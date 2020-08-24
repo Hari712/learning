@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { Splash, SignUp, Login } from '../screen';
+import { Splash, SignUp, Login, ResetPasscode, Passcode, LiveTracking } from '../screen';
 import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,6 +14,9 @@ function AppNavigator() {
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="ResetPasscode" component={ResetPasscode} />
+        <Stack.Screen name="Passcode" component={Passcode} />
+        <Stack.Screen name='LiveTracking' component={LiveTracking} />
         </Stack.Navigator>
     </NavigationContainer>
   );
