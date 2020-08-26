@@ -4,6 +4,7 @@ import React from 'react'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './NavigationService';
+import { TabStackNavigator } from './TabStack';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,7 @@ function AppNavigator() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="ResetPasscode" component={ResetPasscode} />
         <Stack.Screen name="Passcode" component={Passcode} />
-        <Stack.Screen name='LiveTracking' component={LiveTracking} />
+        <Stack.Screen name='LiveTracking' component={TabStackNavigator} />
         </Stack.Navigator>
     </NavigationContainer>
   );

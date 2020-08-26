@@ -2,7 +2,7 @@ export const ColorConstant = {
     WHITE: '#FFFFFF',
     ORANGE: '#FF7F21',
     GREY: '#B5B5B5',
-    BLUE: '06418E',
+    BLUE: '#06418E',
 
     // blue: '#00ABE6',
     // white: '#ffffff',

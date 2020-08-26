@@ -11,7 +11,18 @@ const images = {
         bluebell: require('../../assets/images/bluebell.png'),
         orangrbell: require('../../assets/images/orangebell.png'),
         orangeline: require('../../assets/images/orangeline.png'),
-        blueline: require('../../assets/images/blueline.png')
+        blueline: require('../../assets/images/blueline.png'),
+        liveTrackingClick: require('../../assets/images/livetrackingclick.png'),
+        liveTrackingDefault: require('../../assets/images/livetrackingdefault.png'),
+        usersDefault: require('../../assets/images/usersdefault.png'),
+        usersClick: require('../../assets/images/userclick.png'),
+        dashBoardClick: require('../../assets/images/dashboardclick.png'),
+        dashBoardDefault: require('../../assets/images/dashboarddefault.png'),
+        deviceAssetClick: require('../../assets/images/asste&deviceclick.png'),
+        deviceAssetDefault: require('../../assets/images/asset&devicedefault.png'),
+        settingDefault: require('../../assets/images/settingsdefault.png'),
+        settingClick: require('../../assets/images/settingsclick.png')
+
         
     }
 }
