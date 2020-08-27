@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText } from '../../component'
+import CustomButton from '../../component/Button'
 
 
 const Login = () => {
@@ -18,28 +19,29 @@ return (
     <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
         <View style={styles.container}>
             <Image source={images.image.defaultlogo} />
-            <View style={{margin:hp(3),width:'75%'}}>
-                <Text style={{color:ColorConstant.WHITE,fontSize:FontSize.FontSize.regular,textAlign:'center'}}>WELCOME !</Text>
+            <View style={styles.subContner}>
+                <Text style={styles.welcomeText}>WELCOME !</Text>
             </View>
             
             <EditText value={email} onChangeText={(value) => {setEmail(value)}} placeholder='Email Address/Mobile Number' />
-            <EditText passcode style={{paddingHorizontal:hp(1.5), flexDirection:'row',alignItems:'center',justifyContent:'space-between'}} value={passcode} onChangeText={(value) => setPasscode(value)} placeholder='Passcode' />
+            <EditText passcode style={styles.passcodeText} value={passcode} onChangeText={(value) => setPasscode(value)} placeholder='Passcode' />
 
     
-            <View style={{width:'75%',margin:hp(1.5),flexDirection:'row'}}>
+            <View style={styles.checkboxContainer}>
                 <Image source={images.image.checkbox}></Image>
-                <Text style={{color:ColorConstant.WHITE,fontWeight:'100',fontSize:FontSize.FontSize.medium}}>  Keep me logged in</Text>
+                <Text style={styles.checkboxText}>  Keep me logged in</Text>
             </View>
             
+            <CustomButton title="Login" onPress={() => NavigationService.navigate('LiveTracking')} style={styles.button}  />
+            
+            {/*             
             <TouchableOpacity onPress={() => NavigationService.navigate('LiveTracking')} style={{ borderRadius:6, width:'75%', margin:hp(2),  alignItems:'center' ,backgroundColor:ColorConstant.ORANGE,height:hp(6)}}>
                 <Text style={{color:ColorConstant.WHITE,  flex:1,textAlignVertical:'center'}}>Login</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
-            {/* <View style={{flexDirection:'row', marginBottom:hp(2)}}> */}
-                <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('ResetPasscode')}>
-                    <Text style={{color:ColorConstant.WHITE,fontWeight:'100'}}>Reset Passcode</Text>
-                </TouchableOpacity>
-            {/* </View> */}
+            <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('ResetPasscode')}>
+                <Text style={styles.resetText}>Reset Passcode</Text>
+            </TouchableOpacity>
 
         </View> 
         
@@ -53,6 +55,38 @@ container: {
     alignItems:'center',
     width:'100%'
 },
+subContner: {
+    margin:hp(3),
+    width:'75%'
+},
+welcomeText: {
+    color:ColorConstant.WHITE,
+    fontSize:FontSize.FontSize.regular,
+    textAlign:'center'
+},
+passcodeText: {
+    paddingHorizontal:hp(1.5), 
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between'
+},
+checkboxContainer: {
+    width:'75%',
+    margin:hp(1.5),
+    flexDirection:'row'
+},
+checkboxText: {
+    color:ColorConstant.WHITE,
+    fontWeight:'100',
+    fontSize:FontSize.FontSize.medium
+},
+button: {
+    borderRadius:6, 
+    width:'75%', 
+    margin:hp(2),  
+    alignItems:'center',
+    backgroundColor:ColorConstant.ORANGE,height:hp(6)
+},
 backgroundImage: {
     flex: 1,
     alignItems: 'center',
@@ -64,6 +98,10 @@ subContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+},
+resetText: {
+    color:ColorConstant.WHITE,
+    fontWeight:'100'
 },
 inputTextStyle: {
     borderRadius:6,

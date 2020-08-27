@@ -5,6 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
+import CustomButton from '../../component/Button'
 
 const ResetPasscode = () => {
     return(
@@ -16,9 +17,11 @@ const ResetPasscode = () => {
             </View>
             <TextInput placeholder='Email Address/Mobile Number' placeholderTextColor={ColorConstant.GREY} style={styles.inputTextStyle}></TextInput>
             
-            <TouchableOpacity onPress={() => NavigationService.navigate('Passcode')}   style={{ borderRadius:6, width:'75%', margin:hp(2),  alignItems:'center' ,backgroundColor:ColorConstant.ORANGE,height:hp(6)}}>
+            <CustomButton title='Reset'  onPress={() => NavigationService.navigate('Passcode')}  style={{ borderRadius:6, width:'75%', margin:hp(2),  alignItems:'center',backgroundColor:ColorConstant.ORANGE,height:hp(6)}} />
+            
+            {/* <TouchableOpacity onPress={() => NavigationService.navigate('Passcode')}   style={{ borderRadius:6, width:'75%', margin:hp(2),  alignItems:'center' ,backgroundColor:ColorConstant.ORANGE,height:hp(6)}}>
                 <Text style={{color:ColorConstant.WHITE,  flex:1,textAlignVertical:'center'}}>Reset</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <View style={{flexDirection:'row', marginTop:hp(3)}}>
                 <Text style={{color:ColorConstant.WHITE,fontWeight:'100'}}>Login into Existing Account   </Text>

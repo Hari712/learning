@@ -27,53 +27,71 @@ const LiveTracking = () => {
 
 		<View style={styles.container}>
 			
-			<Mapbox.MapView
-				styleURL={Mapbox.StyleURL.Street}
-				zoomLevel={15}
-				centerCoordinate={[11.256, 43.77]}
-				style={styles.container}>
-				{renderAnnotations()}
-				
-			</Mapbox.MapView>
-
-			<View style={{ position:'absolute', flex:1,right:20, top:20,width:'15%'}}>
-				<TouchableOpacity style={{borderRadius:13,height:hp(7.3),justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE}}>
-						<Image source={images.image.bluebell}/> 
-				</TouchableOpacity> 
-
-				<TouchableOpacity activeOpacity={1} onPress={() =>isLineClick?setIsLineClick(false):setIsLineClick(true)} style={{borderRadius:13,height:hp(7.3),marginTop:hp(2) ,justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE}}>
-					{isLineClick?
-					<Image style={{position:'absolute'}} source={images.image.orangeline}/>:
-					<Image style={{position:'absolute'}} source={images.image.blueline}/>
-					}
-
-					{isLineClick?
-						<View style={{backgroundColor:'white',padding:5,right:120,borderRadius:16,width:'280%',height:hp(18),top:38,justifyContent:'space-between'}}>
-							{data.map((item) =>
-							<View>
-							<Text style={{margin:hp(0.5),color:ColorConstant.BLUE,textAlignVertical:'center'}}>{item}</Text>
-							<View style={{borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)}}/>
-						</View>
-							)
-							}
-					</View>
-					:null}
+				<Mapbox.MapView
+					styleURL={Mapbox.StyleURL.Street}
+					zoomLevel={15}
+					centerCoordinate={[11.256, 43.77]}
+					style={styles.container}>
+					{renderAnnotations()}
 					
-				</TouchableOpacity>
-				<TouchableOpacity style={{borderRadius:13,height:hp(7.3),marginTop:hp(2),justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.BLUE}}>
-					<Image style={{tintColor:ColorConstant.WHITE}} source={images.image.add}/> 
-				</TouchableOpacity>
-			</View> 
+				</Mapbox.MapView>
+
+				<View style={styles.subContainer}>
+
+					<TouchableOpacity style={styles.bellIconStyle}>
+							<Image source={images.image.bluebell}/> 
+					</TouchableOpacity> 
+
+					<TouchableOpacity activeOpacity={1} onPress={() =>isLineClick?setIsLineClick(false):setIsLineClick(true)} style={styles.lineIconStyle}>
+							{isLineClick?
+							<Image style={{position:'absolute'}} source={images.image.orangeline}/>:
+							<Image style={{position:'absolute'}} source={images.image.blueline}/>
+							}
+
+								{isLineClick?
+									<View style={styles.lineContainer}>
+										{data.map((item) =>
+										<View>
+										<Text style={styles.textStyle}>{item}</Text>
+										<View style={styles.horizontalLine}/>
+									</View>
+										)
+										}
+								</View>
+								:null}
+						
+							</TouchableOpacity>
+							<TouchableOpacity style={[styles.lineIconStyle,{backgroundColor:ColorConstant.BLUE}]}>
+								<Image style={{tintColor:ColorConstant.WHITE}} source={images.image.add}/> 
+							</TouchableOpacity>
+				</View> 
 		</View>
 		);
-		}
+	}
 
 const data = ['Geo Fence','Sensor Information','Alarms']
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width:'100%'
+	},
+	subContainer: {
+		position:'absolute', flex:1,right:20, top:20,width:'15%'
+	},
+	bellIconStyle: {
+		borderRadius:13,height:hp(7.3),justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
+	},
+	lineIconStyle: {
+		borderRadius:13,height:hp(7.3),marginTop:hp(2) ,justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
+	},
+	lineContainer:{
+		backgroundColor:'white',padding:5,right:120,borderRadius:16,width:'280%',height:hp(18),top:38,justifyContent:'space-between'
+	},
+	textStyle:{
+		margin:hp(0.5),color:ColorConstant.BLUE,textAlignVertical:'center'
+	},
+	horizontalLine:{
+		borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)
 	},
 	map: {
 		height: 400,

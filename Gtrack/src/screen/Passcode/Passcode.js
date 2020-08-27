@@ -18,15 +18,15 @@ const Passcode = ({navigation}) => {
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
         <View style={styles.container}>
             <Image source={images.image.defaultlogo}/>
-            <View style={{margin:hp(4),width:'75%'}}>
-                <Text style={{color:ColorConstant.WHITE,fontSize:FontSize.FontSize.medium,textAlign:'center'}}>Passcode Reset Email Sent</Text>
-                <Text style={{color:ColorConstant.WHITE,fontSize:FontSize.FontSize.small,textAlign:'center',marginTop:hp(1)}}>The New Passcode is sent on</Text>
-                <Text style={{color:ColorConstant.ORANGE,fontSize:FontSize.FontSize.small,textAlign:'center',marginTop:hp(1)}}>@davidsmith@gmail.com</Text>
+            <View style={styles.subContainer}>
+                <Text style={styles.resetEmailText}>Passcode Reset Email Sent</Text>
+                <Text style={styles.textStyle}>The New Passcode is sent on</Text>
+                <Text style={[styles.textStyle,{color:ColorConstant.ORANGE}]}>@davidsmith@gmail.com</Text>
             </View>
             
-            <EditText passcode style={{paddingHorizontal:hp(1.5), flexDirection:'row',alignItems:'center',marginTop:hp(0.5),justifyContent:'space-between'}} value={passcode} onChangeText={(value) => setPasscode(value)} placeholder='Enter New Passcode' />
+            <EditText passcode style={styles.passcode} value={passcode} onChangeText={(value) => setPasscode(value)} placeholder='Enter New Passcode' />
            
-            <View style={{flexDirection:'row',justifyContent:'space-between',width:'75%',margin:hp(2),alignItems:'center'}}>
+            <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={()=>{
                     cancel?setCancel(false):setCancel(true)
                     navigation.goBack()
@@ -53,6 +53,35 @@ container: {
     marginTop:hp(20),
     alignItems:'center',
     width:'100%'
+},
+subContainer: {
+    margin:hp(4),
+    width:'75%'
+},
+resetEmailText: {
+    color:ColorConstant.WHITE,
+    fontSize:FontSize.FontSize.medium,
+    textAlign:'center'
+},
+textStyle: {
+    color:ColorConstant.WHITE,
+    fontSize:FontSize.FontSize.small,
+    textAlign:'center',
+    marginTop:hp(1)
+},
+passcode: {
+    paddingHorizontal:hp(1.5), 
+    flexDirection:'row',
+    alignItems:'center',
+    marginTop:hp(0.5),
+    justifyContent:'space-between'
+},
+buttonContainer: {
+    flexDirection:'row',
+    justifyContent:'space-between',
+    width:'75%',
+    margin:hp(2),
+    alignItems:'center'
 },
 backgroundImage: {
     flex: 1,
