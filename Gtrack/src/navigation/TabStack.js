@@ -115,7 +115,7 @@ export const TabStackNavigator = ({ }) => {
                     } 
                     // You can return any component that you like here!
                     return (
-                        <View style={{ justifyContent: 'center', alignItems: 'center',bottom:4,marginTop:hp(1)}}>
+                        <View style={{ justifyContent: 'center', alignItems: 'center',bottom:6,marginTop:hp(1)}}>
                             <Image source={iconName} resizeMode='stretch' />
                             <Text style={{textAlign:'center',fontSize:FontSize.FontSize.extraSmall,color:color}}>{route.name} </Text>
                         </View>
@@ -124,10 +124,12 @@ export const TabStackNavigator = ({ }) => {
             })}
             tabBarOptions={{
                 keyboardHidesTabBar: true,
-                style: {  backgroundColor: ColorConstant.WHITE,borderBottomColor: ColorConstant.ORANGE, borderBottomWidth: 4  },
+                style: {  backgroundColor: ColorConstant.WHITE,},
                 showLabel: false,
+                
             }}
             initialRouteName='LiveTracking'
+            
         >
             <Tab.Screen name="Live Tracking" component={LiveTrackingStackNavigator} />
             <Tab.Screen name="Users" component={UsersStackNavigator} />
