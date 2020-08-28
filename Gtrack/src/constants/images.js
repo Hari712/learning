@@ -21,7 +21,10 @@ const images = {
         deviceAssetClick: require('../../assets/images/asste&deviceclick.png'),
         deviceAssetDefault: require('../../assets/images/asset&devicedefault.png'),
         settingDefault: require('../../assets/images/settingsdefault.png'),
-        settingClick: require('../../assets/images/settingsclick.png')
+        settingClick: require('../../assets/images/settingsclick.png'),
+        car: require('../../assets/images/DevieAsset/car.png'),
+        edit: require('../../assets/images/DevieAsset/editwhite.png'),
+        cardExpand: require('../../assets/images/DevieAsset/cardExpnand.png')
 
         
     }

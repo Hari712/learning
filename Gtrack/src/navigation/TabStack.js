@@ -20,6 +20,23 @@ const UsersStack = createStackNavigator();
 const DashBoardStack = createStackNavigator();
 const DeviceAssetStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
+const ScreenOptions = {
+    headerStyle: {
+        backgroundColor: ColorConstant.WHITE,
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        height: hp(9),
+    },
+    headerTintColor: ColorConstant.GREY,
+    headerTitleStyle: {
+        fontSize: FontSize.FontSize.regular,
+        fontWeight: '100',
+        letterSpacing: 3,
+    },
+    headerTitleAlign: 'center',
+    headerTransparent: false,
+}
 
 const LiveTrackingStackNavigator = () => {
     return(
@@ -39,7 +56,7 @@ const UsersStackNavigator = () => {
 
 const DashBoardStackNavigator = () => {
     return(
-        <DashBoardStack.Navigator initialRouteName="Dash Board" headerMode="none">
+        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode={ScreenOptions}>
             <DashBoardStack.Screen name="DashBoard" component={DashBoard} />
         </DashBoardStack.Navigator>
     )
@@ -47,8 +64,8 @@ const DashBoardStackNavigator = () => {
 
 const DeviceAssetStackNavigator = () => {
     return(
-        <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="none">
-            <DeviceAssetStack.Screen name="DeviceAsset" component={DeviceAsset} />
+        <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions}>
+            <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
         </DeviceAssetStack.Navigator>
     )
 }

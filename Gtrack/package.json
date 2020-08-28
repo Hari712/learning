@@ -22,6 +22,7 @@
     "react-native-responsive-screen": "^1.4.1",
     "react-native-safe-area-context": "^3.1.6",
     "react-native-screens": "^2.10.1",
+    "react-native-simple-shadow-view": "^1.6.3",
     "react-native-splash-screen": "^3.2.0"
   },
   "devDependencies": {
