@@ -27,44 +27,51 @@ const LiveTracking = () => {
 
 		<View style={styles.container}>
 			
-				<Mapbox.MapView
-					styleURL={Mapbox.StyleURL.Street}
-					zoomLevel={15}
-					centerCoordinate={[11.256, 43.77]}
-					style={styles.container}>
-					{renderAnnotations()}
-					
-				</Mapbox.MapView>
+			<Mapbox.MapView
+				styleURL={Mapbox.StyleURL.Street}
+				zoomLevel={15}
+				onTouchStart={()=>{setIsLineClick(false)}}
+				centerCoordinate={[11.256, 43.77]}
+				style={styles.container}>
+				{renderAnnotations()}
+				
+			</Mapbox.MapView>
 
-				<View style={styles.subContainer}>
+			<View style={styles.subContainer}>
 
-					<TouchableOpacity style={styles.bellIconStyle}>
-							<Image source={images.image.bluebell}/> 
-					</TouchableOpacity> 
+				<TouchableOpacity onPress={() =>{
+					setIsLineClick(false)
+					console.log("Pressed")
+				}} style={styles.bellIconStyle}>
+						<Image source={images.image.bluebell}/> 
+				</TouchableOpacity> 
 
-					<TouchableOpacity activeOpacity={1} onPress={() =>isLineClick?setIsLineClick(false):setIsLineClick(true)} style={styles.lineIconStyle}>
-							{isLineClick?
-							<Image style={{position:'absolute'}} source={images.image.orangeline}/>:
-							<Image style={{position:'absolute'}} source={images.image.blueline}/>
-							}
+				<TouchableOpacity activeOpacity={1} onPress={() =>setIsLineClick(!isLineClick)} style={styles.lineIconStyle}>
+					{isLineClick?
+						<Image source={images.image.orangeline}/>:
+						<Image source={images.image.blueline}/>
+					}
+				</TouchableOpacity>
 
-								{isLineClick?
-									<View style={styles.lineContainer}>
-										{data.map((item) =>
-										<View>
-										<Text style={styles.textStyle}>{item}</Text>
-										<View style={styles.horizontalLine}/>
-									</View>
-										)
-										}
-								</View>
-								:null}
-						
-							</TouchableOpacity>
-							<TouchableOpacity style={[styles.lineIconStyle,{backgroundColor:ColorConstant.BLUE}]}>
-								<Image style={{tintColor:ColorConstant.WHITE}} source={images.image.add}/> 
-							</TouchableOpacity>
-				</View> 
+				{isLineClick?
+					<View style={styles.lineContainer}>
+						{data.map((item,key) =>
+							<View key={key}>
+								<Text style={styles.textStyle}>{item}</Text>
+								{key!=data.length-1 ? <View style={styles.horizontalLine}/> : null}
+							</View>
+						)
+						}
+					</View>
+				:null}
+
+				<TouchableOpacity onPress={()=>{
+					setIsLineClick(false)
+					console.log("Line Icon Pressed")
+				}} style={[styles.lineIconStyle,{backgroundColor:ColorConstant.BLUE}]}>
+					<Image style={{tintColor:ColorConstant.WHITE}} source={images.image.add}/> 
+				</TouchableOpacity>
+			</View> 
 		</View>
 		);
 	}
@@ -85,10 +92,26 @@ const styles = StyleSheet.create({
 		borderRadius:13,height:hp(7.3),marginTop:hp(2) ,justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
 	},
 	lineContainer:{
-		backgroundColor:'white',padding:5,right:120,borderRadius:16,width:'280%',height:hp(18),top:38,justifyContent:'space-between'
+		backgroundColor:'white',
+		padding:5,
+		paddingVertical:hp(1.5),
+		right:70,
+		borderRadius:16,
+		width:hp(20),
+		top:hp(9.5),
+		justifyContent:'space-between',
+		position:'absolute',
+		shadowColor:ColorConstant.GREY,		
+		shadowOffset:{height:0,width:0},
+		shadowOpacity:1,
+		elevation:10,
+		shadowRadius:3
 	},
 	textStyle:{
-		margin:hp(0.5),color:ColorConstant.BLUE,textAlignVertical:'center'
+		margin:hp(0.5),
+		color:ColorConstant.BLUE,
+		textAlignVertical:'center',
+		paddingLeft:hp(0.5)
 	},
 	horizontalLine:{
 		borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)

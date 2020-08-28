@@ -13,7 +13,7 @@ const Splash = (navigation) => {
             
             <Image style={{position:'absolute', alignSelf:'center'}} source={images.image.logo}/>
 
-            <View style={{position:'absolute', bottom: 20, alignContent:'center', alignItems:'center', width:Dimensions.get('window').width}}>
+            <View style={{position:'absolute', bottom: 20, alignContent:'center', alignItems:'center', width:wp(100)}}>
                 <View style={{flexDirection:'row', marginBottom:hp(2)}}>
                     <Text style={{color:ColorConstant.WHITE,fontWeight:'400'}}>Already have an account ? </Text>
                     <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
@@ -21,11 +21,8 @@ const Splash = (navigation) => {
                     </TouchableOpacity>
                 </View>
 
-                <CustomButton title='Get Started' onPress={() => NavigationService.navigate('SignUp')} style={{ borderRadius:6, width:'80%', flex: 1,  alignItems:'center' ,backgroundColor:ColorConstant.ORANGE,height:hp(6)}} />
+                <CustomButton title='Get Started' onPress={() => NavigationService.navigate('SignUp')} style={{ width:wp(80)}} />
                 
-                {/* <TouchableOpacity onPress={() => NavigationService.navigate('SignUp')} style={{ borderRadius:6, width:'80%', flex: 1,  alignItems:'center' ,backgroundColor:ColorConstant.ORANGE,height:hp(6)}}>
-                    <Text style={{color:ColorConstant.WHITE,  flex:1,textAlignVertical:'center'}}>Get Started</Text>
-                </TouchableOpacity> */}
             </View>
 
         </ImageBackground>
