@@ -5,72 +5,73 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
+import Header from '../../component/Header'
+import NavigationService from '../../navigation/NavigationService';
 
-const DeviceAsset = () => {
-    
-   
-	 return (
-     
-  
-      // <View style={{backgroundColor:'red',height:Dimensions.get('window').height}}>
-    DATA.map((item,key) =>
-        <View style={styles.cardContainer}>
-           {console.log("Khushi",item)}
-          <View style={{backgroundColor:ColorConstant.BLUE,flexDirection:'row',width:'100%',height:hp(8),borderTopLeftRadius:15,borderTopRightRadius:15}}>
-             <View>
-                <Text style={{color:ColorConstant.WHITE,marginTop:hp(0.5),paddingLeft:hp(3)}}>{item.title}</Text>
-                <Text style={{paddingLeft:hp(3),color:ColorConstant.ORANGE,fontSize:FontSize.FontSize.small,marginTop:hp(1)}}>{item.id}</Text>
-             </View>
-             <View style={{marginTop:hp(1.5),left:15}}>
-               <Image source={images.image.car}/>
-             </View>
-             <View style={{flexDirection:'row',alignItems:'center',left:60}}>
-               <Image style={{marginRight:hp(3)}} source={images.image.edit}/>
-               <Image source={images.image.cardExpand}/>
-             </View>
-          </View>
-          <View style={{flexDirection:'row',justifyContent:'center',marginTop:hp(1.5)}}>
-            <View style={{flexDirection:'column',paddingHorizontal:hp(2)}} >
-              <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.medium}}>Group</Text>
-              <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.medium}}>{item.group}</Text>              
-            </View>
-            <View style={{flexDirection:'column',paddingHorizontal:hp(2)}} >
-              <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.medium}}>Selected Plan</Text>
-              <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.medium}}>{item.plan} <Text style={{color:ColorConstant.GREY}}>({item.duration})</Text></Text>             
-            </View>
-            <View style={{flexDirection:'column',paddingHorizontal:hp(2)}}>
-            <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.medium}}>Plan Expiry</Text>
-            <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.medium}}>{item.date}</Text>
-            </View>
-          </View>
+const DeviceAsset = ({navigation}) => {
+  return (
+<View>
+  <Header title='Device & Asset' />
+  {DATA.map((item,key) =>
+    <View style={styles.cardContainer} key={key}>
+      {/* Blue top head */}
+      <View style={{backgroundColor:ColorConstant.BLUE,flexDirection:'row',width:"100%",borderTopLeftRadius:15,borderTopRightRadius:15,paddingHorizontal:hp(3)}}>
+        <View style={{ alignContent:'space-between',marginVertical:hp(0.5),}}>
+          <Text style={{color:ColorConstant.WHITE,fontSize:FontSize.FontSize.small}}>{item.title}</Text>
+          <Text style={{color:ColorConstant.ORANGE,fontSize:FontSize.FontSize.extraSmall}}>{item.id}</Text>
         </View>
-    )
-      // </View>
+        <View style={{marginTop:hp(1),left:10}}>
+          {item.image?<Image style={{height:hp(1.5), resizeMode:'contain' }} source={item.image}/>:null}
+        </View>
+        <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-between', alignItems:'center'}}>
+          <Image source={images.image.edit}/>
+          <TouchableOpacity onPress={()=>
+            { 
+            navigation.navigate('Details',{id:item.id, title:item.title})}
+            } >
+            <Image style={{height:hp(2)}} source={images.image.cardExpand}/>
+          </TouchableOpacity>
+        </View>
+      </View>
 
-   
-      )
-  }
-
-  
-     
-
-
-      const DATA = [
+      {/* White Body container */}
+      <View style={{flexDirection:'row',marginTop:hp(1.5),paddingHorizontal:hp(2.5),paddingBottom:hp(1.5)}}>
+        <View style={{flexDirection:'column',width:'35%'}} >
+          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Group</Text>
+          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.group}</Text>              
+        </View>
+        <View style={{flexDirection:'column',width:'40%'}} >
+          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Selected Plan</Text>
+          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.plan} {item.duration?<Text style={{color:ColorConstant.GREY}}>({item.duration})</Text>:null}</Text>             
+        </View>
+        <View style={{flexDirection:'column',width:'25%'}}>
+          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Plan Expiry</Text>
+          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.date}</Text>
+        </View>
+      </View>
+    </View>
+  )}
+     </View>
+  )
+}
+    const DATA = [
         {
             id: '123456789456123',
             title: 'TrackPort International',
             date: "12/05/2020",
             group:'Home',
             plan: 'Basic',
-            duration:'Monthly'
+            duration:'Monthly',
+            image: require('../../../assets/images/Vehicles/car.png')
         },
         {
             id: '123456789456123',
             title: 'TrackPort 4G Vehicle GPS Tracker',
             date: "12/05/2020",
             group:'Fedex Ground',
-            plan: 'Selected',
-            duration:'Yearly'
+            plan: 'Standard',
+            duration:'Yearly',
+            image: require('../../../assets/images/Vehicles/Truck.png')
         },
         {
             id: '123456789456123',
@@ -78,7 +79,8 @@ const DeviceAsset = () => {
             date: "10/05/2020",
             group:'Default',
             plan: 'None',
-            duration:''
+            duration:'',
+            image: ''
         },
 
     ];
@@ -94,8 +96,8 @@ const styles = StyleSheet.create({
   cardContainer: {
     //width:'100%',
     width: Dimensions.get('screen').width-30,
-    marginVertical: hp(4),
-    height:hp(18),
+    marginTop: hp(2),
+    // height:hp(18),
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 15,

@@ -11,6 +11,7 @@ import DeviceAsset from '../screen/Device&Asset/DeviceAsset';
 import Settings from '../screen/Settings/Settings';
 import FontSize from '../component/FontSize';
 import images from '../constants/images';
+import Details from '../screen/Device&Asset/Details'
 
 
 const Tab = createBottomTabNavigator();
@@ -56,7 +57,7 @@ const UsersStackNavigator = () => {
 
 const DashBoardStackNavigator = () => {
     return(
-        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode={ScreenOptions}>
+        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none">
             <DashBoardStack.Screen name="DashBoard" component={DashBoard} />
         </DashBoardStack.Navigator>
     )
@@ -64,8 +65,9 @@ const DashBoardStackNavigator = () => {
 
 const DeviceAssetStackNavigator = () => {
     return(
-        <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions}>
+        <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="none" screenOptions={ScreenOptions}>
             <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
+            <DeviceAssetStack.Screen name="Details" component={Details}/>
         </DeviceAssetStack.Navigator>
     )
 }
