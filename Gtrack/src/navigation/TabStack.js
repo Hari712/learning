@@ -24,16 +24,16 @@ const SettingsStack = createStackNavigator();
 const ScreenOptions = {
     headerStyle: {
         backgroundColor: ColorConstant.WHITE,
-        elevation: 0,
-        shadowOpacity: 0,
+        elevation: 10,
+        shadowOpacity: 0.9,
         borderBottomWidth: 0,
-        height: hp(9),
+        height: hp(8),
     },
     headerTintColor: ColorConstant.GREY,
     headerTitleStyle: {
-        fontSize: FontSize.FontSize.regular,
+        fontSize: FontSize.FontSize.medium,
         fontWeight: '100',
-        letterSpacing: 3,
+        //letterSpacing: 2,
     },
     headerTitleAlign: 'center',
     headerTransparent: false,
@@ -65,7 +65,7 @@ const DashBoardStackNavigator = () => {
 
 const DeviceAssetStackNavigator = () => {
     return(
-        <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="none" screenOptions={ScreenOptions}>
+        <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions} >
             <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
             <DeviceAssetStack.Screen name="Details" component={Details}/>
         </DeviceAssetStack.Navigator>

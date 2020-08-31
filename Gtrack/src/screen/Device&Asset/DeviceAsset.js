@@ -1,17 +1,24 @@
 import React, { useState ,Component} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions} from 'react-native';
+import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import Mapbox from '@react-native-mapbox-gl/maps'
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
-import Header from '../../component/Header'
-import NavigationService from '../../navigation/NavigationService';
 
 const DeviceAsset = ({navigation}) => {
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft:()=>(null),
+      headerRight: () => (
+          <Image source={images.image.menu} style={{marginRight:wp(5), height:hp(3),width:wp(3), resizeMode:'contain'}} />
+      ),
+    });
+  }, [navigation]);
+
   return (
-<View>
-  <Header title='Device & Asset' />
+<ScrollView>
   {DATA.map((item,key) =>
     <View style={styles.cardContainer} key={key}>
       {/* Blue top head */}
@@ -27,7 +34,7 @@ const DeviceAsset = ({navigation}) => {
           <Image source={images.image.edit}/>
           <TouchableOpacity onPress={()=>
             { 
-            navigation.navigate('Details',{id:item.id, title:item.title})}
+            navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
             } >
             <Image style={{height:hp(2)}} source={images.image.cardExpand}/>
           </TouchableOpacity>
@@ -51,7 +58,7 @@ const DeviceAsset = ({navigation}) => {
       </View>
     </View>
   )}
-     </View>
+     </ScrollView>
   )
 }
     const DATA = [
@@ -101,6 +108,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 15,
+    elevation:3,
     borderWidth: 0.3,
     borderColor: ColorConstant.GREY,
     shadowColor:ColorConstant.GREY,
