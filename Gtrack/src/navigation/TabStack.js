@@ -135,7 +135,7 @@ export const TabStackNavigator = ({ }) => {
                     // You can return any component that you like here!
                     return (
                         <View style={{ justifyContent: 'center', alignItems: 'center',bottom:6}}>
-                            <Image source={iconName} resizeMode='stretch' />
+                            <Image source={iconName} resizeMode='contain' />
                             <Text style={{textAlign:'center',fontSize:FontSize.FontSize.extraSmall,color:color}}>{route.name}</Text>
                         </View>
                     )
@@ -143,7 +143,7 @@ export const TabStackNavigator = ({ }) => {
             })}
             tabBarOptions={{
                 keyboardHidesTabBar: true,
-                style: { paddingVertical:hp(2), height:hp(7), backgroundColor: ColorConstant.WHITE,},
+                style: { paddingVertical:hp(2), height:hp(8), backgroundColor: ColorConstant.WHITE,},
                 showLabel: false,
                 
             }}

@@ -13,7 +13,7 @@ const SignUp = () => {
               
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
-                <Image source={images.image.defaultlogo}/>
+                <Image source={images.image.defaultlogo} style={{height:hp(10),resizeMode:'contain'}} />
                 <View style={styles.textConatiner}>
                     <Text style={[styles.textStyle,{fontSize:FontSize.FontSize.medium}]}>Hello there,</Text>
                     <Text style={styles.textStyle}>Enter your information below to </Text>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop:hp(12),
         alignItems:'center',
+        
         width:'100%'
     },
     backgroundImage: {

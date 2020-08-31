@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
         paddingHorizontal:hp(2),
         backgroundColor:ColorConstant.WHITE,
         width:'75%',
+        height:hp(6.5),
         margin:hp(1.5),
         color:'black',
     },
