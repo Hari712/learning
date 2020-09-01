@@ -1,10 +1,11 @@
 import React, { useState ,Component} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAndroid} from 'react-native';
+import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView} from 'react-native';
 import Mapbox from '@react-native-mapbox-gl/maps'
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
+import CustomButton from '../../component/Button';
 
 const Details = ({route, navigation}) => {
     const { id, title, plan, group } = route.params;
@@ -31,10 +32,11 @@ const Details = ({route, navigation}) => {
       }, [navigation]);
 
   return (
+<ScrollView>  
 <View style={{width:'100%',height:Dimensions.get('window').height}}>
     <View style={styles.cardContainer}>     
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:hp(2),alignItems:'center'}}>
-            <Text>Device Details</Text>
+        <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:hp(2),alignItems:'center',marginVertical:hp(1)}}>
+            <Text style={{color:ColorConstant.BLUE,fontSize:FontSize.FontSize.medium,fontWeight:'600'}}>Device Details</Text>
             <Image source={images.image.usb}/>
         </View>
         <View style={{borderBottomColor:ColorConstant.GREY,borderBottomWidth:0.5,marginHorizontal:hp(2)}}/>
@@ -56,8 +58,8 @@ const Details = ({route, navigation}) => {
     </View> 
 
     <View style={styles.cardContainer}>     
-        <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:hp(2),alignItems:'center'}}>
-            <Text>Plan Details</Text>
+        <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:hp(2),alignItems:'center',marginVertical:hp(1)}}>
+            <Text style={{color:ColorConstant.BLUE,fontSize:FontSize.FontSize.medium,fontWeight:'600'}}>Plan Details</Text>
             <Image source={images.image.list}/>
         </View>
         <View style={{borderBottomColor:ColorConstant.GREY,borderBottomWidth:0.5,marginHorizontal:hp(2)}}/>
@@ -86,15 +88,72 @@ const Details = ({route, navigation}) => {
             <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small,marginTop:hp(1)}}>{'\u2B24'} <Text style={{color:ColorConstant.BLACK}}>    Phone,Text,Chat and Email Support</Text></Text> 
             <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small,marginTop:hp(1)}}>{'\u2B24'} <Text style={{color:ColorConstant.BLACK}}>    Optional Protection Plan(2.99/mo)</Text></Text>
             <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small,marginTop:hp(1)}}>{'\u2B24'} <Text style={{color:ColorConstant.BLACK}}>    5% off future BHS Hardware purchase</Text></Text>  
-        </View>
-
-            
+        </View>            
       </View> 
 
+      <View style={styles.cardContainer}>     
+        <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:hp(2),alignItems:'center',marginVertical:hp(1)}}>
+            <Text style={{color:ColorConstant.BLUE,fontSize:FontSize.FontSize.medium,fontWeight:'600'}}>Asset Details</Text>
+            <Image source={images.image.pickupcar}/>
+        </View>
+        <View style={{borderBottomColor:ColorConstant.GREY,borderBottomWidth:0.5,marginHorizontal:hp(2)}}/>
 
-</View>  
+        <View style={{flexDirection:'row',marginTop:hp(1.5),marginHorizontal:hp(2),paddingBottom:hp(1.5)}}>
+            <View style={{flexDirection:'column',flex:3}} >
+                <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Type</Text>
+                <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>Car</Text>              
+            </View>
+            <View style={{flexDirection:'column',flex:3}} >
+                <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Description</Text>
+                <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>My Dad's Car(Chevrolet Captiva)</Text>         
+            </View>
+        </View>
+      </View> 
+
+      <View style={styles.cardContainer}>     
+        <View style={{flexDirection:'row',justifyContent:'space-between',marginHorizontal:hp(2),alignItems:'center',marginVertical:hp(1)}}>
+            <Text style={{color:ColorConstant.BLUE,fontSize:FontSize.FontSize.medium,fontWeight:'600'}}>User Details</Text>
+            <Image source={images.image.user}/>
+        </View>
+        <View style={{borderBottomColor:ColorConstant.GREY,borderBottomWidth:0.5,marginHorizontal:hp(2)}}/>
+        {Data.map((item,key)=>
+        <View key={key} style={{flexDirection:'row',marginTop:hp(1.5),marginHorizontal:hp(2),paddingBottom:hp(1.5)}}>
+            <View style={{flexDirection:'column',flex:1}} >
+                <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Name</Text>
+                <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.name}</Text>              
+            </View>
+            <View style={{flexDirection:'column',flex:2}} >
+                <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Role</Text>
+                <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.role}</Text>         
+            </View>
+        </View>
+        )}
+      </View> 
+      
+      <TouchableOpacity style={{borderRadius:6,flexDirection:'row', width:'45%',bottom:hp(3), marginVertical:hp(5),alignSelf:'center',alignItems:'center',justifyContent:'space-evenly',backgroundColor:ColorConstant.BLUE,height:hp(6)}}>
+        <Image source={images.image.export}/>
+        <Text style={{color:ColorConstant.WHITE}}>Export Details</Text>
+      </TouchableOpacity>
+
+    
+      {/* <CustomButton onPress={{}} title='Export Details' style={{backgroundColor:ColorConstant.BLUE,width:wp(50),justifyContent:'center',alignSelf:'center'}} /> */}
+
+
+
+</View> 
+</ScrollView>   
   )}
-   
+
+const Data=[
+  {
+    name:'Tom Smith',
+    role:'Owner'
+  },
+  {
+  name:'David Smith',
+  role:'Regular'
+  }
+]  
 
 const styles = StyleSheet.create({
 //   cardSubContainer: {
