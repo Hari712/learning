@@ -12,6 +12,7 @@ import Settings from '../screen/Settings/Settings';
 import FontSize from '../component/FontSize';
 import images from '../constants/images';
 import Details from '../screen/Device&Asset/Details'
+import EditDeviceAsset from '../screen/Device&Asset/EditDeviceAsset'
 
 
 const Tab = createBottomTabNavigator();
@@ -68,6 +69,7 @@ const DeviceAssetStackNavigator = () => {
         <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions} >
             <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
             <DeviceAssetStack.Screen name="Details" component={Details}/>
+            <DeviceAssetStack.Screen name="EditDeviceAsset" component={EditDeviceAsset}/>
         </DeviceAssetStack.Navigator>
     )
 }

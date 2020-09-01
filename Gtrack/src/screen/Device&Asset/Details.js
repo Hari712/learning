@@ -117,7 +117,7 @@ const Details = ({route, navigation}) => {
         </View>
         <View style={{borderBottomColor:ColorConstant.GREY,borderBottomWidth:0.5,marginHorizontal:hp(2)}}/>
         {Data.map((item,key)=>
-        <View key={key} style={{flexDirection:'row',marginTop:hp(1.5),marginHorizontal:hp(2),paddingBottom:hp(1.5)}}>
+        <View key={key} style={{flexDirection:'row',marginTop:hp(1.5),marginHorizontal:hp(2)}}>
             <View style={{flexDirection:'column',flex:1}} >
                 <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Name</Text>
                 <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.name}</Text>              

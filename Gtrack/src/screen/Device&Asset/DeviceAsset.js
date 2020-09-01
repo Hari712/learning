@@ -31,7 +31,11 @@ const DeviceAsset = ({navigation}) => {
           {item.image?<Image style={{height:hp(1.5), resizeMode:'contain' }} source={item.image}/>:null}
         </View>
         <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-between', alignItems:'center'}}>
+         <TouchableOpacity onPress={()=> 
+          {
+            navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
           <Image source={images.image.edit}/>
+        </TouchableOpacity>
           <TouchableOpacity onPress={()=>
             { 
             navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
