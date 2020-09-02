@@ -33,7 +33,9 @@ const images = {
         user: require('../../assets/images/user.png'),
         menu: require('../../assets/images/menu.png'),
         menuclick: require('../../assets/images/menuclick.png'),
-        back: require('../../assets/images/back.png')
+        back: require('../../assets/images/back.png'),
+        down: require('../../assets/images/down.png'),
+        next: require('../../assets/images/next.png')
 
         
     }
