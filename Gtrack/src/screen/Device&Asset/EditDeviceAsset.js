@@ -11,7 +11,6 @@ import {
     FilledTextField,
     OutlinedTextField,
   } from '@ubaids/react-native-material-textfield'
-import { color } from 'react-native-reanimated';
   
 
 const EditDeviceAsset = ({route, navigation}) => {
@@ -19,7 +18,9 @@ const EditDeviceAsset = ({route, navigation}) => {
     console.log('Khushi',route.params)
 
     const [value,setValue] = useState();
+    const [type,setType] = useState('Car');
     const [dialogVisible,setDialogVisible] = useState(false)
+    const [assetDropdown,setAssetDropdown] = useState(false)
    
 
     React.useLayoutEffect(() => {
@@ -89,7 +90,7 @@ const EditDeviceAsset = ({route, navigation}) => {
                 <Text style={{marginLeft:hp(2),color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small,fontWeight:'600'}}>Asset</Text>
             </View>
 
-            <TouchableOpacity onPress={()=>setAssetDropdown(true)}>
+            <TouchableOpacity onPress={()=>setAssetDropdown(!assetDropdown)}>
                 <OutlinedTextField
                     label='Type'
                     tintColor={ColorConstant.GREY}
@@ -97,9 +98,10 @@ const EditDeviceAsset = ({route, navigation}) => {
                     labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
                     labelFontSize={FontSize.FontSize.small}
                     contentInset={{ input: 10.45, label: 1.4 }}
-                    formatText={handleInput}
+                    //formatText={handleInput}
+                    value={type}
                     renderRightAccessory={() => handleRightAccessory()}
-                    //editable={false}
+                    editable={false}
                     //inputContainerStyle={styles.inputContainer}
                     activeLineWidth={1}
                     containerStyle={styles.inputButton}
@@ -108,6 +110,21 @@ const EditDeviceAsset = ({route, navigation}) => {
                     //ref={this.fieldRef}
                 />
             </TouchableOpacity>
+
+            { assetDropdown?
+            <View style={{ position:'absolute',top:'48%',borderRadius:hp(2),opacity:4, marginHorizontal:wp(10),alignSelf:'center',  elevation:5, backgroundColor:'white', width:wp(90), height:hp(30) }}>
+                {['Car','Truck','Tempo'].map((item,key)=>{
+                    return(
+                    <TouchableOpacity key={key} onPress={()=>{
+                        setType(item)
+                        console.log("Khushi Clicked", item, type)
+                        setAssetDropdown(false)
+                    }}>
+                        <Text>{item}</Text>
+                    </TouchableOpacity>
+                    )
+                })}
+            </View>:null}
 
                 <View style={{flexDirection:'row',marginTop:hp(2),marginBottom:hp(3)}}>
                     <View style={{flexDirection:'column',flex:1}} >

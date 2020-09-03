@@ -5,19 +5,63 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
+import NavigationService from '../../navigation/NavigationService';
 
 const DeviceAsset = ({navigation}) => {
 
+  var [menuClick,setMenuClick] = useState(false)
+
   React.useLayoutEffect(() => {
+
+    // function menuHandle(item){
+    //   console.log("khushi",item)
+    //   if(item=='Create'){
+    //     return NavigationService.navigate('CreateDeviceAsset')
+    //   }else if(item=='Manage'){
+    //     return NavigationService.navigate('CreateDeviceAsset')
+    //   }
+    //   else
+    //     return 
+    // }
+
     navigation.setOptions({
       headerLeft:()=>(null),
-      headerRight: () => (
-          <Image source={images.image.menu} style={{marginRight:wp(5), height:hp(3),width:wp(3), resizeMode:'contain'}} />
-      ),
+      headerRight:()=> (
+          <TouchableOpacity activeOpacity={1} onPress={()=>setMenuClick(!menuClick)}>
+            <Image source={menuClick?images.image.menuclick:images.image.menu} style={{marginRight:wp(5), height:hp(3),width:wp(3), resizeMode:'contain'}} />
+          </TouchableOpacity>
+      )
     });
-  }, [navigation]);
+  });
 
-  return (
+  function menuHandle(item){
+    console.log("khushi",item)
+    if(item=='Create'){
+      return NavigationService.navigate('CreateDeviceAsset')
+    }else if(item=='Manage'){
+      return NavigationService.navigate('CreateDeviceAsset')
+    }
+    else
+      return 
+  }
+
+
+return ( 
+<View>
+  {menuClick?
+      <View style={styles.menuPopup}>
+        {Menu.map((item,key) =>
+          <View key={key}>
+            <TouchableOpacity onPress={()=> menuHandle(item) }>
+              <Text style={styles.textStyle}>{item}</Text>
+            </TouchableOpacity>
+            {key!=Menu.length-1 ? <View style={styles.horizontalLine}/> : null}
+          </View>
+          )
+        }
+      </View>:
+    null}     
+    
 <ScrollView>
   {DATA.map((item,key) =>
     <View style={styles.cardContainer} key={key}>
@@ -61,10 +105,16 @@ const DeviceAsset = ({navigation}) => {
         </View>
       </View>
     </View>
+    
   )}
      </ScrollView>
+     </View>
+    
   )
 }
+
+    const Menu= ['Create', 'Manage', 'Export Devices']
+
     const DATA = [
         {
             id: '123456789456123',
@@ -97,12 +147,6 @@ const DeviceAsset = ({navigation}) => {
     ];
 
 const styles = StyleSheet.create({
-//   cardSubContainer: {
-//     width: '100%', overflow: "hidden", borderRadius: 23, borderWidth: 0.3,
-//     borderColor: 'yellow',
-//     marginTop:hp(2),
-//     height:hp(20)
-// },
 
   cardContainer: {
     //width:'100%',
@@ -120,62 +164,32 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 0, height: 0 },
 },
-	// container: {
-	// 	flex: 1,
-	// },
-	// subContainer: {
-	// 	position:'absolute', flex:1,right:20, top:20,width:'15%'
-	// },
-	// bellIconStyle: {
-	// 	borderRadius:13,height:hp(7.3),justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
-	// },
-	// lineIconStyle: {
-	// 	borderRadius:13,height:hp(7.3),marginTop:hp(2) ,justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
-	// },
-	// lineContainer:{
-	// 	backgroundColor:'white',
-	// 	padding:5,
-	// 	paddingVertical:hp(1.5),
-	// 	right:70,
-	// 	borderRadius:16,
-	// 	width:hp(20),
-	// 	top:hp(9.5),
-	// 	justifyContent:'space-between',
-	// 	position:'absolute',
-	// 	shadowColor:ColorConstant.GREY,		
-	// 	shadowOffset:{height:0,width:0},
-	// 	shadowOpacity:1,
-	// 	elevation:10,
-	// 	shadowRadius:3
-	// },
-	// textStyle:{
-	// 	margin:hp(0.5),
-	// 	color:ColorConstant.BLUE,
-	// 	textAlignVertical:'center',
-	// 	paddingLeft:hp(0.5)
-	// },
-	// horizontalLine:{
-	// 	borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)
-	// },
-	// map: {
-	// 	height: 400,
-	// 	marginTop: 80
-	// },
-	// annotationContainer: {
-	// 	width: 30,
-	// 	height: 30,
-	// 	alignItems: 'center',
-	// 	justifyContent: 'center',
-	// 	backgroundColor: 'white',
-	// 	borderRadius: 15
-	// },
-	// annotationFill: {
-	// 	width: 30,
-	// 	height: 30,
-	// 	borderRadius: 15,
-	// 	backgroundColor: 'blue',
-	// 	transform: [{ scale: 0.6 }]
-	// }
+menuPopup:{
+  backgroundColor:'white',
+  padding:5,
+  paddingVertical:hp(1.5),
+  right:wp(3),
+  borderRadius:16,
+  width:hp(20),
+  top:hp(-1),
+  justifyContent:'space-between',
+  position:'absolute',
+  shadowColor:ColorConstant.GREY,		
+  shadowOffset:{height:0,width:0},
+  shadowOpacity:1,
+  elevation:10,
+  shadowRadius:3
+},
+textStyle:{
+  margin:hp(0.5),
+  color:ColorConstant.BLUE,
+  textAlignVertical:'center',
+  paddingLeft:hp(0.5)
+},
+horizontalLine:{
+  borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)
+},
 });
+
 
 export default DeviceAsset;
