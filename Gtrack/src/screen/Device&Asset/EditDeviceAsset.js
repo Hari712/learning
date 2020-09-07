@@ -6,21 +6,17 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
 import { ConfirmDialog  } from 'react-native-simple-dialogs';
-import {
-    TextField,
-    FilledTextField,
-    OutlinedTextField,
-  } from '@ubaids/react-native-material-textfield'
+import TextField from '../../component/TextField';
+import DropDown from '../../component/DropDown';
   
 
 const EditDeviceAsset = ({route, navigation}) => {
     const {id,title} = route.params;
-    console.log('Khushi',route.params)
 
     const [value,setValue] = useState();
-    const [type,setType] = useState('Car');
+    const [type,setType] = useState();
+    const [group,setGroup] = useState();
     const [dialogVisible,setDialogVisible] = useState(false)
-    const [assetDropdown,setAssetDropdown] = useState(false)
    
 
     React.useLayoutEffect(() => {
@@ -42,11 +38,6 @@ const EditDeviceAsset = ({route, navigation}) => {
             )
         });
       }, [navigation]);
-
-    const handleInput = text => {
-        setValue(text)
-        return text
-    }  
     
     function handleRightAccessory() {
         return <Image source={images.image.next} resizemode='contain'style={styles.downArrow} />
@@ -65,14 +56,14 @@ const EditDeviceAsset = ({route, navigation}) => {
             </View>
 
             <View style={{width:'100%',alignSelf:'center',margin:hp(3)}}>
-                <OutlinedTextField
+                {/* <OutlinedTextField
                     label='Name*'
                     tintColor={ColorConstant.GREY}
                     fontSize={FontSize.FontSize.small}
                     labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
                     labelFontSize={FontSize.FontSize.small}
                     contentInset={{ input: 10.45, label: 1.4 }}
-                    formatText={handleInput}
+                    formatText={handleInput}                
                     //editable={false}
                     //renderRightAccessory={() => handleRightAccessory()}
                     //inputContainerStyle={styles.inputContainer}
@@ -81,7 +72,8 @@ const EditDeviceAsset = ({route, navigation}) => {
                     //formatText={this.formatText}
                     //onSubmitEditing={this.onSubmit}
                     //ref={this.fieldRef}
-                />
+                /> */}
+                <TextField valueSet={setValue} label='Name*' />
              </View>
              <View style={{borderBottomColor:ColorConstant.GREY,borderBottomWidth:0.3,marginHorizontal:hp(2),width:wp(95),alignSelf:'center'}}/>
 
@@ -90,7 +82,7 @@ const EditDeviceAsset = ({route, navigation}) => {
                 <Text style={{marginLeft:hp(2),color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small,fontWeight:'600'}}>Asset</Text>
             </View>
 
-            <TouchableOpacity onPress={()=>setAssetDropdown(!assetDropdown)}>
+            {/* <TouchableOpacity onPress={()=>setAssetDropdown(!assetDropdown)}>
                 <OutlinedTextField
                     label='Type'
                     tintColor={ColorConstant.GREY}
@@ -98,8 +90,9 @@ const EditDeviceAsset = ({route, navigation}) => {
                     labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
                     labelFontSize={FontSize.FontSize.small}
                     contentInset={{ input: 10.45, label: 1.4 }}
-                    //formatText={handleInput}
-                    value={type}
+                    //formatText={handleDropDown}
+                    //value={type}
+                    defaultValue={type}
                     renderRightAccessory={() => handleRightAccessory()}
                     editable={false}
                     //inputContainerStyle={styles.inputContainer}
@@ -107,7 +100,7 @@ const EditDeviceAsset = ({route, navigation}) => {
                     containerStyle={styles.inputButton}
                     //formatText={this.formatText}
                     //onSubmitEditing={this.onSubmit}
-                    //ref={this.fieldRef}
+                    ref={dropDownRef}
                 />
             </TouchableOpacity>
 
@@ -124,7 +117,9 @@ const EditDeviceAsset = ({route, navigation}) => {
                     </TouchableOpacity>
                     )
                 })}
-            </View>:null}
+            </View>:null} */}
+
+            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Car','Truck','Tempo']} />
 
                 <View style={{flexDirection:'row',marginTop:hp(2),marginBottom:hp(3)}}>
                     <View style={{flexDirection:'column',flex:1}} >
@@ -142,7 +137,7 @@ const EditDeviceAsset = ({route, navigation}) => {
                     <Image  style={{resizeMode:'stretch'}} source={images.image.list}/>
                     <Text style={{marginLeft:hp(2),color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small,fontWeight:'600'}}>Select Group</Text>
                 </View>
-
+{/* 
                 <OutlinedTextField
                     label='Select Group'
                     tintColor={ColorConstant.GREY}
@@ -159,7 +154,9 @@ const EditDeviceAsset = ({route, navigation}) => {
                     //formatText={this.formatText}
                     //onSubmitEditing={this.onSubmit}
                     //ref={this.fieldRef}
-                />
+                /> */}
+
+            <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={['Group 1','Group 2','Group 3']} />
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>

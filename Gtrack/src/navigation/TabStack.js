@@ -68,11 +68,10 @@ const DashBoardStackNavigator = () => {
 const DeviceAssetStackNavigator = () => {
     return(
         <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions} >
-            {/* <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} /> */}
-            <DeviceAssetStack.Screen name="Device & Asset" component={CreateDeviceAsset} />
+            <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
             <DeviceAssetStack.Screen name="Details" component={Details}/>
             <DeviceAssetStack.Screen name="EditDeviceAsset" component={EditDeviceAsset}/>
-            {/* <DeviceAssetStack.Screen name="CreateDeviceAsset" component={CreateDeviceAsset}/> */}
+            <DeviceAssetStack.Screen name="CreateDeviceAsset" component={CreateDeviceAsset}/>
         </DeviceAssetStack.Navigator>
     )
 }

@@ -48,21 +48,7 @@ const DeviceAsset = ({navigation}) => {
 
 return ( 
 <View>
-  {menuClick?
-      <View style={styles.menuPopup}>
-        {Menu.map((item,key) =>
-          <View key={key}>
-            <TouchableOpacity onPress={()=> menuHandle(item) }>
-              <Text style={styles.textStyle}>{item}</Text>
-            </TouchableOpacity>
-            {key!=Menu.length-1 ? <View style={styles.horizontalLine}/> : null}
-          </View>
-          )
-        }
-      </View>:
-    null}     
-    
-<ScrollView>
+<ScrollView style={{height:"100%"}} onTouchStart={()=>setMenuClick(false)}>
   {DATA.map((item,key) =>
     <View style={styles.cardContainer} key={key}>
       {/* Blue top head */}
@@ -107,7 +93,30 @@ return (
     </View>
     
   )}
+
+
+      {/* <View >
+        {Menu.map((item,key) =>
+            <TouchableOpacity key={key} style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=> console.log("Khushi",item) }>
+              <Text style={styles.textStyle}>{item}</Text>
+            </TouchableOpacity>
+          )
+        }
+      </View> */}
+
      </ScrollView>
+
+     {menuClick?
+        <View style={styles.menuPopup}>
+          {Menu.map((item,key) =>
+              <TouchableOpacity key={key}  style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=>menuHandle(item) }>
+                <Text style={styles.textStyle}>{item}</Text>
+              </TouchableOpacity>
+            )
+          }
+        </View>:
+      null} 
+
      </View>
     
   )

@@ -83,10 +83,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	subContainer: {
-		position:'absolute', flex:1,right:20, top:20,width:'15%'
+		position:'absolute', flex:1,right:20, top:20,width:hp(7.5)
 	},
 	bellIconStyle: {
-		borderRadius:13,height:hp(7.3),justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
+		borderRadius:13,
+		height:hp(7.3),
+		justifyContent:'center',
+		alignItems:'center',
+		width:'100%',backgroundColor:ColorConstant.WHITE
 	},
 	lineIconStyle: {
 		borderRadius:13,height:hp(7.3),marginTop:hp(2) ,justifyContent:'center',alignItems:'center',width:'100%',backgroundColor:ColorConstant.WHITE
@@ -95,9 +99,9 @@ const styles = StyleSheet.create({
 		backgroundColor:'white',
 		padding:5,
 		paddingVertical:hp(1.5),
-		right:70,
+		right:wp(18),
 		borderRadius:16,
-		width:hp(20),
+		width:'300%',
 		top:hp(9.5),
 		justifyContent:'space-between',
 		position:'absolute',

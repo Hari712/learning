@@ -10,7 +10,7 @@ import FontSize from './FontSize';
 
 class TextField extends React.Component {
 
-    fieldRef = React.createRef();
+    //fieldRef = React.createRef();
 
     
 
@@ -24,13 +24,13 @@ class TextField extends React.Component {
 
     onSubmit = () => {
         let {current: field } = this.fieldRef;
-        console.log("khushiMuKU",field.value());
+    
         
     }
 
     render() {
     
-        const {label, ...otherProps} = this.props;
+        const {label, innerRef, ...otherProps} = this.props;
 
         const handleInput = text => {
             this.props.valueSet(text)
@@ -51,10 +51,10 @@ class TextField extends React.Component {
                 //editable={false}
                 //inputContainerStyle={styles.inputContainer}
                 activeLineWidth={1}
-                containerStyle={styles.inputButton}
+                //containerStyle={styles.inputButton}
                 //formatText={this.formatText}
-                onSubmitEditing={this.onSubmit}
-                ref={this.fieldRef}
+                //onSubmitEditing={this.onSubmit}
+                //ref={innerRef}
                 {...otherProps}
             />
 
@@ -70,7 +70,7 @@ class TextField extends React.Component {
 
 const styles = StyleSheet.create({
     inputContainer: {
-        height: hp(6),
+        height: hp(5.5),
     },
     inputButton: {
         alignSelf: 'center',
@@ -80,4 +80,6 @@ const styles = StyleSheet.create({
 })
     
 
-export default TextField
+export default React.forwardRef((props, ref) =>
+    <TextField innerRef={ref} {...props} />
+);

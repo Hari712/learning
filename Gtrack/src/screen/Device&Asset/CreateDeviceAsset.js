@@ -12,22 +12,17 @@ import {
   } from '@ubaids/react-native-material-textfield'
 import TextField from '../../component/TextField';
    
+// const [group, setGroup]= useState(); 
+const textRef = React.createRef();
 
-const CreateDeviceAsset = ({route, navigation}) => {
-
-    const groupRef = useRef();
-    const [group, setGroup]= useState();
- 
-    const Group = () => (
-        <View style={styles.container}>
-        <View style={styles.scene} >
-            {/* <OutlinedTextField
+const OutlineType = ({value, handleFun }) => {
+return(<OutlinedTextField
                     label='Group Name*'
                     fontSize={FontSize.FontSize.small}
                     labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
                     labelFontSize={FontSize.FontSize.small}
                     contentInset={{ input: 10.45, label: 1.4 }}
-                    formatText={handleInput}
+                    formatText={handleFun}
                     value={value}
                     //renderRightAccessory={() => handleRightAccessory()}
                     //editable={false}
@@ -36,10 +31,28 @@ const CreateDeviceAsset = ({route, navigation}) => {
                     //containerStyle={styles.inputButton}
                     //formatText={this.formatText}
                     //onSubmitEditing={this.onSubmit}
-                    ref={groupRef}
-                /> */}
+                    ref={textRef}
+                />)}
 
-                <TextField label='Group Name*' valueSet={setGroup.bind(this)} defaultvalue={group} />
+
+const CreateDeviceAsset = ({route, navigation}) => {
+
+    const groupRef = useRef();
+    const [group, setGroup]= useState(); 
+   
+    const handleInput = text => {
+        setGroup(text)
+        console.log("Group Value:", group)
+        return text
+        
+    }  
+ 
+    const Group = () => (
+        <View style={styles.container}>
+        <View style={styles.scene} >
+            <OutlineType value={group} handleFun={handleInput} />
+
+                {/* <TextField label='Group Name*' value={textRef && textRef.current && textRef.current.setValue(value)} valueSet={setGroup.bind(this)} defaultvalue={group} ref={textRef} /> */}
                    
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
@@ -69,6 +82,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
                     labelFontSize={FontSize.FontSize.small}
                     contentInset={{ input: 10.45, label: 1.4 }}
                     formatText={handleInput}
+                    value={textRef && textRef.current && textRef.current.setValue(value)}
                     //renderRightAccessory={() => handleRightAccessory()}
                     //editable={false}
                     //inputContainerStyle={styles.inputContainer}
@@ -139,11 +153,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
     const [index, setIndex] = useState(0);
     const [value,setValue]= useState()  
 
-    const handleInput = text => {
-        setValue(text)
-        return text
-        
-    }  
+    
     const [routes] = React.useState([
         { key: 'group', title: 'Group' },
         { key: 'asset', title: 'Asset' }
