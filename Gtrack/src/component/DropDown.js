@@ -27,7 +27,7 @@ class DropDown extends React.Component {
 
     render() {
     
-        const {label, dataList, innerRef, ...otherProps} = this.props;
+        const {label, dataList, innerRef, outerStyle, ...otherProps} = this.props;
 
         const data = ['Car','Truck','Tempo'];        
 
@@ -43,7 +43,7 @@ class DropDown extends React.Component {
 
         return(
             <SafeAreaView>
-                <TouchableOpacity onPress={show} style={styles.container}>
+                <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
                         tintColor={ColorConstant.GREY}
@@ -51,7 +51,7 @@ class DropDown extends React.Component {
                         labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
                         labelFontSize={FontSize.FontSize.small}
                         contentInset={{ input: 10.45, label: 1.4 }}
-                        defaultValue={this.state.selected}
+                        //defaultValue={this.state.selected}
                         renderRightAccessory={() => handleRightAccessory()}
                         editable={false}
                         inputContainerStyle={styles.inputContainer}
@@ -87,15 +87,8 @@ class DropDown extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        //marginTop:hp(3),
-        margin:hp(3)
-        //height:hp(6)
-    },
-    imageContainer:{
-        height: hp(2), 
-        width: hp(2),
-        justifyContent: 'center',
-        //backgroundColor:'red',    
+        marginVertical:hp(1),
+        justifyContent: 'center',   
     },
     downArrow: {               
        // alignSelf:'center'
@@ -109,18 +102,15 @@ const styles = StyleSheet.create({
         alignSelf:'center',  
         elevation:5, 
         backgroundColor:'white', 
-        width:wp(90),
+        width:'100%',
         paddingLeft:hp(3) 
-        //height:hp(30) 
     },
     inputContainer: {
-        height: hp(6),        
-        //backgroundColor:'red',
+        height: hp(6), 
     },
     inputButton: {
         alignSelf: 'center',
-        width: wp(90),
-        //backgroundColor:'red',
+        width: '100%',
         height: hp(6)
     },
 })

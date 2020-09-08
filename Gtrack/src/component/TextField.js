@@ -18,22 +18,22 @@ class TextField extends React.Component {
         super(props);
         this.state={
             isSelected: false,
+            textValue:''
         }
         // this.focus = this.focus.bind(this);
     }
 
     onSubmit = () => {
-        let {current: field } = this.fieldRef;
-    
-        
+        this.props.valueSet(this.state.textValue)
     }
 
     render() {
     
-        const {label, innerRef, ...otherProps} = this.props;
+        const {label, innerRef, outerStyle, multiline, ...otherProps} = this.props;
 
         const handleInput = text => {
-            this.props.valueSet(text)
+            //this.props.valueSet(text)
+            this.setState({textValue: text})
             return text
         }
         return(
@@ -46,15 +46,15 @@ class TextField extends React.Component {
                 labelFontSize={FontSize.FontSize.small}
                 contentInset={{ input: 10.45, label: 1.4 }}
                 formatText={handleInput}
-                //value={text}
+                //value={this.state.textValue}
                 //renderRightAccessory={() => handleRightAccessory()}
                 //editable={false}
-                //inputContainerStyle={styles.inputContainer}
+                inputContainerStyle={multiline ? styles.descContainer : styles.inputContainer}
                 activeLineWidth={1}
-                //containerStyle={styles.inputButton}
+                containerStyle={[styles.inputButton, {height: multiline ? hp(15) : hp(6)} , outerStyle]}
                 //formatText={this.formatText}
-                //onSubmitEditing={this.onSubmit}
-                //ref={innerRef}
+                onSubmitEditing={this.onSubmit}
+                ref={innerRef}
                 {...otherProps}
             />
 
@@ -70,12 +70,15 @@ class TextField extends React.Component {
 
 const styles = StyleSheet.create({
     inputContainer: {
-        height: hp(5.5),
+        height: hp(6),
     },
-    inputButton: {
+    descContainer: {
+        height: hp(15),
+    },
+    inputButton: {        
         alignSelf: 'center',
-        width: wp(90),
-        marginTop: hp(3)
+        width: '100%',
+        marginVertical: hp(1)
     },
 })
     

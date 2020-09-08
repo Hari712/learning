@@ -1,139 +1,69 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView, TextInput} from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
-import {
-    
-    FilledTextField,
-    OutlinedTextField,
-  } from '@ubaids/react-native-material-textfield'
 import TextField from '../../component/TextField';
+import DropDown from '../../component/DropDown';
    
-// const [group, setGroup]= useState(); 
-const textRef = React.createRef();
-
-const OutlineType = ({value, handleFun }) => {
-return(<OutlinedTextField
-                    label='Group Name*'
-                    fontSize={FontSize.FontSize.small}
-                    labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
-                    labelFontSize={FontSize.FontSize.small}
-                    contentInset={{ input: 10.45, label: 1.4 }}
-                    formatText={handleFun}
-                    value={value}
-                    //renderRightAccessory={() => handleRightAccessory()}
-                    //editable={false}
-                    //inputContainerStyle={styles.inputContainer}
-                    activeLineWidth={1}
-                    //containerStyle={styles.inputButton}
-                    //formatText={this.formatText}
-                    //onSubmitEditing={this.onSubmit}
-                    ref={textRef}
-                />)}
-
 
 const CreateDeviceAsset = ({route, navigation}) => {
 
-    const groupRef = useRef();
     const [group, setGroup]= useState(); 
+    const [detailsToggle, setDetailsToggle] = useState(false);
+    const [type, setType] = useState();
+    const [device, setDevice] = useState();
    
-    const handleInput = text => {
-        setGroup(text)
-        console.log("Group Value:", group)
-        return text
+    // const handleInput = text => {
+    //     setGroup(text)
+    //     console.log("Group Value:", group)
+    //     return text
         
-    }  
+    // }  
+    useEffect(()=>{
+        group? null : setDetailsToggle(false)
+    }, [group])
  
     const Group = () => (
         <View style={styles.container}>
-        <View style={styles.scene} >
-            <OutlineType value={group} handleFun={handleInput} />
+            <View style={styles.scene} >
+                <TextField valueSet={setGroup} label='Group Name*' defaultValue={group} />
+            </View>
 
-                {/* <TextField label='Group Name*' value={textRef && textRef.current && textRef.current.setValue(value)} valueSet={setGroup.bind(this)} defaultvalue={group} ref={textRef} /> */}
-                   
+            {detailsToggle?
+                <View style={{backgroundColor:ColorConstant.PINK,height:hp(25),width:'100%'}}>
+                </View>
+            :null}  
+
+            <View style={[styles.scene]} >
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
                         <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity disabled={true} style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Next</Text>
+                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={{borderRadius:6,backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,width:'42%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}> {detailsToggle ? 'Save' : 'Next'} </Text>
                     </TouchableOpacity>
                 </View>
-           
-        </View>
-                <View style={{backgroundColor:ColorConstant.BLUE,height:hp(25),width:'100%',marginTop:hp(3)}}/>           
-                
+            </View>
         </View>
        
     );
     
     const Asset = () => (
         <View style={styles.container}>
-        <View style={styles.scene} >
-           <OutlinedTextField
-                    label='Name*'
-                    tintColor={ColorConstant.GREY}
-                    fontSize={FontSize.FontSize.small}
-                    labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
-                    labelFontSize={FontSize.FontSize.small}
-                    contentInset={{ input: 10.45, label: 1.4 }}
-                    formatText={handleInput}
-                    value={textRef && textRef.current && textRef.current.setValue(value)}
-                    //renderRightAccessory={() => handleRightAccessory()}
-                    //editable={false}
-                    //inputContainerStyle={styles.inputContainer}
-                    activeLineWidth={1}
-                    //containerStyle={styles.inputButton}
-                    //formatText={this.formatText}
-                    //onSubmitEditing={this.onSubmit}
-                    //ref={this.fieldRef}
-                />
-                <View style={{marginTop:hp(2)}}>
-                    <OutlinedTextField
-                            label='Name*'
-                            tintColor={ColorConstant.GREY}
-                            fontSize={FontSize.FontSize.small}
-                            labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
-                            labelFontSize={FontSize.FontSize.small}
-                            contentInset={{ input: 10.45, label: 1.4 }}
-                            formatText={handleInput}
-                            //renderRightAccessory={() => handleRightAccessory()}
-                            //editable={false}
-                            //inputContainerStyle={styles.inputContainer}
-                            activeLineWidth={1}
-                            //containerStyle={styles.inputButton}
-                            //formatText={this.formatText}
-                            //onSubmitEditing={this.onSubmit}
-                            //ref={this.fieldRef}
-                        /> 
-                </View> 
-                <View style={{height:hp(15),borderRadius:4,borderWidth:0.5,marginTop:hp(2),paddingLeft:hp(1)}}>
-                    <TextInput style={{fontSize:FontSize.FontSize.small}} multiline={true} placeholder='Descrption'/>
-                </View>  
-                <View style={{marginTop:hp(3)}}>
-                    <OutlinedTextField
-                            label='Name*'
-                            tintColor={ColorConstant.GREY}
-                            fontSize={FontSize.FontSize.small}
-                            labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
-                            labelFontSize={FontSize.FontSize.small}
-                            contentInset={{ input: 10.45, label: 1.4 }}
-                            formatText={handleInput}
-                            //renderRightAccessory={() => handleRightAccessory()}
-                            //editable={false}
-                            //inputContainerStyle={styles.inputContainer}
-                            activeLineWidth={1}
-                            //containerStyle={styles.inputButton}
-                            //formatText={this.formatText}
-                            //onSubmitEditing={this.onSubmit}
-                            //ref={this.fieldRef}
-                        /> 
-                </View> 
+            <View style={styles.scene} >
 
+                <TextField valueSet={setValue} defaultValue={value} label='Name*' /> 
+
+                <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} /> 
+
+                <TextField valueSet={setValue} defaultValue={value} label='Description (Optional)'  multiline={true} outerStyle={{marginTop:hp(3)}} />
+
+                <DropDown defaultValue={device} label='Select Device' valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} />
+                
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
                         <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
@@ -143,7 +73,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
                         <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
                     </TouchableOpacity>
                 </View>
-                </View>
+            </View>
         </View>
        
     );
@@ -215,21 +145,23 @@ return(
 }
 const styles = StyleSheet.create({
     container:{
-        width:Dimensions.get('window').width,alignItems:'center'
+        width:Dimensions.get('window').width,
+        alignItems:'center'
     },
     scene: {
         //flex: 1,
         //alignContent:'center',
         width:'85%',
-        marginHorizontal:hp(3),
-        marginVertical:hp(5),
+        marginHorizontal:hp(5),
+        //marginVertical:hp(1),
+        marginTop:hp(5)
       },	
       buttonContainer: {
         flexDirection:'row',
         justifyContent:'space-evenly',
         //width:'75%',
         //margin:hp(3),
-        marginTop:hp(5),
+        marginTop:hp(3),
         alignItems:'center'
     },
 });

@@ -17,6 +17,8 @@ const EditDeviceAsset = ({route, navigation}) => {
     const [type,setType] = useState();
     const [group,setGroup] = useState();
     const [dialogVisible,setDialogVisible] = useState(false)
+    const groupArray = ['Group 1','Group 2','Group 3'] ;
+    const typeArray = ['Car','Truck','Tempo'] ;
    
 
     React.useLayoutEffect(() => {
@@ -38,10 +40,6 @@ const EditDeviceAsset = ({route, navigation}) => {
             )
         });
       }, [navigation]);
-    
-    function handleRightAccessory() {
-        return <Image source={images.image.next} resizemode='contain'style={styles.downArrow} />
-    }   
 
   return (
     <View style={{height:Dimensions.get('window').height,backgroundColor:ColorConstant.WHITE,alignItems:'center'}}>
@@ -119,7 +117,7 @@ const EditDeviceAsset = ({route, navigation}) => {
                 })}
             </View>:null} */}
 
-            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Car','Truck','Tempo']} />
+            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray} />
 
                 <View style={{flexDirection:'row',marginTop:hp(2),marginBottom:hp(3)}}>
                     <View style={{flexDirection:'column',flex:1}} >
@@ -137,26 +135,9 @@ const EditDeviceAsset = ({route, navigation}) => {
                     <Image  style={{resizeMode:'stretch'}} source={images.image.list}/>
                     <Text style={{marginLeft:hp(2),color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small,fontWeight:'600'}}>Select Group</Text>
                 </View>
-{/* 
-                <OutlinedTextField
-                    label='Select Group'
-                    tintColor={ColorConstant.GREY}
-                    fontSize={FontSize.FontSize.small}
-                    labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
-                    labelFontSize={FontSize.FontSize.small}
-                    contentInset={{ input: 10.45, label: 1.4 }}
-                    formatText={handleInput}
-                    renderRightAccessory={() => handleRightAccessory()}
-                    //editable={false}
-                    //inputContainerStyle={styles.inputContainer}
-                    activeLineWidth={1}
-                    containerStyle={styles.inputButton}
-                    //formatText={this.formatText}
-                    //onSubmitEditing={this.onSubmit}
-                    //ref={this.fieldRef}
-                /> */}
 
-            <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={['Group 1','Group 2','Group 3']} />
+
+            <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>
