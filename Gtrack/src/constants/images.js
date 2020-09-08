@@ -4,6 +4,7 @@ const images = {
         logo: require('../../assets/images/Splash/logo.png'),
         defaultlogo: require('../../assets/images/defaultlogo.png'),
         checkbox: require('../../assets/images/checkbox.png'),
+        checkedbox: require('../../assets/images/checkedbox.png'),
         eyeicon: require('../../assets/images/eyeicon.png'),
         disableyeicon: require('../../assets/images/eyeicondisable.png'),
         login: require('../../assets/images/login.png'),
