@@ -1,28 +1,18 @@
 import React, { useState ,Component} from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView} from 'react-native';
-import Mapbox from '@react-native-mapbox-gl/maps'
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
 import NavigationService from '../../navigation/NavigationService';
+import Tooltip from 'rn-tooltip';
 
 const DeviceAsset = ({navigation}) => {
 
-  var [menuClick,setMenuClick] = useState(false)
+  const [menuClick,setMenuClick] = useState(false)
+  const [carClick, setCarClick] = useState(false)
 
   React.useLayoutEffect(() => {
-
-    // function menuHandle(item){
-    //   console.log("khushi",item)
-    //   if(item=='Create'){
-    //     return NavigationService.navigate('CreateDeviceAsset')
-    //   }else if(item=='Manage'){
-    //     return NavigationService.navigate('CreateDeviceAsset')
-    //   }
-    //   else
-    //     return 
-    // }
 
     navigation.setOptions({
       headerLeft:()=>(null),
@@ -35,7 +25,6 @@ const DeviceAsset = ({navigation}) => {
   });
 
   function menuHandle(item){
-    console.log("khushi",item)
     if(item=='Create'){
       return NavigationService.navigate('CreateDeviceAsset')
     }else if(item=='Manage'){
@@ -58,8 +47,17 @@ return (
           <Text style={{color:ColorConstant.ORANGE,fontSize:FontSize.FontSize.extraSmall}}>{item.id}</Text>
         </View>
         <View style={{marginTop:hp(1),left:10}}>
-          {item.image?<Image style={{height:hp(1.5), resizeMode:'contain' }} source={item.image}/>:null}
+          <Tooltip
+            popover={<Text style={{alignSelf:'flex-start', fontSize:FontSize.FontSize.medium}}>{item.desc}</Text>} 
+            backgroundColor={ColorConstant.WHITE}
+            overlayColor={ColorConstant.TRANSPARENT}
+            pointerStyle={{elevation:0.1, top:3, borderBottomWidth:12,}}
+            containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
+          >
+            {item.image?<Image style={{height:hp(1.5), resizeMode:'contain' }} source={item.image}/>:null}
+          </Tooltip>
         </View>
+
         <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-between', alignItems:'center'}}>
          <TouchableOpacity onPress={()=> 
           {
@@ -132,6 +130,8 @@ return (
             group:'Home',
             plan: 'Basic',
             duration:'Monthly',
+            type: 'Car',
+            desc: 'My Dad\'s Car',
             image: require('../../../assets/images/Vehicles/car.png')
         },
         {
@@ -141,6 +141,8 @@ return (
             group:'Fedex Ground',
             plan: 'Standard',
             duration:'Yearly',
+            type:'Truck',
+            desc: 'My Dad\'s Truck',
             image: require('../../../assets/images/Vehicles/Truck.png')
         },
         {
@@ -149,7 +151,9 @@ return (
             date: "10/05/2020",
             group:'Default',
             plan: 'None',
+            type: '',
             duration:'',
+            desc: '',
             image: ''
         },
 

@@ -7,6 +7,7 @@ import FontSize from '../../component/FontSize';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
+import MultiSelect from '../../component/MultiSelect';
    
 
 const CreateDeviceAsset = ({route, navigation}) => {
@@ -15,6 +16,8 @@ const CreateDeviceAsset = ({route, navigation}) => {
     const [detailsToggle, setDetailsToggle] = useState(false);
     const [type, setType] = useState();
     const [device, setDevice] = useState();
+    const [description, setDescrption] = useState();
+    const [selectedDevices, setSelectedDevices] = useState();
    
     // const handleInput = text => {
     //     setGroup(text)
@@ -33,7 +36,8 @@ const CreateDeviceAsset = ({route, navigation}) => {
             </View>
 
             {detailsToggle?
-                <View style={{backgroundColor:ColorConstant.PINK,height:hp(25),width:'100%'}}>
+                <View style={{backgroundColor:ColorConstant.PINK,height:hp(25),width:'100%',paddingHorizontal:'7.5%'}}>
+                    <MultiSelect label='Select Device' valueSet={setSelectedDevices} />
                 </View>
             :null}  
 
@@ -60,7 +64,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
 
                 <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} /> 
 
-                <TextField valueSet={setValue} defaultValue={value} label='Description (Optional)'  multiline={true} outerStyle={{marginTop:hp(3)}} />
+                <TextField valueSet={setDescrption} defaultValue={description} label='Description (Optional)'  multiline={true} outerStyle={{marginTop:hp(3)}} />
 
                 <DropDown defaultValue={device} label='Select Device' valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} />
                 

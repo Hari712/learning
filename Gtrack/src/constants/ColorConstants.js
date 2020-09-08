@@ -4,5 +4,6 @@ export const ColorConstant = {
     GREY: '#B5B5B5',
     BLUE: '#06418E',
     BLACK:'#373737',
-    PINK:'#FEF6F1'
+    PINK:'#FEF6F1',
+    TRANSPARENT: 'transparent'
 }
