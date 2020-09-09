@@ -68,7 +68,7 @@ return (
             { 
             navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
             } >
-            <Image style={{height:hp(2)}} source={images.image.cardExpand}/>
+            <Image source={images.image.cardExpand}/>
           </TouchableOpacity>
         </View>
       </View>
@@ -184,7 +184,7 @@ menuPopup:{
   right:wp(3),
   borderRadius:16,
   width:hp(20),
-  top:hp(-1),
+  top:hp(0.5),
   justifyContent:'space-between',
   position:'absolute',
   shadowColor:ColorConstant.GREY,		

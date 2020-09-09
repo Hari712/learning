@@ -9,7 +9,6 @@ import { EditText } from '../../component'
 
 const Passcode = ({navigation}) => {
 
-    const [email, setEmail] = useState('')
     const [passcode, setPasscode] = useState('')
     const [cancel, setCancel] = useState(false)
     const [login, setLogin] = useState(false)
@@ -24,23 +23,26 @@ const Passcode = ({navigation}) => {
                 <Text style={[styles.textStyle,{color:ColorConstant.ORANGE}]}>@davidsmith@gmail.com</Text>
             </View>
             
-            <EditText passcode style={styles.passcode} value={passcode} onChangeText={(value) => setPasscode(value)} placeholder='Enter New Passcode' />
+            <EditText 
+                passcode style={styles.passcode} 
+                value={passcode} 
+                onChangeText={(value) => setPasscode(value)} 
+                placeholder='Enter New Passcode' 
+            />
            
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={()=>{
                     cancel?setCancel(false):setCancel(true)
                     navigation.goBack()
-                }}style={{borderRadius:6,backgroundColor:cancel?ColorConstant.WHITE:ColorConstant.ORANGE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                    <Text style={{textAlign:'center',color:cancel?ColorConstant.ORANGE:ColorConstant.WHITE}}>Cancel</Text>
+                }}style={[styles.cancelButton]}>
+                    <Text style={styles.buttonTextColor}>Cancel</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => NavigationService.navigate('LiveTracking')} style={{borderRadius:6,backgroundColor:login?ColorConstant.WHITE:ColorConstant.ORANGE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                    <Text style={{textAlign:'center',color:login?ColorConstant.ORANGE:ColorConstant.WHITE}}>Login</Text>
+                <TouchableOpacity 
+                    onPress={() => NavigationService.navigate('LiveTracking')} 
+                    style={styles.LoginButton}>
+                    <Text style={styles.LoginButtonText}>Login</Text>
                 </TouchableOpacity>
-
-                {/* <TouchableOpacity onPress={() => login?setLogin(false):setLogin(true)} style={{borderRadius:6,backgroundColor:login?ColorConstant.WHITE:ColorConstant.ORANGE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                    <Text style={{textAlign:'center',color:login?ColorConstant.ORANGE:ColorConstant.WHITE}}>Login</Text>
-                </TouchableOpacity> */}
             </View>
         </View> 
            
@@ -52,20 +54,21 @@ container: {
     flex: 1,
     marginTop:hp(20),
     alignItems:'center',
-    width:'100%'
 },
 subContainer: {
     margin:hp(4),
-    width:'75%'
+    width: wp(75)
 },
 resetEmailText: {
     color:ColorConstant.WHITE,
     fontSize:FontSize.FontSize.medium,
+    fontWeight: 'bold',
     textAlign:'center'
 },
 textStyle: {
     color:ColorConstant.WHITE,
     fontSize:FontSize.FontSize.small,
+    fontWeight: '500',
     textAlign:'center',
     marginTop:hp(1)
 },
@@ -79,9 +82,31 @@ passcode: {
 buttonContainer: {
     flexDirection:'row',
     justifyContent:'space-between',
-    width:'75%',
+    width: wp(75),
     margin:hp(2),
     alignItems:'center'
+},
+cancelButton: {
+    borderRadius:6,
+    width:'42%',
+    height:hp(6),
+    justifyContent:'center',
+    backgroundColor: ColorConstant.WHITE,
+},
+buttonTextColor: {
+    textAlign: 'center',
+    color: ColorConstant.ORANGE
+},
+LoginButton: {
+    borderRadius:6,
+    backgroundColor: ColorConstant.ORANGE,
+    width:'42%',
+    height:hp(6),
+    justifyContent:'center'
+},
+LoginButtonText: {
+    textAlign:'center',
+    color: ColorConstant.WHITE
 },
 backgroundImage: {
     flex: 1,
