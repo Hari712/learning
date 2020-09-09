@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         bottom: 20, 
         alignContent:'center', 
         alignItems:'center', 
-        width:wp(100)
+        // width:wp(100)
     },
     viewStyle: {
         flexDirection:'row', 

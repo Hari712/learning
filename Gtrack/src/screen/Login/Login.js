@@ -8,6 +8,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { EditText } from '../../component'
 import CustomButton from '../../component/Button'
 import CheckBox from 'react-native-check-box'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 const Login = () => {
 
@@ -18,8 +19,9 @@ const Login = () => {
 
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
+            <KeyboardAwareScrollView>
             <View style={styles.container}>
-                <Image source={images.image.defaultlogo} />
+                <Image source={images.image.defaultlogo} style={styles.imageStyle}/>
                 <View style={styles.subContner}>
                     <Text style={styles.welcomeText}>WELCOME!</Text>
                 </View>
@@ -38,17 +40,6 @@ const Login = () => {
                     passcode style={styles.passcodeText}
                 />
 
-                <View style={styles.checkboxMainStyle}>
-                    <CheckBox
-                        style={{}}
-                        unCheckedImage={<Image source={images.image.checkbox}></Image>}
-                        checkedImage={<Image source={images.image.checkedbox}></Image>}
-                        onClick={() => { setIsSelected(!isSelected) }}
-                        isChecked={isSelected}
-                    />
-                    <Text style={styles.checkboxText}>Keep me logged in</Text>
-                </View>
-
                 <CustomButton 
                     title="Login" 
                     onPress={() => NavigationService.navigate('LiveTracking')} 
@@ -59,14 +50,21 @@ const Login = () => {
                 <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('ResetPasscode')}>
                     <Text style={styles.resetText}>Reset Passcode</Text>
                 </TouchableOpacity>
-
             </View>
-
+            </KeyboardAwareScrollView>
         </ImageBackground>
+        
+
     )
 }
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: Dimensions.get('window').height
+    },
     container: {
         flex: 1,
         marginTop: hp(20),
@@ -108,12 +106,6 @@ const styles = StyleSheet.create({
     buttonTextStyle: {
         fontSize: FontSize.FontSize.medium, 
         fontWeight: '500'
-    },
-    backgroundImage: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Dimensions.get('window').height
     },
     subContainer: {
         flexDirection: 'row',

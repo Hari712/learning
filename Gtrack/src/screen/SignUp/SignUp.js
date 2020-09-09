@@ -8,12 +8,14 @@ import NavigationService from '../../navigation/NavigationService'
 import CustomButton from '../../component/Button'
 import { EditText } from '../../component'
 import CheckBox from 'react-native-check-box'
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview'
 
 const SignUp = () => {
     const [isSelected, setIsSelected] = useState(false)
     return (
 
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
+            <KeyboardAwareScrollView>
             <View style={styles.container}>
                 <Image source={images.image.defaultlogo} style={styles.imageStyle} />
                 <View style={styles.textConatiner}>
@@ -44,7 +46,7 @@ const SignUp = () => {
                     textStyle={styles.buttonTextStyle}
                     onPress={() => NavigationService.navigate('SignUp')} 
                 />
-
+ 
                 <View style={styles.bottomContainer}>
                     <Text style={styles.bottomText}>Already have an account ? </Text>
                     <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
@@ -53,7 +55,7 @@ const SignUp = () => {
                 </View>
 
             </View>
-
+            </KeyboardAwareScrollView>
         </ImageBackground>
     )
 }
@@ -68,7 +70,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: hp(12),
         alignItems: 'center',
-        width: '100%'
     },
     imageStyle: {
         height: hp(10),

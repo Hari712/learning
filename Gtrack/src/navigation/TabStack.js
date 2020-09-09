@@ -34,8 +34,7 @@ const ScreenOptions = {
     headerTintColor: ColorConstant.GREY,
     headerTitleStyle: {
         fontSize: FontSize.FontSize.medium,
-        fontWeight: '100',
-        //letterSpacing: 2,
+        fontWeight: '500',
     },
     headerTitleAlign: 'center',
     headerTransparent: false,
