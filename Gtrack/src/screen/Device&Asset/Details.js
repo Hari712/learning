@@ -18,7 +18,6 @@ const Details = ({route, navigation}) => {
                     color:ColorConstant.GREY,
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
-                    //letterSpacing: 0,
                     textAlign:'center' }}>
                     Details of {title}
                 </Text>          
