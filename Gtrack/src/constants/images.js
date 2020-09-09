@@ -3,7 +3,8 @@ const images = {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
         defaultlogo: require('../../assets/images/defaultlogo.png'),
-        checkbox: require('../../assets/images/checkbox.png'),
+        checkbox: require('../../assets/images/unchecked.png'),
+        checkboxClick: require('../../assets/images/checkboxclick.png'),
         eyeicon: require('../../assets/images/eyeicon.png'),
         disableyeicon: require('../../assets/images/eyeicondisable.png'),
         login: require('../../assets/images/login.png'),
@@ -35,7 +36,10 @@ const images = {
         menuclick: require('../../assets/images/menuclick.png'),
         back: require('../../assets/images/back.png'),
         down: require('../../assets/images/down.png'),
-        next: require('../../assets/images/next.png')
+        next: require('../../assets/images/next.png'),
+        add: require('../../assets/images/Manage/add.png'),
+        trash: require('../../assets/images/Manage/trash.png'),
+        trashBlack: require('../../assets/images/Manage/trashblack.png')
 
         
     }

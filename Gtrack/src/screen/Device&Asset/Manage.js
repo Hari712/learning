@@ -10,7 +10,7 @@ import DropDown from '../../component/DropDown';
 import MultiSelect from '../../component/MultiSelect';
    
 
-const CreateDeviceAsset = ({route, navigation}) => {
+const Manage = ({route, navigation}) => {
 
     const [group, setGroup]= useState(); 
     const [detailsToggle, setDetailsToggle] = useState(false);
@@ -19,12 +19,6 @@ const CreateDeviceAsset = ({route, navigation}) => {
     const [description, setDescrption] = useState();
     const [selectedDevices, setSelectedDevices] = useState();
    
-    // const handleInput = text => {
-    //     setGroup(text)
-    //     console.log("Group Value:", group)
-    //     return text
-        
-    // }  
     useEffect(()=>{
         group? null : setDetailsToggle(false)
     }, [group])
@@ -32,25 +26,12 @@ const CreateDeviceAsset = ({route, navigation}) => {
     const Group = () => (
         <View style={styles.container}>
             <View style={styles.scene} >
-                <TextField valueSet={setGroup} label='Group Name*' defaultValue={group} />
-            </View>
-
-            {detailsToggle?
-                <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',paddingHorizontal:'7.5%'}}>
-                    <MultiSelect label='Select Device' valueSet={setSelectedDevices} selectedData={selectedDevices} />
+                <View style={{backgroundColor:ColorConstant.BLUE,height:hp(6.6),width:wp(6),alignItems:'center',justifyContent:'center',borderTopLeftRadius:15,borderBottomLeftRadius:15}}>
+                    <Image source={images.image.next}/>
                 </View>
-            :null}  
-
-            <View style={[styles.scene]} >
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={{borderRadius:6,backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}> {detailsToggle ? 'Save' : 'Next'} </Text>
-                    </TouchableOpacity>
-                </View>
+              <Text> Home</Text>
+              <Image source={images.image.add}/>
+              <Image source={images.image.add} />
             </View>
         </View>
        
@@ -154,11 +135,16 @@ const styles = StyleSheet.create({
     },
     scene: {
         //flex: 1,
+        flexDirection:'row',
+        alignItems:'center',
         //alignContent:'center',
         width:'85%',
-        marginHorizontal:hp(5),
+        //paddingHorizontal:hp(2),
         //marginVertical:hp(1),
-        marginTop:hp(5)
+        borderRadius:15,
+        borderWidth:0.5,
+        marginTop:hp(5),
+        height:hp(6.6)
       },	
       buttonContainer: {
         flexDirection:'row',
@@ -170,4 +156,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateDeviceAsset
+export default Manage

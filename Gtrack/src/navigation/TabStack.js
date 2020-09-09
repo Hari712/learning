@@ -14,6 +14,7 @@ import images from '../constants/images';
 import Details from '../screen/Device&Asset/Details'
 import EditDeviceAsset from '../screen/Device&Asset/EditDeviceAsset'
 import CreateDeviceAsset from '../screen/Device&Asset/CreateDeviceAsset';
+import Manage from '../screen/Device&Asset/Manage';
 
 
 const Tab = createBottomTabNavigator();
@@ -72,6 +73,7 @@ const DeviceAssetStackNavigator = () => {
             <DeviceAssetStack.Screen name="Details" component={Details}/>
             <DeviceAssetStack.Screen name="EditDeviceAsset" component={EditDeviceAsset}/>
             <DeviceAssetStack.Screen name="CreateDeviceAsset" component={CreateDeviceAsset}/>
+            <DeviceAssetStack.Screen name="Manage" component={Manage} />
         </DeviceAssetStack.Navigator>
     )
 }

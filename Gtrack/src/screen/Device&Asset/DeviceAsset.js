@@ -28,10 +28,10 @@ const DeviceAsset = ({navigation}) => {
     if(item=='Create'){
       return NavigationService.navigate('CreateDeviceAsset')
     }else if(item=='Manage'){
-      return NavigationService.navigate('CreateDeviceAsset')
+      return NavigationService.navigate('Manage')
     }
     else
-      return 
+      return  
   }
 
 

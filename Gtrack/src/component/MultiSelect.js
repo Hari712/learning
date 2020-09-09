@@ -5,8 +5,10 @@ import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from '@ubaids/react-native-material-textfield'
 import FontSize from './FontSize';
-
-
+import { ScrollView } from "react-native-gesture-handler";
+       
+let data = []; 
+let selectedItem = [];
 
 class MultiSelect extends React.Component {
 
@@ -15,26 +17,58 @@ class MultiSelect extends React.Component {
         this.state={
             isSelected: true,
             selected:'',
-            buttonMeasurement: ''
+            buttonMeasurement: '',
+            
         }
         this._buttonFrame = null;
         // this.focus = this.focus.bind(this);
+    }
+
+    componentDidMount(){
+        const {dataList, selectedData} = this.props;
+
+        selectedItem = selectedData ? selectedData : [];
+        data = dataList ? dataList : ['Car','Truck','Tempo'] ;
     }
 
     onSubmit = () => {
         let {current: field } = this.fieldRef;  
     }
 
-    render() {
+    render() {      
     
-        const {label, dataList, innerRef, outerStyle, ...otherProps} = this.props;
-
-        const data = ['Car','Truck','Tempo'];        
+        const {label, dataList, innerRef, valueSet, outerStyle, ...otherProps} = this.props;
+   
 
         function handleRightAccessory() {
             return <View style={styles.imageContainer}>
                     <Image source={images.image.next} resizemode='contain'style={styles.downArrow} />
                 </View>
+        }
+
+        function renderRow(item, key) {
+            return(
+                <TouchableOpacity style={{flexDirection:'row', alignItems:'center', backgroundColor:'red'}} key={key} 
+                        onPress={()=>{handleCheck(item,key)} }>
+                    <Image source={selectedItem.includes(item) ? images.image.checkboxClick:images.image.checkbox} />
+                    <Text>{item}</Text>
+                </TouchableOpacity>
+            )
+        }
+
+        function handleCheck(item,key) {
+            console.log("Click Handle", item, selectedItem)
+            if (selectedItem.includes(item)) {
+                //selectedItem = selectedItem.filter(prevItem => prevItem !== item)
+                const pos = selectedItem.indexOf(item)
+                selectedItem.splice(pos, 1) 
+                console.log("Remaining",  selectedItem)         
+            }
+            else {
+                selectedItem.push(item)
+                console.log("Added", selectedItem)
+            }
+           valueSet(selectedItem)
         }
 
         const show = () => {
@@ -63,22 +97,22 @@ class MultiSelect extends React.Component {
 
 
                 { this.state.isSelected ?
-                    <View style={styles.dropdown}>
-                        {(dataList?dataList:data).map((item,key)=>{
-                            return(
-                            <TouchableOpacity key={key} onPress={()=>{
-                                this.setState({
-                                    selected: item, 
-                                    isSelected:false,
-                                })
-                                this.props.valueSet(item)
-                            }}>
-                                <Text>{item}</Text>
-                            </TouchableOpacity>
-                            )
-                        })}
+                <ScrollView style={styles.dropdown}>
+                    <View>
+                        {data.map((item,key)=>{renderRow(item,key)})}
                     </View>
+                </ScrollView> 
                 :null} 
+
+                <Text>
+                    Selected Items:
+                </Text>
+
+                <View style={styles.dropdown}>
+                    {selectedItem.map((item)=>
+                        <Text>{item}</Text>
+                    )}
+                </View>
 
             </SafeAreaView>   
         )
@@ -95,7 +129,6 @@ const styles = StyleSheet.create({
     },
     dropdown: { 
         position:'relative',
-        
         borderRadius:hp(2),
         opacity:4, 
         marginHorizontal:wp(10),
