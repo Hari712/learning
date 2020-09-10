@@ -1,6 +1,5 @@
 import React, { useState ,Component} from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView} from 'react-native';
-import Mapbox from '@react-native-mapbox-gl/maps'
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
