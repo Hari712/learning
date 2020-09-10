@@ -8,7 +8,14 @@ import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import MultiSelect from '../../component/MultiSelect';
-   
+
+const devicesList = [
+    'TrackPort International', 
+    'TrackPort International1', 
+    'TrackPort International2', 
+    'TrackPort International3', 
+    'TrackPort International4'
+ ]
 
 const CreateDeviceAsset = ({route, navigation}) => {
 
@@ -17,31 +24,27 @@ const CreateDeviceAsset = ({route, navigation}) => {
     const [type, setType] = useState();
     const [device, setDevice] = useState();
     const [description, setDescrption] = useState();
-    const [selectedDevices, setSelectedDevices] = useState();
-   
-    // const handleInput = text => {
-    //     setGroup(text)
-    //     console.log("Group Value:", group)
-    //     return text
-        
-    // }  
+    const [selectedDevices, setSelectedDevices] = useState([]);
+    
     useEffect(()=>{
         group? null : setDetailsToggle(false)
     }, [group])
  
     const Group = () => (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={{height: Dimensions.get('window').height}}>
+            <View style={styles.container}>
+
             <View style={styles.scene} >
                 <TextField valueSet={setGroup} label='Group Name*' defaultValue={group} />
             </View>
 
             {detailsToggle?
                 <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',paddingHorizontal:'7.5%'}}>
-                    <MultiSelect label='Select Device' valueSet={setSelectedDevices} selectedData={selectedDevices} />
+                    <MultiSelect label='Select Device' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} />                   
                 </View>
             :null}  
 
-            <View style={[styles.scene]} >
+            <View style={styles.scene} >
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
                         <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
@@ -52,8 +55,9 @@ const CreateDeviceAsset = ({route, navigation}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </View>
-       
+    
+            </View>
+        </ScrollView>     
     );
     
     const Asset = () => (

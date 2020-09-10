@@ -5,8 +5,6 @@ const images = {
         defaultlogo: require('../../assets/images/defaultlogo.png'),
         checkbox: require('../../assets/images/unchecked.png'),
         checkboxClick: require('../../assets/images/checkboxclick.png'),
-        checkbox: require('../../assets/images/checkbox.png'),
-        checkedbox: require('../../assets/images/checkedbox.png'),
         eyeicon: require('../../assets/images/eyeicon.png'),
         disableyeicon: require('../../assets/images/eyeicondisable.png'),
         login: require('../../assets/images/login.png'),
@@ -41,7 +39,9 @@ const images = {
         next: require('../../assets/images/next.png'),
         add: require('../../assets/images/Manage/add.png'),
         trash: require('../../assets/images/Manage/trash.png'),
-        trashBlack: require('../../assets/images/Manage/trashblack.png')
+        trashBlack: require('../../assets/images/Manage/trashblack.png'),
+        upArrow: require('../../assets/images/Manage/up.png'),
+        downarrow: require('../../assets/images/Manage/down.png')
 
         
     }

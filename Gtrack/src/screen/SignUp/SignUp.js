@@ -33,7 +33,7 @@ const SignUp = () => {
                     <CheckBox
                         style={{}}
                         unCheckedImage={<Image source={images.image.checkbox}></Image>}
-                        checkedImage={<Image source={images.image.checkedbox}></Image>}
+                        checkedImage={<Image source={images.image.checkboxClick}></Image>}
                         onClick={() => { setIsSelected(!isSelected) }}
                         isChecked={isSelected}
                     />

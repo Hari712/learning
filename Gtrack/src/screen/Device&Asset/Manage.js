@@ -7,11 +7,15 @@ import FontSize from '../../component/FontSize';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
-import MultiSelect from '../../component/MultiSelect';
-   
+import ExapandableListView from '../../component/ExpandableListView';
 
+   
+const Data = [{
+
+}]
 const Manage = ({route, navigation}) => {
 
+    const [downArrow, setDownArrowClick] = useState(false);
     const [group, setGroup]= useState(); 
     const [detailsToggle, setDetailsToggle] = useState(false);
     const [type, setType] = useState();
@@ -25,14 +29,11 @@ const Manage = ({route, navigation}) => {
  
     const Group = () => (
         <View style={styles.container}>
-            <View style={styles.scene} >
-                <View style={{backgroundColor:ColorConstant.BLUE,height:hp(6.6),width:wp(6),alignItems:'center',justifyContent:'center',borderTopLeftRadius:15,borderBottomLeftRadius:15}}>
-                    <Image source={images.image.next}/>
-                </View>
-              <Text> Home</Text>
-              <Image source={images.image.add}/>
-              <Image source={images.image.add} />
-            </View>
+
+        <ExapandableListView />
+
+
+
         </View>
        
     );
@@ -141,10 +142,22 @@ const styles = StyleSheet.create({
         width:'85%',
         //paddingHorizontal:hp(2),
         //marginVertical:hp(1),
-        borderRadius:15,
+        borderRadius:12,
         borderWidth:0.5,
         marginTop:hp(5),
-        height:hp(6.6)
+        height:hp(6)
+      },
+      card: {
+        //flex: 1,
+        flexDirection:'row',
+        alignItems:'center',
+        //alignContent:'center',
+        width:'85%',
+        //paddingHorizontal:hp(2),
+        //marginVertical:hp(1),
+        borderRadius:12,
+        borderWidth:0.5,
+        marginTop:hp(5),
       },	
       buttonContainer: {
         flexDirection:'row',
