@@ -23,7 +23,6 @@ const images = {
         deviceAssetDefault: require('../../assets/images/asset&devicedefault.png'),
         settingDefault: require('../../assets/images/settingsdefault.png'),
         settingClick: require('../../assets/images/settingsclick.png'),
-        //car: require('../../assets/images/DeviceAsset/car.png'),
         edit: require('../../assets/images/DeviceAsset/editwhite.png'),
         cardExpand: require('../../assets/images/DeviceAsset/cardExpnand.png'),
         export: require('../../assets/images/export.png'),
