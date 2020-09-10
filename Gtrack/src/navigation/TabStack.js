@@ -79,7 +79,7 @@ const DeviceAssetStackNavigator = () => {
 
 const SettingsStackNavigator = () => {
     return(
-        <SettingsStack.Navigator initialRouteName="Settings" headerMode="none">
+        <SettingsStack.Navigator initialRouteName="Settings" headerMode="screen" screenOptions={ScreenOptions} >
             <SettingsStack.Screen name="Settings" component={Settings} />
         </SettingsStack.Navigator>
     )

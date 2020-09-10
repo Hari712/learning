@@ -38,9 +38,19 @@ const images = {
         next: require('../../assets/images/next.png'),
         add: require('../../assets/images/Manage/add.png'),
         trash: require('../../assets/images/Manage/trash.png'),
-        trashBlack: require('../../assets/images/Manage/trashblack.png')
+        trashBlack: require('../../assets/images/Manage/trashblack.png'),
 
-        
+        //settings
+        settings: {
+            profile: require('../../assets/images/Settings/Profile-icon.png'),
+            subscription: require('../../assets/images/Settings/Subscription-icon.png'),
+            paymentSettings: require('../../assets/images/Settings/PaymentSettings-icon.png'),
+            permission: require('../../assets/images/Settings/Permission-icon.png'),
+            about: require('../../assets/images/Settings/About-icon.png'),
+            rateUs: require('../../assets/images/Settings/RateUs-icon.png'),
+            feedback: require('../../assets/images/Settings/Feedback-icon.png'),
+            logout: require('../../assets/images/Settings/Logout-icon.png')
+        }
     }
 }
 

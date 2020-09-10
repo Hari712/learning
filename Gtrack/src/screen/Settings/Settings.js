@@ -7,26 +7,66 @@ import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText } from '../../component'
 
-export default class Settings extends React.Component {
-  
-    constructor(props) {
-      super(props)
-      this.state = {
-        isLoading: false
-      }
-    }
+const Settings = ({navigation}) => {
 
+  const [listData, setListData] = useState(SETTINGS_MENU)
 
-    render() {
-      return (
-      
-        <Text>Setting Screen</Text>
-                 
-    );
-    }
-  } 
-    
-  
-  const styles = StyleSheet.create({
-    
+  React.useLayoutEffect(() => {
+
+    navigation.setOptions({
+      headerLeft:()=>(null),
+    });
   });
+
+  return(
+    <View>
+      {listData.map((item, index) =>
+        <View>
+
+        </View>
+      )
+      }
+    </View>
+  )
+}
+
+export default Settings; 
+  
+const styles = StyleSheet.create({
+    
+});
+
+const SETTINGS_MENU = [
+  {
+    title: 'Profile',
+    icon: images.image.settings.profile
+  },
+  {
+    title: 'Subscription',
+    icon: images.image.settings.subscription
+  },
+  {
+    title: 'Payment Settings',
+    icon: images.image.settings.paymentSettings
+  },
+  {
+    title: 'Permission',
+    icon: images.image.settings.permission
+  },
+  {
+    title: 'About',
+    icon: images.image.settings.about
+  },
+  {
+    title: 'Rate Us',
+    icon: images.image.settings.rateUs
+  },
+  {
+    title: 'Feedback',
+    icon: images.image.settings.feedback
+  },
+  {
+    title: 'Logout',
+    icon: images.image.settings.logout
+  }
+]
