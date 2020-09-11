@@ -32,8 +32,8 @@ const SignUp = () => {
                 <View style={styles.checkboxMainStyle}>
                     <CheckBox
                         style={{}}
-                        unCheckedImage={<Image source={images.image.checkbox}></Image>}
-                        checkedImage={<Image source={images.image.checkboxClick}></Image>}
+                        unCheckedImage={<Image source={images.login.uncheckedbox}></Image>}
+                        checkedImage={<Image source={images.login.checkedbox}></Image>}
                         onClick={() => { setIsSelected(!isSelected) }}
                         isChecked={isSelected}
                     />

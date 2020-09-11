@@ -9,10 +9,36 @@ import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import ExapandableListView from '../../component/ExpandableListView';
 
-   
-const Data = [{
 
-}]
+const CONTENT = [
+    {
+      id: 1, // required, id of item
+      categoryName: 'Home', // label of item expandable item
+      subCategory: [
+        // required, array containing inner objects
+        {
+          id: 3, // required, of inner object
+          name: 'TrackPort International 1', // required, label of inner object
+        },
+        {
+          id: 4,
+          name: 'TrackPort International 2',
+        },
+        {
+          id: 6,
+          name: 'TrackPort International 3',
+        },
+      ],
+    },
+    {
+      id: 2,
+      categoryName: 'Fedex Ground',
+      subCategory: [{id: 22, name: '4G Magnetic GPS Tracker'}],
+    },
+  ];
+
+   
+const Data = ['Trackport International','Trackport International1','Trackport International2']
 const Manage = ({route, navigation}) => {
 
     const [downArrow, setDownArrowClick] = useState(false);
@@ -22,6 +48,8 @@ const Manage = ({route, navigation}) => {
     const [device, setDevice] = useState();
     const [description, setDescrption] = useState();
     const [selectedDevices, setSelectedDevices] = useState();
+
+    const [toggle,setToggle] = useState(false);
    
     useEffect(()=>{
         group? null : setDetailsToggle(false)
@@ -30,10 +58,8 @@ const Manage = ({route, navigation}) => {
     const Group = () => (
         <View style={styles.container}>
 
-        <ExapandableListView />
-
-
-
+            <ExapandableListView data={CONTENT} />
+        
         </View>
        
     );

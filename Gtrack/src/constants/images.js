@@ -1,10 +1,14 @@
 const images = {
+    login:{
+        checkedbox: require('../../assets/images/Login/checkedbox.png'),
+        uncheckedbox: require('../../assets/images/Login/unchecked.png'),
+    },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
         defaultlogo: require('../../assets/images/defaultlogo.png'),
-        checkbox: require('../../assets/images/unchecked.png'),
-        checkboxClick: require('../../assets/images/checkboxclick.png'),
+        checkbox: require('../../assets/images/unchecked.png'),        
+        checkboxClick: require('../../assets/images/checkboxClick.png'),
         eyeicon: require('../../assets/images/eyeicon.png'),
         disableyeicon: require('../../assets/images/eyeicondisable.png'),
         login: require('../../assets/images/login.png'),
