@@ -9,6 +9,13 @@ import Users from '../screen/Users/Users';
 import DashBoard from '../screen/Dashboard/Dashboard';
 import DeviceAsset from '../screen/Device&Asset/DeviceAsset';
 import Settings from '../screen/Settings/Settings';
+import Profile from '../screen/Settings/Profile/Profile';
+import Subscription from '../screen/Settings/Subscription/Subscription';
+import PaymentSettings from '../screen/Settings/PaymentSettings/PaymentSettings';
+import Permission from '../screen/Settings/Permission/Permission';
+import About from '../screen/Settings/About/About';
+import RateUs from '../screen/Settings/RateUs/RateUs';
+import Feedback from '../screen/Settings/Feedback/Feedback';
 import FontSize from '../component/FontSize';
 import images from '../constants/images';
 import Details from '../screen/Device&Asset/Details'
@@ -81,6 +88,13 @@ const SettingsStackNavigator = () => {
     return(
         <SettingsStack.Navigator initialRouteName="Settings" headerMode="screen" screenOptions={ScreenOptions} >
             <SettingsStack.Screen name="Settings" component={Settings} />
+            <SettingsStack.Screen name="Profile" component={Profile} />
+            <SettingsStack.Screen name="Subscription" component={Subscription} />
+            <SettingsStack.Screen name="PaymentSettings" component={PaymentSettings} />
+            <SettingsStack.Screen name="Permission" component={Permission} />
+            <SettingsStack.Screen name="About" component={About} />
+            <SettingsStack.Screen name="RateUs" component={RateUs} />
+            <SettingsStack.Screen name="Feedback" component={Feedback} />
         </SettingsStack.Navigator>
     )
 }

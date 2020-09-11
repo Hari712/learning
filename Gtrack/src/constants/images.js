@@ -49,7 +49,9 @@ const images = {
             about: require('../../assets/images/Settings/About-icon.png'),
             rateUs: require('../../assets/images/Settings/RateUs-icon.png'),
             feedback: require('../../assets/images/Settings/Feedback-icon.png'),
-            logout: require('../../assets/images/Settings/Logout-icon.png')
+            logout: require('../../assets/images/Settings/Logout-icon.png'),
+            nextArrow: require('../../assets/images/Settings/next-1.png'),
+            next: require('../../assets/images/Settings/next.png')
         }
     }
 }
