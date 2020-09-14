@@ -4,6 +4,9 @@ import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from './FontSize'
+import MultiSelect from './MultiSelect';
+import DropDown from './DropDown';
+import { ConfirmDialog } from 'react-native-simple-dialogs';
 
 
   const ExapandableListView = props => {
@@ -13,12 +16,23 @@ import FontSize from './FontSize'
   
     const [selectedKey, setSelectedKey] = useState();
     const [subContainerHeight, setSubContainerHeight] = useState();
+    const [addClick, setAddClick] = useState();
+    const [selectedDevices, setSelectedDevices] = useState([]);
+    const [dialogVisible,setDialogVisible] = useState(false)
+    const devicesList = [
+      'TrackPort International', 
+      'TrackPort International1', 
+      'TrackPort International2', 
+      'TrackPort International3', 
+      'TrackPort International4'
+   ]
 
       return(
-          
+      
         data.map((item,key)=>{    
 
           return(
+        <View>   
         <View key={key} style={[styles.card, { height:(key==selectedKey)? subContainerHeight : hp(5) , borderColor: (key==selectedKey)?ColorConstant.ORANGE:ColorConstant.WHITE}]} >
 
             {/* Arrow Left Side */}
@@ -34,7 +48,9 @@ import FontSize from './FontSize'
                 <View style={{flexDirection:'row', width:'100%',paddingHorizontal:10}}>
                   <Text style={{flex:1,color:(key==selectedKey)?ColorConstant.ORANGE:ColorConstant.BLACK}}>{item.categoryName}</Text>  
                       <Image style={styles.icon} source={images.image.trashBlack}/>
-                      <Image style={styles.icon} source={images.image.add} />  
+                      <TouchableOpacity style={{alignSelf:'center'}} key={key} onPress={()=>(key==addClick)?setAddClick(-1):setAddClick(key)}>
+                        <Image style={styles.icon} source={images.image.add} />  
+                      </TouchableOpacity>
                 </View>
 
                 {/* Expanded data View */}
@@ -54,6 +70,60 @@ import FontSize from './FontSize'
                 
 
             </View>     
+
+        </View>         
+               
+                
+        {/* Popup View */}
+                           
+        {(key==addClick)?
+            <View style={styles.popup}>
+                <View style={{flexDirection:'row',margin:hp(2)}}>
+                  <View style={{flex:1,alignItems:'center'}}>
+                    <Text style={{color:ColorConstant.ORANGE,fontSize:FontSize.FontSize.medium,fontWeight:'bold'}}>Add Device</Text>
+                  </View>
+                  <TouchableOpacity onPress={()=>setAddClick(-1)} style={{alignSelf:'center',height:hp(2)}}>
+                    <Image source={images.manage.close} />
+                  </TouchableOpacity>
+                </View>
+               
+                {/* <MultiSelect label='Select Device' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} outerStyle={{width:'85%',alignSelf:'center'}} /> */}
+
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42.5%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)}  style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42.5%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Okay</Text>
+                    </TouchableOpacity>
+                </View>
+
+                
+                <ConfirmDialog
+                    title="Are you sure ?"
+                    titleStyle={{color:ColorConstant.ORANGE, textAlign:'center',fontSize:FontSize.FontSize.regular,fontWeight:'bold'}}
+                    message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
+                    messageStyle={{color:ColorConstant.BLACK, textAlign:'center',fontSize:FontSize.FontSize.small}}
+                    visible={dialogVisible}
+                    buttonsStyle={{alignItems:'center',marginBottom:hp(3)}}
+                    dialogStyle={{borderRadius:hp(2)}}
+                    onTouchOutside={() => setDialogVisible(false)}
+                    negativeButton={{
+                        title: "Cancel",
+                        onPress: () => setDialogVisible(false),
+                        titleStyle:{backgroundColor:ColorConstant.WHITE,borderRadius:4,borderWidth:1,borderColor:ColorConstant.BLUE, color:ColorConstant.BLUE,width:wp(30),marginRight:hp(2)}
+                    }}
+                    positiveButton={{
+                        title: "Okay",
+                        onPress: () => setDialogVisible(false),
+                        titleStyle:{backgroundColor:ColorConstant.BLUE,borderRadius:4, color:ColorConstant.WHITE,width:wp(30),marginRight:hp(2)}
+                    }} >
+                        
+                </ConfirmDialog>
+        
+            </View>:null}
+
 
         </View>)
         })
@@ -109,7 +179,21 @@ import FontSize from './FontSize'
         shadowRadius: 3,
         shadowOpacity: 1,
         backgroundColor:ColorConstant.WHITE
-    },	
+    },
+    popup: {
+      borderRadius:12,
+      marginTop:hp(5),
+      //alignItems:'center',
+      elevation:3,
+      shadowColor: ColorConstant.GREY,
+      shadowOffset: {
+        width: 0,
+        height: 0
+      },
+      shadowRadius: 3,
+      shadowOpacity: 1,
+      backgroundColor:ColorConstant.WHITE
+    },
     icon:{
         margin:4,
         alignSelf:'center'
@@ -128,13 +212,14 @@ import FontSize from './FontSize'
     buttonContainer: {
         flexDirection:'row',
         justifyContent:'space-evenly',
-        //width:'75%',
+        width:'85%',
         //margin:hp(3),
         marginTop:hp(3),
-        alignItems:'center'
+        marginBottom:hp(3),
+        alignSelf:'center'
     },
 });
 
-  export default ExapandableListView;
+export default ExapandableListView;
 
   

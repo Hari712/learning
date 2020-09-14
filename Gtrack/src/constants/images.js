@@ -3,6 +3,14 @@ const images = {
         checkedbox: require('../../assets/images/Login/checkedbox.png'),
         uncheckedbox: require('../../assets/images/Login/unchecked.png'),
     },
+    manage: {
+        close: require('../../assets/images/Manage/close.png'),
+        closeClick: require('../../assets/images/Manage/closeClick.png'),
+        editClick: require('../../assets/images/Manage/editClick.png'),
+        edit: require('../../assets/images/Manage/editblack.png'),
+        trash: require('../../assets/images/Manage/trash.png'),
+        trashBlack: require('../../assets/images/Manage/trashblack.png')
+    },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),

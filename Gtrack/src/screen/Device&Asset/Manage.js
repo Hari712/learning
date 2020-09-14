@@ -5,8 +5,6 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
 import ExapandableListView from '../../component/ExpandableListView';
 
 
@@ -39,6 +37,8 @@ const CONTENT = [
 
    
 const Data = ['Trackport International','Trackport International1','Trackport International2']
+const asset = ['Chevrolet Captiva','My Dad\'s car','Ford','Tesla']
+
 const Manage = ({route, navigation}) => {
 
     const [downArrow, setDownArrowClick] = useState(false);
@@ -50,6 +50,9 @@ const Manage = ({route, navigation}) => {
     const [selectedDevices, setSelectedDevices] = useState();
 
     const [toggle,setToggle] = useState(false);
+
+    const [editClick, setEditClick] = useState();
+    //const [searchValue, setSearchValue] = useState()
    
     useEffect(()=>{
         group? null : setDetailsToggle(false)
@@ -59,33 +62,38 @@ const Manage = ({route, navigation}) => {
         <View style={styles.container}>
 
             <ExapandableListView data={CONTENT} />
+            
         
         </View>
        
     );
     
     const Asset = () => (
-        <View style={styles.container}>
-            <View style={styles.scene} >
+        <View style={styles.container}> 
 
-                <TextField valueSet={setValue} defaultValue={value} label='Name*' /> 
-
-                <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} /> 
-
-                <TextField valueSet={setDescrption} defaultValue={description} label='Description (Optional)'  multiline={true} outerStyle={{marginTop:hp(3)}} />
-
-                <DropDown defaultValue={device} label='Select Device' valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} />
-                
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity  style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={styles.search}>
+                <TextInput 
+                    placeholder='Search Here'
+                    //onChangeText={this.updateSearch}
+                    //value={search}
+                />
             </View>
+            {asset.map((item,key)=>
+                <View key={key} style={styles.card}>
+                    <View style={{backgroundColor:(key==editClick)?ColorConstant.ORANGE:ColorConstant.BLUE,height:hp(6),width:wp(6),borderTopLeftRadius:12,borderBottomLeftRadius:12}} />
+                    <View style={{flexDirection:'row',paddingHorizontal:hp(2),alignItems:'center',width:'90%'}}>
+                        <Text style={{flex:1,color:(key==editClick)?ColorConstant.BLUE:ColorConstant.BLACK}}>{item}</Text> 
+                        <TouchableOpacity onPress={()=>(key==editClick)?setEditClick(-1):setEditClick(key)} style={{marginRight:hp(2)}}>         
+                            <Image source={(key==editClick)?images.manage.editClick:images.manage.edit}/>
+                        </TouchableOpacity>  
+                        <TouchableOpacity>   
+                            <Image source={images.manage.trashBlack}/>
+                        </TouchableOpacity> 
+                    </View>    
+                </View>
+
+            )}           
+
         </View>
        
     );
@@ -93,7 +101,7 @@ const Manage = ({route, navigation}) => {
     const initialLayout = { width: Dimensions.get('window').width, height: Dimensions.get('window').height };
     
     const [index, setIndex] = useState(0);
-    const [value,setValue]= useState()  
+    //const [value,setValue]= useState()  
 
     
     const [routes] = React.useState([
@@ -173,18 +181,43 @@ const styles = StyleSheet.create({
         marginTop:hp(5),
         height:hp(6)
       },
-      card: {
-        //flex: 1,
+      search: {
+        paddingHorizontal:hp(2),
         flexDirection:'row',
         alignItems:'center',
-        //alignContent:'center',
         width:'85%',
-        //paddingHorizontal:hp(2),
-        //marginVertical:hp(1),
+        height:hp(6),
         borderRadius:12,
-        borderWidth:0.5,
         marginTop:hp(5),
-      },	
+        elevation:4,
+        shadowColor: ColorConstant.GREY,
+        shadowOffset: {
+          width: 0,
+          height: 0
+        },
+        shadowRadius: 3,
+        shadowOpacity: 1,
+        backgroundColor:ColorConstant.WHITE
+      },
+      card: {
+        //paddingHorizontal:hp(2),
+        flexDirection:'row',
+        alignItems:'center',
+        //justifyContent:'space-between',
+        width:'85%',
+        height:hp(6),
+        borderRadius:12,
+        marginTop:hp(5),
+        elevation:4,
+        shadowColor: ColorConstant.GREY,
+        shadowOffset: {
+          width: 0,
+          height: 0
+        },
+        shadowRadius: 3,
+        shadowOpacity: 1,
+        backgroundColor:ColorConstant.WHITE
+      }	,
       buttonContainer: {
         flexDirection:'row',
         justifyContent:'space-evenly',
