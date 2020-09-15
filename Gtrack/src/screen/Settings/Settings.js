@@ -105,12 +105,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp(3)
   },
 
-  // cardContainer: {
-  //   // width: '90%',
-  //   // alignSelf: 'center',
-  //   backgroundColor: ColorConstant.ORANGE,
-  // },
-
   bodySubContainer: {
     paddingHorizontal: wp(3),
     paddingVertical: hp(2),

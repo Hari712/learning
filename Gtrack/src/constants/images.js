@@ -61,7 +61,8 @@ const images = {
             email: require('../../assets/images/Settings/email.png'),
             phone: require('../../assets/images/Settings/phone.png'),
             billingAddress: require('../../assets/images/Settings/BillingAddress.png'),
-            shippingAddress: require('../../assets/images/Settings/shippingAddress.png')
+            shippingAddress: require('../../assets/images/Settings/shippingAddress.png'),
+            downArrow: require('../../assets/images/Settings/down-arrow.png')
         }
     }
 }

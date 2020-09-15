@@ -34,21 +34,25 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>My Profile</Text>
             </View>
 
+            {DATA.map((item,key) =>
             <View style={styles.mainViewStyle}>
                 <View style={styles.blueBoxStyle}>
-                    <Text style={styles.textStyle}>David Smith</Text>
-                    <Image source={images.image.edit} />
+                    <Text style={styles.textStyle}>{item.fullName}</Text>
+
+                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:item.firstName,lastName:item.lastName, phoneNumber:item.phoneNumber, emailId:item.emailId}) }} >
+                        <Image source={images.image.edit} />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.subMainView}>
                     <View style={styles.emailMainView}>
                         <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>davidsmith@gmail.com</Text>
+                        <Text style={styles.emailText}>{item.emailId}</Text>
                     </View>
 
                     <View style={styles.emailMainView}>
                         <Image source={images.image.settings.phone} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>None</Text>
+                        <Text style={styles.emailText}>{item.phoneNumber}</Text>
                     </View>
                 </View>
 
@@ -79,10 +83,21 @@ const Profile = ({ navigation }) => {
                 </View>
 
             </View>
+            )}
 
         </View>
     )
 }
+
+const DATA = [
+    {
+        fullName: "David Smith",
+        firstName: "David",
+        lastName: "Smith",
+        emailId: "davidsmith@gmail.com",
+        phoneNumber: "None",
+    }
+]
 
 const styles = StyleSheet.create({
     container: {
@@ -124,7 +139,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         alignItems: 'center',
-        padding: hp(2)
+        padding: 12
     },
     textStyle: {
         fontSize: FontSize.FontSize.small,
