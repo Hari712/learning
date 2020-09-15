@@ -19,13 +19,7 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
     const [addClick, setAddClick] = useState();
     const [selectedDevices, setSelectedDevices] = useState([]);
     const [dialogVisible,setDialogVisible] = useState(false)
-    const devicesList = [
-      'TrackPort International', 
-      'TrackPort International1', 
-      'TrackPort International2', 
-      'TrackPort International3', 
-      'TrackPort International4'
-   ]
+    const [devicesList,setDevicesList] = useState(['Car'])
 
       return(
       
@@ -48,7 +42,18 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
                 <View style={{flexDirection:'row', width:'100%',paddingHorizontal:10}}>
                   <Text style={{flex:1,color:(key==selectedKey)?ColorConstant.ORANGE:ColorConstant.BLACK}}>{item.categoryName}</Text>  
                       <Image style={styles.icon} source={images.image.trashBlack}/>
-                      <TouchableOpacity style={{alignSelf:'center'}} key={key} onPress={()=>(key==addClick)?setAddClick(-1):setAddClick(key)}>
+                      <TouchableOpacity style={{alignSelf:'center'}} key={key} 
+                      
+                      onPress={()=>{
+                        (key==addClick)?
+                          setAddClick(-1):                          
+                          setAddClick(key)
+                           //console.log("khushu",item.subCategory.map((values,key)=>Object.entries(values).map((id,name)=>id.name)))
+                          
+                          //console.log("Khushi", )
+                          //setDevicesList(item.subCategory)
+                      }}
+                      >
                         <Image style={styles.icon} source={images.image.add} />  
                       </TouchableOpacity>
                 </View>
@@ -86,9 +91,10 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
                     <Image source={images.manage.close} />
                   </TouchableOpacity>
                 </View>
-               
-                {/* <MultiSelect label='Select Device' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} outerStyle={{width:'85%',alignSelf:'center'}} /> */}
-
+                <View style={{width:'85%', alignSelf:'center'}}>
+                  <MultiSelect label='Select Device' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} outerStyle={{width:'100%',alignSelf:'center'}} />
+                </View>
+                
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42.5%',height:hp(6),justifyContent:'center'}}>
                         <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
@@ -126,7 +132,9 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
 
 
         </View>)
-        })
+        }
+        
+        )
       )
 
   }

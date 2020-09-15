@@ -95,15 +95,20 @@ class MultiSelect extends React.Component {
                         )
                     })}
                 </ScrollView> 
-                :null} 
+                :null}
+
+
+                {/* Selected Devices or Item List */}
                  { this.state.isSelected ?
                 <Text style={{color:ColorConstant.ORANGE,margin:hp(2)}}>
                    Selected Device List
                 </Text>:null}
-
-                <View style={styles.selectedContainer}>
+                 
+                <View style={[styles.selectedContainer]}>
                     { Object.values(selectedItem).map((item,key)=>
-                        <Text key={key}>{item}</Text>
+                        <View>
+                            <Text key={key}>{item}</Text>
+                        </View>
                     )}
                 </View>
 
@@ -115,7 +120,7 @@ class MultiSelect extends React.Component {
 const styles = StyleSheet.create({
     container: {
         marginVertical:hp(1),
-        justifyContent: 'center',   
+        justifyContent: 'center',
     },
     downArrow: {               
        // alignSelf:'center'
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
         position:'relative',
         borderRadius:hp(2),
         opacity:4,
-        height:'50%', 
+        height:hp(30), 
         marginHorizontal:wp(10),
         alignSelf:'center',  
         elevation:5, 

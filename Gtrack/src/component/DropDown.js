@@ -27,7 +27,7 @@ class DropDown extends React.Component {
 
     render() {
     
-        const {label, dataList, innerRef, outerStyle, ...otherProps} = this.props;
+        const {label, dataList, innerRef, outerStyle, dropdownStyle,...otherProps} = this.props;
 
         const data = ['Car','Truck','Tempo'];        
 
@@ -63,7 +63,7 @@ class DropDown extends React.Component {
 
 
                 { this.state.isSelected ?
-                    <View style={styles.dropdown}>
+                    <View style={[styles.dropdown,dropdownStyle]}>
                         {(dataList?dataList:data).map((item,key)=>{
                             return(
                             <TouchableOpacity key={key} onPress={()=>{
