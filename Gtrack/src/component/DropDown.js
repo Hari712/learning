@@ -94,16 +94,18 @@ const styles = StyleSheet.create({
        // alignSelf:'center'
     },
     dropdown: { 
-        position:'absolute',
-        top:'90%', 
+       // position:'absolute',
+        marginTop:hp(0.5), 
         borderRadius:hp(2),
-        opacity:4, 
+        opacity:1, 
         marginHorizontal:wp(10),
         alignSelf:'center',  
         elevation:5, 
         backgroundColor:'white', 
         width:'100%',
-        paddingLeft:hp(3) 
+        paddingLeft:hp(3),
+        borderWidth: 1,
+        borderColor: ColorConstant.GREY,
     },
     inputContainer: {
         height: hp(6), 

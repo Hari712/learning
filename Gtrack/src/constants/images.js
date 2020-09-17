@@ -62,7 +62,11 @@ const images = {
             phone: require('../../assets/images/Settings/phone.png'),
             billingAddress: require('../../assets/images/Settings/BillingAddress.png'),
             shippingAddress: require('../../assets/images/Settings/shippingAddress.png'),
-            downArrow: require('../../assets/images/Settings/down-arrow.png')
+            downArrow: require('../../assets/images/Settings/down-arrow.png'),
+            billing: require('../../assets/images/Settings/billing.png'),
+            crossIcon: require('../../assets/images/Settings/CrossIcon.png'),
+            rectangle: require('../../assets/images/Settings/Rectangle.png'),
+            GroupCheckBox: require('../../assets/images/Settings/GroupCheckBox.png')
         }
     }
 }

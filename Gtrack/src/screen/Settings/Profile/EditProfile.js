@@ -6,6 +6,8 @@ import { ColorConstant } from '../../../constants/ColorConstants';
 import FontSize from '../../../component/FontSize';
 import TextField from '../../../component/TextField';
 import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
+import DropDown from '../../../component/DropDown';
+import CheckBox from 'react-native-check-box'
 
 const EditProfile = ({ navigation, route, index }) => {
     const { firstName, lastName, emailId, phoneNumber } = route.params;
@@ -13,36 +15,8 @@ const EditProfile = ({ navigation, route, index }) => {
     const [value, setValue] = useState();
     const [cancel, setCancel] = useState(false)
     const [viewDialogBox, setViewDialogBox] = useState(false)
-
-    const DialogPopup = () => {
-        return (
-            <Dialog
-                visible={setViewDialogBox}
-                onTouchOutside={() => { setViewDialogBox(false) }}
-
-                footer={
-                    <DialogFooter>
-                        <DialogButton
-                            text="CANCEL"
-                            onPress={() => { setViewDialogBox(false) }}
-                        />
-                        <DialogButton
-                            text="DELETE"
-                            onPress={() => { }}
-                        />
-                    </DialogFooter>
-                }
-            >
-                 <DialogContent >
-                    <View style={[styles.deleteView, { height: hp(16) }]}>
-                        <Text style={styles.deleteHeaderText} >Confirm</Text>
-                        <Text style={styles.deleteContentText}>Are you sure you want to delete this question?</Text>
-                    </View>
-                </DialogContent>
-
-            </Dialog>
-        )
-    }
+    const [country, setCountry] = useState();
+    const [isSelected, setIsSelected] = useState(false)
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -91,7 +65,7 @@ const EditProfile = ({ navigation, route, index }) => {
                     </View>
 
                     <View style={styles.cardContainer}>
-                        <TouchableOpacity onPress={() => { setViewDialogBox(true) }}>
+                        <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
                             <View style={styles.billingView}>
                                 <Text style={styles.billingAddressText}>Billing Address</Text>
                                 <Image source={images.image.settings.billingAddress} />
@@ -127,14 +101,83 @@ const EditProfile = ({ navigation, route, index }) => {
                     </View>
                 </View>
             </ScrollView>
-            {viewDialogBox == true ?
-                <DialogPopup />
-                :
-                null
-            }
+
+            <Dialog
+                visible={viewDialogBox}
+                onTouchOutside={() => { setViewDialogBox(false) }}
+            >
+                <DialogContent>
+                    <View style={styles.billingAddressDialogView}>
+                        <View style={styles.billingMainView}>
+                            <Image source={images.image.settings.billing} />
+                            <Text style={styles.headingTextStyle} >Billing Address</Text>
+                            <Image source={images.image.settings.crossIcon} />
+                        </View>
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setValue} label='Address line 1*' value={"Toronto City Hall 100 Queen St W"} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setValue} label='Address line 2*' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            </View>
+                        </View>
+
+                        <View style={styles.checkboxMainStyle}>
+                            <View style={{shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10}}> 
+                                <CheckBox
+                                    style={{  }}
+                                    unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
+                                    checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
+                                    onClick={() => { setIsSelected(!isSelected) }}
+                                    isChecked={isSelected}
+                                />
+                            </View>
+                           
+                            <Text style={styles.termsConditionStyle}>In this address also your shipping address?</Text>
+                        </View>
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={() => { setViewDialogBox(false)}} style={[styles.cancelButton]}>
+                                <Text style={styles.buttonTextColor}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => { setViewDialogBox(false)}}
+                                style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </DialogContent>
+
+            </Dialog>
+
+
         </View>
     )
 }
+
+const countryList = ['Canada', 'India', 'USA'];
 
 const styles = StyleSheet.create({
     container: {
@@ -165,10 +208,23 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin: hp(1.5)
     },
+    countryField: {
+        width: '45%',
+    },
+    checkboxMainStyle: {
+        flexDirection: 'row',
+        width: wp(75),
+        margin: hp(1.5),
+    },
+    termsConditionStyle: {
+        color: ColorConstant.BLACK,
+        fontSize: FontSize.FontSize.small,
+        marginLeft: wp(3)
+    },
     textNameStyle: {
         color: ColorConstant.BLACK,
         fontSize: FontSize.FontSize.small,
-        fontWeight: '500'
+        fontWeight: '500',
     },
     EmailTextStyle: {
         color: ColorConstant.GREY,
@@ -212,7 +268,7 @@ const styles = StyleSheet.create({
         width: wp(75),
         marginTop: hp(6),
         alignSelf: 'center',
-        paddingBottom: hp(6)
+        // paddingBottom: hp(6)
     },
     cancelButton: {
         borderRadius: 6,
@@ -237,6 +293,21 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: ColorConstant.WHITE,
         fontWeight: 'bold'
+    },
+    billingAddressDialogView: {
+        width: wp(80),
+        height: hp(75)
+    },
+    billingMainView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: hp(2),
+        marginBottom: hp(3)
+    },
+    headingTextStyle: {
+        color: ColorConstant.ORANGE,
+        fontSize: FontSize.FontSize.small,
+        fontWeight: '500'
     },
 })
 
