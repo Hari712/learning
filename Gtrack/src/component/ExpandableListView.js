@@ -18,8 +18,20 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
     const [subContainerHeight, setSubContainerHeight] = useState();
     const [addClick, setAddClick] = useState();
     const [selectedDevices, setSelectedDevices] = useState([]);
+    const [deleteDeviceKey, setDeleteDeviceKey] = useState();
     const [dialogVisible,setDialogVisible] = useState(false)
     const [devicesList,setDevicesList] = useState(['Car'])
+
+    const deleteFunction = (item, key) => {
+      console.log('Testing Success', item, key)
+      setDeleteDeviceKey(key)
+      setDialogVisible(true)
+    }
+
+    const deleteConfirm = () => {
+      setSelectedDevices(selectedDevices.filter((item,key) => key!=deleteDeviceKey))
+      setDialogVisible(false)
+    }
 
       return(
       
@@ -92,7 +104,17 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
                   </TouchableOpacity>
                 </View>
                 <View style={{width:'85%', alignSelf:'center'}}>
-                  <MultiSelect label='Select Device' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} outerStyle={{width:'100%',alignSelf:'center'}} />
+                  <MultiSelect 
+                    label='Select Device' 
+                    //dataList={devicesList} 
+                    valueSet={setSelectedDevices} 
+                    selectedData={selectedDevices}
+                    selectedItemContainerStyle={styles.selectedItemContainerStyle} 
+                    hideDeleteButton={true}
+                    hideSelectedDeviceLable={true}
+                    deleteHandle={deleteFunction}
+                    selectedItemRowStyle={styles.selectedItemRowStyle}
+                    outerStyle={{width:'100%',alignSelf:'center'}} />
                 </View>
                 
                 <View style={styles.buttonContainer}>
@@ -100,7 +122,7 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
                         <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)}  style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42.5%',height:hp(6),justifyContent:'center'}}>
+                    <TouchableOpacity  style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42.5%',height:hp(6),justifyContent:'center'}}>
                         <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Okay</Text>
                     </TouchableOpacity>
                 </View>
@@ -122,7 +144,7 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
                     }}
                     positiveButton={{
                         title: "Okay",
-                        onPress: () => setDialogVisible(false),
+                        onPress: deleteConfirm,
                         titleStyle:{backgroundColor:ColorConstant.BLUE,borderRadius:4, color:ColorConstant.WHITE,width:wp(30),marginRight:hp(2)}
                     }} >
                         
@@ -226,6 +248,24 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
         marginBottom:hp(3),
         alignSelf:'center'
     },
+    selectedItemRowStyle: {
+        flexDirection:'row',
+        elevation:4,
+        backgroundColor:ColorConstant.LIGHTPINK,
+        borderRadius:5,
+        alignItems:'center',
+        paddingHorizontal:hp(1),
+        //flexWrap:'wrap',
+        margin:4,
+        height:hp(4),
+    },
+    selectedItemContainerStyle:{
+      backgroundColor:ColorConstant.PINK,
+      borderRadius:8,
+      marginTop:hp(2),
+      elevation:0,
+      padding:hp(1)
+    }
 });
 
 export default ExapandableListView;

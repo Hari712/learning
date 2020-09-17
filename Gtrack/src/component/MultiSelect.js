@@ -1,11 +1,10 @@
 import React, {Component, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, FlatList, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, FlatList, Dimensions, ScrollView } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from '@ubaids/react-native-material-textfield'
 import FontSize from './FontSize';
-import { ScrollView } from "react-native-gesture-handler";
        
 let data = []; 
 let selectedItem = [];
@@ -14,7 +13,7 @@ let selectedAll = false;
 class MultiSelect extends React.Component {
 
     constructor(props) {
-        super(props);
+        super();
         this.state={
             isSelected: true,            
         }
@@ -22,9 +21,9 @@ class MultiSelect extends React.Component {
 
     
 
-    render() {      
+    render() {    
     
-        const {label, dataList, selectedData, innerRef, valueSet, outerStyle, ...otherProps} = this.props;
+        const {label, dataList, selectedData, innerRef, valueSet, outerStyle, selectedItemContainerStyle, ...otherProps} = this.props;
 
         selectedItem = selectedData ? selectedData : [];
         data = dataList ? dataList : ['Car','Truck','Tempo'] ;     
@@ -97,20 +96,29 @@ class MultiSelect extends React.Component {
                 </ScrollView> 
                 :null}
 
-
+ 
                 {/* Selected Devices or Item List */}
-                 { this.state.isSelected ?
+                 { this.state.isSelected && !otherProps.hideSelectedDeviceLable ?
                 <Text style={{color:ColorConstant.ORANGE,margin:hp(2)}}>
                    Selected Device List
                 </Text>:null}
                  
-                <View style={[styles.selectedContainer]}>
+                <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
                     { Object.values(selectedItem).map((item,key)=>
-                        <View>
-                            <Text key={key}>{item}</Text>
+                    <View style={{flexWrap:'wrap', flexShrink:1 }}>
+                        <View style={[otherProps.selectedItemRowStyle]}>
+                            <Text style={{marginRight:hp(1),color:ColorConstant.ORANGE}} key={key}>{item}</Text>
+                            {otherProps.hideDeleteButton ?
+                            <TouchableOpacity onPress={()=>otherProps.deleteHandle(item, key)} /*onPress={()=>{
+                                if (selectedItem.includes(item)) {
+                                    valueSet(oldArray => oldArray.filter(function(value){return value != item}) )}}} */     
+                                 style={{paddingTop:hp(0.5),justifyContent:'center'}}>
+                                <Image style={{height:hp(2)}} source={images.manage.closeClick}/>
+                            </TouchableOpacity>  : null}
                         </View>
+                    </View>
                     )}
-                </View>
+                </View>             
 
             </SafeAreaView>   
         )
@@ -123,7 +131,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     downArrow: {               
-       // alignSelf:'center'
+        // alignSelf:'center',
+        marginVertical:hp(1),
+        //backgroundColor:'red'
     },
     dropdown: { 
         position:'relative',
@@ -144,7 +154,7 @@ const styles = StyleSheet.create({
         marginHorizontal:wp(10),
         alignSelf:'center',  
         elevation:5, 
-        backgroundColor:'white', 
+        backgroundColor:ColorConstant.WHITE, 
         width:'100%',
         paddingHorizontal:hp(2) 
     },

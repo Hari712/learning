@@ -45,19 +45,16 @@ let assetData = asset
 
 const Manage = ({route, navigation}) => {
 
-    const [downArrow, setDownArrowClick] = useState(false);
     const [group, setGroup]= useState(); 
     const [detailsToggle, setDetailsToggle] = useState(false);
-    const [type, setType] = useState();
-    const [device, setDevice] = useState();
-    const [description, setDescrption] = useState();
     const [selectedDevices, setSelectedDevices] = useState();
-
-    const [toggle,setToggle] = useState(false);
-
     const [dialogVisible,setDialogVisible] = useState(false)
     const [editClick, setEditClick] = useState();
     const [deleteVariable, setDeleteVariable] = useState();
+    const [type, setType] = useState();
+    const [value, setValue] = useState();
+    const [tempName, setTempName] = useState();
+    const [description, setDescrption] = useState();
 
 
    
@@ -75,10 +72,40 @@ const Manage = ({route, navigation}) => {
         
         </View>
        
-    );
-    
-    
+    );    
 
+    const updateData = () => {   
+        console.log("hello")   
+        // Location = editClick
+        // Array = assetData, asset
+        assetData[editClick] = tempName ;
+        asset = assetData;
+        setEditClick(-1)
+        setTempName()
+    }
+    
+    const popUp = (item, key) => {        
+        return(
+            <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',marginTop:hp(2)}}>
+                        
+                <TextField valueSet={setTempName} value={tempName} label='Name*' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
+                
+                <DropDown label='Type*' defaultValue={type} valueSet={setType}  outerStyle={{width:'85%',alignSelf:'center',backgroundColor:ColorConstant.WHITE}} dropdownStyle={{width:'85%',alignSelf:'center'}} />
+                
+                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label='Description' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
+                
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={()=>setEditClick(-1)} style={{borderRadius:6,borderColor:ColorConstant.BLUE,borderWidth:1,backgroundColor:ColorConstant.WHITE,width:'30%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={updateData} style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'30%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }    
     const searchBar = () => {
         const [search, setSearch] = useState()
 
@@ -111,7 +138,7 @@ const Manage = ({route, navigation}) => {
             <ConfirmDialog
                 title="Are you sure ?"
                 titleStyle={{color:ColorConstant.ORANGE, textAlign:'center',fontSize:FontSize.FontSize.regular,fontWeight:'bold'}}
-                message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
+                message={"Do you really want to delete asset?" + "\n \n" + "It will get detach from the current device."}
                 messageStyle={{color:ColorConstant.BLACK, textAlign:'center',fontSize:FontSize.FontSize.small}}
                 visible={dialogVisible}
                 //overlayStyle={{backgroundColor:'transparent'}}
@@ -146,12 +173,15 @@ const Manage = ({route, navigation}) => {
         {searchBar()}
             
             {assetData.map((item,key)=>
-            <View style={styles.container}>
-                <View key={key} style={styles.card}>
+            <View key={key} style={styles.container}>
+                <View style={styles.card}>
                     <View style={{backgroundColor:(key==editClick)?ColorConstant.ORANGE:ColorConstant.BLUE,height:hp(6),width:wp(6),borderTopLeftRadius:12,borderBottomLeftRadius:12}} />
                     <View key={key} style={{flexDirection:'row',paddingHorizontal:hp(2),alignItems:'center',width:'90%'}}>
                         <Text style={{flex:1,color:(key==editClick)?ColorConstant.BLUE:ColorConstant.BLACK}}>{item}</Text> 
-                        <TouchableOpacity onPress={()=>(key==editClick)?setEditClick(-1):setEditClick(key)} style={{marginRight:hp(2)}}>         
+                        <TouchableOpacity onPress={()=>{(key==editClick)?setEditClick(-1):
+                            setEditClick(key)
+                            setTempName(item)
+                            }} style={{marginRight:hp(2)}}>         
                             <Image source={(key==editClick)?images.manage.editClick:images.manage.edit}/>
                         </TouchableOpacity>  
                         <TouchableOpacity onPress={()=>deleteAssetItem(item,key)} >   
@@ -160,20 +190,8 @@ const Manage = ({route, navigation}) => {
                     </View>
                 </View> 
                 {(key==editClick)?  
-                    <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',marginTop:hp(2)}}>
-                       <TextField label='Name*' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
-                       <DropDown label='Type*' outerStyle={{width:'85%',alignSelf:'center',backgroundColor:ColorConstant.WHITE}} dropdownStyle={{width:'85%',alignSelf:'center'}} />
-                       <TextField multiline={true} label='Description' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
-                       <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={()=>setEditClick(-1)} style={{borderRadius:6,borderColor:ColorConstant.BLUE,borderWidth:1,backgroundColor:ColorConstant.WHITE,width:'30%',height:hp(6),justifyContent:'center'}}>
-                                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'30%',height:hp(6),justifyContent:'center'}}>
-                                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View> :null}
+                    popUp(item,key)
+                     :null}
                    
             </View>
             )}
@@ -255,7 +273,7 @@ return(
 const styles = StyleSheet.create({
     container:{
         width:Dimensions.get('window').width,
-        alignItems:'center'        
+        alignItems:'center'     
     },
     scene: {
         //flex: 1,

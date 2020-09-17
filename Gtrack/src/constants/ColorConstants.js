@@ -5,5 +5,7 @@ export const ColorConstant = {
     BLUE: '#06418E',
     BLACK:'#373737',
     PINK:'#FEF6F1',
-    TRANSPARENT: 'transparent'
+    TRANSPARENT: 'transparent',
+    LIGHTPINK: '#FFDDC5'
+
 }
