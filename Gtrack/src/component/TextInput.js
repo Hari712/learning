@@ -1,5 +1,6 @@
 import React, {Component, useState } from "react";
-import { StyleSheet, TextInput, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, TextInput, View, Text, Image, TouchableOpacity } from "react-native";
+import FontSize from '../component/FontSize'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
@@ -25,6 +26,7 @@ class EditText extends React.Component {
             <View style={[styles.inputTextStyle,style]}>
                 <TextInput 
                     secureTextEntry={!this.state.isSelected} 
+                    style={{ fontSize: FontSize.FontSize.small }}
                     placeholderTextColor={ColorConstant.GREY} 
                     ref={'textInput'}
                     {...otherProps}
@@ -52,10 +54,11 @@ class EditText extends React.Component {
 
 const styles = StyleSheet.create({
     inputTextStyle: {
-        borderRadius:6,
+        borderRadius:7,
         paddingHorizontal:hp(2),
         backgroundColor:ColorConstant.WHITE,
-        width:'75%',
+        width:wp(75),
+        height:hp(5.5),
         margin:hp(1.5),
         color:'black',
     },
