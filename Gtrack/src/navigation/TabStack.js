@@ -58,7 +58,7 @@ const LiveTrackingStackNavigator = () => {
 
 const UsersStackNavigator = () => {
     return(
-        <UsersStack.Navigator initialRouteName="Users" headerMode="none" >
+        <UsersStack.Navigator initialRouteName="Users" headerMode="screen" screenOptions={ScreenOptions} >
             <UsersStack.Screen name="Users" component={Users} />
         </UsersStack.Navigator>
     )

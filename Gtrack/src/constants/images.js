@@ -11,6 +11,10 @@ const images = {
         trash: require('../../assets/images/Manage/trash.png'),
         trashBlack: require('../../assets/images/Manage/trashblack.png')
     },
+    user: {
+        add: require('../../assets/images/User/add.png'),
+        filter: require('../../assets/images/User/filter.png')
+    },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
