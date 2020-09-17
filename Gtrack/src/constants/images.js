@@ -66,7 +66,10 @@ const images = {
             billing: require('../../assets/images/Settings/billing.png'),
             crossIcon: require('../../assets/images/Settings/CrossIcon.png'),
             rectangle: require('../../assets/images/Settings/Rectangle.png'),
-            GroupCheckBox: require('../../assets/images/Settings/GroupCheckBox.png')
+            GroupCheckBox: require('../../assets/images/Settings/GroupCheckBox.png'),
+            address: require('../../assets/images/Settings/address.png'),
+            editIcon: require('../../assets/images/Settings/EditIcon.png'),
+            upArrow: require('../../assets/images/Settings/upArrow.png')
         }
     }
 }

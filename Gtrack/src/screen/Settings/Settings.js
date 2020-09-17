@@ -86,6 +86,7 @@ const Settings = ({ navigation }) => {
           contentContainerStyle={{}}
           data={SETTINGS_MENU}
           renderItem={SettingsItems}
+          keyExtractor={(item,index) => index.toString()}
         />
     </SafeAreaView>
 

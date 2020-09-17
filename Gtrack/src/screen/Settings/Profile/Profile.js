@@ -34,8 +34,8 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>My Profile</Text>
             </View>
 
-            {DATA.map((item,key) =>
-            <View style={styles.mainViewStyle}>
+            {DATA.map((item,index) =>
+            <View key={index} style={styles.mainViewStyle}>
                 <View style={styles.blueBoxStyle}>
                     <Text style={styles.textStyle}>{item.fullName}</Text>
 

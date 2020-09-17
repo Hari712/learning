@@ -42,7 +42,7 @@ class DropDown extends React.Component {
         }
 
         return(
-            <SafeAreaView>
+            <>
                 <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
@@ -80,7 +80,7 @@ class DropDown extends React.Component {
                     </View>
                 :null} 
 
-            </SafeAreaView>   
+            </>   
         )
     }
 }

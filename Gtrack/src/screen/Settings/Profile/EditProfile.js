@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
@@ -9,14 +9,28 @@ import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-
 import DropDown from '../../../component/DropDown';
 import CheckBox from 'react-native-check-box'
 
-const EditProfile = ({ navigation, route, index }) => {
+const EditProfile = ({ navigation, route, item }) => {
     const { firstName, lastName, emailId, phoneNumber } = route.params;
-
     const [value, setValue] = useState();
     const [cancel, setCancel] = useState(false)
-    const [viewDialogBox, setViewDialogBox] = useState(false)
     const [country, setCountry] = useState();
     const [isSelected, setIsSelected] = useState(false)
+
+    //RenderBillingDialog
+    const [viewDialogBox, setViewDialogBox] = useState(false)
+    const [address1Value, setAddress1Value] = useState();
+    const [address2Value, setAddress2Value] = useState();
+    
+    const [addressLine1, setAddressLine1] = useState();
+    const [addressLine2, setAddressLine2] = useState();
+
+    // RenderShippingEditDialog
+    const [viewEditDialogBox, setViewEditDialogBox] = useState(false)
+
+
+    //RenderNewShippingDialog
+    const [viewNewShippingDialog, setViewNewShippingDialog] = useState(false)
+    
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -38,6 +52,219 @@ const EditProfile = ({ navigation, route, index }) => {
             )
         });
     }, [navigation]);
+
+    function hideDialog() {
+        setViewDialogBox(false)
+        setViewEditDialogBox(false)
+        setViewNewShippingDialog(false)
+    }
+
+    useEffect(() => {
+        console.log('Dialog Visibility', viewDialogBox)
+        console.log('Dialog Visibility', viewEditDialogBox)
+        console.log('Dialog Visibility', viewNewShippingDialog)
+    }, [viewDialogBox], [viewEditDialogBox], [viewNewShippingDialog])
+
+    function RenderBillingDialog(item, index) {
+        return (
+            <Dialog
+                visible={viewDialogBox}
+                onTouchOutside={() => hideDialog()}
+            >
+                <DialogContent>
+                    <View style={styles.billingAddressDialogView}>
+                        <View style={styles.billingMainView}>
+                            <Image source={images.image.settings.billing} />
+                            <Text style={styles.headingTextStyle} >Billing Address</Text>
+                            <Image source={images.image.settings.crossIcon} />
+                        </View>
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress1Value} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress2Value} label='Address line 2*' value={address2Value} onChangeText={(text) => setAddress2Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            </View>
+                        </View>
+
+                        <View style={styles.checkboxMainStyle}>
+                            <View style={{ shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10 }}>
+                                <CheckBox
+                                    style={{}}
+                                    unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
+                                    checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
+                                    onClick={() => { setIsSelected(!isSelected), setAddressLine1(address1Value), setAddressLine2(address2Value) }}
+                                    isChecked={isSelected}
+                                />
+                            </View>
+                            <Text style={styles.termsConditionStyle}>In this address also your shipping address?</Text>
+                        </View>
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+                                <Text style={styles.buttonTextColor}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => hideDialog()}
+                                style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </DialogContent>
+            </Dialog>
+        )
+    }
+
+    function RenderShippingEditDialog(item, index) {
+        return (
+            <Dialog
+                visible={viewEditDialogBox}
+                onTouchOutside={() => hideDialog()}
+            >
+                <DialogContent>
+                    <View style={styles.billingAddressDialogView}>
+                        <View style={styles.billingMainView}>
+                            <Image source={images.image.settings.address} />
+                            <Text style={styles.headingTextStyle} >Edit Shipping Address</Text>
+                            <Image source={images.image.settings.crossIcon} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField label='Shipping Address Name*' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            {/* <TextField valueSet={setAddress1Value} label='Shipping Address Name*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} /> */}
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress1Value} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress2Value} label='Address line 2*' value={address2Value} onChangeText={(text) => setAddress2Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            </View>
+                        </View>
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+                                <Text style={styles.buttonTextColor}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => hideDialog()}
+                                style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </DialogContent>
+            </Dialog>
+        )
+    }
+
+    function RenderNewShippingDialog(item, index) {
+        return(
+            <Dialog
+                visible={viewNewShippingDialog}
+                onTouchOutside={() => hideDialog()}
+            >
+                <DialogContent>
+                    <View style={styles.billingAddressDialogView}>
+                        <View style={styles.billingMainView}>
+                            <Image source={images.image.settings.address} />
+                                <Text style={styles.headingTextStyle} >New Shipping Address</Text>
+                            <Image source={images.image.settings.crossIcon} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress1Value} label='Shipping Address Name*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress1Value} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={styles.textInputField}>
+                            <TextField valueSet={setAddress1Value} label='Address line 2*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                            </View>
+                        </View>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={styles.countryField}>
+                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                            </View>
+
+                            <View style={styles.countryField}>
+                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            </View>
+                        </View>
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+                                <Text style={styles.buttonTextColor}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => hideDialog()}
+                                style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>Save</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </DialogContent>
+            </Dialog>
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -76,17 +303,57 @@ const EditProfile = ({ navigation, route, index }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.cardContainer}>
-                        <TouchableOpacity onPress={() => { navigation.navigate('Settings') }}>
+                    {!isSelected ?
+                        <View style={styles.cardContainer}>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Settings') }}>
+                                <View style={styles.billingView}>
+                                    <Text style={styles.billingAddressText}>Shipping Address</Text>
+                                    <Image source={images.image.settings.billingAddress} />
+                                </View>
+                                <View style={styles.footerIconStyle}>
+                                    <Image source={images.image.settings.downArrow} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        :
+                        <View style={styles.cardContainer}>
                             <View style={styles.billingView}>
-                                <Text style={styles.billingAddressText}>Shipping Address</Text>
-                                <Image source={images.image.settings.billingAddress} />
+                                <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Shipping Address</Text>
+                                <Image source={images.image.settings.address} />
                             </View>
-                            <View style={styles.footerIconStyle}>
-                                <Image source={images.image.settings.downArrow} />
+
+                            <View style={styles.underLineStyle} />
+
+                            <View style={styles.textMainView}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+                                    <View>
+                                        <Text style={styles.textStyleNone}>{addressLine1}</Text>
+                                        <Text style={styles.textStyleNone}>{addressLine2}</Text>
+                                        <Text style={styles.textStyleNone}>{country}</Text>
+                                    </View>
+
+                                    <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+                                        <Image source={images.image.settings.editIcon} />
+                                    </TouchableOpacity>
+
+                                </View>
+
+                                <View style={styles.underLineStyle} />
+
+                                <View style={styles.subCardContainer}>
+                                    <TouchableOpacity style={{ padding: 20 }} onPress={() => { setViewNewShippingDialog(!viewNewShippingDialog) }}>
+                                        <Image source={images.image.settings.address} style={{ alignSelf: 'center' }} />
+                                        <Text style={{ alignSelf: 'center', marginTop: hp(2), fontSize: FontSize.FontSize.small, fontWeight: '500', color: ColorConstant.ORANGE }}>Add New Shipping Address</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </TouchableOpacity>
-                    </View>
+
+                            <View style={styles.shippingFooterStyle}>
+                                <Image source={images.image.settings.upArrow} />
+                            </View>
+
+                        </View>
+                    }
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
@@ -102,82 +369,19 @@ const EditProfile = ({ navigation, route, index }) => {
                 </View>
             </ScrollView>
 
-            <Dialog
-                visible={viewDialogBox}
-                onTouchOutside={() => { setViewDialogBox(false) }}
-            >
-                <DialogContent>
-                    <View style={styles.billingAddressDialogView}>
-                        <View style={styles.billingMainView}>
-                            <Image source={images.image.settings.billing} />
-                            <Text style={styles.headingTextStyle} >Billing Address</Text>
-                            <Image source={images.image.settings.crossIcon} />
-                        </View>
-                        <View style={styles.textInputField}>
-                            <TextField valueSet={setValue} label='Address line 1*' value={"Toronto City Hall 100 Queen St W"} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
-                        </View>
+            {RenderBillingDialog()}
 
-                        <View style={styles.textInputField}>
-                            <TextField valueSet={setValue} label='Address line 2*' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
-                        </View>
+            {RenderShippingEditDialog()}
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
-                            </View>
-
-                            <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
-                            </View>
-
-                            <View style={styles.countryField}>
-                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
-                            </View>
-                        </View>
-
-                        <View style={styles.checkboxMainStyle}>
-                            <View style={{shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10}}> 
-                                <CheckBox
-                                    style={{  }}
-                                    unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
-                                    checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
-                                    onClick={() => { setIsSelected(!isSelected) }}
-                                    isChecked={isSelected}
-                                />
-                            </View>
-                           
-                            <Text style={styles.termsConditionStyle}>In this address also your shipping address?</Text>
-                        </View>
-
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => { setViewDialogBox(false)}} style={[styles.cancelButton]}>
-                                <Text style={styles.buttonTextColor}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => { setViewDialogBox(false)}}
-                                style={styles.LoginButton}>
-                                <Text style={styles.LoginButtonText}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </DialogContent>
-
-            </Dialog>
-
+            {RenderNewShippingDialog()}
 
         </View>
     )
 }
 
 const countryList = ['Canada', 'India', 'USA'];
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -245,6 +449,21 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOffset: { width: 0, height: 0 },
     },
+    subCardContainer: {
+        width: Dimensions.get('screen').width - 60,
+        marginTop: hp(2),
+        alignSelf: 'center',
+        backgroundColor: ColorConstant.PINK,
+        borderRadius: 15,
+        elevation: 3,
+        borderWidth: 0.3,
+        borderColor: ColorConstant.GREY,
+        shadowColor: ColorConstant.GREY,
+        shadowOpacity: 0.5,
+        shadowRadius: 3,
+        shadowOffset: { width: 0, height: 0 },
+        marginBottom: hp(3)
+    },
     billingView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -255,8 +474,28 @@ const styles = StyleSheet.create({
         color: ColorConstant.BLACK,
         fontSize: FontSize.FontSize.small,
     },
+    underLineStyle: {
+        borderBottomColor: ColorConstant.GREY,
+        borderBottomWidth: 0.5,
+        marginHorizontal: hp(1),
+    },
+    textMainView: {
+        marginHorizontal: hp(1.5),
+        marginVertical: hp(1)
+    },
+    textStyleNone: {
+        color: ColorConstant.BLACK,
+        fontSize: FontSize.FontSize.small
+    },
     footerIconStyle: {
         backgroundColor: ColorConstant.BLUE,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
+        alignItems: 'center',
+        padding: 5,
+    },
+    shippingFooterStyle: {
+        backgroundColor: ColorConstant.ORANGE,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
         alignItems: 'center',
@@ -266,9 +505,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: wp(75),
-        marginTop: hp(6),
+        marginTop: hp(3),
         alignSelf: 'center',
-        // paddingBottom: hp(6)
+        paddingBottom: hp(6)
     },
     cancelButton: {
         borderRadius: 6,
