@@ -9,8 +9,9 @@ import Tooltip from 'rn-tooltip';
 
 const Users = ({navigation}) => {
 
-  const [menuClick,setMenuClick] = useState(false)
-  const [carClick, setCarClick] = useState(false)
+  const [active, setActive] = useState();
+  const [filterClick, setFilterClick] = useState(false);
+ 
 
   React.useLayoutEffect(() => {
 
@@ -20,155 +21,141 @@ const Users = ({navigation}) => {
   });
 
   const searchBar = () => {
-    const [search, setSearch] = useState()
+        const [search, setSearch] = useState()
 
-    const searchFilter = (text) => {
-        assetData = asset.filter(item=>item.toLowerCase().includes(text.toLowerCase())) 
-        setSearch(text)
-    }
+        const searchFilter = (text) => {
+            assetData = asset.filter(item=>item.toLowerCase().includes(text.toLowerCase())) 
+            setSearch(text)
+        }
 
-    return (
-      <View style={{width:'100%'}}>
-        <View style={{width:Dimensions.get('window').width-40,flexDirection:'row'}}>
-        <View style={styles.search}>
-            <TextInput 
-                placeholder='Search Here'
-                onChangeText={text => searchFilter(text) }                    
-                value={search}                
-            />
-            <TouchableOpacity>
-              <Image source={images.user.filter} />
-            </TouchableOpacity>
-
-        </View>
-        
-        <TouchableOpacity style={styles.addButton}>
-              <Image source={images.user.add} />
+        return (
+          <View style={styles.searchSubContainer}>
+            <View style={styles.search}>
+                <TextInput 
+                    placeholder='Search Here...'
+                    style={styles.searchText}
+                    onChangeText={text => searchFilter(text) }                    
+                    value={search}
+                    
+                />
+                <TouchableOpacity onPress={()=> setFilterClick(!filterClick)} >
+                  <Image source={filterClick? images.user.filterClick:images.user.filter } />
+                </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.addButton}>
+              <Image source={images.user.add}/>
             </TouchableOpacity>
            
-      </View>
-      </View>
-    )
-}
+           </View>
+        )
+    }
 
 
 return ( 
-<View>
-<ScrollView contentContainerStyle={{height:"100%",alignItems:'center'}}>
-
-  {searchBar()} 
-
-  {DATA.map((item,key) =>
-    <View style={styles.cardContainer} key={key}>
-      {/* Blue top head */}
-      <View style={{backgroundColor:ColorConstant.BLUE,flexDirection:'row',width:"100%",borderTopLeftRadius:12,borderTopRightRadius:12,paddingHorizontal:hp(3)}}>
-        <View style={{ alignContent:'space-between',marginVertical:hp(0.5),}}>
-          <Text style={{color:ColorConstant.WHITE,fontSize:FontSize.FontSize.small}}>{item.title}</Text>
-        </View>
-        <View style={{marginTop:hp(1),left:10}}>
-
-        </View>
-
-        <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-between', alignItems:'center'}}>
-         <TouchableOpacity>
-          <Image source={images.image.edit}/>
-        </TouchableOpacity>
-
-        </View>
-      </View>
-
-      {/* White Body container */}
-      <View style={{flexDirection:'row',marginTop:hp(1.5),paddingHorizontal:hp(2.5),paddingBottom:hp(1.5)}}>
-        <View style={{flexDirection:'column',width:'33%'}} >
-          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Group</Text>
-          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.group}</Text>              
-        </View>
-        <View style={{flexDirection:'column',width:'39%'}} >
-          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Selected Plan</Text>
-          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.plan} {item.duration?<Text style={{color:ColorConstant.GREY}}>({item.duration})</Text>:null}</Text>             
-        </View>
-        <View style={{flexDirection:'column',width:'27%'}}>
-          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Plan Expiry</Text>
-          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.date}</Text>
-        </View>
-      </View>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
     
-  )}
+      <View style={styles.searchContainer}>
+      {searchBar()} 
+      </View>
 
-
-      {/* <View >
-        {Menu.map((item,key) =>
-            <TouchableOpacity key={key} style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=> console.log("Khushi",item) }>
-              <Text style={styles.textStyle}>{item}</Text>
-            </TouchableOpacity>
-          )
-        }
-      </View> */}
-
-     </ScrollView>
-
-     {menuClick?
-        <View style={styles.menuPopup}>
-          {Menu.map((item,key) =>
-              <TouchableOpacity key={key}  style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=>menuHandle(item) }>
-                <Text style={styles.textStyle}>{item}</Text>
+      {DATA.map((item,key) =>
+        <View style={styles.cardContainer} key={key}>
+          {/* Blue top head */}
+          <View style={styles.blueBox}>
+              <Text style={styles.blueBoxTitle}>{item.name}</Text>
+              <TouchableOpacity onPress={()=>(key==active)?setActive(-1):setActive(key)}>
+              <Image source={(key==active)?images.user.active :images.user.inactive} />
               </TouchableOpacity>
-            )
-          }
-        </View>:
-      null} 
+              <Text style={styles.activeText}>{(key==active)? 'Active' : 'Inactive' }</Text>
+              <Image style={{marginLeft:hp(2)}} source={images.user.edit} />        
+          </View>
 
-     </View>
-    
-  )
-}
+          {/* White Body container */}
+          <View style={styles.whiteContainer}>
+            <View style={styles.whiteSubView} >
+              <Text style={styles.whiteContainerText}>Role</Text>
+              <Text style={styles.whiteContainerSubText}>{item.role}</Text>              
+            </View>
+            <View style={{flexDirection:'column',flex:1}} >
+              <Text style={styles.whiteContainerText}>Rights</Text>
+              <Text style={styles.whiteContainerSubText}>{item.rights}</Text>       
+            </View>
+            <View style={{flexDirection:'column'}}>
+              <Text style={styles.whiteContainerText}>Group</Text>
+              <Text style={styles.whiteContainerSubText}>{item.group}</Text>
+            </View>
+          </View>
 
-    const Menu= ['Create', 'Manage', 'Export Devices']
+          {/* Email and Phone */}
+          <View style={styles.horizontalLine} />
+            <View style={styles.emailPhone}>
+              <Image style={styles.emailImage} source={images.user.email} />
+              <Text style={styles.emailText}>    {item.email}</Text>
+              <Image source={images.user.phone} />
+              <Text style={styles.phoneText}>  {item.phoneNo}</Text>
+            </View>
+          </View>
+        
+      )}
+
+        {filterClick?
+                <View style={styles.menu}>
+                  {filterData.map((item,key) =>
+                      <TouchableOpacity key={key} style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=filterData.length-1 ?1:0}}>
+                        <Text style={styles.textStyle}>{item}</Text>
+                      </TouchableOpacity>
+                    )
+                  }
+                </View>:
+              null} 
+
+        </ScrollView>
+      
+        
+      )
+    }
+
 
     const DATA = [
         {
-            id: '123456789456123',
-            title: 'TrackPort International',
-            date: "12/05/2020",
+            name: 'Tom Smith',
+            role:'Owner',
+            rights: 'Admin',
             group:'Home',
-            plan: 'Basic',
-            duration:'Monthly',
-            type: 'Car',
-            desc: 'My Dad\'s Car',
-            image: require('../../../assets/images/Vehicles/car.png')
+            email: 'tomsmith@gmail.com',
+            phoneNo: '+1 430 8976532',
         },
         {
-            id: '123456789456123',
-            title: 'TrackPort 4G Vehicle GPS Tracker',
-            date: "12/05/2020",
+            name: 'Richard Stokes',
+            role:'Regular',
+            rights: 'Regular User',
             group:'Fedex Ground',
-            plan: 'Standard',
-            duration:'Yearly',
-            type:'Truck',
-            desc: 'My Dad\'s Truck',
-            image: require('../../../assets/images/Vehicles/Truck.png')
+            email: 'richard@gmail.com',
+            phoneNo:'+1 430 8976532',
         },
         {
-            id: '123456789456123',
-            title: 'Spark Nano GPS Tracker',
-            date: "10/05/2020",
-            group:'Default',
-            plan: 'None',
-            type: '',
-            duration:'',
-            desc: '',
-            image: ''
+            name: 'Charles Anderson',
+            role:'Home',
+            rights: 'Admin',
+            group:'Fedex Ground',
+            email: 'charles@gmail.com',
+            phoneNo: '+1 430 8976532',
         },
 
     ];
 
+    const filterData = ['Active','Inactive']
+
 const styles = StyleSheet.create({
 
+  container: {
+    height:"100%",
+    alignItems:'center'
+  },
   cardContainer: {
-    //width:'100%',
-    width: Dimensions.get('screen').width-40,
-    marginTop: hp(2),
+    width:'90%',
+    //width: Dimensions.get('screen').width-40,
+    marginVertical: hp(1.5),
     // height:hp(18),
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
@@ -181,38 +168,81 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 0, height: 0 },
 },
-menuPopup:{
-  backgroundColor:'white',
-  padding:5,
-  paddingVertical:hp(1.5),
-  right:wp(3),
-  borderRadius:12,
-  width:hp(20),
-  top:hp(0.5),
-  justifyContent:'space-between',
-  position:'absolute',
-  shadowColor:ColorConstant.GREY,		
-  shadowOffset:{height:0,width:0},
-  shadowOpacity:1,
-  elevation:10,
-  shadowRadius:3
+searchContainer : {
+    width:'90%',
+    alignItems:'center',
+    //marginVertical:hp(0.1)
 },
-textStyle:{
-  margin:hp(0.5),
-  color:ColorConstant.BLUE,
-  textAlignVertical:'center',
-  paddingLeft:hp(0.5)
+blueBox : {
+  backgroundColor:ColorConstant.BLUE,
+  alignItems:'center',
+  height:hp(5),
+  flexDirection:'row',
+  width:"100%",
+  borderTopLeftRadius:12,
+  borderTopRightRadius:12,
+  paddingHorizontal:hp(3)
+},
+blueBoxTitle :{
+  color:ColorConstant.WHITE,
+  fontSize:FontSize.FontSize.medium,
+  fontWeight:'bold',
+  flex:1
+},
+activeText : {
+  fontSize:FontSize.FontSize.small,
+  color:ColorConstant.WHITE,
+  paddingHorizontal:hp(1)
+},
+whiteContainer : {
+  flexDirection:'row',
+  marginTop:hp(1.5),
+  paddingHorizontal:hp(2.5),
+  paddingBottom:hp(1.5)
+},
+whiteSubView : {
+  flexDirection:'column',flex:1
+},
+whiteContainerText: {
+  color:ColorConstant.GREY,
+  fontSize:FontSize.FontSize.small
+},
+whiteContainerSubText : {
+  color:ColorConstant.BLACK,
+  fontSize:FontSize.FontSize.small
 },
 horizontalLine:{
-  borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)
+  borderBottomWidth:0.5,
+  width:'90%',
+  alignSelf:'center',
+  borderBottomColor:ColorConstant.GREY
+},
+emailPhone : {
+  flexDirection:'row',
+  marginTop:hp(1.5),
+  paddingHorizontal:hp(2.5),
+  paddingBottom:hp(1.5),
+  alignItems:'center'
+},
+emailImage : {
+  height:hp(1.5),
+  resizeMode:'contain'
+},
+emailText : {
+  color:ColorConstant.BLACK,
+  fontSize:FontSize.FontSize.extraSmall,
+  flex:1
+},
+phoneText : {
+  color:ColorConstant.BLACK,
+  fontSize:FontSize.FontSize.extraSmall
 },
 search: {
   paddingHorizontal:hp(2),
-  marginHorizontal:hp(2),
   flexDirection:'row',
   alignItems:'center',
   justifyContent:'space-between',
-  width: '80%',
+  width:'84%',
   height:hp(6),
   borderRadius:12,
   marginTop:hp(4),
@@ -233,7 +263,7 @@ addButton : {
     flexDirection:'row',
     alignItems:'center',
     justifyContent:'center',
-    width:'15%',
+    width:'14%',
     height:hp(6),
     borderRadius:12,
     marginTop:hp(4),
@@ -249,6 +279,37 @@ addButton : {
     backgroundColor:ColorConstant.WHITE
   
 },
+menu:{
+  backgroundColor:'white',
+  padding:5,
+  paddingVertical:hp(1.5),
+  right:wp(19),
+  borderRadius:16,
+  width:hp(12),
+  top:hp(11),
+  justifyContent:'space-between',
+  position:'absolute',
+  shadowColor:ColorConstant.GREY,		
+  shadowOffset:{height:0,width:0},
+  shadowOpacity:1,
+  elevation:10,
+  shadowRadius:3
+},
+textStyle:{
+  margin:hp(0.5),
+  color:ColorConstant.BLUE,
+  textAlignVertical:'center',
+  paddingLeft:hp(0.5)
+},
+searchText: {
+  fontSize:FontSize.FontSize.small,
+  color:ColorConstant.LIGHTGREY
+},
+searchSubContainer: {
+  flexDirection:'row',
+  width:'100%',
+  justifyContent:'space-between'
+}
 });
 
 

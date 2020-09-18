@@ -13,7 +13,13 @@ const images = {
     },
     user: {
         add: require('../../assets/images/User/add.png'),
-        filter: require('../../assets/images/User/filter.png')
+        filter: require('../../assets/images/User/filter.png'),
+        filterClick: require('../../assets/images/User/filterClick.png'),
+        active: require('../../assets/images/User/active.png'),
+        inactive: require('../../assets/images/User/inactive.png'),
+        edit: require('../../assets/images/User/edit.png'),
+        email: require('../../assets/images/User/email.png'),
+        phone: require('../../assets/images/User/phone.png')
     },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
