@@ -1,12 +1,16 @@
-import React, { useState, Component } from 'react';
+import React, { useState, Component, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import FontSize from '../../../component/FontSize';
 import ShadowView from 'react-native-simple-shadow-view'
+import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 
 const Profile = ({ navigation }) => {
+
+    const [viewDialogBox, setViewDialogBox] = useState(false)
+    const [cancel, setCancel] = useState(false)
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -27,6 +31,47 @@ const Profile = ({ navigation }) => {
             )
         });
     }, [navigation]);
+
+    function hideDialog() {
+        setViewDialogBox(false)
+    }
+
+    useEffect(() => {
+        console.log('Dialog Visibility', viewDialogBox)
+    }, [viewDialogBox])
+
+    function RenderBillingDialog(item, index) {
+        return (
+            <Dialog
+                visible={viewDialogBox}
+                onTouchOutside={() => hideDialog()}
+            >
+            <DialogContent>
+                <View style={styles.billingAddressDialogView}>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: hp(5)}}>
+                        <Text style={{color: ColorConstant.ORANGE, justifyContent: 'center', marginLeft: wp(25), fontWeight: 'bold'}}>Are you sure ?</Text>
+                        <Image source = {images.image.settings.crossIcon} />
+                    </View>
+
+                    <Text style={{marginTop: hp(5)}}>Do you really want to delete Home Address ?</Text>
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+                                <Text style={styles.buttonTextColor}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => { hideDialog() }}
+                                style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                    
+                </View>
+            </DialogContent>
+        </Dialog>
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -77,10 +122,13 @@ const Profile = ({ navigation }) => {
 
                     <View style={styles.underLineStyle} />
 
-                    <View style={styles.textMainView}>
+                    <TouchableOpacity style={styles.textMainView} onPress={() => { setViewDialogBox(!viewDialogBox) }}>
                         <Text style={styles.textStyleNone}>None</Text>
-                    </View>
+                        <Image source={images.image.settings.trash} />
+                    </TouchableOpacity>
                 </View>
+
+                {RenderBillingDialog()}
 
             </View>
             )}
@@ -192,11 +240,49 @@ const styles = StyleSheet.create({
     },
     textMainView: {
         marginHorizontal: hp(3),
-        marginVertical: hp(1)
+        marginVertical: hp(1),
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },  
     textStyleNone: {
         color: ColorConstant.BLACK, 
         fontSize: FontSize.FontSize.small
+    },
+    billingAddressDialogView: {
+        width: wp(80),
+        height: hp(25)
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: wp(75),
+        marginTop: hp(5),
+        alignSelf: 'center',
+        paddingBottom: hp(6),
+    },
+    cancelButton: {
+        borderRadius: 6,
+        width: '42%',
+        height: hp(6),
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: ColorConstant.BLUE,
+    },
+    buttonTextColor: {
+        textAlign: 'center',
+        color: ColorConstant.BLUE
+    },
+    LoginButton: {
+        borderRadius: 6,
+        width: '42%',
+        height: hp(6),
+        justifyContent: 'center',
+        backgroundColor: ColorConstant.BLUE,
+    },
+    LoginButtonText: {
+        textAlign: 'center',
+        color: ColorConstant.WHITE,
+        fontWeight: 'bold'
     },
 })
 

@@ -15,22 +15,29 @@ const EditProfile = ({ navigation, route, item }) => {
     const [cancel, setCancel] = useState(false)
     const [country, setCountry] = useState();
     const [isSelected, setIsSelected] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(false)
 
     //RenderBillingDialog
     const [viewDialogBox, setViewDialogBox] = useState(false)
     const [address1Value, setAddress1Value] = useState();
     const [address2Value, setAddress2Value] = useState();
-    
+
     const [addressLine1, setAddressLine1] = useState();
     const [addressLine2, setAddressLine2] = useState();
 
+    const [isClickOnSave, setIsClickOnSave] = useState(false);
+
     // RenderShippingEditDialog
     const [viewEditDialogBox, setViewEditDialogBox] = useState(false)
-
+    const [viewEditShippingAddName, setViewEditShippingAddName] = useState()
+    const [editShippingAddName, setEditShippingAddName] = useState()
 
     //RenderNewShippingDialog
     const [viewNewShippingDialog, setViewNewShippingDialog] = useState(false)
-    
+    const [newShippingAddressName, setNewShippingAddressName] = useState()
+    const [newShippingAddressLine1, setNewShippingAddressLine1] = useState()
+    const [newShippingAddressLine2, setNewShippingAddressLine2] = useState()
+    const [viewNewShippingAdd, setViewNewShippingAdd] = useState()
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -45,13 +52,187 @@ const EditProfile = ({ navigation, route, item }) => {
                 </Text>
             ),
             headerLeft: () => (
-
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
         });
     }, [navigation]);
+
+    const BillingAddress = () => {
+        return (
+            <View style={styles.cardContainer}>
+                <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
+                    <View style={styles.billingView}>
+                        <Text style={styles.billingAddressText}>Billing Address</Text>
+                        <Image source={images.image.settings.billingAddress} />
+                    </View>
+                </TouchableOpacity>
+
+                <View style={styles.footerIconStyle}>
+                    {!isClickOnSave ?
+                        null
+                        :
+                        <TouchableOpacity onPress={() => { setIsCollapsed(!isCollapsed) }} >
+                            <Image source={images.image.settings.downArrow} onPress />
+                        </TouchableOpacity>
+                    }
+                </View>
+
+                {isCollapsed && isClickOnSave ?
+                    <View style={styles.cardContainer}>
+                        <View style={styles.billingView}>
+                            <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Billing Address</Text>
+                            <Image source={images.image.settings.billing} />
+                        </View>
+
+                        <View style={styles.underLineStyle} />
+
+                        <View style={styles.textMainView}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+                                <View>
+                                    <Text style={styles.textStyleNone}>{addressLine1}</Text>
+                                    <Text style={styles.textStyleNone}>{addressLine2}</Text>
+                                    <Text style={styles.textStyleNone}>{country}</Text>
+                                </View>
+
+                                <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+                                    <Image source={images.image.settings.editIcon} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={styles.shippingFooterStyle}>
+                            <Image source={images.image.settings.upArrow} />
+                        </View>
+
+                    </View>
+                    :
+                    null
+
+                }
+
+            </View>
+        )
+    }
+
+    // <View style={styles.cardContainer}>
+    //     <View style={styles.billingView}>
+    //         <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Billing Address</Text>
+    //         <Image source={images.image.settings.billing} />
+    //     </View>
+
+    //     <View style={styles.underLineStyle} />
+
+    //     <View style={styles.textMainView}>
+    //         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+    //             <View>
+    //                 <Text style={styles.textStyleNone}>{addressLine1}</Text>
+    //                 <Text style={styles.textStyleNone}>{addressLine2}</Text>
+    //                 <Text style={styles.textStyleNone}>{country}</Text>
+    //             </View>
+
+    //             <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+    //                 <Image source={images.image.settings.editIcon} />
+    //             </TouchableOpacity>
+    //         </View>
+    //     </View>
+
+    //     <View style={styles.shippingFooterStyle}>
+    //         <Image source={images.image.settings.upArrow} />
+    //     </View>
+
+    // </View>
+
+
+    const ShippingAddress = () => {
+        return (
+            <View>
+                {!isSelected ?
+                    <View style={styles.cardContainer}>
+                        <TouchableOpacity onPress={() => { navigation.navigate('Settings') }}>
+                            <View style={styles.billingView}>
+                                <Text style={styles.billingAddressText}>Shipping Address</Text>
+                                <Image source={images.image.settings.billingAddress} />
+                            </View>
+                            <View style={styles.footerIconStyle}>
+
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    :
+                    <View style={styles.cardContainer}>
+                        <View style={styles.billingView}>
+                            <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Shipping Address</Text>
+                            <Image source={images.image.settings.address} />
+                        </View>
+
+                        <View style={styles.underLineStyle} />
+
+                        <View style={styles.textMainView}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+                                <View>
+                                    {setEditShippingAddName ?
+                                        <View>
+                                            <Text style={styles.textStyleNone}>{viewEditShippingAddName}</Text>
+                                            <Text style={styles.textStyleNone}>{addressLine1}</Text>
+                                            <Text style={styles.textStyleNone}>{addressLine2}</Text>
+                                            <Text style={styles.textStyleNone}>{country}</Text>
+                                        </View>
+                                        :
+                                        <View>
+                                            <Text style={styles.textStyleNone}>{addressLine1}</Text>
+                                            <Text style={styles.textStyleNone}>{addressLine2}</Text>
+                                            <Text style={styles.textStyleNone}>{country}</Text>
+                                        </View>
+                                    }
+                                </View>
+
+                                <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+                                    <Image source={images.image.settings.editIcon} />
+                                </TouchableOpacity>
+
+                            </View>
+
+                            <View style={styles.underLineStyle} />
+
+                            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+                            {setViewNewShippingAdd ?
+                                <View>
+                                    <Text style={styles.textStyleNone}>{newShippingAddressName}</Text>
+                                    <Text style={styles.textStyleNone}>{newShippingAddressLine1}</Text>
+                                    <Text style={styles.textStyleNone}>{newShippingAddressLine2}</Text>
+                                    <Text style={styles.textStyleNone}>{country}</Text>
+                                </View>
+                                :
+                                <View>
+                                    <Text style={styles.textStyleNone}>{newShippingAddressLine1}</Text>
+                                    <Text style={styles.textStyleNone}>{newShippingAddressLine1}</Text>
+                                    <Text style={styles.textStyleNone}>{country}</Text>
+                                </View>
+                            }
+                            <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+                                <Image source={images.image.settings.editIcon} />
+                            </TouchableOpacity>
+                        </View> */}
+
+                            <View style={styles.subCardContainer}>
+                                <TouchableOpacity style={{ padding: 20 }} onPress={() => { setViewNewShippingDialog(!viewNewShippingDialog) }}>
+                                    <Image source={images.image.settings.address} style={{ alignSelf: 'center' }} />
+                                    <Text style={{ alignSelf: 'center', marginTop: hp(2), fontSize: FontSize.FontSize.small, fontWeight: '500', color: ColorConstant.ORANGE }}>Add New Shipping Address</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <View style={styles.shippingFooterStyle}>
+                            <Image source={images.image.settings.upArrow} />
+                        </View>
+
+                    </View>
+                }
+            </View>
+        )
+    }
 
     function hideDialog() {
         setViewDialogBox(false)
@@ -75,7 +256,7 @@ const EditProfile = ({ navigation, route, item }) => {
                     <View style={styles.billingAddressDialogView}>
                         <View style={styles.billingMainView}>
                             <Image source={images.image.settings.billing} />
-                            <Text style={styles.headingTextStyle} >Billing Address</Text>
+                            <Text style={styles.headingTextStyle}> Billing Address </Text>
                             <Image source={images.image.settings.crossIcon} />
                         </View>
                         <View style={styles.textInputField}>
@@ -125,7 +306,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => hideDialog()}
+                                onPress={() => { hideDialog(), setIsClickOnSave(!isClickOnSave), setAddressLine1(address1Value), setAddressLine2(address2Value) }}
                                 style={styles.LoginButton}>
                                 <Text style={styles.LoginButtonText}>Save</Text>
                             </TouchableOpacity>
@@ -152,16 +333,15 @@ const EditProfile = ({ navigation, route, item }) => {
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField label='Shipping Address Name*' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
-                            {/* <TextField valueSet={setAddress1Value} label='Shipping Address Name*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} /> */}
+                            <TextField valueSet={setViewEditShippingAddName} label='Shipping Address Name*' value={viewEditShippingAddName} onChangeText={(text) => setViewEditShippingAddName(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress1Value} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField valueSet={setAddressLine1} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddressLine1(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress2Value} label='Address line 2*' value={address2Value} onChangeText={(text) => setAddress2Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField valueSet={setAddressLine2} label='Address line 2*' value={address2Value} onChangeText={(text) => setAddressLine2(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
@@ -190,7 +370,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => hideDialog()}
+                                onPress={() => { hideDialog(), setEditShippingAddName(viewEditShippingAddName) }}
                                 style={styles.LoginButton}>
                                 <Text style={styles.LoginButtonText}>Save</Text>
                             </TouchableOpacity>
@@ -203,7 +383,7 @@ const EditProfile = ({ navigation, route, item }) => {
     }
 
     function RenderNewShippingDialog(item, index) {
-        return(
+        return (
             <Dialog
                 visible={viewNewShippingDialog}
                 onTouchOutside={() => hideDialog()}
@@ -212,20 +392,20 @@ const EditProfile = ({ navigation, route, item }) => {
                     <View style={styles.billingAddressDialogView}>
                         <View style={styles.billingMainView}>
                             <Image source={images.image.settings.address} />
-                                <Text style={styles.headingTextStyle} >New Shipping Address</Text>
+                            <Text style={styles.headingTextStyle} >New Shipping Address</Text>
                             <Image source={images.image.settings.crossIcon} />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress1Value} label='Shipping Address Name*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField valueSet={setNewShippingAddressName} label='Shipping Address Name*' value={newShippingAddressName} onChangeText={(text) => setNewShippingAddressName(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress1Value} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField valueSet={setNewShippingAddressLine1} label='Address line 1*' value={newShippingAddressLine1} onChangeText={(text) => setNewShippingAddressLine1(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress1Value} label='Address line 2*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField valueSet={setNewShippingAddressLine2} label='Address line 2*' value={newShippingAddressLine2} onChangeText={(text) => setNewShippingAddressLine2(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
@@ -254,7 +434,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => hideDialog()}
+                                onPress={() => { hideDialog(), setViewNewShippingAdd(newShippingAddressName) }}
                                 style={styles.LoginButton}>
                                 <Text style={styles.LoginButtonText}>Save</Text>
                             </TouchableOpacity>
@@ -291,69 +471,9 @@ const EditProfile = ({ navigation, route, item }) => {
                         <TextField valueSet={setValue} label='Phone Number' value={phoneNumber} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} />
                     </View>
 
-                    <View style={styles.cardContainer}>
-                        <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
-                            <View style={styles.billingView}>
-                                <Text style={styles.billingAddressText}>Billing Address</Text>
-                                <Image source={images.image.settings.billingAddress} />
-                            </View>
-                            <View style={styles.footerIconStyle}>
-                                <Image source={images.image.settings.downArrow} />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                    <BillingAddress />
 
-                    {!isSelected ?
-                        <View style={styles.cardContainer}>
-                            <TouchableOpacity onPress={() => { navigation.navigate('Settings') }}>
-                                <View style={styles.billingView}>
-                                    <Text style={styles.billingAddressText}>Shipping Address</Text>
-                                    <Image source={images.image.settings.billingAddress} />
-                                </View>
-                                <View style={styles.footerIconStyle}>
-                                    <Image source={images.image.settings.downArrow} />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        :
-                        <View style={styles.cardContainer}>
-                            <View style={styles.billingView}>
-                                <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Shipping Address</Text>
-                                <Image source={images.image.settings.address} />
-                            </View>
-
-                            <View style={styles.underLineStyle} />
-
-                            <View style={styles.textMainView}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
-                                    <View>
-                                        <Text style={styles.textStyleNone}>{addressLine1}</Text>
-                                        <Text style={styles.textStyleNone}>{addressLine2}</Text>
-                                        <Text style={styles.textStyleNone}>{country}</Text>
-                                    </View>
-
-                                    <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
-                                        <Image source={images.image.settings.editIcon} />
-                                    </TouchableOpacity>
-
-                                </View>
-
-                                <View style={styles.underLineStyle} />
-
-                                <View style={styles.subCardContainer}>
-                                    <TouchableOpacity style={{ padding: 20 }} onPress={() => { setViewNewShippingDialog(!viewNewShippingDialog) }}>
-                                        <Image source={images.image.settings.address} style={{ alignSelf: 'center' }} />
-                                        <Text style={{ alignSelf: 'center', marginTop: hp(2), fontSize: FontSize.FontSize.small, fontWeight: '500', color: ColorConstant.ORANGE }}>Add New Shipping Address</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-
-                            <View style={styles.shippingFooterStyle}>
-                                <Image source={images.image.settings.upArrow} />
-                            </View>
-
-                        </View>
-                    }
+                    <ShippingAddress />
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
@@ -361,7 +481,7 @@ const EditProfile = ({ navigation, route, item }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('Passcode')}
+                            onPress={() => { navigation.goBack() }}
                             style={styles.LoginButton}>
                             <Text style={styles.LoginButtonText}>Done</Text>
                         </TouchableOpacity>

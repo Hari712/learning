@@ -69,7 +69,8 @@ const images = {
             GroupCheckBox: require('../../assets/images/Settings/GroupCheckBox.png'),
             address: require('../../assets/images/Settings/address.png'),
             editIcon: require('../../assets/images/Settings/EditIcon.png'),
-            upArrow: require('../../assets/images/Settings/upArrow.png')
+            upArrow: require('../../assets/images/Settings/upArrow.png'),
+            trash: require('../../assets/images/Settings/trash.png')
         }
     }
 }
