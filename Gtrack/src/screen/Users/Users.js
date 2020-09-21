@@ -7,9 +7,45 @@ import FontSize from '../../component/FontSize';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
 
+
+let DATA = [
+  {
+      name: 'Tom Smith',
+      role:'Owner',
+      status:'Active',
+      rights: 'Admin',
+      group:['Home'],
+      email: 'tomsmith@gmail.com',
+      phoneNo: '+1 430 8976532',
+  },
+  {
+      name: 'Richard Stokes',
+      role:'Regular',
+      status:'Inactive',
+      rights: 'Regular User',
+      group:['Fedex Ground','Gas Station','Home'],
+      email: 'richard@gmail.com',
+      phoneNo:'+1 430 8976532',
+  },
+  {
+      name: 'Charles Anderson',
+      role:'Home',
+      status:'Inactive',
+      rights: 'Admin',
+      group:['Fedex Ground'],
+      email: 'charles@gmail.com',
+      phoneNo: '+1 430 8976532',
+  },
+
+];
+
+let searchData= DATA
+
+const filterData = ['Active','Inactive']
+
+
 const Users = ({navigation}) => {
 
-  const [active, setActive] = useState();
   const [filterClick, setFilterClick] = useState(false);
  
 
@@ -24,7 +60,7 @@ const Users = ({navigation}) => {
         const [search, setSearch] = useState()
 
         const searchFilter = (text) => {
-            assetData = asset.filter(item=>item.toLowerCase().includes(text.toLowerCase())) 
+          searchData = DATA.filter(item=>item.name.toString().toLowerCase().includes(text.toLowerCase()))
             setSearch(text)
         }
 
@@ -38,11 +74,11 @@ const Users = ({navigation}) => {
                     value={search}
                     
                 />
-                <TouchableOpacity onPress={()=> setFilterClick(!filterClick)} >
+                <TouchableOpacity  onPress={()=> setFilterClick(!filterClick)} >
                   <Image source={filterClick? images.user.filterClick:images.user.filter } />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
               <Image source={images.user.add}/>
             </TouchableOpacity>
            
@@ -52,21 +88,21 @@ const Users = ({navigation}) => {
 
 
 return ( 
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView  contentContainerStyle={styles.container}>
     
       <View style={styles.searchContainer}>
       {searchBar()} 
       </View>
 
-      {DATA.map((item,key) =>
+      {searchData.map((item,key) =>
         <View style={styles.cardContainer} key={key}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <Text style={styles.blueBoxTitle}>{item.name}</Text>
-              <TouchableOpacity onPress={()=>(key==active)?setActive(-1):setActive(key)}>
-              <Image source={(key==active)?images.user.active :images.user.inactive} />
+              <TouchableOpacity>
+              <Image source={item.status=='Active'?images.user.active:images.user.inactive} />
               </TouchableOpacity>
-              <Text style={styles.activeText}>{(key==active)? 'Active' : 'Inactive' }</Text>
+              <Text style={styles.activeText}>{item.status}</Text>
               <Image style={{marginLeft:hp(2)}} source={images.user.edit} />        
           </View>
 
@@ -82,8 +118,27 @@ return (
             </View>
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>Group</Text>
-              <Text style={styles.whiteContainerSubText}>{item.group}</Text>
-            </View>
+              <View style={{justifyContent:'flex-start',flexDirection:'row'}}>
+                  <Text style={styles.whiteContainerSubText}>{item.group[0]} </Text>  
+                  <Tooltip
+                    popover={<Text style={{ fontSize:FontSize.FontSize.medium}}>{item.group[1]}</Text>} 
+                    backgroundColor={ColorConstant.WHITE}
+                    //withPointer={true}
+                    overlayColor={ColorConstant.TRANSPARENT}
+                    pointerStyle={{elevation:0.1,borderRightWidth:4,borderLeftWidth:4}}
+                    containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
+                  >           
+                    {item.group.length>1?
+                      <Text style={{fontSize:hp(1.3),backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>+{item.group.length-1}</Text>
+                  :null
+                    }
+                  </Tooltip>   
+              
+              
+              </View>              
+              
+            </View> 
+
           </View>
 
           {/* Email and Phone */}
@@ -115,36 +170,6 @@ return (
       )
     }
 
-
-    const DATA = [
-        {
-            name: 'Tom Smith',
-            role:'Owner',
-            rights: 'Admin',
-            group:'Home',
-            email: 'tomsmith@gmail.com',
-            phoneNo: '+1 430 8976532',
-        },
-        {
-            name: 'Richard Stokes',
-            role:'Regular',
-            rights: 'Regular User',
-            group:'Fedex Ground',
-            email: 'richard@gmail.com',
-            phoneNo:'+1 430 8976532',
-        },
-        {
-            name: 'Charles Anderson',
-            role:'Home',
-            rights: 'Admin',
-            group:'Fedex Ground',
-            email: 'charles@gmail.com',
-            phoneNo: '+1 430 8976532',
-        },
-
-    ];
-
-    const filterData = ['Active','Inactive']
 
 const styles = StyleSheet.create({
 
@@ -192,7 +217,8 @@ blueBoxTitle :{
 activeText : {
   fontSize:FontSize.FontSize.small,
   color:ColorConstant.WHITE,
-  paddingHorizontal:hp(1)
+  paddingHorizontal:hp(1),
+  flex:0.3
 },
 whiteContainer : {
   flexDirection:'row',
@@ -209,7 +235,9 @@ whiteContainerText: {
 },
 whiteContainerSubText : {
   color:ColorConstant.BLACK,
-  fontSize:FontSize.FontSize.small
+  fontSize:FontSize.FontSize.small,
+
+
 },
 horizontalLine:{
   borderBottomWidth:0.5,
