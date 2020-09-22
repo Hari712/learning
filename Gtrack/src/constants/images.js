@@ -19,7 +19,9 @@ const images = {
         inactive: require('../../assets/images/User/inactive.png'),
         edit: require('../../assets/images/User/edit.png'),
         email: require('../../assets/images/User/email.png'),
-        phone: require('../../assets/images/User/phone.png')
+        phone: require('../../assets/images/User/phone.png'),
+        info: require('../../assets/images/User/info.png'),
+        infoClick: require('../../assets/images/User/infoClick.png')
     },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),

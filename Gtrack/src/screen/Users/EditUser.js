@@ -9,7 +9,7 @@ import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import MultiSelect from '../../component/MultiSelect'
 
-const AddUser = ({navigation}) => {
+const EditUser = ({navigation}) => {
  
   const [name, setName]= useState();
   const [lastName, setLastName] = useState();
@@ -214,4 +214,4 @@ selectedItemContainerStyle:{
 });
 
 
-export default AddUser;
+export default EditUser;

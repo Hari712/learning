@@ -15,7 +15,7 @@ class MultiSelect extends React.Component {
     constructor(props) {
         super();
         this.state={
-            isSelected: true,            
+            isSelected: false,            
         }
     }
 
@@ -50,6 +50,7 @@ class MultiSelect extends React.Component {
                         contentInset={{ input: 10.45, label: 1.4 }}
                         renderRightAccessory={() => handleRightAccessory()}
                         editable={false}
+                        value='Select Group'
                         inputContainerStyle={styles.inputContainer}
                         activeLineWidth={1}
                         containerStyle={styles.inputButton}
@@ -59,9 +60,9 @@ class MultiSelect extends React.Component {
 
 
                 { this.state.isSelected ?
-                <ScrollView style={styles.dropdown}>
+                <ScrollView style={[styles.dropdown,otherProps.dropdownStyle]}>
                     {/* Select All */}
-                    <TouchableOpacity style={styles.row} 
+                    <TouchableOpacity style={[styles.row, otherProps.rowStyle]} 
                         onPress={()=>{
                             if (selectedAll) {
                                 selectedAll = false;
@@ -73,13 +74,13 @@ class MultiSelect extends React.Component {
                             }                    
                         } }>
                         <Image source={ selectedAll ? images.image.checkboxClick :images.image.checkbox} />
-                        <Text style={{color:ColorConstant.BLUE}}>Select All</Text>
+                        <Text style={{color:ColorConstant.BLUE}}>{otherProps.allText? otherProps.allText : 'Select All'}</Text>
                     </TouchableOpacity>
 
                     {/* Data Rows */}
                     {data.map((item,key)=>{
                         return(
-                            <TouchableOpacity key={key} style={styles.row} 
+                            <TouchableOpacity key={key} style={[styles.row, otherProps.rowStyle]} 
                                 onPress={()=>{
                                     if (selectedItem.includes(item)) {
                                         valueSet(oldArray => oldArray.filter(function(value){return value != item}) )       

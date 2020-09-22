@@ -99,11 +99,11 @@ return (
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <Text style={styles.blueBoxTitle}>{item.name}</Text>
-              <TouchableOpacity>
               <Image source={item.status=='Active'?images.user.active:images.user.inactive} />
-              </TouchableOpacity>
               <Text style={styles.activeText}>{item.status}</Text>
-              <Image style={{marginLeft:hp(2)}} source={images.user.edit} />        
+              <TouchableOpacity onPress={()=>navigation.navigate('EditUser')} style={{marginLeft:hp(2)}}>
+                <Image source={images.user.edit} /> 
+              </TouchableOpacity>       
           </View>
 
           {/* White Body container */}

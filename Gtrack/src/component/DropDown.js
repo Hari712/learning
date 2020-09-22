@@ -43,6 +43,7 @@ class DropDown extends React.Component {
 
         return(
             <SafeAreaView>
+                {/* <View > */}
                 <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
@@ -59,21 +60,23 @@ class DropDown extends React.Component {
                         containerStyle={styles.inputButton}
                         {...otherProps}
                     />
+                   
                 </TouchableOpacity>
+                {/* </View> */}
 
 
                 { this.state.isSelected ?
                     <View style={[styles.dropdown,dropdownStyle]}>
                         {(dataList?dataList:data).map((item,key)=>{
                             return(
-                            <TouchableOpacity key={key} onPress={()=>{
+                            <TouchableOpacity style={otherProps.dataRowStyle} key={key} onPress={()=>{
                                 this.setState({
                                     selected: item, 
                                     isSelected:false,
                                 })
                                 this.props.valueSet(item)
                             }}>
-                                <Text>{item}</Text>
+                                <Text style={otherProps.dataTextStyle}>{item}</Text>
                             </TouchableOpacity>
                             )
                         })}
@@ -88,10 +91,12 @@ class DropDown extends React.Component {
 const styles = StyleSheet.create({
     container: {
         marginVertical:hp(1),
-        justifyContent: 'center',   
+        justifyContent: 'center', 
+       
     },
     downArrow: {               
        // alignSelf:'center'
+       marginVertical:hp(1),
     },
     dropdown: { 
         position:'absolute',
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
         elevation:5, 
         backgroundColor:'white', 
         width:'100%',
-        paddingLeft:hp(3) 
+        paddingHorizontal:hp(3) 
     },
     inputContainer: {
         height: hp(6), 
