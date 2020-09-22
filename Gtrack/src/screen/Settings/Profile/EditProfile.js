@@ -1,5 +1,5 @@
 import React, { useState, Component, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, FlatList } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
@@ -21,9 +21,12 @@ const EditProfile = ({ navigation, route, item }) => {
     const [viewDialogBox, setViewDialogBox] = useState(false)
     const [address1Value, setAddress1Value] = useState();
     const [address2Value, setAddress2Value] = useState();
-
+    const [postalCode, setPostalCode] = useState();
+ 
     const [addressLine1, setAddressLine1] = useState();
     const [addressLine2, setAddressLine2] = useState();
+
+    const [data, setData] = useState();
 
     const [isClickOnSave, setIsClickOnSave] = useState(false);
 
@@ -62,25 +65,8 @@ const EditProfile = ({ navigation, route, item }) => {
     const BillingAddress = () => {
         return (
             <View style={styles.cardContainer}>
-                <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
-                    <View style={styles.billingView}>
-                        <Text style={styles.billingAddressText}>Billing Address</Text>
-                        <Image source={images.image.settings.billingAddress} />
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.footerIconStyle}>
-                    {!isClickOnSave ?
-                        null
-                        :
-                        <TouchableOpacity onPress={() => { setIsCollapsed(!isCollapsed) }} >
-                            <Image source={images.image.settings.downArrow} onPress />
-                        </TouchableOpacity>
-                    }
-                </View>
-
                 {isCollapsed && isClickOnSave ?
-                    <View style={styles.cardContainer}>
+                    <View >
                         <View style={styles.billingView}>
                             <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Billing Address</Text>
                             <Image source={images.image.settings.billing} />
@@ -102,101 +88,74 @@ const EditProfile = ({ navigation, route, item }) => {
                             </View>
                         </View>
 
-                        <View style={styles.shippingFooterStyle}>
+                        <TouchableOpacity style={styles.shippingFooterStyle} onPress={() => { setIsCollapsed(!isCollapsed) }} >
                             <Image source={images.image.settings.upArrow} />
-                        </View>
+                        </TouchableOpacity>
 
                     </View>
                     :
-                    null
+                    <View>
+                        <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
+                            <View style={styles.billingView}>
+                                <Text style={styles.billingAddressText}>Billing Address</Text>
+                                <Image source={images.image.settings.billingAddress} />
+                            </View>
+                        </TouchableOpacity>
 
+                        <View style={styles.footerIconStyle}>
+                            {!isClickOnSave ?
+                                null
+                                :
+                                <TouchableOpacity onPress={() => { setIsCollapsed(!isCollapsed) }} >
+                                    <Image source={images.image.settings.downArrow} onPress />
+                                </TouchableOpacity>
+                            }
+                        </View>
+                    </View>
                 }
-
             </View>
         )
     }
 
-    // <View style={styles.cardContainer}>
-    //     <View style={styles.billingView}>
-    //         <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Billing Address</Text>
-    //         <Image source={images.image.settings.billing} />
-    //     </View>
-
-    //     <View style={styles.underLineStyle} />
-
-    //     <View style={styles.textMainView}>
-    //         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
-    //             <View>
-    //                 <Text style={styles.textStyleNone}>{addressLine1}</Text>
-    //                 <Text style={styles.textStyleNone}>{addressLine2}</Text>
-    //                 <Text style={styles.textStyleNone}>{country}</Text>
-    //             </View>
-
-    //             <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
-    //                 <Image source={images.image.settings.editIcon} />
-    //             </TouchableOpacity>
-    //         </View>
-    //     </View>
-
-    //     <View style={styles.shippingFooterStyle}>
-    //         <Image source={images.image.settings.upArrow} />
-    //     </View>
-
-    // </View>
-
-
     const ShippingAddress = () => {
         return (
             <View>
-                {!isSelected ?
-                    <View style={styles.cardContainer}>
-                        <TouchableOpacity onPress={() => { navigation.navigate('Settings') }}>
-                            <View style={styles.billingView}>
-                                <Text style={styles.billingAddressText}>Shipping Address</Text>
-                                <Image source={images.image.settings.billingAddress} />
-                            </View>
-                            <View style={styles.footerIconStyle}>
-
-                            </View>
-                        </TouchableOpacity>
+                <View style={styles.cardContainer}>
+                    <View style={styles.billingView}>
+                        <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Shipping Address</Text>
+                        <Image source={images.image.settings.address} />
                     </View>
-                    :
-                    <View style={styles.cardContainer}>
-                        <View style={styles.billingView}>
-                            <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Shipping Address</Text>
-                            <Image source={images.image.settings.address} />
+
+                    <View style={styles.underLineStyle} />
+
+                    <View style={styles.textMainView}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+                            <View>
+                                {setEditShippingAddName ?
+                                    <View>
+                                        <Text style={styles.textStyleNone}>{viewEditShippingAddName}</Text>
+                                        <Text style={styles.textStyleNone}>{addressLine1}</Text>
+                                        <Text style={styles.textStyleNone}>{addressLine2}</Text>
+                                        <Text style={styles.textStyleNone}>{country}</Text>
+                                    </View>
+                                    :
+                                    <View>
+                                        <Text style={styles.textStyleNone}>{addressLine1}</Text>
+                                        <Text style={styles.textStyleNone}>{addressLine2}</Text>
+                                        <Text style={styles.textStyleNone}>{country}</Text>
+                                    </View>
+                                }
+                            </View>
+
+                            <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+                                <Image source={images.image.settings.editIcon} />
+                            </TouchableOpacity>
+
                         </View>
 
                         <View style={styles.underLineStyle} />
 
-                        <View style={styles.textMainView}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
-                                <View>
-                                    {setEditShippingAddName ?
-                                        <View>
-                                            <Text style={styles.textStyleNone}>{viewEditShippingAddName}</Text>
-                                            <Text style={styles.textStyleNone}>{addressLine1}</Text>
-                                            <Text style={styles.textStyleNone}>{addressLine2}</Text>
-                                            <Text style={styles.textStyleNone}>{country}</Text>
-                                        </View>
-                                        :
-                                        <View>
-                                            <Text style={styles.textStyleNone}>{addressLine1}</Text>
-                                            <Text style={styles.textStyleNone}>{addressLine2}</Text>
-                                            <Text style={styles.textStyleNone}>{country}</Text>
-                                        </View>
-                                    }
-                                </View>
-
-                                <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
-                                    <Image source={images.image.settings.editIcon} />
-                                </TouchableOpacity>
-
-                            </View>
-
-                            <View style={styles.underLineStyle} />
-
-                            {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
                             {setViewNewShippingAdd ?
                                 <View>
                                     <Text style={styles.textStyleNone}>{newShippingAddressName}</Text>
@@ -214,22 +173,20 @@ const EditProfile = ({ navigation, route, item }) => {
                             <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
                                 <Image source={images.image.settings.editIcon} />
                             </TouchableOpacity>
-                        </View> */}
-
-                            <View style={styles.subCardContainer}>
-                                <TouchableOpacity style={{ padding: 20 }} onPress={() => { setViewNewShippingDialog(!viewNewShippingDialog) }}>
-                                    <Image source={images.image.settings.address} style={{ alignSelf: 'center' }} />
-                                    <Text style={{ alignSelf: 'center', marginTop: hp(2), fontSize: FontSize.FontSize.small, fontWeight: '500', color: ColorConstant.ORANGE }}>Add New Shipping Address</Text>
-                                </TouchableOpacity>
-                            </View>
                         </View>
 
-                        <View style={styles.shippingFooterStyle}>
-                            <Image source={images.image.settings.upArrow} />
+                        <View style={styles.subCardContainer}>
+                            <TouchableOpacity style={{ padding: 20 }} onPress={() => { setViewNewShippingDialog(!viewNewShippingDialog) }}>
+                                <Image source={images.image.settings.address} style={{ alignSelf: 'center' }} />
+                                <Text style={{ alignSelf: 'center', marginTop: hp(2), fontSize: FontSize.FontSize.small, fontWeight: '500', color: ColorConstant.ORANGE }}>Add New Shipping Address</Text>
+                            </TouchableOpacity>
                         </View>
-
                     </View>
-                }
+
+                    <View style={styles.shippingFooterStyle}>
+                        <Image source={images.image.settings.upArrow} />
+                    </View>
+                </View>
             </View>
         )
     }
@@ -246,6 +203,30 @@ const EditProfile = ({ navigation, route, item }) => {
         console.log('Dialog Visibility', viewNewShippingDialog)
     }, [viewDialogBox], [viewEditDialogBox], [viewNewShippingDialog])
 
+    function storeItem(item, index) {
+        let array = []
+        let dataItems = {
+            Name: viewEditShippingAddName,
+            AddressLine1: address1Value,
+            AddressLine2: address2Value,
+            zip: postalCode
+        }
+        array.push(dataItems)
+        setData(array)
+    }
+
+    function addNewShippingItem(item, index) {
+        let array = []
+        let dataItems = {
+            Name: newShippingAddressName,
+            AddressLine1: newShippingAddressLine1,
+            AddressLine2: newShippingAddressLine2,
+            zip: postalCode
+        }
+        array.push(dataItems)
+        setData(array)
+    }
+
     function RenderBillingDialog(item, index) {
         return (
             <Dialog
@@ -260,30 +241,72 @@ const EditProfile = ({ navigation, route, item }) => {
                             <Image source={images.image.settings.crossIcon} />
                         </View>
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress1Value} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddress1Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setAddress1Value} 
+                                label='Address line 1*' 
+                                value={address1Value} 
+                                onChangeText={(text) => setAddress1Value(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddress2Value} label='Address line 2*' value={address2Value} onChangeText={(text) => setAddress2Value(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setAddress2Value} 
+                                label='Address line 2*' 
+                                value={address2Value} 
+                                onChangeText={(text) => setAddress2Value(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select Country' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
 
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select State' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select City' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
 
                             <View style={styles.countryField}>
-                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                                <TextField 
+                                    valueSet={setPostalCode} 
+                                    label='Zip/Postal Code' 
+                                    value={postalCode} 
+                                    onChangeText={(text) => setPostalCode(text)} 
+                                    style={styles.textNameStyle} 
+                                    labelFontSize={hp(1.4)} 
+                                    labelTextStyle={{ top: hp(0.5) }} 
+                                    contentInset={{ input: 12 }} 
+                                />
                             </View>
                         </View>
 
@@ -293,7 +316,12 @@ const EditProfile = ({ navigation, route, item }) => {
                                     style={{}}
                                     unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
                                     checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
-                                    onClick={() => { setIsSelected(!isSelected), setAddressLine1(address1Value), setAddressLine2(address2Value) }}
+                                    onClick={() => {
+                                        storeItem(), 
+                                        setIsSelected(!isSelected)
+                                        setAddressLine1(address1Value), 
+                                        setAddressLine2(address2Value) 
+                                    }}
                                     isChecked={isSelected}
                                 />
                             </View>
@@ -333,34 +361,85 @@ const EditProfile = ({ navigation, route, item }) => {
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setViewEditShippingAddName} label='Shipping Address Name*' value={viewEditShippingAddName} onChangeText={(text) => setViewEditShippingAddName(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setViewEditShippingAddName} 
+                                label='Shipping Address Name*' 
+                                value={viewEditShippingAddName} 
+                                onChangeText={(text) => setViewEditShippingAddName(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddressLine1} label='Address line 1*' value={address1Value} onChangeText={(text) => setAddressLine1(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setAddressLine1} 
+                                label='Address line 1*' 
+                                value={address1Value} 
+                                onChangeText={(text) => setAddressLine1(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setAddressLine2} label='Address line 2*' value={address2Value} onChangeText={(text) => setAddressLine2(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setAddressLine2} 
+                                label='Address line 2*' 
+                                value={address2Value} 
+                                onChangeText={(text) => setAddressLine2(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select Country' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
 
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select State' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select City' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
 
                             <View style={styles.countryField}>
-                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                                <TextField 
+                                    valueSet={setPostalCode} 
+                                    label='Zip/Postal Code' 
+                                    value={postalCode} 
+                                    onChangeText={(text) => setPostalCode(text)} 
+                                    style={styles.textNameStyle} 
+                                    labelFontSize={hp(1.4)} 
+                                    labelTextStyle={{ top: hp(0.5) }} 
+                                    contentInset={{ input: 12 }} 
+                                />
                             </View>
                         </View>
 
@@ -397,34 +476,85 @@ const EditProfile = ({ navigation, route, item }) => {
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setNewShippingAddressName} label='Shipping Address Name*' value={newShippingAddressName} onChangeText={(text) => setNewShippingAddressName(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setNewShippingAddressName} 
+                                label='Shipping Address Name*' 
+                                value={newShippingAddressName}  
+                                onChangeText={(text) => setNewShippingAddressName(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setNewShippingAddressLine1} label='Address line 1*' value={newShippingAddressLine1} onChangeText={(text) => setNewShippingAddressLine1(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setNewShippingAddressLine1} 
+                                label='Address line 1*' 
+                                value={newShippingAddressLine1} 
+                                onChangeText={(text) => setNewShippingAddressLine1(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={styles.textInputField}>
-                            <TextField valueSet={setNewShippingAddressLine2} label='Address line 2*' value={newShippingAddressLine2} onChangeText={(text) => setNewShippingAddressLine2(text)} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                            <TextField 
+                                valueSet={setNewShippingAddressLine2} 
+                                label='Address line 2*' 
+                                value={newShippingAddressLine2} 
+                                onChangeText={(text) => setNewShippingAddressLine2(text)} 
+                                style={styles.textNameStyle} 
+                                labelFontSize={hp(1.4)} 
+                                labelTextStyle={{ top: hp(0.5) }} 
+                                contentInset={{ input: 12 }} 
+                            />
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select Country' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select Country' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
 
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select State' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select State' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
                         </View>
 
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={styles.countryField}>
-                                <DropDown defaultValue={country} label='Select City' valueSet={setCountry} dataList={countryList} />
+                                <DropDown 
+                                    defaultValue={country} 
+                                    label='Select City' 
+                                    valueSet={setCountry} 
+                                    dataList={countryList} 
+                                />
                             </View>
 
                             <View style={styles.countryField}>
-                                <TextField valueSet={setValue} label='Zip/Postal Code' style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} contentInset={{ input: 12 }} />
+                                <TextField 
+                                    valueSet={setPostalCode} 
+                                    label='Zip/Postal Code' 
+                                    value={postalCode} 
+                                    onChangeText={(text) => setPostalCode(text)} 
+                                    style={styles.textNameStyle} 
+                                    labelFontSize={hp(1.4)} 
+                                    labelTextStyle={{ top: hp(0.5) }} 
+                                    contentInset={{ input: 12 }} 
+                                />
                             </View>
                         </View>
 
@@ -434,12 +564,11 @@ const EditProfile = ({ navigation, route, item }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={() => { hideDialog(), setViewNewShippingAdd(newShippingAddressName) }}
+                                onPress={() => { hideDialog(), addNewShippingItem()  }}
                                 style={styles.LoginButton}>
                                 <Text style={styles.LoginButtonText}>Save</Text>
                             </TouchableOpacity>
                         </View>
-
                     </View>
                 </DialogContent>
             </Dialog>
@@ -455,11 +584,25 @@ const EditProfile = ({ navigation, route, item }) => {
             <ScrollView style={{ height: "100%" }}>
                 <View style={styles.mainViewStyle}>
                     <View style={styles.textInputField}>
-                        <TextField valueSet={setValue} label='First Name' value={firstName} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} />
+                        <TextField 
+                            valueSet={setValue} 
+                            label='First Name' 
+                            value={firstName} 
+                            style={styles.textNameStyle} 
+                            labelFontSize={hp(1.4)} 
+                            labelTextStyle={{ top: hp(0.5) }} 
+                        />
                     </View>
 
                     <View style={styles.textInputField}>
-                        <TextField valueSet={setValue} label='Last Name' value={lastName} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} />
+                        <TextField 
+                            valueSet={setValue} 
+                            label='Last Name' 
+                            value={lastName} 
+                            style={styles.textNameStyle} 
+                            labelFontSize={hp(1.4)} 
+                            labelTextStyle={{ top: hp(0.5) }} 
+                        />
                     </View>
 
                     <View style={styles.textInputField}>
@@ -468,13 +611,38 @@ const EditProfile = ({ navigation, route, item }) => {
                     </View>
 
                     <View style={styles.textInputField}>
-                        <TextField valueSet={setValue} label='Phone Number' value={phoneNumber} style={styles.textNameStyle} labelFontSize={hp(1.4)} labelTextStyle={{ top: hp(0.5) }} />
+                        <TextField 
+                            valueSet={setValue} 
+                            label='Phone Number' 
+                            value={phoneNumber} 
+                            style={styles.textNameStyle} 
+                            labelFontSize={hp(1.4)} 
+                            labelTextStyle={{ top: hp(0.5) }} 
+                        />
                     </View>
 
                     <BillingAddress />
 
-                    <ShippingAddress />
+                    {!isSelected ?
+                        <View style={styles.cardContainer}>
+                            <TouchableOpacity onPress={() => { navigation.navigate('Settings') }}>
+                                <View style={styles.billingView}>
+                                    <Text style={styles.billingAddressText}>Shipping Address</Text>
+                                    <Image source={images.image.settings.billingAddress} />
+                                </View>
+                                <View style={styles.footerIconStyle}>
 
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        :
+                        <FlatList
+                            style={{}}
+                            contentContainerStyle={styles.flatlistStyle}
+                            data={data}
+                            renderItem={ShippingAddress}
+                        />
+                    }
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
                             <Text style={styles.buttonTextColor}>Cancel</Text>
@@ -498,10 +666,6 @@ const EditProfile = ({ navigation, route, item }) => {
         </View>
     )
 }
-
-const countryList = ['Canada', 'India', 'USA'];
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -671,3 +835,14 @@ const styles = StyleSheet.create({
 })
 
 export default EditProfile;
+
+const countryList = ['Canada', 'India', 'USA'];
+
+const DATA = [
+    {
+        Name: "Home",
+        AddressLine1: "Amarcar",
+        AddressLine2: 'Gorwa',
+        zip: '6523154'
+    },
+]
