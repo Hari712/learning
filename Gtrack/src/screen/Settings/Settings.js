@@ -86,6 +86,7 @@ const Settings = ({ navigation }) => {
           contentContainerStyle={{}}
           data={SETTINGS_MENU}
           renderItem={SettingsItems}
+          keyExtractor={(item,index) => index.toString()}
         />
     </SafeAreaView>
 
@@ -104,12 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: hp(3)
   },
-
-  // cardContainer: {
-  //   // width: '90%',
-  //   // alignSelf: 'center',
-  //   backgroundColor: ColorConstant.ORANGE,
-  // },
 
   bodySubContainer: {
     paddingHorizontal: wp(3),

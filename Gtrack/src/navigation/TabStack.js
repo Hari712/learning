@@ -23,6 +23,7 @@ import EditDeviceAsset from '../screen/Device&Asset/EditDeviceAsset'
 import CreateDeviceAsset from '../screen/Device&Asset/CreateDeviceAsset';
 import Manage from '../screen/Device&Asset/Manage';
 import AddUser from '../screen/Users/AddUser';
+import EditProfile from '../screen/Settings/Profile/EditProfile';
 
 
 const Tab = createBottomTabNavigator();
@@ -91,6 +92,7 @@ const SettingsStackNavigator = () => {
         <SettingsStack.Navigator initialRouteName="Settings" headerMode="screen" screenOptions={ScreenOptions} >
             <SettingsStack.Screen name="Settings" component={Settings} />
             <SettingsStack.Screen name="Profile" component={Profile} />
+            <SettingsStack.Screen name="EditProfile" component={EditProfile} />
             <SettingsStack.Screen name="Subscription" component={Subscription} />
             <SettingsStack.Screen name="PaymentSettings" component={PaymentSettings} />
             <SettingsStack.Screen name="Permission" component={Permission} />

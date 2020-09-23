@@ -5,6 +5,7 @@ import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from '@ubaids/react-native-material-textfield'
 import FontSize from './FontSize';
+import { color } from "react-native-reanimated";
 
 
 
@@ -29,7 +30,7 @@ class TextField extends React.Component {
 
     render() {
     
-        const {label, innerRef, outerStyle, multiline, ...otherProps} = this.props;
+        const {label, innerRef, outerStyle, multiline, onChangeText, ...otherProps} = this.props;
 
         const handleInput = text => {
             //this.props.valueSet(text)
@@ -42,19 +43,21 @@ class TextField extends React.Component {
                 label={label}
                 textColor={ColorConstant.BLACK}
                 tintColor={ColorConstant.GREY}
+                baseColor={ColorConstant.GREY}
                 fontSize={FontSize.FontSize.small}
-                labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
+                labelTextStyle={{ fontFamily: 'Montserrat-Regular'}}
                 labelFontSize={FontSize.FontSize.small}
-                contentInset={{ input: 10.45, label: 1.4 }}
+                contentInset={{ input: 12, label: 1.4 }}
                 formatText={handleInput}
-                //value={this.state.textValue}
+                value={this.state.textValue}
                 //renderRightAccessory={() => handleRightAccessory()}
                 //editable={false}
                 inputContainerStyle={multiline ? styles.descContainer : styles.inputContainer}
                 activeLineWidth={1}
                 containerStyle={[styles.inputButton, {height: multiline ? hp(15) : hp(6)} , outerStyle]}
-                //formatText={this.formatText}
+                // formatText={this.formatText}
                 onSubmitEditing={this.onSubmit}
+                onChangeText={onChangeText}
                 ref={innerRef}
                 {...otherProps}
             />

@@ -79,7 +79,20 @@ const images = {
             feedback: require('../../assets/images/Settings/Feedback-icon.png'),
             logout: require('../../assets/images/Settings/Logout-icon.png'),
             nextArrow: require('../../assets/images/Settings/next-1.png'),
-            next: require('../../assets/images/Settings/next.png')
+            next: require('../../assets/images/Settings/next.png'),
+            email: require('../../assets/images/Settings/email.png'),
+            phone: require('../../assets/images/Settings/phone.png'),
+            billingAddress: require('../../assets/images/Settings/BillingAddress.png'),
+            shippingAddress: require('../../assets/images/Settings/shippingAddress.png'),
+            downArrow: require('../../assets/images/Settings/down-arrow.png'),
+            billing: require('../../assets/images/Settings/billing.png'),
+            crossIcon: require('../../assets/images/Settings/CrossIcon.png'),
+            rectangle: require('../../assets/images/Settings/Rectangle.png'),
+            GroupCheckBox: require('../../assets/images/Settings/GroupCheckBox.png'),
+            address: require('../../assets/images/Settings/address.png'),
+            editIcon: require('../../assets/images/Settings/EditIcon.png'),
+            upArrow: require('../../assets/images/Settings/upArrow.png'),
+            trash: require('../../assets/images/Settings/trash.png')
         }
     }
 }

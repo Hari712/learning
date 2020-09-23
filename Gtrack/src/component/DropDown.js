@@ -42,8 +42,7 @@ class DropDown extends React.Component {
         }
 
         return(
-            <SafeAreaView>
-                {/* <View > */}
+            <>
                 <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
@@ -83,7 +82,7 @@ class DropDown extends React.Component {
                     </View>
                 :null} 
 
-            </SafeAreaView>   
+            </>   
         )
     }
 }
@@ -99,16 +98,19 @@ const styles = StyleSheet.create({
        marginVertical:hp(1),
     },
     dropdown: { 
-        position:'absolute',
-        top:'90%', 
+       // position:'absolute',
+        marginTop:hp(0.5), 
         borderRadius:hp(2),
-        opacity:4, 
+        opacity:1, 
         marginHorizontal:wp(10),
         alignSelf:'center',  
         elevation:5, 
         backgroundColor:'white', 
         width:'100%',
-        paddingHorizontal:hp(3) 
+        paddingHorizontal:hp(3),
+        paddingLeft:hp(3),
+        borderWidth: 1,
+        borderColor: ColorConstant.GREY,
     },
     inputContainer: {
         height: hp(6), 
