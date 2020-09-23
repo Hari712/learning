@@ -1,5 +1,5 @@
 import React, { useState, Component, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, FlatList } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, FlatList, SafeAreaView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
@@ -537,7 +537,7 @@ const EditProfile = ({ navigation, route, item }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>Edit Profile</Text>
             </View>
@@ -650,7 +650,7 @@ const EditProfile = ({ navigation, route, item }) => {
 
             {RenderNewShippingDialog()}
 
-        </View>
+        </SafeAreaView>
     )
 }
 

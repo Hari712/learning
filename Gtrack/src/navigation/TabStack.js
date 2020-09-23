@@ -67,7 +67,7 @@ const UsersStackNavigator = () => {
 
 const DashBoardStackNavigator = () => {
     return(
-        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none">
+        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none" headerMode="screen" screenOptions={ScreenOptions}>
             <DashBoardStack.Screen name="DashBoard" component={DashBoard} />
         </DashBoardStack.Navigator>
     )

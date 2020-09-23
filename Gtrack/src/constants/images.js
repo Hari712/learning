@@ -79,6 +79,12 @@ const images = {
             editIcon: require('../../assets/images/Settings/EditIcon.png'),
             upArrow: require('../../assets/images/Settings/upArrow.png'),
             trash: require('../../assets/images/Settings/trash.png')
+        },
+
+        //Dashboard
+        dashboard: {
+            next: require('../../assets/images/Dashboard/next.png'),
+            refresh: require('../../assets/images/Dashboard/refresh.png')
         }
     }
 }
