@@ -40,7 +40,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
 
             {detailsToggle?
                 <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',paddingHorizontal:'7.5%'}}>
-                    <MultiSelect label='Select Device' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} />                   
+                    <MultiSelect label='Select Device' allText='Select All' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} />                   
                 </View>
             :null}  
 

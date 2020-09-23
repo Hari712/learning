@@ -92,16 +92,6 @@ return (
     
   )}
 
-
-      {/* <View >
-        {Menu.map((item,key) =>
-            <TouchableOpacity key={key} style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=> console.log("Khushi",item) }>
-              <Text style={styles.textStyle}>{item}</Text>
-            </TouchableOpacity>
-          )
-        }
-      </View> */}
-
      </ScrollView>
 
      {menuClick?

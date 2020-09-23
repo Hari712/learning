@@ -11,6 +11,20 @@ const images = {
         trash: require('../../assets/images/Manage/trash.png'),
         trashBlack: require('../../assets/images/Manage/trashblack.png')
     },
+    user: {
+        add: require('../../assets/images/User/add.png'),
+        filter: require('../../assets/images/User/filter.png'),
+        filterClick: require('../../assets/images/User/filterClick.png'),
+        active: require('../../assets/images/User/active.png'),
+        inactive: require('../../assets/images/User/inactive.png'),
+        edit: require('../../assets/images/User/edit.png'),
+        email: require('../../assets/images/User/email.png'),
+        phone: require('../../assets/images/User/phone.png'),
+        info: require('../../assets/images/User/info.png'),
+        infoClick: require('../../assets/images/User/infoClick.png'),
+        upArrow: require('../../assets/images/User/up.png'),
+        downarrow: require('../../assets/images/User/down.png')
+    },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
