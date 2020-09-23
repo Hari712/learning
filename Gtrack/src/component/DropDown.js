@@ -33,7 +33,7 @@ class DropDown extends React.Component {
 
         function handleRightAccessory() {
             return <View style={styles.imageContainer}>
-                    <Image source={images.image.next} resizemode='contain'style={styles.downArrow} />
+                    <Image source={images.image.next} resizemode='contain' style={styles.downArrow} />
                 </View>
         }
 

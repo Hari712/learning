@@ -10,7 +10,8 @@ import Tooltip from 'rn-tooltip';
 
 let DATA = [
   {
-      name: 'Tom Smith',
+      firstName: 'Tom',
+      lastName:'Smith',
       role:'Owner',
       status:'Active',
       rights: 'Admin',
@@ -19,7 +20,8 @@ let DATA = [
       phoneNo: '+1 430 8976532',
   },
   {
-      name: 'Richard Stokes',
+      firstName: 'Richard',
+      lastName: 'Stokes',
       role:'Regular',
       status:'Inactive',
       rights: 'Regular User',
@@ -28,7 +30,8 @@ let DATA = [
       phoneNo:'+1 430 8976532',
   },
   {
-      name: 'Charles Anderson',
+      firstName: 'Charles',
+      lastName: 'Anderson',
       role:'Home',
       status:'Inactive',
       rights: 'Admin',
@@ -78,7 +81,7 @@ const Users = ({navigation}) => {
                   <Image source={filterClick? images.user.filterClick:images.user.filter } />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
+            <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
               <Image source={images.user.add}/>
             </TouchableOpacity>
            
@@ -98,10 +101,10 @@ return (
         <View style={styles.cardContainer} key={key}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
-              <Text style={styles.blueBoxTitle}>{item.name}</Text>
+              <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
               <Image source={item.status=='Active'?images.user.active:images.user.inactive} />
               <Text style={styles.activeText}>{item.status}</Text>
-              <TouchableOpacity onPress={()=>navigation.navigate('EditUser')} style={{marginLeft:hp(2)}}>
+              <TouchableOpacity onPress={()=>{navigation.navigate('AddUser',{editData:item})}} style={{marginLeft:hp(2)}}>
                 <Image source={images.user.edit} /> 
               </TouchableOpacity>       
           </View>
@@ -132,9 +135,7 @@ return (
                       <Text style={{fontSize:hp(1.3),backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>+{item.group.length-1}</Text>
                   :null
                     }
-                  </Tooltip>   
-              
-              
+                  </Tooltip>               
               </View>              
               
             </View> 
@@ -179,9 +180,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width:'90%',
-    //width: Dimensions.get('screen').width-40,
     marginVertical: hp(1.5),
-    // height:hp(18),
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 12,
@@ -236,8 +235,6 @@ whiteContainerText: {
 whiteContainerSubText : {
   color:ColorConstant.BLACK,
   fontSize:FontSize.FontSize.small,
-
-
 },
 horizontalLine:{
   borderBottomWidth:0.5,

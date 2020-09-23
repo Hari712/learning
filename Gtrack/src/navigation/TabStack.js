@@ -23,7 +23,6 @@ import EditDeviceAsset from '../screen/Device&Asset/EditDeviceAsset'
 import CreateDeviceAsset from '../screen/Device&Asset/CreateDeviceAsset';
 import Manage from '../screen/Device&Asset/Manage';
 import AddUser from '../screen/Users/AddUser';
-import EditUser from '../screen/Users/EditUser';
 
 
 const Tab = createBottomTabNavigator();
@@ -63,7 +62,6 @@ const UsersStackNavigator = () => {
         <UsersStack.Navigator initialRouteName="Users" headerMode="screen" screenOptions={ScreenOptions} >
             <UsersStack.Screen name="Users" component={Users} />
             <UsersStack.Screen name="AddUser" component={AddUser} />
-            <UsersStack.Screen name="EditUser" component={EditUser} />
         </UsersStack.Navigator>
     )
 }

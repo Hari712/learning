@@ -104,6 +104,7 @@ class MultiSelect extends React.Component {
                    Selected Device List
                 </Text>:null}
                  
+                {selectedItem && selectedItem.length?
                 <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
                     { Object.values(selectedItem).map((item,key)=>
                     <View style={{flexWrap:'wrap', flexShrink:1 }}>
@@ -119,7 +120,7 @@ class MultiSelect extends React.Component {
                         </View>
                     </View>
                     )}
-                </View>             
+                </View>:null }            
 
             </SafeAreaView>   
         )

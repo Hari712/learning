@@ -21,7 +21,9 @@ const images = {
         email: require('../../assets/images/User/email.png'),
         phone: require('../../assets/images/User/phone.png'),
         info: require('../../assets/images/User/info.png'),
-        infoClick: require('../../assets/images/User/infoClick.png')
+        infoClick: require('../../assets/images/User/infoClick.png'),
+        upArrow: require('../../assets/images/User/up.png'),
+        downarrow: require('../../assets/images/User/down.png')
     },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),

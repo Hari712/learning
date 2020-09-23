@@ -40,6 +40,7 @@ class TextField extends React.Component {
            
             <OutlinedTextField
                 label={label}
+                textColor={ColorConstant.BLACK}
                 tintColor={ColorConstant.GREY}
                 fontSize={FontSize.FontSize.small}
                 labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
