@@ -18,7 +18,12 @@ const AddUser = ({navigation}) => {
   const [selectedGroup, setSelectedGroup] = useState([]);
   const [role, setRole] = useState();
 
+
   const Data =['Home','Fedex Ground']
+
+  // React.useEffect(() => {
+  //   setName('khushbu')
+  // },[])
 
   React.useLayoutEffect(() => {
 
@@ -56,12 +61,6 @@ const AddUser = ({navigation}) => {
       </View>
     )
   }
-
-  // const deleteFunction = (item, key) => {
-  //   console.log('Testing Success', item, key)
-  //   setDeleteDeviceKey(key)
-  //   setDialogVisible(true)
-  // }
 
 return ( 
     <View style={styles.container}>
@@ -126,7 +125,7 @@ return (
             selectedData={selectedGroup}
             selectedItemContainerStyle={styles.selectedItemContainerStyle} 
             selectedItemRowStyle={styles.selectedItemRowStyle}
-            //deleteHandle={deleteFunction}
+            deleteHandle={(item,key)=>setSelectedGroup(selectedGroup.filter((item1,key1) => key1 != key))}
             />
 
           <TouchableOpacity disabled={!(name && lastName && email && role)} style={{backgroundColor:name && email ? ColorConstant.BLUE : ColorConstant.LIGHTGREY ,marginTop:hp(2),height:hp(6),width:'85%',justifyContent:'center',alignSelf:'center',borderRadius:5}}>
