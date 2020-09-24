@@ -41,7 +41,7 @@ const Dashboard = ({ navigation }) => {
                 lineCap="round"
                 style={{ borderRadius: hp(6.5) }}
                 tintTransparency={false}
-                tintColor={ColorConstant.LIGHTGREEN}
+                tintColor={ColorConstant.GREEN}
                 onAnimationComplete={() => console.log('onAnimationComplete')}
                 backgroundColor={ColorConstant.WHITE}
               >
@@ -80,7 +80,7 @@ const Dashboard = ({ navigation }) => {
                 lineCap="round"
                 style={{ borderRadius: hp(6.5) }}
                 tintTransparency={false}
-                tintColor= {ColorConstant.LIGHTGREEN}
+                tintColor={ColorConstant.GREEN}
                 onAnimationComplete={() => console.log('onAnimationComplete')}
                 backgroundColor={ColorConstant.WHITE}
               >
@@ -124,12 +124,52 @@ const Dashboard = ({ navigation }) => {
 
         </View>
 
-        <ShadowView style={styles.summaryContainer}>
-          <View style={styles.deviceSummaryDetailView}>
-            <Text>kinnari</Text>
-          </View>
-        </ShadowView>
+        {DeviceSummaryData.map((item, key) =>
 
+          <ShadowView style={styles.summaryContainer}>
+            <View style={{ flexDirection: 'row', flex: 1 }}>
+
+              <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
+                <View style={{ flex: 0.25 }}>
+                  <View style={styles.deviceSummaryDetailView}>
+                    <Image source={item.icon} style={{ height: hp(3.5), width: hp(3.5) }} resizeMode='contain' />
+                  </View>
+                </View>
+
+                <View style={{ paddingHorizontal: '3%', marginTop: hp(1), flex: 0.75 }}>
+                  <Text style={{ color: ColorConstant.BLACK, fontSize: hp(1.4), fontWeight: '500' }}>{item.title}</Text>
+                  <Text style={{ color: ColorConstant.GREY, fontSize: hp(1.4), marginTop: hp(1) }}>{item.subtitle}</Text>
+                </View>
+
+              </View>
+
+              <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
+                <View style={[styles.stateViewStyle, { backgroundColor: item.state === 'Active' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
+                  <Text style={[styles.stateTextStyle, { color: item.title === 'Active' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>{item.state}</Text>
+                </View>
+              </View>
+
+            </View>
+          </ShadowView>
+
+        )}
+
+      </ShadowView>
+    )
+  }
+
+  const RecentAlarms = () => {
+    return(
+      <ShadowView style={styles.deviceSummaryContainer}>
+        <View style={styles.deviceSummaryMainViewStyle}>
+          <View style={styles.leftMainViewStyle}>
+              <Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>Recent Alarms</Text>
+          </View>
+
+          <View style={styles.rightMainViewStyle}>
+              <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+          </View>
+        </View>
       </ShadowView>
     )
   }
@@ -154,6 +194,8 @@ const Dashboard = ({ navigation }) => {
         <ActiveUser />
 
         <DeviceSummary />
+
+        <RecentAlarms />
 
       </SafeAreaView>
     </ScrollView>
@@ -274,9 +316,8 @@ const styles = StyleSheet.create({
   },
 
   summaryContainer: {
-    width: '87%',
     marginVertical: hp(2),
-    alignSelf: 'center',
+    paddingVertical: '3%',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: hp(5.5 / 2),
     borderWidth: 0.5,
@@ -285,18 +326,55 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     shadowOffset: { width: 0, height: 5 },
-    padding: 10
+    paddingHorizontal: '3%',
+    marginHorizontal: '4%'
   },
 
   deviceSummaryDetailView: {
-    width: hp(8),
-    height: hp(8),
+    width: hp(6),
+    height: hp(6),
     backgroundColor: ColorConstant.LIGHTBLUE,
     borderRadius: hp(8),
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  stateViewStyle: {
+    width: '90%',
+    height: hp(2.5),
+    backgroundColor: ColorConstant.GREY,
+    borderRadius: hp(2.5 / 2),
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: '3%'
+  },
+
+  stateTextStyle: {
+    fontSize: hp(1.0),
+    fontWeight: '500'
   }
 
 })
 
 export default Dashboard;
+
+const DeviceSummaryData = [
+  {
+    title: 'TrackPort International',
+    subtitle: 'Home',
+    state: 'Active',
+    icon: images.image.dashboard.carIcon
+  },
+  {
+    title: 'TrackPort 4G Vehicle GPS Tracker',
+    subtitle: 'Fedex Ground',
+    state: 'Inactive',
+    icon: images.image.dashboard.truckIcon
+  },
+  {
+    title: 'Spark Nano 7 GPS Tracker',
+    subtitle: 'Industrial',
+    state: 'Active',
+    icon: images.image.dashboard.carIcon
+  },
+]

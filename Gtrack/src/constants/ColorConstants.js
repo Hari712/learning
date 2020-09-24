@@ -9,5 +9,9 @@ export const ColorConstant = {
     LIGHTPINK: '#FFDDC5',
     DARKGREY: '#E6EAF3',
     LIGHTBLUE: '#C0DAFE',
-    LIGHTGREEN: '#1DD8BD'
+    GREEN: '#1DD8BD',
+    LIGHTGREEN: '#E8F9F3',
+    DARKGREEN: '#2AA98B',
+    LIGHTRED: '#F9E5E6',
+    DARKRED: '#CF1B1C'
 }
