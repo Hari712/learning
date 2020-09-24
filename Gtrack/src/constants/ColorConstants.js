@@ -7,6 +7,7 @@ export const ColorConstant = {
     PINK:'#FEF6F1',
     TRANSPARENT: 'transparent',
     LIGHTPINK: '#FFDDC5',
-    DARKGREY: '#E6EAF3'
-
+    DARKGREY: '#E6EAF3',
+    LIGHTBLUE: '#C0DAFE',
+    LIGHTGREEN: '#1DD8BD'
 }

@@ -84,7 +84,8 @@ const images = {
         //Dashboard
         dashboard: {
             next: require('../../assets/images/Dashboard/next.png'),
-            refresh: require('../../assets/images/Dashboard/refresh.png')
+            refresh: require('../../assets/images/Dashboard/refresh.png'),
+            SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png')
         }
     }
 }
