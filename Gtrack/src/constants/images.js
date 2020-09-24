@@ -25,6 +25,11 @@ const images = {
         upArrow: require('../../assets/images/User/up.png'),
         downarrow: require('../../assets/images/User/down.png')
     },
+    dashBoard: {
+        calender: require('../../assets/images/DashBoard/calendar.png'),
+        list: require('../../assets/images/DashBoard/list.png'),
+        pin: require('../../assets/images/DashBoard/pin.png')
+    },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
