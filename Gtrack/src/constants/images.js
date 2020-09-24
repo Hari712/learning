@@ -85,9 +85,11 @@ const images = {
         dashboard: {
             next: require('../../assets/images/Dashboard/next.png'),
             refresh: require('../../assets/images/Dashboard/refresh.png'),
+            fullScreen: require('../../assets/images/Dashboard/fullscreen.png'),
             SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png'),
             carIcon: require('../../assets/images/Dashboard/car.png'),
-            truckIcon: require('../../assets/images/Dashboard/Truck.png')
+            truckIcon: require('../../assets/images/Dashboard/Truck.png'),
+            bell: require('../../assets/images/Dashboard/bell.png')
         }
     }
 }

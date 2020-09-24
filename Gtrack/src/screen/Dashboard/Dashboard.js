@@ -9,6 +9,7 @@ import { EditText } from '../../component'
 import ShadowView from 'react-native-simple-shadow-view'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
+import ActivityRings from "react-native-activity-rings";
 
 const Dashboard = ({ navigation }) => {
 
@@ -118,7 +119,12 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Text style={styles.allUsersTextStyle}>No. of devices: 10</Text>
+            <Text style={styles.devicesTextStyle}>No. of devices: 10</Text>
+
+            <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
+              <Image source={images.image.dashboard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
+            </TouchableOpacity>
+
             <Image source={images.image.dashboard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
 
@@ -159,20 +165,45 @@ const Dashboard = ({ navigation }) => {
   }
 
   const RecentAlarms = () => {
-    return(
+    return (
       <ShadowView style={styles.deviceSummaryContainer}>
+
         <View style={styles.deviceSummaryMainViewStyle}>
           <View style={styles.leftMainViewStyle}>
-              <Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>Recent Alarms</Text>
+            <Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>Recent Alarms</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
-              <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
         </View>
+
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{justifyContent: 'center', flexDirection: 'row', position: 'absolute', backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center'}}>
+          <Image source={images.image.dashboard.bell} style={{height: hp(2), width: hp(2)}} resizeMode= 'contain' />
+          <Text style={{marginLeft: wp(1), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE}}>30</Text>
+          <Text style={{marginLeft: wp(3), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE}}>Alerts</Text>
+        </View>
+
+        <ActivityRings data={activityData} config={activityConfig} />
+      </View>
+
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2)}}>
+          <View style={[styles.alarmStatusMainView, {backgroundColor: ColorConstant.LIGHTBROWN} ]}></View>
+          <Text style={{color: ColorConstant.BLUE, fontSize: hp(1.4)}}>Low Battery</Text>
+
+          <View style={[styles.alarmStatusMainView, {backgroundColor: ColorConstant.BROWN} ]}></View>
+          <Text style={{color: ColorConstant.BLUE, fontSize: hp(1.4)}}>Movement</Text>
+
+          <View style={[styles.alarmStatusMainView, {backgroundColor: ColorConstant.DARKBROWN} ]}></View>
+          <Text style={{color: ColorConstant.BLUE, fontSize: hp(1.4)}}>Over Speeding</Text>
+        </View>
+
       </ShadowView>
     )
   }
+
+
 
   return (
     <ScrollView>
@@ -186,6 +217,11 @@ const Dashboard = ({ navigation }) => {
           <View style={styles.rightMainViewStyle}>
             <Text style={styles.allUsersTextStyle}>All Users</Text>
             <Image source={images.image.dashboard.next} style={styles.nextImageStyle} resizeMode='contain' />
+
+            <TouchableOpacity onPress={() => { navigation.navigate('Users') }} >
+              <Image source={images.image.dashboard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
+            </TouchableOpacity>
+
             <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
 
@@ -235,16 +271,43 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
 
+  devicesTextStyle: {
+    marginRight: wp(5),
+    color: ColorConstant.BLUE,
+    fontSize: FontSize.FontSize.small,
+    fontWeight: '500'
+  },
+
+  ViewallStyle: {
+    height: hp(2),
+    width: hp(2),
+    marginRight: wp(3)
+  },
+
   nextImageStyle: {
     height: hp(1.2),
     width: hp(1.2),
     top: 5,
-    marginRight: wp(3)
+    marginRight: wp(7)
+  },
+
+  fullScreenStyle: {
+    height: hp(2),
+    width: hp(2),
+    marginRight: wp(5)
   },
 
   refreshImageStyle: {
     height: hp(2),
     width: hp(2)
+  },
+
+  alarmStatusMainView: {
+    width: wp(4),
+    height: hp(1.8),
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
 
   activeUserMainView: {
@@ -378,3 +441,31 @@ const DeviceSummaryData = [
     icon: images.image.dashboard.carIcon
   },
 ]
+
+const activityData = [
+  {
+    value: 0.8,
+    color: ColorConstant.BROWN,
+    backgroundColor: ColorConstant.GREY,
+    label: "ACTIVITY",
+  },
+  {
+    value: 0.6,
+    color: ColorConstant.DARKBROWN,
+    backgroundColor: ColorConstant.GREY,
+    label: "ACTIVITY",
+  },
+  {
+    label: "RINGS",
+    value: 0.2,
+    color: ColorConstant.LIGHTBROWN,
+    backgroundColor: ColorConstant.GREY,
+  }
+];
+
+const activityConfig = {
+  width: 180,
+  height: 180,
+  radius: 55,
+  ringSize: 5,
+};
