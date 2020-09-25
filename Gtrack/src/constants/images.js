@@ -89,7 +89,9 @@ const images = {
             SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png'),
             carIcon: require('../../assets/images/Dashboard/car.png'),
             truckIcon: require('../../assets/images/Dashboard/Truck.png'),
-            bell: require('../../assets/images/Dashboard/bell.png')
+            bell: require('../../assets/images/Dashboard/bell.png'),
+            leftIcon: require('../../assets/images/Dashboard/Left.png'),
+            rightIcon: require('../../assets/images/Dashboard/Right.png')
         }
     }
 }

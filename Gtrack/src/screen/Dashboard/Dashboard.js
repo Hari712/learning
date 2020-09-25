@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, SafeAreaView } from 'react-native'
+import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -10,6 +10,7 @@ import ShadowView from 'react-native-simple-shadow-view'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
 import ActivityRings from "react-native-activity-rings";
+import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
 
 const Dashboard = ({ navigation }) => {
 
@@ -178,32 +179,30 @@ const Dashboard = ({ navigation }) => {
           </View>
         </View>
 
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <View style={{justifyContent: 'center', flexDirection: 'row', position: 'absolute', backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center'}}>
-          <Image source={images.image.dashboard.bell} style={{height: hp(2), width: hp(2)}} resizeMode= 'contain' />
-          <Text style={{marginLeft: wp(1), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE}}>30</Text>
-          <Text style={{marginLeft: wp(3), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE}}>Alerts</Text>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
+            <Image source={images.image.dashboard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
+            <Text style={{ marginLeft: wp(1), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE }}>30</Text>
+            <Text style={{ marginLeft: wp(3), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE }}>Alerts</Text>
+          </View>
+
+          <ActivityRings data={activityData} config={activityConfig} />
         </View>
 
-        <ActivityRings data={activityData} config={activityConfig} />
-      </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2) }}>
+          <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.LIGHTBROWN }]}></View>
+          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>Low Battery</Text>
 
-        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2)}}>
-          <View style={[styles.alarmStatusMainView, {backgroundColor: ColorConstant.LIGHTBROWN} ]}></View>
-          <Text style={{color: ColorConstant.BLUE, fontSize: hp(1.4)}}>Low Battery</Text>
+          <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.BROWN }]}></View>
+          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>Movement</Text>
 
-          <View style={[styles.alarmStatusMainView, {backgroundColor: ColorConstant.BROWN} ]}></View>
-          <Text style={{color: ColorConstant.BLUE, fontSize: hp(1.4)}}>Movement</Text>
-
-          <View style={[styles.alarmStatusMainView, {backgroundColor: ColorConstant.DARKBROWN} ]}></View>
-          <Text style={{color: ColorConstant.BLUE, fontSize: hp(1.4)}}>Over Speeding</Text>
+          <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.DARKBROWN }]}></View>
+          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>Over Speeding</Text>
         </View>
 
       </ShadowView>
     )
   }
-
-
 
   return (
     <ScrollView>
@@ -232,6 +231,8 @@ const Dashboard = ({ navigation }) => {
         <DeviceSummary />
 
         <RecentAlarms />
+
+        <LiveTrackingDashboard />
 
       </SafeAreaView>
     </ScrollView>

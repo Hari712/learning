@@ -11,7 +11,7 @@ const Map = Platform.select({
 	android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const LiveTracking = () => {
+const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)
 
