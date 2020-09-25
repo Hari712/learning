@@ -66,7 +66,7 @@ const TrackingDetails = () => {
 
             <SlidingUpPanel 
                 ref={_panel}
-				draggableRange={{top: height / 2, bottom: hp(9)}}				
+				draggableRange={{top: height / 2, bottom: hp(8)}}				
                 containerStyle={styles.containerStyle}
                 > 
 
