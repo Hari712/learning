@@ -3,8 +3,8 @@ import { View, StyleSheet, Text, Image, Dimensions, Platform } from 'react-nativ
 import images from '../constants/images';
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import SlidingUpPanel from 'rn-sliding-up-panel';
-
+import BottomSheet from 'reanimated-bottom-sheet';
+import FontSize from './FontSize';
 
 const isAndroid = Platform.OS === 'android'
 const {height} = Dimensions.get('window')
@@ -16,11 +16,11 @@ const Map = Platform.select({
 
 const TrackingDetails = () => {
 
-	const _panel = useRef();
+	const sheetRef = useRef(null);
     
     React.useEffect(()=>{
 
-	   _panel.current.show()
+		sheetRef.current.snapTo(0)
 	   
     },[])
 
@@ -60,59 +60,61 @@ const TrackingDetails = () => {
         )
 	}
 
+	const renderContent = () => (
+		<View style={styles.subView}>
+			<Text style={styles.mainTitle}>Tracking Details</Text>
+			<View style={styles.subContainerView}>
+				<Text style={styles.title}>Address</Text>
+				<Image style={styles.icon} source={images.dashBoard.pin}/>
+			</View> 
+			<View style={styles.address}>
+				<Text style={{fontSize:FontSize.FontSize.small}}>900 Dufferian Street,{'\n'}Toronto MG L40 1V6 {'\n'}Canada</Text>
+			</View>
+			<View style={styles.subContainerView}>
+				<Text style={styles.title}>Date & Time</Text>
+				<Image style={styles.icon} source={images.dashBoard.calender}/>
+			</View> 
+			<View style={styles.otherDetails}>
+				<Text style={styles.date}>21/07/2020</Text>
+				<Text style={[styles.date,{flex:1}]}>02:00:04</Text>
+			</View> 
+			<View style={styles.subContainerView}>
+				<Text style={styles.title}>Other details</Text>
+				<Image style={styles.icon} source={images.dashBoard.list}/>
+			</View> 
+			<View style={styles.otherDetails}>
+				<View style={{flex:1}}>
+					<Text style={styles.otherDetailText}>Duration</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>12m 8s</Text>
+				</View>
+				<View style={{flex:1}}>
+					<Text style={styles.otherDetailText}>Distance</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>16.47mi</Text>
+				</View>
+				<View style={{flex:0.3}}>
+					<Text style={styles.otherDetailText}>Speed</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>66mph</Text>
+				</View>    
+			</View>         
+		</View>
+	);
+
 	return (
 		<View style={styles.container}>
 			{isAndroid ? renderMapBox() : renderApppleMap()}
 
-            <SlidingUpPanel 
-                ref={_panel}
-				draggableRange={{top: height / 2, bottom: hp(8)}}				
-                containerStyle={styles.containerStyle}
-                > 
-
-                <View style={styles.subView}>
-                    <Text style={styles.mainTitle}>Tracking Details</Text>
-                    <View style={styles.subContainerView}>
-                        <Text style={styles.title}>Address</Text>
-                        <Image style={{marginBottom:hp(1)}} source={images.dashBoard.pin}/>
-                    </View> 
-                    <View style={styles.address}>
-                        <Text style={{fontSize:hp(1)}}>900 Dufferian Street,Toronto MG L40 1V6 Canada</Text>
-                    </View>
-                    <View style={styles.subContainerView}>
-                        <Text style={styles.title}>Date & Time</Text>
-                        <Image style={{marginBottom:hp(1)}} source={images.dashBoard.calender}/>
-                    </View> 
-                    <View style={styles.otherDetails}>
-                        <Text style={styles.date}>21/07/2020</Text>
-                        <Text style={[styles.date,{flex:1}]}>02:00:04</Text>
-                    </View> 
-                    <View style={styles.subContainerView}>
-                        <Text style={styles.title}>Other details</Text>
-                        <Image style={{marginBottom:hp(1)}} source={images.dashBoard.list}/>
-                    </View> 
-                    <View style={styles.otherDetails}>
-                        <View style={{flex:1}}>
-                            <Text style={styles.otherDetailText}>Duration</Text>
-                            <Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>12m 8s</Text>
-                        </View>
-                        <View style={{flex:1}}>
-                            <Text style={styles.otherDetailText}>Distance</Text>
-                            <Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>16.47mi</Text>
-                        </View>
-                        <View style={{flex:0.3}}>
-                            <Text style={styles.otherDetailText}>Speed</Text>
-                            <Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>66mph</Text>
-                        </View>    
-                    </View>         
-                </View>
-                </SlidingUpPanel>
+			<BottomSheet
+				ref={sheetRef}
+				snapPoints={[height/2, height/4, hp(7)]}
+				borderRadius={30}
+				renderContent={renderContent}
+     		/>
 
 			{/* <Mapbox.MapView
 				styleURL={Mapbox.StyleURL.Street}
 				zoomLevel={15}
 				onTouchStart={() => { setIsLineClick(false) }}
-				centerCoordinate={[11.256, 43.77]}
+				centerCoordinate={[11.256, 43.77]} 
 				style={styles.container}>
 				
 				{renderAnnotations()}
@@ -131,32 +133,6 @@ const styles = StyleSheet.create({
 	subContainer: {
 		position: 'absolute', flex: 1, right: 20, top: 20, width: hp(7.5)
 	},
-	bellIconStyle: {
-		borderRadius: 13,
-		height: hp(7.3),
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%', backgroundColor: ColorConstant.WHITE
-	},
-	lineIconStyle: {
-		borderRadius: 13, height: hp(7.3), marginTop: hp(2), justifyContent: 'center', alignItems: 'center', width: '100%', backgroundColor: ColorConstant.WHITE
-	},
-	lineContainer: {
-		backgroundColor: 'white',
-		padding: 5,
-		paddingVertical: hp(1.5),
-		right: wp(18),
-		borderRadius: 16,
-		width: '300%',
-		top: hp(9.5),
-		justifyContent: 'space-between',
-		position: 'absolute',
-		shadowColor: ColorConstant.GREY,
-		shadowOffset: { height: 0, width: 0 },
-		shadowOpacity: 1,
-		elevation: 10,
-		shadowRadius: 3
-	},
 	textStyle: {
 		margin: hp(0.5),
 		color: ColorConstant.BLUE,
@@ -164,7 +140,9 @@ const styles = StyleSheet.create({
 		paddingLeft: hp(0.5)
 	},
 	horizontalLine: {
-		borderBottomWidth: 0.5, borderBottomColor: ColorConstant.GREY, margin: hp(0.7)
+		borderBottomWidth: 0.5, 
+		borderBottomColor: ColorConstant.GREY, 
+		margin: hp(0.7)
 	},
 	map: {
 		height: 400,
@@ -185,37 +163,40 @@ const styles = StyleSheet.create({
 		backgroundColor: 'blue',
 		transform: [{ scale: 0.6 }]
 	},
-	containerStyle: {
-		backgroundColor:ColorConstant.WHITE,
-		borderTopLeftRadius:30,
-		borderTopRightRadius:30
-	},
 	subView: {
 		width:'100%',
 		alignItems:'center',
-		marginTop:hp(2)
+		height:height/2,		
+		backgroundColor:ColorConstant.WHITE,
 	},
 	mainTitle: {
 		color:ColorConstant.ORANGE,
 		fontWeight:'bold',
-		fontSize:hp(2)
+		paddingTop:hp(2),
+		fontSize:FontSize.FontSize.medium,
+		fontFamily:'Nunito-Bold'
 	},
 	subContainerView: {
 		flexDirection:'row',
 		marginHorizontal:hp(4),
 		marginTop:hp(4) ,
 		alignItems:'center',
+		justifyContent:'flex-start',
 		borderBottomColor:ColorConstant.GREY,
 		borderBottomWidth:0.5
+	},
+	icon: {
+		alignSelf:'flex-start'
 	},
 	title: {
 		flex:1,color:ColorConstant.GREY,
 		fontSize:hp(1.5),
 		fontWeight:'bold',
-		marginBottom:hp(1)
+		marginBottom:hp(1),
+		fontFamily:'Nunito-SemiBold'
 	},
 	address: {
-		width:'20%',
+		fontWeight:'700',
 		alignSelf:'flex-start',
 		marginHorizontal:hp(4),
 		marginTop:hp(1)
@@ -232,7 +213,7 @@ const styles = StyleSheet.create({
 	},
 	otherDetailText: {
 		color:ColorConstant.GREY,fontSize:hp(1.2),
-		marginBottom:hp(1)
+		marginBottom:hp(1),
 	}
 });
 
