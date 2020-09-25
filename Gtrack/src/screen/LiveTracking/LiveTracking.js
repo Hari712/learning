@@ -64,10 +64,7 @@ const LiveTracking = () => {
 
 			<View style={styles.subContainer}>
 
-				<TouchableOpacity onPress={() => {
-					setIsLineClick(false)
-					console.log("Pressed")
-				}} style={styles.bellIconStyle}>
+				<TouchableOpacity onPress={() =>  {navigation.navigate('Notification'), setIsLineClick(false)}} style={styles.bellIconStyle}>
 					<Image source={images.image.bluebell} />
 				</TouchableOpacity>
 
