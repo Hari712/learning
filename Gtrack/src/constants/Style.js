@@ -79,7 +79,7 @@ const GlobalStyles = StyleSheet.create({
     searchInput: {
         flex: 1,
         paddingLeft: hp(2),
-        fontFamily: 'Montserrat-Regular',
+        fontFamily: 'Nunito-Regular',
         color: ColorConstant.gray,
         fontSize: FontSize.FontSize.tow,
         height: hp(6),
