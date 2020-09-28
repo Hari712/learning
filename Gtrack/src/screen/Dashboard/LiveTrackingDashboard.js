@@ -59,10 +59,10 @@ const LiveTrackinDashboard = ({ navigation }) => {
                 <View style={styles.rightMainViewStyle}>
 
                     <TouchableOpacity onPress={() =>  NavigationService.navigate("LiveTracking") } >
-                        <Image source={images.image.dashboard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
+                        <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
                     </TouchableOpacity>
 
-                    <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+                    <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
                 </View>
 
             </View>
@@ -75,9 +75,9 @@ const LiveTrackinDashboard = ({ navigation }) => {
                     <View style={{ height: hp(3), backgroundColor: ColorConstant.WHITE, marginTop: hp(3), borderRadius: 13, justifyContent: 'center' }}>
                         
                         <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingHorizontal: wp(3)  }}>
-                            <Image source={images.image.dashboard.leftIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} />
+                            <Image source={images.dashBoard.leftIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} />
                                 <Text style={{color: ColorConstant.BROWN, fontSize: hp(1.4)}}> TrackPort International </Text>
-                            <Image source={images.image.dashboard.rightIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} />
+                            <Image source={images.dashBoard.rightIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} />
                         </View>
 
                     </View>

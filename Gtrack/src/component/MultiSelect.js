@@ -45,7 +45,7 @@ class MultiSelect extends React.Component {
                         label={label}
                         tintColor={ColorConstant.GREY}
                         fontSize={FontSize.FontSize.small}
-                        labelTextStyle={{ fontFamily: 'Montserrat-Regular' }}
+                        labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
                         labelFontSize={FontSize.FontSize.small}
                         contentInset={{ input: 10.45, label: 1.4 }}
                         renderRightAccessory={() => handleRightAccessory()}

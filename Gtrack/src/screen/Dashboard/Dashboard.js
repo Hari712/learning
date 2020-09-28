@@ -123,10 +123,10 @@ const Dashboard = ({ navigation }) => {
             <Text style={styles.devicesTextStyle}>No. of devices: 10</Text>
 
             <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
-              <Image source={images.image.dashboard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
+              <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <Image source={images.image.dashboard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
+            <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
 
         </View>
@@ -175,13 +175,13 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
         </View>
 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
-            <Image source={images.image.dashboard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
+            <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
             <Text style={{ marginLeft: wp(1), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE }}>30</Text>
             <Text style={{ marginLeft: wp(3), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE }}>Alerts</Text>
           </View>
@@ -215,13 +215,13 @@ const Dashboard = ({ navigation }) => {
 
           <View style={styles.rightMainViewStyle}>
             <Text style={styles.allUsersTextStyle}>All Users</Text>
-            <Image source={images.image.dashboard.next} style={styles.nextImageStyle} resizeMode='contain' />
+            <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
 
             <TouchableOpacity onPress={() => { navigation.navigate('Users') }} >
-              <Image source={images.image.dashboard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
+              <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <Image source={images.image.dashboard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
 
         </View>
@@ -427,19 +427,19 @@ const DeviceSummaryData = [
     title: 'TrackPort International',
     subtitle: 'Home',
     state: 'Active',
-    icon: images.image.dashboard.carIcon
+    icon: images.dashBoard.carIcon
   },
   {
     title: 'TrackPort 4G Vehicle GPS Tracker',
     subtitle: 'Fedex Ground',
     state: 'Inactive',
-    icon: images.image.dashboard.truckIcon
+    icon: images.dashBoard.truckIcon
   },
   {
     title: 'Spark Nano 7 GPS Tracker',
     subtitle: 'Industrial',
     state: 'Active',
-    icon: images.image.dashboard.carIcon
+    icon: images.dashBoard.carIcon
   },
 ]
 

@@ -28,7 +28,17 @@ const images = {
     dashBoard: {
         calender: require('../../assets/images/DashBoard/calendar.png'),
         list: require('../../assets/images/DashBoard/list.png'),
-        pin: require('../../assets/images/DashBoard/pin.png')
+        pin: require('../../assets/images/DashBoard/pin.png'),
+        next: require('../../assets/images/DashBoard/next.png'),
+        refresh: require('../../assets/images/DashBoard/refresh.png'),
+        fullScreen: require('../../assets/images/DashBoard/fullscreen.png'),
+        SettingIcon: require('../../assets/images/DashBoard/SettingIcon.png'),
+        carIcon: require('../../assets/images/DashBoard/car.png'),
+        truckIcon: require('../../assets/images/DashBoard/Truck.png'),
+        bell: require('../../assets/images/DashBoard/bell.png'),
+        leftIcon: require('../../assets/images/DashBoard/Left.png'),
+        rightIcon: require('../../assets/images/DashBoard/Right.png')
+        
     },
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
@@ -101,17 +111,17 @@ const images = {
         },
 
         //Dashboard
-        dashboard: {
-            next: require('../../assets/images/Dashboard/next.png'),
-            refresh: require('../../assets/images/Dashboard/refresh.png'),
-            fullScreen: require('../../assets/images/Dashboard/fullscreen.png'),
-            SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png'),
-            carIcon: require('../../assets/images/Dashboard/car.png'),
-            truckIcon: require('../../assets/images/Dashboard/Truck.png'),
-            bell: require('../../assets/images/Dashboard/bell.png'),
-            leftIcon: require('../../assets/images/Dashboard/Left.png'),
-            rightIcon: require('../../assets/images/Dashboard/Right.png')
-        }
+        // dashboard: {
+        //     next: require('../../assets/images/Dashboard/next.png'),
+        //     refresh: require('../../assets/images/Dashboard/refresh.png'),
+        //     fullScreen: require('../../assets/images/Dashboard/fullscreen.png'),
+        //     SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png'),
+        //     carIcon: require('../../assets/images/Dashboard/car.png'),
+        //     truckIcon: require('../../assets/images/Dashboard/Truck.png'),
+        //     bell: require('../../assets/images/Dashboard/bell.png'),
+        //     leftIcon: require('../../assets/images/Dashboard/Left.png'),
+        //     rightIcon: require('../../assets/images/Dashboard/Right.png')
+        // }
     }
 }
 
