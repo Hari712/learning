@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Platform } from 'react
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { navigationRef } from '../../navigation/NavigationService';
 
 const isAndroid = Platform.OS === 'android'
 
@@ -11,7 +12,7 @@ const Map = Platform.select({
 	android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const LiveTracking = () => {
+const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)
 
@@ -91,6 +92,7 @@ const LiveTracking = () => {
 					: null}
 
 				<TouchableOpacity onPress={() => {
+					navigation.navigate('TrackingDetails')
 					setIsLineClick(false)
 					console.log("Line Icon Pressed")
 				}} style={[styles.lineIconStyle, { backgroundColor: ColorConstant.BLUE }]}>
