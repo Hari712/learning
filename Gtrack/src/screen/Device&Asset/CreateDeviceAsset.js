@@ -8,6 +8,7 @@ import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import MultiSelect from '../../component/MultiSelect';
+import { color } from 'react-native-reanimated';
 
 const devicesList = [
     'TrackPort International', 
@@ -31,7 +32,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
     }, [group])
  
     const Group = () => (
-        <ScrollView contentContainerStyle={{height: Dimensions.get('window').height}}>
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
             <View style={styles.container}>
 
             <View style={styles.scene} >
@@ -39,19 +40,19 @@ const CreateDeviceAsset = ({route, navigation}) => {
             </View>
 
             {detailsToggle?
-                <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',paddingHorizontal:'7.5%'}}>
+                <View style={styles.detailsToggle}>
                     <MultiSelect label='Select Device' allText='Select All' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} />                   
                 </View>
             :null}  
 
             <View style={styles.scene} >
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                    <TouchableOpacity style={styles.buttonStyle}>
+                        <Text style={styles.cancelText}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={{borderRadius:6,backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}> {detailsToggle ? 'Save' : 'Next'} </Text>
+                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={[styles.buttonStyle,{backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,borderColor:ColorConstant.GREY}]}>
+                        <Text style={styles.saveText}> {detailsToggle ? 'Save' : 'Next'} </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -66,19 +67,19 @@ const CreateDeviceAsset = ({route, navigation}) => {
 
                 <TextField valueSet={setValue} defaultValue={value} label='Name*' /> 
 
-                <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} /> 
+                <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} /> 
 
-                <TextField valueSet={setDescrption} defaultValue={description} label='Description (Optional)'  multiline={true} outerStyle={{marginTop:hp(3)}} />
+                <TextField valueSet={setDescrption} defaultValue={description} label='Description (Optional)'  multiline={true} outerStyle={styles.outerStyle} />
 
-                <DropDown defaultValue={device} label='Select Device' valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={{marginTop:hp(3)}} />
+                <DropDown defaultValue={device} label='Select Device' valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} />
                 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={{borderRadius:6,borderWidth:1,borderColor:ColorConstant.BLUE,backgroundColor:ColorConstant.WHITE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                    <TouchableOpacity style={styles.buttonStyle}>
+                        <Text style={styles.cancelText}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity  style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
+                    <TouchableOpacity  style={[styles.buttonStyle,{backgroundColor:ColorConstant.BLUE}]}>
+                        <Text style={styles.saveText}>Save</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -152,6 +153,9 @@ return(
 
 }
 const styles = StyleSheet.create({
+    contentContainerStyle: {
+        height: Dimensions.get('window').height  
+    },    
     container:{
         width:Dimensions.get('window').width,
         alignItems:'center'
@@ -163,7 +167,13 @@ const styles = StyleSheet.create({
         marginHorizontal:hp(5),
         //marginVertical:hp(1),
         marginTop:hp(5)
-      },	
+      },
+        detailsToggle: {
+            backgroundColor:ColorConstant.PINK,
+            paddingVertical:10,
+            width:'100%',
+            paddingHorizontal:'7.5%'
+        },	
       buttonContainer: {
         flexDirection:'row',
         justifyContent:'space-evenly',
@@ -172,6 +182,27 @@ const styles = StyleSheet.create({
         marginTop:hp(3),
         alignItems:'center'
     },
+      buttonStyle: {
+        borderRadius:6,
+        borderWidth:1,
+        borderColor:ColorConstant.BLUE,
+        backgroundColor:ColorConstant.WHITE,
+        width:'42%',
+        height:hp(6),
+        justifyContent:'center'
+     },
+     cancelText: {
+        textAlign:'center',
+        color:ColorConstant.BLUE
+     },
+     saveText: {
+        textAlign:'center',
+        color:ColorConstant.WHITE
+     },
+     outerStyle: {
+        marginTop:hp(3)
+     },
+     
 });
 
 export default CreateDeviceAsset

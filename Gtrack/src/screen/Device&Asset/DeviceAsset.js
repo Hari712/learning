@@ -39,7 +39,10 @@ return (
 <View>
 <ScrollView style={{height:"100%"}} onTouchStart={()=>setMenuClick(false)}>
   {DATA.map((item,key) =>
-    <View style={styles.cardContainer} key={key}>
+    <TouchableOpacity onPress={()=>
+      { 
+      navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
+      } style={styles.cardContainer} key={key}>
       {/* Blue top head */}
       <View style={{backgroundColor:ColorConstant.BLUE,flexDirection:'row',width:"100%",borderTopLeftRadius:15,borderTopRightRadius:15,paddingHorizontal:hp(3)}}>
         <View style={{ alignContent:'space-between',marginVertical:hp(0.5),}}>
@@ -58,18 +61,18 @@ return (
           </Tooltip>
         </View>
 
-        <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-between', alignItems:'center'}}>
+        <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-evenly', alignItems:'center'}}>
          <TouchableOpacity onPress={()=> 
           {
             navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
           <Image source={images.image.edit}/>
         </TouchableOpacity>
-          <TouchableOpacity onPress={()=>
+          {/* <TouchableOpacity onPress={()=>
             { 
             navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
             } >
             <Image source={images.image.cardExpand}/>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
 
@@ -88,7 +91,7 @@ return (
           <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.date}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
     
   )}
 

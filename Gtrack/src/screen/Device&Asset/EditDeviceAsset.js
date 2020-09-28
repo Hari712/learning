@@ -40,6 +40,12 @@ const EditDeviceAsset = ({route, navigation}) => {
         });
       }, [navigation]);
 
+     const clear = () => {
+        setType('')
+        setGroup('')
+        setValue('')
+     }
+
   return (
     <View style={{height:Dimensions.get('window').height,backgroundColor:ColorConstant.WHITE,alignItems:'center'}}>
         <View style={{marginHorizontal:hp(3),marginVertical:hp(5),width:Dimensions.get('window').width-40}}>
@@ -84,8 +90,8 @@ const EditDeviceAsset = ({route, navigation}) => {
             <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Cancel</Text>
+                    <TouchableOpacity onPress={()=> clear()} style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Clear</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'42%',height:hp(6),justifyContent:'center'}}>

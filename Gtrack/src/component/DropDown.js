@@ -48,9 +48,9 @@ class DropDown extends React.Component {
                         label={label}
                         tintColor={ColorConstant.GREY}
                         fontSize={FontSize.FontSize.small}
-                        labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
+                        //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
                         labelFontSize={FontSize.FontSize.small}
-                        contentInset={{ input: 10.45, label: 1.4 }}
+                        contentInset={{ input: 10.45, label: 3 }}
                         //defaultValue={this.state.selected}
                         renderRightAccessory={() => handleRightAccessory()}
                         editable={false}
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     container: {
         marginVertical:hp(1),
         justifyContent: 'center', 
+        //backgroundColor:'red'
        
     },
     downArrow: {               
