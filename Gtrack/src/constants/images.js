@@ -98,6 +98,19 @@ const images = {
             editIcon: require('../../assets/images/Settings/EditIcon.png'),
             upArrow: require('../../assets/images/Settings/upArrow.png'),
             trash: require('../../assets/images/Settings/trash.png')
+        },
+
+        //Dashboard
+        dashboard: {
+            next: require('../../assets/images/Dashboard/next.png'),
+            refresh: require('../../assets/images/Dashboard/refresh.png'),
+            fullScreen: require('../../assets/images/Dashboard/fullscreen.png'),
+            SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png'),
+            carIcon: require('../../assets/images/Dashboard/car.png'),
+            truckIcon: require('../../assets/images/Dashboard/Truck.png'),
+            bell: require('../../assets/images/Dashboard/bell.png'),
+            leftIcon: require('../../assets/images/Dashboard/Left.png'),
+            rightIcon: require('../../assets/images/Dashboard/Right.png')
         }
     }
 }

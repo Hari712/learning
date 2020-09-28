@@ -58,20 +58,20 @@ const Settings = ({ navigation }) => {
             onPress={() => onPressHandle({ navigation, item })}
             activeOpacity={0.8}>
 
-            <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between'}}>
+            <View style={styles.mainViewStyle}>
 
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: wp(3), paddingBottom: hp(3)}}>
-                <Image source={item.icon} style={{ height: hp(2), width: hp(2), }} resizeMode='contain' />
+              <View style={styles.leftMainViewStyle}>
+                <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' />
                 <Text style={styles.titleTextStyle}>{item.title}</Text>
               </View>
 
-              <View style={{ paddingHorizontal: wp(3), paddingBottom: hp(3) }}>
+              <View style={styles.rightMainViewStyle}>
                 <Image source={item.nextArrow} style={{ }} resizeMode='contain' />
               </View>
 
             </View>
            
-            <View style={{ borderBottomColor: '#e3e3e3', borderBottomWidth: 1 }} />
+            <View style={styles.lineStyle} />
 
           </TouchableOpacity>
          
@@ -113,13 +113,45 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
+  mainViewStyle: {
+    alignItems: 'center', 
+    flexDirection: 'row', 
+    justifyContent: 'space-between'
+  },
+
+  leftMainViewStyle: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    paddingHorizontal: wp(3), 
+    paddingBottom: hp(3)
+  },
+
+  titleIconStyle: {
+    height: hp(2), 
+    width: hp(2),
+  },
+
+  rightMainViewStyle: {
+    paddingHorizontal: wp(3), 
+    paddingBottom: hp(3)
+  },
+
+  lineStyle: {
+    borderBottomColor: '#e3e3e3', 
+    borderBottomWidth: 1 
+  },
+
   titleTextStyle: {
-    fontSize: FontSize.FontSize.medium, color: ColorConstant.BLUE,
+    fontSize: FontSize.FontSize.medium, 
+    color: ColorConstant.BLUE,
     paddingLeft: wp(3)
   },
 
   rightTextStyle: {
-    fontSize: FontSize.FontSize.small, color: ColorConstant.BLUE, paddingRight: hp(0.8), fontStyle: 'italic'
+    fontSize: FontSize.FontSize.small, 
+    color: ColorConstant.BLUE, 
+    paddingRight: hp(0.8), 
+    fontStyle: 'italic'
   },
 });
 
