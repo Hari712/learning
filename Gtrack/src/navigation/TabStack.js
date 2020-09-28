@@ -24,8 +24,6 @@ import CreateDeviceAsset from '../screen/Device&Asset/CreateDeviceAsset';
 import Manage from '../screen/Device&Asset/Manage';
 import AddUser from '../screen/Users/AddUser';
 import EditProfile from '../screen/Settings/Profile/EditProfile';
-import Notification from '../screen/Notification/Notification';
-
 
 const Tab = createBottomTabNavigator();
 
@@ -55,8 +53,7 @@ const LiveTrackingStackNavigator = () => {
     return(
     <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='none' headerMode="screen" screenOptions={ScreenOptions} >
         <LiveTrackingStack.Screen name='LiveTracking' component={LiveTracking} />
-        <LiveTrackingStack.Screen name="Notification" component={Notification} />
-    </LiveTrackingStack.Navigator>p
+    </LiveTrackingStack.Navigator>
     )
 }
 
