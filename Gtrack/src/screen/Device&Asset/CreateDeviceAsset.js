@@ -8,7 +8,6 @@ import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import MultiSelect from '../../component/MultiSelect';
-import { color } from 'react-native-reanimated';
 
 const devicesList = [
     'TrackPort International', 

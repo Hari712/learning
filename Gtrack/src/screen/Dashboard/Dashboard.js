@@ -50,8 +50,8 @@ const Dashboard = ({ navigation }) => {
                 {
                   (fill) => (
                     <View style={{ alignItems: 'center' }} >
-                      <Text style={{ fontSize: FontSize.FontSize.regular, fontWeight: 'bold' }}> 40% </Text>
-                      <Text style={{ fontSize: hp(1.4), color: ColorConstant.GREY, marginTop: hp(0.5) }}>Active</Text>
+                      <Text style={styles.percentage}> 40% </Text>
+                      <Text style={styles.textStyle}>Active</Text>
                     </View>
 
                   )
@@ -89,8 +89,8 @@ const Dashboard = ({ navigation }) => {
                 {
                   (fill) => (
                     <View style={{ alignItems: 'center' }} >
-                      <Text style={{ fontSize: FontSize.FontSize.regular, fontWeight: 'bold' }}> 75% </Text>
-                      <Text style={{ fontSize: hp(1.4), color: ColorConstant.GREY, marginTop: hp(0.5) }}>Active</Text>
+                      <Text style={styles.percentage}> 75% </Text>
+                      <Text style={styles.textStyle}>Active</Text>
                     </View>
 
                   )
@@ -116,7 +116,7 @@ const Dashboard = ({ navigation }) => {
         <View style={styles.deviceSummaryMainViewStyle}>
 
           <View style={styles.leftMainViewStyle}>
-            <Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>Device Summary</Text>
+            <Text style={styles.summary}>Device Summary</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
@@ -134,18 +134,18 @@ const Dashboard = ({ navigation }) => {
         {DeviceSummaryData.map((item, key) =>
 
           <ShadowView style={styles.summaryContainer}>
-            <View style={{ flexDirection: 'row', flex: 1 }}>
+            <View style={styles.subContainer}>
 
               <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
                 <View style={{ flex: 0.25 }}>
                   <View style={styles.deviceSummaryDetailView}>
-                    <Image source={item.icon} style={{ height: hp(3.5), width: hp(3.5) }} resizeMode='contain' />
+                    <Image source={item.icon} style={styles.image} resizeMode='contain' />
                   </View>
                 </View>
 
-                <View style={{ paddingHorizontal: '3%', marginTop: hp(1), flex: 0.75 }}>
-                  <Text style={{ color: ColorConstant.BLACK, fontSize: hp(1.4), fontWeight: '500' }}>{item.title}</Text>
-                  <Text style={{ color: ColorConstant.GREY, fontSize: hp(1.4), marginTop: hp(1) }}>{item.subtitle}</Text>
+                <View style={styles.titleText}>
+                  <Text style={styles.title}>{item.title}</Text>
+                  <Text style={styles.subtitle }>{item.subtitle}</Text>
                 </View>
 
               </View>
@@ -171,7 +171,7 @@ const Dashboard = ({ navigation }) => {
 
         <View style={styles.deviceSummaryMainViewStyle}>
           <View style={styles.leftMainViewStyle}>
-            <Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>Recent Alarms</Text>
+            <Text style={styles.summary}>Recent Alarms</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
@@ -182,8 +182,8 @@ const Dashboard = ({ navigation }) => {
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
             <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
-            <Text style={{ marginLeft: wp(1), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE }}>30</Text>
-            <Text style={{ marginLeft: wp(3), fontWeight: 'bold', fontSize: hp(1.4), color: ColorConstant.BLUE }}>Alerts</Text>
+            <Text style={[styles.alertText,{marginLeft: wp(1)}]}>30</Text>
+            <Text style={styles.alertText }>Alerts</Text>
           </View>
 
           <ActivityRings data={activityData} config={activityConfig} />
@@ -257,12 +257,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(5),
     paddingBottom: hp(3)
   },
-
+  summary: {
+    fontSize: hp(1.4), 
+    fontWeight: 'bold', 
+    color: ColorConstant.BLACK
+  },
+  percentage: {
+    fontSize: FontSize.FontSize.regular, 
+    fontWeight: 'bold'
+  },
+  textStyle: {
+    fontSize: hp(1.4), 
+    color: ColorConstant.GREY, 
+    marginTop: hp(0.5)    
+  },
   rightMainViewStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: wp(6),
     paddingBottom: hp(3)
+  },
+  alertText: {
+    marginLeft: wp(3), 
+    fontWeight: 'bold', 
+    fontSize: hp(1.4), 
+    color: ColorConstant.BLUE
   },
 
   allUsersTextStyle: {
@@ -393,6 +412,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: '3%',
     marginHorizontal: '4%'
   },
+  subContainer: {
+    flexDirection: 'row', 
+    flex: 1
+  },
 
   deviceSummaryDetailView: {
     width: hp(6),
@@ -401,6 +424,25 @@ const styles = StyleSheet.create({
     borderRadius: hp(8),
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  titleText: {
+    paddingHorizontal: '3%', 
+    marginTop: hp(1), 
+    flex: 0.75
+  },
+  title: {
+    color: ColorConstant.BLACK, 
+    fontSize: hp(1.4), 
+    fontWeight: '500'
+  },
+  subtitle: {
+    color: ColorConstant.GREY, 
+    fontSize: hp(1.4), 
+    marginTop: hp(1)
+  },
+  image: {
+    height: hp(3.5), 
+    width: hp(3.5)
   },
 
   stateViewStyle: {

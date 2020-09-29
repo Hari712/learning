@@ -10,7 +10,6 @@ import Tooltip from 'rn-tooltip';
 const DeviceAsset = ({navigation}) => {
 
   const [menuClick,setMenuClick] = useState(false)
-  const [carClick, setCarClick] = useState(false)
 
   React.useLayoutEffect(() => {
 
@@ -18,7 +17,7 @@ const DeviceAsset = ({navigation}) => {
       headerLeft:()=>(null),
       headerRight:()=> (
           <TouchableOpacity activeOpacity={1} onPress={()=>setMenuClick(!menuClick)}>
-            <Image source={menuClick?images.image.menuclick:images.image.menu} style={{marginRight:wp(5), height:hp(3),width:wp(3), resizeMode:'contain'}} />
+            <Image source={menuClick?images.image.menuclick:images.image.menu} style={styles.headerRight} />
           </TouchableOpacity>
       )
     });
@@ -43,25 +42,26 @@ return (
       { 
       navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
       } style={styles.cardContainer} key={key}>
+        
       {/* Blue top head */}
-      <View style={{backgroundColor:ColorConstant.BLUE,flexDirection:'row',width:"100%",borderTopLeftRadius:15,borderTopRightRadius:15,paddingHorizontal:hp(3)}}>
-        <View style={{ alignContent:'space-between',marginVertical:hp(0.5),}}>
-          <Text style={{color:ColorConstant.WHITE,fontSize:FontSize.FontSize.small}}>{item.title}</Text>
-          <Text style={{color:ColorConstant.ORANGE,fontSize:FontSize.FontSize.extraSmall}}>{item.id}</Text>
+      <View style={styles.blueConatiner}>
+        <View style={styles.blueTopHead}>
+          <Text style={styles.headerTitle}>{item.title}</Text>
+          <Text style={styles.id}>{item.id}</Text>
         </View>
-        <View style={{marginTop:hp(1),left:10}}>
+        <View style={styles.toolTip}>
           <Tooltip
-            popover={<Text style={{alignSelf:'flex-start', fontSize:FontSize.FontSize.medium}}>{item.desc}</Text>} 
+            popover={<Text style={styles.toolTipText}>{item.desc}</Text>} 
             backgroundColor={ColorConstant.WHITE}
             overlayColor={ColorConstant.TRANSPARENT}
-            pointerStyle={{elevation:0.1, top:3, borderBottomWidth:12,}}
-            containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
+            pointerStyle={styles.pointerStyle}
+            containerStyle={styles.toolTipContainer}
           >
-            {item.image?<Image style={{height:hp(1.5), resizeMode:'contain' }} source={item.image}/>:null}
+            {item.image?<Image style={styles.image} source={item.image}/>:null}
           </Tooltip>
         </View>
 
-        <View style={{flexDirection:'row', position:'absolute', right:20,height:hp(5),width:wp(10),justifyContent:'space-evenly', alignItems:'center'}}>
+        <View style={styles.editButton}>
          <TouchableOpacity onPress={()=> 
           {
             navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
@@ -77,18 +77,18 @@ return (
       </View>
 
       {/* White Body container */}
-      <View style={{flexDirection:'row',marginTop:hp(1.5),paddingHorizontal:hp(2.5),paddingBottom:hp(1.5)}}>
-        <View style={{flexDirection:'column',width:'35%'}} >
-          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Group</Text>
-          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.group}</Text>              
+      <View style={styles.whiteBodyContainer}>
+        <View style={styles.column} >
+          <Text style={styles.whiteBodyText}>Group</Text>
+          <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.group}</Text>              
         </View>
-        <View style={{flexDirection:'column',width:'40%'}} >
-          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Selected Plan</Text>
-          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.plan} {item.duration?<Text style={{color:ColorConstant.GREY}}>({item.duration})</Text>:null}</Text>             
+        <View style={[styles.column,{width:'40%'}]} >
+          <Text style={styles.whiteBodyText}>Selected Plan</Text>
+          <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.plan} {item.duration?<Text style={{color:ColorConstant.GREY}}>({item.duration})</Text>:null}</Text>             
         </View>
-        <View style={{flexDirection:'column',width:'25%'}}>
-          <Text style={{color:ColorConstant.GREY,fontSize:FontSize.FontSize.small}}>Plan Expiry</Text>
-          <Text style={{color:ColorConstant.BLACK,fontSize:FontSize.FontSize.small}}>{item.date}</Text>
+        <View style={[styles.column,{width:'25%'}]}>
+          <Text style={styles.whiteBodyText}>Plan Expiry</Text>
+          <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.date}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -169,7 +169,66 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
     shadowOffset: { width: 0, height: 0 },
-},
+  },
+  blueConatiner: {
+    backgroundColor:ColorConstant.BLUE,
+    flexDirection:'row',
+    width:"100%",
+    borderTopLeftRadius:15,
+    borderTopRightRadius:15,
+    paddingHorizontal:hp(3)
+  },
+  blueTopHead: {
+    alignContent:'space-between',
+    marginVertical:hp(0.5)
+  },
+  editButton: {
+    flexDirection:'row', 
+    position:'absolute', 
+    right:20,
+    height:hp(5),
+    width:wp(10),
+    zIndex:10,  
+    justifyContent:'space-evenly', 
+    alignItems:'center'
+  },
+  headerTitle: {
+    color:ColorConstant.WHITE,
+    fontSize:FontSize.FontSize.small
+  },
+  toolTipText: {
+    alignSelf:'flex-start', 
+    fontSize:FontSize.FontSize.medium
+  },
+  pointerStyle: {
+    elevation:0.1, 
+    top:3, 
+    borderBottomWidth:12,
+  },
+  toolTipContainer: {
+    borderColor:ColorConstant.ORANGE, 
+    borderWidth:1, 
+    borderRadius:6
+  },
+  image: {
+    height:hp(1.5), 
+    resizeMode:'contain'
+  },
+  id:{
+    color:ColorConstant.ORANGE,
+    fontSize:FontSize.FontSize.extraSmall
+  },
+  headerRight: {
+    marginRight:wp(5), 
+    height:hp(3),
+    width:wp(3), 
+    resizeMode:'contain'
+  },
+  toolTip:{
+    marginTop:hp(1),
+    left:10
+  },
+
 menuPopup:{
   backgroundColor:'white',
   padding:5,
@@ -192,9 +251,20 @@ textStyle:{
   textAlignVertical:'center',
   paddingLeft:hp(0.5)
 },
-horizontalLine:{
-  borderBottomWidth:0.5,borderBottomColor:ColorConstant.GREY,margin:hp(0.7)
+whiteBodyContainer: {
+  flexDirection:'row',
+  marginTop:hp(1.5),
+  paddingHorizontal:hp(2.5),
+  paddingBottom:hp(1.5)
 },
+whiteBodyText: {
+  color:ColorConstant.GREY,
+  fontSize:FontSize.FontSize.small
+},
+column: {
+  flexDirection:'column',width:'35%'
+}
+
 });
 
 

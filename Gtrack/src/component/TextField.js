@@ -29,6 +29,7 @@ class TextField extends React.Component {
         console.log("khushi",this.state.textValue)
     }
 
+
     render() {
     
         const {label, innerRef, outerStyle, multiline, onChangeText, ...otherProps} = this.props;
@@ -39,7 +40,7 @@ class TextField extends React.Component {
             return text
         }
         return(
-           
+        
             <OutlinedTextField
                 label={label}
                 textColor={ColorConstant.BLACK}

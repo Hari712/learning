@@ -27,7 +27,8 @@ class DropDown extends React.Component {
 
     render() {
     
-        const {label, dataList, innerRef, outerStyle, dropdownStyle,...otherProps} = this.props;
+        //isRelative will set the dropdown view absolute or relative ie over other components or expanding other component
+        const {label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, ...otherProps} = this.props;
 
         const data = ['Car','Truck','Tempo'];        
 
@@ -43,7 +44,12 @@ class DropDown extends React.Component {
 
         return(
             <>
-                <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
+                <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}  
+                    onLayout={({nativeEvent}) => {
+                        console.log("Sub container ",nativeEvent.layout)
+                        this.setState({buttonMeasurement:nativeEvent.layout})
+                        //setSubContainerHeight(nativeEvent.layout.height)
+                    }}>
                     <OutlinedTextField
                         label={label}
                         tintColor={ColorConstant.GREY}
@@ -58,14 +64,16 @@ class DropDown extends React.Component {
                         activeLineWidth={1}
                         containerStyle={styles.inputButton}
                         {...otherProps}
-                    />
-                   
+                    />                   
                 </TouchableOpacity>
                 {/* </View> */}
 
 
                 { this.state.isSelected ?
-                    <View style={[styles.dropdown,dropdownStyle]}>
+                    <View style={[isRelative ? 
+                        styles.relativeDropdown: 
+                        [styles.absoluteDropdown,{top:this.state.buttonMeasurement.y + this.state.buttonMeasurement.height}]
+                    , dropdownStyle]}>
                         {(dataList?dataList:data).map((item,key)=>{
                             return(
                             <TouchableOpacity style={otherProps.dataRowStyle} key={key} onPress={()=>{
@@ -92,14 +100,11 @@ const styles = StyleSheet.create({
         marginVertical:hp(1),
         justifyContent: 'center', 
         //backgroundColor:'red'
-       
     },
-    downArrow: {               
-       // alignSelf:'center'
-       marginVertical:hp(1),
+    downArrow: {
+        marginVertical:hp(1),
     },
-    dropdown: { 
-       // position:'absolute',
+    relativeDropdown: {       
         marginTop:hp(0.5), 
         borderRadius:hp(2),
         opacity:1, 
@@ -113,6 +118,23 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: ColorConstant.GREY,
     },
+    absoluteDropdown: { 
+        position:'absolute',        
+        marginTop:hp(0.5), 
+        borderRadius:hp(2),
+        opacity:1, 
+        marginHorizontal:wp(10),
+        alignSelf:'center',  
+        elevation:5, 
+        zIndex:5,
+        backgroundColor:'white', 
+        width:'100%',
+        paddingHorizontal:hp(3),
+        paddingLeft:hp(3),
+        borderWidth: 1,
+        borderColor: ColorConstant.GREY,
+    },
+
     inputContainer: {
         height: hp(6), 
     },

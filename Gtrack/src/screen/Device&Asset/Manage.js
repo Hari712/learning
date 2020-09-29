@@ -8,37 +8,36 @@ import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import ExapandableListView from '../../component/ExpandableListView';
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
-import { ConfirmDialog } from 'react-native-simple-dialogs';
+import Dialog from '../../component/Dialog';
 
 
 const CONTENT = [
     {
-      id: 1, // required, id of item
-      categoryName: 'Home', // label of item expandable item
-      subCategory: [
-        // required, array containing inner objects
-        {
-          id: 3, // required, of inner object
-          name: 'TrackPort International 1', // required, label of inner object
-        },
-        {
-          id: 4,
-          name: 'TrackPort International 2',
-        },
-        {
-          id: 6,
-          name: 'TrackPort International 3',
-        },
-      ],
+        id: 1, // required, id of item
+        categoryName: 'Home', // label of item expandable item
+        subCategory: [
+            // required, array containing inner objects
+            {
+            id: 3, // required, of inner object
+            name: 'TrackPort International 1', // required, label of inner object
+            },
+            {
+            id: 4,
+            name: 'TrackPort International 2',
+            },
+            {
+            id: 6,
+            name: 'TrackPort International 3',
+            },
+        ],
     },
     {
-      id: 2,
-      categoryName: 'Fedex Ground',
-      subCategory: [{id: 22, name: '4G Magnetic GPS Tracker'}],
+        id: 2,
+        categoryName: 'Fedex Ground',
+        subCategory: [{id: 22, name: '4G Magnetic GPS Tracker'}],
     },
-  ];
+];
 
-   
 const Data = ['Trackport International','Trackport International1','Trackport International2']
 let asset = ['Chevrolet Captiva','My Dad\'s car','Ford','Tesla','Ford','Tesla']
 let assetData = asset
@@ -57,21 +56,16 @@ const Manage = ({route, navigation}) => {
     const [description, setDescrption] = useState();
 
 
-   
-    //const [searchValue, setSearchValue] = useState()
-   
     useEffect(()=>{
         group? null : setDetailsToggle(false)
     }, [group])
- 
+
     const Group = () => (
-        <View style={{flex:1, marginBottom:hp(3), maxHeight:Dimensions.get('window').height}}>
-            <ScrollView contentContainerStyle={[styles.container]}>
+        <View style={styles.groupConatiner}>
+            <ScrollView contentContainerStyle={styles.container}>
                 <ExapandableListView data={CONTENT} />
             </ScrollView>
-        
         </View>
-       
     );    
 
     const updateData = () => {   
@@ -86,20 +80,20 @@ const Manage = ({route, navigation}) => {
     
     const popUp = (item, key) => {        
         return(
-            <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',marginTop:hp(2)}}>
+            <View style={styles.popUp}>
                         
-                <TextField valueSet={setTempName} value={tempName} label='Name*' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
+                <TextField valueSet={setTempName} value={tempName} label='Name*' outerStyle={styles.outerStyle} /> 
                 
-                <DropDown label='Type*' defaultValue={type} valueSet={setType}  outerStyle={{width:'85%',alignSelf:'center',backgroundColor:ColorConstant.WHITE}} dropdownStyle={{width:'85%',alignSelf:'center'}} />
+                <DropDown label='Type*' defaultValue={type} valueSet={setType}  outerStyle={[styles.outerStyle,{alignSelf:'center'}]} dropdownStyle={styles.dropdownStyle} />
                 
-                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label='Description' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
+                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label='Description' outerStyle={styles.outerStyle} /> 
                 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={()=>setEditClick(-1)} style={{borderRadius:6,borderColor:ColorConstant.BLUE,borderWidth:1,backgroundColor:ColorConstant.WHITE,width:'30%',height:hp(6),justifyContent:'center'}}>
+                    <TouchableOpacity onPress={()=>setEditClick(-1)} style={styles.cancelButton}>
                         <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={updateData} style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'30%',height:hp(6),justifyContent:'center'}}>
+                    <TouchableOpacity onPress={updateData} style={styles.saveButton}>
                         <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
                     </TouchableOpacity>
                 </View>
@@ -135,32 +129,19 @@ const Manage = ({route, navigation}) => {
     
     const deleteConfirmDialog = () => {
         return(
-            <ConfirmDialog
-                title="Are you sure ?"
-                titleStyle={{color:ColorConstant.ORANGE, textAlign:'center',fontSize:FontSize.FontSize.regular,fontWeight:'bold'}}
+            <Dialog 
+                heading="Are you sure ?"
                 message={"Do you really want to delete asset?" + "\n \n" + "It will get detach from the current device."}
-                messageStyle={{color:ColorConstant.BLACK, textAlign:'center',fontSize:FontSize.FontSize.small}}
                 visible={dialogVisible}
-                //overlayStyle={{backgroundColor:'transparent'}}
-                buttonsStyle={{alignItems:'center',marginBottom:hp(3)}}
-                dialogStyle={{borderRadius:hp(2)}}
                 onTouchOutside={() => setDialogVisible(false)}
-                negativeButton={{
-                    title: "Cancel",
-                    onPress: () => setDialogVisible(false),
-                    titleStyle:{backgroundColor:ColorConstant.WHITE,borderRadius:4,borderWidth:1,borderColor:ColorConstant.BLUE, color:ColorConstant.BLUE,width:wp(30),marginRight:hp(2)}
-                }}
-                positiveButton={{
-                    title: "Okay",
-                    onPress: () => {
-                        setDialogVisible(false)
-                        asset = asset.filter( (item,key) => key != deleteVariable)
-                        assetData = asset;
-                    },
-                    titleStyle:{backgroundColor:ColorConstant.BLUE,borderRadius:4, color:ColorConstant.WHITE,width:wp(30),marginRight:hp(2)}
-                }} >
-                
-            </ConfirmDialog>
+                negativeHandle={() => setDialogVisible(false)}
+                positiveHandle={() => {
+                                setDialogVisible(false)
+                                asset = asset.filter( (item,key) => key != deleteVariable)
+                                assetData = asset;
+                            }
+                        }
+            />
         )
     }
 
@@ -175,24 +156,23 @@ const Manage = ({route, navigation}) => {
             {assetData.map((item,key)=>
             <View key={key} style={styles.container}>
                 <View style={styles.card}>
-                    <View style={{backgroundColor:(key==editClick)?ColorConstant.ORANGE:ColorConstant.BLUE,height:hp(6),width:wp(6),borderTopLeftRadius:12,borderBottomLeftRadius:12}} />
-                    <View key={key} style={{flexDirection:'row',paddingHorizontal:hp(2),alignItems:'center',width:'90%'}}>
-                        <Text style={{flex:1,color:(key==editClick)?ColorConstant.BLUE:ColorConstant.BLACK}}>{item}</Text> 
-                        <TouchableOpacity onPress={()=>{(key==editClick)?setEditClick(-1):
-                            setEditClick(key)
-                            setTempName(item)
-                            }} style={{marginRight:hp(2)}}>         
-                            <Image source={(key==editClick)?images.manage.editClick:images.manage.edit}/>
-                        </TouchableOpacity>  
-                        <TouchableOpacity onPress={()=>deleteAssetItem(item,key)} >   
-                            <Image source={images.manage.trashBlack}/>
-                        </TouchableOpacity> 
-                    </View>
+                    <View style={[styles.blueCard,{backgroundColor:(key==editClick)?ColorConstant.ORANGE:ColorConstant.BLUE}]} />
+                        <View key={key} style={styles.whiteCard}>
+                            <Text style={{flex:1,color:(key==editClick)?ColorConstant.BLUE:ColorConstant.BLACK}}>{item}</Text> 
+                            <TouchableOpacity onPress={()=>{(key==editClick)?setEditClick(-1):
+                                setEditClick(key)
+                                setTempName(item)
+                                }} style={{marginRight:hp(2)}}>         
+                                <Image source={(key==editClick)?images.manage.editClick:images.manage.edit}/>
+                            </TouchableOpacity>  
+                            <TouchableOpacity onPress={()=>deleteAssetItem(item,key)} >   
+                                <Image source={images.manage.trashBlack}/>
+                            </TouchableOpacity> 
+                        </View>
                 </View> 
                 {(key==editClick)?  
                     popUp(item,key)
-                     :null}
-                   
+                    :null}
             </View>
             )}
 
@@ -201,15 +181,12 @@ const Manage = ({route, navigation}) => {
         </View>
         </ScrollView>
         </View>
-       
+    
     );
-   
+
     const initialLayout = { width: Dimensions.get('window').width, height: Dimensions.get('window').height };
     
     const [index, setIndex] = useState(0);
-  
-    //const [value,setValue]= useState()  
-
     
     const [routes] = React.useState([
         { key: 'group', title: 'Group' },
@@ -275,19 +252,40 @@ const styles = StyleSheet.create({
         width:Dimensions.get('window').width,
         alignItems:'center'     
     },
-    scene: {
-        //flex: 1,
-        flexDirection:'row',
-        alignItems:'center',
-        //alignContent:'center',
+    groupConatiner: {
+        flex:1, 
+        marginBottom:hp(3), 
+        maxHeight:Dimensions.get('window').height
+    },
+    popUp: {
+        backgroundColor:ColorConstant.PINK,
+        paddingVertical:10,
+        width:'100%',
+        marginTop:hp(2)
+    },
+    outerStyle: {
         width:'85%',
-        //paddingHorizontal:hp(2),
-        //marginVertical:hp(0.5),
-        borderRadius:12,
-        borderWidth:0.5,
-        marginTop:hp(5),
-        height:hp(6)
-      },
+        backgroundColor:ColorConstant.WHITE
+    },  
+    dropdownStyle: {
+        width:'85%',
+        alignSelf:'center'
+    }, 
+    titleStyle: {
+        color:ColorConstant.ORANGE, 
+        textAlign:'center',
+        fontSize:FontSize.FontSize.regular,
+        fontWeight:'bold'
+    },
+    messageStyle: {
+        color:ColorConstant.BLACK, 
+        textAlign:'center',
+        fontSize:FontSize.FontSize.small
+    },
+    buttonsStyle: {
+        alignItems:'center',
+        marginBottom:hp(3)
+    },
       search: {
         paddingHorizontal:hp(2),
         flexDirection:'row',
@@ -325,7 +323,19 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOpacity: 1,
         backgroundColor:ColorConstant.WHITE
-      }	,
+      },
+      blueCard: {
+        height:hp(6),
+        width:wp(6),
+        borderTopLeftRadius:12,
+        borderBottomLeftRadius:12
+      },
+      whiteCard: {
+        flexDirection:'row',
+        paddingHorizontal:hp(2),
+        alignItems:'center',
+        width:'90%'
+      },
       buttonContainer: {
         flexDirection:'row',
         justifyContent:'space-evenly',
@@ -333,6 +343,22 @@ const styles = StyleSheet.create({
         //margin:hp(3),
         marginTop:hp(3),
         alignItems:'center'
+    },
+    cancelButton: {
+        borderRadius:6,
+        borderColor:ColorConstant.BLUE,
+        borderWidth:1,
+        backgroundColor:ColorConstant.WHITE,
+        width:'30%',
+        height:hp(6),
+        justifyContent:'center'
+    },
+    saveButton: {
+        borderRadius:6,
+        backgroundColor:ColorConstant.BLUE,
+        width:'30%',
+        height:hp(6),
+        justifyContent:'center'
     },
 });
 

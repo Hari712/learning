@@ -4,7 +4,6 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
-import CustomButton from '../../component/Button';
 
 const Details = ({route, navigation}) => {
     const { id, title, plan, group } = route.params;
