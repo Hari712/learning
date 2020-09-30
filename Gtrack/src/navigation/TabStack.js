@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, Text } from 'react-native'
+import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -158,8 +158,8 @@ export const TabStackNavigator = ({ }) => {
                     } 
                     // You can return any component that you like here!
                     return (
-                        <View style={{ justifyContent: 'center', alignItems: 'center',bottom:6}}>
-                            <Image source={iconName} resizeMode='contain' />
+                        <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+                            <Image source={iconName} resizeMode='contain' style={styles.tabIcon}/>
                             <Text style={{textAlign:'center',fontSize:FontSize.FontSize.extraSmall,color:color}}>{route.name}</Text>
                         </View>
                     )
@@ -167,7 +167,7 @@ export const TabStackNavigator = ({ }) => {
             })}
             tabBarOptions={{
                 keyboardHidesTabBar: true,
-                style: { paddingVertical:hp(2), height:hp(8), backgroundColor: ColorConstant.WHITE,},
+                style: {  backgroundColor: ColorConstant.WHITE,},
                 showLabel: false,
                 
             }}
@@ -183,3 +183,11 @@ export const TabStackNavigator = ({ }) => {
         </Tab.Navigator>
     )
 }
+
+const styles = StyleSheet.create({
+    tabIcon: {
+        height: hp(2.3),
+        width: hp(2.3),
+        marginBottom: hp(0.6)
+    }
+})
