@@ -1,4 +1,5 @@
 import React from 'react'
+import { StackActions } from '@react-navigation/native';
 
 export const navigationRef = React.createRef();
 
@@ -10,7 +11,32 @@ function replace(name, param){
     navigationRef.current && navigationRef.current.replace(name, param);
 }
 
+function push(name, params) {
+    navigationRef.current && navigationRef.current.dispatch(StackActions.push(name, params))
+}
+
+function goBack() {
+    navigationRef.current && navigationRef.current.goBack()
+}
+
+function pop() {
+    navigationRef.current && navigationRef.current.dispatch(StackActions.pop())
+}
+
+function popToTop() {
+    navigationRef.current && navigationRef.current.dispatch(StackActions.popToTop())
+}
+
+function getCurrentRouteName() {
+    return routeNameRef && routeNameRef.current ? routeNameRef.current : '' 
+}
+
 export default {
     navigate,
-    replace
+    replace,
+    push,
+    goBack,
+    pop,
+    popToTop,
+    getCurrentRouteName
 }
