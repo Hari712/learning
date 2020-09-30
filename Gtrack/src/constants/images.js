@@ -38,8 +38,21 @@ const images = {
         bell: require('../../assets/images/DashBoard/bell.png'),
         leftIcon: require('../../assets/images/DashBoard/Left.png'),
         rightIcon: require('../../assets/images/DashBoard/Right.png')
-        
     },
+
+    notification: {
+        crossIcon: require('../../assets/images/Notification/cross.png'),
+        speed: require('../../assets/images/Notification/speed.png'),
+        battery: require('../../assets/images/Notification/battery.png'),
+        car: require('../../assets/images/Notification/car.png'),
+        geoFence: require('../../assets/images/Notification/geoFence.png'),
+        engineStatus: require('../../assets/images/Notification/engineStatus.png'),
+        IgniteOn: require('../../assets/images/Notification/IgniteOn.png'),
+        Movement: require('../../assets/images/Notification/Truck.png'),
+        IgniteOff: require('../../assets/images/Notification/IgniteOff.png'),
+        panic: require('../../assets/images/Notification/Panic.png')
+    },
+    
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
