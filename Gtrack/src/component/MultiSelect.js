@@ -74,7 +74,7 @@ class MultiSelect extends React.Component {
                             }                    
                         } }>
                         <Image source={ selectedAll ? images.image.checkboxClick :images.image.checkbox} />
-                        <Text style={{color:ColorConstant.BLUE}}>{otherProps.allText? otherProps.allText : 'Select All'}</Text>
+                        <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:12}}>{otherProps.allText? otherProps.allText : 'Select All'}</Text>
                     </TouchableOpacity>
 
                     {/* Data Rows */}
@@ -90,7 +90,7 @@ class MultiSelect extends React.Component {
                                     }
                                 } }>
                                 <Image source={ selectedItem.includes(item) ? images.image.checkboxClick :images.image.checkbox} />
-                                <Text style={{color:ColorConstant.BLUE}}>{item}</Text>
+                                <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:12}}>{item}</Text>
                             </TouchableOpacity>
                         )
                     })}
@@ -100,7 +100,7 @@ class MultiSelect extends React.Component {
  
                 {/* Selected Devices or Item List */}
                  { this.state.isSelected && !otherProps.hideSelectedDeviceLable ?
-                <Text style={{color:ColorConstant.ORANGE,margin:hp(2)}}>
+                <Text style={{color:ColorConstant.ORANGE,margin:hp(2),fontFamily:'Nunito-SemiBold',fontSize:12}}>
                    Selected Device List
                 </Text>:null}
                  
@@ -109,7 +109,7 @@ class MultiSelect extends React.Component {
                     { Object.values(selectedItem).map((item,key)=>
                     <View style={{flexWrap:'wrap', flexShrink:1 }}>
                         <View style={[otherProps.selectedItemRowStyle]}>
-                            <Text style={{marginRight:hp(1),color:ColorConstant.ORANGE}} key={key}>{item}</Text>
+                            <Text style={[{marginRight:hp(1),color:ColorConstant.ORANGE},otherProps.textStyle]} key={key}>{item}</Text>
                             {otherProps.hideDeleteButton ?
                             <TouchableOpacity onPress={()=>otherProps.deleteHandle(item, key)} /*onPress={()=>{
                                 if (selectedItem.includes(item)) {

@@ -37,7 +37,8 @@ const Login = () => {
                     value={passcode}
                     onChangeText={(value) => setPasscode(value)}
                     placeholder='Passcode'
-                    passcode style={styles.passcodeText}
+                    style={styles.passcodeText}
+                    passcode 
                 />
 
                 <CustomButton 
@@ -78,7 +79,8 @@ const styles = StyleSheet.create({
     welcomeText: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.regular,
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
+        fontFamily:'Nunito-Bold',
         letterSpacing: wp(1),
         textAlign: 'center'
     },
@@ -86,6 +88,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
+        color:'red',
+        // fontSize: FontSize.FontSize.small,
+        // fontFamily:'Nunito-LightItalic',
         justifyContent: 'space-between',
     },    
     button: {
@@ -105,8 +110,8 @@ const styles = StyleSheet.create({
     resetText: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.small, 
-        fontWeight: '500',
-        marginTop: hp(3)
+        marginTop: hp(3),
+        fontFamily:'Nunito-SemiBold'
     },
 })
 

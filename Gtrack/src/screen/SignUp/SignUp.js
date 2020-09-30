@@ -19,13 +19,12 @@ const SignUp = () => {
             <View style={styles.container}>
                 <Image source={images.image.defaultlogo} style={styles.imageStyle} />
                 <View style={styles.textConatiner}>
-                    <Text style={[styles.textStyle, { fontSize: FontSize.FontSize.regular, fontWeight: 'bold', lineHeight: hp(5) }]}>Hello there,</Text>
-                    <Text style={styles.textStyle}>Enter your information below to </Text>
-                    <Text style={styles.textStyle}>create your account</Text>
+                    <Text style={[styles.textStyle, { fontSize: FontSize.FontSize.medium,fontFamily:'Nunito-Bold',  lineHeight: hp(5) }]}>Hello there,</Text>
+                    <Text style={styles.textStyle}>Enter your information below to{'\n'}create your account </Text>
                 </View>
 
                 <EditText placeholder='First Name' style={{ fontSize: FontSize.FontSize.small }} />
-                <EditText placeholder='Last Name' style={{ fontSize: FontSize.FontSize.small }} />
+                <EditText placeholder='Last Name' style={{ fontSize: FontSize.FontSize.small}} />
                 <EditText placeholder='Email Address' style={{ fontSize: FontSize.FontSize.small }} />
                 <EditText placeholder='Mobile Number' style={{ fontSize: FontSize.FontSize.small }} />
 
@@ -37,7 +36,7 @@ const SignUp = () => {
                         onClick={() => { setIsSelected(!isSelected) }}
                         isChecked={isSelected}
                     />
-                    <Text style={styles.termsConditionStyle}>Terms & Condtions</Text>
+                    <Text style={styles.termsConditionStyle}>Terms & Conditions</Text>
                 </View>
 
                 <CustomButton 
@@ -82,15 +81,17 @@ const styles = StyleSheet.create({
     textStyle: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.small,
+        fontFamily:'Nunito-Regular'
     },
     checkboxMainStyle: {
         flexDirection: 'row',
         width: wp(75),
         margin: hp(1.5),
+        alignItems:'center'
     },
     termsConditionStyle: {
         color: ColorConstant.WHITE,
-        fontWeight: 'bold',
+        fontFamily:'Nunito-Regular',
         fontSize: hp(2.2),
         marginLeft: wp(3)
     },
@@ -101,17 +102,21 @@ const styles = StyleSheet.create({
     },
     buttonTextStyle: {
         fontSize: FontSize.FontSize.medium, 
-        fontWeight: '500'
+        fontFamily:'Nunito-SemiBold'
     },
     bottomContainer: {
         flexDirection: 'row',
-        marginTop: hp(3)
+        marginTop: hp(3),
     },
     bottomText: {
         color: ColorConstant.WHITE,
+        fontFamily:'Nunito-Bold',
+        fontSize:FontSize.FontSize.medium
     },
     bottomBtn: {
         color: ColorConstant.ORANGE,
+        fontFamily:'Nunito-Bold',
+        fontSize:FontSize.FontSize.medium
     },
 })
 

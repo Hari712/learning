@@ -33,7 +33,7 @@ const ResetPasscode = () => {
                 />
 
                 <View style={styles.LoginIntoMainView}>
-                    <Text style={styles.LoginIntoTextView}>Login into Existing Account</Text>
+                    <Text style={styles.LoginIntoTextView}>Login into Existing Account   </Text>
                     <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
                         <Image source={images.image.login} />
                     </TouchableOpacity>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     headingTextStyle: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.medium,
-        fontWeight: 'bold',
+        fontFamily:'Nunito-Bold',
         textAlign: 'center'
     },
     emailTextStyle: {
@@ -87,8 +87,9 @@ const styles = StyleSheet.create({
     },
     LoginIntoTextView: {
         color: ColorConstant.WHITE, 
-        fontWeight: 'bold',
-        fontSize: FontSize.FontSize.medium
+        //fontWeight: 'bold',
+        fontSize: FontSize.FontSize.medium,
+        fontFamily:'Nunito-Bold'
     },
     subContainer: {
         flexDirection: 'row',

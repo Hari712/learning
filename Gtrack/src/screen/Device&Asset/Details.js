@@ -13,8 +13,8 @@ const Details = ({route, navigation}) => {
             headerTitle: () => (
                 <Text style={{
                     color:ColorConstant.GREY,
-                    fontSize: FontSize.FontSize.medium,
-                    fontWeight: '500',
+                    fontSize: 14,
+                    fontFamily:'Nunito-SemiBold',
                     textAlign:'center' }}>
                     Details of {title}
                 </Text>          
@@ -28,7 +28,7 @@ const Details = ({route, navigation}) => {
       }, [navigation]);
 
   return (
-<ScrollView>  
+<ScrollView contentContainerStyle={{height:Dimensions.get('screen').height}}>  
 <View style={styles.container}>
     <View style={styles.cardContainer}>     
         <View style={styles.headerDetail}>
@@ -40,15 +40,15 @@ const Details = ({route, navigation}) => {
         <View style={styles.details}>
             <View style={styles.detailsSubView} >
                 <Text style={styles.textStyle}>ID</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>{id}</Text>              
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>{id}</Text>              
             </View>
             <View style={[styles.detailsSubView,{flex:2.5}]} >
                 <Text style={styles.textStyle}>Name</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>{title}</Text>         
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>{title}</Text>         
             </View>
             <View style={[styles.detailsSubView,{flex:1}]}>
                 <Text style={styles.textStyle}>Group</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>{group}</Text>
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>{group}</Text>
             </View>
         </View>
     </View> 
@@ -63,19 +63,19 @@ const Details = ({route, navigation}) => {
         <View style={styles.details}>
             <View style={[styles.detailsSubView,{flex:1.5}]} >
                 <Text style={styles.textStyle}>Plan</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>{plan}</Text>              
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>{plan}</Text>              
             </View>
-            <View style={[styles.detailsSubView,{flex:0.8}]} >
+            <View style={[styles.detailsSubView,{flex:0.9}]} >
                 <Text style={styles.textStyle}>Price</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>$60</Text>         
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>$60</Text>         
             </View>
             <View style={[styles.detailsSubView,{flex:1.2}]}>
                 <Text style={styles.textStyle}>Start Date</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>25/11/2020</Text>
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>25/11/2020</Text>
             </View>
-            <View style={[styles.detailsSubView,{flex:1.2}]}>
+            <View style={[styles.detailsSubView,{flex:1}]}>
                 <Text style={styles.textStyle}>End Date</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>25/12/2020</Text>
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>25/12/2020</Text>
             </View>
         </View>  
         <View style={styles.features}>
@@ -95,13 +95,13 @@ const Details = ({route, navigation}) => {
         <View style={styles.horizontalLine}/>
 
         <View style={styles.details}>
-            <View style={[styles.detailsSubView,{flex:3}]} >
+            <View style={[styles.detailsSubView,{flex:1}]} >
                 <Text style={styles.textStyle}>Type</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>Car</Text>              
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>Car</Text>              
             </View>
-            <View style={[styles.detailsSubView,{flex:3}]} >
+            <View style={[styles.detailsSubView,{flex:2}]} >
                 <Text style={styles.textStyle}>Description</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>My Dad's Car(Chevrolet Captiva)</Text>         
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>My Dad's Car(Chevrolet Captiva)</Text>         
             </View>
         </View>
       </View> 
@@ -116,11 +116,11 @@ const Details = ({route, navigation}) => {
         <View key={key} style={styles.userDetails}>
             <View style={[styles.detailsSubView,{flex:1}]} >
                 <Text style={styles.textStyle}>Name</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>{item.name}</Text>              
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>{item.name}</Text>              
             </View>
             <View style={[styles.detailsSubView,{flex:2}]} >
                 <Text style={styles.textStyle}>Role</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}>{item.role}</Text>         
+                <Text style={[styles.textStyle,{color:ColorConstant.BLACK,marginTop:hp(1)}]}>{item.role}</Text>         
             </View>
         </View>
         )}
@@ -149,12 +149,13 @@ const styles = StyleSheet.create({
 
 container:{
     width:'100%',
-    height:Dimensions.get('screen').height
+    //height:Dimensions.get('screen').height,
+    backgroundColor:ColorConstant.WHITE
 },
 cardContainer: {
     //width:'100%',
     width: Dimensions.get('screen').width-30,
-    marginTop: hp(2),
+    marginTop: hp(4),
     // height:hp(18),
     elevation:3,
     alignSelf: 'center',
@@ -176,14 +177,16 @@ headerDetail: {
 },
 headerText: {
     color:ColorConstant.BLUE,
-    fontSize:FontSize.FontSize.medium,
-    fontWeight:'600'
+    fontSize:FontSize.FontSize.small,
+    //fontWeight:'600'
+    //fontSize:12,
+    fontFamily:'Nunito-Regular'
 },
 details: {
     flexDirection:'row',
     marginTop:hp(1.5),
     marginHorizontal:hp(2),
-    paddingBottom:hp(1.5)
+    paddingBottom:hp(1)
 },
 detailsSubView: {
     flexDirection:'column',
@@ -196,25 +199,28 @@ horizontalLine: {
 },
 textStyle: {
     color:ColorConstant.GREY,
-    fontSize:FontSize.FontSize.small
+    //fontSize:FontSize.FontSize.small,
+    fontSize:10,
+    fontFamily:'Nunito-Regular'
 },
 features: {
     marginHorizontal:hp(2),
     paddingBottom:hp(2),
-    marginTop:hp(1)
+    //marginTop:hp(0.5)
 },
 userDetails: {
     flexDirection:'row',
-    marginTop:hp(1),
+    //marginTop:hp(1),
     marginHorizontal:hp(2),
-    marginVertical:hp(2)
+    marginVertical:hp(1.5)
 },
 export: {
     borderRadius:6,
     flexDirection:'row', 
     width:'45%',
-    bottom:hp(3), 
-    marginVertical:hp(5),
+    bottom:hp(5), 
+    // marginTop:hp(8),
+    marginVertical:hp(7),
     alignSelf:'center',
     alignItems:'center',
     justifyContent:'space-evenly',

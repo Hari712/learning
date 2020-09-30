@@ -40,7 +40,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
 
             {detailsToggle?
                 <View style={styles.detailsToggle}>
-                    <MultiSelect label='Select Device' allText='Select All' dataList={devicesList} valueSet={setSelectedDevices}  selectedData={selectedDevices} />                   
+                    <MultiSelect label='Select Device' allText='Select All' dataList={devicesList} valueSet={setSelectedDevices} textStyle={{color:ColorConstant.BLUE,fontSize:12,paddingVertical:hp(1),fontFamily:'Nunito-Regular'}} selectedData={selectedDevices} />                   
                 </View>
             :null}  
 
@@ -153,11 +153,13 @@ return(
 }
 const styles = StyleSheet.create({
     contentContainerStyle: {
-        height: Dimensions.get('window').height  
+        height: Dimensions.get('window').height,
+        backgroundColor:ColorConstant.WHITE 
     },    
     container:{
-        width:Dimensions.get('window').width,
-        alignItems:'center'
+        height: Dimensions.get('window').height,
+        alignItems:'center',
+        backgroundColor:ColorConstant.WHITE
     },
     scene: {
         //flex: 1,
