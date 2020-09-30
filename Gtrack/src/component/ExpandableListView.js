@@ -5,8 +5,7 @@ import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from './FontSize'
 import MultiSelect from './MultiSelect';
-import DropDown from './DropDown';
-import { ConfirmDialog } from 'react-native-simple-dialogs';
+import Dialog from './Dialog';
 
 
   const ExapandableListView = props => {
@@ -127,38 +126,19 @@ import { ConfirmDialog } from 'react-native-simple-dialogs';
                     </TouchableOpacity>
                 </View>
 
-                
-                <ConfirmDialog
-                    title="Are you sure ?"
-                    titleStyle={{color:ColorConstant.ORANGE, textAlign:'center',fontSize:FontSize.FontSize.regular,fontWeight:'bold'}}
+                <Dialog 
+                    heading="Are you sure ?"
                     message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
-                    messageStyle={{color:ColorConstant.BLACK, textAlign:'center',fontSize:FontSize.FontSize.small}}
                     visible={dialogVisible}
-                    buttonsStyle={{alignItems:'center',marginBottom:hp(3)}}
-                    dialogStyle={{borderRadius:hp(2)}}
                     onTouchOutside={() => setDialogVisible(false)}
-                    negativeButton={{
-                        title: "Cancel",
-                        onPress: () => setDialogVisible(false),
-                        titleStyle:{backgroundColor:ColorConstant.WHITE,borderRadius:4,borderWidth:1,borderColor:ColorConstant.BLUE, color:ColorConstant.BLUE,width:wp(30),marginRight:hp(2)}
-                    }}
-                    positiveButton={{
-                        title: "Okay",
-                        onPress: deleteConfirm,
-                        titleStyle:{backgroundColor:ColorConstant.BLUE,borderRadius:4, color:ColorConstant.WHITE,width:wp(30),marginRight:hp(2)}
-                    }} >
-                        
-                </ConfirmDialog>
-        
+                    negativeHandle={() => setDialogVisible(false)}
+                    positiveHandle={deleteConfirm}
+                /> 
+
             </View>:null}
-
-
         </View>)
-        }
-        
-        )
+        })
       )
-
   }
 
   const styles = StyleSheet.create({

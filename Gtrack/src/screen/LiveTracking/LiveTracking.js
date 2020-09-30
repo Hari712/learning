@@ -4,64 +4,16 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { navigationRef } from '../../navigation/NavigationService';
-
-const isAndroid = Platform.OS === 'android'
-
-const Map = Platform.select({
-	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps')
-})();
+import MapView from '../../component/MapView';
 
 const LiveTracking = ({navigation}) => {
 
-	const [isLineClick, setIsLineClick] = useState(false)
-
-	function renderMapBox() {
-		console.log("android")
-		return (
-			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
-					<Map.default.UserLocation
-						renderMode='normal'
-						visible={true}
-						showsUserHeadingIndicator={true}
-					/>
-				</Map.default.MapView>
-			</View>
-		)
-	};
-
-	function renderApppleMap() {
-		console.log("apple")
-		return (
-            <View style={styles.container}>
-                <View style={StyleSheet.absoluteFillObject}>
-                    <Map.default style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
-                        {/* {<Map.Marker
-                            coordinate={coordinate}
-                            title={selectedRoute.shipmentName}
-                        />} */}
-                    </Map.default>
-                    <View style={{ position: 'absolute', top: 100, left: 50 }} />
-                </View>
-            </View>
-        )
-	}
+	const [isLineClick, setIsLineClick] = useState(false)	
 
 	return (
 		<View style={styles.container}>
-			{isAndroid ? renderMapBox() : renderApppleMap()}
 
-			{/* <Mapbox.MapView
-				styleURL={Mapbox.StyleURL.Street}
-				zoomLevel={15}
-				onTouchStart={() => { setIsLineClick(false) }}
-				centerCoordinate={[11.256, 43.77]}
-				style={styles.container}>
-				
-				{renderAnnotations()}
-
-			</Mapbox.MapView> */}
+			<MapView />
 
 			<View style={styles.subContainer}>
 

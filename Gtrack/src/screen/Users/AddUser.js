@@ -97,7 +97,7 @@ return (
             defaultValue={email} 
             outerStyle={[styles.outerStyle,{marginTop:hp(4)}]} 
           /> 
-          <View style={{flexDirection:'row', marginTop:hp(3)}}>
+          <View style={styles.dropDown}>
             <View style={{flex: 1}}>
               <DropDown 
                 label='Assign Role*'
@@ -172,6 +172,9 @@ outerStyle:{
     },
     shadowRadius: 3,
     shadowOpacity: 1,
+},
+dropDown:{
+  flexDirection:'row', marginTop:hp(3)
 },
 dropdownStyle: {
   position:'relative', 

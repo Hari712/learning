@@ -87,17 +87,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-    },
-    checkboxMainStyle: {
-        width: wp(75),
-        margin: hp(1.5),
-        flexDirection: 'row'
-    },
-    checkboxText: {
-        color: ColorConstant.WHITE,
-        fontSize: FontSize.FontSize.medium,
-        marginLeft: wp(3)
-    },
+    },    
     button: {
         width:wp(75),
         height:hp(5.5),
@@ -117,14 +107,6 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.small, 
         fontWeight: '500',
         marginTop: hp(3)
-    },
-    inputTextStyle: {
-        borderRadius: 6,
-        paddingHorizontal: hp(2),
-        backgroundColor: ColorConstant.WHITE,
-        width: '75%',
-        margin: hp(1.5),
-        color: 'black',
     },
 })
 

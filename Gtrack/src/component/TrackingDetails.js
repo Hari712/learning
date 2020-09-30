@@ -5,14 +5,9 @@ import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import BottomSheet from 'reanimated-bottom-sheet';
 import FontSize from './FontSize';
+import MapView from './MapView';
 
-const isAndroid = Platform.OS === 'android'
 const {height} = Dimensions.get('window')
-
-const Map = Platform.select({
-	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps')
-})();
 
 const TrackingDetails = () => {
 
@@ -23,42 +18,6 @@ const TrackingDetails = () => {
 		sheetRef.current.snapTo(0)
 	   
     },[])
-
-	function renderMapBox() {
-		console.log("android")
-		return (
-			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
-					<Map.default.UserLocation
-						renderMode='normal'
-						visible={true}						
-						showsUserHeadingIndicator={true}
-						
-					/>
-				</Map.default.MapView>
-			</View>
-		)
-	};
-
-	function renderApppleMap() {
-        console.log("apple")
-        
-		return (
-            <View style={styles.container}>
-                <View style={StyleSheet.absoluteFillObject}>
-                    <Map.default style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
-                        {/* {<Map.Marker
-                            coordinate={coordinate}
-                            title={selectedRoute.shipmentName}
-                        />} */}
-                    </Map.default>
-                    <View style={{ position: 'absolute', top: 100, left: 50 }} />
-                </View>
-
-                
-            </View>
-        )
-	}
 
 	const renderContent = () => (
 		<View style={styles.subView}>
@@ -101,7 +60,7 @@ const TrackingDetails = () => {
 
 	return (
 		<View style={styles.container}>
-			{isAndroid ? renderMapBox() : renderApppleMap()}
+			<MapView/>
 
 			<BottomSheet
 				ref={sheetRef}

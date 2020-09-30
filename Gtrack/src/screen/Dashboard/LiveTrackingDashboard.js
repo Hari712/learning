@@ -7,46 +7,9 @@ import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText } from '../../component'
 import ShadowView from 'react-native-simple-shadow-view'
+import MapView from '../../component/MapView'
 
 const LiveTrackinDashboard = ({ navigation }) => {
-
-    const isAndroid = Platform.OS === 'android'
-
-    const Map = Platform.select({
-        ios: () => require('react-native-maps'),
-        android: () => require('@react-native-mapbox-gl/maps')
-    })();
-
-    function renderMapBox() {
-        console.log("android")
-        return (
-            <View style={{flex: 1}}>
-                <Map.default.MapView style={{flex: 1}}>
-                    <Map.default.UserLocation
-                        renderMode='normal'
-                        visible={true}
-                        showsUserHeadingIndicator={true}
-                    />
-                </Map.default.MapView>
-            </View>
-        )
-    };
-
-    function renderAppleMap() {
-        console.log(".....apple")
-        return (
-            <View style={{ flex: 1 }}>
-                <View style={StyleSheet.absoluteFillObject}>
-
-                    <Map.default style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
-
-                    </Map.default>
-                    <View style={{ position: 'absolute', top: 100, left: 50 }} />
-
-                </View>
-            </View>
-        )
-    }
 
     return (
         <ShadowView style={styles.deviceSummaryContainer}>
@@ -68,7 +31,7 @@ const LiveTrackinDashboard = ({ navigation }) => {
             </View>
 
             <View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2) }}>
-                {isAndroid ? renderMapBox() : renderAppleMap()}
+               <MapView/>
 
                 <View style={styles.subContainer}>
                     
