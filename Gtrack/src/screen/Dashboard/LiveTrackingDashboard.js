@@ -8,6 +8,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { EditText } from '../../component'
 import ShadowView from 'react-native-simple-shadow-view'
 import MapView from '../../component/MapView'
+import { TouchableHighlight } from 'react-native-gesture-handler'
 
 const LiveTrackinDashboard = ({ navigation }) => {
 
@@ -25,13 +26,15 @@ const LiveTrackinDashboard = ({ navigation }) => {
                         <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
                     </TouchableOpacity>
 
-                    <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+                    <TouchableOpacity onPress={() =>  NavigationService.navigate("TrackingDetails") }>
+                        <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+                    </TouchableOpacity>
                 </View>
 
             </View>
 
             <View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2) }}>
-               <MapView/>
+                <MapView/>
 
                 <View style={styles.subContainer}>
                     
