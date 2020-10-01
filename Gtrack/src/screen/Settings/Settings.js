@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-between', 
     paddingHorizontal: wp(3), 
-    paddingBottom: hp(3)
+    paddingBottom: hp(3),
+    alignItems: 'center'
   },
 
   titleIconStyle: {

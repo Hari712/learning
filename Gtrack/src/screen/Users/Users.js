@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 12,
-    elevation:3,
+    // elevation:3,
     borderWidth: 0.3,
     borderColor: ColorConstant.GREY,
     shadowColor:ColorConstant.GREY,

@@ -23,6 +23,8 @@ import Manage from '../screen/Device&Asset/Manage';
 import AddUser from '../screen/Users/AddUser';
 import EditProfile from '../screen/Settings/Profile/EditProfile';
 import Notification from '../screen/Notification/Notification';
+import SensorInfo from '../screen/SensorInfo/SensorInfo'
+import DeviceInfo from '../screen/SensorInfo/DeviceInfo'
 
 export{
     Splash,
@@ -48,5 +50,7 @@ export{
     Manage,
     AddUser,
     EditProfile,
-    Notification
+    Notification,
+    SensorInfo,
+    DeviceInfo
 }

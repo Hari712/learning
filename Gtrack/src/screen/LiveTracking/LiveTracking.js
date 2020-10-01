@@ -11,6 +11,18 @@ const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)	
 
+	const onPressHandle = ({ navigation, item, color, setColor }) => {
+		if(item === 'Sensor Information') {
+			navigation.navigate('SensorInfo')
+		}
+		else if (item == 'Geo Fence') {
+			navigation.navigate('Users')
+		}
+		else {
+            navigation.navigate('Settings')
+        }
+	}
+
 	return (
 		<View style={styles.container}>
 
@@ -32,10 +44,10 @@ const LiveTracking = ({navigation}) => {
 				{isLineClick ?
 					<View style={styles.lineContainer}>
 						{data.map((item, key) =>
-							<View key={key}>
+							<TouchableOpacity key={key} onPress={() => onPressHandle({ navigation, item })}>
 								<Text style={styles.textStyle}>{item}</Text>
 								{key != data.length - 1 ? <View style={styles.horizontalLine} /> : null}
-							</View>
+							</TouchableOpacity>
 						)
 						}
 					</View>
