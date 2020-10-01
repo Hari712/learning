@@ -47,7 +47,7 @@ class TextField extends React.Component {
                 tintColor={ColorConstant.GREY}
                 baseColor={ColorConstant.GREY}
                 fontSize={FontSize.FontSize.small}
-                //labelTextStyle={{ fontFamily: 'Nunito-Regular'}}
+                //labelTextStyle={{ fontFamily: 'Nunito-Light'}}
                 labelFontSize={FontSize.FontSize.small}
                 contentInset={{ input: 12, label: 1.4 }}
                 formatText={handleInput}

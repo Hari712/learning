@@ -62,13 +62,15 @@ subContainer: {
 resetEmailText: {
     color:ColorConstant.WHITE,
     fontSize:FontSize.FontSize.medium,
-    fontWeight: 'bold',
+    fontFamily:'Nunito-Bold',
+    //fontWeight: 'bold',
     textAlign:'center'
 },
 textStyle: {
     color:ColorConstant.WHITE,
     fontSize:FontSize.FontSize.small,
-    fontWeight: '500',
+    //fontWeight: '500',
+    fontFamily:'Nunito-SemiBold',
     textAlign:'center',
     marginTop:hp(1)
 },

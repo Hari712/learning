@@ -74,7 +74,7 @@ class MultiSelect extends React.Component {
                             }                    
                         } }>
                         <Image source={ selectedAll ? images.image.checkboxClick :images.image.checkbox} />
-                        <Text style={{color:ColorConstant.BLUE}}>{otherProps.allText? otherProps.allText : 'Select All'}</Text>
+                        <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:12}}>{otherProps.allText? otherProps.allText : 'Select All'}</Text>
                     </TouchableOpacity>
 
                     {/* Data Rows */}
@@ -90,31 +90,31 @@ class MultiSelect extends React.Component {
                                     }
                                 } }>
                                 <Image source={ selectedItem.includes(item) ? images.image.checkboxClick :images.image.checkbox} />
-                                <Text style={{color:ColorConstant.BLUE}}>{item}</Text>
+                                <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:12}}>{item}</Text>
                             </TouchableOpacity>
                         )
                     })}
                 </ScrollView> 
                 :null}
 
- 
+
                 {/* Selected Devices or Item List */}
-                 { this.state.isSelected && !otherProps.hideSelectedDeviceLable ?
-                <Text style={{color:ColorConstant.ORANGE,margin:hp(2)}}>
-                   Selected Device List
+                { selectedItem && selectedItem.length && !otherProps.hideSelectedDeviceLable ?
+                <Text style={{color:ColorConstant.ORANGE,margin:hp(2),fontFamily:'Nunito-SemiBold',fontSize:12}}>
+                    Selected Device List
                 </Text>:null}
-                 
+                
                 {selectedItem && selectedItem.length?
                 <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
                     { Object.values(selectedItem).map((item,key)=>
                     <View style={{flexWrap:'wrap', flexShrink:1 }}>
                         <View style={[otherProps.selectedItemRowStyle]}>
-                            <Text style={{marginRight:hp(1),color:ColorConstant.ORANGE}} key={key}>{item}</Text>
+                            <Text style={[{marginRight:hp(1),color:ColorConstant.ORANGE},otherProps.textStyle]} key={key}>{item}</Text>
                             {otherProps.hideDeleteButton ?
                             <TouchableOpacity onPress={()=>otherProps.deleteHandle(item, key)} /*onPress={()=>{
                                 if (selectedItem.includes(item)) {
                                     valueSet(oldArray => oldArray.filter(function(value){return value != item}) )}}} */     
-                                 style={{paddingTop:hp(0.5),justifyContent:'center'}}>
+                                style={{paddingTop:hp(0.5),justifyContent:'center'}}>
                                 <Image style={{height:hp(2)}} source={images.manage.closeClick}/>
                             </TouchableOpacity>  : null}
                         </View>

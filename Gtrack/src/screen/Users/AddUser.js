@@ -72,17 +72,18 @@ const AddUser = ({navigation,route}) => {
 
 return ( 
     <View style={styles.container}>
+      <View style={{width:'100%'}}>
         <TouchableOpacity style={styles.addButton}>
-            <Text>{route.params?'Edit User': 'Add User'}</Text>
+            <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit User': 'Add User'}</Text>
         </TouchableOpacity>
-
+      </View>
+      <ScrollView style={{width:'100%'}}>
         <View style={styles.subContainer}>
-          <ScrollView>
           <TextField 
             label='Name*' 
             valueSet={setFirstName} 
             defaultValue={firstName} 
-            outerStyle={styles.outerStyle} 
+            outerStyle={[styles.outerStyle,{marginTop:hp(4)}]} 
           /> 
 
           <TextField 
@@ -119,7 +120,6 @@ return (
           {infoClick?
                 info()
               :null}
-
           <MultiSelect 
             label='Group Access' 
             dataList={Data} 
@@ -127,7 +127,7 @@ return (
             hideSelectedDeviceLable={true}
             hideDeleteButton={true}
             rowStyle={styles.rowStyle}
-            dropdownStyle={{height:'20%'}}
+            dropdownStyle={{height:hp(20)}}
             outerStyle={[styles.outerStyle,{marginTop:hp(4)}]}
             valueSet={setSelectedGroup} 
             selectedData={selectedGroup}
@@ -139,8 +139,8 @@ return (
           <TouchableOpacity disabled={!(firstName && lastName && email && role)} style={[styles.saveButtonConatiner,{backgroundColor:firstName && lastName && email && role ? ColorConstant.BLUE : ColorConstant.LIGHTGREY}]}>
             <Text style={styles.saveText}>Save</Text>
           </TouchableOpacity>
-          </ScrollView>
-        </View>
+          </View>
+        </ScrollView>
     </View>
       
         
@@ -152,13 +152,14 @@ return (
 const styles = StyleSheet.create({
 
 container: {
-  height:"100%",
   alignItems:'center',
-  backgroundColor:ColorConstant.WHITE
+  backgroundColor:ColorConstant.WHITE,
+  //height:"100%",
+  flex:1
 },
 subContainer: {
   width:'85%',
-  marginVertical: hp(4),
+  marginBottom: hp(4),
   alignSelf: 'center',
 },
 outerStyle:{
@@ -166,15 +167,16 @@ outerStyle:{
   backgroundColor:ColorConstant.WHITE,
   borderRadius:7,
   shadowColor: ColorConstant.GREY,
-    shadowOffset: {
-      width: 0,
-      height: 0
-    },
-    shadowRadius: 3,
-    shadowOpacity: 1,
+  shadowOffset: {
+    width: 0,
+    height: 0
+  },
+  shadowRadius: 3,
+  shadowOpacity: 1,
 },
 dropDown:{
-  flexDirection:'row', marginTop:hp(3)
+  flexDirection:'row', 
+  marginTop:hp(3)
 },
 dropdownStyle: {
   position:'relative', 
@@ -188,12 +190,15 @@ dataRowStyle: {
 },
 infoContainer:{
   backgroundColor:ColorConstant.PINK,
-  borderRadius:2,
-  marginVertical:hp(2),
+  borderRadius:10,
+  //marginVertical:hp(1),
+  marginBottom:hp(0.1),
   padding:hp(2)
 },
 infoTitle: {
-  fontSize:hp(1.3),
+  //fontSize:hp(1.3),
+  fontSize:10,
+  fontFamily:'Nunito-Regular',
   textAlign:'center',
   color:ColorConstant.GREY
 },
@@ -206,15 +211,19 @@ infoButton:{
   paddingVertical:hp(2.5)
 },
 role: {
-  fontSize:FontSize.FontSize.small,
+  //fontSize:FontSize.FontSize.small,
+  fontSize:12,
+  fontFamily:'Nunito-Regular',
   color:ColorConstant.BLACK,
-  flex:0.5,
+  flex:0.7,
   flexWrap:'wrap'
 },
 roleSubText:{
-  fontSize:hp(1.3),
+  //fontSize:hp(1.3),
   color:ColorConstant.
-  GREY,flex:1
+  GREY,flex:1,
+  fontSize:10,
+  fontFamily:'Nunito-Regular',
 },
 saveText :{
   textAlign:'center',

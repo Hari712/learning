@@ -61,6 +61,7 @@ const styles = StyleSheet.create({
         height:hp(5.5),
         margin:hp(1.5),
         color:'black',
+        fontFamily:'Nunito-LightItalic'
     },
 })
     
