@@ -54,7 +54,7 @@ class DropDown extends React.Component {
                         label={label}
                         tintColor={ColorConstant.GREY}
                         fontSize={FontSize.FontSize.small}
-                        //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
+                        //labelTextStyle={{ fontFamily: 'Nunito-ExtraLightItalic' }}
                         labelFontSize={FontSize.FontSize.small}
                         contentInset={{ input: 10.45, label: 3 }}
                         //defaultValue={this.state.selected}

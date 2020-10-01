@@ -40,7 +40,14 @@ const CreateDeviceAsset = ({route, navigation}) => {
 
             {detailsToggle?
                 <View style={styles.detailsToggle}>
-                    <MultiSelect label='Select Device' allText='Select All' dataList={devicesList} valueSet={setSelectedDevices} textStyle={{color:ColorConstant.BLUE,fontSize:12,paddingVertical:hp(1),fontFamily:'Nunito-Regular'}} selectedData={selectedDevices} />                   
+                    <MultiSelect 
+                        label='Select Device' 
+                        allText='Select All' 
+                        dataList={devicesList} 
+                        valueSet={setSelectedDevices} 
+                        textStyle={{color:ColorConstant.BLUE,fontSize:12,paddingVertical:hp(1),fontFamily:'Nunito-Regular'}} 
+                        selectedData={selectedDevices} 
+                    />                   
                 </View>
             :null}  
 
@@ -50,7 +57,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
                         <Text style={styles.cancelText}>Cancel</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={[styles.buttonStyle,{backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,borderColor:ColorConstant.GREY}]}>
+                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={[styles.nextButton,{backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,}]}>
                         <Text style={styles.saveText}> {detailsToggle ? 'Save' : 'Next'} </Text>
                     </TouchableOpacity>
                 </View>
@@ -122,7 +129,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
                 </TouchableOpacity>
             )
         });
-      }, [navigation]);
+    }, [navigation]);
 
 return(
 <View style={{flex:1}}>
@@ -192,6 +199,13 @@ const styles = StyleSheet.create({
         height:hp(6),
         justifyContent:'center'
      },
+    nextButton: {
+        borderRadius:6,
+        backgroundColor:ColorConstant.WHITE,
+        width:'42%',
+        height:hp(6),
+        justifyContent:'center'
+        },
      cancelText: {
         textAlign:'center',
         color:ColorConstant.BLUE

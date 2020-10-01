@@ -67,7 +67,9 @@ return (
                 <Image  style={{resizeMode:'stretch'}} source={images.image.pickupcar}/>
                 <Text style={styles.textStyle}>Asset</Text>
             </View>
+            <View style={{marginTop:hp(2)}}>
             <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray} />
+            </View>
 
                 <View style={styles.nameDesc}>
                     <View style={styles.column} >
@@ -86,12 +88,13 @@ return (
                     <Text style={styles.textStyle}>Select Group</Text>
                 </View>
 
-
-            <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
+                <View style={{marginTop:hp(2)}}>
+                <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
+                </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={()=> clear()} style={styles.button}>
-                        <Text style={styles.buttonText}>Clear</Text>
+                    <TouchableOpacity onPress={()=> clear()} style={[styles.button,{backgroundColor:ColorConstant.WHITE,borderColor:ColorConstant.BLUE,borderWidth:1}]}>
+                        <Text style={[styles.buttonText,{color:ColorConstant.BLUE}]}>Clear</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={styles.button}>

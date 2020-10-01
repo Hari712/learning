@@ -97,13 +97,13 @@ class MultiSelect extends React.Component {
                 </ScrollView> 
                 :null}
 
- 
+
                 {/* Selected Devices or Item List */}
-                 { this.state.isSelected && !otherProps.hideSelectedDeviceLable ?
+                { selectedItem && selectedItem.length && !otherProps.hideSelectedDeviceLable ?
                 <Text style={{color:ColorConstant.ORANGE,margin:hp(2),fontFamily:'Nunito-SemiBold',fontSize:12}}>
-                   Selected Device List
+                    Selected Device List
                 </Text>:null}
-                 
+                
                 {selectedItem && selectedItem.length?
                 <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
                     { Object.values(selectedItem).map((item,key)=>
@@ -114,7 +114,7 @@ class MultiSelect extends React.Component {
                             <TouchableOpacity onPress={()=>otherProps.deleteHandle(item, key)} /*onPress={()=>{
                                 if (selectedItem.includes(item)) {
                                     valueSet(oldArray => oldArray.filter(function(value){return value != item}) )}}} */     
-                                 style={{paddingTop:hp(0.5),justifyContent:'center'}}>
+                                style={{paddingTop:hp(0.5),justifyContent:'center'}}>
                                 <Image style={{height:hp(2)}} source={images.manage.closeClick}/>
                             </TouchableOpacity>  : null}
                         </View>
