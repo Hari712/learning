@@ -53,6 +53,12 @@ const images = {
         panic: require('../../assets/images/Notification/Panic.png')
     },
     
+    sensorInfo: {
+        next: require('../../assets/images/SensorInformation/next.png'),
+        list: require('../../assets/images/SensorInformation/list.png'),
+        sensor: require('../../assets/images/SensorInformation/sensor.png')
+    },
+
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
@@ -122,19 +128,6 @@ const images = {
             upArrow: require('../../assets/images/Settings/upArrow.png'),
             trash: require('../../assets/images/Settings/trash.png')
         },
-
-        //Dashboard
-        // dashboard: {
-        //     next: require('../../assets/images/Dashboard/next.png'),
-        //     refresh: require('../../assets/images/Dashboard/refresh.png'),
-        //     fullScreen: require('../../assets/images/Dashboard/fullscreen.png'),
-        //     SettingIcon: require('../../assets/images/Dashboard/SettingIcon.png'),
-        //     carIcon: require('../../assets/images/Dashboard/car.png'),
-        //     truckIcon: require('../../assets/images/Dashboard/Truck.png'),
-        //     bell: require('../../assets/images/Dashboard/bell.png'),
-        //     leftIcon: require('../../assets/images/Dashboard/Left.png'),
-        //     rightIcon: require('../../assets/images/Dashboard/Right.png')
-        // }
     }
 }
 
