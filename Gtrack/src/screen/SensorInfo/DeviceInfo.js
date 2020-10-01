@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
@@ -30,7 +30,7 @@ const DeviceInfo = ({ navigation, route }) => {
     }, [navigation]);
 
     return (
-        <View style={styles.DeviceInfoMainView}>
+        <ScrollView style={styles.DeviceInfoMainView}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>{deviceInfo.title}</Text>
             </View>
@@ -44,19 +44,19 @@ const DeviceInfo = ({ navigation, route }) => {
                 <View style={styles.lineStyle} />
 
                 <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '35%' }}>
                         <Text style={styles.mainTextStyle}>State</Text>
                         <Text style={styles.textStyle}>Moving</Text>
                         <Text style={styles.textStyle}>1h 45m 25s</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '40%' }}>
                         <Text style={styles.mainTextStyle}>Time(Position)</Text>
                         <Text style={styles.textStyle}>2020-09-17</Text>
                         <Text style={styles.textStyle}>06:58:06</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '25%' }}>
                         <Text style={styles.mainTextStyle}>Time(Server)</Text>
                         <Text style={styles.textStyle}>2020-09-17</Text>
                         <Text style={styles.textStyle}>06:58:06</Text>
@@ -70,18 +70,18 @@ const DeviceInfo = ({ navigation, route }) => {
                 </View>
 
                 <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '35%' }}>
                         <Text style={styles.mainTextStyle}>Angle</Text>
                         <Text style={styles.textStyle}>54{`\u02DA`} </Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '40%' }}>
                         <Text style={styles.mainTextStyle}>Engine state & hours</Text>
                         <Text style={styles.textStyle}>On</Text>
                         <Text style={styles.textStyle}>546h</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '25%' }}>
                         <Text style={styles.mainTextStyle}>Altitude</Text>
                         <Text style={styles.textStyle}>502 ft</Text>
                     </View>
@@ -97,53 +97,53 @@ const DeviceInfo = ({ navigation, route }) => {
                 <View style={styles.lineStyle} />
 
                 <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '35%' }}>
                         <Text style={styles.mainTextStyle}>Odometer</Text>
                         <Text style={styles.textStyle}>1965631 mi</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '40%' }}>
                         <Text style={styles.mainTextStyle}>State</Text>
                         <Text style={styles.textStyle}>Moving</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '25%' }}>
                         <Text style={styles.mainTextStyle}>Vehicle Power</Text>
                         <Text style={styles.textStyle}>OV</Text>
                     </View>
                 </View>
 
                 <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '35%' }}>
                         <Text style={styles.mainTextStyle}>Battery</Text>
                         <Text style={styles.textStyle}>0%</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '40%' }}>
                         <Text style={styles.mainTextStyle}>Ignition</Text>
                         <Text style={styles.textStyle}>On</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column' }}>
+                    <View style={{ flexDirection: 'column', width: '25%' }}>
                         <Text style={styles.mainTextStyle}>Digital Input</Text>
                         <Text style={styles.textStyle}>Off</Text>
                     </View>
                 </View>
 
                 <View style={styles.sensorMainView}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text style={styles.mainTextStyle}>Fuel Level</Text>
+                    <View style={{ flexDirection: 'column', width: '35%' }}>
+                        <Text style={styles.mainTextStyle}>Fuel Levellll</Text>
                         <Text style={styles.textStyle}>75%</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column', marginLeft: wp(19) }}>
+                    <View style={{ flexDirection: 'column', width: '40%' }}>
                         <Text style={styles.mainTextStyle}>Temperature</Text>
                         <Text style={styles.textStyle}>20.6{`\u02DA`}</Text>
                     </View>
                 </View>
 
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -183,7 +183,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3,
         shadowOffset: { width: 0, height: 0 },
-        paddingBottom: hp(1)
+        paddingBottom: hp(1),
+        marginBottom: hp(3)
     },
 
     titleViewStyle: {
@@ -206,11 +207,10 @@ const styles = StyleSheet.create({
     },
 
     infoDataMainView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: hp(2),
-        paddingBottom: hp(1.5),
-        // backgroundColor: 'yellow',
+        flexDirection:'row',
+        marginTop:hp(1.5),
+        paddingHorizontal:hp(2.5),
+        paddingBottom:hp(1.5)
     },
 
     sensorMainView: {
@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
     addressMainView: {
         marginHorizontal: hp(2),
         paddingBottom: hp(1.5),
-        // backgroundColor: 'green'
     },
 
     mainTextStyle: {
