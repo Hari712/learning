@@ -40,8 +40,7 @@ const ScreenOptions = {
         backgroundColor: ColorConstant.WHITE,
         elevation: 10,
         shadowOpacity: 0.9,
-        borderBottomWidth: 0,
-        height: hp(8),
+        borderBottomWidth: 0
     },
     headerTintColor: ColorConstant.GREY,
     headerTitleStyle: {

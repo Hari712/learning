@@ -57,7 +57,13 @@ const Login = () => {
 
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
-            <KeyboardAwareScrollView>
+            <KeyboardAwareScrollView
+             contentContainerStyle={{ flexGrow: 1 }}
+             automaticallyAdjustContentInsets={false}
+             keyboardShouldPersistTaps='handled'
+             enableOnAndroid={false}
+             scrollEnabled={false}>
+    
                 <View style={styles.container}>
                     <Image source={images.image.defaultlogo} style={styles.imageStyle} />
                     <View style={styles.subContner}>
@@ -98,16 +104,13 @@ const Login = () => {
 
 const styles = StyleSheet.create({
     backgroundImage: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Dimensions.get('window').height
+        flex: 1
     },
     container: {
         flex: 1,
         marginTop: hp(20),
         alignItems: 'center',
-        width: '100%'
+        paddingHorizontal: hp(6)
     },
     subContner: {
         margin: hp(3),
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     button: {
-        width: wp(75),
+        width: '100%',
         height: hp(5.5),
         marginTop: hp(3)
     },

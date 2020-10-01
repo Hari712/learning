@@ -52,18 +52,20 @@ const Passcode = ({navigation}) => {
 const styles = StyleSheet.create({
 container: {
     flex: 1,
-    marginTop:hp(20),
+    justifyContent:'center',
     alignItems:'center',
+    paddingHorizontal: hp(6)
 },
 subContainer: {
-    margin:hp(4),
-    width: wp(75)
+    marginVertical:hp(3),
+    width: '100%'
 },
 resetEmailText: {
     color:ColorConstant.WHITE,
     fontSize:FontSize.FontSize.medium,
     fontWeight: 'bold',
-    textAlign:'center'
+    textAlign:'center',
+    marginBottom: hp(1)
 },
 textStyle: {
     color:ColorConstant.WHITE,
@@ -82,8 +84,8 @@ passcode: {
 buttonContainer: {
     flexDirection:'row',
     justifyContent:'space-between',
-    width: wp(75),
-    margin:hp(2),
+    width: '100%',
+    marginVertical:hp(2),
     alignItems:'center'
 },
 cancelButton: {
@@ -109,10 +111,7 @@ LoginButtonText: {
     color: ColorConstant.WHITE
 },
 backgroundImage: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: Dimensions.get('window').height
+    flex: 1
 },
 })
 export default Passcode

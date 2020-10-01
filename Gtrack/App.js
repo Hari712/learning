@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import { appManagerRef } from './src/constants/AppManager'
 import { Loader } from './src/component'
@@ -24,6 +24,11 @@ const MainApp = forwardRef((props, ref) => {
   useEffect(() => {
     initMapBox()
   }, [])
+
+  useImperativeHandle(ref, () => ({
+    showLoader: () => showLoader(),
+    hideLoader: () => hideLoader()
+  }))
 
   function showLoader() {
     setIsLoading(true)

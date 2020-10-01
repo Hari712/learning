@@ -47,18 +47,16 @@ const ResetPasscode = () => {
 }
 const styles = StyleSheet.create({
     backgroundImage: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: Dimensions.get('window').height
+        flex: 1
     },
     container: {
         flex: 1,
-        marginTop: hp(20),
+        justifyContent:'center',
         alignItems: 'center',
+        paddingHorizontal: hp(6)
     },
     headingMainStyle: {
-        margin: hp(3),
+        marginVertical: hp(3),
         width: wp(75)
     },
     headingTextStyle: {
@@ -73,9 +71,9 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     button: {
-        width:wp(75),
+        width: '100%',
         height:hp(5.5),
-        marginTop: hp(3)
+        marginTop: hp(2)
     },
     buttonTextStyle: {
         fontSize: FontSize.FontSize.medium, 
