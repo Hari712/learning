@@ -35,10 +35,10 @@ const DeviceAsset = ({navigation}) => {
 
 
 return ( 
-<View>
-<ScrollView style={{height:"100%"}} onTouchStart={()=>setMenuClick(false)}>
-  {DATA.map((item,key) =>
-    <TouchableOpacity onPress={()=>
+  <>
+    <ScrollView contentContainerStyle={{flexGrow:1, backgroundColor:ColorConstant.WHITE, paddingBottom:hp(2)}} onTouchStart={()=>setMenuClick(false)}>
+    {DATA.map((item,key) =>
+      <TouchableOpacity onPress={()=>
       { 
       navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
       } style={styles.cardContainer} key={key}>
@@ -62,7 +62,7 @@ return (
         </View>
 
         <View style={styles.editButton}>
-         <TouchableOpacity onPress={()=> 
+        <TouchableOpacity onPress={()=> 
           {
             navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
           <Image source={images.image.edit}/>
@@ -95,9 +95,9 @@ return (
     
   )}
 
-     </ScrollView>
+    </ScrollView>
 
-     {menuClick?
+    {menuClick?
         <View style={styles.menuPopup}>
           {Menu.map((item,key) =>
               <TouchableOpacity key={key}  style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=>menuHandle(item) }>
@@ -108,7 +108,7 @@ return (
         </View>:
       null} 
 
-     </View>
+    </>
     
   )
 }
@@ -149,6 +149,139 @@ return (
             desc: '',
             image: ''
         },
+
+        {
+          id: '123456789456123',
+          title: 'TrackPort International',
+          date: "12/05/2020",
+          group:'Home',
+          plan: 'Basic',
+          duration:'Monthly',
+          type: 'Car',
+          desc: 'My Dad\'s Car',
+          image: require('../../../assets/images/Vehicles/car.png')
+      },
+      {
+          id: '123456789456123',
+          title: 'TrackPort 4G Vehicle GPS Tracker',
+          date: "12/05/2020",
+          group:'Fedex Ground',
+          plan: 'Standard',
+          duration:'Yearly',
+          type:'Truck',
+          desc: 'My Dad\'s Truck',
+          image: require('../../../assets/images/Vehicles/Truck.png')
+      },
+      {
+          id: '123456789456123',
+          title: 'Spark Nano GPS Tracker',
+          date: "10/05/2020",
+          group:'Default',
+          plan: 'None',
+          type: '',
+          duration:'',
+          desc: '',
+          image: ''
+      },
+      {
+        id: '123456789456123',
+        title: 'TrackPort International',
+        date: "12/05/2020",
+        group:'Home',
+        plan: 'Basic',
+        duration:'Monthly',
+        type: 'Car',
+        desc: 'My Dad\'s Car',
+        image: require('../../../assets/images/Vehicles/car.png')
+    },
+    {
+        id: '123456789456123',
+        title: 'TrackPort 4G Vehicle GPS Tracker',
+        date: "12/05/2020",
+        group:'Fedex Ground',
+        plan: 'Standard',
+        duration:'Yearly',
+        type:'Truck',
+        desc: 'My Dad\'s Truck',
+        image: require('../../../assets/images/Vehicles/Truck.png')
+    },
+    {
+        id: '123456789456123',
+        title: 'Spark Nano GPS Tracker',
+        date: "10/05/2020",
+        group:'Default',
+        plan: 'None',
+        type: '',
+        duration:'',
+        desc: '',
+        image: ''
+    },
+    {
+      id: '123456789456123',
+      title: 'TrackPort International',
+      date: "12/05/2020",
+      group:'Home',
+      plan: 'Basic',
+      duration:'Monthly',
+      type: 'Car',
+      desc: 'My Dad\'s Car',
+      image: require('../../../assets/images/Vehicles/car.png')
+  },
+  {
+      id: '123456789456123',
+      title: 'TrackPort 4G Vehicle GPS Tracker',
+      date: "12/05/2020",
+      group:'Fedex Ground',
+      plan: 'Standard',
+      duration:'Yearly',
+      type:'Truck',
+      desc: 'My Dad\'s Truck',
+      image: require('../../../assets/images/Vehicles/Truck.png')
+  },
+  {
+      id: '123456789456123',
+      title: 'Spark Nano GPS Tracker',
+      date: "10/05/2020",
+      group:'Default',
+      plan: 'None',
+      type: '',
+      duration:'',
+      desc: '',
+      image: ''
+  },
+  {
+    id: '123456789456123',
+    title: 'TrackPort International',
+    date: "12/05/2020",
+    group:'Home',
+    plan: 'Basic',
+    duration:'Monthly',
+    type: 'Car',
+    desc: 'My Dad\'s Car',
+    image: require('../../../assets/images/Vehicles/car.png')
+},
+{
+    id: '123456789456123',
+    title: 'TrackPort 4G Vehicle GPS Tracker',
+    date: "12/05/2020",
+    group:'Fedex Ground',
+    plan: 'Standard',
+    duration:'Yearly',
+    type:'Truck',
+    desc: 'My Dad\'s Truck',
+    image: require('../../../assets/images/Vehicles/Truck.png')
+},
+{
+    id: '123456789456123',
+    title: 'Spark Nano GPS Tracker',
+    date: "10/05/2020",
+    group:'Default',
+    plan: 'None',
+    type: '',
+    duration:'',
+    desc: '',
+    image: ''
+},
 
     ];
 

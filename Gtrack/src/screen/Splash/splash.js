@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
     mainViewStyle: {
         position:'absolute', 
         bottom: 20, 
-        alignContent:'center', 
+        //alignContent:'center', 
         alignItems:'center', 
-        // width:wp(100)
+        //width:wp(100)
     },
     viewStyle: {
         flexDirection:'row', 
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     textStyle: {
         color:ColorConstant.WHITE,
         fontSize: hp(2.2),
-        fontWeight: 'bold'
+        fontFamily:'Nunito-Bold'
+        //fontWeight: 'bold'
     },
     loginTextStyle: {
         color:ColorConstant.ORANGE,
@@ -76,7 +77,8 @@ const styles = StyleSheet.create({
     },
     buttonTextStyle: {
         fontSize: FontSize.FontSize.regular, 
-        fontWeight: '600'
+        fontWeight: '600',
+        fontFamily: 'Nunito-Bold'
     }
 })
 

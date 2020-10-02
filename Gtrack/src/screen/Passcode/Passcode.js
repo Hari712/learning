@@ -65,12 +65,15 @@ resetEmailText: {
     fontSize:FontSize.FontSize.medium,
     fontWeight: 'bold',
     textAlign:'center',
-    marginBottom: hp(1)
+    marginBottom: hp(1),
+    fontFamily:'Nunito-Bold',
+    textAlign:'center',
 },
 textStyle: {
     color:ColorConstant.WHITE,
     fontSize:FontSize.FontSize.small,
-    fontWeight: '500',
+    //fontWeight: '500',
+    fontFamily:'Nunito-SemiBold',
     textAlign:'center',
     marginTop:hp(1)
 },

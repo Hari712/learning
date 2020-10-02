@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     textStyle: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.small,
+        fontFamily:'Nunito-Regular'
     },
     checkboxMainStyle: {
         flexDirection: 'row',
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
     },
     termsConditionStyle: {
         color: ColorConstant.WHITE,
-        fontWeight: 'bold',
+        fontFamily:'Nunito-Regular',
         fontSize: hp(2.2),
         marginLeft: wp(3)
     },
@@ -152,13 +153,17 @@ const styles = StyleSheet.create({
     },
     bottomContainer: {
         flexDirection: 'row',
-        marginTop: hp(3)
+        marginTop: hp(3),
     },
     bottomText: {
         color: ColorConstant.WHITE,
+        fontFamily:'Nunito-Bold',
+        fontSize:FontSize.FontSize.medium
     },
     bottomBtn: {
         color: ColorConstant.ORANGE,
+        fontFamily:'Nunito-Bold',
+        fontSize:FontSize.FontSize.medium
     },
 })
 

@@ -199,7 +199,9 @@ const EditProfile = ({ navigation, route, item }) => {
                         <View style={styles.billingMainView}>
                             <Image source={images.image.settings.billing} />
                             <Text style={styles.headingTextStyle}> Billing Address </Text>
-                            <Image source={images.image.settings.crossIcon} />
+                            <TouchableOpacity onPress={() => hideDialog()} >
+                                <Image source={images.image.settings.crossIcon} />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.textInputField}>
                             <TextField
@@ -227,7 +229,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             />
                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={styles.countryField}>
                                 <DropDown
                                     defaultValue={country}
@@ -272,9 +274,9 @@ const EditProfile = ({ navigation, route, item }) => {
                         </View>
 
                         <View style={styles.checkboxMainStyle}>
-                            <View style={{ shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10 }}>
+                            <View style={{ shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10, borderColor: ColorConstant.BLACK, borderWidth: 1 }}>
                                 <CheckBox
-                                    style={{}}
+                                    style={{ }}
                                     unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
                                     checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
                                     onClick={() => {
@@ -318,7 +320,9 @@ const EditProfile = ({ navigation, route, item }) => {
                         <View style={styles.billingMainView}>
                             <Image source={images.image.settings.address} />
                             <Text style={styles.headingTextStyle} >Edit Shipping Address</Text>
-                            <Image source={images.image.settings.crossIcon} />
+                            <TouchableOpacity onPress={() => hideDialog()}>
+                                <Image source={images.image.settings.crossIcon} />
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.textInputField}>
@@ -360,7 +364,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             />
                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={styles.countryField}>
                                 <DropDown
                                     defaultValue={country}
@@ -433,7 +437,9 @@ const EditProfile = ({ navigation, route, item }) => {
                         <View style={styles.billingMainView}>
                             <Image source={images.image.settings.address} />
                             <Text style={styles.headingTextStyle} >New Shipping Address</Text>
-                            <Image source={images.image.settings.crossIcon} />
+                            <TouchableOpacity onPress={() => hideDialog()}>
+                                <Image source={images.image.settings.crossIcon} />
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.textInputField}>
@@ -475,7 +481,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             />
                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', zIndex: 1000 }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                             <View style={styles.countryField}>
                                 <DropDown
                                     defaultValue={country}
@@ -712,7 +718,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 15,
-        elevation: 3,
+        // elevation: 3,
         borderWidth: 0.3,
         borderColor: ColorConstant.GREY,
         shadowColor: ColorConstant.GREY,

@@ -5,6 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { navigationRef } from '../../navigation/NavigationService';
 import MapView from '../../component/MapView';
+import FontSize from '../../component/FontSize';
 
 const LiveTracking = ({navigation}) => {
 
@@ -103,7 +104,9 @@ const styles = StyleSheet.create({
 		margin: hp(0.5),
 		color: ColorConstant.BLUE,
 		textAlignVertical: 'center',
-		paddingLeft: hp(0.5)
+		paddingLeft: hp(0.5),
+		fontSize:FontSize.FontSize.small,
+		fontFamily:'Nunito-Regular'
 	},
 	horizontalLine: {
 		borderBottomWidth: 0.5, borderBottomColor: ColorConstant.GREY, margin: hp(0.7)

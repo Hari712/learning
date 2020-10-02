@@ -5,12 +5,11 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import FontSize from '../../../component/FontSize';
 import ShadowView from 'react-native-simple-shadow-view'
-import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
+import Dialog from '../../../component/Dialog'
 
 const Profile = ({ navigation }) => {
 
-    const [viewDialogBox, setViewDialogBox] = useState(false)
-    const [cancel, setCancel] = useState(false)
+    const [dialogVisible,setDialogVisible] = useState(false)
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -32,44 +31,22 @@ const Profile = ({ navigation }) => {
         });
     }, [navigation]);
 
-    function hideDialog() {
-        setViewDialogBox(false)
-    }
-
     useEffect(() => {
-        console.log('Dialog Visibility', viewDialogBox)
-    }, [viewDialogBox])
+    
+    }, [])
 
     function RenderBillingDialog(item, index) {
         return (
-            <Dialog
-                visible={viewDialogBox}
-                onTouchOutside={() => hideDialog()}
-            >
-            <DialogContent>
-                <View style={styles.billingAddressDialogView}>
-                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: hp(5)}}>
-                        <Text style={{color: ColorConstant.ORANGE, justifyContent: 'center', marginLeft: wp(25), fontWeight: 'bold'}}>Are you sure ?</Text>
-                        <Image source = {images.image.settings.crossIcon} />
-                    </View>
-
-                    <Text style={{marginTop: hp(5)}}>Do you really want to delete Home Address ?</Text>
-
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
-                                <Text style={styles.buttonTextColor}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => { hideDialog() }}
-                                style={styles.LoginButton}>
-                                <Text style={styles.LoginButtonText}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
-                    
-                </View>
-            </DialogContent>
-        </Dialog>
+            <Dialog 
+                    heading="Are you sure ?"
+                    message={"Do you really want to delete Home Address ?"}
+                    visible={dialogVisible}
+                    onTouchOutside={() => setDialogVisible(false)}
+                    positiveButtonName={"Delete"}
+                    negativeButtonName={"Cancel"}
+                    negativeHandle={() => setDialogVisible(false)}
+                    positiveHandle={() => setDialogVisible(false)}
+                />
         )
     }
 
@@ -122,7 +99,7 @@ const Profile = ({ navigation }) => {
 
                     <View style={styles.underLineStyle} />
 
-                    <TouchableOpacity style={styles.textMainView} onPress={() => { setViewDialogBox(!viewDialogBox) }}>
+                    <TouchableOpacity style={styles.textMainView} onPress={() => { setDialogVisible(!dialogVisible) }}>
                         <Text style={styles.textStyleNone}>None</Text>
                         <Image source={images.image.settings.trash} />
                     </TouchableOpacity>
@@ -171,7 +148,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 15,
-        elevation: 3,
+        // elevation: 3,
         borderWidth: 0.3,
         borderColor: ColorConstant.GREY,
         shadowColor: ColorConstant.GREY,
@@ -215,7 +192,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 15,
-        elevation: 3,
+        // elevation: 3,
         borderWidth: 0.3,
         borderColor: ColorConstant.GREY,
         shadowColor: ColorConstant.GREY,

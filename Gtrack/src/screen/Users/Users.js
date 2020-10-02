@@ -124,7 +124,7 @@ return (
               <View style={{justifyContent:'flex-start',flexDirection:'row'}}>
                   <Text style={styles.whiteContainerSubText}>{item.group[0]} </Text>  
                   <Tooltip
-                    popover={<Text style={{ fontSize:FontSize.FontSize.medium}}>{item.group[1]}</Text>} 
+                    popover={<Text style={{ fontSize:10,fontFamily:'Nunito-Regular'}}>{item.group[1]}</Text>} 
                     backgroundColor={ColorConstant.WHITE}
                     //withPointer={true}
                     overlayColor={ColorConstant.TRANSPARENT}
@@ -132,7 +132,7 @@ return (
                     containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
                   >           
                     {item.group.length>1?
-                      <Text style={{fontSize:hp(1.3),backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>+{item.group.length-1}</Text>
+                      <Text style={{fontSize:10,fontFamily:'Nunito-SemiBold',backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>+{item.group.length-1}</Text>
                   :null
                     }
                   </Tooltip>               
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 12,
-    elevation:3,
+    // elevation:3,
     borderWidth: 0.3,
     borderColor: ColorConstant.GREY,
     shadowColor:ColorConstant.GREY,
@@ -209,15 +209,18 @@ blueBox : {
 },
 blueBoxTitle :{
   color:ColorConstant.WHITE,
-  fontSize:FontSize.FontSize.medium,
-  fontWeight:'bold',
-  flex:1
+  fontSize:12,
+  //fontSize:FontSize.FontSize.small,
+  flex:1,
+  fontFamily:'Nunito-Bold'
 },
 activeText : {
-  fontSize:FontSize.FontSize.small,
+  //fontSize:FontSize.FontSize.small,
   color:ColorConstant.WHITE,
   paddingHorizontal:hp(1),
-  flex:0.3
+  flex:0.3,
+  fontSize:12,
+  fontFamily:'Nunito-Regular'
 },
 whiteContainer : {
   flexDirection:'row',
@@ -230,11 +233,16 @@ whiteSubView : {
 },
 whiteContainerText: {
   color:ColorConstant.GREY,
-  fontSize:FontSize.FontSize.small
+  //fontSize:FontSize.FontSize.small,
+  fontSize:10,
+  fontFamily:'Nunito-Regular'
 },
 whiteContainerSubText : {
   color:ColorConstant.BLACK,
-  fontSize:FontSize.FontSize.small,
+  //fontSize:FontSize.FontSize.small,
+  fontSize:12,
+  fontFamily:'Nunito-Regular'
+
 },
 horizontalLine:{
   borderBottomWidth:0.5,
@@ -250,17 +258,22 @@ emailPhone : {
   alignItems:'center'
 },
 emailImage : {
-  height:hp(1.5),
-  resizeMode:'contain'
+  height:hp(2),
+  alignSelf:'flex-end',
+  resizeMode:'contain',
 },
 emailText : {
   color:ColorConstant.BLACK,
-  fontSize:FontSize.FontSize.extraSmall,
-  flex:1
+  //fontSize:FontSize.FontSize.extraSmall,
+  flex:1,
+  fontSize:10,
+  fontFamily:'Nunito-Regular'
 },
 phoneText : {
   color:ColorConstant.BLACK,
-  fontSize:FontSize.FontSize.extraSmall
+  //fontSize:FontSize.FontSize.extraSmall,
+  fontSize:10,
+  fontFamily:'Nunito-Regular'
 },
 search: {
   paddingHorizontal:hp(2),
@@ -324,11 +337,16 @@ textStyle:{
   margin:hp(0.5),
   color:ColorConstant.BLUE,
   textAlignVertical:'center',
-  paddingLeft:hp(0.5)
+  paddingLeft:hp(0.5),
+  fontFamily:'Nunito-Regular',
+  fontSize:12
+  
 },
 searchText: {
-  fontSize:FontSize.FontSize.small,
-  color:ColorConstant.LIGHTGREY
+  //fontSize:FontSize.FontSize.small,
+  fontSize:10,
+  color:ColorConstant.LIGHTGREY,
+  fontFamily:'Nunito-LightItalic'
 },
 searchSubContainer: {
   flexDirection:'row',

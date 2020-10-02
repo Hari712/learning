@@ -3,30 +3,10 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
-import Users from '../screen/Users/Users';
-import DashBoard from '../screen/Dashboard/Dashboard';
-import DeviceAsset from '../screen/Device&Asset/DeviceAsset';
-import Settings from '../screen/Settings/Settings';
-import Profile from '../screen/Settings/Profile/Profile';
-import Subscription from '../screen/Settings/Subscription/Subscription';
-import PaymentSettings from '../screen/Settings/PaymentSettings/PaymentSettings';
-import Permission from '../screen/Settings/Permission/Permission';
-import About from '../screen/Settings/About/About';
-import RateUs from '../screen/Settings/RateUs/RateUs';
-import Feedback from '../screen/Settings/Feedback/Feedback';
 import FontSize from '../component/FontSize';
 import images from '../constants/images';
-import Details from '../screen/Device&Asset/Details'
-import EditDeviceAsset from '../screen/Device&Asset/EditDeviceAsset'
-import CreateDeviceAsset from '../screen/Device&Asset/CreateDeviceAsset';
-import Manage from '../screen/Device&Asset/Manage';
-import AddUser from '../screen/Users/AddUser';
-import EditProfile from '../screen/Settings/Profile/EditProfile';
-import Notification from '../screen/Notification/Notification';
-import { SensorInfo } from '../screen'
-import { DeviceInfo } from '../screen'
 
 const Tab = createBottomTabNavigator();
 
@@ -53,7 +33,7 @@ const ScreenOptions = {
 
 const LiveTrackingStackNavigator = () => {
     return(
-    <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='none' headerMode="screen" screenOptions={ScreenOptions} >
+    <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='none'  screenOptions={ScreenOptions} >
         <LiveTrackingStack.Screen name='LiveTracking' component={LiveTracking} />
         <LiveTrackingStack.Screen name='Notification' component={Notification} />
         <LiveTrackingStack.Screen name='SensorInfo' component={SensorInfo} />
@@ -163,7 +143,7 @@ export const TabStackNavigator = ({ }) => {
                     return (
                         <View style={{ justifyContent: 'center', alignItems: 'center'}}>
                             <Image source={iconName} resizeMode='contain' style={styles.tabIcon}/>
-                            <Text style={{textAlign:'center',fontSize:FontSize.FontSize.extraSmall,color:color}}>{route.name}</Text>
+                            <Text style={{textAlign:'center',fontSize:FontSize.FontSize.extraSmall,fontFamily:'Nunito-Regular',color:color}}>{route.name}</Text>
                         </View>
                     )
                 },

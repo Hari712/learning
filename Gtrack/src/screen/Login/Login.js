@@ -38,7 +38,7 @@ const Login = () => {
                 message = AppConstants.EMPTY_PASSWORD
             }
             if (!_.isEmpty(message)) {
-               AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+                AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
 
             }
@@ -119,7 +119,8 @@ const styles = StyleSheet.create({
     welcomeText: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.regular,
-        fontWeight: 'bold',
+        //fontWeight: 'bold',
+        fontFamily:'Nunito-Bold',
         letterSpacing: wp(1),
         textAlign: 'center'
     },
@@ -127,6 +128,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
+        color:'red',
+        // fontSize: FontSize.FontSize.small,
+        // fontFamily:'Nunito-LightItalic',
         justifyContent: 'space-between',
     },
     button: {
@@ -147,7 +151,8 @@ const styles = StyleSheet.create({
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.small,
         fontWeight: '500',
-        marginTop: hp(3)
+        marginTop: hp(3),
+        fontFamily:'Nunito-SemiBold'
     },
 })
 
