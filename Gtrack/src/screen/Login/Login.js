@@ -6,6 +6,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { AppConstants } from '../../constants/AppConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
+import { useDispatch } from 'react-redux'
 import NavigationService from '../../navigation/NavigationService'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
 import AppManager from '../../constants/AppManager'
@@ -14,15 +15,18 @@ import CustomButton from '../../component/Button'
 import CheckBox from 'react-native-check-box'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import _ from 'lodash'
+import * as LoginActions from './Login.Action'
 
 const Login = () => {
+
+    const dispatch = useDispatch()
 
     const { isConnected } = useSelector(state => ({
         isConnected: state.network.isConnected,
     }))
 
     const [email, setEmail] = useState('')
-    const [passcode, setPasscode] = useState('')
+    const [password, setPassword] = useState('')
     const [isSelected, setIsSelected] = useState(false)
 
     function onTapLoginButton() {
@@ -40,11 +44,24 @@ const Login = () => {
             if (!_.isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
-
+                AppManager.showLoader()
+                const requestBody = {
+                    emailOrPhone: email,
+                    password: password
+                }
+                dispatch(LoginActions.requestLogin(requestBody, onLoginSuccess, onLoginError))
             }
         } else {
             AppManager.showNoInternetConnectivityError()
         }
+    }
+
+    function onLoginSuccess(data) {
+        AppManager.hideLoader()
+    }
+
+    function onLoginError(error) {
+        AppManager.hideLoader()
     }
 
     function navigateToLiveTracking() {
@@ -78,8 +95,8 @@ const Login = () => {
                     />
 
                     <EditText
-                        value={passcode}
-                        onChangeText={(value) => setPasscode(value)}
+                        value={password}
+                        onChangeText={(value) => setPassword(value)}
                         placeholder='Passcode'
                         passcode style={styles.passcodeText}
                     />
