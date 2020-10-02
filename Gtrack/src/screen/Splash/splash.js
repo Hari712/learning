@@ -73,10 +73,11 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         width:wp(80),
-        height:hp(5.5),
+        height:hp(5.3),
     },
     buttonTextStyle: {
         fontSize: FontSize.FontSize.regular, 
+        fontWeight: '600',
         fontFamily: 'Nunito-Bold'
     }
 })

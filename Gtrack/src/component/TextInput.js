@@ -57,9 +57,9 @@ const styles = StyleSheet.create({
         borderRadius:7,
         paddingHorizontal:hp(2),
         backgroundColor:ColorConstant.WHITE,
-        width:wp(75),
+        width:'100%',
         height:hp(5.5),
-        margin:hp(1.5),
+        marginBottom:hp(2.5),
         color:'black',
         fontFamily:'Nunito-LightItalic'
     },
