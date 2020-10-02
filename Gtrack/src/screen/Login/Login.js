@@ -70,12 +70,16 @@ const Login = () => {
                         <Text style={styles.welcomeText}>WELCOME!</Text>
                     </View>
 
+                    {/* <View style={{flexDirection:'row',backgroundColor:'red'}}> 
                     <EditText
                         value={email}
                         onChangeText={(value) => { setEmail(value) }}
                         placeholder='Email Address/Mobile Number'
                         style={{ fontSize: FontSize.FontSize.small, paddingHorizontal: hp(1.5), alignItems: 'center' }}
                     />
+                   
+                    <Image source={images.login.info}></Image>
+                    </View> */}
 
                     <EditText
                         value={passcode}

@@ -63,7 +63,7 @@ const Users = ({navigation}) => {
         const [search, setSearch] = useState()
 
         const searchFilter = (text) => {
-          searchData = DATA.filter(item=>item.name.toString().toLowerCase().includes(text.toLowerCase()))
+          searchData = DATA.filter(item=>item.firstName.toString().toLowerCase().includes(text.toLowerCase()))
             setSearch(text)
         }
 
