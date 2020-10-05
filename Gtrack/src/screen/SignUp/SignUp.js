@@ -202,7 +202,8 @@ const styles = StyleSheet.create({
     countryCode: {
         flex:1,
         fontSize:FontSize.FontSize.small,
-        fontFamily:'Nunito-Regular'
+        fontFamily:'Nunito-Regular',
+        color:ColorConstant.BLACK,
     }
 })
 

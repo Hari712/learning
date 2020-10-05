@@ -19,14 +19,14 @@ class EditText extends React.Component {
     }
 
     render() {
-        const {style, passcode, ...otherProps} = this.props;
+        const {style, passcode, rightContainer,  ...otherProps} = this.props;
         return(
             passcode ?
 
             <View style={[styles.inputTextStyle,style]}>
                 <TextInput 
                     secureTextEntry={!this.state.isSelected} 
-                    style={{ fontSize: FontSize.FontSize.small }}
+                    style={styles.textStyle}
                     placeholderTextColor={ColorConstant.GREY} 
                     ref={'textInput'}
                     {...otherProps}
@@ -42,12 +42,15 @@ class EditText extends React.Component {
 
             :
 
-            <TextInput 
-                placeholderTextColor={ColorConstant.GREY} 
-                ref={'textInput'}
-                style={[styles.inputTextStyle, style]} 
-                {...otherProps}
-            />
+            <View style={[styles.inputTextStyle, {flexDirection:'row'},style]}>
+                <TextInput 
+                    placeholderTextColor={ColorConstant.GREY} 
+                    ref={'textInput'}
+                    style={styles.textStyle}
+                    {...otherProps}
+                />
+                {rightContainer}
+            </View>
         )
     }
 }
@@ -60,9 +63,13 @@ const styles = StyleSheet.create({
         width:'100%',
         height:hp(5.5),
         marginBottom:hp(2.5),
-        color:'black',
-        fontFamily:'Nunito-LightItalic'
     },
+    textStyle: {
+        fontSize: FontSize.FontSize.small, 
+        flex:1,
+        color:ColorConstant.BLACK,
+        fontFamily:'Nunito-LightItalic'
+    }
 })
     
 

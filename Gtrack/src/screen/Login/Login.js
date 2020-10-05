@@ -24,6 +24,7 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [passcode, setPasscode] = useState('')
     const [isSelected, setIsSelected] = useState(false)
+    const [isClickInfo,setIsClickInfo] = useState(false)
 
     function onTapLoginButton() {
         if (isConnected) {
@@ -58,11 +59,11 @@ const Login = () => {
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <KeyboardAwareScrollView
-             contentContainerStyle={{ flexGrow: 1 }}
-             automaticallyAdjustContentInsets={false}
-             keyboardShouldPersistTaps='handled'
-             enableOnAndroid={false}
-             scrollEnabled={false}>
+                contentContainerStyle={{ flexGrow: 1 }}
+                automaticallyAdjustContentInsets={false}
+                keyboardShouldPersistTaps='handled'
+                enableOnAndroid={false}
+                scrollEnabled={false}>
     
                 <View style={styles.container}>
                     <Image source={images.image.defaultlogo} style={styles.imageStyle} />
@@ -70,16 +71,23 @@ const Login = () => {
                         <Text style={styles.welcomeText}>WELCOME!</Text>
                     </View>
 
-                    {/* <View style={{flexDirection:'row',backgroundColor:'red'}}> 
                     <EditText
                         value={email}
                         onChangeText={(value) => { setEmail(value) }}
                         placeholder='Email Address/Mobile Number'
-                        style={{ fontSize: FontSize.FontSize.small, paddingHorizontal: hp(1.5), alignItems: 'center' }}
-                    />
-                   
-                    <Image source={images.login.info}></Image>
-                    </View> */}
+                        rightContainer={
+                            <TouchableOpacity onPress={()=>setIsClickInfo(!isClickInfo)} style={{width:wp(3),zIndex:1}}>
+                                <Image source={isClickInfo?images.login.infoClick:images.login.info} />
+                            </TouchableOpacity>
+                        }
+                        style={{ paddingHorizontal: hp(1.5), alignItems: 'center' }}
+                    /> 
+                    {isClickInfo?
+                        <View style={styles.infoPopup}>
+                            <Text style={styles.infoText}>Enter mobile number without country code.</Text>
+                        </View>
+                    :null}                  
+                    
 
                     <EditText
                         value={passcode}
@@ -108,7 +116,7 @@ const Login = () => {
 
 const styles = StyleSheet.create({
     backgroundImage: {
-        flex: 1
+        flex: 1,
     },
     container: {
         flex: 1,
@@ -133,8 +141,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         color:'red',
-        // fontSize: FontSize.FontSize.small,
-        // fontFamily:'Nunito-LightItalic',
         justifyContent: 'space-between',
     },
     button: {
@@ -158,6 +164,21 @@ const styles = StyleSheet.create({
         marginTop: hp(3),
         fontFamily:'Nunito-SemiBold'
     },
+    infoPopup: {
+        borderRadius:7,
+        paddingVertical:hp(0.5),
+        paddingLeft:hp(2),
+        backgroundColor:ColorConstant.TRANSPARENT,
+        width:'100%',
+        borderColor:ColorConstant.WHITE,
+        borderWidth:1,
+        marginBottom:hp(2.5),
+    },
+    infoText: {
+        fontSize: FontSize.FontSize.small, 
+        color:ColorConstant.WHITE,
+        fontFamily:'Nunito-LightItalic'
+    }
 })
 
 export default Login;
