@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react'
-import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput } from 'react-native'
+import React, { Component, useState,useEffect } from 'react'
+import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, Button } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -11,7 +11,8 @@ import { EditText } from '../../component'
 import CheckBox from 'react-native-check-box'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import isEmpty from 'lodash/isEmpty'
-
+import Modal from 'react-native-modal'
+import { CountrySelection } from 'react-native-country-list'
 
 const SignUp = () => {
 
@@ -19,8 +20,9 @@ const SignUp = () => {
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
     const [email, setEmail] = useState()
-    const [countryCode, setCountryCode] = useState()
+    const [countryCode, setCountryCode] = useState(0)
     const [phoneNumber, setPhoneNumber] = useState()
+    const [isModalVisible, setModalVisible] = useState(true);
 
     function onTapSignUp() {
         let message = ''
@@ -46,6 +48,13 @@ const SignUp = () => {
 
         }
     }
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+      };
+    const onCountrySelection = (country) => {
+        setCountryCode(country.callingCode)
+        setModalVisible(!isModalVisible)
+    }  
 
     return (
 
@@ -68,9 +77,23 @@ const SignUp = () => {
                     <EditText placeholder='Last Name' style={{ fontSize: FontSize.FontSize.small }} value={lastName} />
                     <EditText placeholder='Email Address' style={{ fontSize: FontSize.FontSize.small }} value={email} />
                     <View style={{ flexDirection:'row'}}>
-                        <View style={{ flex:0.25 }}>
-                        <EditText placeholder='Mobile Number' style={{ fontSize: FontSize.FontSize.small }} value={phoneNumber} />
-                        </View>
+
+                        <View style={styles.countryPicker }>
+                            <Text style={styles.countryCode}>+{countryCode}</Text>
+                        <TouchableOpacity  onPress={toggleModal}>
+                            <Image style={{height:hp(1)}} source={images.countryPicker.downArrow}/> 
+                        </TouchableOpacity>
+                            <Modal 
+                                isVisible={!isModalVisible} 
+                                coverScreen={true}
+                                //onBackButtonPress={() => setModalVisible(false)}
+                                >
+                                <View style={{flex: 1}}>
+                                    <CountrySelection action={(item) => onCountrySelection(item)} selected={countryCode}/>
+                                </View>
+                            </Modal>
+                    </View>
+
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText placeholder='Mobile Number' style={{ fontSize: FontSize.FontSize.small }} value={phoneNumber} />
                         </View>    
@@ -79,7 +102,7 @@ const SignUp = () => {
 
                     <View style={styles.checkboxMainStyle}>
                         <CheckBox
-                            style={{}}
+                            style={{alignSelf:'center'}}
                             unCheckedImage={<Image source={images.login.uncheckedbox}></Image>}
                             checkedImage={<Image source={images.login.checkedbox}></Image>}
                             onClick={() => { setIsSelected(!isSelected) }}
@@ -165,6 +188,23 @@ const styles = StyleSheet.create({
         fontFamily:'Nunito-Bold',
         fontSize:FontSize.FontSize.medium
     },
+    countryPicker: {
+        flex:0.25,
+        flexDirection:'row',
+        borderRadius:7,
+        paddingHorizontal:hp(1.5),
+        backgroundColor:ColorConstant.WHITE,        
+        height:hp(5.5),
+        marginBottom:hp(2.5),
+        alignItems:'center',
+        
+    },
+    countryCode: {
+        flex:1,
+        fontSize:FontSize.FontSize.small,
+        fontFamily:'Nunito-Regular',
+        color:ColorConstant.BLACK,
+    }
 })
 
 export default SignUp;

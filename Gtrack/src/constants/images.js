@@ -2,6 +2,8 @@ const images = {
     login:{
         checkedbox: require('../../assets/images/Login/checkedbox.png'),
         uncheckedbox: require('../../assets/images/Login/unchecked.png'),
+        info: require('../../assets/images/Login/info.png'),
+        infoClick: require('../../assets/images/Login/infoClick.png')
     },
     manage: {
         close: require('../../assets/images/Manage/close.png'),
@@ -10,6 +12,9 @@ const images = {
         edit: require('../../assets/images/Manage/editblack.png'),
         trash: require('../../assets/images/Manage/trash.png'),
         trashBlack: require('../../assets/images/Manage/trashblack.png')
+    },
+    countryPicker:{
+        downArrow: require('../../assets/images/CountryPicker/downArrow.png')
     },
     user: {
         add: require('../../assets/images/User/add.png'),
