@@ -38,7 +38,7 @@ const Login = () => {
             else if (!validateEmailorPhoneNumber(email)) {
                 message = AppConstants.INVALID_EMAIL_OR_PHONE
             }
-            else if (_.isEmpty(passcode)) {
+            else if (_.isEmpty(password)) {
                 message = AppConstants.EMPTY_PASSWORD
             }
             if (!_.isEmpty(message)) {
@@ -58,10 +58,15 @@ const Login = () => {
 
     function onLoginSuccess(data) {
         AppManager.hideLoader()
+        console.log("Success data",data)
+        if(data.message=="User successfully authenticated"){
+            navigateToLiveTracking()
+        }
     }
 
     function onLoginError(error) {
         AppManager.hideLoader()
+        console.log("Error",error)
     }
 
     function navigateToLiveTracking() {
@@ -114,7 +119,8 @@ const Login = () => {
 
                     <CustomButton
                         title="Login"
-                        onPress={() => navigateToLiveTracking()}
+                        //onPress={() => navigateToLiveTracking()}
+                        onPress={() => onTapLoginButton()}
                         style={styles.button}
                         textStyle={styles.buttonTextStyle}
                     />
