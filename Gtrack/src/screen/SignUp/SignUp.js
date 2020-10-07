@@ -15,7 +15,7 @@ import isEmpty from 'lodash/isEmpty'
 import Modal from 'react-native-modal'
 import { CountrySelection } from 'react-native-country-list'
 import AppManager from '../../constants/AppManager'
-import * as SignUpAction from './Signup.Action'
+import * as LoginActions from '../Login/Login.Action'
 
 const SignUp = () => {
 
@@ -53,14 +53,13 @@ const SignUp = () => {
         } else {
             AppManager.showLoader()
             const requestBody = {
-                "id" : null,
                 "email" : email,
                 "firstName" :firstName,
                 "lastName" :lastName,
                 "phone" : phoneNumber,
-                "phonePrefix" :countryCode
+                "phonePrefix" : "+" + countryCode.toString()
             }
-            dispatch(SignUpAction.requestSignUp(requestBody, onSuccess, onError))
+            dispatch(LoginActions.requestSignUp(requestBody, onSuccess, onError))
 
         }
     }
@@ -68,11 +67,18 @@ const SignUp = () => {
     function onSuccess(data) {
         AppManager.hideLoader()
         console.log("Success data",data)
+        if(data.message=="Successfully created new data"){
+            AppManager.showSimpleMessage('warning', { message: data.message, description: '', floating: true }) 
+            NavigationService.navigate('Login')
+        }
     }
 
     function onError(error) {
         AppManager.hideLoader()
         console.log("Error",error)
+        if(error=='Email is already registered in the system'){
+            AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
+        }
     }
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -161,7 +167,6 @@ const SignUp = () => {
                         style={styles.buttonStyle}
                         textStyle={styles.buttonTextStyle}
                         onPress={() => onTapSignUp()}
-                       // onPress={() => NavigationService.navigate('SignUp')}
                     />
 
                     <View style={styles.bottomContainer}>
