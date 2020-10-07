@@ -59,7 +59,8 @@ const Login = () => {
     function onLoginSuccess(data) {
         AppManager.hideLoader()
         console.log("Success data",data)
-        if(data.message=="User successfully authenticated"){
+        if(data){
+            AppManager.showSimpleMessage('warning', { message:data.message, description: '', floating: true })
             navigateToLiveTracking()
         }
     }
@@ -67,8 +68,8 @@ const Login = () => {
     function onLoginError(error) {
         AppManager.hideLoader()
         console.log("Error",error)
-        if(error=="Invalid Password, Please Try Again!"){
-            AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
+        if(error){
+            AppManager.showSimpleMessage('warning', { message:error, description: '', floating: true })
         }
     }
 

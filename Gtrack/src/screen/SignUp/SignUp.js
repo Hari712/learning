@@ -67,7 +67,7 @@ const SignUp = () => {
     function onSuccess(data) {
         AppManager.hideLoader()
         console.log("Success data",data)
-        if(data.message=="Successfully created new data"){
+        if(data){
             AppManager.showSimpleMessage('warning', { message: data.message, description: '', floating: true }) 
             NavigationService.navigate('Login')
         }
@@ -76,7 +76,7 @@ const SignUp = () => {
     function onError(error) {
         AppManager.hideLoader()
         console.log("Error",error)
-        if(error=='Email is already registered in the system'){
+        if(error){
             AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
         }
     }
