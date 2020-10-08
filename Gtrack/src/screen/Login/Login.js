@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState,useEffect } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput } from 'react-native'
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,19 +13,22 @@ import { EditText } from '../../component'
 import CustomButton from '../../component/Button'
 import CheckBox from 'react-native-check-box'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
+import { storeItem } from '../../utils/storage'
+import { USER_DATA } from '../../constants/AppConstants'
 import _ from 'lodash'
 import * as LoginActions from './Login.Action'
 
-const Login = () => {
 
+const Login = () => {
+    
     const dispatch = useDispatch()
 
     const { isConnected } = useSelector(state => ({
         isConnected: state.network.isConnected,
     }))
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('Khushbu.solanki@ekzero.com')
+    const [password, setPassword] = useState('865382')
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo,setIsClickInfo] = useState(false)
 
@@ -59,9 +62,21 @@ const Login = () => {
     function onLoginSuccess(data) {
         AppManager.hideLoader()
         console.log("Success data",data)
-        if(data){
-            AppManager.showSimpleMessage('warning', { message:data.message, description: '', floating: true })
-            navigateToLiveTracking()
+        saveUserData(data)
+        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })
+        navigateToLiveTracking()
+       
+    }
+
+    const saveUserData = async (data) => {
+        try {
+            const isSuccess = await storeItem(USER_DATA, data)
+            if (isSuccess) {
+                AppManager.hideLoader()
+                dispatch(LoginActions.setLoginResponse(data))
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 

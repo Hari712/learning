@@ -10,24 +10,27 @@ const initialState = {
     lastName: null,
     phonePrefix: null,
     phone: null,
-    email: null
+    email: null,
+    group:[],
+    role:[]
 }
 
 export const loginReducer = createReducer(state = initialState, {
     [types.LOGIN_RESPONSE](state, action) {
         const { data } = action
-        const { user } = data
         return {
             ...state,
-            tokenType: data.tokenType,
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken,
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            phonePrefix: user.phonePrefix,
-            phone: user.phone,
-            email: user.email
+            tokenType: data.result.tokenType,
+            accessToken: data.result.accessToken,
+            refreshToken: data.result.refreshToken,
+            id:data.result.userDTO.id,
+            firstName: data.result.userDTO.firstName,
+            lastName: data.result.userDTO.lastName,
+            phonePrefix: data.result.userDTO.phonePrefix,
+            phone: data.result.userDTO.phone,
+            email: data.result.userDTO.firstName,
+            group: data.result.userDTO.groups,
+            role: data.result.userDTO.roles
         }
     }
 })

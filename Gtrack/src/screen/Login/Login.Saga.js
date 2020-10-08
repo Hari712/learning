@@ -10,6 +10,7 @@ function* login(action) {
     const { data, onSuccess, onError } = action
     try {
         const response = yield call(API.post, ApiConstants.LOGIN, data)
+        setToken(response.result.accessToken)
         onSuccess(response)
     } catch (error) {
         onError(error)
