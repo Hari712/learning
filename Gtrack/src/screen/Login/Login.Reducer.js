@@ -28,7 +28,7 @@ export const loginReducer = createReducer(state = initialState, {
             lastName: data.result.userDTO.lastName,
             phonePrefix: data.result.userDTO.phonePrefix,
             phone: data.result.userDTO.phone,
-            email: data.result.userDTO.firstName,
+            email: data.result.userDTO.email,
             group: data.result.userDTO.groups,
             role: data.result.userDTO.roles
         }

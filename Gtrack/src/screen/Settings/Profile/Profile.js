@@ -1,15 +1,21 @@
-import React, { useState, Component, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../../constants/images';
-import { ColorConstant } from '../../../constants/ColorConstants';
-import FontSize from '../../../component/FontSize';
+import React, { useState, Component, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import images from '../../../constants/images'
+import { ColorConstant } from '../../../constants/ColorConstants'
+import { getLoginState } from '../../Selector'
+import FontSize from '../../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import Dialog from '../../../component/Dialog'
 
 const Profile = ({ navigation }) => {
 
     const [dialogVisible,setDialogVisible] = useState(false)
+
+    const { loginData } = useSelector(state => ({
+        loginData: getLoginState(state),
+    }))
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -28,6 +34,7 @@ const Profile = ({ navigation }) => {
                     <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
+            
         });
     }, [navigation]);
 
@@ -56,12 +63,11 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>My Profile</Text>
             </View>
 
-            {DATA.map((item,index) =>
-            <View key={index} style={styles.mainViewStyle}>
+            <View style={styles.mainViewStyle}>
                 <View style={styles.blueBoxStyle}>
-                    <Text style={styles.textStyle}>{item.fullName}</Text>
+                <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:item.firstName,lastName:item.lastName, phoneNumber:item.phoneNumber, emailId:item.emailId}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:loginData.firstName,lastName:loginData.lastName, phoneNumber:loginData.phone, emailId:loginData.email}) }} >
                         <Image source={images.image.edit} />
                     </TouchableOpacity>
                 </View>
@@ -69,12 +75,12 @@ const Profile = ({ navigation }) => {
                 <View style={styles.subMainView}>
                     <View style={styles.emailMainView}>
                         <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>{item.emailId}</Text>
+                        <Text style={styles.emailText}>{loginData.email}</Text>
                     </View>
 
                     <View style={styles.emailMainView}>
                         <Image source={images.image.settings.phone} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>{item.phoneNumber}</Text>
+                        <Text style={styles.emailText}>{loginData.phone}</Text>
                     </View>
                 </View>
 
@@ -108,22 +114,12 @@ const Profile = ({ navigation }) => {
                 {RenderBillingDialog()}
 
             </View>
-            )}
+           
 
         </View>
     )
+
 }
-
-const DATA = [
-    {
-        fullName: "David Smith",
-        firstName: "David",
-        lastName: "Smith",
-        emailId: "davidsmith@gmail.com",
-        phoneNumber: "None",
-    }
-]
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
