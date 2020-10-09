@@ -1,6 +1,7 @@
 import React, { Component, useState,useEffect } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, Button } from 'react-native'
 import images from '../../constants/images'
+import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AppConstants } from '../../constants/AppConstants'
@@ -13,8 +14,12 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import isEmpty from 'lodash/isEmpty'
 import Modal from 'react-native-modal'
 import { CountrySelection } from 'react-native-country-list'
+import AppManager from '../../constants/AppManager'
+import * as LoginActions from '../Login/Login.Action'
 
 const SignUp = () => {
+
+    const dispatch = useDispatch()
 
     const [isSelected, setIsSelected] = useState(false)
     const [firstName, setFirstName] = useState()
@@ -43,9 +48,36 @@ const SignUp = () => {
         }
 
         if (!isEmpty(message)) {
+            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
 
         } else {
+            AppManager.showLoader()
+            const requestBody = {
+                "email" : email,
+                "firstName" :firstName,
+                "lastName" :lastName,
+                "phone" : phoneNumber,
+                "phonePrefix" : "+" + countryCode.toString()
+            }
+            dispatch(LoginActions.requestSignUp(requestBody, onSuccess, onError))
 
+        }
+    }
+
+    function onSuccess(data) {
+        AppManager.hideLoader()
+        console.log("Success data",data)
+        if(data){
+            AppManager.showSimpleMessage('warning', { message: AppConstants.EMAIL_SENT, description: '', floating: true }) 
+            NavigationService.navigate('Login')
+        }
+    }
+
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)
+        if(error){
+            AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
         }
     }
     const toggleModal = () => {
@@ -73,9 +105,24 @@ const SignUp = () => {
                         <Text style={styles.textStyle}>create your account</Text>
                     </View>
 
-                    <EditText placeholder='First Name' style={{ fontSize: FontSize.FontSize.small }} value={firstName} />
-                    <EditText placeholder='Last Name' style={{ fontSize: FontSize.FontSize.small }} value={lastName} />
-                    <EditText placeholder='Email Address' style={{ fontSize: FontSize.FontSize.small }} value={email} />
+                    <EditText 
+                        placeholder='First Name' 
+                        style={styles.editText}  
+                        onChangeText={(text) => { setFirstName(text) }}
+                        value={firstName} 
+                    />
+                    <EditText 
+                        placeholder='Last Name' 
+                        style={styles.editText}
+                        onChangeText={(text) => { setLastName(text) }}
+                        value={lastName} 
+                    />
+                    <EditText 
+                        placeholder='Email Address' 
+                        style={styles.editText}
+                        onChangeText={(text) => { setEmail(text) }}
+                        value={email} 
+                    />
                     <View style={{ flexDirection:'row'}}>
 
                         <View style={styles.countryPicker }>
@@ -95,7 +142,11 @@ const SignUp = () => {
                     </View>
 
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
-                        <EditText placeholder='Mobile Number' style={{ fontSize: FontSize.FontSize.small }} value={phoneNumber} />
+                        <EditText 
+                            placeholder='Mobile Number' 
+                            style={styles.editText}
+                            onChangeText={(text) => { setPhoneNumber(text) }} 
+                            value={phoneNumber} />
                         </View>    
                     </View>    
                    
@@ -108,14 +159,14 @@ const SignUp = () => {
                             onClick={() => { setIsSelected(!isSelected) }}
                             isChecked={isSelected}
                         />
-                        <Text style={styles.termsConditionStyle}>Terms & Condtions</Text>
+                        <Text style={styles.termsConditionStyle}>Terms & Conditions</Text>
                     </View>
 
                     <CustomButton
                         title='Create an Account'
                         style={styles.buttonStyle}
                         textStyle={styles.buttonTextStyle}
-                        onPress={() => NavigationService.navigate('SignUp')}
+                        onPress={() => onTapSignUp()}
                     />
 
                     <View style={styles.bottomContainer}>
@@ -148,6 +199,9 @@ const styles = StyleSheet.create({
         alignItems:'flex-start',
         marginVertical: hp(2),
         width:'100%'
+    },
+    editText : {
+        fontSize: FontSize.FontSize.small
     },
     textStyle: {
         color: ColorConstant.WHITE,

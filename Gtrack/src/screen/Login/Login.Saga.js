@@ -10,6 +10,7 @@ function* login(action) {
     const { data, onSuccess, onError } = action
     try {
         const response = yield call(API.post, ApiConstants.LOGIN, data)
+        setToken(response.result.accessToken)
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -27,9 +28,9 @@ function* signUp(action) {
 }
 
 function* resetPassword(action) {
-    const { data, onSuccess, onError } = action
+    const { emailOrPhone, onSuccess, onError } = action
     try {
-        const response = yield call(API.post, ApiConstants.RESET_PASSWORD, data)
+        const response = yield call(API.post, ApiConstants.RESET_PASSWORD, emailOrPhone)
         onSuccess(response)
     } catch (error) {
         onError(error)
