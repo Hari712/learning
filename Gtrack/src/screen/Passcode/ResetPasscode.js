@@ -1,15 +1,53 @@
 import React, { Component, useState } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput } from 'react-native'
 import images from '../../constants/images'
+import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import CustomButton from '../../component/Button'
 import { EditText } from '../../component'
+import _ from 'lodash'
+import { AppConstants } from '../../constants/AppConstants'
+import AppManager from '../../constants/AppManager'
+import * as LoginActions from '../Login/Login.Action'
+import { validateEmailorPhoneNumber } from '../../utils/helper'
 
 const ResetPasscode = () => {
     const [email, setEmail] = useState('')
+    const dispatch = useDispatch()
+
+    const { isConnected } = useSelector(state => ({
+        isConnected: state.network.isConnected,
+    }))
+
+    function onTapReset() {
+        if (isConnected) {
+            if (!validateEmailorPhoneNumber(email)) {        
+                AppManager.showSimpleMessage('warning', { message:  AppConstants.INVALID_EMAIL_OR_PHONE, description: '', floating: true })
+            } else {
+                AppManager.showLoader()
+                const requestBody = {
+                   "emailOrPhone": email.toString(),
+                }
+                dispatch(LoginActions.requestResetPassword(requestBody, onSuccess, onError))
+            }
+        }
+    }
+    function onSuccess(data) {
+        AppManager.hideLoader()
+        console.log("Success",data)
+        AppManager.showSimpleMessage('warning', { message:data.message, description: '', floating: true })
+        NavigationService.navigate('Passcode')
+    }
+
+    function onError(error) {
+        AppManager.hideLoader()
+        if(error){
+        AppManager.showSimpleMessage('warning', { message:error, description: '', floating: true })
+        }
+    }
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
@@ -26,8 +64,8 @@ const ResetPasscode = () => {
                 />
 
                 <CustomButton
-                    title="Reset"
-                    onPress={() => NavigationService.navigate('Passcode')}
+                    title="Reset"        
+                    onPress={() => onTapReset()}
                     style={styles.button}
                     textStyle={styles.buttonTextStyle}
                 />

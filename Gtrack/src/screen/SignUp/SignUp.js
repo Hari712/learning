@@ -107,19 +107,19 @@ const SignUp = () => {
 
                     <EditText 
                         placeholder='First Name' 
-                        style={{ fontSize: FontSize.FontSize.small }}  
+                        style={styles.editText}  
                         onChangeText={(text) => { setFirstName(text) }}
                         value={firstName} 
                     />
                     <EditText 
                         placeholder='Last Name' 
-                        style={{ fontSize: FontSize.FontSize.small }} 
+                        style={styles.editText}
                         onChangeText={(text) => { setLastName(text) }}
                         value={lastName} 
                     />
                     <EditText 
                         placeholder='Email Address' 
-                        style={{ fontSize: FontSize.FontSize.small }} 
+                        style={styles.editText}
                         onChangeText={(text) => { setEmail(text) }}
                         value={email} 
                     />
@@ -144,7 +144,7 @@ const SignUp = () => {
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText 
                             placeholder='Mobile Number' 
-                            style={{ fontSize: FontSize.FontSize.small }}
+                            style={styles.editText}
                             onChangeText={(text) => { setPhoneNumber(text) }} 
                             value={phoneNumber} />
                         </View>    
@@ -199,6 +199,9 @@ const styles = StyleSheet.create({
         alignItems:'flex-start',
         marginVertical: hp(2),
         width:'100%'
+    },
+    editText : {
+        fontSize: FontSize.FontSize.small
     },
     textStyle: {
         color: ColorConstant.WHITE,
