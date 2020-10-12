@@ -39,7 +39,7 @@ const Passcode = ({navigation}) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    onPress={() => NavigationService.navigate('LiveTracking')} 
+                    onPress={() => NavigationService.navigate('Login')} 
                     style={styles.LoginButton}>
                     <Text style={styles.LoginButtonText}>Login</Text>
                 </TouchableOpacity>

@@ -29,7 +29,7 @@ const ResetPasscode = () => {
             } else {
                 AppManager.showLoader()
                 const requestBody = {
-                   "emailOrPhone": email.toString(),
+                    "emailOrPhone": email.toString(),
                 }
                 dispatch(LoginActions.requestResetPassword(requestBody, onSuccess, onError))
             }

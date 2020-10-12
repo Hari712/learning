@@ -27,8 +27,8 @@ const Login = () => {
         isConnected: state.network.isConnected,
     }))
 
-    const [email, setEmail] = useState('Khushbu.solanki@ekzero.com')
-    const [password, setPassword] = useState('865382')
+    const [email, setEmail] = useState()
+    const [password, setPassword] = useState()
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo,setIsClickInfo] = useState(false)
 

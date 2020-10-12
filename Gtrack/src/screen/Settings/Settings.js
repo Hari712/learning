@@ -4,6 +4,9 @@ import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
+import { removeItem } from '../../utils/storage';
+import { USER_DATA } from '../../constants/AppConstants'
+import NavigationService from '../../navigation/NavigationService'
 
 const Settings = ({ navigation }) => {
 
@@ -43,6 +46,11 @@ const Settings = ({ navigation }) => {
 
       else if (item.title == 'Feedback') {
         navigation.navigate('Feedback')
+      }
+
+      else if (item.title == 'Logout'){
+        removeItem(USER_DATA);
+        NavigationService.navigate('Login')
       }
 
       else {

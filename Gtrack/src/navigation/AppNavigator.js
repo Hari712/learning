@@ -54,7 +54,7 @@ function AppNavigator() {
                   !isLoggedIn ?
                       (<Stack.Screen name="Auth" component={AuthStackNavigator} />) 
                       :
-                     (<Stack.Screen name='LiveTracking' component={TabStackNavigator} />)
+                      (<Stack.Screen name='LiveTracking' component={TabStackNavigator} />)
                      
               }
           </Stack.Navigator>

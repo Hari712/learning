@@ -32,5 +32,19 @@ export const loginReducer = createReducer(state = initialState, {
             group: data.result.userDTO.groups,
             role: data.result.userDTO.roles
         }
+    },
+    [types.EDIT_PROFILE_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            id:result.id,
+            firstName: result.usefirstName,
+            lastName: result.lastName,
+            phonePrefix: result.phonePrefix,
+            phone: result.phone,
+            email: result.email,
+            group: result.groups,
+            role: result.roles
+        }
     }
 })

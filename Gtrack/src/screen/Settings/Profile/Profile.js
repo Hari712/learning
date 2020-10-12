@@ -67,7 +67,7 @@ const Profile = ({ navigation }) => {
                 <View style={styles.blueBoxStyle}>
                 <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:loginData.firstName,lastName:loginData.lastName, phoneNumber:loginData.phone, emailId:loginData.email}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:loginData.firstName,lastName:loginData.lastName, phoneNumber:loginData.phone, emailId:loginData.email,loginData:loginData}) }} >
                         <Image source={images.image.edit} />
                     </TouchableOpacity>
                 </View>
