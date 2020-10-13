@@ -7,12 +7,71 @@ import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText } from '../../component'
 
-const Passcode = ({navigation}) => {
+const Passcode = ({navigation, route}) => {
+
+    const { emailId } = route.params;
 
     const [passcode, setPasscode] = useState('')
     const [cancel, setCancel] = useState(false)
     const [login, setLogin] = useState(false)
-  
+
+    function loginHandle() {
+        if (isConnected) {
+            let message = ''
+            if (_.isEmpty(passcode)) {
+                message = AppConstants.EMPTY_PASSWORD
+            }
+            if (!_.isEmpty(message)) {
+                AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+            } else {
+                AppManager.showLoader()
+                const requestBody = {
+                    emailOrPhone: emailId,
+                    password: passcode
+                }
+                dispatch(LoginActions.requestLogin(requestBody, onLoginSuccess, onLoginError))
+            }
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }        
+    }
+
+    function onLoginSuccess(data) {
+        AppManager.hideLoader()
+        console.log("Success data",data)
+        saveUserData(data)
+        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })
+        navigateToLiveTracking()
+    
+    }
+
+    const saveUserData = async (data) => {
+        try {
+            const isSuccess = await storeItem(USER_DATA, data)
+            if (isSuccess) {
+                AppManager.hideLoader()
+                dispatch(LoginActions.setLoginResponse(data))
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    function onLoginError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)
+        if(error){
+            AppManager.showSimpleMessage('warning', { message:error, description: '', floating: true })
+        }
+    }
+
+    function navigateToLiveTracking() {
+        NavigationService.navigate('LiveTracking')
+    }
+
+
+
+
     return(
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
         <View style={styles.container}>
@@ -20,7 +79,7 @@ const Passcode = ({navigation}) => {
             <View style={styles.subContainer}>
                 <Text style={styles.resetEmailText}>Passcode Reset Email Sent</Text>
                 <Text style={styles.textStyle}>The New Passcode is sent on</Text>
-                <Text style={[styles.textStyle,{color:ColorConstant.ORANGE}]}>@davidsmith@gmail.com</Text>
+                <Text style={[styles.textStyle,{color:ColorConstant.ORANGE}]}>{emailId}</Text>
             </View>
             
             <EditText 
@@ -29,7 +88,7 @@ const Passcode = ({navigation}) => {
                 onChangeText={(value) => setPasscode(value)} 
                 placeholder='Enter New Passcode' 
             />
-           
+        
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={()=>{
                     cancel?setCancel(false):setCancel(true)
@@ -39,13 +98,13 @@ const Passcode = ({navigation}) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    onPress={() => NavigationService.navigate('Login')} 
+                    onPress={() => loginHandle()} 
                     style={styles.LoginButton}>
                     <Text style={styles.LoginButtonText}>Login</Text>
                 </TouchableOpacity>
             </View>
         </View> 
-           
+        
     </ImageBackground>
 )
 }

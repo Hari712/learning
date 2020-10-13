@@ -6,7 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FontSize from '../../component/FontSize'
 import { removeItem } from '../../utils/storage';
 import { USER_DATA } from '../../constants/AppConstants'
-import NavigationService from '../../navigation/NavigationService'
+import NavigationService, { navigationRef } from '../../navigation/NavigationService'
 
 const Settings = ({ navigation }) => {
 
@@ -50,7 +50,9 @@ const Settings = ({ navigation }) => {
 
       else if (item.title == 'Logout'){
         removeItem(USER_DATA);
-        NavigationService.navigate('Login')
+        console.log(":logged out", navigationRef.current.getCurrentOptions())
+        //AuthStackNavigator
+        //NavigationService.navigate('Splash')
       }
 
       else {
@@ -78,11 +80,11 @@ const Settings = ({ navigation }) => {
               </View>
 
             </View>
-           
+          
             <View style={styles.lineStyle} />
 
           </TouchableOpacity>
-         
+        
         </View>
     )
   }

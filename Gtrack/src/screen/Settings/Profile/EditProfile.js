@@ -184,6 +184,7 @@ const EditProfile = ({ navigation, route, item }) => {
     function editProfile() {
         AppManager.showLoader()
         const requestBody = {
+            "id" : id,
             "firstName" : firstName,
             "lastName" : lastName,
             "email" : emailId,                  

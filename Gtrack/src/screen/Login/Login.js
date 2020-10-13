@@ -38,9 +38,9 @@ const Login = () => {
             if (_.isEmpty(email)) {
                 message = AppConstants.EMPTY_EMAIL_OR_PHONE
             }
-            else if (!validateEmailorPhoneNumber(email)) {
-                message = AppConstants.INVALID_EMAIL_OR_PHONE
-            }
+            // else if (!validateEmailorPhoneNumber(email)) {
+            //     message = AppConstants.INVALID_EMAIL_OR_PHONE
+            // }
             else if (_.isEmpty(password)) {
                 message = AppConstants.EMPTY_PASSWORD
             }
