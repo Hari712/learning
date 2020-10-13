@@ -23,8 +23,10 @@ import Manage from '../screen/Device&Asset/Manage';
 import AddUser from '../screen/Users/AddUser';
 import EditProfile from '../screen/Settings/Profile/EditProfile';
 import Notification from '../screen/Notification/Notification';
-import SensorInfo from '../screen/SensorInfo/SensorInfo'
-import DeviceInfo from '../screen/SensorInfo/DeviceInfo'
+import SensorInfo from '../screen/SensorInfo/SensorInfo';
+import DeviceInfo from '../screen/SensorInfo/DeviceInfo';
+import GeoFence from '../screen/LiveTracking/GeoFence';
+import GeoFenceCreateNew from '../screen/LiveTracking/GeoFenceCreateNew';
 
 export{
     Splash,
@@ -52,5 +54,7 @@ export{
     EditProfile,
     Notification,
     SensorInfo,
-    DeviceInfo
+    DeviceInfo, 
+    GeoFence,
+    GeoFenceCreateNew
 }

@@ -64,6 +64,10 @@ const images = {
         sensor: require('../../assets/images/SensorInformation/sensor.png')
     },
 
+    geoFence: {
+        deleteIcon: require('../../assets/images/GeoFence/trash.png')
+    },
+
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
