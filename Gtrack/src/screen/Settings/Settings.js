@@ -50,12 +50,11 @@ const Settings = ({ navigation }) => {
       }
 
       else if (item.title == 'Logout'){
-
         dispatch(LoginActions.requestLogout())        
       }
 
       else {
-        navigation.navigate('Login')
+        dispatch(LoginActions.requestLogout()) 
       }
 
     }
