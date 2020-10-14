@@ -65,7 +65,9 @@ const images = {
     },
 
     geoFence: {
-        deleteIcon: require('../../assets/images/GeoFence/trash.png')
+        deleteIcon: require('../../assets/images/GeoFence/deleteIcon.png'),
+        downIcon: require('../../assets/images/GeoFence/downIcon.png'),
+        upIcon: require('../../assets/images/GeoFence/upIcon.png')
     },
 
     image: {
