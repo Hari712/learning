@@ -7,7 +7,7 @@ import API, { getToken, setToken } from '../../../api'
 // import { USER_DATA } from '../../constants/AppConstants'
 
 function* editProfile(action) {
-    const { data, userId, onSuccess, onError } = action    
+    const { data, userId, onSuccess, onError } = action   
     try {   
         const response = yield call(API.put, ApiConstants.EDIT_PROFILE(userId), data)
         onSuccess(response)

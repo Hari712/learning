@@ -31,12 +31,12 @@ function AppNavigator() {
     async function getLoggedInData(){
       const response = await getItem(USER_DATA)
       console.log("Response",response)
-      if (response) {
+      if (response && response.result) {
         await setToken(response.result.accessToken)
         dispatch(LoginActions.setLoginResponse(response))
         console.log("Access Token: ", getToken())
       }  
-      setIsReady(true)    
+      setIsReady(true)  
     }
 
     const timer = setTimeout(() => {
@@ -54,10 +54,10 @@ function AppNavigator() {
       <NavigationContainer ref={navigationRef}>
           <Stack.Navigator headerMode="none" screenOptions={{ animationEnabled: false }}>
               {
-                  isLoggedIn ?
-                    <Stack.Screen name='LiveTracking' component={TabStackNavigator} /> 
-                    :
-                    <Stack.Screen name="Auth" component={AuthStackNavigator} />
+                isLoggedIn ?
+                  <Stack.Screen name='LiveTracking' component={TabStackNavigator} /> 
+                  :
+                  <Stack.Screen name="Auth" component={AuthStackNavigator} />
               }
           </Stack.Navigator>
       </NavigationContainer>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StackActions } from '@react-navigation/native';
+import { StackActions, NavigationActions } from '@react-navigation/native';
 
 export const navigationRef = React.createRef();
 
@@ -31,6 +31,15 @@ function getCurrentRouteName() {
     return routeNameRef && routeNameRef.current ? routeNameRef.current : '' 
 }
 
+// function onUserLogout() {
+//     const resetActionForLogOutToLoginWelcome = StackActions.reset({
+//         index: 0,
+//         // actions: [NavigationActions.navigate({ routeName: 'Auth', params: { screenName: 'Login' } })],
+//         // actions: [NavigationActions.navigate({ routeName: 'Login', params: { screenName: SCREEN_CONSTANTS.DASHBOARD } })],
+//     });
+//     _navigator.dispatch(resetActionForLogOutToLoginWelcome);
+// }
+
 export default {
     navigate,
     replace,
@@ -38,5 +47,6 @@ export default {
     goBack,
     pop,
     popToTop,
-    getCurrentRouteName
+    getCurrentRouteName,
+    // onUserLogout
 }

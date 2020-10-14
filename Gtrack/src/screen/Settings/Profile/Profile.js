@@ -67,24 +67,24 @@ const Profile = ({ navigation }) => {
                 <View style={styles.blueBoxStyle}>
                 <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:loginData.firstName,lastName:loginData.lastName, phoneNumber:loginData.phone, emailId:loginData.email,loginData:loginData}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {loginData:loginData}) }} >
                         <Image source={images.image.edit} />
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.subMainView}>
                     <View style={styles.emailMainView}>
-                        <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
+                        <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8), }} resizeMode='contain' />
                         <Text style={styles.emailText}>{loginData.email}</Text>
                     </View>
 
-                    <View style={styles.emailMainView}>
+                    <View style={[styles.emailMainView,{flex:0.4}]}>
                         <Image source={images.image.settings.phone} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>{loginData.phone}</Text>
+                        <Text style={styles.emailText}>{loginData.phonePrefix} {loginData.phone}</Text>
                     </View>
                 </View>
 
-                <View style={styles.billingAddressMainView}>
+                {/* <View style={styles.billingAddressMainView}>
                     <View style={styles.billingView}>
                         <Text style={styles.billingAddressText}>Billing Address</Text>
                         <Image source={images.image.settings.billingAddress} />
@@ -111,7 +111,7 @@ const Profile = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                {RenderBillingDialog()}
+                {RenderBillingDialog()} */}
 
             </View>
            
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 15,
-        // elevation: 3,
+        elevation: 4,
         borderWidth: 0.3,
         borderColor: ColorConstant.GREY,
         shadowColor: ColorConstant.GREY,
@@ -176,11 +176,14 @@ const styles = StyleSheet.create({
     },
     emailMainView: {
         flexDirection: 'row',
+        alignItems:'center',
+        flex:1,
+        justifyContent:'space-evenly'
     },
     emailText: {
         color: ColorConstant.BLACK,
         fontSize: hp(1.4),
-        marginLeft: wp(3)
+       // marginLeft: wp(3)
     },
     billingAddressMainView: {
         width: Dimensions.get('screen').width - 50,

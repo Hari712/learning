@@ -4,7 +4,7 @@ const SUFFIX_URL = 'public/'
 
 const AUTH = 'auth/'
 
-const USER = ' users/'
+const USER = 'users/'
 
 const ApiConstants = {
     BASE_URL: BASE_URL,

@@ -12,11 +12,19 @@ import CheckBox from 'react-native-check-box'
 import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
 
+
 const EditProfile = ({ navigation, route, item }) => {
     const dispatch = useDispatch()
 
-    const { firstName, lastName, emailId, phoneNumber,loginData } = route.params;
-    const {id} = route.params.loginData;
+    const { loginData } = route.params;
+    const {id} = loginData;
+
+    //User data variables
+    const [firstName, setFirstName] = useState(loginData.firstName);
+    const [lastName, setLastName] = useState(loginData.lastName);
+    const [phoneNumber,setPhoneNumber] = useState(loginData.phone)
+
+    // useEffect ()
 
     const [value, setValue] = useState();
     const [cancel, setCancel] = useState(false)
@@ -187,15 +195,19 @@ const EditProfile = ({ navigation, route, item }) => {
             "id" : id,
             "firstName" : firstName,
             "lastName" : lastName,
-            "email" : emailId,                  
-            "phoneNumber" : phoneNumber
+            "email" : loginData.email,                  
+            "phone" : phoneNumber
+            //"phonePrefix": phonePrefix
         }
+        console.log("Data", requestBody);
         dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
     }
 
     function onSuccess(data) {
         AppManager.hideLoader()
         console.log("Success",data)
+        dispatch(ProfileActions.setEditProfileResponse(data))
+        navigation.navigate('Profile')
     }
 
     function onError(error) {
@@ -581,7 +593,7 @@ const EditProfile = ({ navigation, route, item }) => {
                 <View style={styles.mainViewStyle}>
                     <View style={styles.textInputField}>
                         <TextField
-                            valueSet={setValue}
+                            valueSet={setFirstName}
                             label='First Name'
                             value={firstName}
                             style={styles.textNameStyle}
@@ -592,7 +604,7 @@ const EditProfile = ({ navigation, route, item }) => {
 
                     <View style={styles.textInputField}>
                         <TextField
-                            valueSet={setValue}
+                            valueSet={setLastName}
                             label='Last Name'
                             value={lastName}
                             style={styles.textNameStyle}
@@ -603,12 +615,12 @@ const EditProfile = ({ navigation, route, item }) => {
 
                     <View style={styles.textInputField}>
                         <Text style={styles.EmailTextStyle}>Email Address</Text>
-                        <Text style={styles.textNameStyle}>{emailId}</Text>
+                        <Text style={styles.textNameStyle}>{loginData.email}</Text>
                     </View>
 
                     <View style={styles.textInputField}>
                         <TextField
-                            valueSet={setValue}
+                            valueSet={setPhoneNumber}
                             label='Phone Number'
                             value={phoneNumber}
                             style={styles.textNameStyle}

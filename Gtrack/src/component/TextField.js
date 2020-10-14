@@ -26,7 +26,6 @@ class TextField extends React.Component {
 
     onSubmit = () => {
         this.props.valueSet(this.state.textValue)
-        console.log("khushi",this.state.textValue)
     }
 
 
@@ -36,7 +35,7 @@ class TextField extends React.Component {
 
         const handleInput = text => {
             //this.props.valueSet(text)
-            this.setState({textValue: text})
+            this.setState({textValue: text}, ()=>this.props.valueSet(text))
             return text
         }
         return(

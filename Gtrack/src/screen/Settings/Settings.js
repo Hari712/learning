@@ -51,6 +51,7 @@ const Settings = ({ navigation }) => {
       else if (item.title == 'Logout'){
         removeItem(USER_DATA);
         console.log(":logged out", navigationRef.current.getCurrentOptions())
+        // NavigationService.onUserLogout()
         //AuthStackNavigator
         //NavigationService.navigate('Splash')
       }

@@ -8,7 +8,7 @@ export const requestEditProfile = (data, userId, onSuccess, onError) => ({
     onError
 })
 
-// export const setEditProfileResponse = (data) => ({
-//     type: types.EDIT_PROFILE_RESPONSE,
-//     data
-// })
+export const setEditProfileResponse = (data) => ({
+    type: types.EDIT_PROFILE_RESPONSE,
+    data
+})
