@@ -4,11 +4,12 @@ import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
-import { removeItem } from '../../utils/storage';
-import { USER_DATA } from '../../constants/AppConstants'
-import NavigationService, { navigationRef } from '../../navigation/NavigationService'
+import { useDispatch } from 'react-redux';
+import * as LoginActions from '../Login/Login.Action'
 
 const Settings = ({ navigation }) => {
+
+  const dispatch = useDispatch()
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -49,11 +50,8 @@ const Settings = ({ navigation }) => {
       }
 
       else if (item.title == 'Logout'){
-        removeItem(USER_DATA);
-        console.log(":logged out", navigationRef.current.getCurrentOptions())
-        // NavigationService.onUserLogout()
-        //AuthStackNavigator
-        //NavigationService.navigate('Splash')
+
+        dispatch(LoginActions.requestLogout())        
       }
 
       else {

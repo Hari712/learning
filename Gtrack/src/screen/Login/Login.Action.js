@@ -35,3 +35,7 @@ export const requestResetPassword = (emailOrPhone, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const requestLogout = () => ({
+    type: types.LOGOUT_REQUEST
+})
