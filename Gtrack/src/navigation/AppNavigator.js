@@ -11,6 +11,7 @@ import { USER_DATA } from '../constants/AppConstants'
 import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../screen/Login/Login.Action'
 import AuthStackNavigator from './AuthNavigator';
+import { setToken, getToken } from '../api';
 
 const Stack = createStackNavigator();
 
@@ -30,10 +31,12 @@ function AppNavigator() {
     async function getLoggedInData(){
       const response = await getItem(USER_DATA)
       console.log("Response",response)
-      if (response) {
+      if (response && response.result) {
+        await setToken(response.result.accessToken)
         dispatch(LoginActions.setLoginResponse(response))
-    }  
-      setIsReady(true)    
+        console.log("Access Token: ", getToken())
+      }  
+      setIsReady(true)  
     }
 
     const timer = setTimeout(() => {
@@ -51,11 +54,10 @@ function AppNavigator() {
       <NavigationContainer ref={navigationRef}>
           <Stack.Navigator headerMode="none" screenOptions={{ animationEnabled: false }}>
               {
-                  !isLoggedIn ?
-                      (<Stack.Screen name="Auth" component={AuthStackNavigator} />) 
-                      :
-                     (<Stack.Screen name='LiveTracking' component={TabStackNavigator} />)
-                     
+                isLoggedIn ?
+                  <Stack.Screen name='LiveTracking' component={TabStackNavigator} /> 
+                  :
+                  <Stack.Screen name="Auth" component={AuthStackNavigator} />
               }
           </Stack.Navigator>
       </NavigationContainer>

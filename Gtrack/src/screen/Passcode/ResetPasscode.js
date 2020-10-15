@@ -29,7 +29,7 @@ const ResetPasscode = () => {
             } else {
                 AppManager.showLoader()
                 const requestBody = {
-                   "emailOrPhone": email.toString(),
+                    "emailOrPhone": email.toString(),
                 }
                 dispatch(LoginActions.requestResetPassword(requestBody, onSuccess, onError))
             }
@@ -39,7 +39,7 @@ const ResetPasscode = () => {
         AppManager.hideLoader()
         console.log("Success",data)
         AppManager.showSimpleMessage('warning', { message:data.message, description: '', floating: true })
-        NavigationService.navigate('Passcode')
+        NavigationService.navigate('Passcode',{ emailId: email })
     }
 
     function onError(error) {
@@ -75,7 +75,6 @@ const ResetPasscode = () => {
                     <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
                         <Image source={images.image.login} />
                     </TouchableOpacity>
-
                 </View>
 
             </View>

@@ -2,15 +2,30 @@ import React, { useState, Component, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, FlatList, SafeAreaView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
+import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import FontSize from '../../../component/FontSize';
 import TextField from '../../../component/TextField';
 import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 import DropDown from '../../../component/DropDown';
 import CheckBox from 'react-native-check-box'
+import * as ProfileActions from '../Profile/Profile.Action'
+import AppManager from '../../../constants/AppManager'
+
 
 const EditProfile = ({ navigation, route, item }) => {
-    const { firstName, lastName, emailId, phoneNumber } = route.params;
+    const dispatch = useDispatch()
+
+    const { loginData } = route.params;
+    const {id} = loginData;
+
+    //User data variables
+    const [firstName, setFirstName] = useState(loginData.firstName);
+    const [lastName, setLastName] = useState(loginData.lastName);
+    const [phoneNumber,setPhoneNumber] = useState(loginData.phone)
+
+    // useEffect ()
+
     const [value, setValue] = useState();
     const [cancel, setCancel] = useState(false)
     const [country, setCountry] = useState();
@@ -61,93 +76,93 @@ const EditProfile = ({ navigation, route, item }) => {
         });
     }, [navigation]);
 
-    const BillingAddress = () => {
-        return (
-            <View style={styles.cardContainer}>
-                {isCollapsed && isClickOnSave ?
-                    <View >
-                        <View style={styles.billingView}>
-                            <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Billing Address</Text>
-                            <Image source={images.image.settings.billing} />
-                        </View>
+    // const BillingAddress = () => {
+    //     return (
+    //         <View style={styles.cardContainer}>
+    //             {isCollapsed && isClickOnSave ?
+    //                 <View >
+    //                     <View style={styles.billingView}>
+    //                         <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.ORANGE, fontWeight: '500' }}>Billing Address</Text>
+    //                         <Image source={images.image.settings.billing} />
+    //                     </View>
 
-                        <View style={styles.underLineStyle} />
+    //                     <View style={styles.underLineStyle} />
 
-                        <View style={styles.textMainView}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
-                                <View>
-                                    <Text style={styles.textStyleNone}>{addressLine1}</Text>
-                                    <Text style={styles.textStyleNone}>{addressLine2}</Text>
-                                    <Text style={styles.textStyleNone}>{country}</Text>
-                                </View>
+    //                     <View style={styles.textMainView}>
+    //                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+    //                             <View>
+    //                                 <Text style={styles.textStyleNone}>{addressLine1}</Text>
+    //                                 <Text style={styles.textStyleNone}>{addressLine2}</Text>
+    //                                 <Text style={styles.textStyleNone}>{country}</Text>
+    //                             </View>
 
-                                <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
-                                    <Image source={images.image.settings.editIcon} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+    //                             <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+    //                                 <Image source={images.image.settings.editIcon} />
+    //                             </TouchableOpacity>
+    //                         </View>
+    //                     </View>
 
-                        <TouchableOpacity style={styles.shippingFooterStyle} onPress={() => { setIsCollapsed(!isCollapsed) }} >
-                            <Image source={images.image.settings.upArrow} />
-                        </TouchableOpacity>
+    //                     <TouchableOpacity style={styles.shippingFooterStyle} onPress={() => { setIsCollapsed(!isCollapsed) }} >
+    //                         <Image source={images.image.settings.upArrow} />
+    //                     </TouchableOpacity>
 
-                    </View>
-                    :
-                    <View>
-                        <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
-                            <View style={styles.billingView}>
-                                <Text style={styles.billingAddressText}>Billing Address</Text>
-                                <Image source={images.image.settings.billingAddress} />
-                            </View>
-                        </TouchableOpacity>
+    //                 </View>
+    //                 :
+    //                 <View>
+    //                     <TouchableOpacity onPress={() => { setViewDialogBox(!viewDialogBox) }}>
+    //                         <View style={styles.billingView}>
+    //                             <Text style={styles.billingAddressText}>Billing Address</Text>
+    //                             <Image source={images.image.settings.billingAddress} />
+    //                         </View>
+    //                     </TouchableOpacity>
 
-                        <View style={styles.footerIconStyle}>
-                            {!isClickOnSave ?
-                                null
-                                :
-                                <TouchableOpacity onPress={() => { setIsCollapsed(!isCollapsed) }} >
-                                    <Image source={images.image.settings.downArrow} onPress />
-                                </TouchableOpacity>
-                            }
-                        </View>
-                    </View>
-                }
-            </View>
-        )
-    }
+    //                     <View style={styles.footerIconStyle}>
+    //                         {!isClickOnSave ?
+    //                             null
+    //                             :
+    //                             <TouchableOpacity onPress={() => { setIsCollapsed(!isCollapsed) }} >
+    //                                 <Image source={images.image.settings.downArrow} onPress />
+    //                             </TouchableOpacity>
+    //                         }
+    //                     </View>
+    //                 </View>
+    //             }
+    //         </View>
+    //     )
+    // }
 
-    const ShippingAddress = (item, index) => {
-        console.log('item-------', item)
-        return (
-            <View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
-                    <View>
-                        {setEditShippingAddName ?
-                            <View>
-                                <Text style={styles.textStyleNone}>{item.item.Name ? item.item.Name : ''}</Text>
-                                <Text style={styles.textStyleNone}>{item.item.AddressLine1}</Text>
-                                <Text style={styles.textStyleNone}>{item.item.AddressLine2}</Text>
-                                <Text style={styles.textStyleNone}>{item.item.country}</Text>
-                            </View>
-                            :
-                            <View>
-                                <Text style={styles.textStyleNone}>{item.item.AddressLine1}</Text>
-                                <Text style={styles.textStyleNone}>{item.item.AddressLine2}</Text>
-                                <Text style={styles.textStyleNone}>{item.item.country}</Text>
-                            </View>
-                        }
-                    </View>
+    // const ShippingAddress = (item, index) => {
+    //     console.log('item-------', item)
+    //     return (
+    //         <View>
+    //             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: hp(1) }}>
+    //                 <View>
+    //                     {setEditShippingAddName ?
+    //                         <View>
+    //                             <Text style={styles.textStyleNone}>{item.item.Name ? item.item.Name : ''}</Text>
+    //                             <Text style={styles.textStyleNone}>{item.item.AddressLine1}</Text>
+    //                             <Text style={styles.textStyleNone}>{item.item.AddressLine2}</Text>
+    //                             <Text style={styles.textStyleNone}>{item.item.country}</Text>
+    //                         </View>
+    //                         :
+    //                         <View>
+    //                             <Text style={styles.textStyleNone}>{item.item.AddressLine1}</Text>
+    //                             <Text style={styles.textStyleNone}>{item.item.AddressLine2}</Text>
+    //                             <Text style={styles.textStyleNone}>{item.item.country}</Text>
+    //                         </View>
+    //                     }
+    //                 </View>
 
-                    <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
-                        <Image source={images.image.settings.editIcon} />
-                    </TouchableOpacity>
+    //                 <TouchableOpacity style={{ marginTop: hp(1) }} onPress={() => { setViewEditDialogBox(!viewEditDialogBox) }}>
+    //                     <Image source={images.image.settings.editIcon} />
+    //                 </TouchableOpacity>
 
-                </View>
+    //             </View>
 
-                <View style={styles.underLineStyle} />
-            </View>
-        )
-    }
+    //             <View style={styles.underLineStyle} />
+    //         </View>
+    //     )
+    // }
 
     function hideDialog() {
         setViewDialogBox(false)
@@ -174,373 +189,399 @@ const EditProfile = ({ navigation, route, item }) => {
         setData(array)
     }
 
-    function addNewShippingItem(item, index) {
-        let array = [...data]
-        console.log('arrary---', array)
-        let dataItems = {
-            Name: newShippingAddressName,
-            AddressLine1: newShippingAddressLine1,
-            AddressLine2: newShippingAddressLine2,
-            zip: postalCode,
-            country: country
+    function editProfile() {
+        AppManager.showLoader()
+        const requestBody = {
+            "id" : id,
+            "firstName" : firstName,
+            "lastName" : lastName,
+            "email" : loginData.email,                  
+            "phone" : phoneNumber
+            //"phonePrefix": phonePrefix
         }
-        array.push(dataItems)
-        setData(array)
+        console.log("Data", requestBody);
+        dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
     }
 
-    function RenderBillingDialog(item, index) {
-        return (
-            <Dialog
-                visible={viewDialogBox}
-                onTouchOutside={() => hideDialog()}
-            >
-                <DialogContent>
-                    <View style={styles.billingAddressDialogView}>
-                        <View style={styles.billingMainView}>
-                            <Image source={images.image.settings.billing} />
-                            <Text style={styles.headingTextStyle}> Billing Address </Text>
-                            <TouchableOpacity onPress={() => hideDialog()} >
-                                <Image source={images.image.settings.crossIcon} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setAddress1Value}
-                                label='Address line 1*'
-                                value={address1Value}
-                                onChangeText={(text) => setAddress1Value(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
-
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setAddress2Value}
-                                label='Address line 2*'
-                                value={address2Value}
-                                onChangeText={(text) => setAddress2Value(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select Country'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select State'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select City'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-
-                            <View style={styles.countryField}>
-                                <TextField
-                                    valueSet={setPostalCode}
-                                    label='Zip/Postal Code'
-                                    value={postalCode}
-                                    onChangeText={(text) => setPostalCode(text)}
-                                    style={styles.textNameStyle}
-                                    labelFontSize={hp(1.4)}
-                                    labelTextStyle={{ top: hp(0.5) }}
-                                    contentInset={{ input: 12 }}
-                                />
-                            </View>
-                        </View>
-
-                        <View style={styles.checkboxMainStyle}>
-                            <View style={{ shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10, borderColor: ColorConstant.BLACK, borderWidth: 1 }}>
-                                <CheckBox
-                                    style={{ }}
-                                    unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
-                                    checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
-                                    onClick={() => {
-                                        storeItem(),
-                                            setIsSelected(!isSelected)
-                                        setAddressLine1(address1Value),
-                                            setAddressLine2(address2Value)
-                                    }}
-                                    isChecked={isSelected}
-                                />
-                            </View>
-                            <Text style={styles.termsConditionStyle}>In this address also your shipping address?</Text>
-                        </View>
-
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
-                                <Text style={styles.buttonTextColor}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => { hideDialog(), setIsClickOnSave(!isClickOnSave), setAddressLine1(address1Value), setAddressLine2(address2Value) }}
-                                style={styles.LoginButton}>
-                                <Text style={styles.LoginButtonText}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </DialogContent>
-            </Dialog>
-        )
+    function onSuccess(data) {
+        AppManager.hideLoader()
+        console.log("Success",data)
+        dispatch(ProfileActions.setEditProfileResponse(data))
+        navigation.navigate('Profile')
     }
 
-    function RenderShippingEditDialog(item, index) {
-        return (
-            <Dialog
-                visible={viewEditDialogBox}
-                onTouchOutside={() => hideDialog()}
-            >
-                <DialogContent>
-                    <View style={styles.billingAddressDialogView}>
-                        <View style={styles.billingMainView}>
-                            <Image source={images.image.settings.address} />
-                            <Text style={styles.headingTextStyle} >Edit Shipping Address</Text>
-                            <TouchableOpacity onPress={() => hideDialog()}>
-                                <Image source={images.image.settings.crossIcon} />
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setViewEditShippingAddName}
-                                label='Shipping Address Name*'
-                                value={viewEditShippingAddName}
-                                onChangeText={(text) => setViewEditShippingAddName(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
-
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setAddressLine1}
-                                label='Address line 1*'
-                                value={address1Value}
-                                onChangeText={(text) => setAddressLine1(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
-
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setAddressLine2}
-                                label='Address line 2*'
-                                value={address2Value}
-                                onChangeText={(text) => setAddressLine2(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select Country'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select State'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-                        </View>
-
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select City'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-
-                            <View style={styles.countryField}>
-                                <TextField
-                                    valueSet={setPostalCode}
-                                    label='Zip/Postal Code'
-                                    value={postalCode}
-                                    onChangeText={(text) => setPostalCode(text)}
-                                    style={styles.textNameStyle}
-                                    labelFontSize={hp(1.4)}
-                                    labelTextStyle={{ top: hp(0.5) }}
-                                    contentInset={{ input: 12 }}
-                                />
-                            </View>
-                        </View>
-
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
-                                <Text style={styles.buttonTextColor}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                                onPress={() => { hideDialog(), setEditShippingAddName(viewEditShippingAddName) }}
-                                style={styles.LoginButton}>
-                                <Text style={styles.LoginButtonText}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </DialogContent>
-            </Dialog>
-        )
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)
     }
 
-    function RenderNewShippingDialog(item, index) {
-        return (
-            <Dialog
-                visible={viewNewShippingDialog}
-                onTouchOutside={() => hideDialog()}
-            >
-                <DialogContent>
-                    <View style={styles.billingAddressDialogView}>
-                        <View style={styles.billingMainView}>
-                            <Image source={images.image.settings.address} />
-                            <Text style={styles.headingTextStyle} >New Shipping Address</Text>
-                            <TouchableOpacity onPress={() => hideDialog()}>
-                                <Image source={images.image.settings.crossIcon} />
-                            </TouchableOpacity>
-                        </View>
+    // function addNewShippingItem(item, index) {
+    //     let array = [...data]
+    //     console.log('arrary---', array)
+    //     let dataItems = {
+    //         Name: newShippingAddressName,
+    //         AddressLine1: newShippingAddressLine1,
+    //         AddressLine2: newShippingAddressLine2,
+    //         zip: postalCode,
+    //         country: country
+    //     }
+    //     array.push(dataItems)
+    //     setData(array)
+    // }
 
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setNewShippingAddressName}
-                                label='Shipping Address Name*'
-                                value={newShippingAddressName}
-                                onChangeText={(text) => setNewShippingAddressName(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
+    // function RenderBillingDialog(item, index) {
+    //     return (
+    //         <Dialog
+    //             visible={viewDialogBox}
+    //             onTouchOutside={() => hideDialog()}
+    //         >
+    //             <DialogContent>
+    //                 <View style={styles.billingAddressDialogView}>
+    //                     <View style={styles.billingMainView}>
+    //                         <Image source={images.image.settings.billing} />
+    //                         <Text style={styles.headingTextStyle}> Billing Address </Text>
+    //                         <TouchableOpacity onPress={() => hideDialog()} >
+    //                             <Image source={images.image.settings.crossIcon} />
+    //                         </TouchableOpacity>
+    //                     </View>
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setAddress1Value}
+    //                             label='Address line 1*'
+    //                             value={address1Value}
+    //                             onChangeText={(text) => setAddress1Value(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
 
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setNewShippingAddressLine1}
-                                label='Address line 1*'
-                                value={newShippingAddressLine1}
-                                onChangeText={(text) => setNewShippingAddressLine1(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setAddress2Value}
+    //                             label='Address line 2*'
+    //                             value={address2Value}
+    //                             onChangeText={(text) => setAddress2Value(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
 
-                        <View style={styles.textInputField}>
-                            <TextField
-                                valueSet={setNewShippingAddressLine2}
-                                label='Address line 2*'
-                                value={newShippingAddressLine2}
-                                onChangeText={(text) => setNewShippingAddressLine2(text)}
-                                style={styles.textNameStyle}
-                                labelFontSize={hp(1.4)}
-                                labelTextStyle={{ top: hp(0.5) }}
-                                contentInset={{ input: 12 }}
-                            />
-                        </View>
+    //                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select Country'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select Country'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select State'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+    //                     </View>
 
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select State'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
-                        </View>
+    //                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select City'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <View style={styles.countryField}>
-                                <DropDown
-                                    defaultValue={country}
-                                    label='Select City'
-                                    valueSet={setCountry}
-                                    dataList={countryList}
-                                />
-                            </View>
+    //                         <View style={styles.countryField}>
+    //                             <TextField
+    //                                 valueSet={setPostalCode}
+    //                                 label='Zip/Postal Code'
+    //                                 value={postalCode}
+    //                                 onChangeText={(text) => setPostalCode(text)}
+    //                                 style={styles.textNameStyle}
+    //                                 labelFontSize={hp(1.4)}
+    //                                 labelTextStyle={{ top: hp(0.5) }}
+    //                                 contentInset={{ input: 12 }}
+    //                             />
+    //                         </View>
+    //                     </View>
 
-                            <View style={styles.countryField}>
-                                <TextField
-                                    valueSet={setPostalCode}
-                                    label='Zip/Postal Code'
-                                    value={postalCode}
-                                    onChangeText={(text) => setPostalCode(text)}
-                                    style={styles.textNameStyle}
-                                    labelFontSize={hp(1.4)}
-                                    labelTextStyle={{ top: hp(0.5) }}
-                                    contentInset={{ input: 12 }}
-                                />
-                            </View>
-                        </View>
+    //                     <View style={styles.checkboxMainStyle}>
+    //                         <View style={{ shadowColor: ColorConstant.GREY, shadowOpacity: 0.5, shadowRadius: 10, borderColor: ColorConstant.BLACK, borderWidth: 1 }}>
+    //                             <CheckBox
+    //                                 style={{ }}
+    //                                 unCheckedImage={<Image source={images.image.settings.rectangle} ></Image>}
+    //                                 checkedImage={<Image source={images.image.settings.GroupCheckBox}></Image>}
+    //                                 onClick={() => {
+    //                                     storeItem(),
+    //                                         setIsSelected(!isSelected)
+    //                                     setAddressLine1(address1Value),
+    //                                         setAddressLine2(address2Value)
+    //                                 }}
+    //                                 isChecked={isSelected}
+    //                             />
+    //                         </View>
+    //                         <Text style={styles.termsConditionStyle}>In this address also your shipping address?</Text>
+    //                     </View>
 
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
-                                <Text style={styles.buttonTextColor}>Cancel</Text>
-                            </TouchableOpacity>
+    //                     <View style={styles.buttonContainer}>
+    //                         <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+    //                             <Text style={styles.buttonTextColor}>Cancel</Text>
+    //                         </TouchableOpacity>
 
-                            <TouchableOpacity
-                                onPress={() => { hideDialog(), addNewShippingItem() }}
-                                style={styles.LoginButton}>
-                                <Text style={styles.LoginButtonText}>Save</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </DialogContent>
-            </Dialog>
-        )
-    }
+    //                         <TouchableOpacity
+    //                             onPress={() => { hideDialog(), setIsClickOnSave(!isClickOnSave), setAddressLine1(address1Value), setAddressLine2(address2Value) }}
+    //                             style={styles.LoginButton}>
+    //                             <Text style={styles.LoginButtonText}>Save</Text>
+    //                         </TouchableOpacity>
+    //                     </View>
+
+    //                 </View>
+    //             </DialogContent>
+    //         </Dialog>
+    //     )
+    // }
+
+    // function RenderShippingEditDialog(item, index) {
+    //     return (
+    //         <Dialog
+    //             visible={viewEditDialogBox}
+    //             onTouchOutside={() => hideDialog()}
+    //         >
+    //             <DialogContent>
+    //                 <View style={styles.billingAddressDialogView}>
+    //                     <View style={styles.billingMainView}>
+    //                         <Image source={images.image.settings.address} />
+    //                         <Text style={styles.headingTextStyle} >Edit Shipping Address</Text>
+    //                         <TouchableOpacity onPress={() => hideDialog()}>
+    //                             <Image source={images.image.settings.crossIcon} />
+    //                         </TouchableOpacity>
+    //                     </View>
+
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setViewEditShippingAddName}
+    //                             label='Shipping Address Name*'
+    //                             value={viewEditShippingAddName}
+    //                             onChangeText={(text) => setViewEditShippingAddName(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
+
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setAddressLine1}
+    //                             label='Address line 1*'
+    //                             value={address1Value}
+    //                             onChangeText={(text) => setAddressLine1(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
+
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setAddressLine2}
+    //                             label='Address line 2*'
+    //                             value={address2Value}
+    //                             onChangeText={(text) => setAddressLine2(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select Country'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select State'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select City'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+
+    //                         <View style={styles.countryField}>
+    //                             <TextField
+    //                                 valueSet={setPostalCode}
+    //                                 label='Zip/Postal Code'
+    //                                 value={postalCode}
+    //                                 onChangeText={(text) => setPostalCode(text)}
+    //                                 style={styles.textNameStyle}
+    //                                 labelFontSize={hp(1.4)}
+    //                                 labelTextStyle={{ top: hp(0.5) }}
+    //                                 contentInset={{ input: 12 }}
+    //                             />
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={styles.buttonContainer}>
+    //                         <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+    //                             <Text style={styles.buttonTextColor}>Cancel</Text>
+    //                         </TouchableOpacity>
+
+    //                         <TouchableOpacity
+    //                             onPress={() => { hideDialog(), setEditShippingAddName(viewEditShippingAddName) }}
+    //                             style={styles.LoginButton}>
+    //                             <Text style={styles.LoginButtonText}>Save</Text>
+    //                         </TouchableOpacity>
+    //                     </View>
+
+    //                 </View>
+    //             </DialogContent>
+    //         </Dialog>
+    //     )
+    // }
+
+    // function RenderNewShippingDialog(item, index) {
+    //     return (
+    //         <Dialog
+    //             visible={viewNewShippingDialog}
+    //             onTouchOutside={() => hideDialog()}
+    //         >
+    //             <DialogContent>
+    //                 <View style={styles.billingAddressDialogView}>
+    //                     <View style={styles.billingMainView}>
+    //                         <Image source={images.image.settings.address} />
+    //                         <Text style={styles.headingTextStyle} >New Shipping Address</Text>
+    //                         <TouchableOpacity onPress={() => hideDialog()}>
+    //                             <Image source={images.image.settings.crossIcon} />
+    //                         </TouchableOpacity>
+    //                     </View>
+
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setNewShippingAddressName}
+    //                             label='Shipping Address Name*'
+    //                             value={newShippingAddressName}
+    //                             onChangeText={(text) => setNewShippingAddressName(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
+
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setNewShippingAddressLine1}
+    //                             label='Address line 1*'
+    //                             value={newShippingAddressLine1}
+    //                             onChangeText={(text) => setNewShippingAddressLine1(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
+
+    //                     <View style={styles.textInputField}>
+    //                         <TextField
+    //                             valueSet={setNewShippingAddressLine2}
+    //                             label='Address line 2*'
+    //                             value={newShippingAddressLine2}
+    //                             onChangeText={(text) => setNewShippingAddressLine2(text)}
+    //                             style={styles.textNameStyle}
+    //                             labelFontSize={hp(1.4)}
+    //                             labelTextStyle={{ top: hp(0.5) }}
+    //                             contentInset={{ input: 12 }}
+    //                         />
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select Country'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select State'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    //                         <View style={styles.countryField}>
+    //                             <DropDown
+    //                                 defaultValue={country}
+    //                                 label='Select City'
+    //                                 valueSet={setCountry}
+    //                                 dataList={countryList}
+    //                             />
+    //                         </View>
+
+    //                         <View style={styles.countryField}>
+    //                             <TextField
+    //                                 valueSet={setPostalCode}
+    //                                 label='Zip/Postal Code'
+    //                                 value={postalCode}
+    //                                 onChangeText={(text) => setPostalCode(text)}
+    //                                 style={styles.textNameStyle}
+    //                                 labelFontSize={hp(1.4)}
+    //                                 labelTextStyle={{ top: hp(0.5) }}
+    //                                 contentInset={{ input: 12 }}
+    //                             />
+    //                         </View>
+    //                     </View>
+
+    //                     <View style={styles.buttonContainer}>
+    //                         <TouchableOpacity onPress={() => hideDialog()} style={[styles.cancelButton]}>
+    //                             <Text style={styles.buttonTextColor}>Cancel</Text>
+    //                         </TouchableOpacity>
+
+    //                         <TouchableOpacity
+    //                             onPress={() => { hideDialog(), addNewShippingItem() }}
+    //                             style={styles.LoginButton}>
+    //                             <Text style={styles.LoginButtonText}>Save</Text>
+    //                         </TouchableOpacity>
+    //                     </View>
+    //                 </View>
+    //             </DialogContent>
+    //         </Dialog>
+    //     )
+    // }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -552,7 +593,7 @@ const EditProfile = ({ navigation, route, item }) => {
                 <View style={styles.mainViewStyle}>
                     <View style={styles.textInputField}>
                         <TextField
-                            valueSet={setValue}
+                            valueSet={setFirstName}
                             label='First Name'
                             value={firstName}
                             style={styles.textNameStyle}
@@ -563,7 +604,7 @@ const EditProfile = ({ navigation, route, item }) => {
 
                     <View style={styles.textInputField}>
                         <TextField
-                            valueSet={setValue}
+                            valueSet={setLastName}
                             label='Last Name'
                             value={lastName}
                             style={styles.textNameStyle}
@@ -574,12 +615,12 @@ const EditProfile = ({ navigation, route, item }) => {
 
                     <View style={styles.textInputField}>
                         <Text style={styles.EmailTextStyle}>Email Address</Text>
-                        <Text style={styles.textNameStyle}>{emailId}</Text>
+                        <Text style={styles.textNameStyle}>{loginData.email}</Text>
                     </View>
 
                     <View style={styles.textInputField}>
                         <TextField
-                            valueSet={setValue}
+                            valueSet={setPhoneNumber}
                             label='Phone Number'
                             value={phoneNumber}
                             style={styles.textNameStyle}
@@ -588,7 +629,7 @@ const EditProfile = ({ navigation, route, item }) => {
                         />
                     </View>
 
-                    <BillingAddress />
+                    {/* <BillingAddress />
 
                     {!isSelected ?
                         <View style={styles.cardContainer}>
@@ -635,14 +676,14 @@ const EditProfile = ({ navigation, route, item }) => {
 
                             </View>
                         </View>
-                    }
+                    } */}
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
                             <Text style={styles.buttonTextColor}>Cancel</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => { navigation.goBack() }}
+                            onPress={() => editProfile() }
                             style={styles.LoginButton}>
                             <Text style={styles.LoginButtonText}>Done</Text>
                         </TouchableOpacity>
@@ -650,11 +691,11 @@ const EditProfile = ({ navigation, route, item }) => {
                 </View>
             </ScrollView>
 
-            {RenderBillingDialog()}
+            {/* {RenderBillingDialog()}
 
             {RenderShippingEditDialog()}
 
-            {RenderNewShippingDialog()}
+            {RenderNewShippingDialog()} */}
 
         </SafeAreaView>
     )

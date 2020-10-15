@@ -1,15 +1,21 @@
-import React, { useState, Component, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../../constants/images';
-import { ColorConstant } from '../../../constants/ColorConstants';
-import FontSize from '../../../component/FontSize';
+import React, { useState, Component, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import images from '../../../constants/images'
+import { ColorConstant } from '../../../constants/ColorConstants'
+import { getLoginState } from '../../Selector'
+import FontSize from '../../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import Dialog from '../../../component/Dialog'
 
 const Profile = ({ navigation }) => {
 
     const [dialogVisible,setDialogVisible] = useState(false)
+
+    const { loginData } = useSelector(state => ({
+        loginData: getLoginState(state),
+    }))
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -28,6 +34,7 @@ const Profile = ({ navigation }) => {
                     <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
+            
         });
     }, [navigation]);
 
@@ -56,29 +63,28 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>My Profile</Text>
             </View>
 
-            {DATA.map((item,index) =>
-            <View key={index} style={styles.mainViewStyle}>
+            <View style={styles.mainViewStyle}>
                 <View style={styles.blueBoxStyle}>
-                    <Text style={styles.textStyle}>{item.fullName}</Text>
+                <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {firstName:item.firstName,lastName:item.lastName, phoneNumber:item.phoneNumber, emailId:item.emailId}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {loginData:loginData}) }} >
                         <Image source={images.image.edit} />
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.subMainView}>
                     <View style={styles.emailMainView}>
-                        <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>{item.emailId}</Text>
+                        <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8), }} resizeMode='contain' />
+                        <Text style={styles.emailText}>{loginData.email}</Text>
                     </View>
 
-                    <View style={styles.emailMainView}>
+                    <View style={[styles.emailMainView,{flex:0.4}]}>
                         <Image source={images.image.settings.phone} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
-                        <Text style={styles.emailText}>{item.phoneNumber}</Text>
+                        <Text style={styles.emailText}>{loginData.phonePrefix} {loginData.phone}</Text>
                     </View>
                 </View>
 
-                <View style={styles.billingAddressMainView}>
+                {/* <View style={styles.billingAddressMainView}>
                     <View style={styles.billingView}>
                         <Text style={styles.billingAddressText}>Billing Address</Text>
                         <Image source={images.image.settings.billingAddress} />
@@ -105,25 +111,15 @@ const Profile = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                {RenderBillingDialog()}
+                {RenderBillingDialog()} */}
 
             </View>
-            )}
+           
 
         </View>
     )
+
 }
-
-const DATA = [
-    {
-        fullName: "David Smith",
-        firstName: "David",
-        lastName: "Smith",
-        emailId: "davidsmith@gmail.com",
-        phoneNumber: "None",
-    }
-]
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -148,7 +144,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 15,
-        // elevation: 3,
+        elevation: 4,
         borderWidth: 0.3,
         borderColor: ColorConstant.GREY,
         shadowColor: ColorConstant.GREY,
@@ -180,11 +176,14 @@ const styles = StyleSheet.create({
     },
     emailMainView: {
         flexDirection: 'row',
+        alignItems:'center',
+        flex:1,
+        justifyContent:'space-evenly'
     },
     emailText: {
         color: ColorConstant.BLACK,
         fontSize: hp(1.4),
-        marginLeft: wp(3)
+       // marginLeft: wp(3)
     },
     billingAddressMainView: {
         width: Dimensions.get('screen').width - 50,

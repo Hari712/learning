@@ -27,8 +27,8 @@ const Login = () => {
         isConnected: state.network.isConnected,
     }))
 
-    const [email, setEmail] = useState('Khushbu.solanki@ekzero.com')
-    const [password, setPassword] = useState('865382')
+    const [email, setEmail] = useState('Khushbu.solanki+22@ekzero.com')
+    const [password, setPassword] = useState('946856')
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo,setIsClickInfo] = useState(false)
 
@@ -63,9 +63,7 @@ const Login = () => {
         AppManager.hideLoader()
         console.log("Success data",data)
         saveUserData(data)
-        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })
-        navigateToLiveTracking()
-       
+        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })            
     }
 
     const saveUserData = async (data) => {
@@ -86,10 +84,6 @@ const Login = () => {
         if(error){
             AppManager.showSimpleMessage('warning', { message:error, description: '', floating: true })
         }
-    }
-
-    function navigateToLiveTracking() {
-        NavigationService.navigate('LiveTracking')
     }
 
     function navigateToResetPasscode() {
@@ -138,7 +132,6 @@ const Login = () => {
 
                     <CustomButton
                         title="Login"
-                        //onPress={() => navigateToLiveTracking()}
                         onPress={() => onTapLoginButton()}
                         style={styles.button}
                         textStyle={styles.buttonTextStyle}

@@ -28,9 +28,21 @@ export const loginReducer = createReducer(state = initialState, {
             lastName: data.result.userDTO.lastName,
             phonePrefix: data.result.userDTO.phonePrefix,
             phone: data.result.userDTO.phone,
-            email: data.result.userDTO.firstName,
+            email: data.result.userDTO.email,
             group: data.result.userDTO.groups,
             role: data.result.userDTO.roles
+        }
+    },
+    [types.EDIT_PROFILE_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            firstName: result.firstName,
+            lastName: result.lastName,
+            // phonePrefix: result.phonePrefix,
+            phone: result.phone,
+            group: result.groups,
+            role: result.roles
         }
     }
 })

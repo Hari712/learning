@@ -4,8 +4,12 @@ import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
+import { useDispatch } from 'react-redux';
+import * as LoginActions from '../Login/Login.Action'
 
 const Settings = ({ navigation }) => {
+
+  const dispatch = useDispatch()
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,8 +49,12 @@ const Settings = ({ navigation }) => {
         navigation.navigate('Feedback')
       }
 
+      else if (item.title == 'Logout'){
+        dispatch(LoginActions.requestLogout())        
+      }
+
       else {
-        navigation.navigate('Login')
+        dispatch(LoginActions.requestLogout()) 
       }
 
     }
@@ -70,11 +78,11 @@ const Settings = ({ navigation }) => {
               </View>
 
             </View>
-           
+          
             <View style={styles.lineStyle} />
 
           </TouchableOpacity>
-         
+        
         </View>
     )
   }

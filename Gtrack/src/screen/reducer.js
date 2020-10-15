@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { loginReducer } from './Login/Login.Reducer'
 import { reducer as network, offlineActionTypes } from 'react-native-offline'
 import { LOGOUT_REQUEST } from '../constants/ActionTypes'
+import { clearUserData } from '../utils/helper'
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -12,7 +13,7 @@ const mainRootReducer = (state, action) => {
     if (action.type === LOGOUT_REQUEST) {
         // for all keys defined in your persistConfig(s)
 
-       // clearUserData()
+        clearUserData()
         //LoginActions.setKeyCloakTokenInfo(initialState)
         state = undefined;
     }
