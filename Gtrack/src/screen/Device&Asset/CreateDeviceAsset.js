@@ -214,9 +214,7 @@ const styles = StyleSheet.create({
         textAlign:'center',
         color:ColorConstant.WHITE
      },
-     outerStyle: {
-        marginTop:hp(3)
-     },
+    
      
 });
 

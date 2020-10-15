@@ -12,14 +12,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
     const [cancel, setCancel] = useState(false)
     const [selectedGroup, setSelectedGroup] = useState([]);
     const [role, setRole] = useState();
-    const DATA = [
-        {
-            type: 'Circle'
-        },
-        {
-            type: 'Polygon'
-        }
-    ]
+    const DATA =['Circle','Polygon']
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

@@ -3,13 +3,12 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import FontSize from '../component/FontSize';
 import images from '../constants/images';
 
 const Tab = createBottomTabNavigator();
-
 const LiveTrackingStack = createStackNavigator();
 const UsersStack = createStackNavigator();
 const DashBoardStack = createStackNavigator();
@@ -41,6 +40,7 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name='GeoFence' component={GeoFence} />
         <LiveTrackingStack.Screen name='GeoFenceCreateNew' component={GeoFenceCreateNew} />
         <LiveTrackingStack.Screen name='GeoFenceType' component={GeoFenceType} />
+        <LiveTrackingStack.Screen name='GeoFenceDetails' component={GeoFenceDetails} />
     </LiveTrackingStack.Navigator>
     )
 }
