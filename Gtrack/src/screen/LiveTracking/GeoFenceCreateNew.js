@@ -12,6 +12,14 @@ const GeoFenceCreateNew = ({ navigation }) => {
     const [cancel, setCancel] = useState(false)
     const [selectedGroup, setSelectedGroup] = useState([]);
     const [role, setRole] = useState();
+    const DATA = [
+        {
+            type: 'Circle'
+        },
+        {
+            type: 'Polygon'
+        }
+    ]
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -43,7 +51,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
                 <MultiSelectDropdown
                     label='Group Access'
                     //  dataList={Data} 
-                    allText='All'
+                    allText='Select All'
                     hideSelectedDeviceLable={true}
                     hideDeleteButton={true}
                     rowStyle={styles.rowStyle}
@@ -63,7 +71,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
                         label='GeoFence Type*'
                         defaultValue={role}
                         valueSet={setRole}
-                        dataList={['Circle', 'Polygon']}
+                        dataList={DATA}
                         outerStyle={[styles.outerViewStyle]}
                         dropdownStyle={styles.dropdownStyle}
                         dataRowStyle={styles.dataRowStyle}
@@ -79,7 +87,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
                     <Text style={styles.buttonTextColor}>Cancel</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.nextButton}>
+                <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType') }}  style={styles.nextButton}>
                     <Text style={styles.nextButtonText}>Next</Text>
                 </TouchableOpacity>
             </View>
@@ -119,7 +127,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 0
         },
-        shadowRadius: 3,
+        shadowRadius: 1,
         shadowOpacity: 1,
     },
     selectedItemContainerStyle: {
@@ -148,7 +156,7 @@ const styles = StyleSheet.create({
         height: hp(4),
     },
     dropDown:{
-        marginTop:hp(3),
+        marginTop:hp(2),
         width: '85%', 
         alignSelf: 'center'
     },
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
           width: 0,
           height: 0
         },
-        shadowRadius: 3,
+        shadowRadius: 1,
         shadowOpacity: 1,
       },
       dropdownStyle: {
@@ -207,13 +215,3 @@ const styles = StyleSheet.create({
 })
 
 export default GeoFenceCreateNew;
-
-const data = [
-    {
-        title: 'Select Device'
-    },
-    {
-        title: 'GeoFence Type'
-    }
-]
-

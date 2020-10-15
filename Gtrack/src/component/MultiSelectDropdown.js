@@ -19,14 +19,11 @@ class MultiSelectDropdown extends React.Component {
         }
     }
 
-
-
     render() {
-
         const { label, dataList, selectedData, innerRef, valueSet, outerStyle, selectedItemContainerStyle, ...otherProps } = this.props;
 
         selectedItem = selectedData ? selectedData : [];
-        data = dataList ? dataList : ['Select All', 'TrackPort International', 'TrackPort 4G Vehicle GPS Tracker', 'Spar Nano 7 GPS Tracker', 'Spar Nano 8 GPS Tracker'];
+        data = dataList ? dataList : ['TrackPort International', 'TrackPort 4G Vehicle GPS Tracker', 'Spar Nano 7 GPS Tracker', 'Spar Nano 8 GPS Tracker'];
 
         function handleRightAccessory() {
             return <View style={styles.imageContainer}>
@@ -188,7 +185,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
     },
 })
 

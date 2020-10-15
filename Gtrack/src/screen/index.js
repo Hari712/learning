@@ -27,6 +27,7 @@ import SensorInfo from '../screen/SensorInfo/SensorInfo';
 import DeviceInfo from '../screen/SensorInfo/DeviceInfo';
 import GeoFence from '../screen/LiveTracking/GeoFence';
 import GeoFenceCreateNew from '../screen/LiveTracking/GeoFenceCreateNew';
+import GeoFenceType from '../screen/LiveTracking/GeoFenceType';
 
 export{
     Splash,
@@ -56,5 +57,6 @@ export{
     SensorInfo,
     DeviceInfo, 
     GeoFence,
-    GeoFenceCreateNew
+    GeoFenceCreateNew,
+    GeoFenceType
 }
