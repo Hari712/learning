@@ -16,3 +16,14 @@ export const isUserLoggedIn = createSelector(
     (info) => info && info.accessToken
 )
 
+/**
+ * Get SubUser Information
+ */
+
+export const getSubuserInfo = (state) => state.users
+export const getSubuserState = createSelector(
+    [getSubuserInfo],
+    (info) => info
+    
+)
+

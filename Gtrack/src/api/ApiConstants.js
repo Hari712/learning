@@ -12,7 +12,9 @@ const ApiConstants = {
     SIGNUP: SUFFIX_URL + 'signup',
     REFRESH_TOKEN:(userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     RESET_PASSWORD: SUFFIX_URL + AUTH + 'resetPassword',
-    EDIT_PROFILE:(userId) => `${USER}${userId}/updateProfileDetails`
+    EDIT_PROFILE:(userId) => `${USER}${userId}/updateProfileDetails`,
+    GET_SUBUSER:(userId) => `${USER}${userId}/subUsers`
+
 }
 
 export default ApiConstants

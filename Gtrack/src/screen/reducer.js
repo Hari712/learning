@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import { loginReducer } from './Login/Login.Reducer'
+import { usersReducer } from './Users/Users.Reducer'
 import { reducer as network, offlineActionTypes } from 'react-native-offline'
 import { LOGOUT_REQUEST } from '../constants/ActionTypes'
 import { clearUserData } from '../utils/helper'
 
 const rootReducer = combineReducers({
     login: loginReducer,
+    users: usersReducer,
     network
 })
 
