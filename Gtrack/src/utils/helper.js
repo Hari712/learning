@@ -1,6 +1,6 @@
-import { EMAIL_PHONE_REGEX } from '../constants/AppConstants'
+import { EMAIL_VALIDATION_REGEX } from '../constants/AppConstants'
 
 export const validateEmailorPhoneNumber = (input) => {
-    const re = EMAIL_PHONE_REGEX
+    const re = EMAIL_VALIDATION_REGEX
     return re.test(input)
 }
