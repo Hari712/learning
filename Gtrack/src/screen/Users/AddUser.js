@@ -8,8 +8,22 @@ import NavigationService from '../../navigation/NavigationService';
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import MultiSelect from '../../component/MultiSelect'
+import { AppConstants } from '../../constants/AppConstants';
+import * as UsersActions from './Users.Action'
+import { getLoginState, getSubuserState } from '../Selector'
+import { useDispatch, useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty'
+import AppManager from '../../constants/AppManager'
 
 const AddUser = ({navigation,route}) => {
+
+  const { loginData, subUserData } = useSelector(state => ({
+    loginData: getLoginState(state),
+    subUserData: getSubuserState(state)
+  }))
+
+
+  const dispatch = useDispatch()
  
   const [firstName, setFirstName]= useState();
   const [lastName, setLastName] = useState();
@@ -19,8 +33,12 @@ const AddUser = ({navigation,route}) => {
   const [role, setRole] = useState();
 
   const Data =['Home','Fedex Ground']
+  const GroupList = subUserData.group.map(element => {return element.groupName} ); 
+  // const selectedGroupWithID = 
+  console.log("Group List", GroupList)
 
   React.useEffect(() => {
+    dispatch(UsersActions.requestGetGroup(loginData.id, onGroupSuccess, onGroupError));
     if(route){
       const editData = route.params;
       console.log("Editdata",editData)
@@ -32,6 +50,51 @@ const AddUser = ({navigation,route}) => {
         setSelectedGroup(editData.editData.group)
     }}
   },[])
+
+  function onGroupSuccess(data){
+    console.log("Success group",data)
+  }
+
+  function onGroupError(error){
+    console.log("Error group",error)
+  }
+
+  function addUser() {
+        AppManager.showLoader()
+        const requestBody = {
+          "userDTOS" : [ {
+            "id" : null,
+            "email" : email,
+            "firstName" :firstName,
+            "lastName" : lastName,
+            "markAsOwner" : null,
+            "roles" : [ {
+              "id" : 2,
+              "name" : role,
+            } ],
+            "groups" : [ {
+              "id" : 149,
+              "groupName" : selectedGroup,
+              "devices" : [ ],
+              "users" : [ ]
+            } ]
+          } ]
+        }
+        dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError)) 
+
+    }
+
+
+function onSuccess(data) {    
+  console.log("Success",data) 
+  dispatch(UsersActions.setSubuserResponse(data))
+  AppManager.hideLoader()
+}
+
+function onError(error) {
+  AppManager.hideLoader()
+  console.log("Error",error)   
+}
 
   React.useLayoutEffect(() => {
 
@@ -53,6 +116,8 @@ const AddUser = ({navigation,route}) => {
         )  
     });
   });
+
+
 
   const info = () => {
     return(
@@ -122,7 +187,7 @@ return (
               :null}
           <MultiSelect 
             label='Group Access' 
-            dataList={Data} 
+            dataList={GroupList} 
             allText='All' 
             hideSelectedDeviceLable={true}
             hideDeleteButton={true}
@@ -136,7 +201,7 @@ return (
             deleteHandle={(item,key)=>setSelectedGroup(selectedGroup.filter((item1,key1) => key1 != key))}
             />
 
-          <TouchableOpacity disabled={!(firstName && lastName && email && role)} style={[styles.saveButtonConatiner,{backgroundColor:firstName && lastName && email && role ? ColorConstant.BLUE : ColorConstant.LIGHTGREY}]}>
+          <TouchableOpacity onPress={() => addUser()} disabled={!(firstName && lastName && email && role)} style={[styles.saveButtonConatiner,{backgroundColor:firstName && lastName && email && role ? ColorConstant.BLUE : ColorConstant.LIGHTGREY}]}>
             <Text style={styles.saveText}>Save</Text>
           </TouchableOpacity>
           </View>

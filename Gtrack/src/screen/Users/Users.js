@@ -39,7 +39,6 @@ const Users = ({navigation}) => {
   function onSuccess(data) {    
     console.log("Success",data) 
     dispatch(UsersActions.setSubuserResponse(data))
-    console.log("khushi1",subUserData)
     AppManager.hideLoader()
   }
   

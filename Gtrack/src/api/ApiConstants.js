@@ -13,7 +13,10 @@ const ApiConstants = {
     REFRESH_TOKEN:(userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     RESET_PASSWORD: SUFFIX_URL + AUTH + 'resetPassword',
     EDIT_PROFILE:(userId) => `${USER}${userId}/updateProfileDetails`,
-    GET_SUBUSER:(userId) => `${USER}${userId}/subUsers`
+    GET_SUBUSER:(userId) => `${USER}${userId}/subUsers`,
+    ADD_SUBUSER:(userId) => `${USER}${userId}/addUsers`,
+    GET_GROUP:(userId) => `${USER}${userId}/groups`,
+    UPDATE_SUBUSER_DETAILS: (userId) =>`${USER}${userId}/updateSubUser`
 
 }
 

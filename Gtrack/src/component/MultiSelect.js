@@ -5,7 +5,7 @@ import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from '@ubaids/react-native-material-textfield'
 import FontSize from './FontSize';
-       
+    
 let data = []; 
 let selectedItem = [];
 let selectedAll = false;

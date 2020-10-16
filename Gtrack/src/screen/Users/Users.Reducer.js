@@ -3,6 +3,7 @@ import * as types from '../../constants/ActionTypes';
 
 const initialState = {
     subUser:[],
+    group:[]
 }
 
 export const usersReducer = createReducer(state = initialState, {
@@ -13,4 +14,20 @@ export const usersReducer = createReducer(state = initialState, {
             subUser:result
         }
     },
+    [types.GET_GROUP_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            group:result
+        }
+    },
+    [types.UPDATE_SUBUSER_DETAIL_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            group:result.groups,
+            role:result.roles
+        }
+    },
+
 })
