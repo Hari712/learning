@@ -69,7 +69,10 @@ const images = {
         downIcon: require('../../assets/images/GeoFence/downIcon.png'),
         upIcon: require('../../assets/images/GeoFence/upIcon.png'),
         backgroundImage: require('../../assets/images/GeoFence/BackgroundImage.png'),
-        uploadGrey: require('../../assets/images/GeoFence/uploadGrey.png')
+        uploadGrey: require('../../assets/images/GeoFence/uploadGrey.png'),
+        CrossBlack: require('../../assets/images/GeoFence/CrossBlack.png'),
+        listIcon: require('../../assets/images/GeoFence/list.png'),
+        pin: require('../../assets/images/GeoFence/pin.png')
     },
 
     image: {
