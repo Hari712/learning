@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import FontSize from '../../component/FontSize';
+import Dialog, { DialogContent } from 'react-native-popup-dialog';
 
 const GeoFence = ({ navigation }) => {
+    const [viewDialogBox, setViewDialogBox] = useState(false)
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -27,56 +29,60 @@ const GeoFence = ({ navigation }) => {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        console.log('Dialog Visibility', viewDialogBox)
+    }, [viewDialogBox])
+
+    function RenderViewDetailsDialog(item, index) {
+        return(
+            <Dialog visible={viewDialogBox} onTouchOutside={() => hideDialog()}>
+                <DialogContent>
+                    <Text>kk</Text>
+                </DialogContent>
+            </Dialog>
+        )
+    }
+
+    const GeoFenceInfoItem = ({ item }) => {
+        return (
+            <TouchableOpacity style={styles.cardContainer} onPress={() => { setViewDialogBox(!viewDialogBox) }}>
+                <View style={styles.blueBox}>
+                    <Text style={styles.blueBoxTitle}> {item.title} </Text>
+                    <TouchableOpacity onPress={() => { }}>
+                        <Image source={item.deleteIcon} resizeMode="contain" />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.whiteContainer}>
+                    <View style={{ flexDirection: 'column', flex: 1 }} >
+                        <Text style={styles.whiteContainerText}>{item.Group}</Text>
+                        <Text style={styles.whiteContainerSubText}>{item.GroupData}</Text>
+                    </View>
+
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.whiteContainerText}>{item.DeviceName}</Text>
+                        <Text style={styles.whiteContainerSubText}>{item.DeviceNameData}</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+            
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate('GeoFenceCreateNew')} >
-                    <Text style = {styles.createNewText}>Create New</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate('GeoFenceCreateNew')} >
+                <Text style={styles.createNewText}>Create New</Text>
+            </TouchableOpacity>
+            <FlatList
+                style={{}}
+                contentContainerStyle={{}}
+                data={GEOFENCEINFO}
+                renderItem={GeoFenceInfoItem}
+                keyExtractor={(item, index) => index.toString()}
+            />
 
-                <View style={styles.cardContainer}>
-                    <View style={styles.blueBox}>
-                        <Text style={styles.blueBoxTitle}> Gas Station </Text>
-                        <TouchableOpacity onPress={() => { }}>
-                            <Image source={images.geoFence.deleteIcon} resizeMode="contain" />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.whiteContainer}>
-                        <View style={{ flexDirection: 'column', flex: 1 }} >
-                            <Text style={styles.whiteContainerText}>Group</Text>
-                            <Text style={styles.whiteContainerSubText}>Home</Text>
-                        </View>
-
-                        <View style = {{flex: 1 }}>
-                            <Text style={styles.whiteContainerText}>Device Name</Text>
-                            <Text style={styles.whiteContainerSubText}>Track port International</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <View style={styles.cardContainer}>
-                    <View style={styles.blueBox}>
-                        <Text style={styles.blueBoxTitle}> Oil Refinery </Text>
-                        <TouchableOpacity onPress={() => { }}>
-                            <Image source={images.geoFence.deleteIcon} resizeMode="contain" />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.whiteContainer}>
-                        <View style={{ flexDirection: 'column', flex: 1 }} >
-                            <Text style={styles.whiteContainerText}>Group</Text>
-                            <Text style={styles.whiteContainerSubText}>Home</Text>
-                        </View>
-
-                        <View style = {{flex: 1}}>
-                            <Text style={styles.whiteContainerText}>Device Name</Text>
-                            <Text style={styles.whiteContainerSubText}>Spark Nano 7 GPS Tracker</Text>
-                        </View>
-                    </View>
-                </View>
-
-            </ScrollView>
+            {RenderViewDetailsDialog()}
         </SafeAreaView>
     )
 }
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
         fontSize: hp(1.4),
         fontWeight: 'bold',
         flex: 1,
-        fontFamily:'Nunito-Bold',
+        fontFamily: 'Nunito-Bold',
     },
     whiteContainer: {
         flexDirection: 'row',
@@ -143,13 +149,32 @@ const styles = StyleSheet.create({
     whiteContainerText: {
         color: ColorConstant.GREY,
         fontSize: hp(1.4),
-        fontFamily:'Nunito-Regular'
+        fontFamily: 'Nunito-Regular'
     },
     whiteContainerSubText: {
         color: ColorConstant.BLACK,
         fontSize: FontSize.FontSize.small,
-        fontFamily:'Nunito-Regular'
+        fontFamily: 'Nunito-Regular'
     },
 })
 
 export default GeoFence;
+
+const GEOFENCEINFO = [
+    {
+        title: 'Gas Station',
+        deleteIcon: images.geoFence.deleteIcon,
+        Group: 'Group',
+        DeviceName: 'Device Name',
+        GroupData: 'Home',
+        DeviceNameData: 'Track Port International'
+    },
+    {
+        title: 'Oil Refinery',
+        deleteIcon: images.geoFence.deleteIcon,
+        Group: 'Group',
+        DeviceName: 'Device Name',
+        GroupData: 'Home',
+        DeviceNameData: 'Spark Nano 7 GPS Tracker'
+    }
+]
