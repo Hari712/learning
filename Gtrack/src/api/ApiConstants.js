@@ -16,7 +16,7 @@ const ApiConstants = {
     GET_SUBUSER:(userId) => `${USER}${userId}/subUsers`,
     ADD_SUBUSER:(userId) => `${USER}${userId}/addUsers`,
     GET_GROUP:(userId) => `${USER}${userId}/groups`,
-    UPDATE_SUBUSER_DETAILS: (userId) =>`${USER}${userId}/updateSubUser`
+    UPDATE_SUBUSER_DETAILS:(userId) =>`${USER}${userId}/updateSubUser`
 
 }
 

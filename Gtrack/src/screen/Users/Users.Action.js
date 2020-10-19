@@ -38,8 +38,9 @@ export const setGroupResponse = (data) => ({
     data
 })
 
-export const requestUpdateSubuserDetail = (userId, onSuccess, onError) => ({
+export const requestUpdateSubuserDetail = ( body, userId, onSuccess, onError) => ({
     type: types.UPDATE_SUBUSER_DETAIL_REQUEST,
+    body,
     userId,
     onSuccess,
     onError

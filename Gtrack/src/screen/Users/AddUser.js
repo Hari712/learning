@@ -7,7 +7,7 @@ import FontSize from '../../component/FontSize';
 import NavigationService from '../../navigation/NavigationService';
 import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
-import MultiSelect from '../../component/MultiSelect'
+import MultiSelect, { MultiSelectGroup } from '../../component/MultiSelect'
 import { AppConstants } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
 import { getLoginState, getSubuserState } from '../Selector'
@@ -32,10 +32,11 @@ const AddUser = ({navigation,route}) => {
   const [selectedGroup, setSelectedGroup] = useState([]);
   const [role, setRole] = useState();
 
-  const Data =['Home','Fedex Ground']
-  const GroupList = subUserData.group.map(element => {return element.groupName} ); 
+  // const Data =['Home','Fedex Ground']
+  // const GroupList = subUserData.group.map(element => {return element.groupName} ); 
+  // const GroupId = subUserData.group.map(element => {return element.id} ); 
   // const selectedGroupWithID = 
-  console.log("Group List", GroupList)
+  // console.log("Group List", subUserData.group, selectedGroup)
 
   React.useEffect(() => {
     dispatch(UsersActions.requestGetGroup(loginData.id, onGroupSuccess, onGroupError));
@@ -46,8 +47,8 @@ const AddUser = ({navigation,route}) => {
         setFirstName(editData.editData.firstName)
         setLastName(editData.editData.lastName)
         setEmail(editData.editData.email)
-        setRole(editData.editData.role)
-        setSelectedGroup(editData.editData.group)
+        setRole(editData.editData.roles[0].id==1?"Owner":"Regular")
+        setSelectedGroup(editData.editData.groups)
     }}
   },[])
 
@@ -68,26 +69,25 @@ const AddUser = ({navigation,route}) => {
             "firstName" :firstName,
             "lastName" : lastName,
             "markAsOwner" : null,
-            "roles" : [ {
-              "id" : 2,
-              "name" : role,
-            } ],
-            "groups" : [ {
-              "id" : 149,
-              "groupName" : selectedGroup,
-              "devices" : [ ],
-              "users" : [ ]
-            } ]
+            "roles" : [{
+              "id" : role=="Owner" ? 1 : 2
+            }],
+            "groups" : selectedGroup
           } ]
         }
-        dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError)) 
+        console.log("User Body: ", requestBody)
+        if(route && route.params){
+          dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError)) 
+        } else{
+          dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError)) 
+        }
 
     }
 
 
 function onSuccess(data) {    
   console.log("Success",data) 
-  dispatch(UsersActions.setSubuserResponse(data))
+  // dispatch(UsersActions.setSubuserResponse(data))
   AppManager.hideLoader()
 }
 
@@ -185,9 +185,9 @@ return (
           {infoClick?
                 info()
               :null}
-          <MultiSelect 
+          <MultiSelectGroup 
             label='Group Access' 
-            dataList={GroupList} 
+            dataList={subUserData.group} 
             allText='All' 
             hideSelectedDeviceLable={true}
             hideDeleteButton={true}
@@ -198,7 +198,7 @@ return (
             selectedData={selectedGroup}
             selectedItemContainerStyle={styles.selectedItemContainerStyle} 
             selectedItemRowStyle={styles.selectedItemRowStyle}
-            deleteHandle={(item,key)=>setSelectedGroup(selectedGroup.filter((item1,key1) => key1 != key))}
+            deleteHandle={(item)=>setSelectedGroup(selectedGroup.filter((item1) => item1.id != item.id))}
             />
 
           <TouchableOpacity onPress={() => addUser()} disabled={!(firstName && lastName && email && role)} style={[styles.saveButtonConatiner,{backgroundColor:firstName && lastName && email && role ? ColorConstant.BLUE : ColorConstant.LIGHTGREY}]}>

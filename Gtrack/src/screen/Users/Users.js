@@ -87,6 +87,7 @@ const Users = ({navigation}) => {
 
 
 return ( 
+  <>
     <ScrollView  contentContainerStyle={styles.container}>
     
       <View style={styles.searchContainer}>
@@ -175,7 +176,7 @@ return (
               null} 
 
         </ScrollView>
-      
+      </>
         
       )
     }
@@ -184,8 +185,8 @@ return (
 const styles = StyleSheet.create({
 
   container: {
-    height:"100%",
-    alignItems:'center'
+    alignItems:'center',
+    flexGrow:1
   },
   cardContainer: {
     width:'90%',
