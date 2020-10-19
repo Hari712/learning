@@ -5,10 +5,13 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import FontSize from '../../component/FontSize';
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
-import MapView from '../../component/MapView'
+import MapView from '../../component/MapView';
 
 const GeoFence = ({ navigation }) => {
-    const [viewDialogBox, setViewDialogBox] = useState(false)
+    const [viewDialogBox, setViewDialogBox] = useState(false);
+    const [deleteDialogBox, setDeleteDialogBox] = useState(false);
+    const [cancel, setCancel] = useState(false);
+    const [dlete, setDelete] = useState(false);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -32,7 +35,8 @@ const GeoFence = ({ navigation }) => {
 
     useEffect(() => {
         console.log('Dialog Visibility', viewDialogBox)
-    }, [viewDialogBox])
+        console.log('Dialog Visibility', deleteDialogBox)
+    }, [viewDialogBox], [deleteDialogBox])
 
     function RenderViewDetailsDialog(item, index) {
         return (
@@ -140,6 +144,37 @@ const GeoFence = ({ navigation }) => {
 
     function hideDialog() {
         setViewDialogBox(false)
+        setDeleteDialogBox(false)
+    }
+
+    function RenderViewDeleteDialog(item, index) {
+        return (
+            <Dialog visible={deleteDialogBox} onTouchOutside={() => hideDialog()}>
+                <DialogContent>
+                    <View style={styles.deleteDialogMainView}>
+
+                        <View style={styles.subHeadingView}>
+                            <Text style={styles.deleteText}>Are you sure ?</Text>
+                            <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                        </View>
+                        <View style={styles.textMainView}>
+                            <Text style={styles.textViewStyle}>Do you really want to delete Gas Station ?</Text>
+                        </View>
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
+                                <Text style={styles.buttonTextColor}>Cancel</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
+                                <Text style={styles.nextButtonText}>Next</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </DialogContent>
+            </Dialog>
+        )
     }
 
     const GeoFenceInfoItem = ({ item }) => {
@@ -147,7 +182,7 @@ const GeoFence = ({ navigation }) => {
             <TouchableOpacity style={styles.cardContainer} onPress={() => { setViewDialogBox(!viewDialogBox) }}>
                 <View style={styles.blueBox}>
                     <Text style={styles.blueBoxTitle}> {item.title} </Text>
-                    <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={() => { setDeleteDialogBox(!deleteDialogBox) }}>
                         <Image source={item.deleteIcon} resizeMode="contain" />
                     </TouchableOpacity>
                 </View>
@@ -182,6 +217,7 @@ const GeoFence = ({ navigation }) => {
             />
 
             {RenderViewDetailsDialog()}
+            {RenderViewDeleteDialog()}
         </SafeAreaView>
     )
 }
@@ -259,10 +295,28 @@ const styles = StyleSheet.create({
         height: hp(80),
         width: wp(80)
     },
+    deleteDialogMainView: {
+        height: hp(25),
+        width: wp(80)
+    },
     subHeadingView: {
         flexDirection: 'row',
         marginTop: hp(2),
         justifyContent: 'space-between'
+    },
+    deleteText: {
+        fontSize: FontSize.FontSize.medium,
+        color: ColorConstant.ORANGE,
+        fontWeight: 'bold',
+        marginLeft: wp(25),
+    },
+    textMainView: {
+        marginTop: hp(5),
+        alignSelf: 'center'
+    },
+    textViewStyle: {
+        fontSize: FontSize.FontSize.small,
+        color: ColorConstant.BLACK
     },
     headingText: {
         fontSize: FontSize.FontSize.medium,
@@ -308,6 +362,26 @@ const styles = StyleSheet.create({
         width: wp(70),
         marginTop: hp(3),
         alignSelf: 'center'
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: wp(75),
+        marginTop: hp(8),
+        alignSelf: 'center',
+        paddingBottom: hp(6)
+    },
+    cancelButton: {
+        borderRadius: 6,
+        width: '40%',
+        height: hp(5),
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: ColorConstant.BLUE,
+    },
+    buttonTextColor: {
+        textAlign: 'center',
+        color: ColorConstant.BLUE
     },
     nextButton: {
         borderRadius: 6,

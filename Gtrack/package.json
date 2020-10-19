@@ -29,6 +29,7 @@
     "react-native-country-list": "^1.0.10",
     "react-native-flash-message": "^0.1.16",
     "react-native-gesture-handler": "^1.8.0",
+    "react-native-image-crop-picker": "^0.4.4",
     "react-native-indicators": "^0.17.0",
     "react-native-keyboard-aware-scrollview": "^2.1.0",
     "react-native-maps": "^0.27.1",
