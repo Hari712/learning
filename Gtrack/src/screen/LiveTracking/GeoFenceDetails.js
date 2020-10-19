@@ -84,7 +84,6 @@ const GeoFenceDetails = ({ navigation }) => {
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.5) }}
-                            contentInset={{ input: 12 }}
                             multiline={true}
                         />
                     </View>
