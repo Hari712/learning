@@ -103,7 +103,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     </View>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: hp(25) }}>
-                        <View style={{ width: '47%' }}>
+                        <View style={{ width: '50%' }}>
                             <DropDown
                                 defaultValue={fontsize}
                                 label='Font Size'
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
         borderColor: ColorConstant.GREY,
         width: '47%',
         marginTop: hp(1),
+        borderRadius: 10
     },
     uploadText: {
         fontSize: FontSize.FontSize.small,

@@ -40,12 +40,14 @@ const GeoFence = ({ navigation }) => {
 
     function RenderViewDetailsDialog(item, index) {
         return (
-            <Dialog visible={viewDialogBox} onTouchOutside={() => hideDialog()}>
+            <Dialog visible={viewDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={{ borderRadius: 15 }}>
                 <DialogContent>
                     <View style={styles.mainViewHeading}>
                         <View style={styles.subHeadingView}>
                             <Text style={styles.headingText}>View</Text>
-                            <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                            <TouchableOpacity onPress={() => { hideDialog() }}>
+                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.popUpCardContainer}>
@@ -68,42 +70,47 @@ const GeoFence = ({ navigation }) => {
                                 </View>
                             </View>
 
-                            <View style={styles.secondRowMainView}>
-                                <View style={{ flexDirection: 'column', width: '25%' }}>
-                                    <Text style={styles.mainTextStyle}>Colour</Text>
-                                    <View style={styles.deviceSummaryDetailView}></View>
-                                </View>
+                            <View style={{ flexDirection: 'row' }}>
+                                <View style={{ width: '68%' }}>
+                                    <View style={styles.secondRowMainView}>
+                                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                                            <Text style={styles.mainTextStyle}>Colour</Text>
+                                            <View style={styles.deviceSummaryDetailView}></View>
+                                        </View>
 
-                                <View style={{ flexDirection: 'column', width: '25%' }}>
-                                    <Text style={styles.mainTextStyle}>Font Size</Text>
-                                    <Text style={styles.fontSizeStyle}>08</Text>
-                                </View>
+                                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                                            <Text style={styles.mainTextStyle}>Font Size</Text>
+                                            <Text style={styles.fontSizeStyle}>08</Text>
+                                        </View>
 
-                                <View style={{ flexDirection: 'column', width: '30%' }}>
-                                    <Text style={styles.mainTextStyle}>Type</Text>
-                                    <Text style={styles.fontSizeStyle}>Polygon</Text>
-                                </View>
+                                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                                            <Text style={styles.mainTextStyle}>Type</Text>
+                                            <Text style={styles.fontSizeStyle}>Polygon</Text>
+                                        </View>
+                                    </View>
 
-                                <View style={{ flexDirection: 'column', width: '50%', }}>
-                                    <Text style={styles.mainTextStyle}>Image</Text>
-                                    <View style={styles.deviceSummaryDetailView}></View>
-                                </View>
-                            </View>
+                                    <View style={styles.secondRowMainView}>
+                                        <View style={{ flexDirection: 'column', width: '36%' }}>
+                                            <Text style={styles.mainTextStyle}>Visibility</Text>
+                                            <Text style={styles.fontSizeStyle}>02 to 20</Text>
+                                        </View>
 
-                            <View style={styles.secondRowMainView}>
-                                <View style={{ flexDirection: 'column', width: '25%' }}>
-                                    <Text style={styles.mainTextStyle}>Visibility</Text>
-                                    <Text style={styles.fontSizeStyle}>02 to 20</Text>
-                                </View>
+                                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                                            <Text style={styles.mainTextStyle}>Area</Text>
+                                            <Text style={styles.fontSizeStyle}>100m2</Text>
+                                        </View>
 
-                                <View style={{ flexDirection: 'column', width: '25%' }}>
-                                    <Text style={styles.mainTextStyle}>Area</Text>
-                                    <Text style={styles.fontSizeStyle}>100m2</Text>
+                                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                                            <Text style={styles.mainTextStyle}>Perimeter</Text>
+                                            <Text style={styles.fontSizeStyle}>75m</Text>
+                                        </View>
+                                    </View>
                                 </View>
-
-                                <View style={{ flexDirection: 'column', width: '30%' }}>
-                                    <Text style={styles.mainTextStyle}>Perimeter</Text>
-                                    <Text style={styles.fontSizeStyle}>75m</Text>
+                                <View style={styles.secondRowMainView}>
+                                    <View style={{ flexDirection: 'column' }}>
+                                        <Text style={styles.mainTextStyle}>Image</Text>
+                                        <Image source={images.geoFence.Intersection} resizeMode='stretch' style={{ marginTop: hp(1), height: hp(10), width: wp(20) }} />
+                                    </View>
                                 </View>
                             </View>
 
@@ -131,7 +138,7 @@ const GeoFence = ({ navigation }) => {
 
                         <View style={styles.buttonMainContainer}>
                             <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType') }} style={styles.nextButton}>
-                                <Text style={styles.nextButtonText}>Next</Text>
+                                <Text style={styles.nextButtonText}>Edit</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -149,13 +156,15 @@ const GeoFence = ({ navigation }) => {
 
     function RenderViewDeleteDialog(item, index) {
         return (
-            <Dialog visible={deleteDialogBox} onTouchOutside={() => hideDialog()}>
+            <Dialog visible={deleteDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={{ borderRadius: 15 }}>
                 <DialogContent>
                     <View style={styles.deleteDialogMainView}>
 
                         <View style={styles.subHeadingView}>
                             <Text style={styles.deleteText}>Are you sure ?</Text>
-                            <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                            <TouchableOpacity onPress={() => { hideDialog() }}>
+                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.textMainView}>
                             <Text style={styles.textViewStyle}>Do you really want to delete Gas Station ?</Text>
@@ -167,7 +176,7 @@ const GeoFence = ({ navigation }) => {
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
-                                <Text style={styles.nextButtonText}>Next</Text>
+                                <Text style={styles.nextButtonText}>Delete</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -292,11 +301,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito-Regular'
     },
     mainViewHeading: {
-        height: hp(80),
+        height: hp(78),
         width: wp(80)
     },
     deleteDialogMainView: {
-        height: hp(25),
+        height: hp(23),
         width: wp(80)
     },
     subHeadingView: {
@@ -361,20 +370,20 @@ const styles = StyleSheet.create({
     buttonMainContainer: {
         width: wp(70),
         marginTop: hp(3),
-        alignSelf: 'center'
+        marginLeft: wp(28)
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: wp(75),
-        marginTop: hp(8),
+        marginTop: hp(7),
         alignSelf: 'center',
-        paddingBottom: hp(6)
+        // paddingBottom: hp(6)
     },
     cancelButton: {
         borderRadius: 6,
         width: '40%',
-        height: hp(5),
+        height: hp(4),
         justifyContent: 'center',
         borderWidth: 1,
         borderColor: ColorConstant.BLUE,
@@ -386,7 +395,7 @@ const styles = StyleSheet.create({
     nextButton: {
         borderRadius: 6,
         width: '40%',
-        height: hp(5),
+        height: hp(4),
         justifyContent: 'center',
         backgroundColor: ColorConstant.BLUE,
     },
@@ -404,8 +413,8 @@ const styles = StyleSheet.create({
     secondRowMainView: {
         flexDirection: 'row',
         // marginTop: hp(1.5),
-        paddingHorizontal: hp(2.5),
-        paddingBottom: hp(1.5)
+        paddingHorizontal: hp(1.5),
+        paddingBottom: hp(1)
     },
     mainTextStyle: {
         color: ColorConstant.GREY,
@@ -415,7 +424,7 @@ const styles = StyleSheet.create({
     fontSizeStyle: {
         fontSize: hp(1.4),
         color: ColorConstant.BLACK,
-        marginTop: hp(1.5)
+        marginTop: hp(1)
     },
     deviceSummaryDetailView: {
         width: hp(2.5),

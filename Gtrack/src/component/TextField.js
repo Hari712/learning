@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     },
     descContainer: {
         height: hp(15),
+        textAlignVertical: "top",
     },
     inputButton: {        
         alignSelf: 'center',

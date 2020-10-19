@@ -72,7 +72,8 @@ const images = {
         uploadGrey: require('../../assets/images/GeoFence/uploadGrey.png'),
         CrossBlack: require('../../assets/images/GeoFence/CrossBlack.png'),
         listIcon: require('../../assets/images/GeoFence/list.png'),
-        pin: require('../../assets/images/GeoFence/pin.png')
+        pin: require('../../assets/images/GeoFence/pin.png'),
+        Intersection: require('../../assets/images/GeoFence/Intersection.png')
     },
 
     image: {

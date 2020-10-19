@@ -68,7 +68,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
                         outerStyle={[styles.outerViewStyle]}
                         dropdownStyle={styles.dropdownStyle}
                         dataRowStyle={styles.dataRowStyle}
-                        dataTextStyle={{ padding: 3 }}
+                        dataTextStyle={{ padding: 3, color: ColorConstant.BLUE }}
                         labelFontSize={hp(1.4)}
                         labelTextStyle={{ top: hp(0.5) }}
                     />
@@ -168,10 +168,11 @@ const styles = StyleSheet.create({
       dropdownStyle: {
         position:'relative', 
         top:hp(0.1), 
-        width:'100%', 
+        width:'100%',
       },
       dataRowStyle: {
-        borderBottomWidth:1,borderBottomColor:ColorConstant.GREY, 
+        borderBottomWidth:1,
+        borderBottomColor:ColorConstant.LIGHTGREY, 
       },
     buttonMainContainer: {
         flexDirection: 'row',
