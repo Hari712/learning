@@ -1,5 +1,5 @@
 import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput} from 'react-native';
+import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl} from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -20,6 +20,7 @@ const filterData = ['Active','Inactive']
 const Users = ({navigation}) => {
 
   const [filterClick, setFilterClick] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { loginData, subUserData } = useSelector(state => ({
     loginData: getLoginState(state),
@@ -40,11 +41,13 @@ const Users = ({navigation}) => {
     console.log("Success",data) 
     dispatch(UsersActions.setSubuserResponse(data))
     AppManager.hideLoader()
+    setIsRefreshing(false)
   }
   
   function onError(error) {
     AppManager.hideLoader()
-    console.log("Error",error)   
+    console.log("Error",error)  
+    setIsRefreshing(false) 
   }
 
   React.useLayoutEffect(() => {
@@ -85,10 +88,23 @@ const Users = ({navigation}) => {
         )
     }
 
+    const onRefresh = () => {
+      setIsRefreshing(true)
+      dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
+  }
+
 
 return ( 
   <>
-    <ScrollView  contentContainerStyle={styles.container}>
+    <ScrollView  
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl 
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}        
+        />
+      }
+      >      
     
       <View style={styles.searchContainer}>
       {searchBar()} 
@@ -119,8 +135,8 @@ return (
             </View>
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>Group</Text>
-              <View style={{justifyContent:'flex-start',flexDirection:'row'}}>
-                  <Text style={styles.whiteContainerSubText}>{item.groups[0].groupName} </Text>  
+              <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
+                  <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName :null} </Text>  
                   <Tooltip
                     popover={
                       <View>

@@ -20,14 +20,5 @@ export const usersReducer = createReducer(state = initialState, {
             ...state,
             group:result
         }
-    },
-    [types.UPDATE_SUBUSER_DETAIL_RESPONSE](state, action) {
-        const { result } = action.data
-        return {
-            ...state,
-            group:result.groups,
-            role:result.roles
-        }
-    },
-
+    }
 })

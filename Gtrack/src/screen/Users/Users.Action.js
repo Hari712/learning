@@ -46,8 +46,4 @@ export const requestUpdateSubuserDetail = ( body, userId, onSuccess, onError) =>
     onError
 })
 
-export const setUpdateSubuserDetail = (data) => ({
-    type: types.UPDATE_SUBUSER_DETAIL_RESPONSE,
-    data
-})
 

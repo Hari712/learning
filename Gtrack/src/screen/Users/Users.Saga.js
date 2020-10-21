@@ -39,8 +39,6 @@ function* updateSubuserDetails(action) {
     const {body, userId, onSuccess, onError } = action
     try {
         const response = yield call(API.put, ApiConstants.UPDATE_SUBUSER_DETAILS(userId), body)            
-        //yield put(UserActions.setUpdateSubuserDetail(response))
-        console.log("khushi",response)    
         onSuccess(response)
     } catch (error) {
         onError(error)

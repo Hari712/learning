@@ -62,23 +62,34 @@ const AddUser = ({navigation,route}) => {
 
   function addUser() {
         AppManager.showLoader()
-        const requestBody = {
-          "userDTOS" : [ {
-            "id" : null,
-            "email" : email,
-            "firstName" :firstName,
-            "lastName" : lastName,
-            "markAsOwner" : null,
-            "roles" : [{
-              "id" : role=="Owner" ? 1 : 2
-            }],
-            "groups" : selectedGroup
-          } ]
-        }
-        console.log("User Body: ", requestBody)
         if(route && route.params){
+          const requestBody = {
+            "id" : route.params.editData.id,
+            "firstName" : firstName ,
+            "lastName" : lastName,
+            "email" : email,
+            "roles" : [ {
+              "id" : role=="Owner" ? 1 : 2
+            } ],
+            "groups" : selectedGroup
+          }
+          console.log("User Body: ", requestBody)
           dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError)) 
         } else{
+          const requestBody = {
+            "userDTOS" : [ {
+              "id" : null,
+              "email" : email,
+              "firstName" :firstName,
+              "lastName" : lastName,
+              "markAsOwner" : null,
+              "roles" : [{
+                "id" : role=="Owner" ? 1 : 2
+              }],
+              "groups" : selectedGroup
+            } ]
+          }
+          console.log("User Body: ", requestBody)
           dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError)) 
         }
 
