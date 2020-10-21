@@ -1,48 +1,18 @@
-import React, { useState ,Component} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput} from 'react-native';
+import React, { useState ,Component, useEffect} from 'react';
+import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl} from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize';
 import NavigationService from '../../navigation/NavigationService';
+import { getLoginState, getSubuserState } from '../Selector'
 import Tooltip from 'rn-tooltip';
+import { useDispatch, useSelector } from 'react-redux';
+import * as UsersActions from './Users.Action'
+import AppManager from '../../constants/AppManager';
 
-
-let DATA = [
-  {
-      firstName: 'Tom',
-      lastName:'Smith',
-      role:'Owner',
-      status:'Active',
-      rights: 'Admin',
-      group:['Home'],
-      email: 'tomsmith@gmail.com',
-      phoneNo: '+1 430 8976532',
-  },
-  {
-      firstName: 'Richard',
-      lastName: 'Stokes',
-      role:'Regular',
-      status:'Inactive',
-      rights: 'Regular User',
-      group:['Fedex Ground','Gas Station','Home'],
-      email: 'richard@gmail.com',
-      phoneNo:'+1 430 8976532',
-  },
-  {
-      firstName: 'Charles',
-      lastName: 'Anderson',
-      role:'Home',
-      status:'Inactive',
-      rights: 'Admin',
-      group:['Fedex Ground'],
-      email: 'charles@gmail.com',
-      phoneNo: '+1 430 8976532',
-  },
-
-];
-
-let searchData= DATA
+let DATA;
+let searchData;
 
 const filterData = ['Active','Inactive']
 
@@ -50,7 +20,35 @@ const filterData = ['Active','Inactive']
 const Users = ({navigation}) => {
 
   const [filterClick, setFilterClick] = useState(false);
- 
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const { loginData, subUserData } = useSelector(state => ({
+    loginData: getLoginState(state),
+    subUserData: getSubuserState(state)
+  }))
+
+    DATA = subUserData.subUser
+    searchData = DATA 
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {    
+    AppManager.showLoader()
+    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))   
+  }, [])
+
+  function onSuccess(data) {    
+    console.log("Success",data) 
+    dispatch(UsersActions.setSubuserResponse(data))
+    AppManager.hideLoader()
+    setIsRefreshing(false)
+  }
+  
+  function onError(error) {
+    AppManager.hideLoader()
+    console.log("Error",error)  
+    setIsRefreshing(false) 
+  }
 
   React.useLayoutEffect(() => {
 
@@ -64,7 +62,8 @@ const Users = ({navigation}) => {
 
         const searchFilter = (text) => {
           searchData = DATA.filter(item=>item.firstName.toString().toLowerCase().includes(text.toLowerCase()))
-            setSearch(text)
+          console.log(searchData)
+          setSearch(text)
         }
 
         return (
@@ -84,14 +83,28 @@ const Users = ({navigation}) => {
             <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
               <Image source={images.user.add}/>
             </TouchableOpacity>
-           
-           </View>
+          
+          </View>
         )
     }
 
+    const onRefresh = () => {
+      setIsRefreshing(true)
+      dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
+  }
+
 
 return ( 
-    <ScrollView  contentContainerStyle={styles.container}>
+  <>
+    <ScrollView  
+      contentContainerStyle={styles.container}
+      refreshControl={
+        <RefreshControl 
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}        
+        />
+      }
+      >      
     
       <View style={styles.searchContainer}>
       {searchBar()} 
@@ -102,8 +115,8 @@ return (
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
-              <Image source={item.status=='Active'?images.user.active:images.user.inactive} />
-              <Text style={styles.activeText}>{item.status}</Text>
+              <Image source={item.isActive?images.user.active:images.user.inactive} />
+              <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
               <TouchableOpacity onPress={()=>{navigation.navigate('AddUser',{editData:item})}} style={{marginLeft:hp(2)}}>
                 <Image source={images.user.edit} /> 
               </TouchableOpacity>       
@@ -113,7 +126,8 @@ return (
           <View style={styles.whiteContainer}>
             <View style={styles.whiteSubView} >
               <Text style={styles.whiteContainerText}>Role</Text>
-              <Text style={styles.whiteContainerSubText}>{item.role}</Text>              
+              {item.roles.map((role,key) =>
+                <Text key={key} style={styles.whiteContainerSubText}>{role.name}</Text> )}       
             </View>
             <View style={{flexDirection:'column',flex:1}} >
               <Text style={styles.whiteContainerText}>Rights</Text>
@@ -121,19 +135,31 @@ return (
             </View>
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>Group</Text>
-              <View style={{justifyContent:'flex-start',flexDirection:'row'}}>
-                  <Text style={styles.whiteContainerSubText}>{item.group[0]} </Text>  
+              <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
+                  <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName :null} </Text>  
                   <Tooltip
-                    popover={<Text style={{ fontSize:10,fontFamily:'Nunito-Regular'}}>{item.group[1]}</Text>} 
+                    popover={
+                      <View>
+                        {item.groups.map((element, index) => {
+                          if(index>0)
+                            return(
+                              <Text key={index} style={{ fontSize:10,fontFamily:'Nunito-Regular'}}>
+                                {element.groupName}
+                              </Text>
+                            )
+                          })}
+                      </View>
+                    } 
                     backgroundColor={ColorConstant.WHITE}
-                    //withPointer={true}
                     overlayColor={ColorConstant.TRANSPARENT}
                     pointerStyle={{elevation:0.1,borderRightWidth:4,borderLeftWidth:4}}
                     containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
                   >           
-                    {item.group.length>1?
-                      <Text style={{fontSize:10,fontFamily:'Nunito-SemiBold',backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>+{item.group.length-1}</Text>
-                  :null
+                    {item.groups.length>1?
+                      <Text style={{fontSize:10,fontFamily:'Nunito-SemiBold',backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>
+                        +{item.groups.length-1}
+                      </Text>
+                      :null
                     }
                   </Tooltip>               
               </View>              
@@ -166,7 +192,7 @@ return (
               null} 
 
         </ScrollView>
-      
+      </>
         
       )
     }
@@ -175,8 +201,8 @@ return (
 const styles = StyleSheet.create({
 
   container: {
-    height:"100%",
-    alignItems:'center'
+    alignItems:'center',
+    flexGrow:1
   },
   cardContainer: {
     width:'90%',
