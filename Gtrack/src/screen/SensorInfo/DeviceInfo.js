@@ -133,7 +133,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                     <View style={styles.sensorMainView}>
                         <View style={{ flexDirection: 'column', width: '35%' }}>
-                            <Text style={styles.mainTextStyle}>Fuel Levellll</Text>
+                            <Text style={styles.mainTextStyle}>Fuel Level</Text>
                             <Text style={styles.textStyle}>75%</Text>
                         </View>
 

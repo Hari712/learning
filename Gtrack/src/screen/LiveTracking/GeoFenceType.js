@@ -15,23 +15,18 @@ const GeoFenceType = ({ navigation, route }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={{
-                    color: ColorConstant.GREY,
-                    fontSize: FontSize.FontSize.medium,
-                    fontWeight: '500',
-                    textAlign: 'center'
-                }}>
+                <Text style={styles.headerTitle}>
                     Geo Fence
                 </Text>
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: wp(4) }} source={images.image.back} />
+                    <Image style={styles.headerLeftStyle} source={images.image.back} />
                 </TouchableOpacity>
             ),
             headerRight: () => (
                 <TouchableOpacity onPress={() => navigation.navigate('GeoFenceDetails')}>
-                    <Text style={{ color: ColorConstant.BLUE, marginRight: wp(4) }}>Next</Text>
+                    <Text style={styles.headerRightStyle}>Next</Text>
                 </TouchableOpacity>
             )
         });
@@ -52,14 +47,13 @@ const GeoFenceType = ({ navigation, route }) => {
                 </View>
                 {type == 'Circle' ?
                     <View style={styles.sliderMainView}>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Text style={{ color: '#B5B5B5', fontSize: hp(1.4), paddingTop: hp(1), marginLeft: wp(3) }}>Change Radius</Text>
+                        <View style={styles.sliderSubView}>
+                            <Text style={styles.radiusTextSize}>Change Radius</Text>
 
-                            <View style={{ flexDirection: 'row', paddingTop: hp(1), marginRight: wp(3) }}>
-                                <Text style={{ fontSize: hp(1.4), lineHeight: 20, color: ColorConstant.ORANGE }}>400m</Text>
-                                <Text style={{ fontSize: hp(1.4), lineHeight: 15, color: ColorConstant.ORANGE }}>2</Text>
+                            <View style={styles.radiusMainView}>
+                                <Text style={styles.textStyleInfo}>400m</Text>
+                                <Text style={styles.otherTextStyle}>2</Text>
                             </View>
-
                         </View>
 
                         <View style={styles.sliderContainer}>
@@ -97,6 +91,19 @@ const GeoFenceType = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
+    headerTitle: {
+        color: ColorConstant.GREY,
+        fontSize: FontSize.FontSize.medium,
+        fontWeight: '500',
+        textAlign: 'center'
+    },
+    headerLeftStyle: {
+        marginLeft: wp(4)
+    },
+    headerRightStyle: {
+        color: ColorConstant.BLUE, 
+        marginRight: wp(4)
+    },
     container: {
         flex: 1,
     },
@@ -131,6 +138,31 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         top: hp(60),
         // alignItems: 'center'
+    },
+    sliderSubView: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between'
+    },
+    radiusTextSize: {
+        color: '#B5B5B5', 
+        fontSize: hp(1.4), 
+        paddingTop: hp(1), 
+        marginLeft: wp(3)
+    },
+    radiusMainView: {
+        flexDirection: 'row', 
+        paddingTop: hp(1), 
+        marginRight: wp(3)
+    },
+    textStyleInfo: {
+        fontSize: hp(1.4),
+        lineHeight: 20, 
+        color: ColorConstant.ORANGE
+    },
+    otherTextStyle: {
+        fontSize: hp(1.4), 
+        lineHeight: 15, 
+        color: ColorConstant.ORANGE
     },
     sliderContainer: {
         flex: 1,

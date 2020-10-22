@@ -17,18 +17,13 @@ const GeoFenceCreateNew = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={{
-                    color: ColorConstant.GREY,
-                    fontSize: FontSize.FontSize.medium,
-                    fontWeight: '500',
-                    textAlign: 'center'
-                }}>
+                <Text style={styles.headerTitle}>
                     Geo Fence
                 </Text>
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <Image style={styles.headerLeftStyle} source={images.image.back} />
                 </TouchableOpacity>
             )
         });
@@ -39,7 +34,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>Create New</Text>
             </View>
-            <View style={{ width: '85%', alignSelf: 'center' }}>
+            <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
                     label='Group Access'
                     //  dataList={Data} 
@@ -58,7 +53,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             </View>
 
             <View style={styles.dropDown}>
-                <View style={{ flex: 1 }}>
+                <View style={styles.dropDownSubView}>
                     <DropDown
                         label='GeoFence Type*'
                         defaultValue={role}
@@ -89,6 +84,15 @@ const GeoFenceCreateNew = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    headerTitle: {
+        color: ColorConstant.GREY,
+        fontSize: FontSize.FontSize.medium,
+        fontWeight: '500',
+        textAlign: 'center'
+    },
+    headerLeftStyle: {
+        marginLeft: hp(2)
+    },
     container: {
         flex: 1,
         backgroundColor: ColorConstant.WHITE,
@@ -105,6 +109,10 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.small,
         fontWeight: 'bold',
         color: '#ffffff'
+    },
+    multiselectMainView: {
+        width: '85%', 
+        alignSelf: 'center'
     },
     rowStyle: {
         borderBottomColor: ColorConstant.LIGHTGREY,
@@ -151,6 +159,9 @@ const styles = StyleSheet.create({
         marginTop:hp(2),
         width: '85%', 
         alignSelf: 'center'
+    },
+    dropDownSubView: {
+        flex: 1
     },
     outerViewStyle:{
         elevation:4,

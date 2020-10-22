@@ -16,18 +16,13 @@ const GeoFence = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={{
-                    color: ColorConstant.GREY,
-                    fontSize: FontSize.FontSize.medium,
-                    fontWeight: '500',
-                    textAlign: 'center'
-                }}>
+                <Text style={styles.headerTitle}>                 
                     Geo Fence
                 </Text>
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <Image style={styles.headerLeftStyle} source={images.image.back} />
                 </TouchableOpacity>
             )
         });
@@ -40,13 +35,13 @@ const GeoFence = ({ navigation }) => {
 
     function RenderViewDetailsDialog(item, index) {
         return (
-            <Dialog visible={viewDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={{ borderRadius: 15 }}>
+            <Dialog visible={viewDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={styles.dialogStyle}>
                 <DialogContent>
                     <View style={styles.mainViewHeading}>
                         <View style={styles.subHeadingView}>
                             <Text style={styles.headingText}>View</Text>
                             <TouchableOpacity onPress={() => { hideDialog() }}>
-                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
                             </TouchableOpacity>
                         </View>
 
@@ -59,63 +54,63 @@ const GeoFence = ({ navigation }) => {
                             <View style={styles.lineStyle} />
 
                             <View style={styles.infoDataMainView}>
-                                <View style={{ flexDirection: 'column', width: '50%' }}>
+                                <View style={styles.infoDataSubView}>
                                     <Text style={styles.mainTextStyle}>Name</Text>
                                     <Text style={styles.textStyle}>Gas Station</Text>
                                 </View>
 
-                                <View style={{ flexDirection: 'column' }}>
+                                <View style={styles.descriptionMainStyle}>
                                     <Text style={styles.mainTextStyle}>Description</Text>
                                     <Text style={styles.textStyle}>Description of card</Text>
                                 </View>
                             </View>
 
-                            <View style={{ flexDirection: 'row' }}>
-                                <View style={{ width: '68%' }}>
+                            <View style={styles.geoFenceDetailMainView}>
+                                <View style={styles.detailsMainView}>
                                     <View style={styles.secondRowMainView}>
-                                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                                        <View style={styles.secondRowSubView}>
                                             <Text style={styles.mainTextStyle}>Colour</Text>
                                             <View style={styles.deviceSummaryDetailView}></View>
                                         </View>
 
-                                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                                        <View style={styles.fontSizeMainView}>
                                             <Text style={styles.mainTextStyle}>Font Size</Text>
                                             <Text style={styles.fontSizeStyle}>08</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                                        <View style={styles.typeMainViewStyle}>
                                             <Text style={styles.mainTextStyle}>Type</Text>
                                             <Text style={styles.fontSizeStyle}>Polygon</Text>
                                         </View>
                                     </View>
 
                                     <View style={styles.secondRowMainView}>
-                                        <View style={{ flexDirection: 'column', width: '36%' }}>
+                                        <View style={styles.visibilityMainView}>
                                             <Text style={styles.mainTextStyle}>Visibility</Text>
                                             <Text style={styles.fontSizeStyle}>02 to 20</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                                        <View style={styles.areaMainView}>
                                             <Text style={styles.mainTextStyle}>Area</Text>
                                             <Text style={styles.fontSizeStyle}>100m2</Text>
                                         </View>
 
-                                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                                        <View style={styles.perimeterMainView}>
                                             <Text style={styles.mainTextStyle}>Perimeter</Text>
                                             <Text style={styles.fontSizeStyle}>75m</Text>
                                         </View>
                                     </View>
                                 </View>
                                 <View style={styles.secondRowMainView}>
-                                    <View style={{ flexDirection: 'column' }}>
+                                    <View style={styles.descriptionMainStyle}>
                                         <Text style={styles.mainTextStyle}>Image</Text>
-                                        <Image source={images.geoFence.Intersection} resizeMode='stretch' style={{ marginTop: hp(1), height: hp(10), width: wp(20) }} />
+                                        <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
                                     </View>
                                 </View>
                             </View>
 
                             <View style={styles.secondRowMainView}>
-                                <View style={{ flexDirection: 'column' }}>
+                                <View style={styles.descriptionMainStyle}>
                                     <Text style={styles.mainTextStyle}>Selected Devices</Text>
                                     <Text style={styles.fontSizeStyle}>TrackPort International</Text>
                                     <Text style={styles.fontSizeStyle}>Spark Nano 7 GPS Tracker</Text>
@@ -131,7 +126,7 @@ const GeoFence = ({ navigation }) => {
 
                             <View style={styles.lineStyle} />
 
-                            <View style={{ height: hp(20), width: '100%', paddingHorizontal: wp(5), padding: hp(2) }}>
+                            <View style={styles.mapViewMainView}>
                                 <MapView />
                             </View>
                         </View>
@@ -156,14 +151,14 @@ const GeoFence = ({ navigation }) => {
 
     function RenderViewDeleteDialog(item, index) {
         return (
-            <Dialog visible={deleteDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={{ borderRadius: 15 }}>
+            <Dialog visible={deleteDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={styles.dialogStyle}>
                 <DialogContent>
                     <View style={styles.deleteDialogMainView}>
 
                         <View style={styles.subHeadingView}>
                             <Text style={styles.deleteText}>Are you sure ?</Text>
                             <TouchableOpacity onPress={() => { hideDialog() }}>
-                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={{ marginTop: hp(0.5) }} />
+                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
                             </TouchableOpacity>
                         </View>
                         <View style={styles.textMainView}>
@@ -197,12 +192,12 @@ const GeoFence = ({ navigation }) => {
                 </View>
 
                 <View style={styles.whiteContainer}>
-                    <View style={{ flexDirection: 'column', flex: 1 }} >
+                    <View style={styles.GroupMainView}>
                         <Text style={styles.whiteContainerText}>{item.Group}</Text>
                         <Text style={styles.whiteContainerSubText}>{item.GroupData}</Text>
                     </View>
 
-                    <View style={{ flex: 1 }}>
+                    <View style={styles.deviceNameMainView}>
                         <Text style={styles.whiteContainerText}>{item.DeviceName}</Text>
                         <Text style={styles.whiteContainerSubText}>{item.DeviceNameData}</Text>
                     </View>
@@ -232,6 +227,18 @@ const GeoFence = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    headerTitle: {
+        color: ColorConstant.GREY,
+        fontSize: FontSize.FontSize.medium,
+        fontWeight: '500',
+        textAlign: 'center'
+    },
+    headerLeftStyle: {
+        marginLeft: hp(2)
+    },
+    dialogStyle: {
+        borderRadius: 15
+    },
     container: {
         flex: 1,
         backgroundColor: ColorConstant.WHITE,
@@ -290,6 +297,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp(3.5),
         paddingBottom: hp(1.5)
     },
+    GroupMainView: {
+        flexDirection: 'column', 
+        flex: 1
+    },
     whiteContainerText: {
         color: ColorConstant.GREY,
         fontSize: hp(1.4),
@@ -299,6 +310,9 @@ const styles = StyleSheet.create({
         color: ColorConstant.BLACK,
         fontSize: FontSize.FontSize.small,
         fontFamily: 'Nunito-Regular'
+    },
+    deviceNameMainView: {
+        flex: 1 
     },
     mainViewHeading: {
         height: hp(80),
@@ -333,6 +347,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginLeft: wp(35)
     },
+    crossImageStyle: {
+        marginTop: hp(0.5)
+    },
     popUpCardContainer: {
         width: '100%',
         // width: Dimensions.get('screen').width - 30,
@@ -366,6 +383,12 @@ const styles = StyleSheet.create({
         borderBottomColor: ColorConstant.GREY,
         borderBottomWidth: 0.5,
         marginHorizontal: hp(2)
+    },
+    mapViewMainView: {
+        height: hp(20), 
+        width: '100%', 
+        paddingHorizontal: wp(5), 
+        padding: hp(2)
     },
     buttonMainContainer: {
         width: wp(70),
@@ -410,21 +433,46 @@ const styles = StyleSheet.create({
         paddingHorizontal: hp(2.5),
         paddingBottom: hp(1.5)
     },
+    infoDataSubView: {
+        flexDirection: 'column', 
+        width: '50%'
+    },
     secondRowMainView: {
         flexDirection: 'row',
         // marginTop: hp(1.5),
         paddingHorizontal: hp(1.5),
         paddingBottom: hp(1)
     },
+    visibilityMainView: {
+        flexDirection: 'column', 
+        width: '36%'
+    },
+    secondRowSubView: {
+        flexDirection: 'column', 
+        width: '35%'
+    },
     mainTextStyle: {
         color: ColorConstant.GREY,
         fontSize: hp(1.4),
         marginTop: hp(1.5),
     },
+    intersectionImageStyle: {
+        marginTop: hp(1), 
+        height: hp(10), 
+        width: wp(20)
+    },
     fontSizeStyle: {
         fontSize: hp(1.4),
         color: ColorConstant.BLACK,
         marginTop: hp(1)
+    },
+    perimeterMainView: {
+        flexDirection: 'column', 
+        width: '35%'
+    },
+    areaMainView: {
+        flexDirection: 'column', 
+        width: '40%'
     },
     deviceSummaryDetailView: {
         width: hp(2.5),
@@ -435,10 +483,27 @@ const styles = StyleSheet.create({
         // justifyContent: 'center',
         // alignItems: 'center'
     },
+    fontSizeMainView: {
+        flexDirection: 'column', 
+        width: '40%'
+    },
+    typeMainViewStyle: {
+        flexDirection: 'column', 
+        width: '35%'
+    },
     textStyle: {
         color: ColorConstant.BLACK,
         fontSize: hp(1.4),
         marginTop: hp(1),
+    },
+    geoFenceDetailMainView: {
+        flexDirection: 'row'
+    },
+    detailsMainView: {
+        width: '68%'
+    },
+    descriptionMainStyle:{
+        flexDirection: 'column'
     }
 })
 

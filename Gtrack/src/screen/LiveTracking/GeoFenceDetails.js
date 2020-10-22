@@ -25,18 +25,13 @@ const GeoFenceDetails = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={{
-                    color: ColorConstant.GREY,
-                    fontSize: FontSize.FontSize.medium,
-                    fontWeight: '500',
-                    textAlign: 'center'
-                }}>
+                <Text style={styles.headerTitle}>
                     Geo Fence
                 </Text>
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: wp(4) }} source={images.image.back} />
+                    <Image style={styles.headerLeftStyle} source={images.image.back} />
                 </TouchableOpacity>
             ),
         });
@@ -101,8 +96,8 @@ const GeoFenceDetails = ({ navigation }) => {
                         />
                     </View>
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', height: hp(25) }}>
-                        <View style={{ width: '50%' }}>
+                    <View style={styles.dropDownMainView}>
+                        <View style={styles.dropdownView}>
                             <DropDown
                                 defaultValue={fontsize}
                                 label='Font Size'
@@ -167,6 +162,15 @@ const GeoFenceDetails = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+    headerTitle: {
+        color: ColorConstant.GREY,
+        fontSize: FontSize.FontSize.medium,
+        fontWeight: '500',
+        textAlign: 'center'
+    },
+    headerLeftStyle: {
+        marginLeft: wp(4)
+    },
     container: {
         flex: 1,
         backgroundColor: ColorConstant.WHITE,
@@ -198,6 +202,14 @@ const styles = StyleSheet.create({
         width: '100%',
         alignSelf: 'center',
         margin: hp(0.5)
+    },
+    dropDownMainView: {
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        height: hp(25)
+    },
+    dropdownView: {
+        width: '50%'
     },
     textNameStyle: {
         color: ColorConstant.BLACK,
