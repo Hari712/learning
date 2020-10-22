@@ -76,10 +76,11 @@ const GeoFenceDetails = ({ navigation }) => {
                             label='Description'
                             value={description}
                             onChangeText={(text) => setDescrption(text)}
-                            style={styles.textNameStyle}
+                            // style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.5) }}
                             multiline={true}
+                            contentInset={{ input: 7 }}
                         />
                     </View>
 
