@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito-Regular'
     },
     mainViewHeading: {
-        height: hp(78),
+        height: hp(80),
         width: wp(80)
     },
     deleteDialogMainView: {

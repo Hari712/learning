@@ -39,7 +39,6 @@ const GeoFenceCreateNew = ({ navigation }) => {
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>Create New</Text>
             </View>
-
             <View style={{ width: '85%', alignSelf: 'center' }}>
                 <MultiSelectDropdown
                     label='Group Access'
@@ -68,22 +67,22 @@ const GeoFenceCreateNew = ({ navigation }) => {
                         outerStyle={[styles.outerViewStyle]}
                         dropdownStyle={styles.dropdownStyle}
                         dataRowStyle={styles.dataRowStyle}
-                        dataTextStyle={{ padding: 3, color: ColorConstant.BLUE }}
+                        dataTextStyle={{ color: ColorConstant.BLUE, marginTop: hp(1), marginBottom: hp(1) }}
                         labelFontSize={hp(1.4)}
                         labelTextStyle={{ top: hp(0.5) }}
                     />
                 </View>
             </View>
-
-            <View style={styles.buttonMainContainer}>
-                <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                    <Text style={styles.buttonTextColor}>Cancel</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType') }}  style={styles.nextButton}>
-                    <Text style={styles.nextButtonText}>Next</Text>
-                </TouchableOpacity>
-            </View>
+            {/* {DATA.map((item,index) => */}
+                <View style={styles.buttonMainContainer}>
+                    <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
+                        <Text style={styles.buttonTextColor}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType', { type: role }) }}  style={styles.nextButton}>
+                        <Text style={styles.nextButtonText}>Next</Text>
+                    </TouchableOpacity>
+                </View>
+            {/* )} */}
 
         </ScrollView>
     )
@@ -169,6 +168,7 @@ const styles = StyleSheet.create({
         position:'relative', 
         top:hp(0.1), 
         width:'100%',
+        borderRadius: 13
       },
       dataRowStyle: {
         borderBottomWidth:1,
