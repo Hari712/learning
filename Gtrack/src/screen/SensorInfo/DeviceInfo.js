@@ -30,120 +30,122 @@ const DeviceInfo = ({ navigation, route }) => {
     }, [navigation]);
 
     return (
-        <ScrollView style={styles.DeviceInfoMainView}>
-            <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{deviceInfo.title}</Text>
-            </View>
-
-            <View style={styles.cardContainer}>
-                <View style={styles.titleViewStyle}>
-                    <Text style={styles.titleTextStyle}>Information</Text>
-                    <Image source={images.sensorInfo.list} resizeMode='contain' />
+        <SafeAreaView style={styles.DeviceInfoMainView}>
+            <ScrollView>
+                <View style={styles.mainView}>
+                    <Text style={styles.textViewStyle}>{deviceInfo.title}</Text>
                 </View>
 
-                <View style={styles.lineStyle} />
-
-                <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column', width: '35%' }}>
-                        <Text style={styles.mainTextStyle}>State</Text>
-                        <Text style={styles.textStyle}>Moving</Text>
-                        <Text style={styles.textStyle}>1h 45m 25s</Text>
+                <View style={styles.cardContainer}>
+                    <View style={styles.titleViewStyle}>
+                        <Text style={styles.titleTextStyle}>Information</Text>
+                        <Image source={images.sensorInfo.list} resizeMode='contain' />
                     </View>
 
-                    <View style={{ flexDirection: 'column', width: '40%' }}>
-                        <Text style={styles.mainTextStyle}>Time(Position)</Text>
-                        <Text style={styles.textStyle}>2020-09-17</Text>
-                        <Text style={styles.textStyle}>06:58:06</Text>
+                    <View style={styles.lineStyle} />
+
+                    <View style={styles.infoDataMainView}>
+                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                            <Text style={styles.mainTextStyle}>State</Text>
+                            <Text style={styles.textStyle}>Moving</Text>
+                            <Text style={styles.textStyle}>1h 45m 25s</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                            <Text style={styles.mainTextStyle}>Time(Position)</Text>
+                            <Text style={styles.textStyle}>2020-09-17</Text>
+                            <Text style={styles.textStyle}>06:58:06</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '25%' }}>
+                            <Text style={styles.mainTextStyle}>Time(Server)</Text>
+                            <Text style={styles.textStyle}>2020-09-17</Text>
+                            <Text style={styles.textStyle}>06:58:06</Text>
+                        </View>
                     </View>
 
-                    <View style={{ flexDirection: 'column', width: '25%' }}>
-                        <Text style={styles.mainTextStyle}>Time(Server)</Text>
-                        <Text style={styles.textStyle}>2020-09-17</Text>
-                        <Text style={styles.textStyle}>06:58:06</Text>
-                    </View>
-                </View>
-
-                <View style={styles.addressMainView}>
-                    <Text style={styles.mainTextStyle}>Address</Text>
-                    <Text style={styles.textStyle}>M62, Bradle, Kirklees,</Text>
-                    <Text style={styles.textStyle}>West Yorkshire, HD6 4JX, GB</Text>
-                </View>
-
-                <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column', width: '35%' }}>
-                        <Text style={styles.mainTextStyle}>Angle</Text>
-                        <Text style={styles.textStyle}>54{`\u02DA`} </Text>
+                    <View style={styles.addressMainView}>
+                        <Text style={styles.mainTextStyle}>Address</Text>
+                        <Text style={styles.textStyle}>M62, Bradle, Kirklees,</Text>
+                        <Text style={styles.textStyle}>West Yorkshire, HD6 4JX, GB</Text>
                     </View>
 
-                    <View style={{ flexDirection: 'column', width: '40%' }}>
-                        <Text style={styles.mainTextStyle}>Engine state & hours</Text>
-                        <Text style={styles.textStyle}>On</Text>
-                        <Text style={styles.textStyle}>546h</Text>
-                    </View>
+                    <View style={styles.infoDataMainView}>
+                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                            <Text style={styles.mainTextStyle}>Angle</Text>
+                            <Text style={styles.textStyle}>54{`\u02DA`} </Text>
+                        </View>
 
-                    <View style={{ flexDirection: 'column', width: '25%' }}>
-                        <Text style={styles.mainTextStyle}>Altitude</Text>
-                        <Text style={styles.textStyle}>502 ft</Text>
-                    </View>
-                </View>
-            </View>
+                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                            <Text style={styles.mainTextStyle}>Engine state & hours</Text>
+                            <Text style={styles.textStyle}>On</Text>
+                            <Text style={styles.textStyle}>546h</Text>
+                        </View>
 
-            <View style={styles.cardContainer}>
-                <View style={styles.titleViewStyle}>
-                    <Text style={styles.titleTextStyle}>Sensor</Text>
-                    <Image source={images.sensorInfo.sensor} resizeMode='contain' />
-                </View>
-
-                <View style={styles.lineStyle} />
-
-                <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column', width: '35%' }}>
-                        <Text style={styles.mainTextStyle}>Odometer</Text>
-                        <Text style={styles.textStyle}>1965631 mi</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'column', width: '40%' }}>
-                        <Text style={styles.mainTextStyle}>State</Text>
-                        <Text style={styles.textStyle}>Moving</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'column', width: '25%' }}>
-                        <Text style={styles.mainTextStyle}>Vehicle Power</Text>
-                        <Text style={styles.textStyle}>OV</Text>
+                        <View style={{ flexDirection: 'column', width: '25%' }}>
+                            <Text style={styles.mainTextStyle}>Altitude</Text>
+                            <Text style={styles.textStyle}>502 ft</Text>
+                        </View>
                     </View>
                 </View>
 
-                <View style={styles.infoDataMainView}>
-                    <View style={{ flexDirection: 'column', width: '35%' }}>
-                        <Text style={styles.mainTextStyle}>Battery</Text>
-                        <Text style={styles.textStyle}>0%</Text>
+                <View style={styles.cardContainer}>
+                    <View style={styles.titleViewStyle}>
+                        <Text style={styles.titleTextStyle}>Sensor</Text>
+                        <Image source={images.sensorInfo.sensor} resizeMode='contain' />
                     </View>
 
-                    <View style={{ flexDirection: 'column', width: '40%' }}>
-                        <Text style={styles.mainTextStyle}>Ignition</Text>
-                        <Text style={styles.textStyle}>On</Text>
+                    <View style={styles.lineStyle} />
+
+                    <View style={styles.infoDataMainView}>
+                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                            <Text style={styles.mainTextStyle}>Odometer</Text>
+                            <Text style={styles.textStyle}>1965631 mi</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                            <Text style={styles.mainTextStyle}>State</Text>
+                            <Text style={styles.textStyle}>Moving</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '25%' }}>
+                            <Text style={styles.mainTextStyle}>Vehicle Power</Text>
+                            <Text style={styles.textStyle}>OV</Text>
+                        </View>
                     </View>
 
-                    <View style={{ flexDirection: 'column', width: '25%' }}>
-                        <Text style={styles.mainTextStyle}>Digital Input</Text>
-                        <Text style={styles.textStyle}>Off</Text>
+                    <View style={styles.infoDataMainView}>
+                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                            <Text style={styles.mainTextStyle}>Battery</Text>
+                            <Text style={styles.textStyle}>0%</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                            <Text style={styles.mainTextStyle}>Ignition</Text>
+                            <Text style={styles.textStyle}>On</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '25%' }}>
+                            <Text style={styles.mainTextStyle}>Digital Input</Text>
+                            <Text style={styles.textStyle}>Off</Text>
+                        </View>
                     </View>
+
+                    <View style={styles.sensorMainView}>
+                        <View style={{ flexDirection: 'column', width: '35%' }}>
+                            <Text style={styles.mainTextStyle}>Fuel Level</Text>
+                            <Text style={styles.textStyle}>75%</Text>
+                        </View>
+
+                        <View style={{ flexDirection: 'column', width: '40%' }}>
+                            <Text style={styles.mainTextStyle}>Temperature</Text>
+                            <Text style={styles.textStyle}>20.6{`\u02DA`}</Text>
+                        </View>
+                    </View>
+
                 </View>
-
-                <View style={styles.sensorMainView}>
-                    <View style={{ flexDirection: 'column', width: '35%' }}>
-                        <Text style={styles.mainTextStyle}>Fuel Levellll</Text>
-                        <Text style={styles.textStyle}>75%</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'column', width: '40%' }}>
-                        <Text style={styles.mainTextStyle}>Temperature</Text>
-                        <Text style={styles.textStyle}>20.6{`\u02DA`}</Text>
-                    </View>
-                </View>
-
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
@@ -207,10 +209,10 @@ const styles = StyleSheet.create({
     },
 
     infoDataMainView: {
-        flexDirection:'row',
-        marginTop:hp(1.5),
-        paddingHorizontal:hp(2.5),
-        paddingBottom:hp(1.5)
+        flexDirection: 'row',
+        marginTop: hp(1.5),
+        paddingHorizontal: hp(2.5),
+        paddingBottom: hp(1.5)
     },
 
     sensorMainView: {

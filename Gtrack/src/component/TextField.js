@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View, TouchableOpacity, Image } from "react-nati
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
-import { OutlinedTextField } from '@ubaids/react-native-material-textfield'
+import { OutlinedTextField } from 'react-native-material-textfield'
 import FontSize from './FontSize';
 import { color } from "react-native-reanimated";
 
@@ -47,16 +47,17 @@ class TextField extends React.Component {
                 baseColor={ColorConstant.GREY}
                 fontSize={FontSize.FontSize.small}
                 //labelTextStyle={{ fontFamily: 'Nunito-Light'}}
+                style={[styles.input, multiline && styles.bigInput]}
                 labelFontSize={FontSize.FontSize.small}
-                contentInset={{ input: 12, label: 1.4 }}
+                contentInset={{ label: hp(0.15), input: hp(7) }}
                 formatText={handleInput}
                 //value={this.state.textValue}
                 //renderRightAccessory={() => handleRightAccessory()}
                 //editable={false}
+                multiline={multiline}
                 inputContainerStyle={multiline ? styles.descContainer : styles.inputContainer}
                 activeLineWidth={1}
-                containerStyle={[styles.inputButton, {height: multiline ? hp(15) : hp(6)} , outerStyle]}
-                // formatText={this.formatText}
+                containerStyle={styles.inputButton}
                 onSubmitEditing={this.onSubmit}
                 onChangeText={onChangeText}
                 ref={innerRef}
@@ -77,8 +78,16 @@ const styles = StyleSheet.create({
     inputContainer: {
         height: hp(6),
     },
+    bigInput: {
+        height: hp(10),
+        marginBottom: hp(2.75)
+    },
+    input: {
+        fontFamily: 'Montserrat-Regular',
+        color: ColorConstant.gray,
+    },
     descContainer: {
-        height: hp(15),
+        height: hp(12)
     },
     inputButton: {        
         alignSelf: 'center',

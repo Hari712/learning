@@ -16,7 +16,7 @@ const LiveTracking = ({navigation}) => {
 			navigation.navigate('SensorInfo')
 		}
 		else if (item == 'Geo Fence') {
-			navigation.navigate('Users')
+			navigation.navigate('GeoFence')
 		}
 		else {
             navigation.navigate('Settings')

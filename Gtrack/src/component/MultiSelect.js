@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, F
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
-import { OutlinedTextField } from '@ubaids/react-native-material-textfield'
+import { OutlinedTextField } from 'react-native-material-textfield'
 import FontSize from './FontSize';
     
 let data = []; 
