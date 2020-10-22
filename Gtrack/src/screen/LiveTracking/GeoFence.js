@@ -4,19 +4,19 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import FontSize from '../../component/FontSize';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import { Dialog } from 'react-native-simple-dialogs';
 import MapView from '../../component/MapView';
 
 const GeoFence = ({ navigation }) => {
-    const [viewDialogBox, setViewDialogBox] = useState(false);
+    const [dialogVisible, setDialogVisible] = useState(false)
+
     const [deleteDialogBox, setDeleteDialogBox] = useState(false);
     const [cancel, setCancel] = useState(false);
-    const [dlete, setDelete] = useState(false);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={styles.headerTitle}>                 
+                <Text style={styles.headerTitle}>
                     Geo Fence
                 </Text>
             ),
@@ -28,162 +28,14 @@ const GeoFence = ({ navigation }) => {
         });
     }, [navigation]);
 
-    useEffect(() => {
-        console.log('Dialog Visibility', viewDialogBox)
-        console.log('Dialog Visibility', deleteDialogBox)
-    }, [viewDialogBox], [deleteDialogBox])
-
-    function RenderViewDetailsDialog(item, index) {
-        return (
-            <Dialog visible={viewDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={styles.dialogStyle}>
-                <DialogContent>
-                    <View style={styles.mainViewHeading}>
-                        <View style={styles.subHeadingView}>
-                            <Text style={styles.headingText}>View</Text>
-                            <TouchableOpacity onPress={() => { hideDialog() }}>
-                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={styles.popUpCardContainer}>
-                            <View style={styles.titleViewStyle}>
-                                <Text style={styles.titleTextStyle}>Details</Text>
-                                <Image source={images.geoFence.listIcon} resizeMode='contain' />
-                            </View>
-
-                            <View style={styles.lineStyle} />
-
-                            <View style={styles.infoDataMainView}>
-                                <View style={styles.infoDataSubView}>
-                                    <Text style={styles.mainTextStyle}>Name</Text>
-                                    <Text style={styles.textStyle}>Gas Station</Text>
-                                </View>
-
-                                <View style={styles.descriptionMainStyle}>
-                                    <Text style={styles.mainTextStyle}>Description</Text>
-                                    <Text style={styles.textStyle}>Description of card</Text>
-                                </View>
-                            </View>
-
-                            <View style={styles.geoFenceDetailMainView}>
-                                <View style={styles.detailsMainView}>
-                                    <View style={styles.secondRowMainView}>
-                                        <View style={styles.secondRowSubView}>
-                                            <Text style={styles.mainTextStyle}>Colour</Text>
-                                            <View style={styles.deviceSummaryDetailView}></View>
-                                        </View>
-
-                                        <View style={styles.fontSizeMainView}>
-                                            <Text style={styles.mainTextStyle}>Font Size</Text>
-                                            <Text style={styles.fontSizeStyle}>08</Text>
-                                        </View>
-
-                                        <View style={styles.typeMainViewStyle}>
-                                            <Text style={styles.mainTextStyle}>Type</Text>
-                                            <Text style={styles.fontSizeStyle}>Polygon</Text>
-                                        </View>
-                                    </View>
-
-                                    <View style={styles.secondRowMainView}>
-                                        <View style={styles.visibilityMainView}>
-                                            <Text style={styles.mainTextStyle}>Visibility</Text>
-                                            <Text style={styles.fontSizeStyle}>02 to 20</Text>
-                                        </View>
-
-                                        <View style={styles.areaMainView}>
-                                            <Text style={styles.mainTextStyle}>Area</Text>
-                                            <Text style={styles.fontSizeStyle}>100m2</Text>
-                                        </View>
-
-                                        <View style={styles.perimeterMainView}>
-                                            <Text style={styles.mainTextStyle}>Perimeter</Text>
-                                            <Text style={styles.fontSizeStyle}>75m</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={styles.secondRowMainView}>
-                                    <View style={styles.descriptionMainStyle}>
-                                        <Text style={styles.mainTextStyle}>Image</Text>
-                                        <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
-                                    </View>
-                                </View>
-                            </View>
-
-                            <View style={styles.secondRowMainView}>
-                                <View style={styles.descriptionMainStyle}>
-                                    <Text style={styles.mainTextStyle}>Selected Devices</Text>
-                                    <Text style={styles.fontSizeStyle}>TrackPort International</Text>
-                                    <Text style={styles.fontSizeStyle}>Spark Nano 7 GPS Tracker</Text>
-                                </View>
-                            </View>
-                        </View>
-
-                        <View style={styles.popUpCardContainer}>
-                            <View style={styles.titleViewStyle}>
-                                <Text style={styles.titleTextStyle}>Location</Text>
-                                <Image source={images.geoFence.pin} resizeMode='contain' />
-                            </View>
-
-                            <View style={styles.lineStyle} />
-
-                            <View style={styles.mapViewMainView}>
-                                <MapView />
-                            </View>
-                        </View>
-
-                        <View style={styles.buttonMainContainer}>
-                            <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType') }} style={styles.nextButton}>
-                                <Text style={styles.nextButtonText}>Edit</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-
-                </DialogContent>
-            </Dialog>
-        )
-    }
-
     function hideDialog() {
-        setViewDialogBox(false)
         setDeleteDialogBox(false)
-    }
-
-    function RenderViewDeleteDialog(item, index) {
-        return (
-            <Dialog visible={deleteDialogBox} onTouchOutside={() => hideDialog()} dialogStyle={styles.dialogStyle}>
-                <DialogContent>
-                    <View style={styles.deleteDialogMainView}>
-
-                        <View style={styles.subHeadingView}>
-                            <Text style={styles.deleteText}>Are you sure ?</Text>
-                            <TouchableOpacity onPress={() => { hideDialog() }}>
-                                <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.textMainView}>
-                            <Text style={styles.textViewStyle}>Do you really want to delete Gas Station ?</Text>
-                        </View>
-
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                                <Text style={styles.buttonTextColor}>Cancel</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
-                                <Text style={styles.nextButtonText}>Delete</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                    </View>
-                </DialogContent>
-            </Dialog>
-        )
+        setDialogVisible(false)
     }
 
     const GeoFenceInfoItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.cardContainer} onPress={() => { setViewDialogBox(!viewDialogBox) }}>
+            <TouchableOpacity style={styles.cardContainer} onPress={() => { setDialogVisible(!dialogVisible) }}>
                 <View style={styles.blueBox}>
                     <Text style={styles.blueBoxTitle}> {item.title} </Text>
                     <TouchableOpacity onPress={() => { setDeleteDialogBox(!deleteDialogBox) }}>
@@ -220,8 +72,141 @@ const GeoFence = ({ navigation }) => {
                 keyExtractor={(item, index) => index.toString()}
             />
 
-            {RenderViewDetailsDialog()}
-            {RenderViewDeleteDialog()}
+            <Dialog
+                visible={dialogVisible} onTouchOutside={() => { hideDialog() }} dialogStyle={styles.dialogStyle}>
+
+                <View style={styles.mainViewHeading}>
+                    <View style={styles.subHeadingView}>
+                        <Text style={styles.headingText}>View</Text>
+                        <TouchableOpacity onPress={() => { hideDialog() }}>
+                            <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.popUpCardContainer}>
+                        <View style={styles.titleViewStyle}>
+                            <Text style={styles.titleTextStyle}>Details</Text>
+                            <Image source={images.geoFence.listIcon} resizeMode='contain' />
+                        </View>
+
+                        <View style={styles.lineStyle} />
+
+                        <View style={styles.infoDataMainView}>
+                            <View style={styles.infoDataSubView}>
+                                <Text style={styles.mainTextStyle}>Name</Text>
+                                <Text style={styles.textStyle}>Gas Station</Text>
+                            </View>
+
+                            <View style={styles.descriptionMainStyle}>
+                                <Text style={styles.mainTextStyle}>Description</Text>
+                                <Text style={styles.textStyle}>Description of card</Text>
+                            </View>
+                        </View>
+
+                        <View style={styles.geoFenceDetailMainView}>
+                            <View style={styles.detailsMainView}>
+                                <View style={styles.secondRowMainView}>
+                                    <View style={styles.secondRowSubView}>
+                                        <Text style={styles.mainTextStyle}>Colour</Text>
+                                        <View style={styles.deviceSummaryDetailView}></View>
+                                    </View>
+
+                                    <View style={styles.fontSizeMainView}>
+                                        <Text style={styles.mainTextStyle}>Font Size</Text>
+                                        <Text style={styles.fontSizeStyle}>08</Text>
+                                    </View>
+
+                                    <View style={styles.typeMainViewStyle}>
+                                        <Text style={styles.mainTextStyle}>Type</Text>
+                                        <Text style={styles.fontSizeStyle}>Polygon</Text>
+                                    </View>
+                                </View>
+
+                                <View style={styles.secondRowMainView}>
+                                    <View style={styles.visibilityMainView}>
+                                        <Text style={styles.mainTextStyle}>Visibility</Text>
+                                        <Text style={styles.fontSizeStyle}>02 to 20</Text>
+                                    </View>
+
+                                    <View style={styles.areaMainView}>
+                                        <Text style={styles.mainTextStyle}>Area</Text>
+                                        <Text style={styles.fontSizeStyle}>100m2</Text>
+                                    </View>
+
+                                    <View style={styles.perimeterMainView}>
+                                        <Text style={styles.mainTextStyle}>Perimeter</Text>
+                                        <Text style={styles.fontSizeStyle}>75m</Text>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={styles.secondRowMainView}>
+                                <View style={styles.descriptionMainStyle}>
+                                    <Text style={styles.mainTextStyle}>Image</Text>
+                                    <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
+                                </View>
+                            </View>
+                        </View>
+
+                        <View style={styles.secondRowMainView}>
+                            <View style={styles.descriptionMainStyle}>
+                                <Text style={styles.mainTextStyle}>Selected Devices</Text>
+                                <Text style={styles.fontSizeStyle}>TrackPort International</Text>
+                                <Text style={styles.fontSizeStyle}>Spark Nano 7 GPS Tracker</Text>
+                            </View>
+                        </View>
+                    </View>
+
+                    <View style={styles.popUpCardContainer}>
+                        <View style={styles.titleViewStyle}>
+                            <Text style={styles.titleTextStyle}>Location</Text>
+                            <Image source={images.geoFence.pin} resizeMode='contain' />
+                        </View>
+
+                        <View style={styles.lineStyle} />
+
+                        <View style={styles.mapViewMainView}>
+                            <MapView />
+                        </View>
+                    </View>
+
+                    <View style={styles.buttonMainContainer}>
+                        <TouchableOpacity onPress={() => { }} style={styles.nextButton}>
+                            <Text style={styles.nextButtonText}>Edit</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+
+            </Dialog>
+
+
+            <Dialog visible={deleteDialogBox} onTouchOutside={() => { hideDialog() }} dialogStyle={styles.dialogStyle}>
+                
+                <View style={styles.deleteDialogMainView}>
+
+                    <View style={styles.subHeadingView}>
+                        <Text style={styles.deleteText}>Are you sure ?</Text>
+                        <TouchableOpacity onPress={() => { hideDialog() }}>
+                            <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.textMainView}>
+                        <Text style={styles.textViewStyle}>Do you really want to delete Gas Station ?</Text>
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
+                            <Text style={styles.buttonTextColor}>Cancel</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
+                            <Text style={styles.nextButtonText}>Delete</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                </View>
+            </Dialog>
+
         </SafeAreaView>
     )
 }
@@ -237,7 +222,8 @@ const styles = StyleSheet.create({
         marginLeft: hp(2)
     },
     dialogStyle: {
-        borderRadius: 15
+        borderRadius: 15,
+        backgroundColor: ColorConstant.WHITE
     },
     container: {
         flex: 1,
@@ -298,7 +284,7 @@ const styles = StyleSheet.create({
         paddingBottom: hp(1.5)
     },
     GroupMainView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         flex: 1
     },
     whiteContainerText: {
@@ -312,7 +298,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito-Regular'
     },
     deviceNameMainView: {
-        flex: 1 
+        flex: 1
     },
     mainViewHeading: {
         height: hp(80),
@@ -385,9 +371,9 @@ const styles = StyleSheet.create({
         marginHorizontal: hp(2)
     },
     mapViewMainView: {
-        height: hp(20), 
-        width: '100%', 
-        paddingHorizontal: wp(5), 
+        height: hp(20),
+        width: '100%',
+        paddingHorizontal: wp(5),
         padding: hp(2)
     },
     buttonMainContainer: {
@@ -434,7 +420,7 @@ const styles = StyleSheet.create({
         paddingBottom: hp(1.5)
     },
     infoDataSubView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '50%'
     },
     secondRowMainView: {
@@ -444,11 +430,11 @@ const styles = StyleSheet.create({
         paddingBottom: hp(1)
     },
     visibilityMainView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '36%'
     },
     secondRowSubView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '35%'
     },
     mainTextStyle: {
@@ -457,8 +443,8 @@ const styles = StyleSheet.create({
         marginTop: hp(1.5),
     },
     intersectionImageStyle: {
-        marginTop: hp(1), 
-        height: hp(10), 
+        marginTop: hp(1),
+        height: hp(10),
         width: wp(20)
     },
     fontSizeStyle: {
@@ -467,11 +453,11 @@ const styles = StyleSheet.create({
         marginTop: hp(1)
     },
     perimeterMainView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '35%'
     },
     areaMainView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '40%'
     },
     deviceSummaryDetailView: {
@@ -484,11 +470,11 @@ const styles = StyleSheet.create({
         // alignItems: 'center'
     },
     fontSizeMainView: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '40%'
     },
     typeMainViewStyle: {
-        flexDirection: 'column', 
+        flexDirection: 'column',
         width: '35%'
     },
     textStyle: {
@@ -502,7 +488,7 @@ const styles = StyleSheet.create({
     detailsMainView: {
         width: '68%'
     },
-    descriptionMainStyle:{
+    descriptionMainStyle: {
         flexDirection: 'column'
     }
 })
