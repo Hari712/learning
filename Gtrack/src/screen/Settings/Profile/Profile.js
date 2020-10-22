@@ -1,13 +1,13 @@
-import React, { useState, Component, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import images from '../../../constants/images'
-import { ColorConstant } from '../../../constants/ColorConstants'
-import { getLoginState } from '../../Selector'
-import FontSize from '../../../component/FontSize'
-import ShadowView from 'react-native-simple-shadow-view'
-import Dialog from '../../../component/Dialog'
+import React, { useState, Component, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import images from '../../../constants/images';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { getLoginState } from '../../Selector';
+import FontSize from '../../../component/FontSize';
+import ShadowView from 'react-native-simple-shadow-view';
+import Dialog from '../../../component/Dialog';
 
 const Profile = ({ navigation }) => {
 

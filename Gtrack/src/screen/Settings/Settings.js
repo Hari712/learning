@@ -25,14 +25,6 @@ const Settings = ({ navigation }) => {
         navigation.navigate('Profile')
       }
 
-      else if (item.title == 'Subscription') {
-        navigation.navigate('Subscription')
-      }
-
-      else if (item.title == 'Payment Settings') {
-        navigation.navigate('PaymentSettings')
-      }
-
       else if (item.title == 'Permission') {
         navigation.navigate('Permission')
       }
@@ -41,12 +33,20 @@ const Settings = ({ navigation }) => {
         navigation.navigate('About')
       }
 
+      else if (item.title == 'Notifications') {
+        navigation.navigate('SettingNotification')
+      }
+
       else if (item.title == 'Rate Us') {
         navigation.navigate('RateUs')
       }
 
       else if (item.title == 'Feedback') {
         navigation.navigate('Feedback')
+      }
+
+      else if (item.title == 'Advance Settings') {
+        navigation.navigate('Advance Settings')
       }
 
       else if (item.title == 'Logout'){
@@ -172,18 +172,6 @@ const SETTINGS_MENU = [
     next: images.image.settings.next
   },
   {
-    title: 'Subscription',
-    icon: images.image.settings.subscription,
-    nextArrow: images.image.settings.nextArrow,
-    next: images.image.settings.next
-  },
-  {
-    title: 'Payment Settings',
-    icon: images.image.settings.paymentSettings,
-    nextArrow: images.image.settings.nextArrow,
-    next: images.image.settings.next
-  },
-  {
     title: 'Permission',
     icon: images.image.settings.permission,
     nextArrow: images.image.settings.nextArrow,
@@ -196,6 +184,13 @@ const SETTINGS_MENU = [
     next: images.image.settings.next
   },
   {
+    title: 'Notifications',
+    icon: images.image.settings.notification,
+    nextArrow: images.image.settings.nextArrow,
+    next: images.image.settings.next
+  },
+ 
+  {
     title: 'Rate Us',
     icon: images.image.settings.rateUs,
     nextArrow: images.image.settings.nextArrow,
@@ -204,6 +199,12 @@ const SETTINGS_MENU = [
   {
     title: 'Feedback',
     icon: images.image.settings.feedback,
+    nextArrow: images.image.settings.nextArrow,
+    next: images.image.settings.next
+  },
+  {
+    title: 'Advance Settings',
+    icon: images.image.settings.advanceSetting,
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },
