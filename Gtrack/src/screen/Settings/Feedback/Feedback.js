@@ -1,12 +1,30 @@
 import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { EditText } from '../../../../src/component'
 import { ColorConstant } from '../../../constants/ColorConstants';
+import { FEEDBACK_VALIDATION_ERROR } from '../../../constants/AppConstants'
 import images from '../../../constants/images';
 import FontSize from '../../../component/FontSize';
+import { useDispatch, useSelector } from 'react-redux';
+import { getLoginState } from '../../Selector';
+import AppManager from '../../../constants/AppManager';
+import * as SettingsActions from '../Settings.Action'
+import isEmpty from 'lodash/isEmpty'
+import DeviceInfo from 'react-native-device-info';
 
 const Feedback = ({ navigation }) => {
+
+    const { loginData, isConnected } = useSelector(state => ({
+        loginData: getLoginState(state),
+        isConnected: state.network.isConnected
+    }))
+    
+    const MAX_CHARACTERS_LIMIT = 250
+
+    const [feedback, setFeedback] = useState('')
+
+    const dispatch = useDispatch()
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -28,6 +46,42 @@ const Feedback = ({ navigation }) => {
         });
     }, [navigation]);
 
+    function onSubmitFeedback() {
+        if (isConnected) {
+            if (isEmpty(feedback)) {
+                AppManager.showSimpleMessage('warning', { message: FEEDBACK_VALIDATION_ERROR, description: '', floating: true })
+            } else {
+                let systemVersion = DeviceInfo.getSystemVersion()
+                let deviceType = DeviceInfo.getSystemName().toUpperCase();
+                let version = DeviceInfo.getVersion();
+                const requestBody = {
+                    "id": loginData.feedback ? loginData.feedback.id : null,
+                    "appVersion": version,
+                    "deviceType": deviceType,
+                    "systemVersion": systemVersion,
+                    "feedback" : feedback
+                }
+                console.log("Request Body",requestBody)
+                AppManager.showLoader()
+                dispatch(SettingsActions.requestAddFeedback(requestBody, loginData.id, onSuccess, onError))
+            }
+        }
+    }
+
+    const onSuccess = (data) => {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: 'Feedback submitted successfully', description: '', floating: true })
+        resetText()
+    }
+
+    const onError = (error) => {
+        AppManager.hideLoader()
+    }
+
+    function resetText() {
+        setFeedback('')
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.mainView}>
@@ -37,19 +91,22 @@ const Feedback = ({ navigation }) => {
             <EditText
                 placeholder="Type here"
                 style={styles.descStyle}
+                value={feedback}
+                onChangeText={(value) => { setFeedback(value) }}
+                maxLength={MAX_CHARACTERS_LIMIT}
                 multiline={true}
                 numberOfLines={4}
             />
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.cancelButton]}>
+                <TouchableOpacity onPress={() => resetText()} style={[styles.cancelButton]}>
                     <Text style={styles.buttonTextColor}>Reset</Text>
                 </TouchableOpacity>
 
                 <Text style={styles.textStyle}>Maximum 250 characters</Text>
             </View>
 
-            <TouchableOpacity style={styles.submitButtonStyle}>
+            <TouchableOpacity onPress={() => onSubmitFeedback()} style={styles.submitButtonStyle}>
                 <Text style={styles.submitTextStyle}>Submit</Text>
             </TouchableOpacity>
 
