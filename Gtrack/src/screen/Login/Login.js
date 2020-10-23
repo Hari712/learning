@@ -17,6 +17,8 @@ import { storeItem } from '../../utils/storage'
 import { USER_DATA } from '../../constants/AppConstants'
 import _ from 'lodash'
 import * as LoginActions from './Login.Action'
+import * as SettingsActions from '../Settings/Settings.Action'
+import DeviceInfo from 'react-native-device-info';
 
 
 const Login = () => {
@@ -60,10 +62,21 @@ const Login = () => {
     }
 
     function onLoginSuccess(data) {
-        AppManager.hideLoader()
         console.log("Success data",data)
         saveUserData(data)
+        let deviceType = DeviceInfo.getSystemName();
+        let version = DeviceInfo.getVersion();
+        dispatch(SettingsActions.requestGetFeedBack(data.result.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
         AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })            
+    }
+
+    function onFeedbackSuccess(data) {
+        console.log("Success Feedback",data)
+        AppManager.hideLoader()
+    }
+
+    function onFeedbackError(error) {
+        console.log("Error Feedback",error)
     }
 
     const saveUserData = async (data) => {

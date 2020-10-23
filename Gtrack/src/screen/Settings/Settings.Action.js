@@ -8,15 +8,18 @@ export const requestAddFeedback = (data, userId, onSuccess, onError) => ({
     onError
 })
 
-function* requestGetFeedBack(action) {
-    const { userId, onSuccess, onError } = action
-    try {
-        const url = ApiConstants.GET_FEEDBACK(companyName, driverId, version)
-        const response = yield call(API.get, url)
-        const data = response.result
-        yield put(LoginActions.setFeedBackResponse(data))
-        onSuccess(response)
-    } catch (error) {
-        onError(error)
-    }
-}
+export const requestGetFeedBack = (userId, appVersion, deviceOS, onSuccess, onError) => ({
+    type: types.GET_FEEDBACK_REQUEST,
+    userId,
+    appVersion,
+    deviceOS,
+    onSuccess,
+    onError
+})
+
+export const responseGetFeedback = (data, onSuccess, onError) => ({
+    type: types.GET_FEEDBACK_RESPONSE,
+    data,
+    onSuccess,
+    onError
+})

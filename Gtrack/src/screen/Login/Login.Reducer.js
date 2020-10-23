@@ -12,7 +12,8 @@ const initialState = {
     phone: null,
     email: null,
     group:[],
-    role:[]
+    role:[],
+    feedback:[]
 }
 
 export const loginReducer = createReducer(state = initialState, {
@@ -43,6 +44,13 @@ export const loginReducer = createReducer(state = initialState, {
             phone: result.phone,
             group: result.groups,
             role: result.roles
+        }
+    },
+    [types.GET_FEEDBACK_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            feedback: result
         }
     }
 })

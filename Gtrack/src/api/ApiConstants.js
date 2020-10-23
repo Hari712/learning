@@ -17,8 +17,8 @@ const ApiConstants = {
     ADD_SUBUSER:(userId) => `${USER}${userId}/addUsers`,
     GET_GROUP:(userId) => `${USER}${userId}/groups`,
     UPDATE_SUBUSER_DETAILS:(userId) =>`${USER}${userId}/updateSubUser`,
-    ADD_FEEDBACK:(userId) =>`${USER}${userId}/feedback`
-
+    ADD_FEEDBACK:(userId) =>`${USER}${userId}/feedback`,
+    GET_FEEDBACK_REQUEST:(userId, appVersion, deviceOS) => `${USER}${userId}/feedback/appVersion/${appVersion}/deviceType/${deviceOS}`
 }
 
 export default ApiConstants

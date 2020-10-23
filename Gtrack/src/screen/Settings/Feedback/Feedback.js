@@ -55,7 +55,7 @@ const Feedback = ({ navigation }) => {
                 let deviceType = DeviceInfo.getSystemName().toUpperCase();
                 let version = DeviceInfo.getVersion();
                 const requestBody = {
-                    "id": null,
+                    "id": loginData.feedback ? loginData.feedback.id : null,
                     "appVersion": version,
                     "deviceType": deviceType,
                     "systemVersion": systemVersion,
