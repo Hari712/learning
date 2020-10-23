@@ -64,6 +64,18 @@ const images = {
         sensor: require('../../assets/images/SensorInformation/sensor.png')
     },
 
+    geoFence: {
+        deleteIcon: require('../../assets/images/GeoFence/deleteIcon.png'),
+        downIcon: require('../../assets/images/GeoFence/downIcon.png'),
+        upIcon: require('../../assets/images/GeoFence/upIcon.png'),
+        backgroundImage: require('../../assets/images/GeoFence/BackgroundImage.png'),
+        uploadGrey: require('../../assets/images/GeoFence/uploadGrey.png'),
+        CrossBlack: require('../../assets/images/GeoFence/CrossBlack.png'),
+        listIcon: require('../../assets/images/GeoFence/list.png'),
+        pin: require('../../assets/images/GeoFence/pin.png'),
+        Intersection: require('../../assets/images/GeoFence/Intersection.png')
+    },
+
     image: {
         splash: require('../../assets/images/Splash/splash.png'),
         logo: require('../../assets/images/Splash/logo.png'),
