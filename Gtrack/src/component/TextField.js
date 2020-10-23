@@ -49,7 +49,7 @@ class TextField extends React.Component {
                 //labelTextStyle={{ fontFamily: 'Nunito-Light'}}
                 style={[styles.input, multiline && styles.bigInput]}
                 labelFontSize={FontSize.FontSize.small}
-                contentInset={{ label: hp(0.15), input: hp(7) }}
+                contentInset={{ label: hp(0.15), input: hp(2) }}
                 formatText={handleInput}
                 //value={this.state.textValue}
                 //renderRightAccessory={() => handleRightAccessory()}
@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
         marginBottom: hp(2.75)
     },
     input: {
-        fontFamily: 'Montserrat-Regular',
-        color: ColorConstant.gray,
+        fontFamily: 'Nunito-Light',
+        color: ColorConstant.GREY,
     },
     descContainer: {
         height: hp(12)
