@@ -85,8 +85,7 @@ const styles = StyleSheet.create({
     input: {
         color: ColorConstant.BLACK,
         fontSize: FontSize.FontSize.small,
-        fontWeight: '500',
-        
+        fontWeight: '500'   
     },
     descContainer: {
         height: hp(12)
