@@ -83,8 +83,7 @@ const styles = StyleSheet.create({
         marginBottom: hp(2.75)
     },
     input: {
-        fontFamily: 'Montserrat-Regular',
-        color: ColorConstant.gray,
+        color: ColorConstant.gray
     },
     descContainer: {
         height: hp(12)

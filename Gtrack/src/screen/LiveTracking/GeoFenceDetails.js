@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     scene: {
         width: '90%',
         marginHorizontal: hp(5),
-        marginTop: hp(2)
+        marginTop: hp(2),
     },
     textInputField: {
         width: '100%',
