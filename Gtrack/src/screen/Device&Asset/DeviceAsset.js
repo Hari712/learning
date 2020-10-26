@@ -107,7 +107,7 @@ return (
   )
 }
 
-    const Menu= ['Create', 'Manage', 'Export Devices']
+    const Menu= ['Create', 'Manage']
 
     const DATA = [
         {

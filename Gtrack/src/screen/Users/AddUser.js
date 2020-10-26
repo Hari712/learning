@@ -235,6 +235,7 @@ container: {
 },
 subContainer: {
   width:'85%',
+  marginTop:hp(2),
   marginBottom: hp(4),
   alignSelf: 'center',
 },
@@ -252,7 +253,8 @@ outerStyle:{
 },
 dropDown:{
   flexDirection:'row', 
-  marginTop:hp(3)
+  marginTop:hp(0.5)
+  
 },
 dropdownStyle: {
   position:'relative', 
