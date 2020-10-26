@@ -79,12 +79,15 @@ const styles = StyleSheet.create({
         height: hp(6),
     },
     bigInput: {
-        height: hp(10),
-        marginBottom: hp(2.75)
+        height: hp(9.8),
+        marginBottom: hp(2.8)
     },
     input: {
         fontFamily: 'Nunito-Light',
-        color: ColorConstant.GREY,
+        //color: ColorConstant.GREY,
+        color: ColorConstant.BLACK,
+        fontSize: FontSize.FontSize.small,
+        fontWeight: '500'   
     },
     descContainer: {
         height: hp(12)
