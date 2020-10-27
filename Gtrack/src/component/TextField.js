@@ -57,19 +57,13 @@ class TextField extends React.Component {
                 multiline={multiline}
                 inputContainerStyle={multiline ? styles.descContainer : styles.inputContainer}
                 activeLineWidth={1}
-                containerStyle={styles.inputButton}
+                containerStyle={[styles.inputButton, outerStyle, multiline ? styles.descContainer : styles.inputContainer]}
                 onSubmitEditing={this.onSubmit}
                 onChangeText={onChangeText}
                 ref={innerRef}
                 {...otherProps}
             />
-
-            // <TextInput 
-            //     placeholderTextColor={ColorConstant.GREY} 
-            //     ref={'textInput'}
-            //     style={[styles.inputTextStyle, style]} 
-            //     {...otherProps}
-            // />
+            
         )
     }
 }

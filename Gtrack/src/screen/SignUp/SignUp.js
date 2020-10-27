@@ -25,7 +25,8 @@ const SignUp = () => {
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
     const [email, setEmail] = useState()
-    const [countryCode, setCountryCode] = useState(0)
+    const [countryCode, setCountryCode] = useState(1)
+    const [country, setCountry] = useState()
     const [phoneNumber, setPhoneNumber] = useState()
     const [isModalVisible, setModalVisible] = useState(true);
 
@@ -85,7 +86,8 @@ const SignUp = () => {
       };
     const onCountrySelection = (country) => {
         setCountryCode(country.callingCode)
-        setModalVisible(!isModalVisible)
+        setCountry(country)
+        // setModalVisible(!isModalVisible)
     }  
 
     return (
@@ -136,10 +138,11 @@ const SignUp = () => {
                                 //onBackButtonPress={() => setModalVisible(false)}
                                 >
                                 <View style={{flex: 1}}>
-                                    <CountrySelection action={(item) => onCountrySelection(item)} selected={countryCode}/>
-                                </View>
+                                    <CountrySelection action={(item) => onCountrySelection(item)} selected={country}/>
+                                    <Button title="Done" onPress={()=>setModalVisible(!isModalVisible)} />
+                                </View>                        
                             </Modal>
-                    </View>
+                    </View> 
 
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText 
@@ -149,7 +152,7 @@ const SignUp = () => {
                             value={phoneNumber} />
                         </View>    
                     </View>    
-                   
+                
 
                     <View style={styles.checkboxMainStyle}>
                         <CheckBox

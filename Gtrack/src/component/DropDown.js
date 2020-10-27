@@ -52,7 +52,9 @@ class DropDown extends React.Component {
                     }}>
                     <OutlinedTextField
                         label={label}
+                        textColor={ColorConstant.BLACK}
                         tintColor={ColorConstant.GREY}
+                        baseColor={ColorConstant.GREY}
                         fontSize={FontSize.FontSize.small}
                         //labelTextStyle={{ fontFamily: 'Nunito-ExtraLightItalic' }}
                         labelFontSize={FontSize.FontSize.small}
@@ -76,7 +78,8 @@ class DropDown extends React.Component {
                     , dropdownStyle]}>
                         {(dataList?dataList:data).map((item,key)=>{
                             return(
-                            <TouchableOpacity style={otherProps.dataRowStyle} key={key} onPress={()=>{
+                            <TouchableOpacity style={otherProps.dataRowStyle} key={key} 
+                            onPress={()=>{
                                 this.setState({
                                     selected: item, 
                                     isSelected:false,
@@ -84,6 +87,10 @@ class DropDown extends React.Component {
                                 this.props.valueSet(item)
                             }}>
                                 <Text style={otherProps.dataTextStyle}>{item}</Text>
+                                {key < dataList.length-1 ? 
+                                    <View style={styles.horizontalLine}/>
+                                :null}
+                                
                             </TouchableOpacity>
                             )
                         })}
@@ -103,6 +110,11 @@ const styles = StyleSheet.create({
     },
     downArrow: {
         marginVertical:hp(1),
+    },
+    horizontalLine: {
+        borderWidth:0.5, 
+        borderRadius:1, 
+        borderColor:ColorConstant.GREY
     },
     relativeDropdown: {       
         marginTop:hp(0.5), 
@@ -136,12 +148,12 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        height: hp(6), 
+        height: hp(6),
     },
     inputButton: {
         alignSelf: 'center',
         width: '100%',
-        height: hp(6)
+        height: hp(6),
     },
 })
     

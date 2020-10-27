@@ -156,23 +156,23 @@ return (
       <ScrollView style={{width:'100%'}}>
         <View style={styles.subContainer}>
           <TextField 
-            label='Name*' 
+            label='First Name*' 
             valueSet={setFirstName} 
             defaultValue={firstName} 
-            outerStyle={[styles.outerStyle,{marginTop:hp(4)}]} 
+            outerStyle={[styles.outerStyle]} 
           /> 
 
           <TextField 
             label='Last Name*' 
             valueSet={setLastName} 
             defaultValue={lastName} 
-            outerStyle={[styles.outerStyle,{marginTop:hp(4)}]} 
+            outerStyle={[styles.outerStyle]} 
           /> 
           <TextField 
             label='Email Address*' 
             valueSet={setEmail} 
             defaultValue={email} 
-            outerStyle={[styles.outerStyle,{marginTop:hp(4)}]} 
+            outerStyle={[styles.outerStyle]} 
           /> 
           <View style={styles.dropDown}>
             <View style={{flex: 1}}>
@@ -181,9 +181,10 @@ return (
                 defaultValue={role}
                 valueSet={setRole}
                 dataList={['Regular','Owner']} 
-                outerStyle={[styles.outerStyle]} 
+                outerStyle={{marginTop:hp(3)}}
+                // outerStyle={[styles.outerStyle]} 
                 dropdownStyle={styles.dropdownStyle} 
-                dataRowStyle={styles.dataRowStyle}
+                // dataRowStyle={styles.dataRowStyle}
                 dataTextStyle={{padding:3}}
                 />
             </View>
@@ -204,7 +205,7 @@ return (
             hideDeleteButton={true}
             rowStyle={styles.rowStyle}
             dropdownStyle={{height:hp(20)}}
-            outerStyle={[styles.outerStyle,{marginTop:hp(4)}]}
+            outerStyle={{marginTop:hp(2)}}
             valueSet={setSelectedGroup} 
             selectedData={selectedGroup}
             selectedItemContainerStyle={styles.selectedItemContainerStyle} 
@@ -241,8 +242,11 @@ subContainer: {
 },
 outerStyle:{
   elevation:4,
+  marginTop:hp(3),
+  borderBottomColor:ColorConstant.GREY,
+  borderBottomWidth:1,
   backgroundColor:ColorConstant.WHITE,
-  borderRadius:7,
+  borderRadius:4,
   shadowColor: ColorConstant.GREY,
   shadowOffset: {
     width: 0,
@@ -286,7 +290,7 @@ infoSubContainer: {
 },
 infoButton:{
   paddingHorizontal:hp(2), 
-  paddingVertical:hp(2.5)
+  paddingVertical:hp(5)
 },
 role: {
   //fontSize:FontSize.FontSize.small,

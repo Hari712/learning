@@ -1,5 +1,5 @@
 import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl} from 'react-native';
+import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -57,61 +57,9 @@ const Users = ({navigation}) => {
     });
   });
 
-  const searchBar = () => {
-        const [search, setSearch] = useState()
-
-        const searchFilter = (text) => {
-          searchData = DATA.filter(item=>item.firstName.toString().toLowerCase().includes(text.toLowerCase()))
-          console.log(searchData)
-          setSearch(text)
-        }
-
-        return (
-          <View style={styles.searchSubContainer}>
-            <View style={styles.search}>
-                <TextInput 
-                    placeholder='Search Here...'
-                    style={styles.searchText}
-                    onChangeText={text => searchFilter(text) }                    
-                    value={search}
-                    
-                />
-                <TouchableOpacity  onPress={()=> setFilterClick(!filterClick)} >
-                  <Image source={filterClick? images.user.filterClick:images.user.filter } />
-                </TouchableOpacity>
-            </View>
-            <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
-              <Image source={images.user.add}/>
-            </TouchableOpacity>
-          
-          </View>
-        )
-    }
-
-    const onRefresh = () => {
-      setIsRefreshing(true)
-      dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
-  }
-
-
-return ( 
-  <>
-    <ScrollView  
-      contentContainerStyle={styles.container}
-      refreshControl={
-        <RefreshControl 
-          refreshing={isRefreshing}
-          onRefresh={onRefresh}        
-        />
-      }
-      >      
-    
-      <View style={styles.searchContainer}>
-      {searchBar()} 
-      </View>
-
-      {searchData.map((item,key) =>
-        <View style={styles.cardContainer} key={key}>
+  const renderItem = ({item,key}) => {
+    return(  
+    <View style={styles.cardContainer} key={key}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
@@ -170,16 +118,72 @@ return (
 
           {/* Email and Phone */}
           <View style={styles.horizontalLine} />
+          {console.log("khushi",item)}
             <View style={styles.emailPhone}>
               <Image style={styles.emailImage} source={images.user.email} />
               <Text style={styles.emailText}>    {item.email}</Text>
-              <Image source={images.user.phone} />
+              <Image style={styles.phoneImage} source={images.user.phone} />
               <Text style={styles.phoneText}>  {item.phoneNo}</Text>
             </View>
-          </View>
-        
-      )}
+    </View>
+    )   
+  }
 
+  const searchBar = () => {
+        const [search, setSearch] = useState()
+
+        const searchFilter = (text) => {
+          searchData = DATA.filter(item=>item.firstName.toString().toLowerCase().includes(text.toLowerCase()))
+          console.log(searchData)
+          setSearch(text)
+        }
+
+        return (
+          <View style={styles.searchSubContainer}>
+            <View style={styles.search}>
+                <TextInput 
+                    placeholder='Search Here...'
+                    style={styles.searchText}
+                    onChangeText={text => searchFilter(text) }                    
+                    value={search}
+                    
+                />
+                <TouchableOpacity  onPress={()=> setFilterClick(!filterClick)} >
+                  <Image source={filterClick? images.user.filterClick:images.user.filter } />
+                </TouchableOpacity>
+            </View>
+            <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
+              <Image source={images.user.add}/>
+            </TouchableOpacity>
+          
+          </View>
+        )
+    }
+
+    const onRefresh = () => {
+      setIsRefreshing(true)
+      dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
+  }
+
+
+return ( 
+  <View style={styles.container}>
+    
+      <View style={styles.searchContainer}>
+      {searchBar()} 
+      </View>
+
+      <FlatList
+        data={searchData}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        refreshControl={
+          <RefreshControl 
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}     
+          />
+        }
+      />
         {filterClick?
                 <View style={styles.menu}>
                   {filterData.map((item,key) =>
@@ -191,9 +195,7 @@ return (
                 </View>:
               null} 
 
-        </ScrollView>
-      </>
-        
+  </View>
       )
     }
 
@@ -201,8 +203,7 @@ return (
 const styles = StyleSheet.create({
 
   container: {
-    alignItems:'center',
-    flexGrow:1
+    height:'100%'
   },
   cardContainer: {
     width:'90%',
@@ -220,7 +221,8 @@ const styles = StyleSheet.create({
 },
 searchContainer : {
     width:'90%',
-    alignItems:'center',
+    // alignItems:'center',
+    alignSelf:'center'
     //marginVertical:hp(0.1)
 },
 blueBox : {
@@ -287,6 +289,11 @@ emailImage : {
   height:hp(2),
   alignSelf:'flex-end',
   resizeMode:'contain',
+},
+phoneImage : {
+  height:hp(2),
+  width:wp(4),
+  resizeMode:'contain'
 },
 emailText : {
   color:ColorConstant.BLACK,
@@ -370,7 +377,7 @@ textStyle:{
 },
 searchText: {
   //fontSize:FontSize.FontSize.small,
-  fontSize:10,
+  fontSize:14,
   color:ColorConstant.LIGHTGREY,
   fontFamily:'Nunito-LightItalic'
 },
