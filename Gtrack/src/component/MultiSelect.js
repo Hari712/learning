@@ -207,17 +207,18 @@ export class MultiSelectGroup extends React.Component {
 
                     {/* Data Rows */}
                     {data.map((item,key)=>{
+                        console.log("Item",key, item, selectedItem, selectedItem.includes(item), selectedItem.find((element)=>{return element.id === item.id}))
                         return(
                             <TouchableOpacity key={item.id} style={[styles.row, otherProps.rowStyle]} 
                                 onPress={()=>{
-                                    if (selectedItem.includes(item)) {
+                                    if ( selectedItem.find((element)=>{return element.id === item.id}) ) {
                                         valueSet(oldArray => oldArray.filter(function(value){return value.id != item.id}) )       
                                     }
                                     else {                                            
                                         valueSet(oldArray => [...oldArray, item])
                                     }
                                 } }>
-                                <Image source={ selectedItem.includes(item) ? images.image.checkboxClick :images.image.checkbox} />
+                                <Image source={ selectedItem.find((element)=>{return element.id === item.id}) ? images.image.checkboxClick :images.image.checkbox} />
                                 <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:12}}>{item.groupName}</Text>
                             </TouchableOpacity>
                         )
