@@ -43,7 +43,9 @@ class MultiSelect extends React.Component {
                 <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
+                        textColor={ColorConstant.BLACK}
                         tintColor={ColorConstant.GREY}
+                        baseColor={ColorConstant.GREY}
                         fontSize={FontSize.FontSize.small}
                         //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
                         labelFontSize={FontSize.FontSize.small}
@@ -171,7 +173,9 @@ export class MultiSelectGroup extends React.Component {
                 <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
+                        textColor={ColorConstant.BLACK}
                         tintColor={ColorConstant.GREY}
+                        baseColor={ColorConstant.GREY}
                         fontSize={FontSize.FontSize.small}
                         //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
                         labelFontSize={FontSize.FontSize.small}
@@ -270,7 +274,11 @@ const styles = StyleSheet.create({
         height:hp(30), 
         marginHorizontal:wp(10),
         alignSelf:'center',  
-        elevation:5, 
+        elevation:5,
+        shadowColor:ColorConstant.GREY,
+        shadowOpacity: 0.5,
+        shadowRadius: hp(2),
+        shadowOffset: { width: 0, height: 0 }, 
         backgroundColor:'white', 
         width:'100%',
         paddingHorizontal:hp(2) 
@@ -282,6 +290,10 @@ const styles = StyleSheet.create({
         marginHorizontal:wp(10),
         alignSelf:'center',  
         elevation:5, 
+        shadowColor:ColorConstant.GREY,
+        shadowOpacity: 0.5,
+        shadowRadius: hp(2),
+        shadowOffset: { width: 0, height: 0 }, 
         backgroundColor:ColorConstant.WHITE, 
         width:'100%',
         paddingHorizontal:hp(2) 

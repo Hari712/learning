@@ -14,6 +14,13 @@ export const usersReducer = createReducer(state = initialState, {
             subUser:result
         }
     },
+    [types.GET_SUBUSER_BY_FILTER_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            subUser:result.data
+        }
+    },
     [types.GET_GROUP_RESPONSE](state, action) {
         const { result } = action.data
         return {

@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as UsersActions from './Users.Action'
 import AppManager from '../../constants/AppManager';
 
-let DATA;
 let searchData;
 
 const filterData = ['Active','Inactive']
@@ -21,14 +20,15 @@ const Users = ({navigation}) => {
 
   const [filterClick, setFilterClick] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [searchKeyword, setSearchKeyword] = useState("")
+  const [filterKeyword, setFilterKeyword] = useState([])
 
   const { loginData, subUserData } = useSelector(state => ({
     loginData: getLoginState(state),
     subUserData: getSubuserState(state)
   }))
 
-    DATA = subUserData.subUser
-    searchData = DATA 
+  searchData = subUserData.subUser
 
   const dispatch = useDispatch()
 
@@ -42,6 +42,12 @@ const Users = ({navigation}) => {
     dispatch(UsersActions.setSubuserResponse(data))
     AppManager.hideLoader()
     setIsRefreshing(false)
+  }
+
+  function onFilterSuccess(data) {    
+    console.log("Success",data) 
+    dispatch(UsersActions.setSubuserByFilter(data))
+    AppManager.hideLoader()
   }
   
   function onError(error) {
@@ -118,7 +124,6 @@ const Users = ({navigation}) => {
 
           {/* Email and Phone */}
           <View style={styles.horizontalLine} />
-          {console.log("khushi",item)}
             <View style={styles.emailPhone}>
               <Image style={styles.emailImage} source={images.user.email} />
               <Text style={styles.emailText}>    {item.email}</Text>
@@ -129,23 +134,75 @@ const Users = ({navigation}) => {
     )   
   }
 
-  const searchBar = () => {
-        const [search, setSearch] = useState()
+  const filterHandle = (item) => {
+    
 
-        const searchFilter = (text) => {
-          searchData = DATA.filter(item=>item.firstName.toString().toLowerCase().includes(text.toLowerCase()))
-          console.log(searchData)
-          setSearch(text)
-        }
+    setFilterKeyword([item])
+    // console.log("Filter", item, filterKeyword)
+    
+    AppManager.showLoader()
+    
+    const requestBody =  {
+        // "pageNumber" : 0,
+        // "pageSize" : 5,
+        // "useMaxSearchAsLimit" : false,
+        "searchColumnsList" : [ 
+          {
+            "columnName" : "searchParam",
+            "searchStr" : searchKeyword
+          }, 
+          // {
+          //   "columnName" : "role",
+          //   "searchStrList" : [ "ROLE_REGULAR", "ROLE_OWNER" ]
+          // }, 
+          {
+            "columnName" : "isDeactivated",
+            "searchStrList" : [item]
+          } 
+        ],
+        "sortHeader" : "id",
+        "sortDirection" : "DESC"
+      }
+    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
+    setFilterClick(!filterClick)
+  }
 
+  const searchHandle = (keyword) => {
+    setSearchKeyword(keyword)
+    // AppManager.showLoader()
+    const requestBody =  {
+        // "pageNumber" : 0,
+        // "pageSize" : 5,
+        // "useMaxSearchAsLimit" : false,
+        "searchColumnsList" : [ 
+          {
+            "columnName" : "searchParam",
+            "searchStr" : keyword
+          },
+          // {
+          //   "columnName" : "role",
+          //   "searchStrList" : [ "ROLE_REGULAR", "ROLE_OWNER" ]
+          // }, 
+          {
+            "columnName" : "isDeactivated",
+            "searchStrList" : filterKeyword
+          } 
+        ],
+        "sortHeader" : "id",
+        "sortDirection" : "DESC"
+      }
+    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
+  }
+
+  const searchBar = () => {  
         return (
           <View style={styles.searchSubContainer}>
             <View style={styles.search}>
                 <TextInput 
                     placeholder='Search Here...'
                     style={styles.searchText}
-                    onChangeText={text => searchFilter(text) }                    
-                    value={search}
+                    onChangeText={text => searchHandle(text) }                    
+                    value={searchKeyword}
                     
                 />
                 <TouchableOpacity  onPress={()=> setFilterClick(!filterClick)} >
@@ -184,16 +241,20 @@ return (
           />
         }
       />
-        {filterClick?
-                <View style={styles.menu}>
-                  {filterData.map((item,key) =>
-                      <TouchableOpacity key={key} style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=filterData.length-1 ?1:0}}>
-                        <Text style={styles.textStyle}>{item}</Text>
-                      </TouchableOpacity>
-                    )
-                  }
-                </View>:
-              null} 
+
+      {filterClick?
+        <View style={styles.menu}>
+          {filterData.map((item,key) =>
+            <TouchableOpacity key={key} 
+              onPress={() => filterHandle(item)}
+              style={{
+                borderBottomColor:ColorConstant.GREY,                 
+                borderBottomWidth:key!=filterData.length-1 ?1:0}}>
+              <Text style={styles.textStyle, {color: filterKeyword.find((element)=>{return element === item}) ? ColorConstant.ORANGE : ColorConstant.BLUE }}>{item}</Text>
+            </TouchableOpacity>
+          )}
+        </View>:
+      null} 
 
   </View>
       )
