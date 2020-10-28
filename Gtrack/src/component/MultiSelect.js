@@ -207,7 +207,6 @@ export class MultiSelectGroup extends React.Component {
 
                     {/* Data Rows */}
                     {data.map((item,key)=>{
-                        console.log("Item",key, item, selectedItem, selectedItem.includes(item), selectedItem.find((element)=>{return element.id === item.id}))
                         return(
                             <TouchableOpacity key={item.id} style={[styles.row, otherProps.rowStyle]} 
                                 onPress={()=>{

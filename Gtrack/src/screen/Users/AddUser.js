@@ -24,7 +24,7 @@ const AddUser = ({navigation,route}) => {
 
 
   const dispatch = useDispatch()
- 
+
   const [firstName, setFirstName]= useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -32,17 +32,10 @@ const AddUser = ({navigation,route}) => {
   const [selectedGroup, setSelectedGroup] = useState([]);
   const [role, setRole] = useState();
 
-  // const Data =['Home','Fedex Ground']
-  // const GroupList = subUserData.group.map(element => {return element.groupName} ); 
-  // const GroupId = subUserData.group.map(element => {return element.id} ); 
-  // const selectedGroupWithID = 
-  // console.log("Group List", subUserData.group, selectedGroup)
-
   React.useEffect(() => {
     dispatch(UsersActions.requestGetGroup(loginData.id, onGroupSuccess, onGroupError));
     if(route){
       const editData = route.params;
-      console.log("Editdata",editData)
       if(editData){
         setFirstName(editData.editData.firstName)
         setLastName(editData.editData.lastName)
@@ -73,9 +66,8 @@ const AddUser = ({navigation,route}) => {
             } ],
             "groups" : selectedGroup
           }
-          console.log("User Body: ", requestBody)
           dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError)) 
-        } else{
+        } else {
           const requestBody = {
             "userDTOS" : [ {
               "id" : null,
@@ -89,7 +81,6 @@ const AddUser = ({navigation,route}) => {
               "groups" : selectedGroup
             } ]
           }
-          console.log("User Body: ", requestBody)
           dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError)) 
         }
 
@@ -97,8 +88,7 @@ const AddUser = ({navigation,route}) => {
 
 
 function onSuccess(data) {    
-  console.log("Success",data) 
-  // dispatch(UsersActions.setSubuserResponse(data))
+  console.log("Success",data)
   AppManager.hideLoader()
 }
 
@@ -218,9 +208,8 @@ return (
           </TouchableOpacity>
           </View>
         </ScrollView>
-    </View>
+      </View>
       
-        
       )
     }
 
@@ -228,134 +217,133 @@ return (
 
 const styles = StyleSheet.create({
 
-container: {
-  alignItems:'center',
-  backgroundColor:ColorConstant.WHITE,
-  //height:"100%",
-  flex:1
-},
-subContainer: {
-  width:'85%',
-  marginTop:hp(2),
-  marginBottom: hp(4),
-  alignSelf: 'center',
-},
-outerStyle:{
-  elevation:4,
-  marginTop:hp(3),
-  borderBottomColor:ColorConstant.GREY,
-  borderBottomWidth:1,
-  backgroundColor:ColorConstant.WHITE,
-  borderRadius:4,
-  shadowColor: ColorConstant.GREY,
-  shadowOffset: {
-    width: 0,
-    height: 0
-  },
-  shadowRadius: 3,
-  shadowOpacity: 1,
-},
-dropDown:{
-  flexDirection:'row', 
-  marginTop:hp(0.5)
-  
-},
-dropdownStyle: {
-  position:'relative', 
-  top:hp(0.1), 
-  width:'116%', 
-  left:wp(5.5),
-  marginBottom:hp(3)
-},
-dataRowStyle: {
-  borderBottomWidth:1,borderBottomColor:ColorConstant.GREY
-},
-infoContainer:{
-  backgroundColor:ColorConstant.PINK,
-  borderRadius:10,
-  //marginVertical:hp(1),
-  marginBottom:hp(0.1),
-  padding:hp(2)
-},
-infoTitle: {
-  //fontSize:hp(1.3),
-  fontSize:10,
-  fontFamily:'Nunito-Regular',
-  textAlign:'center',
-  color:ColorConstant.GREY
-},
-infoSubContainer: {
-  flexDirection:'row',
-  padding:6
-},
-infoButton:{
-  paddingHorizontal:hp(2), 
-  paddingVertical:hp(5)
-},
-role: {
-  //fontSize:FontSize.FontSize.small,
-  fontSize:12,
-  fontFamily:'Nunito-Regular',
-  color:ColorConstant.BLACK,
-  flex:0.7,
-  flexWrap:'wrap'
-},
-roleSubText:{
-  //fontSize:hp(1.3),
-  color:ColorConstant.
-  GREY,flex:1,
-  fontSize:10,
-  fontFamily:'Nunito-Regular',
-},
-saveText :{
-  textAlign:'center',
-  color:ColorConstant.WHITE,
-  fontWeight:'bold'
-},
-saveButtonConatiner :{
-  marginTop:hp(4),
-  height:hp(6),
-  width:'85%',
-  justifyContent:'center',
-  alignSelf:'center',
-  borderRadius:5
-},
-addButton : {
-    backgroundColor:ColorConstant.ORANGE,
+  container: {
     alignItems:'center',
-    justifyContent:'center',
-    width:'100%',
-    height:hp(8),
-},
-selectedItemRowStyle: {
-  flexDirection:'row',
-  elevation:4,
-  shadowColor: ColorConstant.GREY,
+    backgroundColor:ColorConstant.WHITE,
+    flex:1
+  },
+  subContainer: {
+    width:'85%',
+    marginTop:hp(2),
+    marginBottom: hp(4),
+    alignSelf: 'center',
+  },
+  outerStyle:{
+    elevation:4,
+    marginTop:hp(3),
+    borderBottomColor:ColorConstant.GREY,
+    borderBottomWidth:1,
+    backgroundColor:ColorConstant.WHITE,
+    borderRadius:4,
+    shadowColor: ColorConstant.GREY,
     shadowOffset: {
       width: 0,
       height: 0
     },
     shadowRadius: 3,
     shadowOpacity: 1,
-  backgroundColor:ColorConstant.LIGHTPINK,
-  borderRadius:5,
-  alignItems:'center',
-  paddingHorizontal:hp(1),
-  //flexWrap:'wrap',
-  margin:4,
-  height:hp(4),
-},
-selectedItemContainerStyle:{
-  backgroundColor:ColorConstant.PINK,
-  borderRadius:8,
-  marginTop:hp(2),
-  elevation:0,
-  padding:hp(1)
-},
-rowStyle: {
-  borderBottomColor:ColorConstant.LIGHTGREY, 
-  borderBottomWidth:1
-}
+  },
+  dropDown:{
+    flexDirection:'row', 
+    marginTop:hp(0.5)
+    
+  },
+  dropdownStyle: {
+    position:'relative', 
+    top:hp(0.1), 
+    width:'116%', 
+    left:wp(5.5),
+    marginBottom:hp(3)
+  },
+  dataRowStyle: {
+    borderBottomWidth:1,borderBottomColor:ColorConstant.GREY
+  },
+  infoContainer:{
+    backgroundColor:ColorConstant.PINK,
+    borderRadius:10,
+    //marginVertical:hp(1),
+    marginBottom:hp(0.1),
+    padding:hp(2)
+  },
+  infoTitle: {
+    //fontSize:hp(1.3),
+    fontSize:10,
+    fontFamily:'Nunito-Regular',
+    textAlign:'center',
+    color:ColorConstant.GREY
+  },
+  infoSubContainer: {
+    flexDirection:'row',
+    padding:6
+  },
+  infoButton:{
+    paddingHorizontal:hp(2), 
+    paddingVertical:hp(5)
+  },
+  role: {
+    //fontSize:FontSize.FontSize.small,
+    fontSize:12,
+    fontFamily:'Nunito-Regular',
+    color:ColorConstant.BLACK,
+    flex:0.7,
+    flexWrap:'wrap'
+  },
+  roleSubText:{
+    //fontSize:hp(1.3),
+    color:ColorConstant.GREY,
+    flex:1,
+    fontSize:10,
+    fontFamily:'Nunito-Regular',
+  },
+  saveText :{
+    textAlign:'center',
+    color:ColorConstant.WHITE,
+    fontWeight:'bold'
+  },
+  saveButtonConatiner :{
+    marginTop:hp(4),
+    height:hp(6),
+    width:'85%',
+    justifyContent:'center',
+    alignSelf:'center',
+    borderRadius:5
+  },
+  addButton : {
+    backgroundColor:ColorConstant.ORANGE,
+    alignItems:'center',
+    justifyContent:'center',
+    width:'100%',
+    height:hp(8),
+  },
+  selectedItemRowStyle: {
+    flexDirection:'row',
+    elevation:4,
+    shadowColor: ColorConstant.GREY,
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowRadius: 3,
+    shadowOpacity: 1,
+    backgroundColor:ColorConstant.LIGHTPINK,
+    borderRadius:5,
+    alignItems:'center',
+    paddingHorizontal:hp(1),
+    //flexWrap:'wrap',
+    margin:4,
+    height:hp(4),
+  },
+  selectedItemContainerStyle:{
+    backgroundColor:ColorConstant.PINK,
+    borderRadius:8,
+    marginTop:hp(2),
+    elevation:0,
+    padding:hp(1)
+  },
+  rowStyle: {
+    borderBottomColor:ColorConstant.LIGHTGREY, 
+    borderBottomWidth:1
+  }
 });
 
 
