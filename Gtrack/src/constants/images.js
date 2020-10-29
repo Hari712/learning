@@ -143,7 +143,15 @@ const images = {
             address: require('../../assets/images/Settings/address.png'),
             editIcon: require('../../assets/images/Settings/EditIcon.png'),
             upArrow: require('../../assets/images/Settings/upArrow.png'),
-            trash: require('../../assets/images/Settings/trash.png')
+            trash: require('../../assets/images/Settings/trash.png'),
+            settingIcon: require('../../assets/images/Settings/AdvanceSettings/settingIcon.png'),
+            arrow: require('../../assets/images/Settings/AdvanceSettings/arrow.png'),
+            toggleOn: require('../../assets/images/Settings/AdvanceSettings/toggleOn.png'),
+            toggleOff: require('../../assets/images/Settings/AdvanceSettings/toggleOff.png'),
+            ellipse: require('../../assets/images/Settings/AdvanceSettings/Ellipse.png'),
+            ellipseClick: require('../../assets/images/Settings/AdvanceSettings/EllipseClick.png'),
+            down: require('../../assets/images/Settings/AdvanceSettings/down.png')
+
         },
     }
 }

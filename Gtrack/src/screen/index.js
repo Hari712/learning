@@ -29,6 +29,7 @@ import GeoFence from '../screen/LiveTracking/GeoFence';
 import GeoFenceCreateNew from '../screen/LiveTracking/GeoFenceCreateNew';
 import GeoFenceType from '../screen/LiveTracking/GeoFenceType';
 import GeoFenceDetails from '../screen/LiveTracking/GeoFenceDetails';
+import AdvanceSettings from '../screen/Settings/AdvanceSettings/AdvanceSettings';
 
 export{
     Splash,
@@ -60,5 +61,6 @@ export{
     GeoFence,
     GeoFenceCreateNew,
     GeoFenceType,
-    GeoFenceDetails
+    GeoFenceDetails,
+    AdvanceSettings
 }
