@@ -45,9 +45,20 @@ function* updateSubuserDetails(action) {
     }
 }
 
+function* getSubuserByFilter(action) {
+    const {body, userId, onSuccess, onError } = action
+    try {
+        const response = yield call(API.post, ApiConstants.GET_SUBUSER_BY_FILTER(userId), body)            
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchUsers() {
     yield takeLatest(types.GET_SUBUSER_REQUEST, getSubuser),
     yield takeLatest(types.ADD_SUBUSER_REQUEST, addSubuser),
     yield takeLatest(types.GET_GROUP_REQUEST, getGroup),
-    yield takeLatest(types.UPDATE_SUBUSER_DETAIL_REQUEST, updateSubuserDetails)
+    yield takeLatest(types.UPDATE_SUBUSER_DETAIL_REQUEST, updateSubuserDetails),
+    yield takeLatest(types.GET_SUBUSER_BY_FILTER_REQUEST, getSubuserByFilter)
 }
