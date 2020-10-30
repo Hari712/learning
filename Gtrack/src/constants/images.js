@@ -16,6 +16,15 @@ const images = {
     countryPicker:{
         downArrow: require('../../assets/images/CountryPicker/downArrow.png')
     },
+    liveTracking: {
+        edit: require('../../assets/images/LiveTracking/Alarms/edit.png'),
+        ellipse: require('../../assets/images/LiveTracking/Alarms/Ellipse.png'),
+        ellipseClick: require('../../assets/images/LiveTracking/Alarms/EllipseClick.png'),
+        list: require('../../assets/images/LiveTracking/Alarms/list.png'),
+        next: require('../../assets/images/LiveTracking/Alarms/next.png'),
+        trash: require('../../assets/images/LiveTracking/Alarms/trash.png')
+
+    },
     user: {
         add: require('../../assets/images/User/add.png'),
         filter: require('../../assets/images/User/filter.png'),
