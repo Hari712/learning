@@ -4,20 +4,19 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../../component/FontSize';
-import NavigationService from '../../../navigation/NavigationService';
-import Tooltip from 'rn-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
-import AppManager from '../../../constants/AppManager';
-import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
-import MultiSelect from '../../../component/MultiSelect';
-import DropDown from '../../../component/DropDown';
+import TextField from '../../../component/TextField';
 
 
 const AlarmType = ({navigation,route}) => {
     
-  const {alarmType} = route.params
+  const { alarmType, selectedDeviceList} = route.params
   
   const dispatch = useDispatch()
+
+  const [alarmName, setAlarmName] = useState()
+  const [speed, setSpeed] = useState()
+  const [selectedCheckbox, setSelectedCheckbox] = useState()
 
   useEffect(() => {    
    
@@ -47,85 +46,127 @@ const AlarmType = ({navigation,route}) => {
 return ( 
   <View style={styles.container}>
     
-      <TouchableOpacity style={styles.header}>
+      <View style={styles.header}>
         <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{alarmType}</Text>
-      </TouchableOpacity>
-      {/* <View style={{paddingHorizontal:hp(4),marginTop:hp(3)}}>
-        <MultiSelectGroup 
-                label='Group Access' 
-                //dataList={devicesList} 
-                allText='All' 
-                hideSelectedDeviceLable={true}
-                hideDeleteButton={true}
-                rowStyle={styles.rowStyle}
-                dropdownStyle={{height:hp(20)}}
-                outerStyle={{marginTop:hp(2)}}
-                valueSet={setSelectedDevice} 
-                selectedData={selectedDevice}
-                selectedItemContainerStyle={styles.selectedItemContainerStyle} 
-                selectedItemRowStyle={styles.selectedItemRowStyle}
-                deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1.id != item.id))}
-                />  
-        <View style={{marginTop:hp(3)}}>       
-            <DropDown label='Select Alarm' defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
-        </View>   
-     </View>  
+      </View>
 
-     {selectedDevice && selectedAlarm ?
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity  style={styles.cancelButton}>
+      <View style={{paddingHorizontal:hp(5)}}>
+        <View style={{marginVertical:hp(3)}}>
+          <Text style={styles.textStyle}>Device Name</Text>
+          {selectedDeviceList.map((device,key) =>
+          <Text key={key} style={[styles.textStyle,{marginVertical:hp(1),color:ColorConstant.BLACK}]}>{device}</Text> )}
+        </View>
+
+        <TextField 
+          valueSet={setAlarmName} 
+          label='Alarm Name*'
+          defaultValue={alarmName}
+          outerStyle={styles.outerStyle} 
+          />
+
+        <View style={styles.inputTextStyle}>
+          <TextInput 
+            placeholder='Speed Limit (mph)'
+            style={styles.speedText}
+            onChangeText={text => setSpeed(text) }                    
+            value={speed}                    
+          />
+        </View>
+
+        <View style={{marginVertical:hp(3)}}>
+          <Text style={styles.textStyle}>Time</Text>
+          {time.map((item,key) =>
+            <View key={key} style={{flexDirection:'row',alignItems:'center'}}>
+              <TouchableOpacity onPress={() =>key==selectedCheckbox? setSelectedCheckbox(-1):setSelectedCheckbox(key)}>
+              <Image source={key==selectedCheckbox? images.liveTracking.ellipseClick : images.liveTracking.ellipse} />
+              </TouchableOpacity>
+              <Text style={[styles.textStyle,{marginVertical:hp(1),color:ColorConstant.BLACK}]}> {item}</Text>
+            </View> )}
+        </View>
+          
+      </View>
+
+      <View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+          <Image style={{alignSelf:'flex-start'}} source={images.liveTracking.checkboxClick}></Image>
+          <Text style={styles.notificationStyle}> Push notification</Text>
+      </View>
+
+      <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity  style={styles.nextButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Next</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Alarms')} style={styles.nextButton}>
+                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
             </TouchableOpacity>
-        </View> : null } */}
+        </View> 
   </View>
       )
     }
 
-const devicesList = [
-    'TrackPort International', 
-    'TrackPort International1', 
-    'TrackPort International2', 
-    'TrackPort International3', 
-    'TrackPort International4'
-    ]
+const time = ['Every day(All hours)', 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' ]
 
 const styles = StyleSheet.create({
 
-  container: {
-    height:'100%'
-  },
-  cardContainer: {
-    width:'90%',
-    marginVertical: hp(1.5),
-    alignSelf: 'center',
-    backgroundColor: ColorConstant.WHITE,
-    borderRadius: 12,
-    elevation:3,
-    borderColor: ColorConstant.GREY,
-    shadowColor:ColorConstant.GREY,
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 0 },
+container: {
+  height:'100%',
+  backgroundColor:ColorConstant.WHITE
 },
 header : {
-    width:'100%',
-    backgroundColor: ColorConstant.ORANGE,
-    height:hp(7),
-    borderColor: ColorConstant.GREY,
-    alignItems:'center',
-    alignSelf:'center',
-    justifyContent:'center'
+  width:'100%',
+  backgroundColor: ColorConstant.ORANGE,
+  height:hp(7),
+  borderColor: ColorConstant.GREY,
+  alignItems:'center',
+  alignSelf:'center',
+  justifyContent:'center'
+},
+textStyle: {
+  fontFamily:'Nunito-Regular',
+  fontSize:FontSize.FontSize.small,
+  color:ColorConstant.GREY
+},
+notificationStyle: {
+  fontFamily:'Nunito-Regular',
+  fontSize:12,
+  color:ColorConstant.BLUE
+},
+outerStyle:{
+  elevation:4,
+  marginTop:hp(0.5),
+  borderBottomColor:ColorConstant.GREY,
+  borderBottomWidth:1,
+  backgroundColor:ColorConstant.WHITE,
+  borderRadius:4,
+  shadowColor: ColorConstant.GREY,
+  shadowOffset: {
+    width: 0,
+    height: 0
+  },
+  shadowRadius: 3,
+  shadowOpacity: 1,
+},
+inputTextStyle: {
+  borderRadius:4,
+  elevation:4,
+  borderColor:ColorConstant.GREY,
+  borderWidth:1,
+  paddingHorizontal:hp(1),
+  backgroundColor:ColorConstant.WHITE,
+  height:hp(6),
+  marginTop:hp(2)
+},
+speedText: {
+  fontSize: 12, 
+  flex:1,
+  color:ColorConstant.BLACK,
+  fontFamily:'Nunito-Regular'
 },
 buttonContainer: {
     flexDirection:'row',
     justifyContent:'space-evenly',
-    //width:'75%',
-    //margin:hp(3),
-    marginTop:hp(10),
+    marginTop:hp(5),
+    paddingHorizontal:hp(5),
     alignItems:'center'
 },
 cancelButton: {
@@ -133,46 +174,17 @@ cancelButton: {
     borderColor:ColorConstant.BLUE,
     borderWidth:1,
     backgroundColor:ColorConstant.WHITE,
-    width:'30%',
+    width:'35%',
     height:hp(6),
     justifyContent:'center'
 },
 nextButton: {
     borderRadius:6,
     backgroundColor:ColorConstant.BLUE,
-    width:'30%',
+    width:'35%',
     height:hp(6),
     justifyContent:'center'
 },
-selectedItemContainerStyle:{
-    backgroundColor:ColorConstant.PINK,
-    borderRadius:8,
-    marginTop:hp(2),
-    elevation:0,
-    padding:hp(1)
-  },
-selectedItemRowStyle: {
-flexDirection:'row',
-elevation:4,
-shadowColor: ColorConstant.GREY,
-shadowOffset: {
-    width: 0,
-    height: 0
-},
-shadowRadius: 3,
-shadowOpacity: 1,
-backgroundColor:ColorConstant.LIGHTPINK,
-borderRadius:5,
-alignItems:'center',
-paddingHorizontal:hp(1),
-//flexWrap:'wrap',
-margin:4,
-height:hp(4),
-},
-  rowStyle: {
-    borderBottomColor:ColorConstant.LIGHTGREY, 
-    borderBottomWidth:1
-  }
 });
 
 

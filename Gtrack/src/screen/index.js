@@ -33,6 +33,7 @@ import AdvanceSettings from '../screen/Settings/AdvanceSettings/AdvanceSettings'
 import Alarms from '../screen/LiveTracking/Alarms/Alarms'
 import CreateNew from '../screen/LiveTracking/Alarms/CreateNew'
 import AlarmType from '../screen/LiveTracking/Alarms/AlarmType'
+import AlarmDetail from '../screen/LiveTracking/Alarms/AlarmDetail'
 
 export{
     Splash,
@@ -68,5 +69,6 @@ export{
     AdvanceSettings,
     Alarms,
     CreateNew,
-    AlarmType
+    AlarmType,
+    AlarmDetail
 }

@@ -22,7 +22,9 @@ const images = {
         ellipseClick: require('../../assets/images/LiveTracking/Alarms/EllipseClick.png'),
         list: require('../../assets/images/LiveTracking/Alarms/list.png'),
         next: require('../../assets/images/LiveTracking/Alarms/next.png'),
-        trash: require('../../assets/images/LiveTracking/Alarms/trash.png')
+        trash: require('../../assets/images/LiveTracking/Alarms/trash.png'),
+        checkbox: require('../../assets/images/LiveTracking/Alarms/checkbox.png'),
+        checkboxClick: require('../../assets/images/LiveTracking/Alarms/checkboxClick.png')
 
     },
     user: {

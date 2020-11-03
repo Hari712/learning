@@ -22,7 +22,13 @@ const CreateNew = ({navigation,route}) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {    
-   
+    if(route){
+      const editData = route.params;
+      console.log("khushi",editData)
+      if(editData){
+        setSelectedDevice(editData.editData.asset)
+        setSelectedAlarm(editData.editData.title)
+    }}
   }, [])
 
   React.useLayoutEffect(() => {
@@ -51,11 +57,11 @@ return (
   <ScrollView contentContainerStyle={styles.container}>
     
       <TouchableOpacity style={styles.header}>
-        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>Create New</Text>
+        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit': 'Create New'}</Text>
       </TouchableOpacity>
       <View style={{paddingHorizontal:hp(4),marginTop:hp(3)}}>
         <MultiSelect 
-                label='Group Access' 
+                label='Select Device' 
                 dataList={devicesList} 
                 allText='All' 
                 hideSelectedDeviceLable={true}
@@ -80,7 +86,7 @@ return (
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm})} style={styles.nextButton}>
+            <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Next</Text>
             </TouchableOpacity>
         </View> : null }
@@ -102,7 +108,7 @@ const alarmList = ['Overspeed','Movement','Ignition','Fuel'] ;
 const styles = StyleSheet.create({
 
   container: {
-    //height:'100%',
+    backgroundColor:ColorConstant.WHITE,
     flexGrow:1
   },
   cardContainer: {

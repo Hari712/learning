@@ -4,8 +4,6 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../../component/FontSize';
-import NavigationService from '../../../navigation/NavigationService';
-import Tooltip from 'rn-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
 
@@ -45,14 +43,17 @@ const Alarms = ({navigation}) => {
   const renderItem = ({item,key}) => {
     return(  
     <View style={styles.cardContainer} key={key}>
+      <TouchableOpacity onPress={() => navigation.navigate('AlarmDetail',{data:item})}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
                 <Text style={styles.blueBoxTitle}>{item.title}</Text>
                 <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.type}</Text>
               </View>
-              <Image source={images.liveTracking.edit} />
-              <TouchableOpacity onPress={()=>{navigation.navigate('AddUser',{editData:item})}} style={{marginLeft:hp(2)}}>
+              <TouchableOpacity style={{zIndex:1}} onPress={()=>{navigation.navigate('CreateNew',{editData:item})}}>
+               <Image source={images.liveTracking.edit} />
+              </TouchableOpacity>
+              <TouchableOpacity style={{zIndex:1}} style={{marginLeft:hp(2)}}>
                 <Image source={images.liveTracking.trash} /> 
               </TouchableOpacity>       
           </View>
@@ -71,7 +72,8 @@ const Alarms = ({navigation}) => {
           <View style={styles.horizontalLine} />
             <View style={styles.duration}>
                 <Text style={styles.durationText}>{item.duration}</Text>
-            </View>
+          </View>
+        </TouchableOpacity>
     </View>
     )   
   }
@@ -91,12 +93,12 @@ return (
         data={DATA}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        // refreshControl={
-        //   <RefreshControl 
-        //     refreshing={isRefreshing}
-        //     onRefresh={onRefresh}     
-        //   />
-        // }
+        refreshControl={
+          <RefreshControl 
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}     
+          />
+        }
       />
 
   </View>
