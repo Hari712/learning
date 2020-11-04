@@ -3,7 +3,8 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, Alarms, CreateNew, AlarmType, AlarmDetail} from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail} from '../screen';
+
 import { ColorConstant } from '../constants/ColorConstants';
 import FontSize from '../component/FontSize';
 import images from '../constants/images';
@@ -84,13 +85,12 @@ const SettingsStackNavigator = () => {
             <SettingsStack.Screen name="Settings" component={Settings} />
             <SettingsStack.Screen name="Profile" component={Profile} />
             <SettingsStack.Screen name="EditProfile" component={EditProfile} />
-            <SettingsStack.Screen name="Subscription" component={Subscription} />
-            <SettingsStack.Screen name="PaymentSettings" component={PaymentSettings} />
             <SettingsStack.Screen name="Permission" component={Permission} />
             <SettingsStack.Screen name="About" component={About} />
             <SettingsStack.Screen name="RateUs" component={RateUs} />
             <SettingsStack.Screen name="Feedback" component={Feedback} />
             <SettingsStack.Screen name="AdvanceSettings" component={AdvanceSettings} />
+            <SettingsStack.Screen name="SettingNotification" component={SettingNotification} />
         </SettingsStack.Navigator>
     )
 }

@@ -10,8 +10,6 @@ import DashBoard from '../screen/Dashboard/Dashboard';
 import DeviceAsset from '../screen/Device&Asset/DeviceAsset';
 import Settings from '../screen/Settings/Settings';
 import Profile from '../screen/Settings/Profile/Profile';
-import Subscription from '../screen/Settings/Subscription/Subscription';
-import PaymentSettings from '../screen/Settings/PaymentSettings/PaymentSettings';
 import Permission from '../screen/Settings/Permission/Permission';
 import About from '../screen/Settings/About/About';
 import RateUs from '../screen/Settings/RateUs/RateUs';
@@ -34,6 +32,7 @@ import Alarms from '../screen/LiveTracking/Alarms/Alarms'
 import CreateNew from '../screen/LiveTracking/Alarms/CreateNew'
 import AlarmType from '../screen/LiveTracking/Alarms/AlarmType'
 import AlarmDetail from '../screen/LiveTracking/Alarms/AlarmDetail'
+import SettingNotification from '../screen/Settings/Notification/SettingNotification'
 
 export{
     Splash,
@@ -50,8 +49,6 @@ export{
     Details,
     Settings,
     Profile,
-    Subscription,
-    PaymentSettings,
     Permission,
     About,
     RateUs,
@@ -70,5 +67,6 @@ export{
     Alarms,
     CreateNew,
     AlarmType,
-    AlarmDetail
+    AlarmDetail,    
+    SettingNotification
 }
