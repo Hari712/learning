@@ -21,7 +21,7 @@ const DeviceAsset = ({navigation}) => {
           </TouchableOpacity>
       )
     });
-  });
+  },[navigation]);
 
   function menuHandle(item){
     if(item=='Create'){

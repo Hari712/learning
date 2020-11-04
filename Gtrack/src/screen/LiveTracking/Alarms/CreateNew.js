@@ -50,7 +50,7 @@ const CreateNew = ({navigation,route}) => {
             </TouchableOpacity>
         )  
     });
-  });
+  },[navigation]);
 
 return ( 
 <>

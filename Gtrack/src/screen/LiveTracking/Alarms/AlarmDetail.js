@@ -38,7 +38,7 @@ const AlarmDetail = ({navigation,route}) => {
             </TouchableOpacity>
         )  
     });
-  });
+  },[navigation]);
 
 return ( 
   <View style={styles.container}>

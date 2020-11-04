@@ -39,7 +39,7 @@ const Alarms = ({navigation}) => {
             </TouchableOpacity>
         )  
     });
-  });
+  },[navigation]);
 
   function handleRemove(id) {
     const newList = list.filter((item) => item.id !== id); 
