@@ -46,7 +46,7 @@ const Settings = ({ navigation }) => {
       }
 
       else if (item.title == 'Advance Settings') {
-        navigation.navigate('Advance Settings')
+        navigation.navigate('AdvanceSettings')
       }
 
       else if (item.title == 'Logout') {
@@ -67,7 +67,10 @@ const Settings = ({ navigation }) => {
 
         <View style={styles.mainViewStyle}>
 
-          <Text style={styles.titleTextStyle}>{item.title}</Text>
+          <View style={styles.leftMainViewStyle}>
+            <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' />
+            <Text style={styles.titleTextStyle}>{item.title}</Text>
+          </View>
 
           <View style={styles.rightMainViewStyle}>
             <Image source={item.nextArrow} style={{}} resizeMode='contain' />
@@ -120,6 +123,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: hp(2)
+  },
+  leftMainViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: wp(3),
+    paddingBottom: hp(3),
+    alignItems: 'center'
+  },
+  titleIconStyle: {
+    height: hp(2),
+    width: hp(2),
   },
   rightMainViewStyle: {
     paddingHorizontal: wp(3),
