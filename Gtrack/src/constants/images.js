@@ -143,7 +143,10 @@ const images = {
             address: require('../../assets/images/Settings/address.png'),
             editIcon: require('../../assets/images/Settings/EditIcon.png'),
             upArrow: require('../../assets/images/Settings/upArrow.png'),
-            trash: require('../../assets/images/Settings/trash.png')
+            trash: require('../../assets/images/Settings/trash.png'),
+            downArrowOrange: require('../../assets/images/Settings/down-notification.png'),
+            onIcon: require('../../assets/images/Settings/onIcon.png'),
+            IconOff: require('../../assets/images/Settings/IconOff.png'),
         },
     }
 }

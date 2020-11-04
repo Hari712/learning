@@ -123,7 +123,9 @@ const styles = StyleSheet.create({
   },
   rightMainViewStyle: {
     paddingHorizontal: wp(3),
-    paddingBottom: hp(3)
+    paddingVertical: hp(1),
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
   lineStyle: {
