@@ -65,16 +65,19 @@ return (
             <Text style={styles.textStyle}>Selected Device</Text>
             {data.asset.map((entry,key) =>
                 <View key={key} style={styles.devices}>
-                <Text style={styles.deviceText}>{entry}</Text>
+                  <Text style={styles.deviceText}>{entry}</Text>
                 </View>
             )}
         </View>
 
-        <View style={{marginTop:hp(2),flexWrap:'wrap'}}>
-           <Text style={styles.textStyle}>Selected Users</Text>
-           <View style={styles.user}>
-            <Text style={styles.deviceText}>John Smith</Text>
-           </View>
+        <View style={{marginTop:hp(2)}}>
+          <Text style={styles.textStyle}>Selected Users</Text>
+          <View style={{flexGrow:1, flexDirection:'row'}}>
+            {Name.map((name,key) =>
+              <View key={key} style={styles.user}>
+                <Text style={styles.deviceText}>{name}</Text>
+              </View>)}
+          </View>
         </View>
 
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
@@ -109,6 +112,8 @@ const DATA = [
     
 ];
 
+const Name = ['John Smith','Johnny clark']
+
 const styles = StyleSheet.create({
 
   container: {
@@ -120,9 +125,9 @@ const styles = StyleSheet.create({
     borderColor:ColorConstant.GREY,
     backgroundColor:ColorConstant.WHITE,
     borderWidth:0.4,
-    marginTop:hp(3),
+    marginTop:hp(4),
     padding:hp(2),
-    marginHorizontal:hp(4),
+    marginHorizontal:hp(3),
   },
   detail: {
     flexDirection:'row',
@@ -138,18 +143,22 @@ const styles = StyleSheet.create({
   },
   user: {
     backgroundColor:ColorConstant.LIGHTBLUE,
-    borderRadius:10,
+    borderRadius:5,
     marginVertical:hp(1),
+    alignSelf: 'flex-start',
+    marginEnd:hp(2)
   },
   devices: {
     backgroundColor:ColorConstant.PINK,
-    borderRadius:10,
-    marginVertical:hp(1)
+    borderRadius:5,
+    marginVertical:hp(1),
+    alignSelf: 'flex-start'
   },
   deviceText: {
     fontSize:12,
     fontFamily:'Nunito-Regular',
-    paddingHorizontal:hp(2)
+    paddingHorizontal:hp(2),
+    paddingVertical: hp(0.1)
   },
   detailText: {
     color:ColorConstant.GREY,

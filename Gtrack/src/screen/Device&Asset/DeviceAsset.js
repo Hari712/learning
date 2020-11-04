@@ -39,8 +39,7 @@ return (
     <ScrollView contentContainerStyle={{flexGrow:1, backgroundColor:ColorConstant.WHITE, paddingBottom:hp(2)}} onTouchStart={()=>setMenuClick(false)}>
     {DATA.map((item,key) =>
       <TouchableOpacity onPress={()=>
-      { 
-      navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
+      { navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
       } style={styles.cardContainer} key={key}>
         
       {/* Blue top head */}
@@ -61,13 +60,9 @@ return (
           </Tooltip>
         </View>
 
-        <View style={styles.editButton}>
-        <TouchableOpacity onPress={()=> 
-          {
-            navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
+        <TouchableOpacity style={styles.editButton} onPress={()=> {navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
           <Image source={images.image.edit}/>
         </TouchableOpacity>
-        </View>
       </View>
 
       {/* White Body container */}
@@ -176,14 +171,10 @@ const styles = StyleSheet.create({
     marginVertical:hp(0.5)
   },
   editButton: {
-    flexDirection:'row', 
-    position:'absolute', 
-    right:20,
-    height:hp(5),
-    width:wp(10),
+    flexDirection:'row',     
     zIndex:10,  
-    justifyContent:'space-evenly', 
-    alignItems:'center'
+    padding:hp(1.5),
+    marginLeft:'auto'
   },
   headerTitle: {
     color:ColorConstant.WHITE,

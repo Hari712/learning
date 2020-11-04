@@ -14,6 +14,7 @@ const Alarms = ({navigation}) => {
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [list, setList] = useState(DATA);
 
   useEffect(() => {    
    
@@ -40,6 +41,11 @@ const Alarms = ({navigation}) => {
     });
   });
 
+  function handleRemove(id) {
+    const newList = list.filter((item) => item.id !== id); 
+    setList(newList);
+  }
+
   const renderItem = ({item,key}) => {
     return(  
     <View style={styles.cardContainer} key={key}>
@@ -50,10 +56,10 @@ const Alarms = ({navigation}) => {
                 <Text style={styles.blueBoxTitle}>{item.title}</Text>
                 <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.type}</Text>
               </View>
-              <TouchableOpacity style={{zIndex:1}} onPress={()=>{navigation.navigate('CreateNew',{editData:item})}}>
-               <Image source={images.liveTracking.edit} />
+              <TouchableOpacity style={{zIndex:5, padding: hp(1.5)}} onPress={()=>{navigation.navigate('CreateNew',{editData:item})}}>
+                <Image source={images.liveTracking.edit} />
               </TouchableOpacity>
-              <TouchableOpacity style={{zIndex:1}} style={{marginLeft:hp(2)}}>
+              <TouchableOpacity onPress={() => handleRemove(item.id)} style={{zIndex:5, padding:hp(1)}} >
                 <Image source={images.liveTracking.trash} /> 
               </TouchableOpacity>       
           </View>
@@ -90,7 +96,7 @@ return (
       </TouchableOpacity>
 
       <FlatList
-        data={DATA}
+        data={list}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         refreshControl={
@@ -106,12 +112,14 @@ return (
     }
 const DATA = [
     {
+        id: 0,
         title: 'Speed',
         type: 'Overspeed Alarm',
         asset: ['TrackPort International'],
         duration: 'Weekdays(Monday-Friday, All hours)'
     },
     {
+        id: 1,
         title: 'Emergency',
         type: 'Panic Alarm',
         asset: ['Spark Nano 7 GPS Tracker', 'TrackPort International', 'TrackPort 4G Vehicle GPS Tracker'],
@@ -119,6 +127,7 @@ const DATA = [
     },
     
 ];
+
 
 const styles = StyleSheet.create({
 
