@@ -28,6 +28,10 @@ import GeoFenceCreateNew from '../screen/LiveTracking/GeoFenceCreateNew';
 import GeoFenceType from '../screen/LiveTracking/GeoFenceType';
 import GeoFenceDetails from '../screen/LiveTracking/GeoFenceDetails';
 import AdvanceSettings from '../screen/Settings/AdvanceSettings/AdvanceSettings';
+import Alarms from '../screen/LiveTracking/Alarms/Alarms'
+import CreateNew from '../screen/LiveTracking/Alarms/CreateNew'
+import AlarmType from '../screen/LiveTracking/Alarms/AlarmType'
+import AlarmDetail from '../screen/LiveTracking/Alarms/AlarmDetail'
 import SettingNotification from '../screen/Settings/Notification/SettingNotification'
 
 export{
@@ -60,5 +64,9 @@ export{
     GeoFenceType,
     GeoFenceDetails,
     AdvanceSettings,
-    SettingNotification,
+    Alarms,
+    CreateNew,
+    AlarmType,
+    AlarmDetail,    
+    SettingNotification
 }

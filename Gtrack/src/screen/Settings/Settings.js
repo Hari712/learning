@@ -15,7 +15,7 @@ const Settings = ({ navigation }) => {
     navigation.setOptions({
       headerLeft: () => (null),
     });
-  });
+  },[navigation]);
 
   const SettingsItems = ({ item }) => {
     // const [listData, setListData] = useState(SETTINGS_MENU)

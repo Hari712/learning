@@ -19,7 +19,7 @@ const LiveTracking = ({navigation}) => {
 			navigation.navigate('GeoFence')
 		}
 		else {
-            navigation.navigate('Settings')
+            navigation.navigate('Alarms')
         }
 	}
 

@@ -116,7 +116,7 @@ function onError(error) {
             </TouchableOpacity>
         )  
     });
-  });
+  },[navigation]);
 
 
 

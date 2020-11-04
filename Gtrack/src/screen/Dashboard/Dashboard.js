@@ -18,7 +18,7 @@ const Dashboard = ({ navigation }) => {
     navigation.setOptions({
       headerLeft: () => (null),
     });
-  });
+  },[navigation]);
 
   // Active user component
   const ActiveUser = () => {

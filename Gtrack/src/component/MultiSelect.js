@@ -52,7 +52,7 @@ class MultiSelect extends React.Component {
                         contentInset={{ input: 10.45, label: 1.4 }}
                         renderRightAccessory={() => handleRightAccessory()}
                         editable={false}
-                        value='Select Group'
+                        //value='Select Group'
                         inputContainerStyle={styles.inputContainer}
                         activeLineWidth={1}
                         containerStyle={styles.inputButton}

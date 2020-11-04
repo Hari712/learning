@@ -36,7 +36,7 @@ const AdvanceSettings = ({navigation,route}) => {
             </TouchableOpacity>
         )  
     });
-  });
+  },[navigation]);
 
 
 return ( 

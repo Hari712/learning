@@ -61,7 +61,7 @@ const Users = ({navigation}) => {
     navigation.setOptions({
       headerLeft:()=>(null)     
     });
-  });
+  },[navigation]);
 
   const renderItem = ({item,key}) => {
     return(  
