@@ -25,20 +25,16 @@ const Settings = ({ navigation }) => {
         navigation.navigate('Profile')
       }
 
-      // else if (item.title == 'Subscription') {
-      //   navigation.navigate('Subscription')
-      // }
-
-      // else if (item.title == 'Payment Settings') {
-      //   navigation.navigate('PaymentSettings')
-      // }
-
       else if (item.title == 'Permission') {
         navigation.navigate('Permission')
       }
 
       else if (item.title == 'About') {
         navigation.navigate('About')
+      }
+
+      else if (item.title == 'Notifications') {
+        navigation.navigate('SettingNotification')
       }
 
       else if (item.title == 'Rate Us') {
@@ -50,56 +46,51 @@ const Settings = ({ navigation }) => {
       }
 
       else if (item.title == 'Advance Settings') {
-        navigation.navigate('AdvanceSettings')
+        navigation.navigate('Advance Settings')
       }
 
-      else if (item.title == 'Logout'){
-        dispatch(LoginActions.requestLogout())        
+      else if (item.title == 'Logout') {
+        dispatch(LoginActions.requestLogout())
       }
 
       else {
-        dispatch(LoginActions.requestLogout()) 
+        dispatch(LoginActions.requestLogout())
       }
 
     }
 
     return (
-      <View>
-          <TouchableOpacity
-            style={styles.bodySubContainer}
-            onPress={() => onPressHandle({ navigation, item })}
-            activeOpacity={0.8}>
+      <TouchableOpacity
+        style={styles.bodySubContainer}
+        onPress={() => onPressHandle({ navigation, item })}
+        activeOpacity={0.8}>
 
-            <View style={styles.mainViewStyle}>
+        <View style={styles.mainViewStyle}>
 
-              <View style={styles.leftMainViewStyle}>
-                <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' />
-                <Text style={styles.titleTextStyle}>{item.title}</Text>
-              </View>
+          <Text style={styles.titleTextStyle}>{item.title}</Text>
 
-              <View style={styles.rightMainViewStyle}>
-                <Image source={item.nextArrow} style={{ }} resizeMode='contain' />
-              </View>
+          <View style={styles.rightMainViewStyle}>
+            <Image source={item.nextArrow} style={{}} resizeMode='contain' />
+          </View>
 
-            </View>
-          
-            <View style={styles.lineStyle} />
-
-          </TouchableOpacity>
-        
         </View>
+
+        <View style={styles.lineStyle} />
+
+      </TouchableOpacity>
+
     )
   }
 
   return (
     <SafeAreaView style={styles.container}>
-        <FlatList
-          style={{}}
-          contentContainerStyle={{}}
-          data={SETTINGS_MENU}
-          renderItem={SettingsItems}
-          keyExtractor={(item,index) => index.toString()}
-        />
+      <FlatList
+        style={{}}
+        contentContainerStyle={{}}
+        data={SETTINGS_MENU}
+        renderItem={SettingsItems}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </SafeAreaView>
 
   )
@@ -120,50 +111,38 @@ const styles = StyleSheet.create({
 
   bodySubContainer: {
     paddingHorizontal: wp(3),
-    paddingVertical: hp(2),
     flexDirection: 'column',
     justifyContent: "space-between",
   },
 
   mainViewStyle: {
-    alignItems: 'center', 
-    flexDirection: 'row', 
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: hp(2)
+  },
+  rightMainViewStyle: {
+    paddingHorizontal: wp(3),
+    paddingVertical: hp(1),
+    flexDirection: 'row',
     justifyContent: 'space-between'
   },
 
-  leftMainViewStyle: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    paddingHorizontal: wp(3), 
-    paddingBottom: hp(3),
-    alignItems: 'center'
-  },
-
-  titleIconStyle: {
-    height: hp(2), 
-    width: hp(2),
-  },
-
-  rightMainViewStyle: {
-    paddingHorizontal: wp(3), 
-    paddingBottom: hp(3)
-  },
-
   lineStyle: {
-    borderBottomColor: '#e3e3e3', 
-    borderBottomWidth: 1 
+    borderBottomColor: '#e3e3e3',
+    borderBottomWidth: 1
   },
 
   titleTextStyle: {
-    fontSize: FontSize.FontSize.medium, 
+    fontSize: FontSize.FontSize.medium,
     color: ColorConstant.BLUE,
     paddingLeft: wp(3)
   },
 
   rightTextStyle: {
-    fontSize: FontSize.FontSize.small, 
-    color: ColorConstant.BLUE, 
-    paddingRight: hp(0.8), 
+    fontSize: FontSize.FontSize.small,
+    color: ColorConstant.BLUE,
+    paddingRight: hp(0.8),
     fontStyle: 'italic'
   },
 });
@@ -175,18 +154,6 @@ const SETTINGS_MENU = [
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },
-  // {
-  //   title: 'Subscription',
-  //   icon: images.image.settings.subscription,
-  //   nextArrow: images.image.settings.nextArrow,
-  //   next: images.image.settings.next
-  // },
-  // {
-  //   title: 'Payment Settings',
-  //   icon: images.image.settings.paymentSettings,
-  //   nextArrow: images.image.settings.nextArrow,
-  //   next: images.image.settings.next
-  // },
   {
     title: 'Permission',
     icon: images.image.settings.permission,
@@ -199,6 +166,13 @@ const SETTINGS_MENU = [
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },
+  {
+    title: 'Notifications',
+    icon: images.image.settings.notification,
+    nextArrow: images.image.settings.nextArrow,
+    next: images.image.settings.next
+  },
+
   {
     title: 'Rate Us',
     icon: images.image.settings.rateUs,
@@ -213,7 +187,7 @@ const SETTINGS_MENU = [
   },
   {
     title: 'Advance Settings',
-    icon: images.image.settings.settingIcon,
+    icon: images.image.settings.advanceSetting,
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },

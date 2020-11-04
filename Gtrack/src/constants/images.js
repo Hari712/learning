@@ -122,12 +122,12 @@ const images = {
         //settings
         settings: {
             profile: require('../../assets/images/Settings/Profile-icon.png'),
-            subscription: require('../../assets/images/Settings/Subscription-icon.png'),
-            paymentSettings: require('../../assets/images/Settings/PaymentSettings-icon.png'),
             permission: require('../../assets/images/Settings/Permission-icon.png'),
             about: require('../../assets/images/Settings/About-icon.png'),
+            notification: require('../../assets/images/Settings/notification.png'),
             rateUs: require('../../assets/images/Settings/RateUs-icon.png'),
             feedback: require('../../assets/images/Settings/Feedback-icon.png'),
+            advanceSetting: require('../../assets/images/Settings/setting-lines.png'),
             logout: require('../../assets/images/Settings/Logout-icon.png'),
             nextArrow: require('../../assets/images/Settings/next-1.png'),
             next: require('../../assets/images/Settings/next.png'),
@@ -150,8 +150,10 @@ const images = {
             toggleOff: require('../../assets/images/Settings/AdvanceSettings/toggleOff.png'),
             ellipse: require('../../assets/images/Settings/AdvanceSettings/Ellipse.png'),
             ellipseClick: require('../../assets/images/Settings/AdvanceSettings/EllipseClick.png'),
-            down: require('../../assets/images/Settings/AdvanceSettings/down.png')
-
+            down: require('../../assets/images/Settings/AdvanceSettings/down.png'),
+            downArrowOrange: require('../../assets/images/Settings/down-notification.png'),
+            onIcon: require('../../assets/images/Settings/onIcon.png'),
+            IconOff: require('../../assets/images/Settings/IconOff.png'),
         },
     }
 }

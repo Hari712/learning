@@ -10,8 +10,6 @@ import DashBoard from '../screen/Dashboard/Dashboard';
 import DeviceAsset from '../screen/Device&Asset/DeviceAsset';
 import Settings from '../screen/Settings/Settings';
 import Profile from '../screen/Settings/Profile/Profile';
-import Subscription from '../screen/Settings/Subscription/Subscription';
-import PaymentSettings from '../screen/Settings/PaymentSettings/PaymentSettings';
 import Permission from '../screen/Settings/Permission/Permission';
 import About from '../screen/Settings/About/About';
 import RateUs from '../screen/Settings/RateUs/RateUs';
@@ -30,6 +28,7 @@ import GeoFenceCreateNew from '../screen/LiveTracking/GeoFenceCreateNew';
 import GeoFenceType from '../screen/LiveTracking/GeoFenceType';
 import GeoFenceDetails from '../screen/LiveTracking/GeoFenceDetails';
 import AdvanceSettings from '../screen/Settings/AdvanceSettings/AdvanceSettings';
+import SettingNotification from '../screen/Settings/Notification/SettingNotification'
 
 export{
     Splash,
@@ -46,8 +45,6 @@ export{
     Details,
     Settings,
     Profile,
-    Subscription,
-    PaymentSettings,
     Permission,
     About,
     RateUs,
@@ -62,5 +59,6 @@ export{
     GeoFenceCreateNew,
     GeoFenceType,
     GeoFenceDetails,
-    AdvanceSettings
+    AdvanceSettings,
+    SettingNotification,
 }
