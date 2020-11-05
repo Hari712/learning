@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     },
     mainViewHeading: {
         height: hp(80),
-        width: wp(80)
+        width: wp(77)
     },
     deleteDialogMainView: {
         height: hp(23),
@@ -331,16 +331,16 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.medium,
         color: ColorConstant.ORANGE,
         fontWeight: 'bold',
-        marginLeft: wp(35)
+        marginLeft: wp(30)
     },
     crossImageStyle: {
-        marginTop: hp(0.5)
+        marginTop: hp(0.5),
+        marginRight: wp(5)
     },
     popUpCardContainer: {
         width: '100%',
-        // width: Dimensions.get('screen').width - 30,
+        marginRight: wp(2),
         marginTop: hp(2),
-        // height:hp(18),
         elevation: 3,
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
@@ -351,8 +351,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 3,
         shadowOffset: { width: 0, height: 0 },
-        // paddingBottom: hp(1),
-        // marginBottom: hp(3)
     },
     titleViewStyle: {
         flexDirection: 'row',
@@ -379,7 +377,7 @@ const styles = StyleSheet.create({
     buttonMainContainer: {
         width: wp(70),
         marginTop: hp(3),
-        marginLeft: wp(28)
+        marginLeft: wp(23)
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -387,7 +385,6 @@ const styles = StyleSheet.create({
         width: wp(75),
         marginTop: hp(7),
         alignSelf: 'center',
-        // paddingBottom: hp(6)
     },
     cancelButton: {
         borderRadius: 6,
@@ -425,7 +422,6 @@ const styles = StyleSheet.create({
     },
     secondRowMainView: {
         flexDirection: 'row',
-        // marginTop: hp(1.5),
         paddingHorizontal: hp(1.5),
         paddingBottom: hp(1)
     },
@@ -466,8 +462,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#E77575',
         borderRadius: hp(0.5),
         marginTop: hp(1)
-        // justifyContent: 'center',
-        // alignItems: 'center'
     },
     fontSizeMainView: {
         flexDirection: 'column',
