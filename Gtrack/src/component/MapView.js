@@ -11,6 +11,17 @@ const isAndroid = Platform.OS === 'android'
 const {height} = Dimensions.get('window')
 
 var points1 = [-7.941227, 39.584127]
+var centerCoord = [-7.941227, 39.584127]
+
+var state = {
+    mapRegion: null,
+    currentLatitude: null,
+    currentLongitude: null,
+    LATLNG: {
+        latitude: -35,
+        longitude: 120
+    },
+}
 
 
 const Map = Platform.select({
@@ -18,69 +29,117 @@ const Map = Platform.select({
 	android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const MapView = () => {
+const MapView = (props) => {
+
+	// const shape = route.params;
+    console.log("type.1", props)
     
-    React.useEffect(()=>{},[])
+	React.useEffect(()=>{},[])
+
+	function renderPolygon() {
+		return(
+		/* Polygon */
+		<Map.default.ShapeSource
+			id="source"
+			shape={{
+				type: 'Feature',
+				geometry: {
+					type: 'Polygon',
+					coordinates: [[
+						[-7.941227, 39.584127],
+						[-7.951227, 39.584127],
+						[-7.965227, 39.589127],
+						[-7.961227, 39.599127],
+						[-7.941227, 39.604127],
+					]],
+				},
+			}}>
+			<Map.default.FillLayer id="fill" 
+				style={{
+					fillColor: ColorConstant.ORANGE, 
+					fillOpacity:0.3, 
+				}} />
+			<Map.default.LineLayer id="line" 
+				style={{
+					lineColor: ColorConstant.ORANGE, 
+					lineWidth: 2
+				}}
+			/>
+			<Map.default.CircleLayer  
+				id="points" 
+				maxZoomLevel={100}
+				center={[centerCoord]}
+				style={{
+					circleRadius: 4,
+					circleColor: ColorConstant.ORANGE, 
+				}} 
+			/>
+		</Map.default.ShapeSource>
+		)
+	}
+	
+	function renderCircle() {
+		return (
+			<Map.default.ShapeSource
+			id="source"
+			shape={{
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					coordinates: centerCoord,
+				},
+			}}>
+				<Map.default.CircleLayer  
+					id="circle" 
+					maxZoomLevel={100}
+					center={[centerCoord]}
+					style={{
+						circleRadius: props.radius,
+						circleColor: ColorConstant.ORANGE, 
+						circleOpacity:0.3, 
+						circleStrokeWidth: 2,
+						circleStrokeColor:ColorConstant.ORANGE, 
+						circleTranslate:[0,0], 
+						circleTranslateAnchor:'viewport'}} />
+			</Map.default.ShapeSource>
+		)
+	}
 
 	function renderMapBox() {
 		console.log("Android")
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} >					
+				<Map.default.MapView style={{ flex: 1 }} >
 					
 					<Map.default.UserLocation
 						renderMode='normal'
 						visible={true}					
-						showsUserHeadingIndicator={true}
-					
+						showsUserHeadingIndicator={true}					
 					/>
-
-					<Map.default.MarkerView 
-						coordinate={points1} 
+			
+					{/* <Map.default.MarkerView 
+						coordinate={centerCoord} 
 						id='point1'
-						draggable = {true}
+						pinColor="red"
+						//draggable = {true}
 						anchor={{x: 0.5, y: 0.5}}
-						onPress={()=>console.log("Something 2")}
-						onDragEnd = {()=>console.log("Something ")}
+						// onDragEnd = {()=>console.log("Something ")}
+						//onPress={(event)=>console.log("Something 2",event)}
+						//onMarkerPress = {(event)=>console.log("Something 2",event)}
 						>
-							<View
-								style={{
-								width: 20,
-								height: 20,
-								borderRadius: 10,
-								backgroundColor: ColorConstant.BLACK,
-								}}
-							/>
-					</Map.default.MarkerView>
+							<View>
+								<Image source={images.image.defaultlogo} />
+							</View>
+					</Map.default.MarkerView> */}
 
 					<Map.default.Camera
-						centerCoordinate={[-7.946227, 39.589127]}
+						centerCoordinate={centerCoord}
 						zoomLevel={12}
 					/>
 
-					<Map.default.ShapeSource
-						id="source"
-						onPress={()=>console.log("khushi")}
-						shape={{
-							type: 'Feature',
-							geometry: {
-								type: 'Polygon',
-								coordinates: [
-									[
-										points1,
-										[-7.951227, 39.584127],
-										[-7.965227, 39.589127],
-										[-7.961227, 39.599127],
-										[-7.941227, 39.604127],
-									],
-								],
-							},
-						}}>
-						<Map.default.FillLayer id="fill" style={{fillColor: '#0000ff40'}} />
-						<Map.default.LineLayer id="line" style={{lineColor: '#f008', lineWidth: 4}} />
-						<Map.default.CircleLayer id="circle" style={{circleRadius: 20, circleColor: 'yellow', circleOpacity:0.4, circleStrokeWidth: 2, circleTranslate:[0,0], circleTranslateAnchor:'viewport'}} />
-					</Map.default.ShapeSource>					
-					
+					{ props.type == 'Circle' ? renderCircle() : null }
+					{ props.type == 'Polygon' ? renderPolygon() : null }
+
 				</Map.default.MapView>
 			</View>
 		)
@@ -98,6 +157,7 @@ const MapView = () => {
 							title={selectedRoute.shipmentName}
 
                         />} */}
+						<Map.default.Polygon></Map.default.Polygon>
                     </Map.default>
                     <View style={{ position: 'absolute', top: 100, left: 50 }} />
                 </View>

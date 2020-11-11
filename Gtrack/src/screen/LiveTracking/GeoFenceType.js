@@ -10,7 +10,7 @@ import Slider from "react-native-slider";
 const GeoFenceType = ({ navigation, route }) => {
     const { type } = route.params;
     console.log("type.", type)
-    const [value, setValue] = useState();
+    const [value, setValue] = useState(0.3);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -35,7 +35,7 @@ const GeoFenceType = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
 
-            <MapView />
+            <MapView type={type} radius={value*200} />
 
             <View style={styles.subContainer}>
                 <View style={styles.search}>
@@ -58,9 +58,9 @@ const GeoFenceType = ({ navigation, route }) => {
 
                         <View style={styles.sliderContainer}>
                             <Slider
-                                // value={value}
-                                // onValueChange={(value) => { setValue(value)}}
-                                minimumValue={0}
+                                value={value}
+                                onValueChange={(value) => { setValue(value)}}
+                                minimumValue={0.3}
                                 maximumValue={1}
                                 minimumTrackTintColor={ColorConstant.BLUE}
                                 maximumTrackTintColor={ColorConstant.BLUE}
