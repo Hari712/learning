@@ -12,6 +12,7 @@ import AppManager from '../../../constants/AppManager';
 import * as SettingsActions from '../Settings.Action'
 import isEmpty from 'lodash/isEmpty'
 import DeviceInfo from 'react-native-device-info';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Feedback = ({ navigation }) => {
 
@@ -83,7 +84,7 @@ const Feedback = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>Feedback</Text>
             </View>
@@ -110,7 +111,7 @@ const Feedback = ({ navigation }) => {
                 <Text style={styles.submitTextStyle}>Submit</Text>
             </TouchableOpacity>
 
-        </View>
+        </ScrollView>
     )
 }
 

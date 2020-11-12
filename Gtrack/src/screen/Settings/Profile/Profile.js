@@ -72,7 +72,7 @@ const Profile = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.subMainView}>
+                {/* <View style={styles.subMainView}>
                     <View style={styles.emailMainView}>
                         <Image source={images.image.settings.email} style={{ height: hp(1.8), width: hp(1.8), }} resizeMode='contain' />
                         <Text style={styles.emailText}>{loginData.email}</Text>
@@ -82,36 +82,23 @@ const Profile = ({ navigation }) => {
                         <Image source={images.image.settings.phone} style={{ height: hp(1.8), width: hp(1.8) }} resizeMode='contain' />
                         <Text style={styles.emailText}>{loginData.phonePrefix} {loginData.phone}</Text>
                     </View>
-                </View>
+                </View> */}
 
-                {/* <View style={styles.billingAddressMainView}>
-                    <View style={styles.billingView}>
-                        <Text style={styles.billingAddressText}>Billing Address</Text>
-                        <Image source={images.image.settings.billingAddress} />
+                <View style={styles.subMainView}>
+                    <View style = {{flexDirection: 'row' }}>
+                        <View style = {{ }}>
+                            <Text  style={styles.emailText}> Mobile Number </Text>
+                            <Text  style={styles.emailText}> Email Address </Text>
+                            <Text  style={styles.emailText}> User Type </Text>
+                        </View>
+                        <View style = {{ }}>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone}</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.email}</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>Member</Text>
+                        </View>
+                        
                     </View>
-
-                    <View style={styles.underLineStyle} />
-
-                    <View style={styles.textMainView}>
-                        <Text style={styles.textStyleNone}>None</Text>
-                    </View>
                 </View>
-
-                <View style={styles.billingAddressMainView}>
-                    <View style={styles.billingView}>
-                        <Text style={styles.billingAddressText}>Shipping Address</Text>
-                        <Image source={images.image.settings.shippingAddress} />
-                    </View>
-
-                    <View style={styles.underLineStyle} />
-
-                    <TouchableOpacity style={styles.textMainView} onPress={() => { setDialogVisible(!dialogVisible) }}>
-                        <Text style={styles.textStyleNone}>None</Text>
-                        <Image source={images.image.settings.trash} />
-                    </TouchableOpacity>
-                </View>
-
-                {RenderBillingDialog()} */}
 
             </View>
            
@@ -168,11 +155,11 @@ const styles = StyleSheet.create({
         color: ColorConstant.WHITE
     },
     subMainView: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        // alignItems: 'center',
+        // flexDirection: 'row',
+        // justifyContent: 'space-between',
         padding: hp(2),
-        marginTop: hp(1)
+        // marginTop: hp(1)
     },
     emailMainView: {
         flexDirection: 'row',
@@ -183,7 +170,7 @@ const styles = StyleSheet.create({
     emailText: {
         color: ColorConstant.BLACK,
         fontSize: hp(1.4),
-       // marginLeft: wp(3)
+        marginTop: hp(3)
     },
     billingAddressMainView: {
         width: Dimensions.get('screen').width - 50,
