@@ -12,6 +12,8 @@ target 'Gtrack' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'react-native-geolocation', :path => '../node_modules/@react-native-community/geolocation'
+
   target 'GtrackTests' do
     inherit! :complete
     # Pods for testing

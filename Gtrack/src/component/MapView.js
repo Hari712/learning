@@ -3,35 +3,154 @@ import { View, StyleSheet, Text, Image, Dimensions, Platform } from 'react-nativ
 import images from '../constants/images';
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import BottomSheet from 'reanimated-bottom-sheet';
-import FontSize from './FontSize';
+import Geolocation from '@react-native-community/geolocation';
 
 const isAndroid = Platform.OS === 'android'
 const {height} = Dimensions.get('window')
+
+//var points1 = [-7.941227, 39.584127]
+var centerCoord = [-7.941227, 39.584127]
+
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
 	android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const MapView = () => {
-    
-    React.useEffect(()=>{
+const MapView = (props) => {
 
-	   
-    },[])
+	// const shape = route.params;
+	console.log("type.1", props)
+	props.currentLocation ? centerCoord = props.currentLocation : null;
+	
+	
+	// const [coordinate, setCoordinate] = useState([])
+    
+	React.useEffect(()=>{
+		// centerCoord = [-7.941227, 70.584127]
+		Geolocation.getCurrentPosition(
+			position => {
+				const intialPosition = position
+				centerCoord = [position.coords.longitude, position.coords.latitude]				
+				console.log("current location",intialPosition, centerCoord)
+			},
+			error => {
+				console.log('Error', JSON.stringify(error))
+			},
+			{ enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
+		)
+	},[centerCoord])
+
+	function renderPolygon() {
+
+		const offset = 0.01
+
+		const coordinates = [[
+			[centerCoord[0] , centerCoord[1] - offset],
+			[centerCoord[0] - offset , centerCoord[1]],
+			[centerCoord[0] - offset , centerCoord[1] + offset],
+			[centerCoord[0] + offset , centerCoord[1] + offset],
+			[centerCoord[0] + offset , centerCoord[1]]
+		]]
+
+		return(
+		/* Polygon */
+		<Map.default.ShapeSource
+			id="source"
+			shape={{
+				type: 'Feature',
+				geometry: {
+					type: 'Polygon',
+					coordinates: coordinates,
+				},
+			}}>
+			<Map.default.FillLayer id="fill" 
+				style={{
+					fillColor: ColorConstant.ORANGE, 
+					fillOpacity:0.3, 
+				}} />
+			<Map.default.LineLayer id="line" 
+				style={{
+					lineColor: ColorConstant.ORANGE, 
+					lineWidth: 2
+				}}
+			/>
+			<Map.default.CircleLayer  
+				id="points"
+				center={[centerCoord]}
+				style={{
+					circleRadius: 4,
+					circleColor: ColorConstant.ORANGE, 
+				}} 
+			/>
+		</Map.default.ShapeSource>
+		)
+	}
+	
+	function renderCircle() {
+		return (
+			<Map.default.ShapeSource
+			id="source"
+			shape={{
+				type: 'Feature',
+				geometry: {
+					type: 'Point',
+					coordinates: centerCoord,
+				},
+			}}>
+				<Map.default.CircleLayer  
+					id="circle" 
+					maxZoomLevel={100}
+					center={[centerCoord]}
+					style={{
+						circleRadius: props.radius,
+						circleColor: ColorConstant.ORANGE, 
+						circleOpacity:0.3, 
+						circleStrokeWidth: 2,
+						circleStrokeColor:ColorConstant.ORANGE, 
+						circleTranslate:[0,0], 
+						circleTranslateAnchor:'viewport'}} />
+			</Map.default.ShapeSource>
+		)
+	}
 
 	function renderMapBox() {
-		console.log("android")
+		console.log("Android")
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
+				<Map.default.MapView style={{ flex: 1 }} >
+					
 					<Map.default.UserLocation
 						renderMode='normal'
-						visible={true}						
+						visible={true}					
 						showsUserHeadingIndicator={true}
-						
+						animated={true}					
 					/>
+			
+					<Map.default.MarkerView 
+						coordinate={centerCoord} 
+						id='point1'
+						pinColor="red"
+						//draggable = {true}
+						anchor={{x: 0.5, y: 1}}
+						// onDragEnd = {()=>console.log("Something ")}
+						//onPress={(event)=>console.log("Something 2",event)}
+						//onMarkerPress = {(event)=>console.log("Something 2",event)}
+						>
+							<View>
+								<Image source={images.image.defaultlogo} style={{height:hp(4), resizeMode:"contain"}} />
+							</View>
+					</Map.default.MarkerView>
+
+					<Map.default.Camera
+						centerCoordinate={centerCoord}
+						// followUserLocation={true}
+						zoomLevel={12}
+					/>
+
+					{ props.type == 'Circle' ? renderCircle() : null }
+					{ props.type == 'Polygon' ? renderPolygon() : null }
+
 				</Map.default.MapView>
 			</View>
 		)
@@ -46,8 +165,10 @@ const MapView = () => {
                     <Map.default style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
                         {/* {<Map.Marker
                             coordinate={coordinate}
-                            title={selectedRoute.shipmentName}
+							title={selectedRoute.shipmentName}
+
                         />} */}
+						<Map.default.Polygon></Map.default.Polygon>
                     </Map.default>
                     <View style={{ position: 'absolute', top: 100, left: 50 }} />
                 </View>
@@ -60,6 +181,7 @@ const MapView = () => {
 	
 	return (
 		<View style={styles.container}>
+			{console.log("Platform: ",Platform.OS)}
 			{isAndroid ? renderMapBox() : renderApppleMap()}
 
 			{/* <Mapbox.MapView

@@ -6,10 +6,26 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { navigationRef } from '../../navigation/NavigationService';
 import MapView from '../../component/MapView';
 import FontSize from '../../component/FontSize';
+import Geolocation from '@react-native-community/geolocation';
 
 const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)	
+	const [currentPosition, setCurrentPosition] = useState([-7.941227, 39.584127]) //by default
+
+	React.useEffect(()=>{
+		Geolocation.getCurrentPosition(
+			position => {
+				const centerCoord = [position.coords.longitude, position.coords.latitude];
+				setCurrentPosition(centerCoord);
+				console.log("current location", centerCoord);
+			},
+			error => {
+				console.log('Error', JSON.stringify(error));
+			},
+			{ enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
+		)
+	},[currentPosition])
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if(item === 'Sensor Information') {
@@ -26,7 +42,7 @@ const LiveTracking = ({navigation}) => {
 	return (
 		<View style={styles.container}>
 
-			<MapView />
+			<MapView currentLocation={currentPosition} />
 
 			<View style={styles.subContainer}>
 
