@@ -1,20 +1,67 @@
 import React, { useState ,Component} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput} from 'react-native';
+import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, I18nManager} from 'react-native';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../../component/FontSize';
+import I18n from "i18n-js";
+import * as RNLocalize from "react-native-localize";
+import memoize from "lodash.memoize";
+// import en from "../../../locales/en.json";
+// import fr from "../../../locales/fr.json";
+
+const translationGetters = {
+  // lazy requires (metro bundler does not support symlinks)
+  en: () => require("../../../locales/en.json"),
+  fr: () => require("../../../locales/fr.json"),
+};
+
+const translate = memoize(
+  (key, config) => i18n.t(key, config),
+  (key, config) => (config ? key + JSON.stringify(config) : key),
+);
+
+const setI18nConfig = () => {
+  // fallback if no available language fits
+  const fallback = { languageTag: "en", isRTL: false };
+
+  const { languageTag, isRTL } =
+    RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) ||
+    fallback;
+
+  // clear translation cache
+  translate.cache.clear();
+  // update layout direction
+  I18nManager.forceRTL(isRTL);
+
+  // set i18n-js config
+  i18n.translations = { [languageTag]: translationGetters[languageTag]() };
+  i18n.locale = languageTag;
+};
 
 const AdvanceSettings = ({navigation,route}) => {
 
   const [isToggleClick,setIsToggleClick] = useState(false)
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
-    
+
+  console.log("khushi", RNLocalize.getLocales());
+  const language = RNLocalize.getLocales()
+  
   React.useEffect(() => {
 
+    RNLocalize.addEventListener("change", this.handleLocalizationChange);
+  
+    console.log(RNLocalize.getCurrencies());
+    console.log("Time Zone", RNLocalize.getCountry());
+    console.log("Time", RNLocalize.usesAutoTimeZone());
   },[])
 
+
+  handleLocalizationChange = () => {
+    setI18nConfig();
+    this.forceUpdate();
+  };
 
 
   React.useLayoutEffect(() => {
@@ -51,10 +98,10 @@ return (
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{height:hp(6)}}>
                     <Text style={styles.textStyle}>Select Language</Text>
-                    <Text style={styles.subText}>{isLanguageClick?null:"English"}</Text>
+                    <Text style={styles.subText}>{isLanguageClick?null:language.map((lan)=> lan.languageTag )}</Text>
                 </View>
                 <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
-                 <Image source={isLanguageClick?images.image.settings.down :images.image.settings.arrow} />
+                  <Image source={isLanguageClick?images.image.settings.down :images.image.settings.arrow} />
                 </TouchableOpacity>
             </View>
 
@@ -87,7 +134,7 @@ return (
                     <Text style={styles.textStyle}>Select time zone</Text>
                     <Text style={styles.subText}>(GMT-07:00)Vancouver</Text>
                 </View>:null}
-           
+          
             <View style={styles.unitContainer}>
                 <Text style={styles.unit}>Units</Text>
                 <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)}>
