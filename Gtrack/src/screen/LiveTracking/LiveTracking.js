@@ -1,31 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Platform } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { useSelector } from 'react-redux'
+import { isUserLoggedIn } from '../Selector'
+import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
 import { navigationRef } from '../../navigation/NavigationService';
 import MapView from '../../component/MapView';
 import FontSize from '../../component/FontSize';
-import Geolocation from '@react-native-community/geolocation';
 
 const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)	
 	const [currentPosition, setCurrentPosition] = useState([-7.941227, 39.584127]) //by default
 
-	React.useEffect(()=>{
-		Geolocation.getCurrentPosition(
-			position => {
-				const centerCoord = [position.coords.longitude, position.coords.latitude];
-				setCurrentPosition(centerCoord);
-				console.log("current location", centerCoord);
-			},
-			error => {
-				console.log('Error', JSON.stringify(error));
-			},
-			{ enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }
-		)
-	},[currentPosition])
+	const { isConnected, isLoggedIn } = useSelector(state => ({
+		isConnected: state.network.isConnected,
+		isLoggedIn: isUserLoggedIn(state)
+	}))
+
+	const location = useSubscribeLocationUpdates(isLoggedIn)
+
+	useEffect(()=> {
+		if (location) {
+			const { latitude, longitude, course, speed, accuracy, altitude } = location
+			let centerCoord = [longitude, latitude]
+			setCurrentPosition(centerCoord);
+		}
+	},[location])
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if(item === 'Sensor Information') {

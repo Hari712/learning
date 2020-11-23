@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: hp(6),
+    height: hp(5),
   },
   selectedItemRowStyle: {
     flexDirection: 'row',

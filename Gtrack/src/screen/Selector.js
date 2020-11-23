@@ -13,7 +13,7 @@ export const getLoginState = createSelector(
 
 export const isUserLoggedIn = createSelector(
     [getLoginInfo],
-    (info) => info && info.accessToken
+    (info) => info && !isEmpty(info.accessToken)
 )
 
 /**

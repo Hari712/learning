@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, Dimensions, Platform } from 'react-native';
 import images from '../constants/images';
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import Geolocation from '@react-native-community/geolocation';
+import { useSelector } from 'react-redux'
+import { isUserLoggedIn } from '../screen/Selector'
+import useSubscribeLocationUpdates from '../utils/useSubscribeLocationUpdates'
 
 const isAndroid = Platform.OS === 'android'
 const {height} = Dimensions.get('window')
@@ -19,27 +21,27 @@ const Map = Platform.select({
 
 const MapView = (props) => {
 
+	const { isConnected, isLoggedIn } = useSelector(state => ({
+		isConnected: state.network.isConnected,
+		isLoggedIn: isUserLoggedIn(state)
+	}))
+
+	const location = useSubscribeLocationUpdates(isLoggedIn)
 	// const shape = route.params;
 	console.log("type.1", props)
 	props.currentLocation ? centerCoord = props.currentLocation : null;
 	
-	
+	useEffect(() => {
+
+		if (location) {
+			const { latitude, longitude, course, speed, accuracy, altitude } = location
+			centerCoord = [longitude, latitude]
+		}
+
+	},[location])
 	// const [coordinate, setCoordinate] = useState([])
     
-	React.useEffect(()=>{
-		// centerCoord = [-7.941227, 70.584127]
-		Geolocation.getCurrentPosition(
-			position => {
-				const intialPosition = position
-				centerCoord = [position.coords.longitude, position.coords.latitude]				
-				console.log("current location",intialPosition, centerCoord)
-			},
-			error => {
-				console.log('Error', JSON.stringify(error))
-			},
-			{ enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 },
-		)
-	},[centerCoord])
+
 
 	function renderPolygon() {
 

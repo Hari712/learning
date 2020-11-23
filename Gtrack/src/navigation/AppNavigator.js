@@ -21,18 +21,18 @@ const Stack = createStackNavigator();
 function AppNavigator() {
 
   const dispatch = useDispatch();
-  const [isReady, setIsReady] = React.useState(false);  
+  const [isReady, setIsReady] = React.useState(false);
   const { isLoggedIn } = useSelector(state => ({
     login: getLoginState(state),
     network: state.network.isConnected,
     isLoggedIn: isUserLoggedIn(state)
-}))
+  }))
 
   useEffect(() => {
 
-    async function getLoggedInData(){
+    async function getLoggedInData() {
       const response = await getItem(USER_DATA)
-      console.log("Response",response)
+      console.log("Response", response)
       if (response && response.result) {
         setToken(response.result.accessToken)
         dispatch(LoginActions.setLoginResponse(response))
@@ -41,9 +41,9 @@ function AppNavigator() {
         let deviceType = DeviceInfo.getSystemName();
         let version = DeviceInfo.getVersion();
         dispatch(SettingsActions.requestGetFeedBack(response.result.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
-        
-      }  
-      setIsReady(true)  
+
+      }
+      setIsReady(true)
     }
 
     const timer = setTimeout(() => {
@@ -54,27 +54,27 @@ function AppNavigator() {
   }, [])
 
   function onFeedbackSuccess(data) {
-    console.log("Success Feedback",data)
+    console.log("Success Feedback", data)
   }
 
   function onFeedbackError(error) {
-    console.log("Error Feedback",error)
+    console.log("Error Feedback", error)
   }
 
 
-  if(!isReady) {
+  if (!isReady) {
     return (<Splash />)
   } else {
     return (
       <NavigationContainer ref={navigationRef}>
-          <Stack.Navigator headerMode="none" screenOptions={{ animationEnabled: false }}>
-              {
-                isLoggedIn ?
-                  <Stack.Screen name='LiveTracking' component={TabStackNavigator} /> 
-                  :
-                  <Stack.Screen name="Auth" component={AuthStackNavigator} />
-              }
-          </Stack.Navigator>
+        <Stack.Navigator headerMode="none" screenOptions={{ animationEnabled: false }}>
+          {
+            isLoggedIn ?
+              <Stack.Screen name='LiveTracking' component={TabStackNavigator} />
+              :
+              <Stack.Screen name="Auth" component={AuthStackNavigator} />
+          }
+        </Stack.Navigator>
       </NavigationContainer>
     )
   }

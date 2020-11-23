@@ -33,6 +33,7 @@ import CreateNew from '../screen/LiveTracking/Alarms/CreateNew'
 import AlarmType from '../screen/LiveTracking/Alarms/AlarmType'
 import AlarmDetail from '../screen/LiveTracking/Alarms/AlarmDetail'
 import SettingNotification from '../screen/Settings/Notification/SettingNotification'
+import ChangePasscode from '../screen/Passcode/ChangePassCode'
 
 export{
     Splash,
@@ -68,5 +69,6 @@ export{
     CreateNew,
     AlarmType,
     AlarmDetail,    
-    SettingNotification
+    SettingNotification,
+    ChangePasscode
 }
