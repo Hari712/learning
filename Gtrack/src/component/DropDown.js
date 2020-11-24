@@ -29,12 +29,12 @@ class DropDown extends React.Component {
     render() {
 
         //isRelative will set the dropdown view absolute or relative ie over other components or expanding other component
-        const { label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, ...otherProps } = this.props;
+        const { label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, accessoryStyle, ...otherProps } = this.props;
 
         const data = ['Car', 'Truck', 'Tempo'];
 
         function handleRightAccessory() {
-            return <View style={styles.imageContainer}>
+            return <View style={[styles.imageContainer, accessoryStyle]}>
                 <Image source={images.image.next} resizemode='contain' style={styles.downArrow} />
             </View>
         }

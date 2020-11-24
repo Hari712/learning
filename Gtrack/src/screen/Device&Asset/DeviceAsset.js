@@ -1,4 +1,4 @@
-import React, { useState ,Component} from 'react';
+import React, { useState , useEffect} from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView} from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -22,6 +22,10 @@ const DeviceAsset = ({navigation}) => {
       )
     });
   },[navigation]);
+
+useEffect(() => {
+  console.log('Menu Click Done')
+},[menuClick])
 
   function menuHandle(item){
     if(item=='Create'){
@@ -89,7 +93,7 @@ return (
     {menuClick?
         <View style={styles.menuPopup}>
           {Menu.map((item,key) =>
-              <TouchableOpacity key={key}  style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?1:0}} onPress={()=>menuHandle(item) }>
+              <TouchableOpacity key={key}  style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?0.4:0}} onPress={()=>menuHandle(item) }>
                 <Text style={styles.textStyle}>{item}</Text>
               </TouchableOpacity>
             )
@@ -204,7 +208,7 @@ const styles = StyleSheet.create({
   },
   headerRight: {
     marginRight:wp(5), 
-    height:hp(3),
+    height:hp(2.2),
     width:wp(3), 
     resizeMode:'contain'
   },
@@ -219,7 +223,7 @@ menuPopup:{
   paddingVertical:hp(1.5),
   right:wp(3),
   borderRadius:16,
-  width:hp(20),
+  width:hp(15),
   top:hp(0.5),
   justifyContent:'space-between',
   position:'absolute',
