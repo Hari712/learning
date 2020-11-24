@@ -22,6 +22,12 @@ const LiveTracking = ({navigation}) => {
 
 	const location = useSubscribeLocationUpdates(isLoggedIn)
 
+	// React.useLayoutEffect(() => {
+	// 	navigation.setOptions({
+	// 	  headerTitle: () => (null),
+	// 	});
+	//   },[navigation]);
+
 	useEffect(()=> {
 		if (location) {
 			const { latitude, longitude, course, speed, accuracy, altitude } = location
