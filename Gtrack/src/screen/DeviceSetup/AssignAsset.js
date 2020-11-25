@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import DropDown from '../../component/DropDown'
+import { DropDown, AddNewAssetDialog } from '../../component'
 import NavigationService from '../../navigation/NavigationService'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
@@ -8,15 +8,51 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 
-const AssignAsset = () => {
+const AssignAsset = ({ navigation }) => {
 
     const [asset, setAsset] = useState('')
+    const [isAssetDialogVisible, setIsAssetDialogVisible] = useState(false)
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={styles.headerTitle}>
+                    Device Setup
+                </Text>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => NavigationService.goBack()}>
+                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation]);
 
     function navigateToAssignGroup() {
         NavigationService.push('AssignGroup')
     }
 
+    function onSubmit(item) {
+
+    }
+
+    function renderAddNewAssetDialog() {
+        return (
+            <AddNewAssetDialog
+                isVisible={isAssetDialogVisible}
+                onSubmit={(item) => onSubmit(item)}
+                onTapClose={() => setIsAssetDialogVisible(false)}
+                onSwipeComplete={() => setIsAssetDialogVisible(false)}
+            />
+        )
+    }
+
+    function onTapAddNewAsset() {
+        setIsAssetDialogVisible(true)
+    }
+
     return (
+        <>
         <View style={styles.container}>
             <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3), }}>
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step2} resizeMode="contain" />
@@ -36,11 +72,11 @@ const AssignAsset = () => {
                     dataList={['abc', 'cde', 'def', 'rock']}
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={styles.inputContainer}
-                    accessoryStyle={{ top: hp(0.7) }}
+                    accessoryStyle={{ top: hp(0.9) }}
                     outerStyle={{ marginBottom: hp(0) }}
                 />
                 <ShadowView style={styles.shadowContainer}>
-                    <TouchableOpacity style={styles.activateButton}>
+                    <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
                         <Text style={styles.activateButtonTitle}>Add New Asset</Text>
                     </TouchableOpacity>
                 </ShadowView>
@@ -58,7 +94,8 @@ const AssignAsset = () => {
                 </ShadowView>
             </View>
         </View>
-
+        {renderAddNewAssetDialog()}
+        </>
     )
 }
 
@@ -66,6 +103,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: ColorConstant.WHITE
+    },
+    headerTitle: {
+        color: ColorConstant.GREY,
+        fontSize: FontSize.FontSize.medium,
+        fontWeight: '500',
+        textAlign: 'center'
+    },
+    headerLeftStyle: {
+        marginLeft: hp(2)
     },
     title: {
         marginTop: hp(1),

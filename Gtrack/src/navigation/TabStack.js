@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup} from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup } from '../screen';
 
 import { ColorConstant } from '../constants/ColorConstants';
 import FontSize from '../component/FontSize';
@@ -33,7 +33,7 @@ const ScreenOptions = {
 
 const LiveTrackingStackNavigator = () => {
     return(
-    <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen'  screenOptions={ScreenOptions} >
+    <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen'  screenOptions={ScreenOptions}>
         <LiveTrackingStack.Screen name='LiveTracking' component={LiveTracking} />
         <LiveTrackingStack.Screen name='Notification' component={Notification} />
         <LiveTrackingStack.Screen name='SensorInfo' component={SensorInfo} />
@@ -49,6 +49,8 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name='ActivateDevice' component={ActivateDevice} />
         <LiveTrackingStack.Screen name='AssignAsset' component={AssignAsset} />
         <LiveTrackingStack.Screen name='AssignGroup' component={AssignGroup} />
+        <LiveTrackingStack.Screen name="BarcodeScanner" component={BarcodeScanner}/>
+        <LiveTrackingStack.Screen name="CompleteSetup" component={CompleteSetup}/>
     </LiveTrackingStack.Navigator>
     )
 }

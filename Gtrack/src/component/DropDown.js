@@ -45,7 +45,6 @@ class DropDown extends React.Component {
 
         return (
             <>
-                <ShadowView style={styles.shadowContainer}>
                     <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}
                         onLayout={({ nativeEvent }) => {
                             console.log("Sub container ", nativeEvent.layout)
@@ -70,7 +69,6 @@ class DropDown extends React.Component {
                             {...otherProps}
                         />
                     </TouchableOpacity>
-                </ShadowView>
                 {/* </View> */}
 
 

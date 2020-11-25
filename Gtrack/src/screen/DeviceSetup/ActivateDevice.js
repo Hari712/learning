@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import TextField from '../../component/TextField'
 import { BarCodeScanIcon } from '../../component/SvgComponent'
@@ -9,19 +9,39 @@ import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
 
-const ActivateDevice = () => {
+const ActivateDevice = ({ navigation }) => {
 
     const [deviceId, setDeviceId] = useState('')
     const [deviceName, setDeviceName] = useState('')
 
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={styles.headerTitle}>
+                    Device Setup
+                </Text>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation]);
+
     function handleRightAccessory() {
         return (
-            <View style={{ top: hp(0.7) }}>
-                <TouchableOpacity>
-                    <BarCodeScanIcon width={hp(3.5)} height={hp(3)} preserveAspectRatio="none" />
+            <View style={{ top: hp(0.6) }}>
+                <TouchableOpacity onPress={() => navigateToBarcodeScanner()}>
+                    <BarCodeScanIcon width={hp(3.0)} height={hp(2.5)} preserveAspectRatio="none" />
                 </TouchableOpacity>
             </View>
         )
+    }
+
+    function navigateToBarcodeScanner() {
+        NavigationService.push('BarcodeScanner')
     }
 
     function navigateToAssignAsset() {
@@ -35,7 +55,7 @@ const ActivateDevice = () => {
                 <Text style={styles.title}>Activate Device</Text>
             </View>
             <View style={{ flex: 0.7, paddingHorizontal: hp(3), paddingTop: hp(2) }}>
-                <ShadowView style={styles.shadowContainer}>
+                <View style={styles.shadowContainer}>
                     <TextField
                         valueSet={setDeviceId}
                         label='Device Id*'
@@ -43,14 +63,14 @@ const ActivateDevice = () => {
                         onChangeText={(text) => setDeviceId(text)}
                         style={styles.textNameStyle}
                         labelFontSize={hp(1.4)}
-                        labelTextStyle={{ top: hp(0.5) }}
+                        labelTextStyle={{ top: hp(0.3) }}
                         renderRightAccessory={() => handleRightAccessory()}
                         contentInset={{ label: hp(-0.5) }}
                         inputContainerStyle={styles.inputContainer}
                     />
 
-                </ShadowView>
-                <ShadowView style={styles.shadowContainer}>
+                </View>
+                <View style={styles.shadowContainer}>
                     <TextField
                         valueSet={setDeviceName}
                         label='Device Name *'
@@ -58,11 +78,11 @@ const ActivateDevice = () => {
                         onChangeText={(text) => setDeviceName(text)}
                         style={styles.textNameStyle}
                         labelFontSize={hp(1.4)}
-                        labelTextStyle={{ top: hp(0.5) }}
+                        labelTextStyle={{ top: hp(0.3) }}
                         contentInset={{ label: hp(-0.5) }}
                         inputContainerStyle={styles.inputContainer}
                     />
-                </ShadowView>
+                </View>
                 <ShadowView style={styles.shadowContainer}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => navigateToAssignAsset()}>
                         <Text style={styles.activateButtonTitle}>Activate</Text>
@@ -78,6 +98,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: ColorConstant.WHITE
+    },
+    headerTitle: {
+        color: ColorConstant.GREY,
+        fontSize: FontSize.FontSize.medium,
+        fontWeight: '500',
+        textAlign: 'center'
+    },
+    headerLeftStyle: {
+        marginLeft: hp(2)
     },
     title: {
         marginTop: hp(1), 

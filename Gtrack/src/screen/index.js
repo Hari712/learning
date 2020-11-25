@@ -37,6 +37,8 @@ import ChangePasscode from '../screen/Passcode/ChangePassCode'
 import ActivateDevice from '../screen/DeviceSetup/ActivateDevice'
 import AssignAsset from '../screen/DeviceSetup/AssignAsset'
 import AssignGroup from '../screen/DeviceSetup/AssignGroup'
+import BarcodeScanner from '../screen/DeviceSetup/BarcodeScanner'
+import CompleteSetup from '../screen/DeviceSetup/CompleteSetup'
 
 export {
     Splash,
@@ -76,5 +78,7 @@ export {
     ChangePasscode,
     ActivateDevice,
     AssignAsset,
-    AssignGroup
+    AssignGroup,
+    BarcodeScanner,
+    CompleteSetup
 }
