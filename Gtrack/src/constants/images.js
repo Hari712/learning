@@ -166,6 +166,11 @@ const images = {
             onIcon: require('../../assets/images/Settings/onIcon.png'),
             IconOff: require('../../assets/images/Settings/IconOff.png'),
         },
+        deviceSetup: {
+            step1: require('../../assets/images/deviceSetup/step1.png'),
+            step2: require('../../assets/images/deviceSetup/step2.png'),
+            step3: require('../../assets/images/deviceSetup/step3.png')
+        }
     }
 }
 

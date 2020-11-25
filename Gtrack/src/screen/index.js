@@ -34,8 +34,13 @@ import AlarmType from '../screen/LiveTracking/Alarms/AlarmType'
 import AlarmDetail from '../screen/LiveTracking/Alarms/AlarmDetail'
 import SettingNotification from '../screen/Settings/Notification/SettingNotification'
 import ChangePasscode from '../screen/Passcode/ChangePassCode'
+import ActivateDevice from '../screen/DeviceSetup/ActivateDevice'
+import AssignAsset from '../screen/DeviceSetup/AssignAsset'
+import AssignGroup from '../screen/DeviceSetup/AssignGroup'
+import BarcodeScanner from '../screen/DeviceSetup/BarcodeScanner'
+import CompleteSetup from '../screen/DeviceSetup/CompleteSetup'
 
-export{
+export {
     Splash,
     SignUp,
     Login,
@@ -70,5 +75,10 @@ export{
     AlarmType,
     AlarmDetail,    
     SettingNotification,
-    ChangePasscode
+    ChangePasscode,
+    ActivateDevice,
+    AssignAsset,
+    AssignGroup,
+    BarcodeScanner,
+    CompleteSetup
 }
