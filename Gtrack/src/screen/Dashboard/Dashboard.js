@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -11,8 +11,12 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
 import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
+import Users from '../Users/Users'
+import DropDown from '../../component/DropDown'
 
 const Dashboard = ({ navigation }) => {
+
+  const [isClickDownArrow, setIsClickDownArrow] = useState(false)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -41,7 +45,7 @@ const Dashboard = ({ navigation }) => {
                 fill={40}
                 rotation={200}
                 lineCap="round"
-                style={{ borderRadius: hp(6.5) }}
+                style={{ borderRadius: hp(6.5)}}
                 tintTransparency={false}
                 tintColor={ColorConstant.GREEN}
                 onAnimationComplete={() => console.log('onAnimationComplete')}
@@ -49,7 +53,7 @@ const Dashboard = ({ navigation }) => {
               >
                 {
                   (fill) => (
-                    <View style={{ alignItems: 'center' }} >
+                    <View style={{ alignItems: 'center'}} >
                       <Text style={styles.percentage}> 40% </Text>
                       <Text style={styles.textStyle}>Active</Text>
                     </View>
@@ -174,13 +178,22 @@ const Dashboard = ({ navigation }) => {
             <Text style={styles.summary}>Recent Alarms</Text>
           </View>
 
+          <View style={{width:'50%',alignItems: 'flex-start',  minHeight: hp(2),maxHeight:hp(7) }}>
+            <DropDown label='Type'  dataList={['Group 1','Group 2','Group 3']} 
+              fontSize={hp(1.6)} 
+              contentInset={{ input: 10.45, label: -10 }}
+              outerStyle={styles.outerStyle} 
+              inputContainerStyle={styles.inputContainerStyle} 
+              containerStyle={styles.containerStyle} /> 
+          </View>
+
           <View style={styles.rightMainViewStyle}>
             <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
         </View>
 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
+          <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', zIndex:0, backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
             <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
             <Text style={[styles.alertText,{marginLeft: wp(1)}]}>30</Text>
             <Text style={styles.alertText }>Alerts</Text>
@@ -215,7 +228,22 @@ const Dashboard = ({ navigation }) => {
 
           <View style={styles.rightMainViewStyle}>
             <Text style={styles.allUsersTextStyle}>All Users</Text>
+            <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
             <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
+            </TouchableOpacity>
+
+
+            {isClickDownArrow ?
+              <View style={styles.userMenu}>
+                {User.map((item, key) =>
+                  <TouchableOpacity key={key}>
+                    <Text style={styles.userStyle}>{item}</Text>
+                    {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
+                  </TouchableOpacity>
+                )
+                }
+              </View>
+              : null}
 
             <TouchableOpacity onPress={() => { navigation.navigate('Users') }} >
               <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
@@ -223,7 +251,7 @@ const Dashboard = ({ navigation }) => {
 
             <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
-
+      
         </View>
 
         <ActiveUser />
@@ -235,10 +263,13 @@ const Dashboard = ({ navigation }) => {
         <LiveTrackingDashboard />
 
       </SafeAreaView>
+      
     </ScrollView>
   )
 
 }
+
+const User =["All Users","Regular","Owner"]
 
 const styles = StyleSheet.create({
   container: {
@@ -251,8 +282,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: hp(3),
+    zIndex:2,
   },
-
+  outerStyle:{
+    height: hp(3),
+    
+  },
+  inputContainerStyle: {
+    height: hp(3),
+  },
+  containerStyle: {
+    alignSelf: 'center',
+    width: '100%',
+    height: hp(3),
+  },
   leftMainViewStyle: {
     paddingHorizontal: wp(5),
     paddingBottom: hp(3)
@@ -290,7 +333,6 @@ const styles = StyleSheet.create({
     fontSize: FontSize.FontSize.small,
     fontWeight: '500'
   },
-
   devicesTextStyle: {
     marginRight: wp(5),
     color: ColorConstant.BLUE,
@@ -332,13 +374,14 @@ const styles = StyleSheet.create({
 
   activeUserMainView: {
     justifyContent: 'space-evenly',
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
 
   cardContainer: {
     backgroundColor: ColorConstant.WHITE,
     width: '45%',
-    height: hp(23),
+    // height: hp(25),
+    paddingBottom:hp(3),
     borderRadius: hp(5.5 / 2),
     borderWidth: 0.5,
     borderColor: ColorConstant.WHITE,
@@ -363,7 +406,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#E6EAF3',
     borderRadius: hp(8),
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   shadowContainer: {
@@ -373,8 +416,36 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: { width: 0, height: 0 },
     borderRadius: hp(6.5), width: hp(13), height: hp(13),
+    paddingBottom:50
   },
-
+  userMenu: {
+		backgroundColor: 'white',
+		padding: 5,
+		paddingVertical: hp(1.5),
+    right: wp(26),
+    zIndex:10,
+		borderRadius: 16,
+		width: '80%',
+		top: hp(3),
+		justifyContent: 'space-between',
+		position: 'absolute',
+		shadowColor: ColorConstant.GREY,
+		shadowOffset: { height: 0, width: 0 },
+		shadowOpacity: 1,
+		elevation: 10,
+		shadowRadius: 3
+  },
+  horizontalLine: {
+		borderBottomWidth: 0.5, borderBottomColor: ColorConstant.GREY, margin: hp(0.7)
+	},
+  userStyle: {
+		margin: hp(0.5),
+		color: ColorConstant.BLUE,
+		textAlignVertical: 'center',
+		paddingLeft: hp(0.5),
+		fontSize:FontSize.FontSize.small,
+		fontFamily:'Nunito-Regular'
+	},
   deviceSummaryContainer: {
     backgroundColor: ColorConstant.WHITE,
     width: '93%',
@@ -394,8 +465,9 @@ const styles = StyleSheet.create({
   deviceSummaryMainViewStyle: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     marginTop: hp(2.5),
+    zIndex:1
   },
 
   summaryContainer: {

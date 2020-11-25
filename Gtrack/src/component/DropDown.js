@@ -35,7 +35,7 @@ class DropDown extends React.Component {
 
         function handleRightAccessory() {
             return <View style={styles.imageContainer}>
-                <Image source={images.image.next} resizemode='contain' style={styles.downArrow} />
+                <Image source={images.image.next} resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle} />
             </View>
         }
 
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         marginHorizontal: wp(10),
         alignSelf: 'center',
         elevation: 5,
-        zIndex: 5,
+        zIndex: 10,
         backgroundColor: 'white',
         width: '100%',
         paddingHorizontal: hp(3),

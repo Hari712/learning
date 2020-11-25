@@ -22,11 +22,11 @@ const LiveTracking = ({navigation}) => {
 
 	const location = useSubscribeLocationUpdates(isLoggedIn)
 
-	// React.useLayoutEffect(() => {
-	// 	navigation.setOptions({
-	// 	  headerTitle: () => (null),
-	// 	});
-	//   },[navigation]);
+	React.useLayoutEffect(() => {
+		navigation.setOptions({
+		  header: () => (null),
+		});
+	  },[navigation]);
 
 	useEffect(()=> {
 		if (location) {

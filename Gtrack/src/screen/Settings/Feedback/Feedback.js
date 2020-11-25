@@ -89,6 +89,7 @@ const Feedback = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>Feedback</Text>
             </View>
 
+
             <EditText
                 placeholder="Type here"
                 style={styles.descStyle}
@@ -98,6 +99,7 @@ const Feedback = ({ navigation }) => {
                 multiline={true}
                 numberOfLines={4}
             />
+           
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => resetText()} style={[styles.cancelButton]}>
@@ -134,7 +136,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.medium
     },
     descStyle: {
-        minHeight: hp(40),
+        //minHeight: hp(40),
+        height:hp(40),
         textAlignVertical: 'top',
         borderColor: ColorConstant.GREY,
         borderWidth: 1,
