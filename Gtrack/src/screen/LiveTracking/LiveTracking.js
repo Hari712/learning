@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	subContainer: {
-		position: 'absolute', flex: 1, right: 20, top: 20, width: hp(7.5)
+		position: 'absolute', flex: 1, right: 20, marginTop: hp(5), width: hp(7.5)
 	},
 	bellIconStyle: {
 		borderRadius: 13,

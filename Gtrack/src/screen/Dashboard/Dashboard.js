@@ -11,12 +11,13 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
 import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
-import Users from '../Users/Users'
 import DropDown from '../../component/DropDown'
 
 const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
+  const [selectedDevice, setSelectedDevice] = useState();
+
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -173,21 +174,21 @@ const Dashboard = ({ navigation }) => {
     return (
       <ShadowView style={styles.deviceSummaryContainer}>
 
-        <View style={styles.deviceSummaryMainViewStyle}>
-          <View style={styles.leftMainViewStyle}>
+        <View style={styles.deviceSummaryMainViewStyle }>
+          <View style={[styles.leftMainViewStyle,{paddingTop:hp(2)}]}>
             <Text style={styles.summary}>Recent Alarms</Text>
           </View>
 
-          <View style={{width:'50%',alignItems: 'flex-start',  minHeight: hp(2),maxHeight:hp(7) }}>
-            <DropDown label='Type'  dataList={['Group 1','Group 2','Group 3']} 
+          <View style={{width:'50%', alignItems: 'flex-start' , justifyContent:'flex-start',flex:1}}>
+            <DropDown label='Type' defaultValue={selectedDevice} valueSet={setSelectedDevice}  dataList={['Group 1','Group 2','Group 3']} 
               fontSize={hp(1.6)} 
-              contentInset={{ input: 10.45, label: -10 }}
+              contentInset={{ input: 10.45, label: -8 }}
               outerStyle={styles.outerStyle} 
               inputContainerStyle={styles.inputContainerStyle} 
               containerStyle={styles.containerStyle} /> 
           </View>
 
-          <View style={styles.rightMainViewStyle}>
+          <View style={[styles.rightMainViewStyle,{paddingTop:hp(2)}]}>
             <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
           </View>
         </View>
@@ -285,16 +286,16 @@ const styles = StyleSheet.create({
     zIndex:2,
   },
   outerStyle:{
-    height: hp(3),
-    
+    height: hp(4),
+    marginVertical:0
   },
   inputContainerStyle: {
-    height: hp(3),
+    height: hp(3.5),
   },
   containerStyle: {
     alignSelf: 'center',
     width: '100%',
-    height: hp(3),
+    height: hp(4),
   },
   leftMainViewStyle: {
     paddingHorizontal: wp(5),
@@ -451,6 +452,7 @@ const styles = StyleSheet.create({
     width: '93%',
     marginVertical: hp(2),
     // height: hp(40),
+    flex:1,
     borderRadius: hp(5.5 / 2),
     borderWidth: 0.5,
     borderColor: ColorConstant.WHITE,
@@ -462,12 +464,17 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
   },
 
-  deviceSummaryMainViewStyle: {
+  deviceSummaryMainViewStyle: Platform.OS=="ios" ? {
     alignItems: 'center',
     flexDirection: 'row',
     //justifyContent: 'space-between',
     marginTop: hp(2.5),
-    zIndex:1
+    zIndex: 5
+  }:{
+    alignItems: 'center',
+    flexDirection: 'row',
+    //justifyContent: 'space-between',
+    marginTop: hp(2.5),
   },
 
   summaryContainer: {

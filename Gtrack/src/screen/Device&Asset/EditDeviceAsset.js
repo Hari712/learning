@@ -67,8 +67,8 @@ return (
                 <Image  style={{resizeMode:'stretch'}} source={images.image.pickupcar}/>
                 <Text style={styles.textStyle}>Asset</Text>
             </View>
-            <View style={{marginTop:hp(2)}}>
-            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray} />
+            <View style={{marginTop:hp(2),zIndex:4}}>
+            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray}  />
             </View>
 
                 <View style={styles.nameDesc}>
@@ -88,7 +88,7 @@ return (
                     <Text style={styles.textStyle}>Select Group</Text>
                 </View>
 
-                <View style={{marginTop:hp(2)}}>
+                <View style={{marginTop:hp(2),zIndex:4}}>
                 <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
                 </View>
 
@@ -137,7 +137,8 @@ alignItems:'center'
 subContainer: {
 marginHorizontal:hp(3),
 marginVertical:hp(5),
-width:Dimensions.get('window').width-40
+width:Dimensions.get('window').width-40,
+zIndex:1
 },
 device: {
     flexDirection:'row',

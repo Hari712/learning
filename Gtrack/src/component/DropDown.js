@@ -81,15 +81,16 @@ class DropDown extends React.Component {
                         , dropdownStyle]}>
                         {(dataList ? dataList : data).map((item, key) => {
                             return (
-                                <TouchableOpacity style={otherProps.dataRowStyle} key={key}
+                                <TouchableOpacity style={[{flex:1}, otherProps.dataRowStyle]} key={key}
                                     onPress={() => {
+                                        console.log("clicked")
                                         this.setState({
                                             selected: item,
                                             isSelected: false,
-                                        })
-                                        this.props.valueSet(item)
+                                        },()=>{this.props.valueSet(item)})
+                                        
                                     }}>
-                                    <Text style={otherProps.dataTextStyle}>{item}</Text>
+                                    <Text style={[styles.datatextStyle,otherProps.dataTextStyle]}>{item}</Text>
                                     {key < dataList.length - 1 ?
                                         <View style={styles.horizontalLine} />
                                         : null}
@@ -126,6 +127,13 @@ const styles = StyleSheet.create({
         marginHorizontal: wp(10),
         alignSelf: 'center',
         elevation: 5,
+        shadowColor: ColorConstant.GREY,
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 3,
+        shadowOpacity: 5,
         backgroundColor: 'white',
         width: '100%',
         paddingHorizontal: hp(3),
@@ -140,8 +148,15 @@ const styles = StyleSheet.create({
         opacity: 1,
         marginHorizontal: wp(10),
         alignSelf: 'center',
-        elevation: 5,
-        zIndex: 10,
+        elevation:10,
+        shadowColor: ColorConstant.GREY,
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 3,
+        shadowOpacity: 5,
+        zIndex: 50,
         backgroundColor: 'white',
         width: '100%',
         paddingHorizontal: hp(3),
@@ -152,6 +167,9 @@ const styles = StyleSheet.create({
 
     inputContainer: {
         height: hp(6),
+    },
+    datatextStyle: {
+        paddingVertical:hp(1.5),
     },
     inputButton: {
         alignSelf: 'center',
