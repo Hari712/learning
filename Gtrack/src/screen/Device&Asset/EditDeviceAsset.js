@@ -3,10 +3,7 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAn
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
-import Dialog from '../../component/Dialog';
+import  { Dialog, FontSize, TextField, DropDown} from '../../component';
 
 const EditDeviceAsset = ({route, navigation}) => {
     const {id,title} = route.params;

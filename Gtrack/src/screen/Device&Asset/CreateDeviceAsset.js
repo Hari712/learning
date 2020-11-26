@@ -3,11 +3,8 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAn
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
+import { FontSize, TextField,DropDown, MultiSelect } from '../../component';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
-import MultiSelect from '../../component/MultiSelect';
 
 const devicesList = [
     'TrackPort International', 

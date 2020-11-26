@@ -1,11 +1,10 @@
 import React, { useState, Component } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { EditText } from '../../../../src/component'
+import { EditText, FontSize } from '../../../../src/component'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FEEDBACK_VALIDATION_ERROR } from '../../../constants/AppConstants'
 import images from '../../../constants/images';
-import FontSize from '../../../component/FontSize';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoginState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';

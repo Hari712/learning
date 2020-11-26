@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { validatePassword } from '../../utils/helper'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize'
 import { AppConstants } from '../../constants/AppConstants'
 import AppManager from '../../constants/AppManager'
 import _ from 'lodash'
 import NavigationService from '../../navigation/NavigationService'
-import { EditText } from '../../component'
+import { EditText, FontSize } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
 
 const ChangePasscode = ({ navigation, route }) => {

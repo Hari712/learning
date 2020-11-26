@@ -3,9 +3,7 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensio
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import FontSize from '../../component/FontSize';
-import MultiSelectDropdown from '../../component/MultiSelectDropdown';
-import DropDown from '../../component/DropDown';
+import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
 
 const GeoFenceCreateNew = ({ navigation }) => {
 

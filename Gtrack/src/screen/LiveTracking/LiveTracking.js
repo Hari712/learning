@@ -6,9 +6,8 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useSelector } from 'react-redux'
 import { isUserLoggedIn } from '../Selector'
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
-import { navigationRef } from '../../navigation/NavigationService';
-import MapView from '../../component/MapView';
-import FontSize from '../../component/FontSize';
+import { MapView, FontSize }from '../../component';
+
 
 const LiveTracking = ({navigation}) => {
 

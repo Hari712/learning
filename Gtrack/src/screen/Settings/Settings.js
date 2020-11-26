@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize'
+import { FontSize } from '../../component'
 import { useDispatch } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 

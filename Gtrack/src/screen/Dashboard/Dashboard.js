@@ -3,15 +3,12 @@ import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOp
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize'
-import NavigationService from '../../navigation/NavigationService'
-import { EditText } from '../../component'
 import ShadowView from 'react-native-simple-shadow-view'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
 import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
-import DropDown from '../../component/DropDown'
+import { DropDown, FontSize} from '../../component'
 
 const Dashboard = ({ navigation }) => {
 

@@ -5,9 +5,8 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { getLoginState } from '../../Selector';
-import FontSize from '../../../component/FontSize';
 import ShadowView from 'react-native-simple-shadow-view';
-import Dialog from '../../../component/Dialog';
+import { Dialog, FontSize }from '../../../component';
 
 const Profile = ({ navigation }) => {
 

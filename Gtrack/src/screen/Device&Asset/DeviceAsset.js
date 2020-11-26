@@ -3,7 +3,7 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView} 
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
+import { FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
 

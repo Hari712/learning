@@ -3,14 +3,8 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, 
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../../component/FontSize';
-import NavigationService from '../../../navigation/NavigationService';
-import Tooltip from 'rn-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
-import AppManager from '../../../constants/AppManager';
-import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
-import MultiSelect from '../../../component/MultiSelect';
-import DropDown from '../../../component/DropDown';
+import { DropDown, MultiSelect, FontSize} from '../../../component';
 
 
 const CreateNew = ({navigation,route}) => {
