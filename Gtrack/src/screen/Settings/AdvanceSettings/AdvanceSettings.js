@@ -4,64 +4,47 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../../component/FontSize';
-import I18n from "i18n-js";
+import { setI18nConfig, translate } from '../../../../App';
+// import I18n from "i18n-js";
 import * as RNLocalize from "react-native-localize";
-import memoize from "lodash.memoize";
-// import en from "../../../locales/en.json";
-// import fr from "../../../locales/fr.json";
+// import memoize from "lodash.memoize";
+// // import en from "../../../locales/en.json";
+// // import fr from "../../../locales/fr.json";
 
-const translationGetters = {
-  // lazy requires (metro bundler does not support symlinks)
-  en: () => require("../../../locales/en.json"),
-  fr: () => require("../../../locales/fr.json"),
-};
+// const translationGetters = {
+//   // lazy requires (metro bundler does not support symlinks)
+//   en: () => require("../../../locales/en.json"),
+//   fr: () => require("../../../locales/fr.json"),
+// };
 
-const translate = memoize(
-  (key, config) => i18n.t(key, config),
-  (key, config) => (config ? key + JSON.stringify(config) : key),
-);
+// const translate = memoize(
+//   (key, config) => i18n.t(key, config),
+//   (key, config) => (config ? key + JSON.stringify(config) : key),
+// );
 
-const setI18nConfig = () => {
-  // fallback if no available language fits
-  const fallback = { languageTag: "en", isRTL: false };
+// const setI18nConfig = () => {
+//   // fallback if no available language fits
+//   const fallback = { languageTag: "en", isRTL: false };
 
-  const { languageTag, isRTL } =
-    RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) ||
-    fallback;
+//   const { languageTag, isRTL } =
+//     RNLocalize.findBestAvailableLanguage(Object.keys(translationGetters)) ||
+//     fallback;
 
-  // clear translation cache
-  translate.cache.clear();
-  // update layout direction
-  I18nManager.forceRTL(isRTL);
+//   // clear translation cache
+//   translate.cache.clear();
+//   // update layout direction
+//   I18nManager.forceRTL(isRTL);
 
-  // set i18n-js config
-  i18n.translations = { [languageTag]: translationGetters[languageTag]() };
-  i18n.locale = languageTag;
-};
+//   // set i18n-js config
+//   i18n.translations = { [languageTag]: translationGetters[languageTag]() };
+//   i18n.locale = languageTag;
+// };
 
 const AdvanceSettings = ({navigation,route}) => {
 
   const [isToggleClick,setIsToggleClick] = useState(false)
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
-
-  console.log("khushi", RNLocalize.getLocales());
-  const language = RNLocalize.getLocales()
-  
-  React.useEffect(() => {
-
-    RNLocalize.addEventListener("change", this.handleLocalizationChange);
-  
-    console.log(RNLocalize.getCurrencies());
-    console.log("Time Zone", RNLocalize.getCountry());
-    console.log("Time", RNLocalize.usesAutoTimeZone());
-  },[])
-
-
-  handleLocalizationChange = () => {
-    setI18nConfig();
-    this.forceUpdate();
-  };
 
 
   React.useLayoutEffect(() => {
@@ -90,7 +73,7 @@ return (
     <View style={styles.container}>
         <View style={{width:'100%'}}>
             <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.headerTitle}>Advance Settings</Text>
+                <Text style={styles.headerTitle}> {translate("hello")} Advance Settings</Text>
             </TouchableOpacity>
         </View>
 
@@ -98,7 +81,7 @@ return (
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{height:hp(6)}}>
                     <Text style={styles.textStyle}>Select Language</Text>
-                    <Text style={styles.subText}>{isLanguageClick?null:language.map((lan)=> lan.languageTag )}</Text>
+                    <Text style={styles.subText}>English</Text>
                 </View>
                 <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
                   <Image source={isLanguageClick?images.image.settings.down :images.image.settings.arrow} />
