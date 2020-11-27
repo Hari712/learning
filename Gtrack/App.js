@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, PermissionsAndroid } from 'react-native';
 import { appManagerRef } from './src/constants/AppManager'
 import { Loader } from './src/component'
 import { Provider } from "react-redux";
@@ -38,10 +38,14 @@ const MainApp = forwardRef((props, ref) => {
     setIsLoading(false)
   }
 
-  function initMapBox() {
+  async function initMapBox() {
     if (isAndroid) {
       Mapbox.default.setAccessToken(MAP_BOX_TOKEN);
       Mapbox.default.setTelemetryEnabled(false);
+      const permission = await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+      ]);
     }
   }
 

@@ -3,56 +3,99 @@ import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOp
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
+import { validatePassword } from '../../utils/helper'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../component/FontSize'
+import { AppConstants } from '../../constants/AppConstants'
+import AppManager from '../../constants/AppManager'
 import _ from 'lodash'
 import NavigationService from '../../navigation/NavigationService'
-import { AppConstants } from '../../constants/AppConstants'
 import { EditText } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
-import AppManager from '../../constants/AppManager'
 
-
-const Passcode = ({ navigation, route }) => {
+const ChangePasscode = ({ navigation, route }) => {
 
     const dispatch = useDispatch()
 
     const { emailId } = route.params;
 
     const [passcode, setPasscode] = useState('')
+    const [confirmpasscode, setConfirmPasscode] = useState('')
+
 
     const { isConnected } = useSelector(state => ({
         isConnected: state.network.isConnected,
     }))
 
-    function requestVerifyOTP() {
+    function loginHandle() {
         if (isConnected) {
             let message = ''
             if (_.isEmpty(passcode)) {
                 message = AppConstants.EMPTY_PASSWORD
+            }
+            else if (!validatePassword(passcode)) {
+                message = AppConstants.INVALID_PASSWORD
+            }
+            else if (_.isEmpty(confirmpasscode)) {
+                message = AppConstants.EMPTY_CONFIMR_PASSWORD
+            }
+            else if (!validatePassword(confirmpasscode)) {
+                message = AppConstants.INVALID_PASSWORD
+            }
+            else if (!(passcode == confirmpasscode)) {
+                message = AppConstants.PASSWORD_DOES_NOT_MATCH
             }
             if (!_.isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
                 AppManager.showLoader()
                 const requestBody = {
-                    userEmail: emailId,
-                    otp: passcode
+                    email: emailId,
+                    password: passcode,
+                    confirmPassword: confirmpasscode
                 }
-                dispatch(LoginActions.requestVerifyOTP(requestBody, onVerifyOTPSuccess, onVerifyOTPError))
+                dispatch(LoginActions.requestResetPasscode(requestBody, onResetPasscodeSuccess, onResetPasscodeError))
             }
         } else {
             AppManager.showNoInternetConnectivityError()
         }
     }
 
-    function onVerifyOTPSuccess(data) {
+    function onResetPasscodeSuccess(data) {
         AppManager.hideLoader()
         console.log("Success data", data)
-        NavigationService.navigate('ChangePasscode', { emailId: emailId })
+        AppManager.showSimpleMessage('success', { message: 'Password reset successfully. Please login to continue', description: '', floating: true })
+        NavigationService.popToTop()
     }
 
-    function onVerifyOTPError(error) {
+    function onResetPasscodeError(error) {
+        AppManager.hideLoader()
+        console.log("Error", error)
+        AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
+    }
+
+    function onLoginSuccess(data) {
+        AppManager.hideLoader()
+        console.log("Success data", data)
+        saveUserData(data)
+        AppManager.showSimpleMessage('warning', { message: AppConstants.LOGIN_SUCCESS, description: '', floating: true })
+        navigateToLiveTracking()
+
+    }
+
+    const saveUserData = async (data) => {
+        try {
+            const isSuccess = await storeItem(USER_DATA, data)
+            if (isSuccess) {
+                AppManager.hideLoader()
+                dispatch(LoginActions.setLoginResponse(data))
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    function onLoginError(error) {
         AppManager.hideLoader()
         console.log("Error", error)
         if (error) {
@@ -60,13 +103,19 @@ const Passcode = ({ navigation, route }) => {
         }
     }
 
+    function navigateToLiveTracking() {
+        NavigationService.navigate('LiveTracking')
+    }
+
+
+
+
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
                 <Image source={images.image.defaultlogo} />
                 <View style={styles.subContainer}>
-                    <Text style={styles.resetEmailText}>Passcode Reset Email Sent</Text>
-                    <Text style={styles.textStyle}>The New Passcode is sent on</Text>
+                    <Text style={styles.resetEmailText}>Set New Passcode</Text>
                     <Text style={[styles.textStyle, { color: ColorConstant.ORANGE }]}>{emailId}</Text>
                 </View>
 
@@ -74,18 +123,27 @@ const Passcode = ({ navigation, route }) => {
                     passcode style={styles.passcode}
                     value={passcode}
                     onChangeText={(value) => setPasscode(value)}
-                    placeholder='Enter OTP'
+                    placeholder='Enter New Passcode'
+                />
+
+                <EditText
+                    passcode style={styles.passcode}
+                    value={confirmpasscode}
+                    onChangeText={(value) => setConfirmPasscode(value)}
+                    placeholder='Confirm New Passcode'
                 />
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.cancelButton]}>
+                    <TouchableOpacity onPress={() => {
+                        navigation.goBack()
+                    }} style={[styles.cancelButton]}>
                         <Text style={styles.buttonTextColor}>Cancel</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => requestVerifyOTP()}
+                        onPress={() => loginHandle()}
                         style={styles.LoginButton}>
-                        <Text style={styles.LoginButtonText}>Submit</Text>
+                        <Text style={styles.LoginButtonText}>Login</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -161,4 +219,4 @@ const styles = StyleSheet.create({
         flex: 1
     },
 })
-export default Passcode
+export default ChangePasscode

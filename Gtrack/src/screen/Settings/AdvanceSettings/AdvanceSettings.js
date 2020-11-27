@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     width:'100%',
-    height:hp(8),
+    height:hp(5),
   
   }
 });

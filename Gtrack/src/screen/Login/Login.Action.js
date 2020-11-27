@@ -36,6 +36,27 @@ export const requestResetPassword = (emailOrPhone, onSuccess, onError) => ({
     onError
 })
 
+export const requestGetOTP = (emailOrPhone, onSuccess, onError) => ({
+    type: types.GET_OTP_REQUEST,
+    emailOrPhone,
+    onSuccess,
+    onError
+})
+
+export const requestVerifyOTP = (data, onSuccess, onError) => ({
+    type: types.VERIFY_OTP_REQUEST,
+    data,
+    onSuccess,
+    onError
+})
+
+export const requestResetPasscode = (data, onSuccess, onError) => ({
+    type: types.RESET_PASSCODE_REQUEST,
+    data,
+    onSuccess,
+    onError
+})
+
 export const requestLogout = () => ({
     type: types.LOGOUT_REQUEST
 })

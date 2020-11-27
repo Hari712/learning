@@ -24,28 +24,28 @@ const ResetPasscode = () => {
 
     function onTapReset() {
         if (isConnected) {
-            if (!validateEmailorPhoneNumber(email)) {        
-                AppManager.showSimpleMessage('warning', { message:  AppConstants.INVALID_EMAIL_OR_PHONE, description: '', floating: true })
+            if (!validateEmailorPhoneNumber(email)) {
+                AppManager.showSimpleMessage('warning', { message: AppConstants.INVALID_EMAIL_OR_PHONE, description: '', floating: true })
             } else {
                 AppManager.showLoader()
                 const requestBody = {
                     "emailOrPhone": email.toString(),
                 }
-                dispatch(LoginActions.requestResetPassword(requestBody, onSuccess, onError))
+                dispatch(LoginActions.requestGetOTP(requestBody, onSuccess, onError))
             }
         }
     }
     function onSuccess(data) {
         AppManager.hideLoader()
-        console.log("Success",data)
-        AppManager.showSimpleMessage('warning', { message:data.message, description: '', floating: true })
-        NavigationService.navigate('Passcode',{ emailId: email })
+        console.log("Success", data)
+        AppManager.showSimpleMessage('warning', { message: data.message, description: '', floating: true })
+        NavigationService.navigate('Passcode', { emailId: email })
     }
 
     function onError(error) {
         AppManager.hideLoader()
-        if(error){
-        AppManager.showSimpleMessage('warning', { message:error, description: '', floating: true })
+        if (error) {
+            AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
         }
     }
     return (
@@ -64,7 +64,7 @@ const ResetPasscode = () => {
                 />
 
                 <CustomButton
-                    title="Reset"        
+                    title="Reset"
                     onPress={() => onTapReset()}
                     style={styles.button}
                     textStyle={styles.buttonTextStyle}
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        justifyContent:'center',
+        justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: hp(6)
     },
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     headingTextStyle: {
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.medium,
-        fontFamily:'Nunito-Bold',
+        fontFamily: 'Nunito-Bold',
         textAlign: 'center'
     },
     emailTextStyle: {
@@ -109,22 +109,22 @@ const styles = StyleSheet.create({
     },
     button: {
         width: '100%',
-        height:hp(5.5),
+        height: hp(5.5),
         marginTop: hp(2)
     },
     buttonTextStyle: {
-        fontSize: FontSize.FontSize.medium, 
+        fontSize: FontSize.FontSize.medium,
         fontWeight: '500'
     },
     LoginIntoMainView: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         marginTop: hp(5)
     },
     LoginIntoTextView: {
-        color: ColorConstant.WHITE, 
+        color: ColorConstant.WHITE,
         //fontWeight: 'bold',
         fontSize: FontSize.FontSize.medium,
-        fontFamily:'Nunito-Bold'
+        fontFamily: 'Nunito-Bold'
     },
     subContainer: {
         flexDirection: 'row',
