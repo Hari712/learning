@@ -9,6 +9,7 @@ import MapView from './MapView'
 import MultiSelect from './MultiSelect'
 import MultiSelectDropdown from './MultiSelectDropdown'
 import TextField from './TextField'
+import Button from './Button'
 
 
 export { 
@@ -22,5 +23,6 @@ export {
     MapView,
     MultiSelect,
     MultiSelectDropdown,
-    TextField
+    TextField,
+    Button
 }
