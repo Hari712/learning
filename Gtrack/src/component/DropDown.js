@@ -79,7 +79,7 @@ class DropDown extends React.Component {
                         , dropdownStyle]}>
                         {(dataList ? dataList : data).map((item, key) => {
                             return (
-                                <TouchableOpacity style={[{flex:1}, otherProps.dataRowStyle]} key={key}
+                                <TouchableOpacity style={[{flex:1,zIndex:9999}, otherProps.dataRowStyle]} key={key}
                                     onPress={() => {
                                         console.log("clicked")
                                         this.setState({
@@ -88,7 +88,8 @@ class DropDown extends React.Component {
                                         },()=>{this.props.valueSet(item)})
                                         
                                     }}>
-                                    <Text style={[styles.datatextStyle,otherProps.dataTextStyle]}>{item}</Text>
+                                    <Text style={[styles.datatextStyle, otherProps.dataTextStyle]}>{item}</Text>
+                                    
                                     {key < dataList.length - 1 ?
                                         <View style={styles.horizontalLine} />
                                         : null}
@@ -154,8 +155,8 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 3,
         shadowOpacity: 5,
-        zIndex: 50,
-        backgroundColor: 'white',
+        // zIndex: 50,
+        backgroundColor: ColorConstant.WHITE,
         width: '100%',
         paddingHorizontal: hp(3),
         paddingLeft: hp(3),
@@ -168,6 +169,7 @@ const styles = StyleSheet.create({
     },
     datatextStyle: {
         paddingVertical:hp(1.5),
+        flex:1,
     },
     inputButton: {
         alignSelf: 'center',

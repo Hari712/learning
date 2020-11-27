@@ -169,28 +169,9 @@ const Dashboard = ({ navigation }) => {
 
   const RecentAlarms = () => {
     return (
-      <ShadowView style={styles.deviceSummaryContainer}>
+      <ShadowView style={styles.deviceSummaryContainer}>        
 
-        <View style={styles.deviceSummaryMainViewStyle }>
-          <View style={[styles.leftMainViewStyle,{paddingTop:hp(2)}]}>
-            <Text style={styles.summary}>Recent Alarms</Text>
-          </View>
-
-          <View style={{width:'50%', alignItems: 'flex-start' , justifyContent:'flex-start',flex:1}}>
-            <DropDown label='Type' defaultValue={selectedDevice} valueSet={setSelectedDevice}  dataList={['Group 1','Group 2','Group 3']} 
-              fontSize={hp(1.6)} 
-              contentInset={{ input: 10.45, label: -8 }}
-              outerStyle={styles.outerStyle} 
-              inputContainerStyle={styles.inputContainerStyle} 
-              containerStyle={styles.containerStyle} /> 
-          </View>
-
-          <View style={[styles.rightMainViewStyle,{paddingTop:hp(2)}]}>
-            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
-          </View>
-        </View>
-
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop:hp(8)}}>
           <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', zIndex:0, backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
             <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
             <Text style={[styles.alertText,{marginLeft: wp(1)}]}>30</Text>
@@ -198,6 +179,27 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <ActivityRings data={activityData} config={activityConfig} />
+        </View>
+
+
+        <View style={[styles.deviceSummaryMainViewStyle, {position:"absolute"}]}>
+          <View style={[styles.leftMainViewStyle,{paddingTop:hp(0.5)}]}>
+            <Text style={styles.summary}>Recent Alarms</Text>
+          </View>
+
+          <View style={{alignItems: 'flex-start', justifyContent:'flex-start', flex:1}}>
+            <DropDown label='Type' defaultValue={selectedDevice} valueSet={setSelectedDevice}  dataList={['Group 1','Group 2','Group 3']} 
+              fontSize={hp(1.6)} 
+              contentInset={{ input: 6, label: -8 }}
+              outerStyle={styles.outerStyle} 
+              dropdownStyle = {{top:hp(3.5),zIndex:99999}}
+              inputContainerStyle={styles.inputContainerStyle} 
+              containerStyle={styles.containerStyle} /> 
+          </View>
+
+          <View style={[styles.rightMainViewStyle,{paddingTop:hp(0.5)}]}>
+            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+          </View>
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2) }}>
@@ -283,19 +285,22 @@ const styles = StyleSheet.create({
     zIndex:2,
   },
   outerStyle:{
-    height: hp(4),
-    marginVertical:0
+    height: hp(3.5),
+    marginVertical:0,
+    flex:1
   },
   inputContainerStyle: {
     height: hp(3.5),
+    width:'100%',
   },
   containerStyle: {
     alignSelf: 'center',
-    width: '100%',
-    height: hp(4),
+    height: hp(2),
+    flex:1
   },
   leftMainViewStyle: {
-    paddingHorizontal: wp(5),
+    paddingLeft: wp(5),
+    paddingRight: wp(3),
     paddingBottom: hp(3)
   },
   summary: {
@@ -315,7 +320,8 @@ const styles = StyleSheet.create({
   rightMainViewStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: wp(6),
+    paddingRight: wp(6),
+    paddingLeft: wp(3),
     paddingBottom: hp(3)
   },
   alertText: {
