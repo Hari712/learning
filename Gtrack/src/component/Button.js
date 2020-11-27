@@ -5,27 +5,27 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FontSize from './FontSize'
 
 const CustomButton = (props) => {
-    const { title = '', style = {}, textStyle = {}, onPress} = props;
+    const { title = '', style = {}, textStyle = {}, onPress } = props;
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button,style]}>
-                <Text style={[styles.text,textStyle]}>{title}</Text>
+        <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+            <Text style={[styles.text, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
     button: {
-        height:hp(5.5),
-        borderRadius:7, 
-        justifyContent:'center',
-        alignItems:'center',
-        backgroundColor:ColorConstant.ORANGE,
+        height: hp(5.5),
+        borderRadius: 7,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: ColorConstant.ORANGE,
     },
 
     text: {
         fontSize: FontSize.FontSize.regular,
-        color:ColorConstant.WHITE,  
+        color: ColorConstant.WHITE,
         fontWeight: '500',
     },
 });

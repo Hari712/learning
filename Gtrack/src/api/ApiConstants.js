@@ -22,7 +22,8 @@ const ApiConstants = {
     UPDATE_SUBUSER_DETAILS:(userId) =>`${USER}${userId}/updateSubUser`,
     ADD_FEEDBACK:(userId) =>`${USER}${userId}/feedback`,
     GET_FEEDBACK_REQUEST:(userId, appVersion, deviceOS) => `${USER}${userId}/feedback/appVersion/${appVersion}/deviceType/${deviceOS}`,
-    GET_SUBUSER_BY_FILTER:(userId) => `${USER}${userId}/list`
+    GET_SUBUSER_BY_FILTER:(userId) => `${USER}${userId}/list`,
+    ASSET_TYPE:(userId) => `${USER}${userId}/assets/assetType`
 }
 
 export default ApiConstants

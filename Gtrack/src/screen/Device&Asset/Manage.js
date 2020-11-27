@@ -228,11 +228,11 @@ return(
             return (
                 <TabBar
                     {...props}
-                    indicatorStyle={{ backgroundColor: ColorConstant.ORANGE, height: hp(7) }}
+                    indicatorStyle={{ backgroundColor: ColorConstant.ORANGE, height: hp(5) }}
                     //labelStyle={{ color: ColorConstant.GREY, fontSize: hp(2.2), fontWeight: '600', textTransform: 'capitalize' }}
-                    style={{ backgroundColor: ColorConstant.WHITE, height: hp(7), justifyContent: 'flex-end', }}
+                    style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
                     renderLabel={({ route, focused, color }) => (
-                        <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize:FontSize.FontSize.medium, fontWeight: '900', }}>
+                        <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize:FontSize.FontSize.medium, fontWeight: '300', }}>
                             {route.title}
                         </Text>
                     )}

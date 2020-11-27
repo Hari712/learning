@@ -10,6 +10,8 @@ import MultiSelect from './MultiSelect'
 import MultiSelectDropdown from './MultiSelectDropdown'
 import TextField from './TextField'
 import Button from './Button'
+import AddNewAssetDialog from './AddNewAssetDialog'
+import AddNewGroupDialog from './AddNewGroupDialog'
 
 
 export { 
@@ -24,5 +26,7 @@ export {
     MultiSelect,
     MultiSelectDropdown,
     TextField,
-    Button
+    Button, 
+    AddNewAssetDialog, 
+    AddNewGroupDialog 
 }

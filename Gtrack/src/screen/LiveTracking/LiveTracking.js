@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { isUserLoggedIn } from '../Selector'
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
 import { MapView, FontSize }from '../../component';
-
+import NavigationService from '../../navigation/NavigationService'
 
 const LiveTracking = ({navigation}) => {
 
@@ -47,6 +47,11 @@ const LiveTracking = ({navigation}) => {
         }
 	}
 
+	function navigateToDeviceSetup() {
+		setIsLineClick(false)
+		NavigationService.push('ActivateDevice')
+	}
+
 	return (
 		<View style={styles.container}>
 
@@ -77,11 +82,7 @@ const LiveTracking = ({navigation}) => {
 					</View>
 					: null}
 
-				<TouchableOpacity onPress={() => {
-					navigation.navigate('TrackingDetails')
-					setIsLineClick(false)
-					console.log("Line Icon Pressed")
-				}} style={[styles.lineIconStyle, { backgroundColor: ColorConstant.BLUE }]}>
+				<TouchableOpacity onPress={() => navigateToDeviceSetup()} style={[styles.lineIconStyle, { backgroundColor: ColorConstant.BLUE }]}>
 					<Image style={{ tintColor: ColorConstant.WHITE }} source={images.image.add} />
 				</TouchableOpacity>
 			</View>
