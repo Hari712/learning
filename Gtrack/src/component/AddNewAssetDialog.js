@@ -59,7 +59,7 @@ function AddNewAssetDialog(props) {
         else {
             let obj = {
                 assetType: assetType,
-                assetname: assetname,
+                assetName: assetname,
                 isQuickAdd: false
             }
             let requestBody = {
@@ -113,6 +113,7 @@ function AddNewAssetDialog(props) {
                     outerStyle={{ marginBottom: hp(0.5) }}
                 />
                 {assetNameError ? <Text style={{ fontSize: FontSize.FontSize.small, color:'red', marginBottom: hp(1) }}>{assetNameError}</Text> : null}
+                <View style={{ zIndex: 10 }}>
                 <DropDown
                     defaultValue={assetType}
                     label='Type*'
@@ -121,8 +122,9 @@ function AddNewAssetDialog(props) {
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={styles.inputContainer}
                     accessoryStyle={{ top: hp(0.9) }}
-                    outerStyle={{ marginBottom: hp(0.5) }}
+                    outerStyle={{ marginBottom: hp(0.5), zIndex: 10 }}
                 />
+                </View>
                 {assetTypeError ? <Text style={{ fontSize: FontSize.FontSize.small, color:'red', marginBottom: hp(1) }}>{assetTypeError}</Text> : null}
                 <TextField
                     valueSet={setAssetDescription}
