@@ -3,9 +3,8 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensio
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import FontSize from '../../component/FontSize';
+import { FontSize, MapView} from '../../component';
 import { Dialog } from 'react-native-simple-dialogs';
-import MapView from '../../component/MapView';
 
 const GeoFence = ({ navigation }) => {
     const [dialogVisible, setDialogVisible] = useState(false)

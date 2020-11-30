@@ -6,9 +6,8 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useSelector } from 'react-redux'
 import { isUserLoggedIn } from '../Selector'
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
+import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
-import MapView from '../../component/MapView';
-import FontSize from '../../component/FontSize';
 
 const LiveTracking = ({navigation}) => {
 
@@ -21,6 +20,12 @@ const LiveTracking = ({navigation}) => {
 	}))
 
 	const location = useSubscribeLocationUpdates(isLoggedIn)
+
+	React.useLayoutEffect(() => {
+		navigation.setOptions({
+		  header: () => (null),
+		});
+	  },[navigation]);
 
 	useEffect(()=> {
 		if (location) {
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	subContainer: {
-		position: 'absolute', flex: 1, right: 20, top: 20, width: hp(7.5)
+		position: 'absolute', flex: 1, right: 20, marginTop: hp(5), width: hp(7.5)
 	},
 	bellIconStyle: {
 		borderRadius: 13,

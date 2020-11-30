@@ -3,12 +3,8 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, 
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
-import ExapandableListView from '../../component/ExpandableListView';
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
-import Dialog from '../../component/Dialog';
+import { Dialog, ExapandableListView, TextField, DropDown, FontSize } from '../../component';
 
 
 const CONTENT = [

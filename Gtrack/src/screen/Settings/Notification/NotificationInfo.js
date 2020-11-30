@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList }
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import FontSize from '../../../component/FontSize';
+import { FontSize }from '../../../component';
 
 const NotificationInfo = ({ navigation }) => {
 

@@ -4,8 +4,7 @@ import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import NavigationService from '../../navigation/NavigationService'
-import CustomButton from '../../component/Button'
-import FontSize from '../../component/FontSize'
+import { CustomButton,FontSize } from '../../component'
 
 const Splash = (navigation) => {
     return ( 

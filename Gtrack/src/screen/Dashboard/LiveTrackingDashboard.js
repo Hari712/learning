@@ -3,12 +3,10 @@ import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOp
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
-import { EditText } from '../../component'
 import ShadowView from 'react-native-simple-shadow-view'
-import MapView from '../../component/MapView'
-import { TouchableHighlight } from 'react-native-gesture-handler'
+import { MapView}  from '../../component'
+
 
 const LiveTrackinDashboard = ({ navigation }) => {
 

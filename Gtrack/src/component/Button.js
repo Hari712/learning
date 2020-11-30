@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { ColorConstant } from '../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../component/FontSize'
+import FontSize from './FontSize'
 
 const CustomButton = (props) => {
     const { title = '', style = {}, textStyle = {}, onPress } = props;

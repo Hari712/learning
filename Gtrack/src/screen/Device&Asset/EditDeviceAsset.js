@@ -3,10 +3,7 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAn
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
-import Dialog from '../../component/Dialog';
+import  { Dialog, FontSize, TextField, DropDown} from '../../component';
 
 const EditDeviceAsset = ({route, navigation}) => {
     const {id,title} = route.params;
@@ -67,8 +64,8 @@ return (
                 <Image  style={{resizeMode:'stretch'}} source={images.image.pickupcar}/>
                 <Text style={styles.textStyle}>Asset</Text>
             </View>
-            <View style={{marginTop:hp(2)}}>
-            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray} />
+            <View style={{marginTop:hp(2),zIndex:4}}>
+            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray}  />
             </View>
 
                 <View style={styles.nameDesc}>
@@ -88,7 +85,7 @@ return (
                     <Text style={styles.textStyle}>Select Group</Text>
                 </View>
 
-                <View style={{marginTop:hp(2)}}>
+                <View style={{marginTop:hp(2),zIndex:4}}>
                 <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
                 </View>
 
@@ -137,7 +134,8 @@ alignItems:'center'
 subContainer: {
 marginHorizontal:hp(3),
 marginVertical:hp(5),
-width:Dimensions.get('window').width-40
+width:Dimensions.get('window').width-40,
+zIndex:1
 },
 device: {
     flexDirection:'row',
