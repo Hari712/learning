@@ -17,6 +17,7 @@ import _ from 'lodash'
 import * as LoginActions from './Login.Action'
 import * as SettingsActions from '../Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info';
+import * as DeviceActions from '../DeviceSetup/Device.Action'
 
 
 const Login = () => {
@@ -61,11 +62,20 @@ const Login = () => {
 
     function onLoginSuccess(data) {
         console.log("Success data",data)
-        saveUserData(data)
+        AppManager.hideLoader()
+        storeItem(USER_DATA, data)
         let deviceType = DeviceInfo.getSystemName();
         let version = DeviceInfo.getVersion();
-        dispatch(SettingsActions.requestGetFeedBack(data.result.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
-        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })            
+        dispatch(SettingsActions.requestGetFeedBack(data.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
+        dispatch(DeviceActions.requestGetAllAssetsType(data.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))           
+    }
+
+    function onAssetTypeLoadedSuccess(data) {
+        console.log('Asset Type Loaded Success')
+    }
+
+    function onAssetTypeLoadedErrror(error) {
+        console.log('Asset Type Loaded error', error)
     }
 
     function onFeedbackSuccess(data) {
@@ -75,18 +85,6 @@ const Login = () => {
 
     function onFeedbackError(error) {
         console.log("Error Feedback",error)
-    }
-
-    const saveUserData = async (data) => {
-        try {
-            const isSuccess = await storeItem(USER_DATA, data)
-            if (isSuccess) {
-                AppManager.hideLoader()
-                dispatch(LoginActions.setLoginResponse(data))
-            }
-        } catch (error) {
-            console.log(error)
-        }
     }
 
     function onLoginError(error) {

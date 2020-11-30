@@ -4,12 +4,32 @@ import { DropDown, AddNewAssetDialog } from '../../component'
 import NavigationService from '../../navigation/NavigationService'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
+import { useSelector, useDispatch } from 'react-redux'
+import { getAssetListInfo, makeGetDeviceDetail, getLoginInfo } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
+import isEmpty from 'lodash/isEmpty'
+import AppManager from '../../constants/AppManager'
+import * as DeviceActions from '../DeviceSetup/Device.Action'
 
-const AssignAsset = ({ navigation }) => {
+const AssignAsset = ({ navigation, route }) => {
 
+    const deviceInfo = route.params.device ? route.params.device : null
+
+    const dispatch = useDispatch()
+
+    const getDeviceDetail = makeGetDeviceDetail()
+
+    const { loginInfo, device, assetList, isConnected } = useSelector(state => ({
+        loginInfo: getLoginInfo(state),
+        assetList: getAssetListInfo(state),
+        device: getDeviceDetail(state, deviceInfo.id),
+        isConnected: state.network.isConnected
+    }))
+
+    const user_id = loginInfo.id ? loginInfo.id : null
+    const assetNameList = isEmpty(assetList) ? [] : assetList.map((item) => item.assetName)
     const [asset, setAsset] = useState('')
     const [isAssetDialogVisible, setIsAssetDialogVisible] = useState(false)
 
@@ -32,14 +52,35 @@ const AssignAsset = ({ navigation }) => {
         NavigationService.push('AssignGroup')
     }
 
-    function onSubmit(item) {
+    function onTapNotNow() {
+        NavigationService.push('AssignGroup')
+    }
 
+    function onSubmit(item) {
+        setIsAssetDialogVisible(false)
+        AppManager.showLoader()
+        let obj = {...item, ...{ deviceId: device.deviceId  }}
+        let requestBody = {
+            assetDTO : obj
+        }
+        AppManager.showLoader()
+        dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+    }
+
+    function onAssignAssetSuccess(data) {
+        AppManager.hideLoader()
+        NavigationService.push('AssignAsset', { device: deviceDTO })
+    }
+
+    function onAssignAssetError(error) {
+        AppManager.hideLoader()
     }
 
     function renderAddNewAssetDialog() {
         return (
             <AddNewAssetDialog
                 isVisible={isAssetDialogVisible}
+                deviceId={device.deviceId}
                 onSubmit={(item) => onSubmit(item)}
                 onTapClose={() => setIsAssetDialogVisible(false)}
                 onSwipeComplete={() => setIsAssetDialogVisible(false)}
@@ -53,48 +94,48 @@ const AssignAsset = ({ navigation }) => {
 
     return (
         <>
-        <View style={styles.container}>
-            <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3), }}>
-                <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step2} resizeMode="contain" />
-                <Text style={styles.title}>Assign Asset</Text>
-                <View style={styles.deviceInfoContainer}>
-                    <Text style={styles.deviceInfo}>Device ID</Text>
-                    <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>85456799777464</Text>
-                    <Text style={[styles.deviceInfo, { marginTop: hp(1.0), color: ColorConstant.BLACK }]}>Device Name</Text>
-                    <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>Tracking Device</Text>
+            <View style={styles.container}>
+                <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3), }}>
+                    <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step2} resizeMode="contain" />
+                    <Text style={styles.title}>Assign Asset</Text>
+                    <View style={styles.deviceInfoContainer}>
+                        <Text style={styles.deviceInfo}>Device ID</Text>
+                        <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>{device.deviceId}</Text>
+                        <Text style={[styles.deviceInfo, { marginTop: hp(1.0), color: ColorConstant.BLACK }]}>Device Name</Text>
+                        <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>{device.deviceName}</Text>
+                    </View>
+                </View>
+                <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2) }}>
+                    <DropDown
+                        defaultValue={asset}
+                        label='Select Existing Asset'
+                        valueSet={setAsset}
+                        dataList={assetNameList}
+                        contentInset={{ label: hp(-0.2) }}
+                        inputContainerStyle={styles.inputContainer}
+                        accessoryStyle={{ top: hp(0.9) }}
+                        outerStyle={{ marginBottom: hp(0) }}
+                    />
+                    <ShadowView style={styles.shadowContainer}>
+                        <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
+                            <Text style={styles.activateButtonTitle}>Add New Asset</Text>
+                        </TouchableOpacity>
+                    </ShadowView>
+                </View>
+                <View style={styles.buttonMainContainer}>
+                    <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
+                        <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>
+                            <Text style={styles.buttonTextColor}>Not Now</Text>
+                        </TouchableOpacity>
+                    </ShadowView>
+                    <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
+                        <TouchableOpacity style={styles.nextButton} onPress={() => navigateToAssignGroup()}>
+                            <Text style={styles.nextButtonText}>Next</Text>
+                        </TouchableOpacity>
+                    </ShadowView>
                 </View>
             </View>
-            <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2) }}>
-                <DropDown
-                    defaultValue={asset}
-                    label='Select Existing Asset'
-                    valueSet={setAsset}
-                    dataList={['abc', 'cde', 'def', 'rock']}
-                    contentInset={{ label: hp(-0.2) }}
-                    inputContainerStyle={styles.inputContainer}
-                    accessoryStyle={{ top: hp(0.9) }}
-                    outerStyle={{ marginBottom: hp(0) }}
-                />
-                <ShadowView style={styles.shadowContainer}>
-                    <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
-                        <Text style={styles.activateButtonTitle}>Add New Asset</Text>
-                    </TouchableOpacity>
-                </ShadowView>
-            </View>
-            <View style={styles.buttonMainContainer}>
-                <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                    <TouchableOpacity style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>Not Now</Text>
-                    </TouchableOpacity>
-                </ShadowView>
-                <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                    <TouchableOpacity style={styles.nextButton} onPress={() => navigateToAssignGroup()}>
-                        <Text style={styles.nextButtonText}>Next</Text>
-                    </TouchableOpacity>
-                </ShadowView>
-            </View>
-        </View>
-        {renderAddNewAssetDialog()}
+            {renderAddNewAssetDialog()}
         </>
     )
 }

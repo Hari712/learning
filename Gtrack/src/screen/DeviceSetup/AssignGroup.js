@@ -3,13 +3,24 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { DropDown, AddNewGroupDialog } from '../../component'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
+import { useSelector, useDispatch } from 'react-redux'
+import { getGroupListInfo } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
+import isEmpty from 'lodash/isEmpty'
 
 const AssignGroup = ({ navigation }) => {
 
+    const dispatch = useDispatch()
+
+    const { groupList, isConnected } = useSelector(state => ({
+        groupList: getGroupListInfo(state),
+        isConnected: state.network.isConnected
+    })) 
+
+    const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [group, setGroup] = useState('')
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
 
@@ -34,6 +45,10 @@ const AssignGroup = ({ navigation }) => {
     }
 
     function onTapNext() {
+        NavigationService.push('CompleteSetup')
+    }
+
+    function onTapNotNow() {
         NavigationService.push('CompleteSetup')
     }
 
@@ -64,7 +79,7 @@ const AssignGroup = ({ navigation }) => {
                     defaultValue={group}
                     label='Select Group'
                     valueSet={setGroup}
-                    dataList={['abc', 'cde', 'def', 'rock']}
+                    dataList={arrGroupnames}
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={styles.inputContainer}
                     accessoryStyle={{ top: hp(0.7) }}
@@ -78,7 +93,7 @@ const AssignGroup = ({ navigation }) => {
             </View>
             <View style={styles.buttonMainContainer}>
                 <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                    <TouchableOpacity style={[styles.cancelButton]}>
+                    <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>
                         <Text style={styles.buttonTextColor}>Not Now</Text>
                     </TouchableOpacity>
                 </ShadowView>

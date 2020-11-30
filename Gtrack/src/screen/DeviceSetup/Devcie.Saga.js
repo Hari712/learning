@@ -17,6 +17,75 @@ function* resetLoadAssetsType(action) {
     }
 }
 
+function* requestAddGroup(action) {
+    const {userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_GROUP(userId)
+        const response = yield call(API.post, url, data)
+        const result = response.result ? response.result: {}
+        const groupInfo = result.groupDTO ? result.groupDTO : {}
+        const arr = []
+        arr.push(groupInfo)
+        yield put(DeviceActions.setAddGroupResponse(arr))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestAddAsset(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_ASSET(userId)
+        const response = yield call(API.post, url, data)
+        const result = response.result ? response.result: {}
+        const assetInfo = result.assetDTO ? result.assetDTO : {}
+        const arr = []
+        arr.push(assetInfo)
+        yield put(DeviceActions.setAddAssetResponse(arr))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestAddDevice(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_DEVICE(userId)
+        const response = yield call(API.post, url, data)
+        const result = response.result ? response.result: {}
+        const deviceInfo = result.deviceDTO ? result.deviceDTO : {}
+        const arr = []
+        arr.push(deviceInfo)
+        yield put(DeviceActions.setAddDeviceResponse(arr))
+        onSuccess(result)
+    } catch (error){
+        onError(error)
+    }
+}
+
+function* requestLinkDeviceWithAsset(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_ASSET(userId)
+        const response = yield call(API.put, url, data)
+        const result = response.result ? response.result: {}
+        const assetInfo = result.assetDTO ? result.assetDTO : {}
+        const arr = []
+        arr.push(assetInfo)
+        yield put(DeviceActions.setAddAssetResponse(arr))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+
 export function* watchDeviceSetup() {
-    yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType)
+    yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
+    yield takeLatest(types.ADD_GROUP_REQUEST, requestAddGroup),
+    yield takeLatest(types.ADD_ASSET_REQUEST, requestAddAsset),
+    yield takeLatest(types.ADD_DEVICE_REQUEST, requestAddDevice),
+    yield takeLatest(types.LINK_DEVICE_TO_ASSET_REQUEST, requestLinkDeviceWithAsset)
 }
