@@ -9,7 +9,7 @@ import { setI18nConfig, translate } from '../../../../App';
 import * as RNLocalize from "react-native-localize";
 // import memoize from "lodash.memoize";
 // // import en from "../../../locales/en.json";
-// // import fr from "../../../locales/fr.json";
+// // import fr from "../../../locales/fr.json"; 
 
 // const translationGetters = {
 //   // lazy requires (metro bundler does not support symlinks)
