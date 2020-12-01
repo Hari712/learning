@@ -109,7 +109,7 @@ const AssignAsset = ({ navigation, route }) => {
                         <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>{device.deviceName}</Text>
                     </View>
                 </View>
-                <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2) }}>
+                <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2), zIndex: 10 }}>
                     <View style={{ zIndex: 10 }}>
                         <DropDown
                             defaultValue={asset}
