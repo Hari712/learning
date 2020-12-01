@@ -1,7 +1,7 @@
 {
     "Splash_string1": "Vous avez déjà un compte",
     "Splash_string2": "s'identifier",
-    "Splash_string3": "Get Started",
+    "Splash_string3": "Commencer",
     "Signup_string1": "Hello there",
     "Signup_string2": "Enter your information below to",
     "Signup_string3": "create your account",
@@ -19,6 +19,7 @@
     "Login_string4": "Passcode",
     "Login_string5": "Reset Passcode",
     "Login_string6": "Enter mobile number without country code",
+    "Login_string7": "Login",
     "Reset_Passcode_string1": "Reset your Passcode",
     "Reset_Passcode_string2": "Reset",
     "Reset_Passcode_string3": "Login into Existing Account",

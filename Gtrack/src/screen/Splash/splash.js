@@ -24,7 +24,7 @@ const Splash = (navigation) => {
                         </View>
 
                         <CustomButton
-                            title='Get Started' 
+                            title={translate("Splash_string3")}
                             style={styles.buttonStyle}
                             textStyle={styles.buttonTextStyle}
                             onPress={() => NavigationService.navigate('SignUp')} 
