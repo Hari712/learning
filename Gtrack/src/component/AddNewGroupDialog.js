@@ -1,17 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
 import Modal from 'react-native-modal'
 import TextField from './TextField'
+import {  getLoginInfo } from '../screen/Selector'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { useSelector, useDispatch } from 'react-redux'
 import FontSize from './FontSize'
+import { AppConstants } from '../constants/AppConstants'
 import { ColorConstant } from '../constants/ColorConstants'
 import images from '../constants/images'
-
+import isEmpty from 'lodash/isEmpty'
+import AppManager from '../constants/AppManager'
+import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
 
 function AddNewGroupDialog(props) {
+
+    const dispatch = useDispatch()
+
+    const { loginInfo, isConnected } = useSelector(state => ({
+        loginInfo: getLoginInfo(state),
+        isConnected: state.network.isConnected
+    }))
+
+    const user_id = loginInfo.id ? loginInfo.id : null 
+
     const { isVisible, onSwipeComplete, onTapClose } = props
 
     const [groupName, setGroupName] = useState('')
+
+    const [groupNameError, setgroupNameError] = useState('')
+
+    useEffect(() => {
+        if (groupName) {
+            setgroupNameError(null)
+        }
+    },[groupName])
+    
 
     function hideDialog() {
         setTimeout(() => onCancelDialog(), 200)
@@ -19,6 +43,31 @@ function AddNewGroupDialog(props) {
 
     function onCancelDialog() {
         onTapClose && onTapClose()
+    }
+
+    function onTapSubmit() {
+        if (isEmpty(groupName)) {
+            setgroupNameError(AppConstants.EMPTY_GROUP_NAME)
+        } else {
+            let requestBody = {
+                groupDTO: {
+                    groupName: groupName,
+                    isQuickAdd: false
+                }
+            }
+            AppManager.showLoader()
+            dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onGroupAddSuccess, onGroupAddError))
+        }
+    }
+
+    function onGroupAddSuccess(data) {
+        AppManager.hideLoader()
+        hideDialog()
+    }
+
+    function onGroupAddError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
     }
 
     function renderBody() {
@@ -44,7 +93,8 @@ function AddNewGroupDialog(props) {
                     inputContainerStyle={styles.inputContainer}
                     outerStyle={{ marginBottom: hp(0.5) }}
                 />
-                <TouchableOpacity style={styles.button}>
+                {groupNameError ? <Text style={{ fontSize: FontSize.FontSize.small, color:'red', marginBottom: hp(1) }}>{groupNameError}</Text> : null}
+                <TouchableOpacity style={styles.button} onPress={() => onTapSubmit()}>
                     <Text style={styles.buttonTitle}>{`Create & Assign`}</Text>
                 </TouchableOpacity>
             </View>

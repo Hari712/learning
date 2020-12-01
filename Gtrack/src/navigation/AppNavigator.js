@@ -43,6 +43,8 @@ function AppNavigator() {
         let version = DeviceInfo.getVersion();
         dispatch(SettingsActions.requestGetFeedBack(response.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
         dispatch(DeviceActions.requestGetAllAssetsType(response.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
+        dispatch(DeviceActions.requestGetAllUserAssets(response.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
+        dispatch(DeviceActions.requestGetAllUserGroups(response.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
       }
       setIsReady(true)
     }
@@ -53,6 +55,22 @@ function AppNavigator() {
 
     return () => clearTimeout(timer);
   }, [])
+
+  function onGetAllUserGroupsSuccess(data) {
+    console.log('Group List Loaded Success')
+  }
+
+  function onGetAllUserGroupError(error) {
+    console.log('Group List Loaded Error')
+  }
+
+  function onUserAssetListLoadedSuccess(data) {
+    console.log('Asset List Loaded Success')
+  }
+
+  function onUserAssetListLoadedError(error) {
+    console.log('Asset List Loaded Error')
+  }
 
   function onAssetTypeLoadedSuccess(data) {
     console.log('Asset Type Loaded Success')

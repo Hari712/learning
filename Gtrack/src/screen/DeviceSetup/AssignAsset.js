@@ -49,31 +49,35 @@ const AssignAsset = ({ navigation, route }) => {
     }, [navigation]);
 
     function navigateToAssignGroup() {
-        NavigationService.push('AssignGroup')
+        if (isEmpty(asset)) {
+            AppManager.showSimpleMessage('warning', { message: 'Please select asset', description: '', floating: true })
+        } else {
+            let selectedAssets = assetList.filter((item) => item.assetName)
+            if (!isEmpty(selectedAssets)) {
+                let selectedAsset = selectedAssets[0]
+                let requestBody = { ...selectedAsset, ...{ deviceId: device.id } }
+                AppManager.showLoader()
+                dispatch(DeviceActions.requestLinkDeviceWithAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+            }
+        }
     }
 
     function onTapNotNow() {
-        NavigationService.push('AssignGroup')
+        NavigationService.push('AssignGroup', { device: deviceInfo })
     }
 
     function onSubmit(item) {
         setIsAssetDialogVisible(false)
-        AppManager.showLoader()
-        let obj = {...item, ...{ deviceId: device.deviceId  }}
-        let requestBody = {
-            assetDTO : obj
-        }
-        AppManager.showLoader()
-        dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
     }
 
     function onAssignAssetSuccess(data) {
         AppManager.hideLoader()
-        NavigationService.push('AssignAsset', { device: deviceDTO })
+        NavigationService.push('AssignGroup', { device: deviceInfo })
     }
 
     function onAssignAssetError(error) {
         AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
     }
 
     function renderAddNewAssetDialog() {
@@ -106,16 +110,18 @@ const AssignAsset = ({ navigation, route }) => {
                     </View>
                 </View>
                 <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2) }}>
-                    <DropDown
-                        defaultValue={asset}
-                        label='Select Existing Asset'
-                        valueSet={setAsset}
-                        dataList={assetNameList}
-                        contentInset={{ label: hp(-0.2) }}
-                        inputContainerStyle={styles.inputContainer}
-                        accessoryStyle={{ top: hp(0.9) }}
-                        outerStyle={{ marginBottom: hp(0) }}
-                    />
+                    <View style={{ zIndex: 10 }}>
+                        <DropDown
+                            defaultValue={asset}
+                            label='Select Existing Asset'
+                            valueSet={setAsset}
+                            dataList={assetNameList}
+                            contentInset={{ label: hp(-0.2) }}
+                            inputContainerStyle={styles.inputContainer}
+                            accessoryStyle={{ top: hp(0.9) }}
+                            outerStyle={{ marginBottom: hp(0) }}
+                        />
+                    </View>
                     <ShadowView style={styles.shadowContainer}>
                         <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
                             <Text style={styles.activateButtonTitle}>Add New Asset</Text>

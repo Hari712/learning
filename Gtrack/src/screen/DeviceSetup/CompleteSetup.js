@@ -38,7 +38,7 @@ const CompleteSetup = ({ navigation }) => {
                 </TouchableOpacity>
                 <CompleteSetupImage />
                 <Text style={styles.completeSetupGuideText}>If you want to continue click on complete setup</Text>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => NavigationService.popToTop()}>
                     <Text style={styles.buttonText}>Complete Setup</Text>
                 </TouchableOpacity>
             </View>

@@ -27,16 +27,32 @@ export const deviceReducer = createReducer(state = initialState, {
     },
     [types.ADD_GROUP_RESPONSE](state, action) {
         const groupInfo = mapKeys(action.data, 'id')
+        const updatedGroups = { ...state.groups, ...groupInfo }
         return {
             ...state,
-            groups: groupInfo
+            groups: updatedGroups
         }
     },
     [types.ADD_ASSET_RESPONSE](state, action) {
+        const assetInfo = mapKeys(action.data, 'id')
+        const updatedassets = { ...state.assets, ...assetInfo }
+        return {
+            ...state,
+            assets: updatedassets
+        }
+    },
+    [types.GET_ALL_USER_ASSETS_RESPONSE](state, action) {
         const assetInfo = mapKeys(action.data, 'id')
         return {
             ...state,
             assets: assetInfo
         }
-    }
+    },
+    [types.GET_GROUP_RESPONSE](state, action) {
+        const groupInfo = mapKeys(action.data, 'id')
+        return {
+            ...state,
+            groups: groupInfo
+        }
+    },
 })

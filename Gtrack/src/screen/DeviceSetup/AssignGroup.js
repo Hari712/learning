@@ -4,22 +4,33 @@ import { DropDown, AddNewGroupDialog } from '../../component'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGroupListInfo } from '../Selector'
+import { getGroupListInfo, makeGetDeviceDetail, getLoginInfo } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
+import AppManager from '../../constants/AppManager'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
 import isEmpty from 'lodash/isEmpty'
+import * as DeviceActions from './Device.Action'
+import mapKeys from 'lodash/mapKeys'
 
-const AssignGroup = ({ navigation }) => {
+
+const AssignGroup = ({ navigation, route }) => {
+
+    const deviceInfo = route.params.device ? route.params.device : null
 
     const dispatch = useDispatch()
 
-    const { groupList, isConnected } = useSelector(state => ({
+    const getDeviceDetail = makeGetDeviceDetail()
+
+    const { loginInfo, groupList, isConnected, device } = useSelector(state => ({
+        loginInfo: getLoginInfo(state),
         groupList: getGroupListInfo(state),
-        isConnected: state.network.isConnected
+        isConnected: state.network.isConnected,
+        device: getDeviceDetail(state, deviceInfo.id),
     })) 
 
+    const user_id = loginInfo.id ? loginInfo.id : null
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [group, setGroup] = useState('')
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
@@ -45,7 +56,34 @@ const AssignGroup = ({ navigation }) => {
     }
 
     function onTapNext() {
+        if (isEmpty(group)) {
+            AppManager.showSimpleMessage('warning', { message: 'Please select group', description: '', floating: true })
+        }
+        else {
+            let selectedGroups = groupList.filter((item) => item.groupName == group)
+            if (!isEmpty(selectedGroups)) {
+                let selectedGroup = selectedGroups[0]
+                let arrDeviceList = selectedGroups.devices ? selectedGroups.devices : []
+                let deviceobjs = mapKeys(arrDeviceList, 'id')
+                let devicelist = { ...deviceobjs, [device.id]: device }
+                let updatedArrList = Object.values(devicelist)
+                let requestBody = {
+                    groupDTO: { ...selectedGroup, ...{ devices: updatedArrList, isQuickAdd: false  } }
+                }
+                AppManager.showLoader()
+                dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
+            } 
+        }
+        
+    }
+
+    function onAssignGroupSuccess(data) {
+        AppManager.hideLoader()
         NavigationService.push('CompleteSetup')
+    }
+
+    function onAssignGroupError(error) {
+        AppManager.hideLoader()
     }
 
     function onTapNotNow() {
@@ -74,7 +112,7 @@ const AssignGroup = ({ navigation }) => {
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step3} resizeMode="contain" />
                 <Text style={styles.title}>Assign Group</Text>
             </View>
-            <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2) }}>
+            <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2), zIndex: 10 }}>
                 <DropDown
                     defaultValue={group}
                     label='Select Group'
@@ -85,12 +123,12 @@ const AssignGroup = ({ navigation }) => {
                     accessoryStyle={{ top: hp(0.7) }}
                     outerStyle={{ marginBottom: hp(0) }}
                 />
-                <ShadowView style={styles.shadowContainer}>
+            </View>
+            <ShadowView style={[styles.shadowContainer, { paddingHorizontal: hp(3) }]}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
                         <Text style={styles.activateButtonTitle}>Add New Group</Text>
                     </TouchableOpacity>
-                </ShadowView>
-            </View>
+            </ShadowView>
             <View style={styles.buttonMainContainer}>
                 <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                     <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>

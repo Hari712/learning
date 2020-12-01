@@ -63,3 +63,35 @@ export const setLinkDeviceWithAssetResponse = (data) => ({
     type: types.LINK_DEVICE_TO_ASSET_RESPONSE,
     data
 })
+
+export const requestGetAllUserAssets = (userId, onSuccess, onError) => ({
+    type: types.GET_ALL_USER_ASSETS_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setAllUserAssetsResponse = (data) => ({
+    type: types.GET_ALL_USER_ASSETS_RESPONSE,
+    data
+})
+
+export const requestGetAllUserGroups = (userId, onSuccess, onError) => ({
+    type: types.GET_GROUP_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setGroupResponse = (data) => ({
+    type: types.GET_GROUP_RESPONSE,
+    data
+})
+
+export const requestLinkDeviceWithGroup = (userId, data, onSuccess, onError) => ({
+    type: types.LINK_DEVICE_WITH_GROUP_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
