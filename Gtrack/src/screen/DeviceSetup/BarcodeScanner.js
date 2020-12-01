@@ -1,7 +1,8 @@
 import React, { useLayoutEffect } from 'react'
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
 import { RNCamera } from 'react-native-camera';
-import BarcodeMask from 'react-native-barcode-mask';
+import BarcodeMask from 'react-native-barcode-mask'
+import images from '../../constants/images'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import NavigationService from '../../navigation/NavigationService'
 import { ColorConstant } from '../../constants/ColorConstants'

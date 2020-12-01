@@ -3,7 +3,10 @@ import * as types from '../../constants/ActionTypes'
 import mapKeys from 'lodash/mapKeys'
 
 const initialState = {
-    assetsType: null
+    assetType: null,
+    assets: null,
+    groups: {},
+    devices: {}
 }
 
 
@@ -12,7 +15,44 @@ export const deviceReducer = createReducer(state = initialState, {
         const assetsTypeInfo = mapKeys(action.data, 'id')
         return {
             ...state,
-            assetsType: assetsTypeInfo
+            assetType: assetsTypeInfo
         }
-    }
+    },
+    [types.ADD_DEVICE_RESPONSE](state, action) {
+        const deviceInfo = mapKeys(action.data, 'id')
+        return {
+            ...state,
+            devices: deviceInfo
+        }
+    },
+    [types.ADD_GROUP_RESPONSE](state, action) {
+        const groupInfo = mapKeys(action.data, 'id')
+        const updatedGroups = { ...state.groups, ...groupInfo }
+        return {
+            ...state,
+            groups: updatedGroups
+        }
+    },
+    [types.ADD_ASSET_RESPONSE](state, action) {
+        const assetInfo = mapKeys(action.data, 'id')
+        const updatedassets = { ...state.assets, ...assetInfo }
+        return {
+            ...state,
+            assets: updatedassets
+        }
+    },
+    [types.GET_ALL_USER_ASSETS_RESPONSE](state, action) {
+        const assetInfo = mapKeys(action.data, 'id')
+        return {
+            ...state,
+            assets: assetInfo
+        }
+    },
+    [types.GET_GROUP_RESPONSE](state, action) {
+        const groupInfo = mapKeys(action.data, 'id')
+        return {
+            ...state,
+            groups: groupInfo
+        }
+    },
 })

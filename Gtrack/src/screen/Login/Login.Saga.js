@@ -4,14 +4,16 @@ import { put, takeLatest, call } from 'redux-saga/effects'
 import { setToken, clearToken } from '../../api'
 import { storeItem, getItem } from '../../utils/storage'
 import API from '../../api'
-import { USER_DATA } from '../../constants/AppConstants'
+import * as LoginActions from './Login.Action'
 
 function* login(action) {
     const { data, onSuccess, onError } = action
     try {
         const response = yield call(API.post, ApiConstants.LOGIN, data)
         setToken(response.result.accessToken)
-        onSuccess(response)
+        const result = response.result ? response.result : {}
+        yield put(LoginActions.setLoginResponse(result))
+        onSuccess(result)
     } catch (error) {
         onError(error)
     }

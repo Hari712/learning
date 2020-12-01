@@ -27,3 +27,82 @@ export const getSubuserState = createSelector(
     
 )
 
+/**
+ * Get Group List
+ */
+
+const getGroupInfo = (state) => getGroupList(state)
+function getGroupList(state) {
+    const groupInfo = state.device && state.device.groups ? state.device.groups : {}
+    const arrGroups = Object.values(groupInfo)
+    arrGroups.sort((item1, item2) => item2.id - item1.id)
+    return arrGroups
+}
+export const getGroupListInfo = createSelector(
+    [getGroupInfo],
+    (info) => info
+)
+
+/**
+ * Get Asset List
+ */
+
+const getAssetInfo = (state) => getAssetList(state)
+function getAssetList(state) {
+    const assetInfo = state.device && state.device.assets ? state.device.assets : {}
+    const arrAssets = Object.values(assetInfo)
+    arrAssets.sort((item1, item2) => item2.id - item1.id)
+    return arrAssets
+}
+export const getAssetListInfo = createSelector(
+    [getAssetInfo],
+    (info) => info
+)
+
+/**
+ * Get Device List
+ */
+
+const getDeviceInfo = (state) => getDeviceList(state)
+function getDeviceList(state) {
+    const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
+    const arrDevices = Object.values(deviceInfo)
+    arrDevices.sort((item1, item2) => item2.id - item1.id)
+    return arrDevices
+}
+export const getDeviceListInfo = createSelector(
+    [getDeviceInfo],
+    (info) => info
+)
+
+/**
+ * Get Device Info
+ */
+
+const getDeviceDetailInfo = (state, deviceId) => getDevice(state, deviceId)
+function getDevice(state, deviceId) {
+    const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
+    const device = deviceInfo[deviceId]
+    return device
+}
+export const makeGetDeviceDetail = () => createSelector(
+    [getDeviceDetailInfo],
+    (info) => info
+)
+
+/**
+ * Get Asset Type List
+ */
+
+const getAssetTypeInfo = (state) => getAssetTypeList(state)
+function getAssetTypeList(state) {
+    const assetInfo = state.device && state.device.assetType ? state.device.assetType : {}
+    const arrAssets = Object.values(assetInfo)
+    arrAssets.sort((item1, item2) => item2.id - item1.id)
+    return arrAssets
+}
+export const getAssetTypeListInfo = createSelector(
+    [getAssetTypeInfo],
+    (info) => info
+)
+

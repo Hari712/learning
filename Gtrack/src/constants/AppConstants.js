@@ -20,5 +20,10 @@ export const AppConstants = {
     EMPTY_COUNTRY_CODE: 'Please select country code',
     INVALID_PHONE_NUMBER: 'Please enter valid phone number',
     EMAIL_SENT:'User created successfully. Please check your mail for account activation',
-    LOGIN_SUCCESS:'Login successfully'
+    LOGIN_SUCCESS:'Login successfully',
+    EMPTY_DEVICE_ID: 'Please enter device id',
+    EMPTY_DEVICE_NAME: 'Please enter device name',
+    EMPTY_ASSET: 'Please enter asset name',
+    EMPTY_ASSET_TYPE: 'Please select asset type',
+    EMPTY_GROUP_NAME: 'Please enter group name'
 }

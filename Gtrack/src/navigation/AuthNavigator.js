@@ -1,12 +1,12 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
-import { Splash, SignUp, Login, ResetPasscode, Passcode, ChangePasscode } from '../screen';
+import { Splash, SignUp, Login, ResetPasscode, Passcode, ChangePasscode, GetStarted } from '../screen';
 
 const AuthStack = createStackNavigator()
 
 const AuthStackNavigator = () => (
-    <AuthStack.Navigator initialRouteName="Splash" headerMode="none">
-        <AuthStack.Screen name="Splash" component={Splash} />
+    <AuthStack.Navigator initialRouteName="GetStarted" headerMode="none">
+        <AuthStack.Screen name="GetStarted" component={GetStarted} />
         <AuthStack.Screen name="Login" component={Login} />
         <AuthStack.Screen name="SignUp" component={SignUp} />
         <AuthStack.Screen name="ResetPasscode" component={ResetPasscode} />

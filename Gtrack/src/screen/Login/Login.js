@@ -1,4 +1,4 @@
-import React, { Component, useState,useEffect } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput } from 'react-native'
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,10 +17,11 @@ import _ from 'lodash'
 import * as LoginActions from './Login.Action'
 import * as SettingsActions from '../Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info';
+import * as DeviceActions from '../DeviceSetup/Device.Action'
 
 
 const Login = () => {
-    
+
     const dispatch = useDispatch()
 
     const { isConnected } = useSelector(state => ({
@@ -30,7 +31,7 @@ const Login = () => {
     const [email, setEmail] = useState('Khushbu.solanki+3@ekzero.com')
     const [password, setPassword] = useState('117285')
     const [isSelected, setIsSelected] = useState(false)
-    const [isClickInfo,setIsClickInfo] = useState(false)
+    const [isClickInfo, setIsClickInfo] = useState(false)
 
     function onTapLoginButton() {
         if (isConnected) {
@@ -60,40 +61,55 @@ const Login = () => {
     }
 
     function onLoginSuccess(data) {
-        console.log("Success data",data)
-        saveUserData(data)
+        console.log("Success data", data)
+        AppManager.hideLoader()
+        storeItem(USER_DATA, data)
         let deviceType = DeviceInfo.getSystemName();
         let version = DeviceInfo.getVersion();
-        dispatch(SettingsActions.requestGetFeedBack(data.result.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
-        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })            
+        dispatch(SettingsActions.requestGetFeedBack(data.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
+        dispatch(DeviceActions.requestGetAllAssetsType(data.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
+        dispatch(DeviceActions.requestGetAllUserAssets(response.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
+        dispatch(DeviceActions.requestGetAllUserGroups(response.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
+    }
+
+    function onGetAllUserGroupsSuccess(data) {
+        console.log('Group List Loaded Success')
+      }
+    
+      function onGetAllUserGroupError(error) {
+        console.log('Group List Loaded Error')
+      }
+
+    function onUserAssetListLoadedSuccess(data) {
+        console.log('Asset List Loaded Success')
+    }
+
+    function onUserAssetListLoadedError(error) {
+        console.log('Asset List Loaded Error')
+    }
+
+    function onAssetTypeLoadedSuccess(data) {
+        console.log('Asset Type Loaded Success')
+    }
+
+    function onAssetTypeLoadedErrror(error) {
+        console.log('Asset Type Loaded error', error)
     }
 
     function onFeedbackSuccess(data) {
-        console.log("Success Feedback",data)
+        console.log("Success Feedback", data)
         AppManager.hideLoader()
     }
 
     function onFeedbackError(error) {
-        console.log("Error Feedback",error)
-    }
-
-    const saveUserData = async (data) => {
-        try {
-            const isSuccess = await storeItem(USER_DATA, data)
-            if (isSuccess) {
-                AppManager.hideLoader()
-                dispatch(LoginActions.setLoginResponse(data))
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        console.log("Error Feedback", error)
     }
 
     function onLoginError(error) {
         AppManager.hideLoader()
-        console.log("Error",error)
-        if(error){
-            AppManager.showSimpleMessage('warning', { message:error, description: '', floating: true })
+        console.log("Error", error)
+        if (error) {
+            AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
         }
     }
 
@@ -109,7 +125,7 @@ const Login = () => {
                 keyboardShouldPersistTaps='handled'
                 enableOnAndroid={false}
                 scrollEnabled={false}>
-    
+
                 <View style={styles.container}>
                     <Image source={images.image.defaultlogo} style={styles.imageStyle} />
                     <View style={styles.subContner}>
@@ -121,18 +137,18 @@ const Login = () => {
                         onChangeText={(value) => { setEmail(value) }}
                         placeholder='Email Address/Mobile Number'
                         rightContainer={
-                            <TouchableOpacity onPress={()=>setIsClickInfo(!isClickInfo)} style={{width:wp(3),zIndex:1}}>
-                                <Image source={isClickInfo?images.login.infoClick:images.login.info} />
+                            <TouchableOpacity onPress={() => setIsClickInfo(!isClickInfo)} style={{ width: wp(3), zIndex: 1 }}>
+                                <Image source={isClickInfo ? images.login.infoClick : images.login.info} />
                             </TouchableOpacity>
                         }
                         style={{ paddingHorizontal: hp(1.5), alignItems: 'center' }}
-                    /> 
-                    {isClickInfo?
+                    />
+                    {isClickInfo ?
                         <View style={styles.infoPopup}>
                             <Text style={styles.infoText}>Enter mobile number without country code.</Text>
                         </View>
-                    :null}                  
-                    
+                        : null}
+
 
                     <EditText
                         value={password}
@@ -177,7 +193,7 @@ const styles = StyleSheet.create({
         color: ColorConstant.WHITE,
         fontSize: FontSize.FontSize.regular,
         //fontWeight: 'bold',
-        fontFamily:'Nunito-Bold',
+        fontFamily: 'Nunito-Bold',
         letterSpacing: wp(1),
         textAlign: 'center'
     },
@@ -185,7 +201,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: hp(1.5),
         flexDirection: 'row',
         alignItems: 'center',
-        color:'red',
+        color: 'red',
         justifyContent: 'space-between',
     },
     button: {
@@ -207,22 +223,22 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.small,
         fontWeight: '500',
         marginTop: hp(3),
-        fontFamily:'Nunito-SemiBold'
+        fontFamily: 'Nunito-SemiBold'
     },
     infoPopup: {
-        borderRadius:7,
-        paddingVertical:hp(0.5),
-        paddingLeft:hp(2),
-        backgroundColor:ColorConstant.TRANSPARENT,
-        width:'100%',
-        borderColor:ColorConstant.WHITE,
-        borderWidth:1,
-        marginBottom:hp(2.5),
+        borderRadius: 7,
+        paddingVertical: hp(0.5),
+        paddingLeft: hp(2),
+        backgroundColor: ColorConstant.TRANSPARENT,
+        width: '100%',
+        borderColor: ColorConstant.WHITE,
+        borderWidth: 1,
+        marginBottom: hp(2.5),
     },
     infoText: {
-        fontSize: FontSize.FontSize.small, 
-        color:ColorConstant.WHITE,
-        fontFamily:'Nunito-LightItalic'
+        fontSize: FontSize.FontSize.small,
+        color: ColorConstant.WHITE,
+        fontFamily: 'Nunito-LightItalic'
     }
 })
 
