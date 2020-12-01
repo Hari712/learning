@@ -68,8 +68,8 @@ const Login = () => {
         let version = DeviceInfo.getVersion();
         dispatch(SettingsActions.requestGetFeedBack(data.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
         dispatch(DeviceActions.requestGetAllAssetsType(data.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
-        dispatch(DeviceActions.requestGetAllUserAssets(response.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
-        dispatch(DeviceActions.requestGetAllUserGroups(response.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
+        dispatch(DeviceActions.requestGetAllUserAssets(data.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
+        dispatch(DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
     }
 
     function onGetAllUserGroupsSuccess(data) {
