@@ -120,7 +120,7 @@ const AssignGroup = ({ navigation, route }) => {
                     dataList={arrGroupnames}
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={styles.inputContainer}
-                    accessoryStyle={{ top: hp(0.7) }}
+                    accessoryStyle={{ top: hp(0.0) }}
                     outerStyle={{ marginBottom: hp(0) }}
                 />
             </View>
