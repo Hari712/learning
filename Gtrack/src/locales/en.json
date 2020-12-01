@@ -74,8 +74,7 @@
     "Notification_string8": "Movement",
     "Notification_string9": "Ignite Off",
     "Notification_string10": "Panic",
-    "Notification_string11": "Movement",
-    "Notification_strin12": "Ignite Off",
+    "Notification_strin11": "Ignite Off",
     "Sensor_Info_string1": "Sensor Information",
     "Sensor_Info_string2": "Information",
     "Sensor_Info_string3": "State",
@@ -127,37 +126,85 @@
     "Dashboard_string6": "Movement",
     "Dashboard_string7": "Over Speeding",
     "Dashboard_string8": "Users View",
-    
-    
-
-
-
-
-
-  
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    "Dashboard_string9": "Active",
+    "Device_Asset_string1": "Create",
+    "Device_Asset_string2": "Manage",
+    "Device_Asset_string3": "Group",
+    "Device_Asset_string4": "Selected Plan",
+    "Device_Asset_string5": "Plan Expiry'",
+    "Device_Asset_string6": "Device & Asset",
+    "Device_Asset_string7": "Device Details",
+    "Device_Asset_string8": "ID",
+    "Device_Asset_string9": "Name",
+    "Device_Asset_string10": "Plan Details",
+    "Device_Asset_string11": "Plan",
+    "Device_Asset_string12": "Price",
+    "Device_Asset_string13": "Start Date",
+    "Device_Asset_string14": "End Date",
+    "Device_Asset_string15": "Asset Details",
+    "Device_Asset_string16": "Type",
+    "Device_Asset_string17": "Description",
+    "Device_Asset_string18": "User Details",
+    "Device_Asset_string19": "Export Details",
+    "Device_Asset_string20": "Features",
+    "Edit_Device_Asset_string1": "Edit Device & Asset",
+    "Edit_Device_Asset_string2": "Device",
+    "Edit_Device_Asset_string3": "Id",
+    "Edit_Device_Asset_string4": "Asset",
+    "Edit_Device_Asset_string5": "Description (Optional)",
+    "Edit_Device_Asset_string6": "Clear",
+    "Group_string": "Add Device",
+    "Settings_string1": "Profile",
+    "Settings_string2": "Permission",
+    "Settings_string3": "About",
+    "Settings_string4": "Rate Us",
+    "Settings_string5": "Feedback",
+    "Settings_string6": "Advance Settings",
+    "Profile_string1": "Do you really want to delete Home Address",
+    "Profile_string2": "My Profile",
+    "Profile_string3": "Mobile Number",
+    "Profile_string4": "Email Address",
+    "Profile_string5": "User Type",
+    "Profile_string6": "Member",
+    "Profile_string7": "Edit Profile",
+    "Profile_string8": "Phone Number",
+    "Profile_string9": "Done",
+    "Setting_Notification_string1": "Push Notification",
+    "Setting_Notification_string2": "Email Notification",
+    "Setting_Notification_string3": "SMS Notification",
+    "Setting_Notification_string4": "Ignition Off",
+    "Setting_Notification_string5": "Overspeed",
+    "Setting_Notification_string6": "Underspeed",
+    "Setting_Notification_string7": "Stationary",
+    "Setting_Notification_string8": "Battry Level",
+    "Setting_Notification_string9": "Geofence",
+    "Setting_Notification_string10": "When your vehicle is turned On.",
+    "Setting_Notification_string11": "When your vehicle is turned Off.",
+    "Setting_Notification_string12": "When your vehicle exceed enter speed limits.",
+    "Setting_Notification_string13": "When your vehicle is travelling below speed limit.",
+    "Setting_Notification_string14": "When your vehicle is start moving.",
+    "Setting_Notification_string15": "When your vehicle is not moving or stopped.",
+    "Setting_Notification_string16": "Vehicle engine is idle.",
+    "Setting_Notification_string17": "'When your device reach at low power level.",
+    "Setting_Notification_string18": "When your device reach at fuel level.",
+    "Setting_Notification_string19": "Your tracker sends an emergency alert.",
+    "Setting_Notification_string20": "Your tracker is out of zone.",
+    "Advance_Setting__string1": "Select Language",
+    "Advance_Setting__string2": "Automatic time zone",
+    "Advance_Setting__string3": "Use network provided time",
+    "Advance_Setting__string4": "Select time zone",
+    "Advance_Setting__string5": "Units",
+    "Advance_Setting__string6": "Distance",
+    "Advance_Setting__string7": "Miles",
+    "Advance_Setting__string8": "Kilometer",
+    "Advance_Setting__string9": "Temperature",
+    "Advance_Setting__string10": "Celsius",
+    "Advance_Setting__string11": "Fahrenheit",
+    "Advance_Setting__string12": "Distance",
+    "Feedback__string1": "Feedback",
+    "Feedback__string2": "Type here",
+    "Feedback__string3": "Reset",
+    "Feedback__string4": "Maximum 250 characters",
     "hello": "Hello!",
-    "Good morning": "Good morning",
     "Currency": "USD"
 }
