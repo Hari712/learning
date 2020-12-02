@@ -61,7 +61,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setName}
-                            label={translate( "Name_string")}
+                            label={translate( "Name")}
                             value={name}
                             onChangeText={(text) => setName(text)}
                             style={styles.textNameStyle}
@@ -137,7 +137,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                            <Text style={styles.buttonTextColor}>{translate("Cancel_string4")}</Text>
+                            <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -152,7 +152,7 @@ const GeoFenceDetails = ({ navigation }) => {
                                     setVisibilityTo(visibilityTo),
                                     setUploadImage(uploadImage)
                             }} style={styles.nextButton}>
-                            <Text style={styles.nextButtonText}>{translate("Save_string")}</Text>
+                            <Text style={styles.nextButtonText}>{translate("Save")}</Text>
                         </TouchableOpacity>
                     </View>
 

@@ -80,7 +80,7 @@ const Passcode = ({ navigation, route }) => {
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>{translate("Cancel_string4")}</Text>
+                        <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity

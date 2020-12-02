@@ -42,7 +42,7 @@ const CreateNew = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                {translate("Alarm_title")}
+                {translate("Alarms")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -77,14 +77,14 @@ return (
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
         <View style={{marginTop:hp(3), marginBottom:hp(12)}}>       
-            <DropDown label='Select Alarm' defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
+            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
         </View>   
      </View>  
 
      {selectedDevice.length>0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel_string4")}</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>

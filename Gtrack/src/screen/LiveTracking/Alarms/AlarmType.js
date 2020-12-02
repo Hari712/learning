@@ -33,7 +33,7 @@ const AlarmType = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-               {translate("Alarm_title")}
+               {translate("Alarms")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -75,7 +75,7 @@ return (
         </View>
 
         <View style={{marginVertical:hp(3)}}>
-          <Text style={styles.textStyle}>{translate("Alarms_string2")}</Text>
+          <Text style={styles.textStyle}>{translate("Time")}</Text>
           {time.map((item,key) =>
             <View key={key} style={{flexDirection:'row',alignItems:'center'}}>
               <TouchableOpacity onPress={() =>key==selectedCheckbox? setSelectedCheckbox(-1):setSelectedCheckbox(key)}>
@@ -94,11 +94,11 @@ return (
 
       <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel_string4")}</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Alarms')} style={styles.nextButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save_string")}</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save")}</Text>
             </TouchableOpacity>
         </View> 
   </View>

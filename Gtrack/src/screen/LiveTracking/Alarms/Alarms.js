@@ -30,7 +30,7 @@ const Alarms = ({navigation}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                {translate("Alarm_title")}
+                {translate("Alarms")}
             </Text>          
         ),  
         headerLeft:() => (

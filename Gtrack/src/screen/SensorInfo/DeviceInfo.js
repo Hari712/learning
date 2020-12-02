@@ -105,7 +105,7 @@ const DeviceInfo = ({ navigation, route }) => {
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '40%' }}>
-                            <Text style={styles.mainTextStyle}>State</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string3")}</Text>
                             <Text style={styles.textStyle}>Moving</Text>
                         </View>
 

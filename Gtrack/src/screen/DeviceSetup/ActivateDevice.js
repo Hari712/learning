@@ -8,6 +8,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
+import { translate } from '../../../App'
 
 const ActivateDevice = ({ navigation }) => {
 
@@ -19,7 +20,7 @@ const ActivateDevice = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Activate_device_string1")}
                 </Text>
             ),
             headerLeft: () => (
@@ -52,13 +53,13 @@ const ActivateDevice = ({ navigation }) => {
         <View style={styles.container}>
             <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step1} resizeMode="contain" />
-                <Text style={styles.title}>Activate Device</Text>
+                <Text style={styles.title}>{translate("Activate_device_string2")}</Text>
             </View>
             <View style={{ flex: 0.7, paddingHorizontal: hp(3), paddingTop: hp(2) }}>
                 <View style={styles.shadowContainer}>
                     <TextField
                         valueSet={setDeviceId}
-                        label='Device Id*'
+                        label={translate("Device Id")}
                         value={deviceId}
                         onChangeText={(text) => setDeviceId(text)}
                         style={styles.textNameStyle}
@@ -73,7 +74,7 @@ const ActivateDevice = ({ navigation }) => {
                 <View style={styles.shadowContainer}>
                     <TextField
                         valueSet={setDeviceName}
-                        label='Device Name *'
+                        label={translate("Device Name")}
                         value={deviceName}
                         onChangeText={(text) => setDeviceName(text)}
                         style={styles.textNameStyle}
@@ -85,7 +86,7 @@ const ActivateDevice = ({ navigation }) => {
                 </View>
                 <ShadowView style={styles.shadowContainer}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => navigateToAssignAsset()}>
-                        <Text style={styles.activateButtonTitle}>Activate</Text>
+                        <Text style={styles.activateButtonTitle}>{translate("Activate")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
             </View>

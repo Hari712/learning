@@ -86,7 +86,7 @@ const GeoFence = ({ navigation }) => {
 
                     <View style={styles.popUpCardContainer}>
                         <View style={styles.titleViewStyle}>
-                            <Text style={styles.titleTextStyle}>{translate("Geofence_string1")}</Text>
+                            <Text style={styles.titleTextStyle}>{translate("Details")}</Text>
                             <Image source={images.geoFence.listIcon} resizeMode='contain' />
                         </View>
 
@@ -94,7 +94,7 @@ const GeoFence = ({ navigation }) => {
 
                         <View style={styles.infoDataMainView}>
                             <View style={styles.infoDataSubView}>
-                                <Text style={styles.mainTextStyle}>{translate("Name_string")}</Text>
+                                <Text style={styles.mainTextStyle}>{translate("Name")}</Text>
                                 <Text style={styles.textStyle}>Gas Station</Text>
                             </View>
 
@@ -118,7 +118,7 @@ const GeoFence = ({ navigation }) => {
                                     </View>
 
                                     <View style={styles.typeMainViewStyle}>
-                                        <Text style={styles.mainTextStyle}>{translate("Geofence_string8")}</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Type")}</Text>
                                         <Text style={styles.fontSizeStyle}>Polygon</Text>
                                     </View>
                                 </View>
@@ -197,7 +197,7 @@ const GeoFence = ({ navigation }) => {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                            <Text style={styles.buttonTextColor}>Cancel</Text>
+                            <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
