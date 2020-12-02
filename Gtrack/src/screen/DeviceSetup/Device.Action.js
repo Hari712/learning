@@ -95,3 +95,17 @@ export const requestLinkDeviceWithGroup = (userId, data, onSuccess, onError) => 
     onSuccess,
     onError
 })
+
+export const requestGetAllUserDevice = (userId, data, onSuccess, onError) => ({
+    type: types.GET_ALL_USER_DEVICE_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
+
+export const setGetAllUserDeviceResponse = (data, pageNumber) => ({
+    type: types.GET_ALL_USER_DEVICE_RESPONSE,
+    data,
+    pageNumber
+})

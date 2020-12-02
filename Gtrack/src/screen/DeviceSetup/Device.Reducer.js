@@ -19,10 +19,11 @@ export const deviceReducer = createReducer(state = initialState, {
         }
     },
     [types.ADD_DEVICE_RESPONSE](state, action) {
-        const deviceInfo = mapKeys(action.data, 'id')
+        const deviceInfo = mapKeys(action.data, 'deviceDTO.id')
+        const updatedDevices = { ...state.devices, ...deviceInfo }
         return {
             ...state,
-            devices: deviceInfo
+            devices: updatedDevices
         }
     },
     [types.ADD_GROUP_RESPONSE](state, action) {
@@ -53,6 +54,20 @@ export const deviceReducer = createReducer(state = initialState, {
         return {
             ...state,
             groups: groupInfo
+        }
+    },
+    [types.GET_ALL_USER_DEVICE_RESPONSE](state, action) {
+        const { data, pageNumber } = action
+        const deviceInfo = mapKeys(data, 'deviceDTO.id')
+        let updatedDevices = {}
+        if (pageNumber == 0) {
+            updatedDevices = { ...deviceInfo }
+        } else {
+            updatedDevices = { ...state.devices, ...deviceInfo }
+        }
+        return {
+            ...state,
+            devices: updatedDevices
         }
     },
 })

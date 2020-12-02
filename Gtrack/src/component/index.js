@@ -12,6 +12,7 @@ import TextField from './TextField'
 import Button from './Button'
 import AddNewAssetDialog from './AddNewAssetDialog'
 import AddNewGroupDialog from './AddNewGroupDialog'
+import DeviceCell from './DeviceCell'
 
 
 export { 
@@ -28,5 +29,6 @@ export {
     TextField,
     Button, 
     AddNewAssetDialog, 
-    AddNewGroupDialog 
+    AddNewGroupDialog,
+    DeviceCell
 }

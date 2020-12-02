@@ -1,259 +1,225 @@
-import React, { useState , useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView} from 'react-native';
-import images from '../../constants/images';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import images from '../../constants/images'
+import { DeviceCell } from '../../component'
+import { useSelector, useDispatch } from 'react-redux'
+import { getDeviceListInfo, getLoginInfo } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize }from '../../component';
+import { FontSize } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
-import Tooltip from 'rn-tooltip';
+import AppManager from '../../constants/AppManager'
+import * as DeviceActions from '../DeviceSetup/Device.Action'
+import { isEmpty } from 'lodash';
 
-const DeviceAsset = ({navigation}) => {
+const DeviceAsset = ({ navigation }) => {
 
-  const [menuClick,setMenuClick] = useState(false)
+  const dispatch = useDispatch()
 
-  React.useLayoutEffect(() => {
+  const [menuClick, setMenuClick] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isLoadMoreData, setIsLoadMoreData] = useState(false)
+  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false)
+  const [pageIndex, setPageIndex] = useState(0)
+  const [pageCount, setPageCount] = useState(10)
+  const [totalCount, setTotalCount] = useState(0)
+
+  const { deviceList, isConnected, loginInfo } = useSelector(state => ({
+    deviceList: getDeviceListInfo(state),
+    isConnected: state.network.isConnected,
+    loginInfo: getLoginInfo(state)
+  }))
+
+  const user_id = loginInfo.id ? loginInfo.id : null
+
+  useLayoutEffect(() => {
 
     navigation.setOptions({
-      headerLeft:()=>(null),
-      headerRight:()=> (
-          <TouchableOpacity activeOpacity={1} onPress={()=>setMenuClick(!menuClick)}>
-            <Image source={menuClick?images.image.menuclick:images.image.menu} style={styles.headerRight} />
-          </TouchableOpacity>
+      headerLeft: () => (null),
+      headerRight: () => (
+        <TouchableOpacity activeOpacity={1} onPress={() => setMenuClick(!menuClick)}>
+          <Image source={menuClick ? images.image.menuclick : images.image.menu} style={styles.headerRight} />
+        </TouchableOpacity>
       )
     });
-  },[navigation]);
+  }, [navigation]);
 
-useEffect(() => {
-  console.log('Menu Click Done')
-},[menuClick])
+  useEffect(() => {
+    loadData()
+    return () => {
 
-  function menuHandle(item){
-    if(item=='Create'){
+    }
+  }, [])
+
+  const loadData = () => {
+    AppManager.showLoader()
+    fetchDeviceList()
+  }
+
+  useEffect(() => {
+    console.log('Menu Click Done')
+  }, [menuClick])
+
+  useEffect(() => {
+    if (isRefreshing == true || isLoadMoreData == true) {
+      fetchDeviceList()
+    }
+  }, [pageIndex, isRefreshing, isLoadMoreData])
+
+  function menuHandle(item) {
+    if (item == 'Create') {
       return NavigationService.navigate('CreateDeviceAsset')
-    }else if(item=='Manage'){
+    } else if (item == 'Manage') {
       return NavigationService.navigate('Manage')
     }
     else
-      return  
+      return
   }
 
+  function fetchDeviceList() {
+    let requestBody = {
+      pageNumber: pageIndex,
+      pageSize: pageCount,
+      useMaxSearchAsLimit: false,
+      searchColumnsList: null,
+      sortHeader: 'id',
+      sortDirection: 'DESC'
+    }
+    loadDeviceList(requestBody)
+  }
 
-return ( 
-  <>
-    <ScrollView contentContainerStyle={{flexGrow:1, backgroundColor:ColorConstant.WHITE, paddingBottom:hp(2)}} onTouchStart={()=>setMenuClick(false)}>
-    {DATA.map((item,key) =>
-      <TouchableOpacity onPress={()=>
-      { navigation.navigate('Details',{id:item.id, title:item.title, plan:item.plan,group:item.group})}
-      } style={styles.cardContainer} key={key}>
-        
-      {/* Blue top head */}
-      <View style={styles.blueConatiner}>
-        <View style={styles.blueTopHead}>
-          <Text style={styles.headerTitle}>{item.title}</Text>
-          <Text style={styles.id}>{item.id}</Text>
-        </View>
-        <View style={styles.toolTip}>
-          <Tooltip
-            popover={<Text style={styles.toolTipText}>{item.desc}</Text>} 
-            backgroundColor={ColorConstant.WHITE}
-            overlayColor={ColorConstant.TRANSPARENT}
-            pointerStyle={styles.pointerStyle}
-            containerStyle={styles.toolTipContainer}
-          >
-            {item.image?<Image style={styles.image} source={item.image}/>:null}
-          </Tooltip>
-        </View>
+  function loadDeviceList(requestBody) {
+    dispatch(DeviceActions.requestGetAllUserDevice(user_id, requestBody, onDeviceListLoadedSuccess, onDeviceListLoadedError))
+  }
 
-        <TouchableOpacity style={styles.editButton} onPress={()=> {navigation.navigate('EditDeviceAsset',{id:item.id,title:item.title})}}>
-          <Image source={images.image.edit}/>
-        </TouchableOpacity>
-      </View>
+  function onDeviceListLoadedSuccess(data) {
+    AppManager.hideLoader()
+    const arrList = data.data ? data.data : []
+    const totalCount = data.totalCount ? data.totalCount : 0
+    if (isEmpty(arrList)) {
+      let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+      setPageIndex(pagenumber)
+    }
+    setTotalCount(totalCount)
+    setIsRefreshing(false)
+    setIsLoadMoreData(false)
+  }
 
-      {/* White Body container */}
-      <View style={styles.whiteBodyContainer}>
-        <View style={styles.column} >
-          <Text style={styles.whiteBodyText}>Group</Text>
-          <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.group}</Text>              
-        </View>
-        <View style={[styles.column,{width:'40%'}]} >
-          <Text style={styles.whiteBodyText}>Selected Plan</Text>
-          <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.plan} {item.duration?<Text style={{color:ColorConstant.GREY}}>({item.duration})</Text>:null}</Text>             
-        </View>
-        <View style={[styles.column,{width:'25%'}]}>
-          <Text style={styles.whiteBodyText}>Plan Expiry</Text>
-          <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.date}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-    
-  )}
+  function onDeviceListLoadedError(error) {
+    AppManager.hideLoader()
+    setIsRefreshing(false)
+    setIsLoadMoreData(false)
+    let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+    setPageIndex(pagenumber)
+  }
 
-    </ScrollView>
+  const onRefresh = () => {
+    setIsRefreshing(true)
+    setPageIndex(0)
+  }
 
-    {menuClick?
+  const renderFooter = () => {
+    //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+    if (!isLoadMoreData || isRefreshing) return null;
+    return <ActivityIndicator style={styles.activityIndicator} />;
+  }
+
+  const loadMoreDevices = () => {
+    if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
+      if (totalCount < deviceList.length) {
+        setIsRefreshing(false)
+        setIsLoadMoreData(true)
+        setOnEndReachedCalledDuringMomentum(true)
+        setPageIndex(pageIndex + 1)
+      }
+    }
+  }
+
+  function renderDeviceCell({ item, index }) {
+    return (
+      <DeviceCell
+        item={item}
+      />
+    )
+  }
+
+  return (
+    <>
+
+
+      {menuClick ?
         <View style={styles.menuPopup}>
-          {Menu.map((item,key) =>
-              <TouchableOpacity key={key}  style={{borderBottomColor:ColorConstant.GREY, borderBottomWidth:key!=Menu.length-1 ?0.4:0}} onPress={()=>menuHandle(item) }>
-                <Text style={styles.textStyle}>{item}</Text>
-              </TouchableOpacity>
-            )
+          {Menu.map((item, key) =>
+            <TouchableOpacity key={key} style={{ borderBottomColor: ColorConstant.GREY, borderBottomWidth: key != Menu.length - 1 ? 0.4 : 0 }} onPress={() => menuHandle(item)}>
+              <Text style={styles.textStyle}>{item}</Text>
+            </TouchableOpacity>
+          )
           }
-        </View>:
-      null} 
+        </View> :
+        null}
+      <View style={{ flex: 1 }}>
+        <FlatList
+          refreshControl={
+            <RefreshControl
+              style={styles.refreshIndicator}
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          ListFooterComponent={renderFooter}
+          onEndReached={() => loadMoreDevices()}
+          onEndReachedThreshold={0.1}
+          onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
+          data={deviceList}
+          renderItem={(data) => renderDeviceCell(data)}
+        />
+      </View>
 
     </>
-    
+
   )
 }
 
-    const Menu= ['Create', 'Manage']
-
-    const DATA = [
-        {
-            id: '123456789456123',
-            title: 'TrackPort International',
-            date: "12/05/2020",
-            group:'Home',
-            plan: 'Basic',
-            duration:'Monthly',
-            type: 'Car',
-            desc: 'My Dad\'s Car',
-            image: require('../../../assets/images/Vehicles/car.png')
-        },
-        {
-            id: '123456789456123',
-            title: 'TrackPort 4G Vehicle GPS Tracker',
-            date: "12/05/2020",
-            group:'Fedex Ground',
-            plan: 'Standard',
-            duration:'Yearly',
-            type:'Truck',
-            desc: 'My Dad\'s Truck',
-            image: require('../../../assets/images/Vehicles/Truck.png')
-        },
-        {
-            id: '123456789456123',
-            title: 'Spark Nano GPS Tracker',
-            date: "10/05/2020",
-            group:'Default',
-            plan: 'None',
-            type: '',
-            duration:'',
-            desc: '',
-            image: ''
-        },
-    ];
+const Menu = ['Create', 'Manage']
 
 const styles = StyleSheet.create({
-
-  cardContainer: {
-    //width:'100%',
-    width: Dimensions.get('screen').width-30,
-    marginTop: hp(2),
-    // height:hp(18),
-    alignSelf: 'center',
-    backgroundColor: ColorConstant.WHITE,
-    borderRadius: 15,
-    elevation:3,
-    borderWidth: 0.3,
-    borderColor: ColorConstant.GREY,
-    shadowColor:ColorConstant.GREY,
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    shadowOffset: { width: 0, height: 0 },
-  },
-  blueConatiner: {
-    backgroundColor:ColorConstant.BLUE,
-    flexDirection:'row',
-    width:"100%",
-    borderTopLeftRadius:15,
-    borderTopRightRadius:15,
-    paddingHorizontal:hp(3)
-  },
-  blueTopHead: {
-    alignContent:'space-between',
-    marginVertical:hp(0.5)
-  },
-  editButton: {
-    flexDirection:'row',     
-    zIndex:10,  
-    padding:hp(1.5),
-    marginLeft:'auto'
-  },
-  headerTitle: {
-    color:ColorConstant.WHITE,
-    fontSize:FontSize.FontSize.small
-  },
-  toolTipText: {
-    alignSelf:'flex-start', 
-    fontSize:FontSize.FontSize.medium
-  },
-  pointerStyle: {
-    elevation:0.1, 
-    top:3, 
-    borderBottomWidth:12,
-  },
-  toolTipContainer: {
-    borderColor:ColorConstant.ORANGE, 
-    borderWidth:1, 
-    borderRadius:6
-  },
-  image: {
-    height:hp(1.5), 
-    resizeMode:'contain'
-  },
-  id:{
-    color:ColorConstant.ORANGE,
-    fontSize:FontSize.FontSize.extraSmall
-  },
   headerRight: {
-    marginRight:wp(5), 
-    height:hp(2.2),
-    width:wp(3), 
-    resizeMode:'contain'
+    marginRight: wp(5),
+    height: hp(2.2),
+    width: wp(3),
+    resizeMode: 'contain'
   },
-  toolTip:{
-    marginTop:hp(1),
-    left:10
+  menuPopup: {
+    backgroundColor: 'white',
+    padding: 5,
+    paddingVertical: hp(1.5),
+    right: wp(3),
+    borderRadius: 16,
+    width: hp(15),
+    top: hp(0.5),
+    justifyContent: 'space-between',
+    position: 'absolute',
+    shadowColor: ColorConstant.GREY,
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 1,
+    elevation: 10,
+    shadowRadius: 3,
+    zIndex: 10
   },
-
-menuPopup:{
-  backgroundColor:'white',
-  padding:5,
-  paddingVertical:hp(1.5),
-  right:wp(3),
-  borderRadius:16,
-  width:hp(15),
-  top:hp(0.5),
-  justifyContent:'space-between',
-  position:'absolute',
-  shadowColor:ColorConstant.GREY,		
-  shadowOffset:{height:0,width:0},
-  shadowOpacity:1,
-  elevation:10,
-  shadowRadius:3
-},
-textStyle:{
-  margin:hp(0.5),
-  color:ColorConstant.BLUE,
-  textAlignVertical:'center',
-  paddingLeft:hp(0.5)
-},
-whiteBodyContainer: {
-  flexDirection:'row',
-  marginTop:hp(1.5),
-  paddingHorizontal:hp(2.5),
-  paddingBottom:hp(1.5)
-},
-whiteBodyText: {
-  color:ColorConstant.GREY,
-  fontSize:FontSize.FontSize.small
-},
-column: {
-  flexDirection:'column',width:'35%'
-}
-
-});
+  textStyle: {
+    margin: hp(0.5),
+    color: ColorConstant.BLUE,
+    textAlignVertical: 'center',
+    paddingLeft: hp(0.5)
+  },
+  activityIndicator: {
+    color: "#000",
+    marginTop: '2%'
+  },
+  refreshIndicator: { tintColor: 'white' }
+})
 
 
-export default DeviceAsset;
+export default DeviceAsset

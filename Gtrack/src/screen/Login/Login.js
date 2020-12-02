@@ -74,11 +74,11 @@ const Login = () => {
 
     function onGetAllUserGroupsSuccess(data) {
         console.log('Group List Loaded Success')
-      }
-    
-      function onGetAllUserGroupError(error) {
+    }
+
+    function onGetAllUserGroupError(error) {
         console.log('Group List Loaded Error')
-      }
+    }
 
     function onUserAssetListLoadedSuccess(data) {
         console.log('Asset List Loaded Success')

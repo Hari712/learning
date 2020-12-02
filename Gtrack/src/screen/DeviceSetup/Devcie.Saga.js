@@ -3,6 +3,7 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as DeviceActions from './Device.Action'
+import { act } from 'react-test-renderer'
 
 function* resetLoadAssetsType(action) {
     const { userId, onSuccess, onError } = action
@@ -57,7 +58,7 @@ function* requestAddDevice(action) {
         const result = response.result ? response.result : {}
         const deviceInfo = result.deviceDTO ? result.deviceDTO : {}
         const arr = []
-        arr.push(deviceInfo)
+        arr.push(result)
         yield put(DeviceActions.setAddDeviceResponse(arr))
         onSuccess(result)
     } catch (error) {
@@ -123,6 +124,21 @@ function* requestLinkDeviceWithGroup(action) {
     }
 }
 
+function* requestGetAllUserDevices(action) {
+    const { userId, data, onSuccess, onError } = action
+    const { pageNumber } = data
+    try {
+        const url = ApiConstants.GET_ALL_USER_DEVICES(userId)
+        const response = yield call(API.post, url, data)
+        const result = response.result ? response.result : {}
+        const arrDeviceList = result.data ? result.data : []
+        yield put(DeviceActions.setGetAllUserDeviceResponse(arrDeviceList, pageNumber))
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -132,5 +148,6 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.LINK_DEVICE_TO_ASSET_REQUEST, requestLinkDeviceWithAsset),
         yield takeLatest(types.GET_ALL_USER_ASSETS_REQUEST, requestGetAllUserAssets),
         yield takeLatest(types.GET_GROUP_REQUEST, requestGetAllUserGroups),
-        yield takeLatest(types.LINK_DEVICE_WITH_GROUP_REQUEST, requestLinkDeviceWithGroup)
+        yield takeLatest(types.LINK_DEVICE_WITH_GROUP_REQUEST, requestLinkDeviceWithGroup),
+        yield takeLatest(types.GET_ALL_USER_DEVICE_REQUEST, requestGetAllUserDevices)
 }
