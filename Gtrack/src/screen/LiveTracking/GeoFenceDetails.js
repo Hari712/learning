@@ -8,6 +8,7 @@ import TextField from '../../component/TextField';
 import DropDown from '../../component/DropDown';
 import { ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
+import { translate } from '../../../App'
 
 const GeoFenceDetails = ({ navigation }) => {
     const [name, setName] = useState();
@@ -26,7 +27,7 @@ const GeoFenceDetails = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Geo Fence
+                    {translate("Geo Fence")}
                 </Text>
             ),
             headerLeft: () => (
@@ -51,7 +52,7 @@ const GeoFenceDetails = ({ navigation }) => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Type: Polygon</Text>
+                <Text style={styles.textViewStyle}>{translate("Geofence_Details_string4")}</Text>
             </View>
 
             <View style={styles.subContainer}>
@@ -60,7 +61,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setName}
-                            label='Name*'
+                            label={translate( "Name_string")}
                             value={name}
                             onChangeText={(text) => setName(text)}
                             style={styles.textNameStyle}
@@ -73,7 +74,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setDescrption}
-                            label='Description'
+                            label={translate("Geofence_string2")}
                             value={description}
                             onChangeText={(text) => setDescrption(text)}
                             // style={styles.textNameStyle}
@@ -87,7 +88,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setColorPicker}
-                            label='Pick Colour'
+                            label={translate("Geofence_Details_string")}
                             value={colorPicker}
                             onChangeText={(text) => setColorPicker(text)}
                             style={styles.textNameStyle}
@@ -101,7 +102,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         <View style={styles.dropdownView}>
                             <DropDown
                                 defaultValue={fontsize}
-                                label='Font Size'
+                                label={translate("Geofence_string7")}
                                 valueSet={setFontsize}
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
@@ -109,7 +110,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                             <DropDown
                                 defaultValue={visibilityFrom}
-                                label='Select Visibility From'
+                                label={translate("Geofence_Details_string1")}
                                 valueSet={setVisibilityFrom}
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
@@ -117,7 +118,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                             <DropDown
                                 defaultValue={visibilityTo}
-                                label='Select Visibility To'
+                                label={translate("Geofence_Details_string2")}
                                 valueSet={setVisibilityTo}
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
@@ -127,7 +128,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         {/* {uploadImage ? */}
                         <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
                             <Image source={images.geoFence.uploadGrey} resizeMode="contain" />
-                            <Text style={styles.uploadText}>Upload Image</Text>
+                            <Text style={styles.uploadText}>{translate("Geofence_Details_string3")}</Text>
                         </TouchableOpacity>
                         {/* :
                             <Image source ={{uri:uploadImage}}/> */}
@@ -136,7 +137,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                            <Text style={styles.buttonTextColor}>Cancel</Text>
+                            <Text style={styles.buttonTextColor}>{translate("Cancel_string4")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -151,7 +152,7 @@ const GeoFenceDetails = ({ navigation }) => {
                                     setVisibilityTo(visibilityTo),
                                     setUploadImage(uploadImage)
                             }} style={styles.nextButton}>
-                            <Text style={styles.nextButtonText}>Save</Text>
+                            <Text style={styles.nextButtonText}>{translate("Save_string")}</Text>
                         </TouchableOpacity>
                     </View>
 

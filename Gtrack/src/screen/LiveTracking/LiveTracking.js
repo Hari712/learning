@@ -9,6 +9,7 @@ import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates
 import NavigationService from '../../navigation/NavigationService'
 import MapView from '../../component/MapView';
 import FontSize from '../../component/FontSize';
+import { translate } from '../../../App'
 
 const LiveTracking = ({navigation}) => {
 
@@ -69,7 +70,7 @@ const LiveTracking = ({navigation}) => {
 					<View style={styles.lineContainer}>
 						{data.map((item, key) =>
 							<TouchableOpacity key={key} onPress={() => onPressHandle({ navigation, item })}>
-								<Text style={styles.textStyle}>{item}</Text>
+								<Text style={styles.textStyle}>{translate(item)}</Text>
 								{key != data.length - 1 ? <View style={styles.horizontalLine} /> : null}
 							</TouchableOpacity>
 						)

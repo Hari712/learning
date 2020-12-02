@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FontSize from '../../../component/FontSize';
 import { useDispatch, useSelector } from 'react-redux';
 import TextField from '../../../component/TextField';
+import { translate } from '../../../../App'
 
 
 const AlarmType = ({navigation,route}) => {
@@ -32,7 +33,7 @@ const AlarmType = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Alarms
+               {translate("Alarm_title")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -52,21 +53,21 @@ return (
 
       <View style={{paddingHorizontal:hp(5)}}>
         <View style={{marginVertical:hp(3)}}>
-          <Text style={styles.textStyle}>Device Name</Text>
+          <Text style={styles.textStyle}>{translate("Assign_asset_string3")}</Text>
           {selectedDeviceList.map((device,key) =>
           <Text key={key} style={[styles.textStyle,{marginVertical:hp(1),color:ColorConstant.BLACK}]}>{device}</Text> )}
         </View>
 
         <TextField 
           valueSet={setAlarmName} 
-          label='Alarm Name*'
+          label={translate("Alarms_name")}
           defaultValue={alarmName}
           outerStyle={styles.outerStyle} 
           />
 
         <View style={styles.inputTextStyle}>
           <TextInput 
-            placeholder='Speed Limit (mph)'
+            placeholder={translate("Alarms_string1")}
             style={styles.speedText}
             onChangeText={text => setSpeed(text) }                    
             value={speed}                    
@@ -74,7 +75,7 @@ return (
         </View>
 
         <View style={{marginVertical:hp(3)}}>
-          <Text style={styles.textStyle}>Time</Text>
+          <Text style={styles.textStyle}>{translate("Alarms_string2")}</Text>
           {time.map((item,key) =>
             <View key={key} style={{flexDirection:'row',alignItems:'center'}}>
               <TouchableOpacity onPress={() =>key==selectedCheckbox? setSelectedCheckbox(-1):setSelectedCheckbox(key)}>
@@ -88,16 +89,16 @@ return (
 
       <View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
           <Image style={{alignSelf:'flex-start'}} source={images.liveTracking.checkboxClick}></Image>
-          <Text style={styles.notificationStyle}> Push notification</Text>
+          <Text style={styles.notificationStyle}> {translate("Setting_Notification_string1")}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel_string4")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Alarms')} style={styles.nextButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save_string")}</Text>
             </TouchableOpacity>
         </View> 
   </View>

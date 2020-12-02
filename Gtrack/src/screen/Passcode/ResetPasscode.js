@@ -13,6 +13,7 @@ import { AppConstants } from '../../constants/AppConstants'
 import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
+import { translate } from '../../../App'
 
 const ResetPasscode = () => {
     const [email, setEmail] = useState('')
@@ -53,13 +54,13 @@ const ResetPasscode = () => {
             <View style={styles.container}>
                 <Image source={images.image.defaultlogo} />
                 <View style={styles.headingMainStyle}>
-                    <Text style={styles.headingTextStyle}>Reset your Passcode</Text>
+                    <Text style={styles.headingTextStyle}>{translate("Reset_Passcode_string1")}</Text>
                 </View>
 
                 <EditText
                     value={email}
                     onChangeText={(value) => { setEmail(value) }}
-                    placeholder='Email Address/Mobile Number'
+                    placeholder={translate("Login_string2")}
                     style={styles.emailTextStyle}
                 />
 
@@ -71,7 +72,7 @@ const ResetPasscode = () => {
                 />
 
                 <View style={styles.LoginIntoMainView}>
-                    <Text style={styles.LoginIntoTextView}>Login into Existing Account   </Text>
+                    <Text style={styles.LoginIntoTextView}>{translate("Reset_Passcode_string3")}  </Text>
                     <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
                         <Image source={images.image.login} />
                     </TouchableOpacity>

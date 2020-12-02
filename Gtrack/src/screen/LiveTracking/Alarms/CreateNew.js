@@ -11,6 +11,7 @@ import AppManager from '../../../constants/AppManager';
 import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
 import MultiSelect from '../../../component/MultiSelect';
 import DropDown from '../../../component/DropDown';
+import { translate } from '../../../../App'
 
 
 const CreateNew = ({navigation,route}) => {
@@ -41,7 +42,7 @@ const CreateNew = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Alarms
+                {translate("Alarm_title")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -61,9 +62,9 @@ return (
       </TouchableOpacity>
       <View style={{paddingHorizontal:hp(4),marginTop:hp(3)}}>
         <MultiSelect 
-                label='Select Device' 
+                label={translate("Select_Device")}
                 dataList={devicesList} 
-                allText='All' 
+                allText={translate("All_string")}
                 hideSelectedDeviceLable={true}
                 hideDeleteButton={true}
                 rowStyle={styles.rowStyle}
@@ -83,11 +84,11 @@ return (
      {selectedDevice.length>0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel_string4")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Next</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next_string")}</Text>
             </TouchableOpacity>
         </View> : null }
   </ScrollView>

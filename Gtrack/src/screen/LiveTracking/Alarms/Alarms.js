@@ -5,7 +5,7 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../../component/FontSize';
 import { useDispatch, useSelector } from 'react-redux';
-import AppManager from '../../../constants/AppManager';
+import { translate } from '../../../../App'
 
 
 const Alarms = ({navigation}) => {
@@ -30,7 +30,7 @@ const Alarms = ({navigation}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Alarms
+                {translate("Alarm_title")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -92,7 +92,7 @@ const Alarms = ({navigation}) => {
 return ( 
   <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate('CreateNew')} style={styles.header}>
-        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>Create New</Text>
+        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Geofence_string")}</Text>
       </TouchableOpacity>
 
       <FlatList
