@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
 import ShadowView from 'react-native-simple-shadow-view'
+import { translate } from '../../../App';
 
 const AddUser = ({ navigation, route }) => {
 
@@ -150,7 +151,7 @@ const AddUser = ({ navigation, route }) => {
         <View style={styles.subContainer}>
           <ShadowView style={styles.shadowContainer}>
             <TextField
-              label='First Name*'
+              label={translate("User_First_Name")}
               valueSet={setFirstName}
               defaultValue={firstName}
               outerStyle={[styles.outerStyle]}
@@ -158,7 +159,7 @@ const AddUser = ({ navigation, route }) => {
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>
             <TextField
-              label='Last Name*'
+              label={translate("User_Last_Name")}
               valueSet={setLastName}
               defaultValue={lastName}
               outerStyle={[styles.outerStyle]}
@@ -166,7 +167,7 @@ const AddUser = ({ navigation, route }) => {
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>
             <TextField
-              label='Email Address*'
+              label={translate("User_Email_Address")}
               valueSet={setEmail}
               defaultValue={email}
               outerStyle={[styles.outerStyle]}
@@ -175,7 +176,7 @@ const AddUser = ({ navigation, route }) => {
           <View style={styles.dropDown}>
             <View style={{ flex: 1 }}>
               <DropDown
-                label='Assign Role*'
+                label={translate("Assign Role")}
                 defaultValue={role}
                 valueSet={setRole}
                 dataList={['Regular', 'Owner']}
@@ -197,9 +198,9 @@ const AddUser = ({ navigation, route }) => {
             : null}
           <ShadowView style={styles.shadowContainer}>
             <MultiSelectGroup
-              label='Group Access'
+              label={translate("Group Access")}
               dataList={subUserData.group}
-              allText='All'
+              allText={translate("All_string")}
               hideSelectedDeviceLable={true}
               hideDeleteButton={true}
               rowStyle={styles.rowStyle}
@@ -212,7 +213,7 @@ const AddUser = ({ navigation, route }) => {
             />
           </ShadowView>
           <TouchableOpacity onPress={() => addUser()} disabled={!(firstName && lastName && email && role)} style={[styles.saveButtonConatiner, { backgroundColor: firstName && lastName && email && role ? ColorConstant.BLUE : ColorConstant.LIGHTGREY }]}>
-            <Text style={styles.saveText}>Save</Text>
+            <Text style={styles.saveText}>{translate("Save")}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

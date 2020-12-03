@@ -26,7 +26,7 @@ const ResetPasscode = () => {
     function onTapReset() {
         if (isConnected) {
             if (!validateEmailorPhoneNumber(email)) {
-                AppManager.showSimpleMessage('warning', { message: AppConstants.INVALID_EMAIL_OR_PHONE, description: '', floating: true })
+                AppManager.showSimpleMessage('warning', { message: translate(AppConstants.INVALID_EMAIL_OR_PHONE), description: '', floating: true })
             } else {
                 AppManager.showLoader()
                 const requestBody = {

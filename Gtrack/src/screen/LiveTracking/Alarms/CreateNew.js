@@ -88,7 +88,7 @@ return (
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next_string")}</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
         </View> : null }
   </ScrollView>

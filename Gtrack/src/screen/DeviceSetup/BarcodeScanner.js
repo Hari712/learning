@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import NavigationService from '../../navigation/NavigationService'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
+import { translate } from '../../../App'
 
 const BarcodeScanner = ({ navigation }) => {
 
@@ -14,7 +15,7 @@ const BarcodeScanner = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (

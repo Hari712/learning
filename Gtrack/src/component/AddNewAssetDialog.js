@@ -7,6 +7,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FontSize from './FontSize'
 import { ColorConstant } from '../constants/ColorConstants'
 import images from '../constants/images'
+import { translate } from '../../App'
 
 function AddNewAssetDialog(props) {
     const { isVisible, onSwipeComplete, onTapClose } = props
@@ -27,7 +28,7 @@ function AddNewAssetDialog(props) {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerTitle}>Add New Asset</Text>
+                    <Text style={styles.headerTitle}>{translate("Add_New_Asset")}</Text>
                     <View style={styles.closeButton}>
                         <TouchableOpacity onPress={() => onCancelDialog()}>
                             <Image style={{ width: hp(1.5), height: hp(1.5) }} source={images.geoFence.CrossBlack} />
@@ -36,7 +37,7 @@ function AddNewAssetDialog(props) {
                 </View>
                 <TextField
                     valueSet={setAssetName}
-                    label='Asset Name*'
+                    label={translate("Asset Name")}
                     value={assetname}
                     onChangeText={(text) => setAssetName(text)}
                     style={styles.textNameStyle}
@@ -48,7 +49,7 @@ function AddNewAssetDialog(props) {
                 />
                 <DropDown
                     defaultValue={assetType}
-                    label='Type*'
+                    label={translate("Type_star")}
                     valueSet={setAssetType}
                     dataList={['abc', 'cde', 'def', 'rock']}
                     contentInset={{ label: hp(-0.2) }}
@@ -59,7 +60,7 @@ function AddNewAssetDialog(props) {
                 <TextField
                     valueSet={setAssetDescription}
                     multiline={true}
-                    label='Description (optional)'
+                    label= {translate("Edit_Device_Asset_string5")}
                     value={assetDescription}
                     onChangeText={(text) => setAssetDescription(text)}
                     labelFontSize={hp(1.4)}
@@ -69,7 +70,7 @@ function AddNewAssetDialog(props) {
                     outerStyle={{ marginBottom: hp(0) }}
                 />
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonTitle}>{`Create & Assign`}</Text>
+                    <Text style={styles.buttonTitle}>{translate("Create_Assign")}</Text>
                 </TouchableOpacity>
             </View>
         )

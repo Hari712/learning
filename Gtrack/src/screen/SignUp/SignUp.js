@@ -34,19 +34,19 @@ const SignUp = () => {
     function onTapSignUp() {
         let message = ''
         if (isEmpty(firstName)) {
-            message = AppConstants.EMPTY_FIRST_NAME
+            message = translate(AppConstants.EMPTY_FIRST_NAME)
         }
         else if (isEmpty(lastName)) {
-            message = AppConstants.EMPTY_LAST_NAME
+            message = translate(AppConstants.EMPTY_LAST_NAME)
         }
         else if (isEmpty(email)) {
-            message = AppConstants.EMPTY_EMAIL
+            message = translate(AppConstants.EMPTY_EMAIL)
         }
         else if (isEmpty(countryCode)) {
-            message = AppConstants.EMPTY_COUNTRY_CODE
+            message = translate(AppConstants.EMPTY_COUNTRY_CODE)
         }
         else if (isEmpty(phoneNumber)) {
-            message = AppConstants.EMPTY_PHONE_NUMBER
+            message = translate(AppConstants.EMPTY_PHONE_NUMBER)
         }
 
         if (!isEmpty(message)) {
@@ -70,7 +70,7 @@ const SignUp = () => {
         AppManager.hideLoader()
         console.log("Success data",data)
         if(data){
-            AppManager.showSimpleMessage('warning', { message: AppConstants.EMAIL_SENT, description: '', floating: true }) 
+            AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: '', floating: true }) 
             NavigationService.navigate('Login')
         }
     }

@@ -6,6 +6,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import images from '../../constants/images'
+import { translate } from '../../../App'
 
 
 const CompleteSetup = ({ navigation }) => {
@@ -14,7 +15,7 @@ const CompleteSetup = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (
@@ -32,14 +33,14 @@ const CompleteSetup = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <Text style={styles.subscriptionText}>For subscription use our website</Text>
+                <Text style={styles.subscriptionText}>{translate("Device_setup_string1")}</Text>
                 <TouchableOpacity style={{ marginBottom: hp(3) }} onPress={() => onTapLink()}>
                     <Text style={styles.webLink}>www.gtrack.com</Text>
                 </TouchableOpacity>
                 <CompleteSetupImage />
-                <Text style={styles.completeSetupGuideText}>If you want to continue click on complete setup</Text>
+                <Text style={styles.completeSetupGuideText}>{translate("Device_setup_string2")}</Text>
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Complete Setup</Text>
+                    <Text style={styles.buttonText}>{translate("Complete Setup")}</Text>
                 </TouchableOpacity>
             </View>
         </View>

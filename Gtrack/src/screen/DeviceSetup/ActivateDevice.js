@@ -20,7 +20,7 @@ const ActivateDevice = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    {translate("Activate_device_string1")}
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (
@@ -53,7 +53,7 @@ const ActivateDevice = ({ navigation }) => {
         <View style={styles.container}>
             <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step1} resizeMode="contain" />
-                <Text style={styles.title}>{translate("Activate_device_string2")}</Text>
+                <Text style={styles.title}>{translate("Activate Device")}</Text>
             </View>
             <View style={{ flex: 0.7, paddingHorizontal: hp(3), paddingTop: hp(2) }}>
                 <View style={styles.shadowContainer}>

@@ -7,6 +7,7 @@ import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
+import { translate } from '../../../App'
 
 const AssignAsset = ({ navigation }) => {
 
@@ -17,7 +18,7 @@ const AssignAsset = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (
@@ -56,18 +57,18 @@ const AssignAsset = ({ navigation }) => {
         <View style={styles.container}>
             <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3), }}>
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step2} resizeMode="contain" />
-                <Text style={styles.title}>Assign Asset</Text>
+                <Text style={styles.title}>{translate("Assign Asset")}</Text>
                 <View style={styles.deviceInfoContainer}>
-                    <Text style={styles.deviceInfo}>Device ID</Text>
+                    <Text style={styles.deviceInfo}>{translate("Assign Asset")}</Text>
                     <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>85456799777464</Text>
-                    <Text style={[styles.deviceInfo, { marginTop: hp(1.0), color: ColorConstant.BLACK }]}>Device Name</Text>
+                    <Text style={[styles.deviceInfo, { marginTop: hp(1.0), color: ColorConstant.BLACK }]}>{translate("Device_Name")}</Text>
                     <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>Tracking Device</Text>
                 </View>
             </View>
             <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2) }}>
                 <DropDown
                     defaultValue={asset}
-                    label='Select Existing Asset'
+                    label={translate("Select Existing Asset")}
                     valueSet={setAsset}
                     dataList={['abc', 'cde', 'def', 'rock']}
                     contentInset={{ label: hp(-0.2) }}
@@ -77,19 +78,19 @@ const AssignAsset = ({ navigation }) => {
                 />
                 <ShadowView style={styles.shadowContainer}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
-                        <Text style={styles.activateButtonTitle}>Add New Asset</Text>
+                        <Text style={styles.activateButtonTitle}>{translate("Add_New_Asset")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
             </View>
             <View style={styles.buttonMainContainer}>
                 <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                     <TouchableOpacity style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>Not Now</Text>
+                        <Text style={styles.buttonTextColor}>{translate("Not Now")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
                 <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                     <TouchableOpacity style={styles.nextButton} onPress={() => navigateToAssignGroup()}>
-                        <Text style={styles.nextButtonText}>Next</Text>
+                        <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
             </View>

@@ -39,13 +39,13 @@ const Login = () => {
         if (isConnected) {
             let message = ''
             if (_.isEmpty(email)) {
-                message = AppConstants.EMPTY_EMAIL_OR_PHONE
+                message = translate(AppConstants.EMPTY_EMAIL_OR_PHONE)
             }
             else if (!validateEmailorPhoneNumber(email)) {
-                message = AppConstants.INVALID_EMAIL_OR_PHONE
+                message = translate(AppConstants.INVALID_EMAIL_OR_PHONE)
             }
             else if (_.isEmpty(password)) {
-                message = AppConstants.EMPTY_PASSWORD
+                message = translate(AppConstants.EMPTY_PASSWORD)
             }
             if (!_.isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -68,7 +68,7 @@ const Login = () => {
         let deviceType = DeviceInfo.getSystemName();
         let version = DeviceInfo.getVersion();
         dispatch(SettingsActions.requestGetFeedBack(data.result.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
-        AppManager.showSimpleMessage('warning', { message:AppConstants.LOGIN_SUCCESS, description: '', floating: true })            
+        AppManager.showSimpleMessage('warning', { message:translate(AppConstants.LOGIN_SUCCESS), description: '', floating: true })            
     }
 
     function onFeedbackSuccess(data) {
@@ -145,7 +145,7 @@ const Login = () => {
                     />
 
                     <CustomButton
-                        title={translate("Login_string7")}
+                        title={translate("Login")}
                         onPress={() => onTapLoginButton()}
                         style={styles.button}
                         textStyle={styles.buttonTextStyle}

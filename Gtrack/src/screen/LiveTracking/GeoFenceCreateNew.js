@@ -75,7 +75,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
                         <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType', { type: role }) }}  style={styles.nextButton}>
-                        <Text style={styles.nextButtonText}>{translate("Next_string")}</Text>
+                        <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                     </TouchableOpacity>
                 </View>
             {/* )} */}
