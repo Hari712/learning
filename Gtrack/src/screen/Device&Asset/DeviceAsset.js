@@ -6,8 +6,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getDeviceListInfo, getLoginInfo } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import NavigationService from '../../navigation/NavigationService'
 import { FontSize } from '../../component';
-import NavigationService from '../../navigation/NavigationService';
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { isEmpty } from 'lodash';
@@ -68,9 +68,9 @@ const DeviceAsset = ({ navigation }) => {
 
   function menuHandle(item) {
     if (item == 'Create') {
-      return NavigationService.navigate('CreateDeviceAsset')
+      return NavigationService.push('CreateDeviceAsset')
     } else if (item == 'Manage') {
-      return NavigationService.navigate('Manage')
+      return NavigationService.push('Manage')
     }
     else
       return

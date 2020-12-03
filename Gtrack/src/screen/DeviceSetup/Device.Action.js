@@ -109,3 +109,18 @@ export const setGetAllUserDeviceResponse = (data, pageNumber) => ({
     data,
     pageNumber
 })
+
+export const requestGetAllNonGroupedDevice = (userId, data, onSuccess, onError) => ({
+    type: types.GET_ALL_NON_GROUPED_DEVICE_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
+
+export const requestGetConsolidatedDevice = (userId, onSuccess, onError) => ({
+    type: types.GET_CONSOLIDATED_DEVICE_REQUEST,
+    userId, 
+    onSuccess, 
+    onError
+})

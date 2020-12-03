@@ -25,5 +25,6 @@ export const AppConstants = {
     EMPTY_DEVICE_NAME: 'Please enter device name',
     EMPTY_ASSET: 'Please enter asset name',
     EMPTY_ASSET_TYPE: 'Please select asset type',
-    EMPTY_GROUP_NAME: 'Please enter group name'
+    EMPTY_GROUP_NAME: 'Please enter group name',
+    EMPTY_DEVICE_SELECTION: 'Please select device'
 }

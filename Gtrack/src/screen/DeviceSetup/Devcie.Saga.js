@@ -139,6 +139,31 @@ function* requestGetAllUserDevices(action) {
     }
 }
 
+function* requestGetAllNonGroupedDevice(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_NON_GROUPED_DEVICE(userId)
+        const response = yield call(API.post, url, data)
+        const result = response.result ? response.result : []
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestGetConsolidatedDevice(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_CONSOLIDATED_DEVICE(userId)
+        let queryParams = { query: { value: false } }
+        const response = yield call(API.get, url, queryParams)
+        const result = response.result ? response.result : []
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -149,5 +174,7 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.GET_ALL_USER_ASSETS_REQUEST, requestGetAllUserAssets),
         yield takeLatest(types.GET_GROUP_REQUEST, requestGetAllUserGroups),
         yield takeLatest(types.LINK_DEVICE_WITH_GROUP_REQUEST, requestLinkDeviceWithGroup),
-        yield takeLatest(types.GET_ALL_USER_DEVICE_REQUEST, requestGetAllUserDevices)
+        yield takeLatest(types.GET_ALL_USER_DEVICE_REQUEST, requestGetAllUserDevices),
+        yield takeLatest(types.GET_ALL_NON_GROUPED_DEVICE_REQUEST, requestGetAllNonGroupedDevice),
+        yield takeLatest(types.GET_CONSOLIDATED_DEVICE_REQUEST, requestGetConsolidatedDevice)
 }
