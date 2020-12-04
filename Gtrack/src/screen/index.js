@@ -40,6 +40,7 @@ import AssignGroup from '../screen/DeviceSetup/AssignGroup'
 import BarcodeScanner from '../screen/DeviceSetup/BarcodeScanner'
 import CompleteSetup from '../screen/DeviceSetup/CompleteSetup'
 import GetStarted from './GetStarted/GetStarted'
+import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
 
 export {
     Splash,
@@ -82,5 +83,6 @@ export {
     AssignGroup,
     BarcodeScanner,
     CompleteSetup,
-    GetStarted
+    GetStarted,
+    SettingsChangePassCode
 }

@@ -49,6 +49,10 @@ const Settings = ({ navigation }) => {
         navigation.navigate('AdvanceSettings')
       }
 
+      else if (item.title == 'Change Passcode') {
+        navigation.navigate('SettingsChangePassCode')
+      }
+
       else if (item.title == 'Logout') {
         dispatch(LoginActions.requestLogout())
       }
@@ -198,6 +202,12 @@ const SETTINGS_MENU = [
   {
     title: 'Advance Settings',
     icon: images.image.settings.advanceSetting,
+    nextArrow: images.image.settings.nextArrow,
+    next: images.image.settings.next
+  },
+  {
+    title: 'Change Passcode',
+    icon: images.image.changePasscode.changePasscodeIcon,
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },
