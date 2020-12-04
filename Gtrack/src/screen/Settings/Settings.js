@@ -207,7 +207,7 @@ const SETTINGS_MENU = [
   },
   {
     title: 'Change Passcode',
-    icon: images.image.settings.advanceSetting,
+    icon: images.image.changePasscode.changePasscodeIcon,
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },
