@@ -23,3 +23,11 @@ export const responseGetFeedback = (data, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const requestChangePasscode = (data, userId, onSuccess, onError) => ({
+    type: types.CHANGE_PASSCODE_REQUEST,    
+    data,
+    userId,
+    onSuccess,
+    onError
+})

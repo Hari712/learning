@@ -5,8 +5,17 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize, TextField } from '../../../component';
 import { Dialog } from 'react-native-simple-dialogs';
+import _ from 'lodash'
+import { AppConstants } from '../../../constants/AppConstants';
+import { validatePassword } from '../../../utils/helper';
+import AppManager from '../../../constants/AppManager';
+import { useDispatch, useSelector } from 'react-redux';
+import * as SettingsActions from '../Settings.Action'
+import { getLoginState } from '../../Selector';
 
 const SettingsChangePassCode = ({navigation,route}) => {
+
+    const dispatch = useDispatch()
 
     const [oldPasscode, setOldPasscode] = useState('')
     const [newPasscode, setNewPasscode] = useState('')
@@ -14,13 +23,13 @@ const SettingsChangePassCode = ({navigation,route}) => {
     const [dialogVisible,setDialogVisible] = useState(false)
     const [oldpwdEyeClick, setOldpwdEyeClick] = useState(false)
     const [NewpwdEyeClick, setNewpwdEyeClick] = useState(false)
-    
-  React.useEffect(() => {
 
-  },[])
-
-
-
+    const { loginData,isConnected } = useSelector(state => ({
+      loginData: getLoginState(state),
+      isConnected: state.network.isConnected,
+  }))
+     
+  
   React.useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -59,6 +68,65 @@ const newPasscodeHandleRightAccessory = () =>{
     )
 }
 
+function onSubmitPasscode() {
+  if (isConnected) {
+      let message = ''
+      if (_.isEmpty(oldPasscode)) {
+          message = AppConstants.EMPTY_OLD_PASSCODE
+      }
+      else if (!validatePassword(oldPasscode)) {
+          message = AppConstants.INVALID_PASSWORD
+      }
+      else if (_.isEmpty(newPasscode)) {
+          message = AppConstants.EMPTY_NEW_PASSCODE
+      }
+      else if (!validatePassword(newPasscode)) {
+          message = AppConstants.INVALID_PASSWORD
+      }
+      else if (_.isEmpty(confirmPasscode)) {
+          message = AppConstants.EMPTY_CONFIRM_PASSWORD
+      }
+      else if (!validatePassword(confirmPasscode)) {
+          message = AppConstants.INVALID_PASSWORD
+      }
+      else if (!(newPasscode == confirmPasscode)) {
+          message = AppConstants.PASSWORD_DOES_NOT_MATCH
+      }
+      if (!_.isEmpty(message)) {
+          AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+      } 
+      else {
+          AppManager.showLoader()
+          const requestBody = {
+            password: oldPasscode.toString(),
+            newPassword: newPasscode.toString(),
+            confirmNewPassword: confirmPasscode.toString()
+          }
+          dispatch(SettingsActions.requestChangePasscode(requestBody, loginData.id, onSuccess, onError))
+      }
+  }
+  else {
+      AppManager.showNoInternetConnectivityError()
+  }
+}
+
+const onSuccess = (data) => {
+  AppManager.hideLoader()
+  setDialogVisible(!dialogVisible)
+  console.log("Success data", data)
+  AppManager.showSimpleMessage('success', { message: 'Successfully Changed Password', description: '', floating: true })
+ 
+}
+
+const onError = (error) => {
+  AppManager.hideLoader()
+  console.log("Error", error)
+  AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
+}
+
+
+
+
 return ( 
     <View style={styles.container}>
         <View style={{width:'100%'}}>
@@ -95,7 +163,7 @@ return (
                   secureTextEntry={true}
                   value={confirmPasscode} 
                   label='Confirm Passcode*' 
-                  onChangeText={(text) => setOldPasscode(text)}
+                  onChangeText={(text) => setConfirmPassword(text)}
               />
           </View>
 
@@ -105,8 +173,8 @@ return (
 
         </View>
 
-        <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={styles.submitButton}>
-            <Text style={styles.submit}>Submit</Text>
+        <TouchableOpacity onPress={()=>onSubmitPasscode()} style={styles.submitButton}>
+          <Text style={styles.submit}>Submit</Text>
         </TouchableOpacity>
 
         <Dialog 
