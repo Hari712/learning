@@ -28,7 +28,8 @@ const ApiConstants = {
     ADD_ASSET:(userId) => `${USER}${userId}/assets`,
     GET_ASSET_BY_USER_ID:(userId) => `${USER}${userId}/assets/all`,
     GET_GROUPS:(userId) => `${USER}${userId}/groups`,
-    ADD_DEVICE:(userId) => `${USER}${userId}/devices`
+    ADD_DEVICE:(userId) => `${USER}${userId}/devices`,
+    CHANGE_PASSCODE:(userId) => `${USER}${userId}/changePassword`
 }
 
 export default ApiConstants
