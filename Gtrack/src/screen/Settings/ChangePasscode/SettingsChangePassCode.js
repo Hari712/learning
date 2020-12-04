@@ -74,9 +74,6 @@ function onSubmitPasscode() {
       if (_.isEmpty(oldPasscode)) {
           message = AppConstants.EMPTY_OLD_PASSCODE
       }
-      else if (!validatePassword(oldPasscode)) {
-          message = AppConstants.INVALID_PASSWORD
-      }
       else if (_.isEmpty(newPasscode)) {
           message = AppConstants.EMPTY_NEW_PASSCODE
       }
@@ -86,10 +83,7 @@ function onSubmitPasscode() {
       else if (_.isEmpty(confirmPasscode)) {
           message = AppConstants.EMPTY_CONFIRM_PASSWORD
       }
-      else if (!validatePassword(confirmPasscode)) {
-          message = AppConstants.INVALID_PASSWORD
-      }
-      else if (!(newPasscode == confirmPasscode)) {
+      else if (newPasscode != confirmPasscode) {
           message = AppConstants.PASSWORD_DOES_NOT_MATCH
       }
       if (!_.isEmpty(message)) {
