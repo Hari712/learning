@@ -38,7 +38,7 @@ const DeviceCell = (props) => {
                     </Tooltip>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push('EditDeviceAsset', { id: item.id, title: item.title }) }}>
+                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push('EditDeviceAsset', { id: item.id, title: item.title, device: deviceDTO }) }}>
                     <Image source={images.image.edit} />
                 </TouchableOpacity>
             </View>

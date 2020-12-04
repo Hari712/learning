@@ -1,227 +1,347 @@
-import React, { useState ,Component, useRef} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView} from 'react-native';
+import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import  { Dialog, FontSize, TextField, DropDown} from '../../component';
+import { Dialog, FontSize, TextField, DropDown, AssetConfirmationDialog } from '../../component'
+import { useSelector, useDispatch } from 'react-redux'
+import { getLoginInfo, makeGetDeviceDetail, getAssetTypeListInfo, getGroupListInfo, getAssetListInfo } from '../Selector'
+import isEmpty from 'lodash/isEmpty'
+import AppManager from '../../constants/AppManager'
+import { AppConstants } from '../../constants/AppConstants'
+import NavigationService from '../../navigation/NavigationService'
+import * as DeviceActions from '../DeviceSetup/Device.Action'
 
-const EditDeviceAsset = ({route, navigation}) => {
-    const {id,title} = route.params;
+const EditDeviceAsset = ({ route, navigation }) => {
+
+    const deviceInfo = route.params.device ? route.params.device : null
+
+    const dispatch = useDispatch()
+
+    const getDeviceDetail = makeGetDeviceDetail()
+
+    const { assetList, isConnected, loginInfo, groupList } = useSelector(state => ({
+        assetList: getAssetListInfo(state),
+        isConnected: state.network.isConnected,
+        loginInfo: getLoginInfo(state),
+        groupList: getGroupListInfo(state),
+    }))
+
+    const user_id = loginInfo.id ? loginInfo.id : null
+    const assetDTO = isEmpty(deviceInfo.assetDTO) ? null : deviceInfo.assetDTO
+
+    const asstName = assetDTO && assetDTO.assetName ? assetDTO.assetName : ''
+
+    const assetType = assetDTO && assetDTO.assetType ? assetDTO.assetType : 'None'
+
+    const assetDescription = assetDTO && assetDTO.description ? assetDTO.description : 'None'
+
+    const groupDTO = isEmpty(deviceInfo.groupDTO) ? null : deviceInfo.groupDTO
+
+    const groupName = groupDTO && groupDTO.groupName ? groupDTO.groupName : null
+
+
+    const arrAssetList = isEmpty(assetList) ? [] : assetList.map((item) => item.assetName)
+    const deviceId = deviceInfo.deviceId ? deviceInfo.deviceId : ''
+
+    const devName = deviceInfo.deviceName ? deviceInfo.deviceName : ''
+
+    const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
+
     const nameRef = useRef();
 
-    const [value,setValue] = useState();
-    const [type,setType] = useState();
-    const [group,setGroup] = useState();
-    const [dialogVisible,setDialogVisible] = useState(false)
-    const groupArray = ['Group 1','Group 2','Group 3'] ;
-    const typeArray = ['Car','Truck','Tempo'] ;
+    const [deviceName, setDeviceName] = useState(devName);
+    const [assetName, setAssetName] = useState(asstName)
+    const [type, setType] = useState(assetType);
+    const [assetDesc, setAssetDescription] = useState(assetDescription)
+    const [group, setGroup] = useState(groupName);
+    const [dialogVisible, setDialogVisible] = useState(false)
 
-    React.useLayoutEffect(() => {
+
+    useEffect(() => {
+        if (assetName) {
+            let selectedAssetList = assetList.filter((item) => item.assetName == assetName)
+            if (!isEmpty(selectedAssetList)) {
+                let selectedAset = selectedAssetList[0]
+                setType(selectedAset.assetType)
+                setAssetDescription(selectedAset.description)
+            }
+        }
+
+    }, [assetName])
+
+    useEffect(() => {
+        if (group) {
+            let selectedGroupList = groupList.filter((item) => item.groupName == group)
+            if (!isEmpty(selectedGroupList)) {
+                let selectedGroup = selectedGroupList[0]
+                setGroup(selectedGroup.groupName)
+            }
+        }
+
+    }, [group])
+
+    useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={{
-                    color:ColorConstant.GREY,
+                    color: ColorConstant.GREY,
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
-                    //letterSpacing: 0,
-                    textAlign:'center' }}>
+                    textAlign: 'center'
+                }}>
                     Edit Device & Asset
-                </Text>          
+                </Text>
             ),
-            headerLeft:() => (
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
-                <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => NavigationService.goBack()}>
+                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
         });
-    }, [navigation]);
+    }, [navigation])
 
     const clear = () => {
-        setValue()
+        setDeviceName('')
         nameRef.current.clear();
         setType('')
-        setGroup('')        
+        setGroup('')
     }
 
-return (
-    <View style={styles.container}>
-        <View style={styles.subContainer}>
-            <View style={styles.device}>
-                <Image  style={{resizeMode:'stretch'}} source={images.image.usb}/>
-                <Text style={styles.textStyle}>Device</Text>
-            </View>
-            <View style={styles.id}>
-                <Text style={styles.idTitle}>Id</Text>
-                <Text style={styles.idText}>{id}</Text>
-            </View>
+    function onTapSave() {
+        let message = ''
+        if (isEmpty(deviceName)) {
+            message = AppConstants.EMPTY_DEVICE_NAME
+        }
+        // else if (isEmpty(type)) {
+        //     message = AppConstants.EMPTY_ASSET_TYPE
+        // }
+        // else if (isEmpty(group)) {
+        //     message = AppConstants.EMPTY_GROUP_SELECTION
+        // }
+        if (!isEmpty(message)) {
+            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+        } else {
+            
+            setDialogVisible(true)
+        }
+    }
 
-            <View style={styles.textField}>
-                <TextField valueSet={setValue} label='Name*' ref={nameRef} />
-            </View>
-            <View style={styles.horizontalLine}/>
+    function onTapConfirm() {
+        setDialogVisible(false)
+        let deviceDTO = { ...deviceInfo, ...{ deviceName: deviceName } }
+            let groupDTObj = groupDTO ? groupDTO : null
+            if (!isEmpty(group)) {
+                let arrSelectedGroup = groupList.filter((item) => item.groupName == group)
+                if (!isEmpty(arrSelectedGroup)) {
+                    let selectedGroup = arrSelectedGroup[0]
+                    groupDTObj = selectedGroup
+                }
+            }
 
-            <View style={[styles.device,{marginTop:hp(2)}]}>
-                <Image  style={{resizeMode:'stretch'}} source={images.image.pickupcar}/>
-                <Text style={styles.textStyle}>Asset</Text>
-            </View>
-            <View style={{marginTop:hp(2),zIndex:4}}>
-            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray}  />
-            </View>
+            let assetDtObj = assetDTO ? assetDTO : null
+            if (!isEmpty(assetDtObj)) {
+                let arrSelectedAsset = arrAssetList.filter((item) => item.assetName == assetName)
+                if (!isEmpty(arrSelectedAsset)) {
+                    let selectedAsset = arrSelectedAsset[0]
+                    assetDtObj = selectedAsset
+                }
+            }
+
+            AppManager.showLoader()
+            let requestBody = {
+                deviceDTO: deviceDTO,
+                assetDTO: assetDtObj,
+                groupDTO: groupDTObj
+            }
+            dispatch(DeviceActions.requestUpdateDevice(user_id, requestBody, onUpdateDeviceSuccess, onUpdateDevcieError))
+    }
+
+    function onUpdateDeviceSuccess(data) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message:'Device updated successfully', description: '' })
+        NavigationService.goBack()
+    }
+
+    function onUpdateDevcieError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '' })
+    }
+
+    function renderAssetConfirmationDialog() {
+        return (
+            <AssetConfirmationDialog
+                isVisible={dialogVisible}
+                // deviceId={device.deviceId}
+                // onSubmit={(item) => onSubmit(item)}
+                onTapConfirm={() => onTapConfirm()}
+                onTapClose={() => setDialogVisible(false)}
+                onSwipeComplete={() => setDialogVisible(false)}
+            />
+        )
+    }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.subContainer}>
+                <View style={styles.device}>
+                    <Image style={{ resizeMode: 'stretch' }} source={images.image.usb} />
+                    <Text style={styles.textStyle}>Device</Text>
+                </View>
+                <View style={styles.id}>
+                    <Text style={styles.idTitle}>Id</Text>
+                    <Text style={styles.idText}>{deviceId}</Text>
+                </View>
+
+                <View style={styles.textField}>
+                    <TextField valueSet={setDeviceName} label='Name*' ref={nameRef} value={devName} />
+                </View>
+                <View style={styles.horizontalLine} />
+
+                <View style={[styles.device, { marginTop: hp(2) }]}>
+                    <Image style={{ resizeMode: 'stretch' }} source={images.image.pickupcar} />
+                    <Text style={styles.textStyle}>Asset</Text>
+                </View>
+                <View style={{ marginTop: hp(2), zIndex: 5 }}>
+                    <DropDown label='Name' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
+                </View>
 
                 <View style={styles.nameDesc}>
                     <View style={styles.column} >
-                        <Text style={styles.nameDescText}>Name</Text>
-                        <Text style={styles.name}>xyz</Text>              
+                        <Text style={styles.nameDescText}>Type</Text>
+                        <Text style={styles.name}>{type}</Text>
                     </View>
                     <View style={styles.column} >
                         <Text style={styles.nameDescText}>Description (Optional)</Text>
-                        <Text style={styles.name}>xyz</Text>         
+                        <Text style={styles.name}>{assetDesc}</Text>
                     </View>
                 </View>
                 <View style={styles.horizontalLine} />
 
-                <View style={[styles.device,{marginTop:hp(2)}]}>
-                    <Image  style={{resizeMode:'stretch'}} source={images.image.list}/>
+                <View style={[styles.device, { marginTop: hp(2) }]}>
+                    <Image style={{ resizeMode: 'stretch' }} source={images.image.list} />
                     <Text style={styles.textStyle}>Select Group</Text>
                 </View>
 
-                <View style={{marginTop:hp(2),zIndex:4}}>
-                <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={groupArray} />
+                <View style={{ marginTop: hp(2), zIndex: 4 }}>
+                    <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={arrGroupnames} />
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={()=> clear()} style={[styles.button,{backgroundColor:ColorConstant.WHITE,borderColor:ColorConstant.BLUE,borderWidth:1}]}>
-                        <Text style={[styles.buttonText,{color:ColorConstant.BLUE}]}>Clear</Text>
+                    <TouchableOpacity onPress={() => clear()} style={[styles.button, { backgroundColor: ColorConstant.WHITE, borderColor: ColorConstant.BLUE, borderWidth: 1 }]}>
+                        <Text style={[styles.buttonText, { color: ColorConstant.BLUE }]}>Clear</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={styles.button}>
+                    <TouchableOpacity onPress={() => onTapSave()} style={styles.button}>
                         <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
                 </View>
 
-                <Dialog 
-                    heading="Are you sure ?"
-                    message={"Do you really want to attach asset ?" + "\n \n" + "It will get detach from the current device."}
-                    visible={dialogVisible}
-                    onTouchOutside={() => setDialogVisible(false)}
-                    positiveButtonName={"Save"}
-                    negativeHandle={() => setDialogVisible(false)}
-                    positiveHandle={() => setDialogVisible(false)}
-                />        
-        </View>     
+                {renderAssetConfirmationDialog()}
+            </View>
 
-    </View>
-    
-    )}
+        </View>
 
-const Data=[
-    {
-        name:'Tom Smith',
-        role:'Owner'
-    },
-    {
-    name:'David Smith',
-    role:'Regular'
-    }
-]  
+    )
+}
 
 const styles = StyleSheet.create({
-container: {
-height:Dimensions.get('window').height,
-backgroundColor:ColorConstant.WHITE,
-alignItems:'center'
-},
-subContainer: {
-marginHorizontal:hp(3),
-marginVertical:hp(5),
-width:Dimensions.get('window').width-40,
-zIndex:1
-},
-device: {
-    flexDirection:'row',
-    alignItems:'center'
-},
-textStyle: {
-marginLeft:hp(2),
-color:ColorConstant.BLUE,
-fontSize:FontSize.FontSize.small,
-fontWeight:'600'
-},
-id: {
-flexDirection:'row',
-marginTop:hp(2)
-},
-idTitle: {
-color:ColorConstant.BLUE,
-fontSize:FontSize.FontSize.small,
-fontWeight:'600',
-flex:1
-},
-idText: {
-marginLeft:hp(1.5),
-color:ColorConstant.BLACK,
-fontSize:FontSize.FontSize.small,
-fontWeight:'600',
-flex:20
-},
-textField: {
-width:'100%',
-alignSelf:'center',
-margin:hp(3)
-},
-horizontalLine: {
-borderBottomColor:ColorConstant.GREY,
-borderBottomWidth:0.3,
-marginHorizontal:hp(2),
-width:wp(95),
-alignSelf:'center'
-},
-nameDesc: {
-flexDirection:'row',
-marginTop:hp(2),
-marginBottom:hp(3)
-},
-column: {
-flexDirection:'column',
-flex:1
-},
-nameDescText: {
-color:ColorConstant.BLUE,
-fontSize:FontSize.FontSize.small
-},
-name: {
-color:ColorConstant.BLACK,
-fontSize:FontSize.FontSize.small,
-marginTop:hp(1)
-},
-button: {
-borderRadius:6,
-backgroundColor:ColorConstant.BLUE,
-width:'42%',
-height:hp(6),
-justifyContent:'center'
-},
-buttonText: {
-textAlign:'center',
-color:ColorConstant.WHITE
-},
-messageStyle: {
-color:ColorConstant.BLACK, 
-textAlign:'center',
-fontSize:FontSize.FontSize.small
-},
-dialogButton: {
-alignItems:'center',
-marginBottom:hp(3)
-},
-buttonContainer: {
-    flexDirection:'row',
-    justifyContent:'space-evenly',
-    //width:'75%',
-    //margin:hp(3),
-    marginTop:hp(5),
-    alignItems:'center'
-}	
+    container: {
+        height: Dimensions.get('window').height,
+        backgroundColor: ColorConstant.WHITE,
+        alignItems: 'center'
+    },
+    subContainer: {
+        marginHorizontal: hp(3),
+        marginVertical: hp(5),
+        width: Dimensions.get('window').width - 40,
+        zIndex: 1
+    },
+    device: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    textStyle: {
+        marginLeft: hp(2),
+        color: ColorConstant.BLUE,
+        fontSize: FontSize.FontSize.small,
+        fontWeight: '600'
+    },
+    id: {
+        flexDirection: 'row',
+        marginTop: hp(2)
+    },
+    idTitle: {
+        color: ColorConstant.BLUE,
+        fontSize: FontSize.FontSize.small,
+        fontWeight: '600',
+        flex: 1
+    },
+    idText: {
+        marginLeft: hp(1.5),
+        color: ColorConstant.BLACK,
+        fontSize: FontSize.FontSize.small,
+        fontWeight: '600',
+        flex: 20
+    },
+    textField: {
+        width: '100%',
+        alignSelf: 'center',
+        margin: hp(3)
+    },
+    horizontalLine: {
+        borderBottomColor: ColorConstant.GREY,
+        borderBottomWidth: 0.3,
+        marginHorizontal: hp(2),
+        width: wp(95),
+        alignSelf: 'center'
+    },
+    nameDesc: {
+        flexDirection: 'row',
+        marginTop: hp(2),
+        marginBottom: hp(3)
+    },
+    column: {
+        flexDirection: 'column',
+        flex: 1
+    },
+    nameDescText: {
+        color: ColorConstant.BLUE,
+        fontSize: FontSize.FontSize.small
+    },
+    name: {
+        color: ColorConstant.BLACK,
+        fontSize: FontSize.FontSize.small,
+        marginTop: hp(1)
+    },
+    button: {
+        borderRadius: 6,
+        backgroundColor: ColorConstant.BLUE,
+        width: '42%',
+        height: hp(6),
+        justifyContent: 'center'
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: ColorConstant.WHITE
+    },
+    messageStyle: {
+        color: ColorConstant.BLACK,
+        textAlign: 'center',
+        fontSize: FontSize.FontSize.small
+    },
+    dialogButton: {
+        alignItems: 'center',
+        marginBottom: hp(3)
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        //width:'75%',
+        //margin:hp(3),
+        marginTop: hp(5),
+        alignItems: 'center'
+    }
 });
 
 export default EditDeviceAsset;

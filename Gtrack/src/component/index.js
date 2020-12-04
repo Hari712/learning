@@ -13,6 +13,7 @@ import Button from './Button'
 import AddNewAssetDialog from './AddNewAssetDialog'
 import AddNewGroupDialog from './AddNewGroupDialog'
 import DeviceCell from './DeviceCell'
+import AssetConfirmationDialog from './AssetConfirmationDialog'
 
 
 export { 
@@ -30,5 +31,6 @@ export {
     Button, 
     AddNewAssetDialog, 
     AddNewGroupDialog,
-    DeviceCell
+    DeviceCell,
+    AssetConfirmationDialog
 }

@@ -3,7 +3,6 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as DeviceActions from './Device.Action'
-import { act } from 'react-test-renderer'
 
 function* resetLoadAssetsType(action) {
     const { userId, onSuccess, onError } = action
@@ -164,6 +163,21 @@ function* requestGetConsolidatedDevice(action) {
     }
 }
 
+function* requestUpdateDevice(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_DEVICE(userId)
+        const response = yield call(API.put, url, data)
+        const result = response.result ? response.result : {}
+        const arr = []
+        arr.push(result)
+        yield put(DeviceActions.setAddDeviceResponse(arr))
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -176,5 +190,6 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.LINK_DEVICE_WITH_GROUP_REQUEST, requestLinkDeviceWithGroup),
         yield takeLatest(types.GET_ALL_USER_DEVICE_REQUEST, requestGetAllUserDevices),
         yield takeLatest(types.GET_ALL_NON_GROUPED_DEVICE_REQUEST, requestGetAllNonGroupedDevice),
-        yield takeLatest(types.GET_CONSOLIDATED_DEVICE_REQUEST, requestGetConsolidatedDevice)
+        yield takeLatest(types.GET_CONSOLIDATED_DEVICE_REQUEST, requestGetConsolidatedDevice),
+        yield takeLatest(types.UPDATE_DEVICE_REQUEST, requestUpdateDevice)
 }

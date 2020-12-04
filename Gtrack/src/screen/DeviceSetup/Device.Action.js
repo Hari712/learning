@@ -124,3 +124,17 @@ export const requestGetConsolidatedDevice = (userId, onSuccess, onError) => ({
     onSuccess, 
     onError
 })
+
+export const requestUpdateDevice = (userId, data, onSuccess, onError) => ({
+    type: types.UPDATE_DEVICE_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
+
+export const setUpdateDeviceResponse = (deviceId, data) => ({
+    type: types.UPDATE_DEVICE_RESPONSE,
+    deviceId,
+    data
+})
