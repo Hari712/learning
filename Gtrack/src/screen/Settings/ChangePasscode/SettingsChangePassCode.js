@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   },
   submit: {
     textAlign:'center',
-    paddingVertical:hp(0.7),
+    paddingVertical:hp(1),
     color:ColorConstant.WHITE,
     fontFamily:"Nunito-Bold"
   },
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   okText: {
     textAlign:'center',
-    paddingVertical:hp(0.7),
+    paddingVertical:hp(1),
     color:ColorConstant.WHITE,
     fontFamily:"Nunito-Bold"
   }
