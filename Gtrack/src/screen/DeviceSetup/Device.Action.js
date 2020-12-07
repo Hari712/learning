@@ -138,3 +138,11 @@ export const setUpdateDeviceResponse = (deviceId, data) => ({
     deviceId,
     data
 })
+
+export const requestGetDeviceDetailByIdAndUserId = (userId, deviceId, onSuccess, onError) => ({
+    type: types.GET_DEVICE_BY_ID_REQUEST,
+    userId,
+    deviceId,
+    onSuccess,
+    onError
+})

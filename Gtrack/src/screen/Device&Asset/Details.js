@@ -1,14 +1,50 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize }from '../../component';
+import { FontSize } from '../../component';
+import { useDispatch, useSelector } from 'react-redux'
+import * as DeviceActions from '../DeviceSetup/Device.Action'
+import AppManager from '../../constants/AppManager'
+import { getLoginInfo } from '../Selector'
+import NavigationService from '../../navigation/NavigationService'
 
 const Details = ({ route, navigation }) => {
-    const { id, title, plan, group } = route.params;
 
-    React.useLayoutEffect(() => {
+    const { deviceId, title } = route.params
+
+    const [deviceData, setDeviceData] = useState(null)
+
+    const dispatch = useDispatch()
+
+    const { loginInfo, isConnected } = useSelector((state) => ({
+        loginInfo: getLoginInfo(state),
+        isConnected: state.network.isConnected
+    }))
+
+    const user_id = loginInfo.id ? loginInfo.id : null
+
+    useEffect(() => {
+        loadDeviceDetail()
+    }, [])
+
+    function loadDeviceDetail() {
+        AppManager.showLoader()
+        dispatch(DeviceActions.requestGetDeviceDetailByIdAndUserId(user_id, deviceId, onDeviceDetailLoadedSuccess, onDeviceDetailLoadedError))
+    }
+
+    function onDeviceDetailLoadedSuccess(data) {
+        setDeviceData(data)
+        AppManager.hideLoader()
+    }
+
+    function onDeviceDetailLoadedError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '' })
+    }
+
+    useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={{
@@ -21,7 +57,7 @@ const Details = ({ route, navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
+                <TouchableOpacity onPress={() => NavigationService.goBack()}>
                     <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
@@ -134,7 +170,7 @@ const Details = ({ route, navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </>
+        </>  
     )
 }
 

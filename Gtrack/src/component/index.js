@@ -14,7 +14,8 @@ import AddNewAssetDialog from './AddNewAssetDialog'
 import AddNewGroupDialog from './AddNewGroupDialog'
 import DeviceCell from './DeviceCell'
 import AssetConfirmationDialog from './AssetConfirmationDialog'
-
+import GroupItem from './GroupItem'
+import AssteItem from './AssetItem'
 
 export { 
     EditText,
@@ -32,5 +33,7 @@ export {
     AddNewAssetDialog, 
     AddNewGroupDialog,
     DeviceCell,
-    AssetConfirmationDialog
+    AssetConfirmationDialog,
+    GroupItem,
+    AssteItem
 }

@@ -15,6 +15,8 @@ import * as DeviceActions from '../DeviceSetup/Device.Action'
 const EditDeviceAsset = ({ route, navigation }) => {
 
     const deviceInfo = route.params.device ? route.params.device : null
+    const assetInfo = route.params.assetDTO ? route.params.assetDTO : null
+    const groupInfo = route.params.groupDTO ? route.params.groupDTO : null
 
     const dispatch = useDispatch()
 
@@ -28,7 +30,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
     }))
 
     const user_id = loginInfo.id ? loginInfo.id : null
-    const assetDTO = isEmpty(deviceInfo.assetDTO) ? null : deviceInfo.assetDTO
+    const assetDTO = isEmpty(assetInfo) ? null : assetInfo
 
     const asstName = assetDTO && assetDTO.assetName ? assetDTO.assetName : ''
 
@@ -36,7 +38,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
 
     const assetDescription = assetDTO && assetDTO.description ? assetDTO.description : 'None'
 
-    const groupDTO = isEmpty(deviceInfo.groupDTO) ? null : deviceInfo.groupDTO
+    const groupDTO = isEmpty(groupInfo) ? null : groupInfo
 
     const groupName = groupDTO && groupDTO.groupName ? groupDTO.groupName : null
 
@@ -140,8 +142,8 @@ const EditDeviceAsset = ({ route, navigation }) => {
             }
 
             let assetDtObj = assetDTO ? assetDTO : null
-            if (!isEmpty(assetDtObj)) {
-                let arrSelectedAsset = arrAssetList.filter((item) => item.assetName == assetName)
+            if (!isEmpty(assetName)) {
+                let arrSelectedAsset = assetList.filter((item) => item.assetName == assetName)
                 if (!isEmpty(arrSelectedAsset)) {
                     let selectedAsset = arrSelectedAsset[0]
                     assetDtObj = selectedAsset

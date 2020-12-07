@@ -3,8 +3,8 @@ import * as types from '../../constants/ActionTypes'
 import mapKeys from 'lodash/mapKeys'
 
 const initialState = {
-    assetType: null,
-    assets: null,
+    assetType: {},
+    assets: {},
     groups: {},
     devices: {}
 }

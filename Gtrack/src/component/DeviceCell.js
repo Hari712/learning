@@ -12,12 +12,13 @@ const DeviceCell = (props) => {
     const { item, onTapDetail, onTapEdit } = props
     const { deviceDTO } = item
     const groupDTO = item.groupDTO ? item.groupDTO : null
+    const assetDTO = item.assetDTO ? item.assetDTO : null
     const groupName = groupDTO ? groupDTO.groupName : 'Default'
     const devicePlan = item.devicePlan ? item.devicePlan : null
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
     return (
-        <TouchableOpacity onPress={() => { NavigationService.push('Details', { id: item.id, title: item.title, plan: item.plan, group: item.group }) }
+        <TouchableOpacity onPress={() => { NavigationService.push('Details', { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
         } style={styles.cardContainer}>
 
             {/* Blue top head */}
@@ -38,7 +39,7 @@ const DeviceCell = (props) => {
                     </Tooltip>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push('EditDeviceAsset', { id: item.id, title: item.title, device: deviceDTO }) }}>
+                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push('EditDeviceAsset', { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
                     <Image source={images.image.edit} />
                 </TouchableOpacity>
             </View>
