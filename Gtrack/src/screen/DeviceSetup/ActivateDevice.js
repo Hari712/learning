@@ -49,9 +49,9 @@ const ActivateDevice = ({ navigation }) => {
     function onTapActivateDevice() {
         let message = ''
         if (isEmpty(deviceId)) {
-            message = AppConstants.EMPTY_DEVICE_ID
+            message = translate(AppConstants.EMPTY_DEVICE_ID)
         } else if (isEmpty(deviceName)) {
-            message = AppConstants.EMPTY_DEVICE_NAME
+            message = translate(AppConstants.EMPTY_DEVICE_NAME)
         }
         if (!isEmpty(message)) {
             AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })

@@ -5,6 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import { Dialog, ExapandableListView, TextField, DropDown, FontSize } from '../../component';
+import { translate } from '../../../App';
 
 
 const CONTENT = [
@@ -78,19 +79,19 @@ const Manage = ({route, navigation}) => {
         return(
             <View style={styles.popUp}>
                         
-                <TextField valueSet={setTempName} value={tempName} label='Name*' outerStyle={styles.outerStyle} /> 
+                <TextField valueSet={setTempName} value={tempName} label={translate("Name_Star")} outerStyle={styles.outerStyle} /> 
                 
-                <DropDown label='Type*' defaultValue={type} valueSet={setType}  outerStyle={[styles.outerStyle,{alignSelf:'center'}]} dropdownStyle={styles.dropdownStyle} />
+                <DropDown label={translate("Type_star")} defaultValue={type} valueSet={setType}  outerStyle={[styles.outerStyle,{alignSelf:'center'}]} dropdownStyle={styles.dropdownStyle} />
                 
-                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label='Description' outerStyle={styles.outerStyle} /> 
+                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label={translate("Description")} outerStyle={styles.outerStyle} /> 
                 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={()=>setEditClick(-1)} style={styles.cancelButton}>
-                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={updateData} style={styles.saveButton}>
-                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save")}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -107,7 +108,7 @@ const Manage = ({route, navigation}) => {
         return (
             <View style={styles.search}>
                 <TextInput 
-                    placeholder='Search Here'
+                    placeholder={translate("Search_here")}
                     onChangeText={text => searchFilter(text) }                    
                     value={search}
                     
@@ -126,7 +127,7 @@ const Manage = ({route, navigation}) => {
     const deleteConfirmDialog = () => {
         return(
             <Dialog 
-                heading="Are you sure ?"
+                heading={translate("Dailog_string")}
                 message={"Do you really want to delete asset?" + "\n \n" + "It will get detach from the current device."}
                 visible={dialogVisible}
                 onTouchOutside={() => setDialogVisible(false)}
@@ -205,7 +206,7 @@ const Manage = ({route, navigation}) => {
                     fontWeight: '500',
                     //letterSpacing: 0,
                     textAlign:'center' }}>
-                    Device & Assest
+                    {translate("Device_Asset")}
                 </Text>          
             ),
             headerLeft:() => (
@@ -233,7 +234,7 @@ return(
                     style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
                     renderLabel={({ route, focused, color }) => (
                         <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize:FontSize.FontSize.medium, fontWeight: '300', }}>
-                            {route.title}
+                            {translate(route.title)}
                         </Text>
                     )}
                 />)

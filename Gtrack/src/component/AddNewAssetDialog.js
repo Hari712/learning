@@ -130,7 +130,7 @@ function AddNewAssetDialog(props) {
                 <TextField
                     valueSet={setAssetDescription}
                     multiline={true}
-                    label= {translate("Edit_Device_Asset_string5")}
+                    label= {translate("Edit_Device_Asset_string")}
                     value={assetDescription}
                     onChangeText={(text) => setAssetDescription(text)}
                     labelFontSize={hp(1.4)}

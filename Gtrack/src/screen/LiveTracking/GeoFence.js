@@ -98,7 +98,7 @@ const GeoFence = ({ navigation }) => {
                             </View>
 
                             <View style={styles.descriptionMainStyle}>
-                                <Text style={styles.mainTextStyle}>{translate("Geofence_string2")}</Text>
+                                <Text style={styles.mainTextStyle}>{translate("Description")}</Text>
                                 <Text style={styles.textStyle}>Description of card</Text>
                             </View>
                         </View>

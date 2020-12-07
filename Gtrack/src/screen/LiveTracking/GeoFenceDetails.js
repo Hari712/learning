@@ -72,7 +72,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setDescrption}
-                            label={translate("Geofence_string2")}
+                            label={translate("Description")}
                             value={description}
                             onChangeText={(text) => setDescrption(text)}
                             // style={styles.textNameStyle}

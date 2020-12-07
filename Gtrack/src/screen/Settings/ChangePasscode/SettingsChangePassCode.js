@@ -12,6 +12,7 @@ import AppManager from '../../../constants/AppManager';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SettingsActions from '../Settings.Action'
 import { getLoginState } from '../../Selector';
+import { translate } from '../../../../App';
 
 const SettingsChangePassCode = ({navigation,route}) => {
 
@@ -72,19 +73,19 @@ function onSubmitPasscode() {
   if (isConnected) {
       let message = ''
       if (_.isEmpty(oldPasscode)) {
-          message = AppConstants.EMPTY_OLD_PASSCODE
+          message = translate(AppConstants.EMPTY_OLD_PASSCODE)
       }
       else if (_.isEmpty(newPasscode)) {
-          message = AppConstants.EMPTY_NEW_PASSCODE
+          message = translate(AppConstants.EMPTY_NEW_PASSCODE)
       }
       else if (!validatePassword(newPasscode)) {
-          message = AppConstants.INVALID_PASSWORD
+          message = translate(AppConstants.INVALID_PASSWORD)
       }
       else if (_.isEmpty(confirmPasscode)) {
-          message = AppConstants.EMPTY_CONFIRM_PASSWORD
+          message = translate(AppConstants.EMPTY_CONFIRM_PASSWORD)
       }
       else if (newPasscode != confirmPasscode) {
-          message = AppConstants.PASSWORD_DOES_NOT_MATCH
+          message = translate(AppConstants.PASSWORD_DOES_NOT_MATCH)
       }
       if (!_.isEmpty(message)) {
           AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -125,7 +126,7 @@ return (
     <View style={styles.container}>
         <View style={{width:'100%'}}>
             <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.headerTitle}>Change Passcode</Text>
+                <Text style={styles.headerTitle}>{translate("Change Passcode")}</Text>
             </TouchableOpacity>
         </View>
         <View style={{paddingHorizontal:hp(4)}}>
@@ -162,13 +163,13 @@ return (
           </View>
 
           <View style={styles.pinkContainer}>
-              <Text style={styles.pinkViewText}>A passcode should be a minimum of 8 characters long with no spaces must contain at least one Uppercase(A-Z). Lowercase(a-z), Digit (0-9), and a Special character from @ # $ % ^ & </Text>
+              <Text style={styles.pinkViewText}>{translate("Change_Passcode_String")}</Text>
           </View>
 
         </View>
 
         <TouchableOpacity onPress={()=>onSubmitPasscode()} style={styles.submitButton}>
-          <Text style={styles.submit}>Submit</Text>
+          <Text style={styles.submit}>{translate("Submit")}</Text>
         </TouchableOpacity>
 
         <Dialog 
@@ -177,9 +178,9 @@ return (
             onTouchOutside={() => setDialogVisible(false)}
         > 
         <Image resizeMode='contain' style={styles.dialogImg} source={images.image.changePasscode.success} />
-        <Text style={{textAlign:'center'}}>Your new passcode has been set successfully!</Text>
+        <Text style={{textAlign:'center'}}>{translate("Password_Sucess")}</Text>
         <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={styles.okButton}>
-            <Text style={styles.okText}>OK</Text>
+            <Text style={styles.okText}>{translate("OK")}</Text>
         </TouchableOpacity>
         </Dialog>
         

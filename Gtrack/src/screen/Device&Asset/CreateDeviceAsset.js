@@ -5,6 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize, TextField,DropDown, MultiSelect } from '../../component';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
+import { translate } from '../../../App';
 
 const devicesList = [
     'TrackPort International', 
@@ -32,7 +33,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
             <View style={styles.container}>
 
             <View style={styles.scene} >
-                <TextField valueSet={setGroup} label='Group Name*' defaultValue={group} />
+                <TextField valueSet={setGroup} label={translate("Group Name")} defaultValue={group} />
             </View>
 
             {detailsToggle?
@@ -51,11 +52,11 @@ const CreateDeviceAsset = ({route, navigation}) => {
             <View style={styles.scene} >
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.buttonStyle}>
-                        <Text style={styles.cancelText}>Cancel</Text>
+                        <Text style={styles.cancelText}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={[styles.nextButton,{backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,}]}>
-                        <Text style={styles.saveText}> {detailsToggle ? 'Save' : 'Next'} </Text>
+                        <Text style={styles.saveText}> {detailsToggle ? translate("Save"): translate("Next")} </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -68,21 +69,21 @@ const CreateDeviceAsset = ({route, navigation}) => {
         <View style={styles.container}>
             <View style={styles.scene} >
 
-                <TextField valueSet={setValue} defaultValue={value} label='Name*' /> 
+                <TextField valueSet={setValue} defaultValue={value} label={translate("Name_Star")} /> 
 
-                <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} /> 
+                <DropDown label={translate("Type")} defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} /> 
 
-                <TextField valueSet={setDescrption} defaultValue={description} label='Description (Optional)'  multiline={true} outerStyle={styles.outerStyle} />
+                <TextField valueSet={setDescrption} defaultValue={description} label={translate("Edit_Device_Asset_string")}  multiline={true} outerStyle={styles.outerStyle} />
 
-                <DropDown defaultValue={device} label='Select Device' valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} />
+                <DropDown defaultValue={device} label={translate("Select_Device")} valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} />
                 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.buttonStyle}>
-                        <Text style={styles.cancelText}>Cancel</Text>
+                        <Text style={styles.cancelText}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity  style={[styles.buttonStyle,{backgroundColor:ColorConstant.BLUE}]}>
-                        <Text style={styles.saveText}>Save</Text>
+                        <Text style={styles.saveText}>{translate("Save")}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -117,7 +118,7 @@ const CreateDeviceAsset = ({route, navigation}) => {
                     fontWeight: '500',
                     //letterSpacing: 0,
                     textAlign:'center' }}>
-                    Device & Assest
+                    {translate("Device_Asset")}
                 </Text>          
             ),
             headerLeft:() => (
@@ -145,7 +146,7 @@ return(
                     style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
                     renderLabel={({ route, focused, color }) => (
                         <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize:FontSize.FontSize.medium, fontWeight: '300', }}>
-                            {route.title}
+                            {translate(route.title)}
                         </Text>
                     )}
                 />)
