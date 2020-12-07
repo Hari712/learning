@@ -5,7 +5,6 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { FontSize, MapView} from '../../component';
 import { Dialog } from 'react-native-simple-dialogs';
-import MapView from '../../component/MapView';
 import { translate } from '../../../App';
 
 const GeoFence = ({ navigation }) => {

@@ -8,8 +8,6 @@ import { isUserLoggedIn } from '../Selector'
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
 import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
-import MapView from '../../component/MapView';
-import FontSize from '../../component/FontSize';
 import { translate } from '../../../App'
 
 const LiveTracking = ({navigation}) => {

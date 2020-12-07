@@ -5,7 +5,6 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import {FontSize, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
-import TextField from '../../../component/TextField';
 import { translate } from '../../../../App'
 
 
