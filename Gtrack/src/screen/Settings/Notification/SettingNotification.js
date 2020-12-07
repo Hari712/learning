@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import FontSize from '../../../component/FontSize';
-import { color } from 'react-native-reanimated';
+import { translate } from '../../../../App'
 
 const NOTIFICATIONS = [
     {
@@ -27,57 +27,57 @@ const NOTIFICATIONS = [
 const PUSHNOTIFICATION = [
     {
         heading: 'Ignition On',
-        description: 'When your vehicle is turned On.',
+        description: 'Setting_Notification_string10',
         onOffIcon: images.image.settings.onIcon 
     }, 
     {
         heading: 'Ignition Off',
-        description: 'When your vehicle is turned Off.',
+        description: 'Setting_Notification_string11',
         onOffIcon: images.image.settings.IconOff
     },
     {
         heading: 'Overspeed',
-        description: 'When your vehicle exceed enter speed limits.',
+        description: 'Setting_Notification_string12',
         onOffIcon: images.image.settings.onIcon
     },
     {
         heading: 'Underspeed',
-        description: 'When your vehicle is travelling below speed limit.',
+        description: 'Setting_Notification_string13',
         onOffIcon: images.image.settings.IconOff
     },
     {
         heading: 'Movement',
-        description: 'When your vehicle is start moving.',
+        description: 'Setting_Notification_string14',
         onOffIcon: images.image.settings.onIcon
     },
     {
         heading: 'Stationary',
-        description: 'When your vehicle is not moving or stopped.',
+        description: 'Setting_Notification_string15',
         onOffIcon: images.image.settings.IconOff
     },
     {
         heading: 'Engine Idle',
-        description: 'Vehicle engine is idle.',
+        description: 'Setting_Notification_string16',
         onOffIcon: images.image.settings.onIcon
     },
     {
-        heading: 'Battry Level',
-        description: 'When your device reach at low power level.',
+        heading: 'Battery Level',
+        description: 'Setting_Notification_string17',
         onOffIcon: images.image.settings.IconOff
     },
     {
         heading: 'Fuel Level',
-        description: 'When your device reach at fuel level.',
+        description: 'Setting_Notification_string18',
         onOffIcon: images.image.settings.IconOff
     },
     {
         heading: 'Panic',
-        description: 'Your tracker sends an emergency alert.',
+        description: 'Setting_Notification_string19',
         onOffIcon: images.image.settings.onIcon
     },
     {
         heading: 'Geofence',
-        description: 'Your tracker is out of zone.',
+        description: 'Setting_Notification_string20',
         onOffIcon: images.image.settings.IconOff
     }
 ]
@@ -93,7 +93,7 @@ const SettingNotification = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Settings
+                    {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
@@ -118,11 +118,11 @@ const SettingNotification = ({ navigation }) => {
                     return(
                     <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
                         <View style={styles.headingViewStyle}>
-                            <Text style = {styles.headingTextStyle}>{item.heading}</Text>
+                            <Text style = {styles.headingTextStyle}>{translate(item.heading)}</Text>
                             <Image source={item.onOffIcon} resizeMode='contain'/>
                         </View>
                         <View style = {{paddingHorizontal: wp(5)}}>
-                            <Text style = {styles.descriptionText}>{item.description}</Text>
+                            <Text style = {styles.descriptionText}>{translate(item.description)}</Text>
                         </View>
                     </View>
                 )})
@@ -133,7 +133,7 @@ const SettingNotification = ({ navigation }) => {
             <View>
                 <TouchableOpacity style={styles.bodySubContainer} onPress={updateLayout} activeOpacity={0.8}>
                     <View style={styles.mainViewStyle}>
-                        <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>{data.title}</Text>
+                        <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>{translate(data.title)}</Text>
 
                         <View style={{marginTop: hp(0.5)}}>
                             <Image source={isCollapsed ? data.downArrow : data.nextArrow} style={{}} resizeMode='contain' />
@@ -153,7 +153,7 @@ const SettingNotification = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Notifications</Text>
+                <Text style={styles.textViewStyle}>{translate("Notifications")}</Text>
             </View>
 
 

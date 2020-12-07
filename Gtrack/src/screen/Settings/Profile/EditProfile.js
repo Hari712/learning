@@ -11,6 +11,7 @@ import DropDown from '../../../component/DropDown';
 import CheckBox from 'react-native-check-box'
 import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
+import { translate } from '../../../../App'
 
 
 const EditProfile = ({ navigation, route, item }) => {
@@ -65,7 +66,7 @@ const EditProfile = ({ navigation, route, item }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Settings
+                   {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
@@ -218,7 +219,7 @@ const EditProfile = ({ navigation, route, item }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Edit Profile</Text>
+                <Text style={styles.textViewStyle}>{translate("Edit Profile")}</Text>
             </View>
 
             <ScrollView style={{ height: "100%" }}>
@@ -226,7 +227,7 @@ const EditProfile = ({ navigation, route, item }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setFirstName}
-                            label='First Name'
+                            label={translate("First Name")}
                             value={firstName}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -237,7 +238,7 @@ const EditProfile = ({ navigation, route, item }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setLastName}
-                            label='Last Name'
+                            label={translate("Last Name")}
                             value={lastName}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -248,7 +249,7 @@ const EditProfile = ({ navigation, route, item }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setPhoneNumber}
-                            label='Phone Number'
+                            label={translate("Phone Number")}
                             value={phoneNumber}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -258,25 +259,25 @@ const EditProfile = ({ navigation, route, item }) => {
 
                     <View style = {{flexDirection: 'row'}}>
                         <View style = {{ marginLeft: wp(1) }}>
-                            <Text style={styles.EmailTextStyle}>Email Address</Text>
+                            <Text style={styles.EmailTextStyle}>{translate("Email Address")}</Text>
                             <Text style={styles.textNameStyle}>{loginData.email}</Text>
                         </View>
                            
                         <View style = {{ marginLeft: wp(15)}}>
-                            <Text style={styles.EmailTextStyle}>User Type</Text>
+                            <Text style={styles.EmailTextStyle}>{translate("User Type")}</Text>
                             <Text style={styles.textNameStyle}>Member</Text>
                         </View>
                     </View>
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                            <Text style={styles.buttonTextColor}>Cancel</Text>
+                            <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             onPress={() => editProfile()}
                             style={styles.LoginButton}>
-                            <Text style={styles.LoginButtonText}>Done</Text>
+                            <Text style={styles.LoginButtonText}>{translate("Done")}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

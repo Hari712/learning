@@ -8,6 +8,7 @@ import { getLoginState } from '../../Selector';
 import FontSize from '../../../component/FontSize';
 import ShadowView from 'react-native-simple-shadow-view';
 import Dialog from '../../../component/Dialog';
+import { translate } from '../../../../App'
 
 const Profile = ({ navigation }) => {
 
@@ -26,7 +27,7 @@ const Profile = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Settings
+                     {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
@@ -45,12 +46,12 @@ const Profile = ({ navigation }) => {
     function RenderBillingDialog(item, index) {
         return (
             <Dialog 
-                    heading="Are you sure ?"
-                    message={"Do you really want to delete Home Address ?"}
+                    heading={translate("Dailog_string")}
+                    message={translate("Dailog_string1")}
                     visible={dialogVisible}
                     onTouchOutside={() => setDialogVisible(false)}
-                    positiveButtonName={"Delete"}
-                    negativeButtonName={"Cancel"}
+                    positiveButtonName={translate("Delete")}
+                    negativeButtonName={translate("Cancel")}
                     negativeHandle={() => setDialogVisible(false)}
                     positiveHandle={() => setDialogVisible(false)}
                 />
@@ -60,7 +61,7 @@ const Profile = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>My Profile</Text>
+                <Text style={styles.textViewStyle}>{translate("Profile_string2")}</Text>
             </View>
 
             <View style={styles.mainViewStyle}>
@@ -87,9 +88,9 @@ const Profile = ({ navigation }) => {
                 <View style={styles.subMainView}>
                     <View style = {{flexDirection: 'row' }}>
                         <View style = {{ }}>
-                            <Text  style={styles.emailText}> Mobile Number </Text>
-                            <Text  style={styles.emailText}> Email Address </Text>
-                            <Text  style={styles.emailText}> User Type </Text>
+                            <Text  style={styles.emailText}> {translate("Mobile Number")} </Text>
+                            <Text  style={styles.emailText}> {translate("Email Address")} </Text>
+                            <Text  style={styles.emailText}> {translate("User Type")} </Text>
                         </View>
                         <View style = {{ }}>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone}</Text>

@@ -13,6 +13,7 @@ import * as SettingsActions from '../Settings.Action'
 import isEmpty from 'lodash/isEmpty'
 import DeviceInfo from 'react-native-device-info';
 import { ScrollView } from 'react-native-gesture-handler';
+import { translate } from '../../../../App';
 
 const Feedback = ({ navigation }) => {
 
@@ -36,7 +37,7 @@ const Feedback = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Settings
+                    {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
@@ -86,11 +87,11 @@ const Feedback = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Feedback</Text>
+                <Text style={styles.textViewStyle}>{translate("Feedback")}</Text>
             </View>
 
             <EditText
-                placeholder="Type here"
+                placeholder={translate("Type here")}
                 style={styles.descStyle}
                 value={feedback}
                 onChangeText={(value) => { setFeedback(value) }}
@@ -101,14 +102,14 @@ const Feedback = ({ navigation }) => {
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => resetText()} style={[styles.cancelButton]}>
-                    <Text style={styles.buttonTextColor}>Reset</Text>
+                    <Text style={styles.buttonTextColor}>{translate("Reset")}</Text>
                 </TouchableOpacity>
 
-                <Text style={styles.textStyle}>Maximum 250 characters</Text>
+                <Text style={styles.textStyle}>{translate("Feedback__string")}</Text>
             </View>
 
             <TouchableOpacity onPress={() => onSubmitFeedback()} style={styles.submitButtonStyle}>
-                <Text style={styles.submitTextStyle}>Submit</Text>
+                <Text style={styles.submitTextStyle}>{translate("Submit")}</Text>
             </TouchableOpacity>
 
         </ScrollView>

@@ -4,6 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import FontSize from '../../../component/FontSize';
+import { translate } from '.../../../App';
 
 const NotificationInfo = ({ navigation }) => {
 
@@ -16,7 +17,7 @@ const NotificationInfo = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Settings
+                    {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
@@ -30,7 +31,7 @@ const NotificationInfo = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Notifications</Text>
+                <Text style={styles.textViewStyle}>{translate("Notifications")}</Text>
             </View>
         </View>
     )

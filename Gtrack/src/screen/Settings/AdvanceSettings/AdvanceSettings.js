@@ -4,7 +4,7 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from '../../../component/FontSize';
-import { setI18nConfig, translate } from '../../../../App';
+import { translate } from '../../../../App';
 import * as RNLocalize from "react-native-localize";
 
 
@@ -25,7 +25,7 @@ const AdvanceSettings = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Settings
+                {translate("Settings")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -41,14 +41,14 @@ return (
     <View style={styles.container}>
         <View style={{width:'100%'}}>
             <TouchableOpacity style={styles.addButton}>
-                <Text style={styles.headerTitle}> {translate("Settings_string6")} </Text>
+                <Text style={styles.headerTitle}> {translate("Advance Settings")} </Text>
             </TouchableOpacity>
         </View>
 
         <View style={{marginVertical:hp(2),paddingHorizontal:hp(3)}}>
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{height:hp(6)}}>
-                    <Text style={styles.textStyle}>Select Language</Text>
+                    <Text style={styles.textStyle}>{translate("Select_language")}</Text>
                     <Text style={styles.subText}>English</Text>
                 </View>
                 <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
@@ -72,7 +72,7 @@ return (
 
             <View style={[styles.unitContainer,{alignItems:'center'}]}>
                 <View style={{height:hp(6)}}>
-                    <Text style={styles.textStyle}>Automatic time zone</Text>
+                    <Text style={styles.textStyle}>{translate("Automatic_time_zone")}</Text>
                     <Text style={styles.subText}>Use network provided time</Text> 
                 </View>
                 <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{alignSelf:'center'}}>
@@ -82,12 +82,12 @@ return (
 
             {isToggleClick?
                 <View style={{justifyContent:'space-between',marginVertical:hp(2)}}>
-                    <Text style={styles.textStyle}>Select time zone</Text>
+                    <Text style={styles.textStyle}>{translate("Select_time_zone")}</Text>
                     <Text style={styles.subText}>(GMT-07:00)Vancouver</Text>
                 </View>:null}
           
             <View style={styles.unitContainer}>
-                <Text style={styles.unit}>Units</Text>
+                <Text style={styles.unit}>{translate("Units")}</Text>
                 <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)}>
                     <Image  source={isUnitClick?images.image.settings.down : images.image.settings.arrow} />
                 </TouchableOpacity>
@@ -96,22 +96,22 @@ return (
             {isUnitClick?
                 <View style={{marginTop:hp(2)}}>
                     <View>
-                        <Text style={[styles.language,{color:ColorConstant.BLUE}]}>Distance</Text>
+                        <Text style={[styles.language,{color:ColorConstant.BLUE}]}>{translate("Distance")}</Text>
                         <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
                             <Image source={images.image.settings.ellipseClick} />
-                            <Text style={styles.unitText}>Miles</Text>
+                            <Text style={styles.unitText}>{translate("Miles")}</Text>
                             <Image source={images.image.settings.ellipse} />
-                            <Text style={[styles.unitText,{flex:2}]}>Kilometer</Text>
+                            <Text style={[styles.unitText,{flex:2}]}>{translate("Kilometer")}</Text>
                         </View>  
                     </View>
 
                     <View style={{marginTop:hp(3)}}>
-                        <Text style={[styles.language,{color:ColorConstant.BLUE}]}>Temperature</Text>
+                        <Text style={[styles.language,{color:ColorConstant.BLUE}]}>{translate("Temperature")}</Text>
                         <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
                             <Image source={images.image.settings.ellipseClick} />
-                            <Text style={styles.unitText}>Celsius </Text>
+                            <Text style={styles.unitText}>{translate("Celsius")} </Text>
                             <Image source={images.image.settings.ellipse} />
-                            <Text style={[styles.unitText,{flex:2}]}>Fahrenheit</Text>
+                            <Text style={[styles.unitText,{flex:2}]}>{translate("Fahrenheit")}</Text>
                         </View>  
                     </View>
                 </View>:null}

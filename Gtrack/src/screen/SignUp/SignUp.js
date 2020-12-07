@@ -109,19 +109,19 @@ const SignUp = () => {
                     </View>
 
                     <EditText 
-                        placeholder={translate("Signup_string7")} 
+                        placeholder={translate("First Name")} 
                         style={styles.editText}  
                         onChangeText={(text) => { setFirstName(text) }}
                         value={firstName} 
                     />
                     <EditText 
-                        placeholder={translate("Signup_string8")} 
+                        placeholder={translate("Last Name")} 
                         style={styles.editText}
                         onChangeText={(text) => { setLastName(text) }}
                         value={lastName} 
                     />
                     <EditText 
-                        placeholder={translate("Signup_string9")}
+                        placeholder={translate("Email Address")}
                         style={styles.editText}
                         onChangeText={(text) => { setEmail(text) }}
                         value={email} 
@@ -147,7 +147,7 @@ const SignUp = () => {
 
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText 
-                            placeholder={translate("Signup_string10")}
+                            placeholder={translate("Mobile Number")}
                             style={styles.editText}
                             onChangeText={(text) => { setPhoneNumber(text) }} 
                             value={phoneNumber} />

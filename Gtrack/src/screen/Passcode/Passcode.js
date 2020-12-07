@@ -86,7 +86,7 @@ const Passcode = ({ navigation, route }) => {
                     <TouchableOpacity
                         onPress={() => requestVerifyOTP()}
                         style={styles.LoginButton}>
-                        <Text style={styles.LoginButtonText}>{translate("Submit_string5")}</Text>
+                        <Text style={styles.LoginButtonText}>{translate("Submit")}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
