@@ -3,9 +3,7 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, TextInpu
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import FontSize from '../../component/FontSize';
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
+import { FontSize, TextField, DropDown }from '../../component';
 import { ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'

@@ -13,7 +13,8 @@ import * as LoginActions from '../screen/Login/Login.Action'
 import AuthStackNavigator from './AuthNavigator';
 import { setToken, getToken } from '../api';
 import * as SettingsActions from '../screen/Settings/Settings.Action'
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info'
+import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
 
 const Stack = createStackNavigator();
 
@@ -33,15 +34,17 @@ function AppNavigator() {
     async function getLoggedInData() {
       const response = await getItem(USER_DATA)
       console.log("Response", response)
-      if (response && response.result) {
-        setToken(response.result.accessToken)
+      if (response) {
+        setToken(response.accessToken)
         dispatch(LoginActions.setLoginResponse(response))
         console.log("Access Token: ", getToken())
 
         let deviceType = DeviceInfo.getSystemName();
         let version = DeviceInfo.getVersion();
-        dispatch(SettingsActions.requestGetFeedBack(response.result.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
-
+        dispatch(SettingsActions.requestGetFeedBack(response.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
+        dispatch(DeviceActions.requestGetAllAssetsType(response.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
+        dispatch(DeviceActions.requestGetAllUserAssets(response.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
+        dispatch(DeviceActions.requestGetAllUserGroups(response.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
       }
       setIsReady(true)
     }
@@ -52,6 +55,30 @@ function AppNavigator() {
 
     return () => clearTimeout(timer);
   }, [])
+
+  function onGetAllUserGroupsSuccess(data) {
+    console.log('Group List Loaded Success')
+  }
+
+  function onGetAllUserGroupError(error) {
+    console.log('Group List Loaded Error')
+  }
+
+  function onUserAssetListLoadedSuccess(data) {
+    console.log('Asset List Loaded Success')
+  }
+
+  function onUserAssetListLoadedError(error) {
+    console.log('Asset List Loaded Error')
+  }
+
+  function onAssetTypeLoadedSuccess(data) {
+    console.log('Asset Type Loaded Success')
+  }
+
+  function onAssetTypeLoadedErrror(error) {
+    console.log('Asset Type Loaded error', error)
+  }
 
   function onFeedbackSuccess(data) {
     console.log("Success Feedback", data)

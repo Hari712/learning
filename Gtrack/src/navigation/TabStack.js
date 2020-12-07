@@ -3,9 +3,9 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, SettingsChangePassCode } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
-import FontSize from '../component/FontSize';
+import { FontSize } from '../component';
 import images from '../constants/images';
 import { translate } from '../../App'
 
@@ -95,6 +95,7 @@ const SettingsStackNavigator = () => {
             <SettingsStack.Screen name="RateUs" component={RateUs} />
             <SettingsStack.Screen name="Feedback" component={Feedback} />
             <SettingsStack.Screen name="AdvanceSettings" component={AdvanceSettings} />
+            <SettingsStack.Screen name="SettingsChangePassCode" component={SettingsChangePassCode} />
             <SettingsStack.Screen name="SettingNotification" component={SettingNotification} />
         </SettingsStack.Navigator>
     )

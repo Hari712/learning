@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize'
+import { FontSize } from '../../component'
 import { useDispatch } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
@@ -48,6 +48,10 @@ const Settings = ({ navigation }) => {
 
       else if (item.title == 'Advance Settings') {
         navigation.navigate('AdvanceSettings')
+      }
+
+      else if (item.title == 'Change Passcode') {
+        navigation.navigate('SettingsChangePassCode')
       }
 
       else if (item.title == 'Logout') {
@@ -199,6 +203,12 @@ const SETTINGS_MENU = [
   {
     title: 'Advance Settings',
     icon: images.image.settings.advanceSetting,
+    nextArrow: images.image.settings.nextArrow,
+    next: images.image.settings.next
+  },
+  {
+    title: 'Change Passcode',
+    icon: images.image.changePasscode.changePasscodeIcon,
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },

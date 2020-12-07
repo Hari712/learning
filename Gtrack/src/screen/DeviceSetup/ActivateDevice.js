@@ -1,17 +1,31 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import TextField from '../../component/TextField'
+import { AppConstants } from '../../constants/AppConstants'
 import { BarCodeScanIcon } from '../../component/SvgComponent'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
+import { useDispatch, useSelector } from 'react-redux'
+import { getLoginInfo } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
+import AppManager from '../../constants/AppManager'
+import isEmpty from 'lodash/isEmpty'
+import * as DeviceActions from './Device.Action'
 
 const ActivateDevice = ({ navigation }) => {
 
+    const dispatch = useDispatch()
+
+    const { loginInfo, isConnected } = useSelector(state => ({
+        loginInfo: getLoginInfo(state),
+        isConnected: state.network.isConnected
+    }))
+
+    const user_id = loginInfo.id ? loginInfo.id : null
     const [deviceId, setDeviceId] = useState('')
     const [deviceName, setDeviceName] = useState('')
 
@@ -29,7 +43,42 @@ const ActivateDevice = ({ navigation }) => {
                 </TouchableOpacity>
             )
         });
-    }, [navigation]);
+    }, [navigation])
+
+
+    function onTapActivateDevice() {
+        let message = ''
+        if (isEmpty(deviceId)) {
+            message = AppConstants.EMPTY_DEVICE_ID
+        } else if (isEmpty(deviceName)) {
+            message = AppConstants.EMPTY_DEVICE_NAME
+        }
+        if (!isEmpty(message)) {
+            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+        } else {
+            AppManager.showLoader()
+            let requestBody = {
+                deviceDTO: {
+                    deviceId: deviceId,
+                    deviceName: deviceName
+                }
+            }
+            dispatch(DeviceActions.requestAddDevice(user_id, requestBody, onSuccess, onError))
+        }
+
+    }
+
+    function onSuccess(data) {
+        const deviceDTO = data.deviceDTO ? data.deviceDTO : {  }
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: 'Device registered successfully', description: '', floating: true })
+        NavigationService.push('AssignAsset', { device: deviceDTO })
+    }
+
+    function onError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
+    }
 
     function handleRightAccessory() {
         return (
@@ -85,7 +134,7 @@ const ActivateDevice = ({ navigation }) => {
                     />
                 </View>
                 <ShadowView style={styles.shadowContainer}>
-                    <TouchableOpacity style={styles.activateButton} onPress={() => navigateToAssignAsset()}>
+                    <TouchableOpacity style={styles.activateButton} onPress={() => onTapActivateDevice()}>
                         <Text style={styles.activateButtonTitle}>{translate("Activate")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
@@ -110,9 +159,9 @@ const styles = StyleSheet.create({
         marginLeft: hp(2)
     },
     title: {
-        marginTop: hp(1), 
-        color: ColorConstant.BLUE, 
-        fontSize: FontSize.FontSize.small, 
+        marginTop: hp(1),
+        color: ColorConstant.BLUE,
+        fontSize: FontSize.FontSize.small,
         fontWeight: '600'
     },
     textNameStyle: {
@@ -145,7 +194,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center"
     },
-    activateButtonTitle: { color: ColorConstant.WHITE, fontWeight: '600', fontSize: FontSize.FontSize.medium  }
+    activateButtonTitle: { color: ColorConstant.WHITE, fontWeight: '600', fontSize: FontSize.FontSize.medium }
 })
 
 export default ActivateDevice

@@ -3,10 +3,8 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, 
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../../component/FontSize';
 import { translate } from '../../../../App';
-import * as RNLocalize from "react-native-localize";
-
+import { FontSize } from '../../../component';
 
 const AdvanceSettings = ({navigation,route}) => {
 

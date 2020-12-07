@@ -3,11 +3,8 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
-import NavigationService from '../../navigation/NavigationService';
-import TextField from '../../component/TextField';
-import DropDown from '../../component/DropDown';
-import MultiSelect, { MultiSelectGroup } from '../../component/MultiSelect'
+import  { DropDown, TextField, FontSize }from '../../component';
+import { MultiSelectGroup } from '../../component/MultiSelect'
 import { AppConstants } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
 import { getLoginState, getSubuserState } from '../Selector'

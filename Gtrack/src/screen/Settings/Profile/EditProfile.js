@@ -4,11 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import images from '../../../constants/images';
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../../constants/ColorConstants';
-import FontSize from '../../../component/FontSize';
-import TextField from '../../../component/TextField';
-import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
-import DropDown from '../../../component/DropDown';
-import CheckBox from 'react-native-check-box'
+import { FontSize, TextField }from '../../../component';
 import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
 import { translate } from '../../../../App'

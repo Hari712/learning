@@ -39,7 +39,7 @@ const CompleteSetup = ({ navigation }) => {
                 </TouchableOpacity>
                 <CompleteSetupImage />
                 <Text style={styles.completeSetupGuideText}>{translate("Device_setup_string2")}</Text>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}  onPress={() => NavigationService.popToTop()}>
                     <Text style={styles.buttonText}>{translate("Complete Setup")}</Text>
                 </TouchableOpacity>
             </View>

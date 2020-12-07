@@ -3,8 +3,7 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, TextInpu
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import FontSize from '../../component/FontSize';
-import MapView from '../../component/MapView';
+import { FontSize, MapView} from '../../component'
 import Slider from "react-native-slider";
 import { translate } from '../../../App'
 

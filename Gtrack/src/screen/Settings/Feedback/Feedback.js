@@ -1,11 +1,10 @@
 import React, { useState, Component } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { EditText } from '../../../../src/component'
+import { EditText, FontSize } from '../../../../src/component'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FEEDBACK_VALIDATION_ERROR } from '../../../constants/AppConstants'
 import images from '../../../constants/images';
-import FontSize from '../../../component/FontSize';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoginState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
@@ -90,6 +89,7 @@ const Feedback = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>{translate("Feedback")}</Text>
             </View>
 
+
             <EditText
                 placeholder={translate("Type here")}
                 style={styles.descStyle}
@@ -99,6 +99,7 @@ const Feedback = ({ navigation }) => {
                 multiline={true}
                 numberOfLines={4}
             />
+           
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => resetText()} style={[styles.cancelButton]}>
@@ -135,7 +136,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.medium
     },
     descStyle: {
-        minHeight: hp(40),
+        //minHeight: hp(40),
+        height:hp(40),
         textAlignVertical: 'top',
         borderColor: ColorConstant.GREY,
         borderWidth: 1,

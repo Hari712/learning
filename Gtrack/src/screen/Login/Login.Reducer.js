@@ -21,17 +21,17 @@ export const loginReducer = createReducer(state = initialState, {
         const { data } = action
         return {
             ...state,
-            tokenType: data.result.tokenType,
-            accessToken: data.result.accessToken,
-            refreshToken: data.result.refreshToken,
-            id:data.result.userDTO.id,
-            firstName: data.result.userDTO.firstName,
-            lastName: data.result.userDTO.lastName,
-            phonePrefix: data.result.userDTO.phonePrefix,
-            phone: data.result.userDTO.phone,
-            email: data.result.userDTO.email,
-            group: data.result.userDTO.groups,
-            role: data.result.userDTO.roles
+            tokenType: data.tokenType,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+            id:data.userDTO.id,
+            firstName: data.userDTO.firstName,
+            lastName: data.userDTO.lastName,
+            phonePrefix: data.userDTO.phonePrefix,
+            phone: data.userDTO.phone,
+            email: data.userDTO.email,
+            group: data.userDTO.groups,
+            role: data.userDTO.roles
         }
     },
     [types.EDIT_PROFILE_RESPONSE](state, action) {

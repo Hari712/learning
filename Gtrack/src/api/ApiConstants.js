@@ -23,7 +23,13 @@ const ApiConstants = {
     ADD_FEEDBACK:(userId) =>`${USER}${userId}/feedback`,
     GET_FEEDBACK_REQUEST:(userId, appVersion, deviceOS) => `${USER}${userId}/feedback/appVersion/${appVersion}/deviceType/${deviceOS}`,
     GET_SUBUSER_BY_FILTER:(userId) => `${USER}${userId}/list`,
-    ASSET_TYPE:(userId) => `${USER}${userId}/assets/assetType`
+    ASSET_TYPE:(userId) => `${USER}${userId}/assets/assetType`,
+    ADD_GROUP:(userId) => `${USER}${userId}/groups`,
+    ADD_ASSET:(userId) => `${USER}${userId}/assets`,
+    GET_ASSET_BY_USER_ID:(userId) => `${USER}${userId}/assets/all`,
+    GET_GROUPS:(userId) => `${USER}${userId}/groups`,
+    ADD_DEVICE:(userId) => `${USER}${userId}/devices`,
+    CHANGE_PASSCODE:(userId) => `${USER}${userId}/changePassword`
 }
 
 export default ApiConstants

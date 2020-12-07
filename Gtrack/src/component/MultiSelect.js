@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, FlatList, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, FlatList, Dimensions, ScrollView, Platform } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
@@ -292,7 +292,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: hp(2),
         shadowOffset: { width: 0, height: 0 },
-        backgroundColor: 'white',
+        borderWidth:Platform.OS=='ios'? 0.4 : 0,
+        borderColor:ColorConstant.GREY,
+        backgroundColor: ColorConstant.WHITE,
         width: '100%',
         paddingHorizontal: hp(2)
     },
