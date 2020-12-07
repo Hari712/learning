@@ -172,7 +172,7 @@ const SignUp = () => {
                     />
 
                     <View style={styles.bottomContainer}>
-                        <Text style={styles.bottomText}>{translate("Splash_string1")} ? </Text>
+                        <Text style={styles.bottomText}>{translate("Splash_string1")}  </Text>
                         <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
                             <Text style={styles.bottomBtn}>{translate("Splash_string2")}</Text>
                         </TouchableOpacity>

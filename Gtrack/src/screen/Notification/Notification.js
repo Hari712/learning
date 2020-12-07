@@ -13,7 +13,7 @@ const Notification = ({ navigation }) => {
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={styles.headingTitle}> {translate("Notification")} </Text>
+                <Text style={styles.headingTitle}> {translate("Notifications")} </Text>
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
