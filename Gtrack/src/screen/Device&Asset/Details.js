@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -9,12 +9,15 @@ import * as DeviceActions from '../DeviceSetup/Device.Action'
 import AppManager from '../../constants/AppManager'
 import { getLoginInfo } from '../Selector'
 import NavigationService from '../../navigation/NavigationService'
+import isEmpty from 'lodash/isEmpty'
 
 const Details = ({ route, navigation }) => {
 
     const { deviceId, title } = route.params
 
     const [deviceData, setDeviceData] = useState(null)
+
+    const [isLoading, setIsLoading] = useState(true)
 
     const dispatch = useDispatch()
 
@@ -36,12 +39,14 @@ const Details = ({ route, navigation }) => {
 
     function onDeviceDetailLoadedSuccess(data) {
         setDeviceData(data)
+        setIsLoading(false)
         AppManager.hideLoader()
     }
 
     function onDeviceDetailLoadedError(error) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
+        setIsLoading(false)
     }
 
     useLayoutEffect(() => {
@@ -64,113 +69,152 @@ const Details = ({ route, navigation }) => {
         });
     }, [navigation]);
 
+    function renderDevicePlan(devicePlan) {
+        const planType = devicePlan.planType ? devicePlan.planType : 'None'
+        const activationDate = devicePlan.activationDate ? devicePlan.activationDate : ''
+        const deActivationDate = devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
+
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.headerDetail}>
+                    <Text style={styles.headerText}>Plan Details</Text>
+                    <Image source={images.image.list} />
+                </View>
+                <View style={styles.horizontalLine} />
+
+                <View style={styles.details}>
+                    <View style={[styles.detailsSubView, { flex: 1.5 }]} >
+                        <Text style={styles.textStyle}>Plan</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{planType}</Text>
+                    </View>
+                    <View style={[styles.detailsSubView, { flex: 0.9 }]} >
+                        <Text style={styles.textStyle}>Price</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$60</Text>
+                    </View>
+                    <View style={[styles.detailsSubView, { flex: 1.2 }]}>
+                        <Text style={styles.textStyle}>Start Date</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{activationDate}</Text>
+                    </View>
+                    <View style={[styles.detailsSubView, { flex: 1 }]}>
+                        <Text style={styles.textStyle}>End Date</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{deActivationDate}</Text>
+                    </View>
+                </View>
+                <View style={styles.features}>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>Features</Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    6 month Data Retention</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Phone,Text,Chat and Email Support</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Optional Protection Plan(2.99/mo)</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    5% off future BHS Hardware purchase</Text></Text>
+                </View>
+            </View>
+        )
+    }
+
+    function renderAssetDetail(assetDTO) {
+        const assetName = assetDTO.assetName ? assetDTO.assetName : ''
+        const description = assetDTO.description ? assetDTO.description : ''
+        const assetType = assetDTO.assetType ? assetDTO.assetType : ''
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.headerDetail}>
+                    <Text style={styles.headerText}>Asset Details</Text>
+                    <Image source={images.image.pickupcar} />
+                </View>
+                <View style={styles.horizontalLine} />
+
+                <View style={styles.details}>
+                    <View style={[styles.detailsSubView, { flex: 1 }]} >
+                        <Text style={styles.textStyle}>Type</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{assetType}</Text>
+                    </View>
+                    <View style={[styles.detailsSubView, { flex: 2 }]} >
+                        <Text style={styles.textStyle}>Description</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{description}</Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
+    function renderUserDetail() {
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.headerDetail}>
+                    <Text style={styles.headerText}>User Details</Text>
+                    <Image source={images.image.user} />
+                </View>
+                <View style={styles.horizontalLine} />
+                {Data.map((item, key) =>
+                    <View key={key} style={styles.userDetails}>
+                        <View style={[styles.detailsSubView, { flex: 1 }]} >
+                            <Text style={styles.textStyle}>Name</Text>
+                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.name}</Text>
+                        </View>
+                        <View style={[styles.detailsSubView, { flex: 2 }]} >
+                            <Text style={styles.textStyle}>Role</Text>
+                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.role}</Text>
+                        </View>
+                    </View>
+                )}
+            </View>
+        )
+    }
+
+    function renderDeviceDetail() {
+        const assetDTO = deviceData && deviceData.assetDTO ? deviceData.assetDTO : null
+        const deviceDTO = deviceData && deviceData.deviceDTO ? deviceData.deviceDTO : null
+        const devicePlan = deviceData && deviceData.devicePlan ? deviceData.devicePlan : null
+        const groupDTO = deviceData && deviceData.groupDTO ? deviceData.groupDTO : null
+        const users = groupDTO && groupDTO.users ? groupDTO.users : []
+        const groupname = groupDTO ? groupDTO.groupName : 'None'
+        return (
+            <>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                    <View style={styles.container}>
+                        <View style={styles.cardContainer}>
+                            <View style={styles.headerDetail}>
+                                <Text style={styles.headerText}>Device Details</Text>
+                                <Image source={images.image.usb} />
+                            </View>
+                            <View style={styles.horizontalLine} />
+
+                            <View style={styles.details}>
+                                <View style={styles.detailsSubView} >
+                                    <Text style={styles.textStyle}>ID</Text>
+                                    <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{deviceId}</Text>
+                                </View>
+                                <View style={[styles.detailsSubView, { flex: 2.5 }]} >
+                                    <Text style={styles.textStyle}>Name</Text>
+                                    <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{title}</Text>
+                                </View>
+                                <View style={[styles.detailsSubView, { flex: 1 }]}>
+                                    <Text style={styles.textStyle}>Group</Text>
+                                    <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{groupname}</Text>
+                                </View>
+                            </View>
+                        </View>
+
+
+                        {devicePlan ? renderDevicePlan() : null}
+                        {assetDTO ? renderAssetDetail(assetDTO) : null}
+                        {!isEmpty(users) ? renderUserDetail() : null}
+
+
+                        <TouchableOpacity style={styles.export}>
+                            <Image source={images.image.export} />
+                            <Text style={{ color: ColorConstant.WHITE }}>Export Details</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </>
+        )
+    }
+
     return (
         <>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-                <View style={styles.container}>
-                    <View style={styles.cardContainer}>
-                        <View style={styles.headerDetail}>
-                            <Text style={styles.headerText}>Device Details</Text>
-                            <Image source={images.image.usb} />
-                        </View>
-                        <View style={styles.horizontalLine} />
-
-                        <View style={styles.details}>
-                            <View style={styles.detailsSubView} >
-                                <Text style={styles.textStyle}>ID</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{id}</Text>
-                            </View>
-                            <View style={[styles.detailsSubView, { flex: 2.5 }]} >
-                                <Text style={styles.textStyle}>Name</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{title}</Text>
-                            </View>
-                            <View style={[styles.detailsSubView, { flex: 1 }]}>
-                                <Text style={styles.textStyle}>Group</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{group}</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardContainer}>
-                        <View style={styles.headerDetail}>
-                            <Text style={styles.headerText}>Plan Details</Text>
-                            <Image source={images.image.list} />
-                        </View>
-                        <View style={styles.horizontalLine} />
-
-                        <View style={styles.details}>
-                            <View style={[styles.detailsSubView, { flex: 1.5 }]} >
-                                <Text style={styles.textStyle}>Plan</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{plan}</Text>
-                            </View>
-                            <View style={[styles.detailsSubView, { flex: 0.9 }]} >
-                                <Text style={styles.textStyle}>Price</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$60</Text>
-                            </View>
-                            <View style={[styles.detailsSubView, { flex: 1.2 }]}>
-                                <Text style={styles.textStyle}>Start Date</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>25/11/2020</Text>
-                            </View>
-                            <View style={[styles.detailsSubView, { flex: 1 }]}>
-                                <Text style={styles.textStyle}>End Date</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>25/12/2020</Text>
-                            </View>
-                        </View>
-                        <View style={styles.features}>
-                            <Text style={[styles.textStyle, { marginTop: hp(1) }]}>Features</Text>
-                            <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    6 month Data Retention</Text></Text>
-                            <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Phone,Text,Chat and Email Support</Text></Text>
-                            <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Optional Protection Plan(2.99/mo)</Text></Text>
-                            <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    5% off future BHS Hardware purchase</Text></Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardContainer}>
-                        <View style={styles.headerDetail}>
-                            <Text style={styles.headerText}>Asset Details</Text>
-                            <Image source={images.image.pickupcar} />
-                        </View>
-                        <View style={styles.horizontalLine} />
-
-                        <View style={styles.details}>
-                            <View style={[styles.detailsSubView, { flex: 1 }]} >
-                                <Text style={styles.textStyle}>Type</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>Car</Text>
-                            </View>
-                            <View style={[styles.detailsSubView, { flex: 2 }]} >
-                                <Text style={styles.textStyle}>Description</Text>
-                                <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>My Dad's Car(Chevrolet Captiva)</Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={styles.cardContainer}>
-                        <View style={styles.headerDetail}>
-                            <Text style={styles.headerText}>User Details</Text>
-                            <Image source={images.image.user} />
-                        </View>
-                        <View style={styles.horizontalLine} />
-                        {Data.map((item, key) =>
-                            <View key={key} style={styles.userDetails}>
-                                <View style={[styles.detailsSubView, { flex: 1 }]} >
-                                    <Text style={styles.textStyle}>Name</Text>
-                                    <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.name}</Text>
-                                </View>
-                                <View style={[styles.detailsSubView, { flex: 2 }]} >
-                                    <Text style={styles.textStyle}>Role</Text>
-                                    <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.role}</Text>
-                                </View>
-                            </View>
-                        )}
-                    </View>
-
-                    <TouchableOpacity style={styles.export}>
-                        <Image source={images.image.export} />
-                        <Text style={{ color: ColorConstant.WHITE }}>Export Details</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        </>  
+            {isLoading ? null : renderDeviceDetail()}
+        </>
     )
 }
 
@@ -266,6 +310,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         backgroundColor: ColorConstant.BLUE,
         height: hp(6)
+    },
+    activityIndicator: {
+        color: "#000",
+        marginTop: '2%'
     }
 
 });
