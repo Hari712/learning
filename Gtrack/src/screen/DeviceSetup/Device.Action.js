@@ -77,14 +77,14 @@ export const setAllUserAssetsResponse = (data) => ({
 })
 
 export const requestGetAllUserGroups = (userId, onSuccess, onError) => ({
-    type: types.GET_GROUP_REQUEST,
+    type: types.GET_ALL_GROUP_REQUEST,
     userId,
     onSuccess,
     onError
 })
 
 export const setGroupResponse = (data) => ({
-    type: types.GET_GROUP_RESPONSE,
+    type: types.GET_ALL_GROUP_RESPONSE,
     data
 })
 
@@ -143,6 +143,13 @@ export const requestGetDeviceDetailByIdAndUserId = (userId, deviceId, onSuccess,
     type: types.GET_DEVICE_BY_ID_REQUEST,
     userId,
     deviceId,
+    onSuccess,
+    onError
+})
+
+export const requestExportAllDevices = (userId, onSuccess, onError) => ({
+    type: types.EXPORT_ALL_DEVICES_REQUEST,
+    userId,
     onSuccess,
     onError
 })

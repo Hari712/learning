@@ -49,7 +49,7 @@ export const deviceReducer = createReducer(state = initialState, {
             assets: assetInfo
         }
     },
-    [types.GET_GROUP_RESPONSE](state, action) {
+    [types.GET_ALL_GROUP_RESPONSE](state, action) {
         const groupInfo = mapKeys(action.data, 'id')
         return {
             ...state,

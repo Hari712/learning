@@ -10,7 +10,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { FontSize } from '../../component';
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
-import { isEmpty } from 'lodash';
+import { isEmpty, set } from 'lodash';
 
 const DeviceAsset = ({ navigation }) => {
 
@@ -37,12 +37,16 @@ const DeviceAsset = ({ navigation }) => {
     navigation.setOptions({
       headerLeft: () => (null),
       headerRight: () => (
-        <TouchableOpacity activeOpacity={1} onPress={() => setMenuClick(!menuClick)}>
+        <TouchableOpacity activeOpacity={1} onPress={() => setMenuClickEvent()}>
           <Image source={menuClick ? images.image.menuclick : images.image.menu} style={styles.headerRight} />
         </TouchableOpacity>
       )
     });
   }, [navigation]);
+
+  function setMenuClickEvent() {
+    setMenuClick(prevState => !prevState)
+  }
 
   useEffect(() => {
     loadData()
@@ -68,12 +72,31 @@ const DeviceAsset = ({ navigation }) => {
 
   function menuHandle(item) {
     if (item == 'Create') {
-      return NavigationService.push('CreateDeviceAsset')
+         NavigationService.push('CreateDeviceAsset')
     } else if (item == 'Manage') {
-      return NavigationService.push('Manage')
+         NavigationService.push('Manage')
+    }
+    else if (item == 'Export All Devices') {
+      exportAllDevices()
+      setMenuClickEvent()
     }
     else
       return
+  }
+
+  function exportAllDevices() {
+    AppManager.showLoader()
+    dispatch(DeviceActions.requestExportAllDevices(user_id, onDeviceExportSuccess, onDeviceExportError))
+  }
+
+  function onDeviceExportSuccess(data) {
+    AppManager.hideLoader()
+    AppManager.showSimpleMessage('success', { message: 'Device exported successfully. Please check your mail', description: '' })
+  }
+
+  function onDeviceExportError(error) {
+    AppManager.hideLoader()
+    AppManager.showSimpleMessage('danger', { message: error , description: '' })
   }
 
   function fetchDeviceList() {
@@ -143,20 +166,22 @@ const DeviceAsset = ({ navigation }) => {
     )
   }
 
+  function renderMenu() {
+    return (
+      <View style={styles.menuPopup}>
+        {Menu.map((item, key) =>
+          <TouchableOpacity key={key} style={{ borderBottomColor: ColorConstant.GREY, borderBottomWidth: key != Menu.length - 1 ? 0.4 : 0 }} onPress={() => menuHandle(item)}>
+            <Text style={styles.textStyle}>{item}</Text>
+          </TouchableOpacity>
+        )
+        }
+      </View>
+    )
+  }
+
   return (
     <>
-
-
-      {menuClick ?
-        <View style={styles.menuPopup}>
-          {Menu.map((item, key) =>
-            <TouchableOpacity key={key} style={{ borderBottomColor: ColorConstant.GREY, borderBottomWidth: key != Menu.length - 1 ? 0.4 : 0 }} onPress={() => menuHandle(item)}>
-              <Text style={styles.textStyle}>{item}</Text>
-            </TouchableOpacity>
-          )
-          }
-        </View> :
-        null}
+      {menuClick ? renderMenu() : null}
       <View style={{ flex: 1 }}>
         <FlatList
           refreshControl={
@@ -182,7 +207,7 @@ const DeviceAsset = ({ navigation }) => {
   )
 }
 
-const Menu = ['Create', 'Manage']
+const Menu = ['Create', 'Manage', 'Export All Devices']
 
 const styles = StyleSheet.create({
   headerRight: {
@@ -206,10 +231,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     elevation: 10,
     shadowRadius: 3,
-    zIndex: 10
+    zIndex: 20
   },
   textStyle: {
-    margin: hp(0.5),
+    marginVertical: hp(0.5),
     color: ColorConstant.BLUE,
     textAlignVertical: 'center',
     paddingLeft: hp(0.5)

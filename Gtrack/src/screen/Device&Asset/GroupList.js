@@ -80,7 +80,7 @@ const GroupList = () => {
                 }
                 data={groupList}
                 renderItem={(data) => renderItem(data)}
-                keyExtractor={(index) => index.toString()}
+                keyExtractor={(item, index) => index.toString()}
             />
         </View>
     )

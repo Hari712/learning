@@ -78,7 +78,7 @@ const AssetList = () => {
                 style={{ height: '100%' }}
                 data={assetList}
                 renderItem={(data) => renderItem(data)}
-                keyExtractor={(index) => index.toString()}
+                keyExtractor={(item, index) => index.toString()}
             />
         </View>
     )

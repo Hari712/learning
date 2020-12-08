@@ -69,8 +69,9 @@ const GroupItem = props => {
                 {(index == selectedKey) ?
                     <View style={{ marginTop: hp(2) }} >
                         {arrDevices.map((subitem, subkey) => {
+                            const itemKey = `${subkey}${index}`
                             return (
-                                <View key={subkey} style={styles.subCategory}>
+                                <View key={itemKey} style={styles.subCategory}>
                                     <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                                     <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
                                     <Image style={styles.icon} source={images.image.trash} />

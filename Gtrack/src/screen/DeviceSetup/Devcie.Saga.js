@@ -191,6 +191,21 @@ function* requestGetAllDeviceById(action) {
     }
 }
 
+function* requestExportAllDevices(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        let requestBody = {
+            type: 'pdf',
+            sendMail: 'true'
+        }
+        const url = ApiConstants.EXPORT_ALL_DEVICES(userId)
+        const response = yield call(API.post, url, requestBody)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -199,11 +214,12 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.ADD_DEVICE_REQUEST, requestAddDevice),
         yield takeLatest(types.LINK_DEVICE_TO_ASSET_REQUEST, requestLinkDeviceWithAsset),
         yield takeLatest(types.GET_ALL_USER_ASSETS_REQUEST, requestGetAllUserAssets),
-        yield takeLatest(types.GET_GROUP_REQUEST, requestGetAllUserGroups),
+        yield takeLatest(types.GET_ALL_GROUP_REQUEST, requestGetAllUserGroups),
         yield takeLatest(types.LINK_DEVICE_WITH_GROUP_REQUEST, requestLinkDeviceWithGroup),
         yield takeLatest(types.GET_ALL_USER_DEVICE_REQUEST, requestGetAllUserDevices),
         yield takeLatest(types.GET_ALL_NON_GROUPED_DEVICE_REQUEST, requestGetAllNonGroupedDevice),
         yield takeLatest(types.GET_CONSOLIDATED_DEVICE_REQUEST, requestGetConsolidatedDevice),
         yield takeLatest(types.UPDATE_DEVICE_REQUEST, requestUpdateDevice),
-        yield takeLatest(types.GET_DEVICE_BY_ID_REQUEST, requestGetAllDeviceById)
+        yield takeLatest(types.GET_DEVICE_BY_ID_REQUEST, requestGetAllDeviceById),
+        yield takeLatest(types.EXPORT_ALL_DEVICES_REQUEST, requestExportAllDevices)
 }

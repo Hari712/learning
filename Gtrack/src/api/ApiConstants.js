@@ -32,7 +32,8 @@ const ApiConstants = {
     GET_ALL_USER_DEVICES:(userId) => `${USER}${userId}/devices/list`,
     GET_NON_GROUPED_DEVICE:(userId) => `${USER}${userId}/devices/groupOrAsset`,
     GET_CONSOLIDATED_DEVICE:(userId) => `${USER}${userId}/devices/consolidated`,
-    GET_DEVICE_BY_ID:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}`
+    GET_DEVICE_BY_ID:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}`,
+    EXPORT_ALL_DEVICES:(userId) => `${USER}${userId}/devices/export`
 }
 
 export default ApiConstants
