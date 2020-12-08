@@ -153,3 +153,11 @@ export const requestExportAllDevices = (userId, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const requestExportDeviceByDeviceID = (userId, deviceId, onSuccess, onError) => ({
+    type: types.EXPORT_DEVICE_BY_DEVICE_ID,
+    userId,
+    deviceId,
+    onSuccess,
+    onError
+})

@@ -49,6 +49,21 @@ const Details = ({ route, navigation }) => {
         setIsLoading(false)
     }
 
+    function exportDeviceDetail() {
+        AppManager.showLoader()
+        dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, deviceId, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
+    }
+
+    function onDeviceDetailExportedSuccessfully(data) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: 'Device detail exported successfully. Please check your mail', description: '' })
+    }
+
+    function onDeviceDetailExportedFailure(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '' })
+    }
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -201,7 +216,7 @@ const Details = ({ route, navigation }) => {
                         {!isEmpty(users) ? renderUserDetail() : null}
 
 
-                        <TouchableOpacity style={styles.export}>
+                        <TouchableOpacity style={styles.export} onPress={() => exportDeviceDetail()}>
                             <Image source={images.image.export} />
                             <Text style={{ color: ColorConstant.WHITE }}>Export Details</Text>
                         </TouchableOpacity>

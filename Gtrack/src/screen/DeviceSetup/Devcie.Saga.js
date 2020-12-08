@@ -3,7 +3,6 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as DeviceActions from './Device.Action'
-import { act } from 'react-test-renderer'
 
 function* resetLoadAssetsType(action) {
     const { userId, onSuccess, onError } = action
@@ -195,7 +194,23 @@ function* requestExportAllDevices(action) {
     const { userId, onSuccess, onError } = action
     try {
         let requestBody = {
-            type: 'pdf',
+            type: 'csv',
+            sendMail: 'true'
+        }
+        const url = ApiConstants.EXPORT_ALL_DEVICES(userId)
+        const response = yield call(API.post, url, requestBody)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestExportDeviceByDeviceId(action) {
+    const { userId, deviceId, onSuccess, onError } = action
+    try {
+        let requestBody = {
+            device_id: deviceId,
+            type: null,
             sendMail: 'true'
         }
         const url = ApiConstants.EXPORT_ALL_DEVICES(userId)
@@ -222,4 +237,5 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.UPDATE_DEVICE_REQUEST, requestUpdateDevice),
         yield takeLatest(types.GET_DEVICE_BY_ID_REQUEST, requestGetAllDeviceById),
         yield takeLatest(types.EXPORT_ALL_DEVICES_REQUEST, requestExportAllDevices)
+        yield takeLatest(types.EXPORT_DEVICE_BY_DEVICE_ID, requestExportDeviceByDeviceId)
 }

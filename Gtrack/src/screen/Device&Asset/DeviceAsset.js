@@ -78,10 +78,8 @@ const DeviceAsset = ({ navigation }) => {
     }
     else if (item == 'Export All Devices') {
       exportAllDevices()
-      setMenuClickEvent()
     }
-    else
-      return
+    setMenuClickEvent()
   }
 
   function exportAllDevices() {
@@ -91,7 +89,7 @@ const DeviceAsset = ({ navigation }) => {
 
   function onDeviceExportSuccess(data) {
     AppManager.hideLoader()
-    AppManager.showSimpleMessage('success', { message: 'Device exported successfully. Please check your mail', description: '' })
+    AppManager.showSimpleMessage('success', { message: 'Device CSV exported successfully. Please check your mail', description: '' })
   }
 
   function onDeviceExportError(error) {
