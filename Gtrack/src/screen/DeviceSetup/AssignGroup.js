@@ -10,6 +10,7 @@ import FontSize from '../../component/FontSize'
 import AppManager from '../../constants/AppManager'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
+import { translate } from '../../../App'
 import isEmpty from 'lodash/isEmpty'
 import * as DeviceActions from './Device.Action'
 import mapKeys from 'lodash/mapKeys'
@@ -39,7 +40,7 @@ const AssignGroup = ({ navigation, route }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (
@@ -110,7 +111,7 @@ const AssignGroup = ({ navigation, route }) => {
         <View style={styles.container}>
             <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3) }}>
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step3} resizeMode="contain" />
-                <Text style={styles.title}>Assign Group</Text>
+                <Text style={styles.title}>{translate("Assign Group")}</Text>
             </View>
             <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2), zIndex: 10 }}>
                 <DropDown
@@ -126,18 +127,18 @@ const AssignGroup = ({ navigation, route }) => {
             </View>
             <ShadowView style={[styles.shadowContainer, { paddingHorizontal: hp(3) }]}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
-                        <Text style={styles.activateButtonTitle}>Add New Group</Text>
+                        <Text style={styles.activateButtonTitle}>{translate("Add New Group")}</Text>
                     </TouchableOpacity>
             </ShadowView>
             <View style={styles.buttonMainContainer}>
                 <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                     <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>
-                        <Text style={styles.buttonTextColor}>Not Now</Text>
+                        <Text style={styles.buttonTextColor}>{translate("Not Now")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
                 <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                     <TouchableOpacity style={styles.nextButton} onPress={() => onTapNext()}>
-                        <Text style={styles.nextButtonText}>Next</Text>
+                        <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
             </View>

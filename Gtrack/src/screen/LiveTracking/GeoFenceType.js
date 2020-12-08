@@ -5,6 +5,7 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { FontSize, MapView} from '../../component'
 import Slider from "react-native-slider";
+import { translate } from '../../../App'
 
 const GeoFenceType = ({ navigation, route }) => {
     const { type } = route.params;
@@ -15,7 +16,7 @@ const GeoFenceType = ({ navigation, route }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Geo Fence
+                    {translate("Geo Fence")}
                 </Text>
             ),
             headerLeft: () => (
@@ -25,7 +26,7 @@ const GeoFenceType = ({ navigation, route }) => {
             ),
             headerRight: () => (
                 <TouchableOpacity onPress={() => navigation.navigate('GeoFenceDetails')}>
-                    <Text style={styles.headerRightStyle}>Next</Text>
+                    <Text style={styles.headerRightStyle}>{translate("Next_string")}</Text>
                 </TouchableOpacity>
             )
         });
@@ -39,7 +40,7 @@ const GeoFenceType = ({ navigation, route }) => {
             <View style={styles.subContainer}>
                 <View style={styles.search}>
                     <TextInput
-                        placeholder='Search Here..'
+                        placeholder={translate("Search_here")}
                     // onChangeText={text => searchFilter(text)}
                     // value={search}
                     />
@@ -47,7 +48,7 @@ const GeoFenceType = ({ navigation, route }) => {
                 {type == 'Circle' ?
                     <View style={styles.sliderMainView}>
                         <View style={styles.sliderSubView}>
-                            <Text style={styles.radiusTextSize}>Change Radius</Text>
+                            <Text style={styles.radiusTextSize}>{translate("Geofence_CreateNew_string3")}</Text>
 
                             <View style={styles.radiusMainView}>
                                 <Text style={styles.textStyleInfo}>400m</Text>

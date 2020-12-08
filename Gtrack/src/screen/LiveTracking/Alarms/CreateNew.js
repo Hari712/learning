@@ -4,6 +4,9 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useDispatch, useSelector } from 'react-redux';
+import AppManager from '../../../constants/AppManager';
+import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
+import { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
 
 
@@ -35,7 +38,7 @@ const CreateNew = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Alarms
+                {translate("Alarms")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -55,9 +58,9 @@ return (
       </TouchableOpacity>
       <View style={{paddingHorizontal:hp(4),marginTop:hp(3)}}>
         <MultiSelect 
-                label='Select Device' 
+                label={translate("Select_Device")}
                 dataList={devicesList} 
-                allText='All' 
+                allText={translate("All_string")}
                 hideSelectedDeviceLable={true}
                 hideDeleteButton={true}
                 rowStyle={styles.rowStyle}
@@ -70,18 +73,18 @@ return (
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
         <View style={{marginTop:hp(3), marginBottom:hp(12)}}>       
-            <DropDown label='Select Alarm' defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
+            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
         </View>   
      </View>  
 
      {selectedDevice.length>0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
-                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Next</Text>
+                <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
         </View> : null }
   </ScrollView>

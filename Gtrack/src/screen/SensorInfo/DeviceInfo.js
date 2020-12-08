@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensio
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
+import { translate } from '../../../App'
 import { FontSize } from '../../component';
 
 
@@ -18,7 +19,7 @@ const DeviceInfo = ({ navigation, route }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Sensor Information
+                    {translate("Sensor Information")}
                 </Text>
             ),
             headerLeft: () => (
@@ -38,7 +39,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                 <View style={styles.cardContainer}>
                     <View style={styles.titleViewStyle}>
-                        <Text style={styles.titleTextStyle}>Information</Text>
+                        <Text style={styles.titleTextStyle}>{translate("Sensor_Info_string2")}</Text>
                         <Image source={images.sensorInfo.list} resizeMode='contain' />
                     </View>
 
@@ -46,44 +47,44 @@ const DeviceInfo = ({ navigation, route }) => {
 
                     <View style={styles.infoDataMainView}>
                         <View style={{ flexDirection: 'column', width: '35%' }}>
-                            <Text style={styles.mainTextStyle}>State</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string3")}</Text>
                             <Text style={styles.textStyle}>Moving</Text>
                             <Text style={styles.textStyle}>1h 45m 25s</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '40%' }}>
-                            <Text style={styles.mainTextStyle}>Time(Position)</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string4")}</Text>
                             <Text style={styles.textStyle}>2020-09-17</Text>
                             <Text style={styles.textStyle}>06:58:06</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '25%' }}>
-                            <Text style={styles.mainTextStyle}>Time(Server)</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string5")}</Text>
                             <Text style={styles.textStyle}>2020-09-17</Text>
                             <Text style={styles.textStyle}>06:58:06</Text>
                         </View>
                     </View>
 
                     <View style={styles.addressMainView}>
-                        <Text style={styles.mainTextStyle}>Address</Text>
+                        <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string6")}</Text>
                         <Text style={styles.textStyle}>M62, Bradle, Kirklees,</Text>
                         <Text style={styles.textStyle}>West Yorkshire, HD6 4JX, GB</Text>
                     </View>
 
                     <View style={styles.infoDataMainView}>
                         <View style={{ flexDirection: 'column', width: '35%' }}>
-                            <Text style={styles.mainTextStyle}>Angle</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string7")}</Text>
                             <Text style={styles.textStyle}>54{`\u02DA`} </Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '40%' }}>
-                            <Text style={styles.mainTextStyle}>Engine state & hours</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string8")}</Text>
                             <Text style={styles.textStyle}>On</Text>
                             <Text style={styles.textStyle}>546h</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '25%' }}>
-                            <Text style={styles.mainTextStyle}>Altitude</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string9")}</Text>
                             <Text style={styles.textStyle}>502 ft</Text>
                         </View>
                     </View>
@@ -91,7 +92,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                 <View style={styles.cardContainer}>
                     <View style={styles.titleViewStyle}>
-                        <Text style={styles.titleTextStyle}>Sensor</Text>
+                        <Text style={styles.titleTextStyle}>{translate("Sensor")}</Text>
                         <Image source={images.sensorInfo.sensor} resizeMode='contain' />
                     </View>
 
@@ -99,46 +100,46 @@ const DeviceInfo = ({ navigation, route }) => {
 
                     <View style={styles.infoDataMainView}>
                         <View style={{ flexDirection: 'column', width: '35%' }}>
-                            <Text style={styles.mainTextStyle}>Odometer</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string10")}</Text>
                             <Text style={styles.textStyle}>1965631 mi</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '40%' }}>
-                            <Text style={styles.mainTextStyle}>State</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string3")}</Text>
                             <Text style={styles.textStyle}>Moving</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '25%' }}>
-                            <Text style={styles.mainTextStyle}>Vehicle Power</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string11")}</Text>
                             <Text style={styles.textStyle}>OV</Text>
                         </View>
                     </View>
 
                     <View style={styles.infoDataMainView}>
                         <View style={{ flexDirection: 'column', width: '35%' }}>
-                            <Text style={styles.mainTextStyle}>Battery</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string12")}</Text>
                             <Text style={styles.textStyle}>0%</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '40%' }}>
-                            <Text style={styles.mainTextStyle}>Ignition</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Ignition")}</Text>
                             <Text style={styles.textStyle}>On</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '25%' }}>
-                            <Text style={styles.mainTextStyle}>Digital Input</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string14")}</Text>
                             <Text style={styles.textStyle}>Off</Text>
                         </View>
                     </View>
 
                     <View style={styles.sensorMainView}>
                         <View style={{ flexDirection: 'column', width: '35%' }}>
-                            <Text style={styles.mainTextStyle}>Fuel Level</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string15")}</Text>
                             <Text style={styles.textStyle}>75%</Text>
                         </View>
 
                         <View style={{ flexDirection: 'column', width: '40%' }}>
-                            <Text style={styles.mainTextStyle}>Temperature</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Sensor_Info_string16")}</Text>
                             <Text style={styles.textStyle}>20.6{`\u02DA`}</Text>
                         </View>
                     </View>

@@ -5,6 +5,7 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { FontSize, MapView} from '../../component';
 import { Dialog } from 'react-native-simple-dialogs';
+import { translate } from '../../../App';
 
 const GeoFence = ({ navigation }) => {
     const [dialogVisible, setDialogVisible] = useState(false)
@@ -16,7 +17,7 @@ const GeoFence = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Geo Fence
+                    {translate("Geo Fence")}
                 </Text>
             ),
             headerLeft: () => (
@@ -61,7 +62,7 @@ const GeoFence = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate('GeoFenceCreateNew')} >
-                <Text style={styles.createNewText}>Create New</Text>
+                <Text style={styles.createNewText}>{translate("Geofence_string")}</Text>
             </TouchableOpacity>
             <FlatList
                 style={{}}
@@ -76,7 +77,7 @@ const GeoFence = ({ navigation }) => {
 
                 <View style={styles.mainViewHeading}>
                     <View style={styles.subHeadingView}>
-                        <Text style={styles.headingText}>View</Text>
+                        <Text style={styles.headingText}>{translate("Geofence_string17")}</Text>
                         <TouchableOpacity onPress={() => { hideDialog() }}>
                             <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
                         </TouchableOpacity>
@@ -84,7 +85,7 @@ const GeoFence = ({ navigation }) => {
 
                     <View style={styles.popUpCardContainer}>
                         <View style={styles.titleViewStyle}>
-                            <Text style={styles.titleTextStyle}>Details</Text>
+                            <Text style={styles.titleTextStyle}>{translate("Details")}</Text>
                             <Image source={images.geoFence.listIcon} resizeMode='contain' />
                         </View>
 
@@ -92,12 +93,12 @@ const GeoFence = ({ navigation }) => {
 
                         <View style={styles.infoDataMainView}>
                             <View style={styles.infoDataSubView}>
-                                <Text style={styles.mainTextStyle}>Name</Text>
+                                <Text style={styles.mainTextStyle}>{translate("Name")}</Text>
                                 <Text style={styles.textStyle}>Gas Station</Text>
                             </View>
 
                             <View style={styles.descriptionMainStyle}>
-                                <Text style={styles.mainTextStyle}>Description</Text>
+                                <Text style={styles.mainTextStyle}>{translate("Description")}</Text>
                                 <Text style={styles.textStyle}>Description of card</Text>
                             </View>
                         </View>
@@ -106,41 +107,41 @@ const GeoFence = ({ navigation }) => {
                             <View style={styles.detailsMainView}>
                                 <View style={styles.secondRowMainView}>
                                     <View style={styles.secondRowSubView}>
-                                        <Text style={styles.mainTextStyle}>Colour</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Geofence_string6")}</Text>
                                         <View style={styles.deviceSummaryDetailView}></View>
                                     </View>
 
                                     <View style={styles.fontSizeMainView}>
-                                        <Text style={styles.mainTextStyle}>Font Size</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Geofence_string7")}</Text>
                                         <Text style={styles.fontSizeStyle}>08</Text>
                                     </View>
 
                                     <View style={styles.typeMainViewStyle}>
-                                        <Text style={styles.mainTextStyle}>Type</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Type")}</Text>
                                         <Text style={styles.fontSizeStyle}>Polygon</Text>
                                     </View>
                                 </View>
 
                                 <View style={styles.secondRowMainView}>
                                     <View style={styles.visibilityMainView}>
-                                        <Text style={styles.mainTextStyle}>Visibility</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Geofence_string10")}</Text>
                                         <Text style={styles.fontSizeStyle}>02 to 20</Text>
                                     </View>
 
                                     <View style={styles.areaMainView}>
-                                        <Text style={styles.mainTextStyle}>Area</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Geofence_string11")}</Text>
                                         <Text style={styles.fontSizeStyle}>100m2</Text>
                                     </View>
 
                                     <View style={styles.perimeterMainView}>
-                                        <Text style={styles.mainTextStyle}>Perimeter</Text>
+                                        <Text style={styles.mainTextStyle}>{translate("Geofence_string12")}</Text>
                                         <Text style={styles.fontSizeStyle}>75m</Text>
                                     </View>
                                 </View>
                             </View>
                             <View style={styles.secondRowMainView}>
                                 <View style={styles.descriptionMainStyle}>
-                                    <Text style={styles.mainTextStyle}>Image</Text>
+                                    <Text style={styles.mainTextStyle}>{translate("Geofence_string13")}</Text>
                                     <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
                                 </View>
                             </View>
@@ -148,7 +149,7 @@ const GeoFence = ({ navigation }) => {
 
                         <View style={styles.secondRowMainView}>
                             <View style={styles.descriptionMainStyle}>
-                                <Text style={styles.mainTextStyle}>Selected Devices</Text>
+                                <Text style={styles.mainTextStyle}>{translate("Geofence_string14")}</Text>
                                 <Text style={styles.fontSizeStyle}>TrackPort International</Text>
                                 <Text style={styles.fontSizeStyle}>Spark Nano 7 GPS Tracker</Text>
                             </View>
@@ -157,7 +158,7 @@ const GeoFence = ({ navigation }) => {
 
                     <View style={styles.popUpCardContainer}>
                         <View style={styles.titleViewStyle}>
-                            <Text style={styles.titleTextStyle}>Location</Text>
+                            <Text style={styles.titleTextStyle}>{translate("Geofence_string15")}</Text>
                             <Image source={images.geoFence.pin} resizeMode='contain' />
                         </View>
 
@@ -170,7 +171,7 @@ const GeoFence = ({ navigation }) => {
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { }} style={styles.nextButton}>
-                            <Text style={styles.nextButtonText}>Edit</Text>
+                            <Text style={styles.nextButtonText}>{translate("Geofence_string16")}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -190,16 +191,16 @@ const GeoFence = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.textMainView}>
-                        <Text style={styles.textViewStyle}>Do you really want to delete Gas Station ?</Text>
+                        <Text style={styles.textViewStyle}>{translate("Geofence_string18")}</Text>
                     </View>
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                            <Text style={styles.buttonTextColor}>Cancel</Text>
+                            <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
-                            <Text style={styles.nextButtonText}>Delete</Text>
+                            <Text style={styles.nextButtonText}>{translate("Delete_string")}</Text>
                         </TouchableOpacity>
                     </View>
 

@@ -8,6 +8,7 @@ import { isUserLoggedIn } from '../Selector'
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
 import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
+import { translate } from '../../../App'
 
 const LiveTracking = ({navigation}) => {
 
@@ -74,7 +75,7 @@ const LiveTracking = ({navigation}) => {
 					<View style={styles.lineContainer}>
 						{data.map((item, key) =>
 							<TouchableOpacity key={key} onPress={() => onPressHandle({ navigation, item })}>
-								<Text style={styles.textStyle}>{item}</Text>
+								<Text style={styles.textStyle}>{translate(item)}</Text>
 								{key != data.length - 1 ? <View style={styles.horizontalLine} /> : null}
 							</TouchableOpacity>
 						)

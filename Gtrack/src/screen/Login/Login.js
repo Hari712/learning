@@ -17,6 +17,7 @@ import _ from 'lodash'
 import * as LoginActions from './Login.Action'
 import * as SettingsActions from '../Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info';
+import { translate } from '../../../App'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 
 
@@ -37,13 +38,13 @@ const Login = () => {
         if (isConnected) {
             let message = ''
             if (_.isEmpty(email)) {
-                message = AppConstants.EMPTY_EMAIL_OR_PHONE
+                message = translate(AppConstants.EMPTY_EMAIL_OR_PHONE)
             }
             else if (!validateEmailorPhoneNumber(email)) {
-                message = AppConstants.INVALID_EMAIL_OR_PHONE
+                message = translate(AppConstants.INVALID_EMAIL_OR_PHONE)
             }
             else if (_.isEmpty(password)) {
-                message = AppConstants.EMPTY_PASSWORD
+                message = translate(AppConstants.EMPTY_PASSWORD)
             }
             if (!_.isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -74,11 +75,11 @@ const Login = () => {
 
     function onGetAllUserGroupsSuccess(data) {
         console.log('Group List Loaded Success')
-      }
+    }
     
-      function onGetAllUserGroupError(error) {
+    function onGetAllUserGroupError(error) {
         console.log('Group List Loaded Error')
-      }
+    }
 
     function onUserAssetListLoadedSuccess(data) {
         console.log('Asset List Loaded Success')
@@ -129,13 +130,13 @@ const Login = () => {
                 <View style={styles.container}>
                     <Image source={images.image.defaultlogo} style={styles.imageStyle} />
                     <View style={styles.subContner}>
-                        <Text style={styles.welcomeText}>WELCOME!</Text>
+                        <Text style={styles.welcomeText}>{translate("Login_string1")}</Text>
                     </View>
 
                     <EditText
                         value={email}
                         onChangeText={(value) => { setEmail(value) }}
-                        placeholder='Email Address/Mobile Number'
+                        placeholder={translate("Login_string2")}
                         rightContainer={
                             <TouchableOpacity onPress={() => setIsClickInfo(!isClickInfo)} style={{ width: wp(3), zIndex: 1 }}>
                                 <Image source={isClickInfo ? images.login.infoClick : images.login.info} />
@@ -145,7 +146,7 @@ const Login = () => {
                     />
                     {isClickInfo ?
                         <View style={styles.infoPopup}>
-                            <Text style={styles.infoText}>Enter mobile number without country code.</Text>
+                            <Text style={styles.infoText}>{translate("Login_string6")}</Text>
                         </View>
                         : null}
 
@@ -153,19 +154,19 @@ const Login = () => {
                     <EditText
                         value={password}
                         onChangeText={(value) => setPassword(value)}
-                        placeholder='Passcode'
+                        placeholder={translate("Login_string4")}
                         passcode style={styles.passcodeText}
                     />
 
                     <CustomButton
-                        title="Login"
+                        title={translate("Login")}
                         onPress={() => onTapLoginButton()}
                         style={styles.button}
                         textStyle={styles.buttonTextStyle}
                     />
 
                     <TouchableOpacity style={styles.subContainer} onPress={() => navigateToResetPasscode()}>
-                        <Text style={styles.resetText}>Reset Passcode</Text>
+                        <Text style={styles.resetText}>{translate("Login_string5")}</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>

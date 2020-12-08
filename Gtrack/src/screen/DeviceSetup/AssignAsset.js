@@ -9,6 +9,7 @@ import { getAssetListInfo, makeGetDeviceDetail, getLoginInfo } from '../Selector
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
+import { translate } from '../../../App'
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
@@ -37,7 +38,7 @@ const AssignAsset = ({ navigation, route }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (
@@ -101,11 +102,11 @@ const AssignAsset = ({ navigation, route }) => {
             <View style={styles.container}>
                 <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3), }}>
                     <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step2} resizeMode="contain" />
-                    <Text style={styles.title}>Assign Asset</Text>
+                    <Text style={styles.title}>{translate("Assign Asset")}</Text>
                     <View style={styles.deviceInfoContainer}>
                         <Text style={styles.deviceInfo}>Device ID</Text>
                         <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>{device.deviceId}</Text>
-                        <Text style={[styles.deviceInfo, { marginTop: hp(1.0), color: ColorConstant.BLACK }]}>Device Name</Text>
+                        <Text style={[styles.deviceInfo, { marginTop: hp(1.0), color: ColorConstant.BLACK }]}>{translate("Device_Name")}</Text>
                         <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>{device.deviceName}</Text>
                     </View>
                 </View>
@@ -113,7 +114,7 @@ const AssignAsset = ({ navigation, route }) => {
                     <View style={{ zIndex: 10 }}>
                         <DropDown
                             defaultValue={asset}
-                            label='Select Existing Asset'
+                            label={translate("Select Existing Asset")}
                             valueSet={setAsset}
                             dataList={assetNameList}
                             contentInset={{ label: hp(-0.2) }}
@@ -124,19 +125,19 @@ const AssignAsset = ({ navigation, route }) => {
                     </View>
                     <ShadowView style={styles.shadowContainer}>
                         <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
-                            <Text style={styles.activateButtonTitle}>Add New Asset</Text>
+                            <Text style={styles.activateButtonTitle}>{translate("Add_New_Asset")}</Text>
                         </TouchableOpacity>
                     </ShadowView>
                 </View>
                 <View style={styles.buttonMainContainer}>
                     <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                         <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>
-                            <Text style={styles.buttonTextColor}>Not Now</Text>
+                            <Text style={styles.buttonTextColor}>{translate("Not Now")}</Text>
                         </TouchableOpacity>
                     </ShadowView>
                     <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
                         <TouchableOpacity style={styles.nextButton} onPress={() => navigateToAssignGroup()}>
-                            <Text style={styles.nextButtonText}>Next</Text>
+                            <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                         </TouchableOpacity>
                     </ShadowView>
                 </View>

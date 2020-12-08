@@ -4,6 +4,7 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { Dialog, FontSize, TextField, DropDown} from '../../component';
+import { translate } from '../../../App';
 
 const EditDeviceAsset = ({route, navigation}) => {
     const {id,title} = route.params;
@@ -25,7 +26,7 @@ const EditDeviceAsset = ({route, navigation}) => {
                     fontWeight: '500',
                     //letterSpacing: 0,
                     textAlign:'center' }}>
-                    Edit Device & Asset
+                    {translate("Edit Device & Asset")}
                 </Text>          
             ),
             headerLeft:() => (
@@ -48,33 +49,33 @@ return (
         <View style={styles.subContainer}>
             <View style={styles.device}>
                 <Image  style={{resizeMode:'stretch'}} source={images.image.usb}/>
-                <Text style={styles.textStyle}>Device</Text>
+                <Text style={styles.textStyle}>{translate("Device")}</Text>
             </View>
             <View style={styles.id}>
-                <Text style={styles.idTitle}>Id</Text>
+                <Text style={styles.idTitle}>{translate("Id")}</Text>
                 <Text style={styles.idText}>{id}</Text>
             </View>
 
             <View style={styles.textField}>
-                <TextField valueSet={setValue} label='Name*' ref={nameRef} />
+                <TextField valueSet={setValue} label={translate("Name_Star")} ref={nameRef} />
             </View>
             <View style={styles.horizontalLine}/>
 
             <View style={[styles.device,{marginTop:hp(2)}]}>
                 <Image  style={{resizeMode:'stretch'}} source={images.image.pickupcar}/>
-                <Text style={styles.textStyle}>Asset</Text>
+                <Text style={styles.textStyle}>{translate("Asset")}</Text>
             </View>
             <View style={{marginTop:hp(2),zIndex:4}}>
-            <DropDown label='Type' defaultValue={type} valueSet={setType} dataList={typeArray}  />
+            <DropDown label={translate("Type")} defaultValue={type} valueSet={setType} dataList={typeArray}  />
             </View>
 
                 <View style={styles.nameDesc}>
                     <View style={styles.column} >
-                        <Text style={styles.nameDescText}>Name</Text>
+                        <Text style={styles.nameDescText}>{translate("Name")}</Text>
                         <Text style={styles.name}>xyz</Text>              
                     </View>
                     <View style={styles.column} >
-                        <Text style={styles.nameDescText}>Description (Optional)</Text>
+                        <Text style={styles.nameDescText}>{translate("Edit_Device_Asset_string")}</Text>
                         <Text style={styles.name}>xyz</Text>         
                     </View>
                 </View>
@@ -82,7 +83,7 @@ return (
 
                 <View style={[styles.device,{marginTop:hp(2)}]}>
                     <Image  style={{resizeMode:'stretch'}} source={images.image.list}/>
-                    <Text style={styles.textStyle}>Select Group</Text>
+                    <Text style={styles.textStyle}>{translate("Select Group")}</Text>
                 </View>
 
                 <View style={{marginTop:hp(2),zIndex:4}}>
@@ -91,20 +92,20 @@ return (
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={()=> clear()} style={[styles.button,{backgroundColor:ColorConstant.WHITE,borderColor:ColorConstant.BLUE,borderWidth:1}]}>
-                        <Text style={[styles.buttonText,{color:ColorConstant.BLUE}]}>Clear</Text>
+                        <Text style={[styles.buttonText,{color:ColorConstant.BLUE}]}>{translate("Clear")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={styles.button}>
-                        <Text style={styles.buttonText}>Save</Text>
+                        <Text style={styles.buttonText}>{translate("Save")}</Text>
                     </TouchableOpacity>
                 </View>
 
                 <Dialog 
-                    heading="Are you sure ?"
+                    heading={translate("Dailog_string")}
                     message={"Do you really want to attach asset ?" + "\n \n" + "It will get detach from the current device."}
                     visible={dialogVisible}
                     onTouchOutside={() => setDialogVisible(false)}
-                    positiveButtonName={"Save"}
+                    positiveButtonName={translate("Save")}
                     negativeHandle={() => setDialogVisible(false)}
                     positiveHandle={() => setDialogVisible(false)}
                 />        

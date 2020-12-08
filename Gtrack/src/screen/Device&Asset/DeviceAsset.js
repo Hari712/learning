@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
+import { translate } from '../../../App';
 
 const DeviceAsset = ({navigation}) => {
 
@@ -72,15 +73,15 @@ return (
       {/* White Body container */}
       <View style={styles.whiteBodyContainer}>
         <View style={styles.column} >
-          <Text style={styles.whiteBodyText}>Group</Text>
+          <Text style={styles.whiteBodyText}>{translate("Group")}</Text>
           <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.group}</Text>              
         </View>
         <View style={[styles.column,{width:'40%'}]} >
-          <Text style={styles.whiteBodyText}>Selected Plan</Text>
+          <Text style={styles.whiteBodyText}>{translate("Selected Plan")}</Text>
           <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.plan} {item.duration?<Text style={{color:ColorConstant.GREY}}>({item.duration})</Text>:null}</Text>             
         </View>
         <View style={[styles.column,{width:'25%'}]}>
-          <Text style={styles.whiteBodyText}>Plan Expiry</Text>
+          <Text style={styles.whiteBodyText}>{translate("Plan Expiry")}</Text>
           <Text style={[styles.whiteBodyText,{color:ColorConstant.BLACK}]}>{item.date}</Text>
         </View>
       </View>

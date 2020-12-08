@@ -8,6 +8,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
 import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
+import { translate } from '../../../App'
 import { DropDown, FontSize} from '../../component'
 
 const Dashboard = ({ navigation }) => {
@@ -118,11 +119,11 @@ const Dashboard = ({ navigation }) => {
         <View style={styles.deviceSummaryMainViewStyle}>
 
           <View style={styles.leftMainViewStyle}>
-            <Text style={styles.summary}>Device Summary</Text>
+            <Text style={styles.summary}>{translate("Device Summary")}</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Text style={styles.devicesTextStyle}>No. of devices: 10</Text>
+            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: 10</Text>
 
             <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
@@ -175,7 +176,7 @@ const Dashboard = ({ navigation }) => {
           <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', zIndex:0, backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
             <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
             <Text style={[styles.alertText,{marginLeft: wp(1)}]}>30</Text>
-            <Text style={styles.alertText }>Alerts</Text>
+            <Text style={styles.alertText }>{translate("Alerts")}</Text>
           </View>
 
           <ActivityRings data={activityData} config={activityConfig} />
@@ -184,7 +185,7 @@ const Dashboard = ({ navigation }) => {
 
         <View style={[styles.deviceSummaryMainViewStyle, {position:"absolute"}]}>
           <View style={[styles.leftMainViewStyle,{paddingTop:hp(0.5)}]}>
-            <Text style={styles.summary}>Recent Alarms</Text>
+            <Text style={styles.summary}>{translate("Recent Alarms")}</Text>
           </View>
 
           <View style={{alignItems: 'flex-start', justifyContent:'flex-start', flex:1}}>
@@ -198,19 +199,21 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={[styles.rightMainViewStyle,{paddingTop:hp(0.5)}]}>
-            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            <TouchableOpacity style={styles.refreshImageStyle}>
+              <Image source={images.dashBoard.refresh} resizeMode='contain' />
+            </TouchableOpacity>
           </View>
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2) }}>
           <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.LIGHTBROWN }]}></View>
-          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>Low Battery</Text>
+          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Low Battery")}</Text>
 
           <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.BROWN }]}></View>
-          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>Movement</Text>
+          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Movement")}</Text>
 
           <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.DARKBROWN }]}></View>
-          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>Over Speeding</Text>
+          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Dashboard_string7")}</Text>
         </View>
 
       </ShadowView>

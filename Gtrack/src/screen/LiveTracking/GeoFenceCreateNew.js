@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensio
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
+import { translate } from '../../../App'
 import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
 
 const GeoFenceCreateNew = ({ navigation }) => {
@@ -16,7 +17,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Geo Fence
+                    {translate("Geo Fence")}
                 </Text>
             ),
             headerLeft: () => (
@@ -30,13 +31,13 @@ const GeoFenceCreateNew = ({ navigation }) => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Create New</Text>
+                <Text style={styles.textViewStyle}>{translate("Geofence_string")}</Text>
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
-                    label='Group Access'
+                    label={translate("Group Access")}
                     //  dataList={Data} 
-                    allText='Select All'
+                    allText={translate("Select_all_string")}
                     hideSelectedDeviceLable={true}
                     hideDeleteButton={true}
                     rowStyle={styles.rowStyle}
@@ -53,7 +54,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             <View style={styles.dropDown}>
                 <View style={styles.dropDownSubView}>
                     <DropDown
-                        label='GeoFence Type*'
+                        label={translate("Geofence_CreateNew_string2")}
                         defaultValue={role}
                         valueSet={setRole}
                         dataList={DATA}
@@ -69,10 +70,10 @@ const GeoFenceCreateNew = ({ navigation }) => {
             {/* {DATA.map((item,index) => */}
                 <View style={styles.buttonMainContainer}>
                     <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>Cancel</Text>
+                        <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType', { type: role }) }}  style={styles.nextButton}>
-                        <Text style={styles.nextButtonText}>Next</Text>
+                        <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                     </TouchableOpacity>
                 </View>
             {/* )} */}
