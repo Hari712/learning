@@ -154,10 +154,10 @@ export const requestExportAllDevices = (userId, onSuccess, onError) => ({
     onError
 })
 
-export const requestExportDeviceByDeviceID = (userId, deviceId, onSuccess, onError) => ({
+export const requestExportDeviceByDeviceID = (userId, data, onSuccess, onError) => ({
     type: types.EXPORT_DEVICE_BY_DEVICE_ID,
     userId,
-    deviceId,
+    data,
     onSuccess,
     onError
 })

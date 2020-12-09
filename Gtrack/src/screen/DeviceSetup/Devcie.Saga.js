@@ -206,15 +206,10 @@ function* requestExportAllDevices(action) {
 }
 
 function* requestExportDeviceByDeviceId(action) {
-    const { userId, deviceId, onSuccess, onError } = action
+    const { userId, data, onSuccess, onError } = action
     try {
-        let requestBody = {
-            device_id: deviceId,
-            type: null,
-            sendMail: 'true'
-        }
         const url = ApiConstants.EXPORT_ALL_DEVICES(userId)
-        const response = yield call(API.post, url, requestBody)
+        const response = yield call(API.post, url, data)
         onSuccess(response)
     } catch (error) {
         onError(error)
