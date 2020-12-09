@@ -27,5 +27,20 @@ export const usersReducer = createReducer(state = initialState, {
             ...state,
             group:result
         }
+    },
+    [types.ACTIVATE_DEACTIVATE_DEVICE_RESPONSE](state, action) {
+        const { subUserId } = action
+        const arrSubUsers = state.subUser ? state.subUser : []
+        const arrSelectedUser = arrSubUsers.map((item) => {
+            if (item.id == subUserId) {
+                item.isActive = !item.isActive
+            }
+            return item
+        })
+        
+        return {
+            ...state,
+            subUser:arrSelectedUser
+        }
     }
 })
