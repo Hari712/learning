@@ -136,7 +136,7 @@ function CreateAsset() {
                     label='Select Device'
                     valueSet={setDevice}
                     dataList={arrDeviceNames}
-                    // contentInset={{ label: hp(-0.2) }}
+                    contentInset={{ input: hp(2) }}
                     // inputContainerStyle={styles.inputContainer}
                     // accessoryStyle={{marginBottom:0}}
                     outerStyle={{ position:'absolute', width:'100%', marginTop: hp(34) }}
@@ -147,10 +147,10 @@ function CreateAsset() {
                     defaultValue={type}
                     valueSet={setType}
                     dataList={arrAssetTypeList}
-                    // contentInset={{ label: hp(-0.2) }}
+                    contentInset={{ input: hp(2) }}
                     // inputContainerStyle={styles.inputContainer}
                     // accessoryStyle={{marginBottom:0}}
-                    outerStyle={{ position:'absolute', width:'100%', marginTop: 75 }}
+                    outerStyle={{ position:'absolute', width:'100%', marginTop: hp(9.5) }}
                 />
 
 
