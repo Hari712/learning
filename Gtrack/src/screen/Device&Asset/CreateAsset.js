@@ -105,39 +105,22 @@ function CreateAsset() {
                 <TextField
                     valueSet={setAssetName}
                     defaultValue={assetName}
-                    label='Name*'
+                    label='Name*'                    
                 />
-                <View style={{ zIndex: 12 }}>
-                    <DropDown
-                        label='Type'
-                        defaultValue={type}
-                        valueSet={setType}
-                        dataList={arrAssetTypeList}
-                        contentInset={{ label: hp(-0.2) }}
-                        inputContainerStyle={styles.inputContainer}
-                        accessoryStyle={{ top: hp(0.0) }}
-                        outerStyle={{ marginBottom: hp(0) }}
-                    />
-                </View>
+                {/* Dropdown absolute - type */}
+                <View style={{margin:hp(5)}}></View>
+
                 <TextField
                     valueSet={setDescrption}
                     defaultValue={description}
                     label='Description (Optional)'
                     multiline={true}
+                    contentInset={{ input:hp(1) }}
                     outerStyle={styles.outerStyle}
                 />
-                <View style={{ zIndex: 10 }}>
-                    <DropDown
-                        defaultValue={device}
-                        label='Select Device'
-                        valueSet={setDevice}
-                        dataList={arrDeviceNames}
-                        contentInset={{ label: hp(-0.2) }}
-                        inputContainerStyle={styles.inputContainer}
-                        accessoryStyle={{ top: hp(0.0) }}
-                        outerStyle={{ marginBottom: hp(0) }}
-                    />
-                </View>
+                {/* Dropdown absolute - device */}
+                <View style={{margin:hp(5)}}></View>
+
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => goBack()}>
                         <Text style={styles.cancelText}>Cancel</Text>
@@ -147,6 +130,30 @@ function CreateAsset() {
                         <Text style={styles.saveText}>Save</Text>
                     </TouchableOpacity>
                 </View>
+
+                <DropDown
+                    defaultValue={device}
+                    label='Select Device'
+                    valueSet={setDevice}
+                    dataList={arrDeviceNames}
+                    // contentInset={{ label: hp(-0.2) }}
+                    // inputContainerStyle={styles.inputContainer}
+                    // accessoryStyle={{marginBottom:0}}
+                    outerStyle={{ position:'absolute', width:'100%', marginTop: hp(34) }}
+                />
+
+                <DropDown
+                    label='Type'
+                    defaultValue={type}
+                    valueSet={setType}
+                    dataList={arrAssetTypeList}
+                    // contentInset={{ label: hp(-0.2) }}
+                    // inputContainerStyle={styles.inputContainer}
+                    // accessoryStyle={{marginBottom:0}}
+                    outerStyle={{ position:'absolute', width:'100%', marginTop: 75 }}
+                />
+
+
             </View>
         </View>
     )

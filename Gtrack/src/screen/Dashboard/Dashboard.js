@@ -188,10 +188,15 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={{alignItems: 'flex-start', justifyContent:'flex-start', flex:1}}>
-            <DropDown label='Type' defaultValue={selectedDevice} valueSet={setSelectedDevice}  dataList={['Group 1','Group 2','Group 3']} 
+            <DropDown 
+              label='Type' 
+              defaultValue={selectedDevice} 
+              valueSet={setSelectedDevice}  
+              dataList={['Group 1','Group 2','Group 3']} 
               fontSize={hp(1.6)} 
               contentInset={{ input: 6, label: -8 }}
               outerStyle={styles.outerStyle} 
+              accessoryStyle={{marginBottom:hp(0.5)}}
               dropdownStyle = {{top:hp(3.5),zIndex:99999}}
               inputContainerStyle={styles.inputContainerStyle} 
               containerStyle={styles.containerStyle} /> 

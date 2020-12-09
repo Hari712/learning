@@ -204,9 +204,8 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     <Image style={{ resizeMode: 'stretch' }} source={images.image.pickupcar} />
                     <Text style={styles.textStyle}>Asset</Text>
                 </View>
-                <View style={{ marginTop: hp(2), zIndex: 5 }}>
-                    <DropDown label='Name' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
-                </View>
+
+                <View style={{ margin: hp(5) }}/>
 
                 <View style={styles.nameDesc}>
                     <View style={styles.column} >
@@ -225,9 +224,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     <Text style={styles.textStyle}>Select Group</Text>
                 </View>
 
-                <View style={{ marginTop: hp(2), zIndex: 4 }}>
-                    <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={arrGroupnames} />
-                </View>
+                <View style={{ margin: hp(5) }}/>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => clear()} style={[styles.button, { backgroundColor: ColorConstant.WHITE, borderColor: ColorConstant.BLUE, borderWidth: 1 }]}>
@@ -237,6 +234,14 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     <TouchableOpacity onPress={() => onTapSave()} style={styles.button}>
                         <Text style={styles.buttonText}>Save</Text>
                     </TouchableOpacity>
+                </View>
+
+                <View style={{ width:'100%', marginTop:385, position:'absolute' }}>
+                    <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={arrGroupnames} />
+                </View>
+
+                <View style={{ width:'100%', marginTop:200, position:'absolute' }}>
+                    <DropDown label='Name' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
                 </View>
 
                 {renderAssetConfirmationDialog()}
@@ -256,8 +261,7 @@ const styles = StyleSheet.create({
     subContainer: {
         marginHorizontal: hp(3),
         marginVertical: hp(5),
-        width: Dimensions.get('window').width - 40,
-        zIndex: 1
+        width: Dimensions.get('window').width - 40
     },
     device: {
         flexDirection: 'row',
