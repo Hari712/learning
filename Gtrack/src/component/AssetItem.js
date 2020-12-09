@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import { DropDown, TextField } from '../component';
+
 
 
 const AssteItem = (props) => {
@@ -12,11 +14,37 @@ const AssteItem = (props) => {
     const { assetName } = item
 
     const [editClick, setEditClick] = useState()
-
+    const [type, setType] = useState();
+    const [tempName, setTempName] = useState();
+    const [description1, setDescrption1] = useState();
 
     function deleteAssetItem(item, key) {
 
     }
+
+    const popUp = () => {        
+        return(
+            <View style={{backgroundColor:ColorConstant.PINK,paddingVertical:10,width:'100%',marginTop:hp(2)}}>
+                        
+                <TextField valueSet={setTempName} value={assetName} label='Name*' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE}} /> 
+                
+                <TextField multiline={true} valueSet={setDescrption1} defaultValue={description1} label='Description' outerStyle={{width:'85%',backgroundColor:ColorConstant.WHITE, marginTop:hp(10)}} /> 
+                
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={()=>setEditClick(-1)} style={{borderRadius:6,borderColor:ColorConstant.BLUE,borderWidth:1,backgroundColor:ColorConstant.WHITE,width:'30%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>Cancel</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity  style={{borderRadius:6,backgroundColor:ColorConstant.BLUE,width:'30%',height:hp(6),justifyContent:'center'}}>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <DropDown label='Type*' defaultValue={type} valueSet={setType}  outerStyle={{width:'85%',alignSelf:'center',backgroundColor:ColorConstant.WHITE, position:'absolute', marginTop: hp(11) }} dropdownStyle={{width:'85%',alignSelf:'center'}} />
+
+            </View>
+        )
+    }   
 
 
     return (
@@ -36,6 +64,8 @@ const AssteItem = (props) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            {(index==editClick)? 
+             popUp() : null}  
         </View>
     )
 }
@@ -69,6 +99,14 @@ const styles = StyleSheet.create({
         width: wp(6),
         borderTopLeftRadius: 12,
         borderBottomLeftRadius: 12
+    },
+    buttonContainer: {
+        flexDirection:'row',
+        justifyContent:'space-evenly',
+        //width:'75%',
+        //margin:hp(3),
+        marginTop:hp(3),
+        alignItems:'center'
     },
     whiteCard: {
         flexDirection: 'row',

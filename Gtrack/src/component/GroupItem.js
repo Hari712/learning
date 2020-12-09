@@ -18,7 +18,7 @@ const GroupItem = props => {
 
     const [selectedKey, setSelectedKey] = useState(-1);
     const [subContainerHeight, setSubContainerHeight] = useState();
-    const [addClick, setAddClick] = useState();
+    const [addClick, setAddClick] = useState(-1);
     const [selectedDevices, setSelectedDevices] = useState([]);
     const [deleteDeviceKey, setDeleteDeviceKey] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
@@ -35,6 +35,10 @@ const GroupItem = props => {
         setDialogVisible(false)
     }
 
+    const onDeleteGroup = () => {
+        
+    }
+
     return (
         <View style={{ width: '100%', alignItems: 'center' }}>
         <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
@@ -49,18 +53,20 @@ const GroupItem = props => {
                 setSubContainerHeight(nativeEvent.layout.height)
             }}>
                 {/* heading */}
-                <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                <View  style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                    {/* {console.log("orange",index,selectedKey)} */}
                     <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                    <Image style={styles.icon} source={images.image.trashBlack} />
-                    <TouchableOpacity style={{ alignSelf: 'center' }} key={index}
-
+                    <TouchableOpacity onPress={onDeleteGroup()}>
+                        <Image style={styles.icon} source={images.image.trashBlack} />
+                    </TouchableOpacity>                   
+                    <TouchableOpacity style={{ alignSelf: 'center' }} 
                         onPress={() => {
-                            (key == addClick) ?
+                            (index == addClick) ?
                                 setAddClick(-1) :
                                 setAddClick(index)
                         }}
                     >
-                        <Image style={styles.icon} source={images.image.add} />
+                        <Image style={styles.icon} source={index == addClick ? images.image.orangeAdd : images.image.add} />
                     </TouchableOpacity>
                 </View>
 
@@ -83,10 +89,10 @@ const GroupItem = props => {
 
 
             </View>
+        </View>
 
             {/* Popup View */}
-
-            {/* {(index == addClick) ?
+            {(index == addClick) ?
                 <View style={styles.popup}>
                     <View style={{ flexDirection: 'row', margin: hp(2) }}>
                         <View style={{ flex: 1, alignItems: 'center' }}>
@@ -107,7 +113,7 @@ const GroupItem = props => {
                             hideSelectedDeviceLable={true}
                             deleteHandle={deleteFunction}
                             selectedItemRowStyle={styles.selectedItemRowStyle}
-                            outerStyle={{ width: '100%', alignSelf: 'center' }} />
+                            outerStyle={{ width: wp(70), alignSelf: 'center' }} />
                     </View>
 
                     <View style={styles.buttonContainer}>
@@ -128,8 +134,8 @@ const GroupItem = props => {
                         positiveHandle={deleteConfirm}
                     />
 
-                </View> : null} */}
-        </View>
+                </View> : null}
+        
         </View>
     )
 }
