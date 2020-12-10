@@ -58,7 +58,7 @@ const Details = ({ route, navigation }) => {
               "useMaxSearchAsLimit" : false,
               "searchColumnsList" : [{
               "columnName" : "searchParam",
-              "searchStr": deviceId
+              "searchStr": `${deviceId}`
           }],
               "sortHeader" : "id",
               "sortDirection" : "DESC"
