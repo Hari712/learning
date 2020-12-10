@@ -177,3 +177,11 @@ export const requestRemoveDevice = (userId, data, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const requestUpdateGroupDevice = (userId, data, onSuccess, onError) => ({
+    type: types.UPDATE_GROUP_DEVICE_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})

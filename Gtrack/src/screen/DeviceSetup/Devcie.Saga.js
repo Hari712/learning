@@ -238,6 +238,17 @@ function* requestRemoveDevice(action) {
     }
 }
 
+function* requestUpdateGroupDevice(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.UPDATE_GROUP(userId)
+        const response = yield call(API.put, url, data)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 
 export function* watchDeviceSetup() {
@@ -258,4 +269,5 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.EXPORT_DEVICE_BY_DEVICE_ID, requestExportDeviceByDeviceId)
         yield takeLatest(types.DELETE_GROUP_REQUEST, requestDeleteGroup)
         yield takeLatest(types.REMOVE_GROUP_DEVICE_REQUEST, requestRemoveDevice)
+        yield takeLatest(types.UPDATE_GROUP_DEVICE_REQUEST, requestUpdateGroupDevice)
 }

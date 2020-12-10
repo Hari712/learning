@@ -29,6 +29,10 @@ const GroupItem = props => {
         loginInfo: getLoginInfo(state),
     }))
 
+    useEffect(() => {
+        loadNonGroupedDevice()
+    }, [])
+
 
     const [selectedKey, setSelectedKey] = useState(-1);
     const [subContainerHeight, setSubContainerHeight] = useState();
@@ -37,8 +41,10 @@ const GroupItem = props => {
     const [deleteDeviceKey, setDeleteDeviceKey] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
     const [deleteGroupDialogVisible, setDeleteGroupDialogVisible] = useState(false)
-    const [devicesList, setDevicesList] = useState(['Car'])
-    const [removeDeviceId, setRemoveDeviceId] = useState();
+    // const [devicesList, setDevicesList] = useState(['Car'])
+    const [removeDeviceId, setRemoveDeviceId] = useState()
+    const [arrDeviceList, setDeviceList] = useState([])
+    const [arrDeviceNames, setDeviceNames] = useState([])
 
     const deleteFunction = (item, key) => {
         console.log('Testing Success', item, key)
@@ -47,12 +53,29 @@ const GroupItem = props => {
         //setDialogVisible(true)
     }
 
+    const onUpdateGroup = () => {
+        let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
+        console.log("Devicesd which are selected", arrSelectedDevices)
+        const  requestBody = {
+            "deviceDTO" : null,
+            "assetDTO" : null,
+            "groupDTO" : {
+            "id" : id,
+            "groupName" : groupName,
+            "devices" : arrSelectedDevices,
+            "isQuickAdd" : false
+            },
+            "devicePlan" : null
+        }
+        dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
+    }
+
     const removeConfirm = () => {
         const requestBody = {
             "groupId" : id,
             "deviceId" : removeDeviceId.toString()
           }          
-        dispatch(DeviceActions.requestRemoveDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
+        dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
     }
 
     
@@ -93,6 +116,28 @@ const GroupItem = props => {
         setRemoveDeviceId(deviceId)
         setDialogVisible(true) 
     }
+
+    function loadNonGroupedDevice() {
+        let requestBody = {
+            nonGrouped: true,
+            nonLinked: false
+        }
+        dispatch(DeviceActions.requestGetAllNonGroupedDevice(loginInfo.id, requestBody, onNonGroupedDeviceLoadedSuccess, onNonGroupedDeviceLoadedError))
+    }
+
+
+    function onNonGroupedDeviceLoadedSuccess(data) {
+        let arr = isEmpty(data) ? [] : data
+        setDeviceList(arr)
+        let arrDeviceNames = arr.map((item) => item.deviceName)
+        setDeviceNames(arrDeviceNames)
+    }
+
+    function onNonGroupedDeviceLoadedError(error) {
+        console.log(error)
+    }
+
+
 
     return (
         <View style={{ width: '100%', alignItems: 'center' }}>
@@ -162,7 +207,7 @@ const GroupItem = props => {
                     <View style={{ width: '85%', alignSelf: 'center' }}>
                         <MultiSelect
                             label='Select Device'
-                            //dataList={devicesList} 
+                            dataList={arrDeviceNames} 
                             valueSet={setSelectedDevices}
                             selectedData={selectedDevices}
                             selectedItemContainerStyle={styles.selectedItemContainerStyle}
@@ -177,7 +222,7 @@ const GroupItem = props => {
                         <TouchableOpacity style={{ borderRadius: 6, borderWidth: 1, borderColor: ColorConstant.BLUE, backgroundColor: ColorConstant.WHITE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
                             <Text style={{ textAlign: 'center', color: ColorConstant.BLUE }}>Cancel</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=> {/* Update group */}} style={{ borderRadius: 6, backgroundColor: ColorConstant.BLUE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
+                        <TouchableOpacity onPress={()=> onUpdateGroup()} style={{ borderRadius: 6, backgroundColor: ColorConstant.BLUE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
                             <Text style={{ textAlign: 'center', color: ColorConstant.WHITE }}>Okay</Text>
                         </TouchableOpacity>
                     </View>

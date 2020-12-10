@@ -38,7 +38,8 @@ const ApiConstants = {
     EXPORT_ALL_DEVICES:(userId) => `${USER}${userId}/devices/export`,
     ACTIVATE_DEACTIVE:(userId, subUserId) => `${USER}${userId}/deleteUser/${subUserId}`,
     DELETE_GROUP:(userId, groupId) => `${USER}${userId}/${GROUP}${groupId}`,
-    REMOVE_DEVICE:(userId) => `${USER}${userId}/${GROUP}removeDevice`
+    REMOVE_DEVICE:(userId) => `${USER}${userId}/${GROUP}removeDevice`,
+    UPDATE_GROUP:(userId) => `${USER}${userId}/${GROUP}`
 
 }
 
