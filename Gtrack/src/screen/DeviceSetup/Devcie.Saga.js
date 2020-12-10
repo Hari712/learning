@@ -216,6 +216,18 @@ function* requestExportDeviceByDeviceId(action) {
     }
 }
 
+function* requestDeleteGroup(action) {
+    const { userId, groupId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.DELETE_GROUP(userId, groupId)
+        const response = yield call(API.delete, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -233,4 +245,5 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.GET_DEVICE_BY_ID_REQUEST, requestGetAllDeviceById),
         yield takeLatest(types.EXPORT_ALL_DEVICES_REQUEST, requestExportAllDevices)
         yield takeLatest(types.EXPORT_DEVICE_BY_DEVICE_ID, requestExportDeviceByDeviceId)
+        yield takeLatest(types.DELETE_GROUP_REQUEST, requestDeleteGroup)
 }

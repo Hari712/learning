@@ -6,6 +6,8 @@ const AUTH = 'auth/'
 
 const USER = 'users/'
 
+const GROUP = 'groups/'
+
 const ApiConstants = {
     BASE_URL: BASE_URL,
     LOGIN: SUFFIX_URL + AUTH + 'login',
@@ -34,7 +36,9 @@ const ApiConstants = {
     GET_CONSOLIDATED_DEVICE:(userId) => `${USER}${userId}/devices/consolidated`,
     GET_DEVICE_BY_ID:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}`,
     EXPORT_ALL_DEVICES:(userId) => `${USER}${userId}/devices/export`,
-    ACTIVATE_DEACTIVE:(userId, subUserId) => `${USER}${userId}/deleteUser/${subUserId}`
+    ACTIVATE_DEACTIVE:(userId, subUserId) => `${USER}${userId}/deleteUser/${subUserId}`,
+    DELETE_GROUP:(userId, groupId) => `${USER}${userId}/${GROUP}${groupId}`
+
 }
 
 export default ApiConstants

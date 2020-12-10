@@ -7,14 +7,26 @@ import FontSize from './FontSize'
 import MultiSelect from './MultiSelect';
 import Dialog from './Dialog';
 import isEmpty from 'lodash/isEmpty'
+import { useDispatch, useSelector } from 'react-redux';
+import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
+import { getLoginInfo } from '../screen/Selector';
+import AppManager from '../constants/AppManager';
 
 const GroupItem = props => {
 
     const { item } = props;
 
-    const { groupName, devices, index } = item
+    const { groupName, devices, index, id } = item
 
     const arrDevices = isEmpty(devices) ? [] : devices
+
+    const dispatch = useDispatch()
+
+    const { isConnected, loginInfo } = useSelector(state => ({
+        isConnected: state.network.isConnected,
+        loginInfo: getLoginInfo(state),
+    }))
+
 
     const [selectedKey, setSelectedKey] = useState(-1);
     const [subContainerHeight, setSubContainerHeight] = useState();
@@ -22,6 +34,7 @@ const GroupItem = props => {
     const [selectedDevices, setSelectedDevices] = useState([]);
     const [deleteDeviceKey, setDeleteDeviceKey] = useState();
     const [dialogVisible, setDialogVisible] = useState(false)
+    const [deleteGroupDialogVisible, setDeleteGroupDialogVisible] = useState(false)
     const [devicesList, setDevicesList] = useState(['Car'])
 
     const deleteFunction = (item, key) => {
@@ -36,7 +49,23 @@ const GroupItem = props => {
     }
 
     const onDeleteGroup = () => {
-        
+       setDeleteGroupDialogVisible(true)
+    }
+
+    const deleteGroupConfirm = () => {
+        dispatch(DeviceActions.requestDeleteGroup(loginInfo.id, id, onDeleteGroupSuccess, onDeleteGroupError))
+    }
+
+    const onDeleteGroupSuccess = (data) => {
+        setDeleteGroupDialogVisible(false)
+        AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
+        console.log("Success",data)
+    }
+
+    const onDeleteGroupError = (error) => {
+        setDeleteGroupDialogVisible(false)
+        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
+        console.log("Success",error)
     }
 
     return (
@@ -56,7 +85,7 @@ const GroupItem = props => {
                 <View  style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                     {/* {console.log("orange",index,selectedKey)} */}
                     <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                    <TouchableOpacity onPress={onDeleteGroup()}>
+                    <TouchableOpacity style={{backgroundColor:'red'}} onPress={()=> onDeleteGroup()} >
                         <Image style={styles.icon} source={images.image.trashBlack} />
                     </TouchableOpacity>                   
                     <TouchableOpacity style={{ alignSelf: 'center' }} 
@@ -135,8 +164,18 @@ const GroupItem = props => {
                     />
 
                 </View> : null}
+
+                <Dialog
+                    heading="Are you sure ?"
+                    message={"Do you really want to delete the group ?" + "\n \n" + "All the devices will be assigned to default group"}
+                    visible={deleteGroupDialogVisible}
+                    onTouchOutside={() => setDeleteGroupDialogVisible(false)}
+                    negativeHandle={() => setDeleteGroupDialogVisible(false)}
+                    positiveHandle={deleteGroupConfirm}
+                />
         
         </View>
+        
     )
 }
 

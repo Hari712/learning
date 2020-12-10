@@ -161,3 +161,11 @@ export const requestExportDeviceByDeviceID = (userId, data, onSuccess, onError) 
     onSuccess,
     onError
 })
+
+export const requestDeleteGroup = (userId, groupId, onSuccess, onError) => ({
+    type: types.DELETE_GROUP_REQUEST,
+    userId,
+    groupId,
+    onSuccess,
+    onError
+})
