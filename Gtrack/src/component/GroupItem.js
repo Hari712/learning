@@ -18,6 +18,8 @@ const GroupItem = props => {
 
     const { groupName, devices, index, id } = item
 
+    console.log("khushi",item)
+
     const arrDevices = isEmpty(devices) ? [] : devices
 
     const dispatch = useDispatch()
@@ -36,16 +38,34 @@ const GroupItem = props => {
     const [dialogVisible, setDialogVisible] = useState(false)
     const [deleteGroupDialogVisible, setDeleteGroupDialogVisible] = useState(false)
     const [devicesList, setDevicesList] = useState(['Car'])
+    const [removeDeviceId, setRemoveDeviceId] = useState();
 
     const deleteFunction = (item, key) => {
         console.log('Testing Success', item, key)
         setDeleteDeviceKey(key)
-        setDialogVisible(true)
+        setSelectedDevices(selectedDevices.filter((item, key) => key != deleteDeviceKey))
+        //setDialogVisible(true)
     }
 
-    const deleteConfirm = () => {
-        setSelectedDevices(selectedDevices.filter((item, key) => key != deleteDeviceKey))
+    const removeConfirm = () => {
+        const requestBody = {
+            "groupId" : id,
+            "deviceId" : removeDeviceId.toString()
+          }          
+        dispatch(DeviceActions.requestRemoveDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
+    }
+
+    
+    const onRemoveDeviceSuccess = (data) => {
         setDialogVisible(false)
+        AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
+        console.log("Success",data)
+    }
+
+    const onRemoveDeviceError = (error) => {
+        setDialogVisible(false)
+        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
+        console.log("Error",error)
     }
 
     const onDeleteGroup = () => {
@@ -65,7 +85,13 @@ const GroupItem = props => {
     const onDeleteGroupError = (error) => {
         setDeleteGroupDialogVisible(false)
         AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
-        console.log("Success",error)
+        console.log("Error",error)
+    }
+
+    
+    const onDeleteDevice = (deviceId) => {
+        setRemoveDeviceId(deviceId)
+        setDialogVisible(true) 
     }
 
     return (
@@ -85,7 +111,7 @@ const GroupItem = props => {
                 <View  style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                     {/* {console.log("orange",index,selectedKey)} */}
                     <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                    <TouchableOpacity style={{backgroundColor:'red'}} onPress={()=> onDeleteGroup()} >
+                    <TouchableOpacity onPress={()=> onDeleteGroup()} >
                         <Image style={styles.icon} source={images.image.trashBlack} />
                     </TouchableOpacity>                   
                     <TouchableOpacity style={{ alignSelf: 'center' }} 
@@ -109,7 +135,9 @@ const GroupItem = props => {
                                 <View key={itemKey} style={styles.subCategory}>
                                     <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                                     <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
+                                    <TouchableOpacity onPress={()=>onDeleteDevice(subitem.id)}>
                                     <Image style={styles.icon} source={images.image.trash} />
+                                    </TouchableOpacity>
                                 </View>
                             )
                         })}
@@ -153,16 +181,6 @@ const GroupItem = props => {
                             <Text style={{ textAlign: 'center', color: ColorConstant.WHITE }}>Okay</Text>
                         </TouchableOpacity>
                     </View>
-
-                    <Dialog
-                        heading="Are you sure ?"
-                        message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
-                        visible={dialogVisible}
-                        onTouchOutside={() => setDialogVisible(false)}
-                        negativeHandle={() => setDialogVisible(false)}
-                        positiveHandle={deleteConfirm}
-                    />
-
                 </View> : null}
 
                 <Dialog
@@ -172,6 +190,15 @@ const GroupItem = props => {
                     onTouchOutside={() => setDeleteGroupDialogVisible(false)}
                     negativeHandle={() => setDeleteGroupDialogVisible(false)}
                     positiveHandle={deleteGroupConfirm}
+                />
+
+                <Dialog
+                    heading="Are you sure ?"
+                    message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
+                    visible={dialogVisible}
+                    onTouchOutside={() => setDialogVisible(false)}
+                    negativeHandle={() => setDialogVisible(false)}
+                    positiveHandle={removeConfirm}
                 />
         
         </View>
