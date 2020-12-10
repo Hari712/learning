@@ -21,6 +21,8 @@ function CreateAsset() {
     const [description, setDescrption] = useState('');
     const [assetName, setAssetName] = useState()
     const [arrDeviceNames, setDeviceNames] = useState([])
+    const [typePositionY, setTypePositionY] = useState()
+    const [devicePositionY, setDevicePositionY] = useState()
 
     const [arrConsolidatedDeviceList, setConsolidatedDeviceList] = useState([])
 
@@ -108,7 +110,10 @@ function CreateAsset() {
                     label='Name*'                    
                 />
                 {/* Dropdown absolute - type */}
-                <View style={{margin:hp(5)}}></View>
+                <View onLayout={(event) => {
+                        var {x, y, width, height} = event.nativeEvent.layout;
+                        setTypePositionY(y)
+                    }} style={{ padding: hp(5) }}/>
 
                 <TextField
                     valueSet={setDescrption}
@@ -119,7 +124,10 @@ function CreateAsset() {
                     outerStyle={styles.outerStyle}
                 />
                 {/* Dropdown absolute - device */}
-                <View style={{margin:hp(5)}}></View>
+                <View onLayout={(event) => {
+                        var {x, y, width, height} = event.nativeEvent.layout;
+                        setDevicePositionY(y)
+                    }} style={{ padding: hp(5) }}/>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => goBack()}>
@@ -139,7 +147,7 @@ function CreateAsset() {
                     contentInset={{ input: hp(2) }}
                     // inputContainerStyle={styles.inputContainer}
                     // accessoryStyle={{marginBottom:0}}
-                    outerStyle={{ position:'absolute', width:'100%', marginTop: hp(34) }}
+                    outerStyle={{ position:'absolute', width:'100%',top:typePositionY, marginTop: hp(2) }}
                 />
 
                 <DropDown
@@ -150,7 +158,7 @@ function CreateAsset() {
                     contentInset={{ input: hp(2) }}
                     // inputContainerStyle={styles.inputContainer}
                     // accessoryStyle={{marginBottom:0}}
-                    outerStyle={{ position:'absolute', width:'100%', marginTop: hp(9.5) }}
+                    outerStyle={{ position:'absolute', width:'100%',top:devicePositionY, marginTop: hp(2) }}
                 />
 
 

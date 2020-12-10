@@ -58,6 +58,8 @@ const EditDeviceAsset = ({ route, navigation }) => {
     const [assetDesc, setAssetDescription] = useState(assetDescription)
     const [group, setGroup] = useState(groupName);
     const [dialogVisible, setDialogVisible] = useState(false)
+    const [typePositionY, setTypePositionY] = useState();
+    const [groupPositionY, setGroupPositionY] = useState();
 
 
     useEffect(() => {
@@ -206,7 +208,10 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     <Text style={styles.textStyle}>Asset</Text>
                 </View>
 
-                <View style={{ margin: hp(5) }}/>
+                <View onLayout={(event) => {
+                        var {x, y, width, height} = event.nativeEvent.layout;
+                        setTypePositionY(y)
+                    }} style={{ padding: hp(5) }}/>
 
                 <View style={styles.nameDesc}>
                     <View style={styles.column} >
@@ -225,7 +230,10 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     <Text style={styles.textStyle}>Select Group</Text>
                 </View>
 
-                <View style={{ margin: hp(5) }}/>
+                <View onLayout={(event) => {
+                        var {x, y, width, height} = event.nativeEvent.layout;
+                        setGroupPositionY(y)
+                    }} style={{ padding: hp(5) }}/>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => clear()} style={[styles.button, { backgroundColor: ColorConstant.WHITE, borderColor: ColorConstant.BLUE, borderWidth: 1 }]}>
@@ -237,11 +245,11 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ width:'100%', marginTop:385, position:'absolute' }}>
+                <View style={{ width:'100%', top:groupPositionY, position:'absolute', marginTop:hp(2) }}>
                     <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={arrGroupnames} />
                 </View>
 
-                <View style={{ width:'100%', marginTop:200, position:'absolute' }}>
+                <View style={{ width:'100%', top:typePositionY, position:'absolute', marginTop:hp(2) }}>
                     <DropDown label='Type' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
                 </View>
 

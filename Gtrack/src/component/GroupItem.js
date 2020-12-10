@@ -177,7 +177,7 @@ const GroupItem = props => {
                         <TouchableOpacity style={{ borderRadius: 6, borderWidth: 1, borderColor: ColorConstant.BLUE, backgroundColor: ColorConstant.WHITE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
                             <Text style={{ textAlign: 'center', color: ColorConstant.BLUE }}>Cancel</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ borderRadius: 6, backgroundColor: ColorConstant.BLUE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
+                        <TouchableOpacity onPress={()=> {/* Update group */}} style={{ borderRadius: 6, backgroundColor: ColorConstant.BLUE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
                             <Text style={{ textAlign: 'center', color: ColorConstant.WHITE }}>Okay</Text>
                         </TouchableOpacity>
                     </View>
