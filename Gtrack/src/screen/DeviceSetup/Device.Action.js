@@ -169,11 +169,26 @@ export const requestDeleteGroup = (userId, groupId, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+export const requestUpdateAssetInfo = (userId, data, onSuccess, onError) => ({
+    type: types.UPDATE_ASSET_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
 
 export const requestRemoveDevice = (userId, data, onSuccess, onError) => ({
     type: types.REMOVE_GROUP_DEVICE_REQUEST,
     userId,
     data,
+    onSuccess,
+    onError
+})
+
+export const requestDeleteAssetByAssetId = (userId, assetId, onSuccess, onError) => ({
+    type: types.DELETE_ASSET_BY_ASSET_ID_REQUEST,
+    userId,
+    assetId,
     onSuccess,
     onError
 })
@@ -184,4 +199,9 @@ export const requestUpdateGroupDevice = (userId, data, onSuccess, onError) => ({
     data,
     onSuccess,
     onError
+})
+
+export const setDeleteAssetResponse = (assetId) => ({
+    type: types.DELETE_ASSET_BY_ASSET_ID_RESPONSE,
+    assetId
 })

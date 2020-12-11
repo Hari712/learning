@@ -3,7 +3,8 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensio
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
+import { DropDown, MultiSelectDropdown, FontSize }from '../../component'
+import NavigationService from '../../navigation/NavigationService'
 
 const GeoFenceCreateNew = ({ navigation }) => {
 
@@ -26,6 +27,11 @@ const GeoFenceCreateNew = ({ navigation }) => {
             )
         });
     }, [navigation]);
+
+    function navigateToPolygonCreator() {
+       // navigation.navigate('GeoFenceType', { type: role })
+        NavigationService.push('GeoFenceCreator')
+    }
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -71,7 +77,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
                     <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
                         <Text style={styles.buttonTextColor}>Cancel</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { navigation.navigate('GeoFenceType', { type: role }) }}  style={styles.nextButton}>
+                    <TouchableOpacity onPress={() => navigateToPolygonCreator()}  style={styles.nextButton}>
                         <Text style={styles.nextButtonText}>Next</Text>
                     </TouchableOpacity>
                 </View>

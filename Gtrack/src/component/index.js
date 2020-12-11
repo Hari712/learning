@@ -16,6 +16,7 @@ import DeviceCell from './DeviceCell'
 import AssetConfirmationDialog from './AssetConfirmationDialog'
 import GroupItem from './GroupItem'
 import AssteItem from './AssetItem'
+import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 
 export { 
     EditText,
@@ -35,5 +36,6 @@ export {
     DeviceCell,
     AssetConfirmationDialog,
     GroupItem,
-    AssteItem
+    AssteItem,
+    DeleteConfirmationDialog
 }
