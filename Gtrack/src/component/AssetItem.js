@@ -28,11 +28,7 @@ const AssteItem = (props) => {
     const [editClick, setEditClick] = useState()
     const [assetLtype, setAssetLType] = useState(assetType);
     const [assetLName, setAssetLName] = useState(assetName);
-    const [assetLdescription, setAssetLDescription] = useState(description);
-
-    function deleteAssetItem(item, key) {
-
-    }
+    const [assetLdescription, setAssetLDescription] = useState(description)
 
     const popUp = () => {
         return (
