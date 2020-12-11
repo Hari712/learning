@@ -216,6 +216,33 @@ function* requestExportDeviceByDeviceId(action) {
     }
 }
 
+function* requestUpdateAssetInfo(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.UPDATE_ASSET(userId)
+        const response = yield call(API.put, url, data)
+        const result = response.result ? response.result : {}
+        const arr = []
+        arr.push(result)
+        yield put(DeviceActions.setAddAssetResponse(arr))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestDeleteAssetByAssetId(action) {
+    const { userId, assetId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.DELETE_ASSET_BY_ASSETID(userId, assetId)
+        const response = yield call(API.delete, url)
+        yield put(DeviceActions.setDeleteAssetResponse(assetId))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -232,5 +259,7 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.UPDATE_DEVICE_REQUEST, requestUpdateDevice),
         yield takeLatest(types.GET_DEVICE_BY_ID_REQUEST, requestGetAllDeviceById),
         yield takeLatest(types.EXPORT_ALL_DEVICES_REQUEST, requestExportAllDevices)
-        yield takeLatest(types.EXPORT_DEVICE_BY_DEVICE_ID, requestExportDeviceByDeviceId)
+        yield takeLatest(types.EXPORT_DEVICE_BY_DEVICE_ID, requestExportDeviceByDeviceId),
+        yield takeLatest(types.UPDATE_ASSET_REQUEST, requestUpdateAssetInfo),
+        yield takeLatest(types.DELETE_ASSET_BY_ASSET_ID_REQUEST, requestDeleteAssetByAssetId)
 }

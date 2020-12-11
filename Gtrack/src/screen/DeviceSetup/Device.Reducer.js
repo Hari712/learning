@@ -70,4 +70,13 @@ export const deviceReducer = createReducer(state = initialState, {
             devices: updatedDevices
         }
     },
+    [types.DELETE_ASSET_BY_ASSET_ID_RESPONSE](state, action) {
+        const { assetId } = action
+        const assetListObj = state.assets
+        delete assetListObj[assetId]
+        return {
+            ...state,
+            assets: assetListObj
+        }
+    }
 })

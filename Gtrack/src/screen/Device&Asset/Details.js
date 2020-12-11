@@ -52,20 +52,20 @@ const Details = ({ route, navigation }) => {
     function exportDeviceDetail() {
         AppManager.showLoader()
         let requestBody = {
-            "paginationDTO" : {
-              "pageNumber" : 0,
-              "pageSize" : 5,
-              "useMaxSearchAsLimit" : false,
-              "searchColumnsList" : [{
-              "columnName" : "searchParam",
-              "searchStr": `${deviceId}`
-          }],
-              "sortHeader" : "id",
-              "sortDirection" : "DESC"
+            "paginationDTO": {
+                "pageNumber": 0,
+                "pageSize": 5,
+                "useMaxSearchAsLimit": false,
+                "searchColumnsList": [{
+                    "columnName": "searchParam",
+                    "searchStr": `${deviceId}`
+                }],
+                "sortHeader": "id",
+                "sortDirection": "DESC"
             },
-            "type" : null,
-            "sendMail" : false
-          }
+            "type": null,
+            "sendMail": false
+        }
         dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
     }
 
@@ -99,19 +99,12 @@ const Details = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    function renderDevicePlan(devicePlan) {
-        const planType = devicePlan.planType ? devicePlan.planType : 'None'
-        const activationDate = devicePlan.activationDate ? devicePlan.activationDate : ''
-        const deActivationDate = devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
-
+    function renderDevicePlanDetail(devicePlan) {
+        const planType = devicePlan && devicePlan.planType ? devicePlan.planType : 'None'
+        const activationDate = devicePlan && devicePlan.activationDate ? devicePlan.activationDate : ''
+        const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         return (
-            <View style={styles.cardContainer}>
-                <View style={styles.headerDetail}>
-                    <Text style={styles.headerText}>Plan Details</Text>
-                    <Image source={images.image.list} />
-                </View>
-                <View style={styles.horizontalLine} />
-
+            <>
                 <View style={styles.details}>
                     <View style={[styles.detailsSubView, { flex: 1.5 }]} >
                         <Text style={styles.textStyle}>Plan</Text>
@@ -137,6 +130,30 @@ const Details = ({ route, navigation }) => {
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Optional Protection Plan(2.99/mo)</Text></Text>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    5% off future BHS Hardware purchase</Text></Text>
                 </View>
+            </>
+        )
+    }
+
+    function renderNoDetailsAvailable() {
+        return (
+            <View style={{ width: '100%', marginVertical: hp(2), justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: ColorConstant.BLACK, fontSize: FontSize.FontSize.extraSmall }}>No Details Available</Text>
+            </View>
+        )
+    }
+
+    function renderDevicePlan(devicePlan) {
+
+
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.headerDetail}>
+                    <Text style={styles.headerText}>Plan Details</Text>
+                    <Image source={images.image.list} />
+                </View>
+                <View style={styles.horizontalLine} />
+                {devicePlan ? renderDevicePlanDetail(devicePlan) : renderNoDetailsAvailable()}
+
             </View>
         )
     }
@@ -146,13 +163,7 @@ const Details = ({ route, navigation }) => {
         const description = assetDTO.description ? assetDTO.description : ''
         const assetType = assetDTO.assetType ? assetDTO.assetType : ''
         return (
-            <View style={styles.cardContainer}>
-                <View style={styles.headerDetail}>
-                    <Text style={styles.headerText}>Asset Details</Text>
-                    <Image source={images.image.pickupcar} />
-                </View>
-                <View style={styles.horizontalLine} />
-
+            <>
                 <View style={styles.details}>
                     <View style={[styles.detailsSubView, { flex: 1 }]} >
                         <Text style={styles.textStyle}>Type</Text>
@@ -163,18 +174,26 @@ const Details = ({ route, navigation }) => {
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{description}</Text>
                     </View>
                 </View>
+            </>
+        )
+    }
+
+    function renderAsetInfo(assetDTO) {
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.headerDetail}>
+                    <Text style={styles.headerText}>Asset Details</Text>
+                    <Image source={images.image.pickupcar} />
+                </View>
+                <View style={styles.horizontalLine} />
+                {assetDTO ? renderAssetDetail(assetDTO) : renderNoDetailsAvailable()}
             </View>
         )
     }
 
     function renderUserDetail() {
         return (
-            <View style={styles.cardContainer}>
-                <View style={styles.headerDetail}>
-                    <Text style={styles.headerText}>User Details</Text>
-                    <Image source={images.image.user} />
-                </View>
-                <View style={styles.horizontalLine} />
+            <>
                 {Data.map((item, key) =>
                     <View key={key} style={styles.userDetails}>
                         <View style={[styles.detailsSubView, { flex: 1 }]} >
@@ -187,6 +206,19 @@ const Details = ({ route, navigation }) => {
                         </View>
                     </View>
                 )}
+            </>
+        )
+    }
+
+    function renderUserInfo(users) {
+        return (
+            <View style={styles.cardContainer}>
+                <View style={styles.headerDetail}>
+                    <Text style={styles.headerText}>User Details</Text>
+                    <Image source={images.image.user} />
+                </View>
+                <View style={styles.horizontalLine} />
+                {isEmpty(users) ? renderNoDetailsAvailable() : renderUserDetail()}
             </View>
         )
     }
@@ -226,9 +258,9 @@ const Details = ({ route, navigation }) => {
                         </View>
 
 
-                        {devicePlan ? renderDevicePlan() : null}
-                        {assetDTO ? renderAssetDetail(assetDTO) : null}
-                        {!isEmpty(users) ? renderUserDetail() : null}
+                        {renderDevicePlan(devicePlan)}
+                        {renderAsetInfo(assetDTO)}
+                        {renderUserInfo()}
 
 
                         <TouchableOpacity style={styles.export} onPress={() => exportDeviceDetail()}>
@@ -331,7 +363,7 @@ const styles = StyleSheet.create({
     export: {
         borderRadius: 6,
         flexDirection: 'row',
-        width: '45%',
+        width: '35%',
         bottom: hp(5),
         // marginTop:hp(8),
         marginVertical: hp(7),
@@ -339,7 +371,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         backgroundColor: ColorConstant.BLUE,
-        height: hp(6)
+        height: hp(5)
     },
     activityIndicator: {
         color: "#000",

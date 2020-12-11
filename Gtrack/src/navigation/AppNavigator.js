@@ -55,8 +55,8 @@ function AppNavigator() {
 
     return () => clearTimeout(timer);
   }, [])
-
-
+  
+  
   function onGetAllUserGroupsSuccess(data) {
     console.log('Group List Loaded Success')
   }

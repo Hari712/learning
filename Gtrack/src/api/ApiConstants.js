@@ -34,7 +34,9 @@ const ApiConstants = {
     GET_CONSOLIDATED_DEVICE:(userId) => `${USER}${userId}/devices/consolidated`,
     GET_DEVICE_BY_ID:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}`,
     EXPORT_ALL_DEVICES:(userId) => `${USER}${userId}/devices/export`,
-    ACTIVATE_DEACTIVE:(userId, subUserId) => `${USER}${userId}/deleteUser/${subUserId}`
+    ACTIVATE_DEACTIVE:(userId, subUserId) => `${USER}${userId}/deleteUser/${subUserId}`,
+    UPDATE_ASSET:(userId) => `${USER}${userId}/assets/update`,
+    DELETE_ASSET_BY_ASSETID:(userId, assetId) => `${USER}${userId}/assets/${assetId}`
 }
 
 export default ApiConstants
