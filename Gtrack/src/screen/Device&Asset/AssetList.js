@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, FlatList, TextInput } from 'react-native';
+import { View, StyleSheet, Text, RefreshControl, TouchableOpacity, Dimensions, FlatList, TextInput } from 'react-native';
 import images from '../../constants/images'
 import { AssteItem } from '../../component'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -12,6 +12,8 @@ import { getAssetListInfo, getLoginInfo } from '../Selector'
 const AssetList = () => {
 
     const dispatch = useDispatch()
+
+    const [isRefreshing, setIsRefreshing] = useState(false)
 
     const { assetList, isConnected, loginInfo } = useSelector(state => ({
         assetList: getAssetListInfo(state),
@@ -27,17 +29,29 @@ const AssetList = () => {
         loadAssetList()
     }, [])
 
+    useEffect(() => {
+        if (isRefreshing) {
+            fetchAssetList()
+        }
+    },[isRefreshing])
+
     function loadAssetList() {
         AppManager.showLoader()
+        fetchAssetList()
+    }
+
+    function fetchAssetList() {
         dispatch(DeviceActions.requestGetAllUserAssets(user_id, onAssetListLoadedSuccess, onAssetListLoadedError))
     }
 
     function onAssetListLoadedSuccess(data) {
         AppManager.hideLoader()
+        setIsRefreshing(false)
     }
 
     function onAssetListLoadedError(error) {
         AppManager.hideLoader()
+        setIsRefreshing(false)
     }
 
     const renderSearchBar = () => {
@@ -71,11 +85,22 @@ const AssetList = () => {
         )
     }
 
+    const onRefresh = () => {
+        setIsRefreshing(true)
+    }
+
     return (
         <View styles={styles.container}>
             {renderSearchBar()}
             <FlatList
                 style={{ height: '100%' }}
+                refreshControl={
+                    <RefreshControl
+                      style={styles.refreshIndicator}
+                      refreshing={isRefreshing}
+                      onRefresh={onRefresh}
+                    />
+                }
                 data={assetList}
                 renderItem={(data) => renderItem(data)}
                 keyExtractor={(item, index) => index.toString()}
@@ -106,7 +131,8 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOpacity: 1,
         backgroundColor: ColorConstant.WHITE
-    }
+    },
+    refreshIndicator: { tintColor: ColorConstant.BLUE }
 })
 
 export default AssetList
