@@ -27,7 +27,7 @@ class MultiSelect extends React.Component {
         const { label, dataList, selectedData, innerRef, valueSet, outerStyle, selectedItemContainerStyle, ...otherProps } = this.props;
 
         selectedItem = selectedData ? selectedData : [];
-        data = dataList ? dataList : ['Car', 'Truck', 'Tempo'];
+        data = dataList ? dataList : ['Car', 'Truck', 'Tempo'];    
 
         function handleRightAccessory() {
             return <View style={styles.imageContainer}>

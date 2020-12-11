@@ -49,6 +49,7 @@ function Group() {
         setDeviceList(arr)
         let arrDeviceNames = arr.map((item) => item.deviceName)
         setDeviceNames(arrDeviceNames)
+        console.log("arr",arrDeviceNames)
     }
 
     function onNonGroupedDeviceLoadedError(error) {

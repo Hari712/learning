@@ -8,6 +8,7 @@ import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AppManager from '../../constants/AppManager'
 import { getLoginInfo, getGroupListInfo } from '../Selector'
+import { isEmpty } from 'lodash';
 
 const GroupList = () => {
 
@@ -53,12 +54,45 @@ const GroupList = () => {
         setIsRefreshing(false)
     }
 
+    const [arrDeviceList, setDeviceList] = useState([])
+    const [arrDeviceNames, setDeviceNames] = useState([])
+
+    useEffect(() => {
+        loadNonGroupedDevice()
+    }, [])
+
+    function loadNonGroupedDevice() {
+        console.log("devices Called")
+        let requestBody = {
+            nonGrouped: true,
+            nonLinked: false
+        }
+        dispatch(DeviceActions.requestGetAllNonGroupedDevice(loginInfo.id, requestBody, onNonGroupedDeviceLoadedSuccess, onNonGroupedDeviceLoadedError))
+    }
+
+
+    function onNonGroupedDeviceLoadedSuccess(data) {
+        let arr = isEmpty(data) ? [] : data
+        setDeviceList(arr)
+        let arrDeviceNames = arr.map((item) => item.deviceName)
+        setDeviceNames(arrDeviceNames)
+    }
+
+    function onNonGroupedDeviceLoadedError(error) {
+        console.log(error)
+    }
+    const [addClick, setAddClick] = useState(-1);
+
     function renderItem({ item, index }) {
         return (
             <>
                 <GroupItem 
                     item={item}
                     index={index}
+                    arrDeviceNames={arrDeviceNames}
+                    arrDeviceList={arrDeviceList}
+                    addClick={addClick}
+                    setAddClick={setAddClick}
                 />
             </>
         )

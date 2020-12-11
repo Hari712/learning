@@ -162,8 +162,23 @@ export const requestExportDeviceByDeviceID = (userId, data, onSuccess, onError) 
     onError
 })
 
+export const requestDeleteGroup = (userId, groupId, onSuccess, onError) => ({
+    type: types.DELETE_GROUP_REQUEST,
+    userId,
+    groupId,
+    onSuccess,
+    onError
+})
 export const requestUpdateAssetInfo = (userId, data, onSuccess, onError) => ({
     type: types.UPDATE_ASSET_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
+
+export const requestRemoveDevice = (userId, data, onSuccess, onError) => ({
+    type: types.REMOVE_GROUP_DEVICE_REQUEST,
     userId,
     data,
     onSuccess,
@@ -174,6 +189,14 @@ export const requestDeleteAssetByAssetId = (userId, assetId, onSuccess, onError)
     type: types.DELETE_ASSET_BY_ASSET_ID_REQUEST,
     userId,
     assetId,
+    onSuccess,
+    onError
+})
+
+export const requestUpdateGroupDevice = (userId, data, onSuccess, onError) => ({
+    type: types.UPDATE_GROUP_DEVICE_REQUEST,
+    userId,
+    data,
     onSuccess,
     onError
 })

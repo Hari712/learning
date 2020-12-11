@@ -216,6 +216,28 @@ function* requestExportDeviceByDeviceId(action) {
     }
 }
 
+function* requestDeleteGroup(action) {
+    const { userId, groupId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.DELETE_GROUP(userId, groupId)
+        const response = yield call(API.delete, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestRemoveDevice(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.REMOVE_DEVICE(userId)
+        const response = yield call(API.put, url, data)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 function* requestUpdateAssetInfo(action) {
     const { userId, data, onSuccess, onError } = action
     try {
@@ -225,6 +247,17 @@ function* requestUpdateAssetInfo(action) {
         const arr = []
         arr.push(result)
         yield put(DeviceActions.setAddAssetResponse(arr))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestUpdateGroupDevice(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.UPDATE_GROUP(userId)
+        const response = yield call(API.put, url, data)
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -258,8 +291,11 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.GET_CONSOLIDATED_DEVICE_REQUEST, requestGetConsolidatedDevice),
         yield takeLatest(types.UPDATE_DEVICE_REQUEST, requestUpdateDevice),
         yield takeLatest(types.GET_DEVICE_BY_ID_REQUEST, requestGetAllDeviceById),
-        yield takeLatest(types.EXPORT_ALL_DEVICES_REQUEST, requestExportAllDevices)
+        yield takeLatest(types.EXPORT_ALL_DEVICES_REQUEST, requestExportAllDevices),
         yield takeLatest(types.EXPORT_DEVICE_BY_DEVICE_ID, requestExportDeviceByDeviceId),
+        yield takeLatest(types.DELETE_GROUP_REQUEST, requestDeleteGroup),
+        yield takeLatest(types.REMOVE_GROUP_DEVICE_REQUEST, requestRemoveDevice),
+        yield takeLatest(types.UPDATE_GROUP_DEVICE_REQUEST, requestUpdateGroupDevice),
         yield takeLatest(types.UPDATE_ASSET_REQUEST, requestUpdateAssetInfo),
         yield takeLatest(types.DELETE_ASSET_BY_ASSET_ID_REQUEST, requestDeleteAssetByAssetId)
 }
