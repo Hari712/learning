@@ -3,10 +3,10 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, 
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from './FontSize';
-import { ConfirmDialog } from 'react-native-simple-dialogs';
+import { Dialog } from 'react-native-simple-dialogs';
 
 
-const Dialog = (props) => {
+const CustomDialog = (props) => {
 
     
 
@@ -18,25 +18,35 @@ const Dialog = (props) => {
 
 
         return(
-            <ConfirmDialog
+            <Dialog
                 title={heading}
                 titleStyle={styles.titleStyle}
-                message={message}
-                messageStyle={styles.messageStyle}               
-                buttonsStyle={styles.buttonsStyle}
-                dialogStyle={{borderRadius:hp(2)}}                
-                negativeButton={{
-                    title: negativeButtonName ? negativeButtonName :"Cancel",
-                    onPress: negativeHandle,
-                    titleStyle:{backgroundColor:ColorConstant.WHITE,borderRadius:4,borderWidth:1,borderColor:ColorConstant.BLUE, color:ColorConstant.BLUE,width:wp(30),marginRight:hp(2)}
-                }}
-                positiveButton={{
-                    title: positiveButtonName ? positiveButtonName : "Okay",
-                    onPress: positiveHandle,
-                    titleStyle:{backgroundColor:ColorConstant.BLUE,borderRadius:4, color:ColorConstant.WHITE,width:wp(30),marginRight:hp(2)}
-                }} 
+                animationType='slide'                
+                dialogStyle={{borderRadius:hp(2),backgroundColor:ColorConstant.WHITE}}                
                 {...otherProps}
-                />
+                >
+                    <View>
+
+                        
+                        <View style={{marginBottom:hp(4)}}>
+                            <Text style={styles.messageStyle}>{message}</Text>
+                        </View>
+
+                        <View style={{ flexDirection:'row', height:hp(5), alignItems:'center' }}>
+                                <TouchableOpacity style={{width:wp(30),margin:hp(2),backgroundColor:ColorConstant.WHITE,borderRadius:4,borderWidth:1,borderColor:ColorConstant.BLUE, height:hp(5)}} onPress={negativeHandle}>
+                                    <Text style={{color:ColorConstant.BLUE,textAlign:'center',fontFamily:'Nunito-Bold',paddingVertical:hp(1),height:hp(5),textTransform:'uppercase',fontSize:FontSize.FontSize.medium}}>
+                                        {negativeButtonName ? negativeButtonName :"Cancel"} 
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{width:wp(30),margin:hp(2),backgroundColor:ColorConstant.BLUE,borderRadius:4, color:ColorConstant.WHITE}} onPress={positiveHandle} >
+                                    <Text style={{color:ColorConstant.WHITE,textAlign:'center',fontFamily:'Nunito-Bold',paddingVertical:hp(1),height:hp(5),textTransform:'uppercase',fontSize:FontSize.FontSize.medium}}> 
+                                        {positiveButtonName ? positiveButtonName : "Okay"}
+                                    </Text>
+                                </TouchableOpacity>
+                        </View>
+                    </View>
+                    
+            </Dialog>
                 
             
         )
@@ -60,4 +70,4 @@ const Dialog = (props) => {
         marginBottom:hp(3)
     },
 })
-export default Dialog
+export default CustomDialog

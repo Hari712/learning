@@ -5,12 +5,12 @@ import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from './FontSize'
 import MultiSelect from './MultiSelect';
-import Dialog from './Dialog';
 import isEmpty from 'lodash/isEmpty'
 import { useDispatch, useSelector } from 'react-redux';
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
 import { getLoginInfo } from '../screen/Selector';
 import AppManager from '../constants/AppManager';
+import CustomDialog from './Dialog';
 
 const GroupItem = props => {
 
@@ -37,6 +37,7 @@ const GroupItem = props => {
     const [dialogVisible, setDialogVisible] = useState(false)
     const [deleteGroupDialogVisible, setDeleteGroupDialogVisible] = useState(false)
     const [removeDeviceId, setRemoveDeviceId] = useState()
+    const [removeDeviceKey, setRemoveDeviceKey] = useState()
 
     const deleteFunction = (item, key) => {
         setDeleteDeviceKey(key)
@@ -60,23 +61,25 @@ const GroupItem = props => {
     }
 
     const removeConfirm = () => {
+        setDialogVisible(false)
+        AppManager.showLoader()
         const requestBody = {
             "groupId" : id,
             "deviceId" : removeDeviceId.toString()
         }          
-        dispatch(DeviceActions.requestRemoveDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
+        dispatch(DeviceActions.requestRemoveDevice(loginInfo.id, requestBody, removeDeviceKey, item.id, onRemoveDeviceSuccess, onRemoveDeviceError))
     }
 
     
     const onRemoveDeviceSuccess = (data) => {
-        setDialogVisible(false)
         AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
         console.log("Success",data)
         setAddClick(-1)
+        AppManager.hideLoader()
     }
 
     const onRemoveDeviceError = (error) => {
-        setDialogVisible(false)
+        AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
         console.log("Error",error)
     }
@@ -86,24 +89,27 @@ const GroupItem = props => {
     }
 
     const deleteGroupConfirm = () => {
+        setDeleteGroupDialogVisible(false)
+        AppManager.showLoader()
         dispatch(DeviceActions.requestDeleteGroup(loginInfo.id, id, onDeleteGroupSuccess, onDeleteGroupError))
     }
 
     const onDeleteGroupSuccess = (data) => {
-        setDeleteGroupDialogVisible(false)
         AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
         console.log("Success",data)
+        AppManager.hideLoader()
     }
 
     const onDeleteGroupError = (error) => {
-        setDeleteGroupDialogVisible(false)
+        AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
         console.log("Error",error)
     }
 
     
-    const onDeleteDevice = (deviceId) => {
+    const onDeleteDevice = (deviceId, key) => {
         setRemoveDeviceId(deviceId)
+        setRemoveDeviceKey(key)
         setDialogVisible(true) 
     }
 
@@ -188,7 +194,7 @@ const GroupItem = props => {
                                 <View key={itemKey} style={styles.subCategory}>
                                     <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                                     <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
-                                    <TouchableOpacity onPress={()=>onDeleteDevice(subitem.id)}>
+                                    <TouchableOpacity onPress={()=>onDeleteDevice(subitem.id, subkey)}>
                                     <Image style={styles.icon} source={images.image.trash} />
                                     </TouchableOpacity>
                                 </View>
@@ -204,16 +210,16 @@ const GroupItem = props => {
             {/* Popup View */}
             {(item.id == addClick) ? addDevicePopup() : null}
 
-                <Dialog
+                <CustomDialog
                     heading="Are you sure ?"
                     message={"Do you really want to delete the group ?" + "\n \n" + "All the devices will be assigned to default group"}
                     visible={deleteGroupDialogVisible}
                     onTouchOutside={() => setDeleteGroupDialogVisible(false)}
                     negativeHandle={() => setDeleteGroupDialogVisible(false)}
-                    positiveHandle={deleteGroupConfirm}
+                    positiveHandle={deleteGroupConfirm}                    
                 />
 
-                <Dialog
+                <CustomDialog
                     heading="Are you sure ?"
                     message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
                     visible={dialogVisible}

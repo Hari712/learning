@@ -78,5 +78,23 @@ export const deviceReducer = createReducer(state = initialState, {
             ...state,
             assets: assetListObj
         }
+    },
+    [types.DELETE_GROUP_RESPONSE](state, action) {
+        const { groupId } = action
+        const groupListObj = state.groups
+        delete groupListObj[groupId]
+        return {
+            ...state,
+            groups: groupListObj
+        }
+    },
+    [types.DELETE_DEVICE_FROM_RESPONSE](state, action) {
+        const { deviceId, groupId } = action
+        const groupListObj = state.groups
+        delete groupListObj[groupId].devices[deviceId]
+        return {
+            ...state,
+            groups: groupListObj
+        }
     }
 })

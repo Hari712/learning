@@ -221,6 +221,7 @@ function* requestDeleteGroup(action) {
     try {
         const url = ApiConstants.DELETE_GROUP(userId, groupId)
         const response = yield call(API.delete, url)
+        yield put(DeviceActions.setDeleteGroupResponse(groupId))
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -228,10 +229,11 @@ function* requestDeleteGroup(action) {
 }
 
 function* requestRemoveDevice(action) {
-    const { userId, data, onSuccess, onError } = action
+    const { userId, data, key, groupId, onSuccess, onError } = action
     try {
         const url = ApiConstants.REMOVE_DEVICE(userId)
         const response = yield call(API.put, url, data)
+        yield put(DeviceActions.setDeleteDeviceFromGroupResponse(key, groupId))
         onSuccess(response)
     } catch (error) {
         onError(error)
