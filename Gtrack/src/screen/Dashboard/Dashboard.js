@@ -29,9 +29,11 @@ const Dashboard = ({ navigation }) => {
     deviceDetails: getDeviceDetailsListInfo(state),
 }))
 
-console.log("Device Details",deviceDetails)
+console.log("Device Details",loginInfo.role.map((role)=>role.name))
 
   const user_id = loginInfo.id ? loginInfo.id : null
+
+  const role = loginInfo.role.map((role)=>role.name)
 
 
   React.useLayoutEffect(() => {
@@ -42,6 +44,7 @@ console.log("Device Details",deviceDetails)
 
   useEffect(() => {
     dispatch(DashboardActions.requestDeviceDetails(user_id, onDeviceDetailsSuccess, onDeviceDetailsError))
+    dispatch(DashboardActions.requestActiveInactiveCount(user_id, onActiveInactiveCountSucess, onActiveInactiveCountError))
   }, [])
 
   const onDeviceDetailsSuccess = (data) => {
@@ -49,6 +52,14 @@ console.log("Device Details",deviceDetails)
   }
 
   const onDeviceDetailsError = (error) => {
+    console.log("Error",error)
+  }
+
+  const onActiveInactiveCountSucess = (data) => {
+    console.log("Success active",data)
+  }
+
+  const onActiveInactiveCountError = (error) => {
     console.log("Error",error)
   }
 
