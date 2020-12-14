@@ -27,7 +27,7 @@ class MultiSelect extends React.Component {
         const { label, dataList, selectedData, innerRef, valueSet, outerStyle, selectedItemContainerStyle, ...otherProps } = this.props;
 
         selectedItem = selectedData ? selectedData : [];
-        data = dataList ? dataList : ['Car', 'Truck', 'Tempo'];
+        data = dataList ? dataList : ['Car', 'Truck', 'Tempo'];    
 
         function handleRightAccessory() {
             return <View style={styles.imageContainer}>
@@ -111,7 +111,7 @@ class MultiSelect extends React.Component {
                 {selectedItem && selectedItem.length ?
                     <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
                         {Object.values(selectedItem).map((item, key) =>
-                            <View style={{ flexWrap: 'wrap', flexShrink: 1 }}>
+                            <View key={key} style={{ flexWrap: 'wrap', flexShrink: 1 }}>
                                 <View style={[otherProps.selectedItemRowStyle]}>
                                     <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} key={key}>{item}</Text>
                                     {otherProps.hideDeleteButton ?

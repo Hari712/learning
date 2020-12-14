@@ -1,21 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView, TextInput} from 'react-native';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, TimePickerAndroid, ScrollView, TextInput } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize, TextField,DropDown, MultiSelect } from '../../component';
+import { FontSize, TextField, DropDown, MultiSelect } from '../../component';
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
+import { useSelector, useDispatch } from 'react-redux'
+import * as DeviceActions from '../DeviceSetup/Device.Action'
+import { getLoginInfo } from '../Selector'
+import isEmpty from 'lodash/isEmpty'
+import Group from './CreateGroup'
+import CreateAsset from './CreateAsset'
 import { translate } from '../../../App';
 
-const devicesList = [
-    'TrackPort International', 
-    'TrackPort International1', 
-    'TrackPort International2', 
-    'TrackPort International3', 
-    'TrackPort International4'
- ]
-
-const CreateDeviceAsset = ({route, navigation}) => {
+const CreateDeviceAsset = ({ route, navigation }) => {
 
     const [group, setGroup]= useState(); 
     const [detailsToggle, setDetailsToggle] = useState(false);
@@ -92,38 +90,44 @@ const CreateDeviceAsset = ({route, navigation}) => {
     );
    
     const initialLayout = { width: Dimensions.get('window').width, height: Dimensions.get('window').height };
-    
-    const [index, setIndex] = useState(0);
-    const [value,setValue]= useState()  
 
-    
+    const [index, setIndex] = useState(0);
+
+
     const [routes] = React.useState([
         { key: 'group', title: 'Group' },
         { key: 'asset', title: 'Asset' }
     ]);
-    
-    const renderScene = SceneMap({
-        group: Group,
-        asset: Asset
-    });
+
+    const renderScene = ({ route }) => {
+        switch (route.key) {
+            case 'group':
+                return <Group />;
+            case 'asset':
+                return <CreateAsset />;
+            default:
+                return null;
+        }
+    }
 
 
-    React.useLayoutEffect(() => {
-    
+    useLayoutEffect(() => {
+
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={{
-                    color:ColorConstant.GREY,
+                    color: ColorConstant.GREY,
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
                     //letterSpacing: 0,
-                    textAlign:'center' }}>
+                    textAlign: 'center'
+                }}>
                     {translate("Device_Asset")}
-                </Text>          
+                </Text>
             ),
-            headerLeft:() => (
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
-                <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
         });
@@ -159,61 +163,64 @@ return(
 const styles = StyleSheet.create({
     contentContainerStyle: {
         height: Dimensions.get('window').height,
-        backgroundColor:ColorConstant.WHITE 
-    },    
-    container:{
+        backgroundColor: ColorConstant.WHITE
+    },
+    container: {
         height: Dimensions.get('window').height,
-        alignItems:'center',
-        backgroundColor:ColorConstant.WHITE
+        alignItems: 'center',
+        backgroundColor: ColorConstant.WHITE
     },
     scene: {
         //flex: 1,
         //alignContent:'center',
-        width:'85%',
-        marginHorizontal:hp(5),
+        width: '85%',
+        marginHorizontal: hp(5),
         //marginVertical:hp(1),
-        marginTop:hp(5)
-      },
-        detailsToggle: {
-            backgroundColor:ColorConstant.PINK,
-            paddingVertical:10,
-            width:'100%',
-            paddingHorizontal:'7.5%'
-        },	
-      buttonContainer: {
-        flexDirection:'row',
-        justifyContent:'space-evenly',
+        marginTop: hp(5)
+    },
+    detailsToggle: {
+        backgroundColor: ColorConstant.PINK,
+        paddingVertical: 10,
+        width: '100%',
+        paddingHorizontal: '7.5%'
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
         //width:'75%',
         //margin:hp(3),
-        marginTop:hp(3),
-        alignItems:'center'
+        marginTop: hp(3),
+        alignItems: 'center'
     },
-      buttonStyle: {
-        borderRadius:6,
-        borderWidth:1,
-        borderColor:ColorConstant.BLUE,
-        backgroundColor:ColorConstant.WHITE,
-        width:'42%',
-        height:hp(6),
-        justifyContent:'center'
-     },
+    buttonStyle: {
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: ColorConstant.BLUE,
+        backgroundColor: ColorConstant.WHITE,
+        width: '42%',
+        height: hp(6),
+        justifyContent: 'center'
+    },
     nextButton: {
-        borderRadius:6,
-        backgroundColor:ColorConstant.WHITE,
-        width:'42%',
-        height:hp(6),
-        justifyContent:'center'
-        },
-     cancelText: {
-        textAlign:'center',
-        color:ColorConstant.BLUE
-     },
-     saveText: {
-        textAlign:'center',
-        color:ColorConstant.WHITE
-     },
-    
-     
+        borderRadius: 6,
+        backgroundColor: ColorConstant.WHITE,
+        width: '42%',
+        height: hp(6),
+        justifyContent: 'center'
+    },
+    cancelText: {
+        textAlign: 'center',
+        color: ColorConstant.BLUE
+    },
+    saveText: {
+        textAlign: 'center',
+        color: ColorConstant.WHITE
+    },
+    inputContainer: {
+        height: hp(5),
+        borderRadius: hp(5),
+    }
+
 });
 
 export default CreateDeviceAsset

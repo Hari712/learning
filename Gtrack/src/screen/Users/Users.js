@@ -10,6 +10,7 @@ import Tooltip from 'rn-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import * as UsersActions from './Users.Action'
 import AppManager from '../../constants/AppManager';
+import Switches from 'react-native-switches'
 import { translate } from '../../../App';
 
 let searchData;
@@ -30,7 +31,7 @@ const Users = ({navigation}) => {
   }))
 
   searchData = subUserData.subUser
-
+  const user_id = loginData.id ? loginData.id : null
   const dispatch = useDispatch()
 
   useEffect(() => {    
@@ -64,13 +65,30 @@ const Users = ({navigation}) => {
     });
   },[navigation]);
 
+  function onChangeSwitch(item) {
+    AppManager.showLoader()
+    dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+  }
+
+  function onChangeUserStatusSuccess(data) {
+    const { result } = data
+    AppManager.hideLoader()
+    AppManager.showSimpleMessage('success', { message: result, description: '' })
+  }
+
+  function onChangeUserStatusError(error) {
+    AppManager.hideLoader()
+    AppManager.showSimpleMessage('danger', { message: error, description: '' })
+  }
+
   const renderItem = ({item,key}) => {
     return(  
     <View style={styles.cardContainer} key={key}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
-              <Image source={item.isActive?images.user.active:images.user.inactive} />
+              {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
+              <Switches shape={'line'} buttonColor={ColorConstant.ORANGE} showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
               <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
               <TouchableOpacity onPress={()=>{navigation.navigate('AddUser',{editData:item})}} style={{marginLeft:hp(2)}}>
                 <Image source={images.user.edit} /> 

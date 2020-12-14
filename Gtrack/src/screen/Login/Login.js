@@ -76,6 +76,7 @@ const Login = () => {
     function onGetAllUserGroupsSuccess(data) {
         console.log('Group List Loaded Success')
     }
+
     
     function onGetAllUserGroupError(error) {
         console.log('Group List Loaded Error')

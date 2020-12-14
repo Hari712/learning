@@ -3,8 +3,8 @@ import * as types from '../../constants/ActionTypes'
 import mapKeys from 'lodash/mapKeys'
 
 const initialState = {
-    assetType: null,
-    assets: null,
+    assetType: {},
+    assets: {},
     groups: {},
     devices: {}
 }
@@ -19,10 +19,11 @@ export const deviceReducer = createReducer(state = initialState, {
         }
     },
     [types.ADD_DEVICE_RESPONSE](state, action) {
-        const deviceInfo = mapKeys(action.data, 'id')
+        const deviceInfo = mapKeys(action.data, 'deviceDTO.id')
+        const updatedDevices = { ...state.devices, ...deviceInfo }
         return {
             ...state,
-            devices: deviceInfo
+            devices: updatedDevices
         }
     },
     [types.ADD_GROUP_RESPONSE](state, action) {
@@ -48,11 +49,52 @@ export const deviceReducer = createReducer(state = initialState, {
             assets: assetInfo
         }
     },
-    [types.GET_GROUP_RESPONSE](state, action) {
+    [types.GET_ALL_GROUP_RESPONSE](state, action) {
         const groupInfo = mapKeys(action.data, 'id')
         return {
             ...state,
             groups: groupInfo
         }
     },
+    [types.GET_ALL_USER_DEVICE_RESPONSE](state, action) {
+        const { data, pageNumber } = action
+        const deviceInfo = mapKeys(data, 'deviceDTO.id')
+        let updatedDevices = {}
+        if (pageNumber == 0) {
+            updatedDevices = { ...deviceInfo }
+        } else {
+            updatedDevices = { ...state.devices, ...deviceInfo }
+        }
+        return {
+            ...state,
+            devices: updatedDevices
+        }
+    },
+    [types.DELETE_ASSET_BY_ASSET_ID_RESPONSE](state, action) {
+        const { assetId } = action
+        const assetListObj = state.assets
+        delete assetListObj[assetId]
+        return {
+            ...state,
+            assets: assetListObj
+        }
+    },
+    [types.DELETE_GROUP_RESPONSE](state, action) {
+        const { groupId } = action
+        const groupListObj = state.groups
+        delete groupListObj[groupId]
+        return {
+            ...state,
+            groups: groupListObj
+        }
+    },
+    [types.DELETE_DEVICE_FROM_RESPONSE](state, action) {
+        const { deviceId, groupId } = action
+        const groupListObj = state.groups
+        delete groupListObj[groupId].devices[deviceId]
+        return {
+            ...state,
+            groups: groupListObj
+        }
+    }
 })

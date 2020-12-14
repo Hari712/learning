@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, FlatList, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, SafeAreaView, Modal, FlatList, Dimensions, ScrollView } from "react-native";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
@@ -75,28 +75,30 @@ class DropDown extends React.Component {
                 { this.state.isSelected ?
                     <View style={[isRelative ?
                         styles.relativeDropdown :
-                        [styles.absoluteDropdown, { top: this.state.buttonMeasurement.y + this.state.buttonMeasurement.height }]
-                        , dropdownStyle]}>
-                        {(dataList ? dataList : data).map((item, key) => {
-                            return (
-                                <TouchableOpacity style={[{flex:1,zIndex:9999}, otherProps.dataRowStyle]} key={key}
-                                    onPress={() => {
-                                        console.log("clicked")
-                                        this.setState({
-                                            selected: item,
-                                            isSelected: false,
-                                        },()=>{this.props.valueSet(item)})
-                                        
-                                    }}>
-                                    <Text style={[styles.datatextStyle, otherProps.dataTextStyle]}>{item}</Text>
-                                    
-                                    {key < dataList.length - 1 ?
-                                        <View style={styles.horizontalLine} />
-                                        : null}
+                        [styles.absoluteDropdown, { top: this.state.buttonMeasurement.y + this.state.buttonMeasurement.height }],
+                        dropdownStyle]}>
+                            <ScrollView keyboardShouldPersistTaps='always' contentContainerStyle={{ flexGrow: 1 }} style={{height: 'auto', maxHeight:hp(20),zIndex:99}}>
+                                {(dataList ? dataList : data).map((item, key) => {
+                                    return (
+                                        <TouchableOpacity style={[{flex:1}, otherProps.dataRowStyle]} key={key}
+                                            onPress={() => {
+                                                console.log("clicked")
+                                                this.setState({
+                                                    selected: item,
+                                                    isSelected: false,
+                                                },()=>{this.props.valueSet(item)})
+                                                
+                                            }}>
+                                            <Text style={[styles.datatextStyle, otherProps.dataTextStyle]}>{item}</Text>
+                                            
+                                            {key <  (dataList ? dataList.length-1 : data.length-1) ?
+                                                <View style={styles.horizontalLine} />
+                                                : null}
 
-                                </TouchableOpacity>
-                            )
-                        })}
+                                        </TouchableOpacity>
+                                    )
+                                })}
+                            </ScrollView>
                     </View>
                     : null}
 
@@ -113,6 +115,9 @@ const styles = StyleSheet.create({
     },
     downArrow: {
         marginVertical: hp(1),
+    },
+    imageContainer:{
+        marginBottom:hp(1)
     },
     horizontalLine: {
         borderWidth: 0.5,
@@ -141,7 +146,7 @@ const styles = StyleSheet.create({
         borderColor: ColorConstant.GREY,
     },
     absoluteDropdown: {
-        position: 'absolute',
+        position: 'absolute',        
         marginTop: hp(0.5),
         borderRadius: hp(2),
         opacity: 1,
@@ -155,7 +160,6 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 3,
         shadowOpacity: 5,
-        // zIndex: 50,
         backgroundColor: ColorConstant.WHITE,
         width: '100%',
         paddingHorizontal: hp(3),

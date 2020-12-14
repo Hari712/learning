@@ -67,7 +67,7 @@ const getDeviceInfo = (state) => getDeviceList(state)
 function getDeviceList(state) {
     const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
     const arrDevices = Object.values(deviceInfo)
-    arrDevices.sort((item1, item2) => item2.id - item1.id)
+    arrDevices.sort((item1, item2) => item1.id - item2.id)
     return arrDevices
 }
 export const getDeviceListInfo = createSelector(
@@ -82,7 +82,7 @@ export const getDeviceListInfo = createSelector(
 const getDeviceDetailInfo = (state, deviceId) => getDevice(state, deviceId)
 function getDevice(state, deviceId) {
     const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
-    const device = deviceInfo[deviceId]
+    const device = deviceInfo[deviceId].deviceDTO
     return device
 }
 export const makeGetDeviceDetail = () => createSelector(

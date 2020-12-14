@@ -23,7 +23,7 @@ import Dialog from './Dialog';
 
     const deleteFunction = (item, key) => {
       console.log('Testing Success', item, key)
-      setDeleteDeviceKey(key)
+      setDeleteDeviceKey(key) 
       setDialogVisible(true)
     }
 
@@ -36,8 +36,7 @@ import Dialog from './Dialog';
       
         data.map((item,key)=>{    
 
-          return(
-        <View>   
+          return(  
         <View key={key} style={[styles.card, { height:(key==selectedKey)? subContainerHeight : hp(5) , borderColor: (key==selectedKey)?ColorConstant.ORANGE:ColorConstant.WHITE}]} >
 
             {/* Arrow Left Side */}
@@ -87,7 +86,7 @@ import Dialog from './Dialog';
 
             </View>     
 
-        </View>         
+        
                
                 
         {/* Popup View */}

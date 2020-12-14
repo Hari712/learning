@@ -1,7 +1,6 @@
 import EditText from './TextInput'
 import Loader from './Loader'
 import CustomButton from './Button'
-import Dialog from './Dialog'
 import DropDown from './DropDown'
 import ExapandableListView from './ExpandableListView'
 import FontSize from './FontSize'
@@ -12,13 +11,18 @@ import TextField from './TextField'
 import Button from './Button'
 import AddNewAssetDialog from './AddNewAssetDialog'
 import AddNewGroupDialog from './AddNewGroupDialog'
-
+import DeviceCell from './DeviceCell'
+import AssetConfirmationDialog from './AssetConfirmationDialog'
+import GroupItem from './GroupItem'
+import AssteItem from './AssetItem'
+import CustomDialog from './Dialog'
+import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 
 export { 
     EditText,
     Loader, 
     CustomButton, 
-    Dialog, 
+    CustomDialog, 
     DropDown,
     ExapandableListView,
     FontSize,
@@ -28,5 +32,10 @@ export {
     TextField,
     Button, 
     AddNewAssetDialog, 
-    AddNewGroupDialog 
+    AddNewGroupDialog,
+    DeviceCell,
+    AssetConfirmationDialog,
+    GroupItem,
+    AssteItem,
+    DeleteConfirmationDialog
 }

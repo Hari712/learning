@@ -28,6 +28,8 @@ export const AppConstants = {
     EMPTY_ASSET: 'Please enter asset name',
     EMPTY_ASSET_TYPE: 'Please select asset type',
     EMPTY_GROUP_NAME: 'Please enter group name',
+    EMPTY_DEVICE_SELECTION: 'Please select device',
+    EMPTY_GROUP_SELECTION: 'Please select group',
     EMPTY_OLD_PASSCODE: "Empty_Old_Passcode",
     EMPTY_NEW_PASSCODE: "Empty_New_Passcode",
     

@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput} from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import { Dialog, ExapandableListView, TextField, DropDown, FontSize } from '../../component';
+import GroupList from './GroupList'
+import AssetList from './AssetList'
 import { translate } from '../../../App';
 
 
@@ -15,36 +17,36 @@ const CONTENT = [
         subCategory: [
             // required, array containing inner objects
             {
-            id: 3, // required, of inner object
-            name: 'TrackPort International 1', // required, label of inner object
+                id: 3, // required, of inner object
+                name: 'TrackPort International 1', // required, label of inner object
             },
             {
-            id: 4,
-            name: 'TrackPort International 2',
+                id: 4,
+                name: 'TrackPort International 2',
             },
             {
-            id: 6,
-            name: 'TrackPort International 3',
+                id: 6,
+                name: 'TrackPort International 3',
             },
         ],
     },
     {
         id: 2,
         categoryName: 'Fedex Ground',
-        subCategory: [{id: 22, name: '4G Magnetic GPS Tracker'}],
+        subCategory: [{ id: 22, name: '4G Magnetic GPS Tracker' }],
     },
 ];
 
-const Data = ['Trackport International','Trackport International1','Trackport International2']
-let asset = ['Chevrolet Captiva','My Dad\'s car','Ford','Tesla','Ford','Tesla']
+const Data = ['Trackport International', 'Trackport International1', 'Trackport International2']
+let asset = ['Chevrolet Captiva', 'My Dad\'s car', 'Ford', 'Tesla', 'Ford', 'Tesla']
 let assetData = asset
 
-const Manage = ({route, navigation}) => {
+const Manage = ({ route, navigation }) => {
 
-    const [group, setGroup]= useState(); 
+    const [group, setGroup] = useState();
     const [detailsToggle, setDetailsToggle] = useState(false);
     const [selectedDevices, setSelectedDevices] = useState();
-    const [dialogVisible,setDialogVisible] = useState(false)
+    const [dialogVisible, setDialogVisible] = useState(false)
     const [editClick, setEditClick] = useState();
     const [deleteVariable, setDeleteVariable] = useState();
     const [type, setType] = useState();
@@ -53,30 +55,23 @@ const Manage = ({route, navigation}) => {
     const [description, setDescrption] = useState();
 
 
-    useEffect(()=>{
-        group? null : setDetailsToggle(false)
+    useEffect(() => {
+        group ? null : setDetailsToggle(false)
     }, [group])
 
-    const Group = () => (
-        <View style={styles.groupConatiner}>
-            <ScrollView contentContainerStyle={styles.container}>
-                <ExapandableListView data={CONTENT} />
-            </ScrollView>
-        </View>
-    );    
 
-    const updateData = () => {   
-        console.log("hello")   
+    const updateData = () => {
+        console.log("hello")
         // Location = editClick
         // Array = assetData, asset
-        assetData[editClick] = tempName ;
+        assetData[editClick] = tempName;
         asset = assetData;
         setEditClick(-1)
         setTempName()
     }
-    
-    const popUp = (item, key) => {        
-        return(
+
+    const popUp = (item, key) => {
+        return (
             <View style={styles.popUp}>
                         
                 <TextField valueSet={setTempName} value={tempName} label={translate("Name_Star")} outerStyle={styles.outerStyle} /> 
@@ -96,12 +91,12 @@ const Manage = ({route, navigation}) => {
                 </View>
             </View>
         )
-    }    
+    }
     const searchBar = () => {
         const [search, setSearch] = useState()
 
         const searchFilter = (text) => {
-            assetData = asset.filter(item=>item.toLowerCase().includes(text.toLowerCase())) 
+            assetData = asset.filter(item => item.toLowerCase().includes(text.toLowerCase()))
             setSearch(text)
         }
 
@@ -111,7 +106,7 @@ const Manage = ({route, navigation}) => {
                     placeholder={translate("Search_here")}
                     onChangeText={text => searchFilter(text) }                    
                     value={search}
-                    
+
                 />
             </View>
         )
@@ -123,7 +118,7 @@ const Manage = ({route, navigation}) => {
         console.log(deleteVariable)
     }
 
-    
+
     const deleteConfirmDialog = () => {
         return(
             <Dialog 
@@ -133,75 +128,76 @@ const Manage = ({route, navigation}) => {
                 onTouchOutside={() => setDialogVisible(false)}
                 negativeHandle={() => setDialogVisible(false)}
                 positiveHandle={() => {
-                                setDialogVisible(false)
-                                asset = asset.filter( (item,key) => key != deleteVariable)
-                                assetData = asset;
-                            }
-                        }
+                    setDialogVisible(false)
+                    asset = asset.filter((item, key) => key != deleteVariable)
+                    assetData = asset;
+                }
+                }
             />
         )
     }
 
-    
+
     const Asset = () => (
-        <View style={{flex:1}}>
-        <ScrollView> 
-        <View style={styles.container}> 
+        <View style={{ flex: 1 }}>
+            <ScrollView>
+                <View style={styles.container}>
 
-        {searchBar()}
-            
-            {assetData.map((item,key)=>
-            <View key={key} style={styles.container}>
-                <View style={styles.card}>
-                    <View style={[styles.blueCard,{backgroundColor:(key==editClick)?ColorConstant.ORANGE:ColorConstant.BLUE}]} />
-                        <View key={key} style={styles.whiteCard}>
-                            <Text style={{flex:1,color:(key==editClick)?ColorConstant.BLUE:ColorConstant.BLACK}}>{item}</Text> 
-                            <TouchableOpacity onPress={()=>{(key==editClick)?setEditClick(-1):
-                                setEditClick(key)
-                                setTempName(item)
-                                }} style={{marginRight:hp(2)}}>         
-                                <Image source={(key==editClick)?images.manage.editClick:images.manage.edit}/>
-                            </TouchableOpacity>  
-                            <TouchableOpacity onPress={()=>deleteAssetItem(item,key)} >   
-                                <Image source={images.manage.trashBlack}/>
-                            </TouchableOpacity> 
+                    {searchBar()}
+
+                    {assetData.map((item, key) =>
+                        <View key={key} style={styles.container}>
+                            <View style={styles.card}>
+                                <View style={[styles.blueCard, { backgroundColor: (key == editClick) ? ColorConstant.ORANGE : ColorConstant.BLUE }]} />
+                                <View key={key} style={styles.whiteCard}>
+                                    <Text style={{ flex: 1, color: (key == editClick) ? ColorConstant.BLUE : ColorConstant.BLACK }}>{item}</Text>
+                                    <TouchableOpacity onPress={() => {
+                                        (key == editClick) ? setEditClick(-1) :
+                                            setEditClick(key)
+                                        setTempName(item)
+                                    }} style={{ marginRight: hp(2) }}>
+                                        <Image source={(key == editClick) ? images.manage.editClick : images.manage.edit} />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => deleteAssetItem(item, key)} >
+                                        <Image source={images.manage.trashBlack} />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            {(key == editClick) ?
+                                popUp(item, key)
+                                : null}
                         </View>
-                </View> 
-                {(key==editClick)?  
-                    popUp(item,key)
-                    :null}
-            </View>
-            )}
+                    )}
 
-            {deleteConfirmDialog()}
+                    {deleteConfirmDialog()}
 
+                </View>
+            </ScrollView>
         </View>
-        </ScrollView>
-        </View>
-    
+
     );
 
     const initialLayout = { width: Dimensions.get('window').width, height: Dimensions.get('window').height };
-    
+
     const [index, setIndex] = useState(0);
-    
+
     const [routes] = React.useState([
         { key: 'group', title: 'Group' },
         { key: 'asset', title: 'Asset' }
     ]);
-    
+
     const renderScene = SceneMap({
-        group: Group,
-        asset: Asset
+        group: GroupList,
+        asset: AssetList
     });
 
 
     React.useLayoutEffect(() => {
-    
+
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={{
-                    color:ColorConstant.GREY,
+                    color: ColorConstant.GREY,
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
                     //letterSpacing: 0,
@@ -209,9 +205,9 @@ const Manage = ({route, navigation}) => {
                     {translate("Device_Asset")}
                 </Text>          
             ),
-            headerLeft:() => (
-                <TouchableOpacity onPress={()=>navigation.goBack()}>
-                <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
                 </TouchableOpacity>
             )
         });
@@ -245,117 +241,117 @@ return(
 
 }
 const styles = StyleSheet.create({
-    container:{
-        width:Dimensions.get('window').width,
-        alignItems:'center'     
+    container: {
+        width: Dimensions.get('window').width,
+        alignItems: 'center'
     },
     groupConatiner: {
-        flex:1, 
-        marginBottom:hp(3), 
-        maxHeight:Dimensions.get('window').height
+        flex: 1,
+        marginBottom: hp(3),
+        maxHeight: Dimensions.get('window').height
     },
     popUp: {
-        backgroundColor:ColorConstant.PINK,
-        paddingVertical:10,
-        width:'100%',
-        marginTop:hp(2)
+        backgroundColor: ColorConstant.PINK,
+        paddingVertical: 10,
+        width: '100%',
+        marginTop: hp(2)
     },
     outerStyle: {
-        width:'85%',
-        backgroundColor:ColorConstant.WHITE
-    },  
+        width: '85%',
+        backgroundColor: ColorConstant.WHITE
+    },
     dropdownStyle: {
-        width:'85%',
-        alignSelf:'center'
-    }, 
+        width: '85%',
+        alignSelf: 'center'
+    },
     titleStyle: {
-        color:ColorConstant.ORANGE, 
-        textAlign:'center',
-        fontSize:FontSize.FontSize.regular,
-        fontWeight:'bold'
+        color: ColorConstant.ORANGE,
+        textAlign: 'center',
+        fontSize: FontSize.FontSize.regular,
+        fontWeight: 'bold'
     },
     messageStyle: {
-        color:ColorConstant.BLACK, 
-        textAlign:'center',
-        fontSize:FontSize.FontSize.small
+        color: ColorConstant.BLACK,
+        textAlign: 'center',
+        fontSize: FontSize.FontSize.small
     },
     buttonsStyle: {
-        alignItems:'center',
-        marginBottom:hp(3)
+        alignItems: 'center',
+        marginBottom: hp(3)
     },
-      search: {
-        paddingHorizontal:hp(2),
-        flexDirection:'row',
-        alignItems:'center',
-        width:'85%',
-        height:hp(6),
-        borderRadius:12,
-        marginTop:hp(4),
-        marginBottom:hp(2),
-        elevation:4,
+    search: {
+        paddingHorizontal: hp(2),
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '85%',
+        height: hp(6),
+        borderRadius: 12,
+        marginTop: hp(4),
+        marginBottom: hp(2),
+        elevation: 4,
         shadowColor: ColorConstant.GREY,
         shadowOffset: {
-          width: 0,
-          height: 0
+            width: 0,
+            height: 0
         },
         shadowRadius: 3,
         shadowOpacity: 1,
-        backgroundColor:ColorConstant.WHITE
-      },
-      card: {
+        backgroundColor: ColorConstant.WHITE
+    },
+    card: {
         //paddingHorizontal:hp(2),
-        flexDirection:'row',
-        alignItems:'center',
+        flexDirection: 'row',
+        alignItems: 'center',
         //justifyContent:'space-between',
-        width:'85%',
-        height:hp(6),
-        borderRadius:12,
-        marginVertical:hp(2),
-        elevation:4,
+        width: '85%',
+        height: hp(6),
+        borderRadius: 12,
+        marginVertical: hp(2),
+        elevation: 4,
         shadowColor: ColorConstant.GREY,
         shadowOffset: {
-          width: 0,
-          height: 0
+            width: 0,
+            height: 0
         },
         shadowRadius: 3,
         shadowOpacity: 1,
-        backgroundColor:ColorConstant.WHITE
-      },
-      blueCard: {
-        height:hp(6),
-        width:wp(6),
-        borderTopLeftRadius:12,
-        borderBottomLeftRadius:12
-      },
-      whiteCard: {
-        flexDirection:'row',
-        paddingHorizontal:hp(2),
-        alignItems:'center',
-        width:'90%'
-      },
-      buttonContainer: {
-        flexDirection:'row',
-        justifyContent:'space-evenly',
+        backgroundColor: ColorConstant.WHITE
+    },
+    blueCard: {
+        height: hp(6),
+        width: wp(6),
+        borderTopLeftRadius: 12,
+        borderBottomLeftRadius: 12
+    },
+    whiteCard: {
+        flexDirection: 'row',
+        paddingHorizontal: hp(2),
+        alignItems: 'center',
+        width: '90%'
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
         //width:'75%',
         //margin:hp(3),
-        marginTop:hp(3),
-        alignItems:'center'
+        marginTop: hp(3),
+        alignItems: 'center'
     },
     cancelButton: {
-        borderRadius:6,
-        borderColor:ColorConstant.BLUE,
-        borderWidth:1,
-        backgroundColor:ColorConstant.WHITE,
-        width:'30%',
-        height:hp(6),
-        justifyContent:'center'
+        borderRadius: 6,
+        borderColor: ColorConstant.BLUE,
+        borderWidth: 1,
+        backgroundColor: ColorConstant.WHITE,
+        width: '30%',
+        height: hp(6),
+        justifyContent: 'center'
     },
     saveButton: {
-        borderRadius:6,
-        backgroundColor:ColorConstant.BLUE,
-        width:'30%',
-        height:hp(6),
-        justifyContent:'center'
+        borderRadius: 6,
+        backgroundColor: ColorConstant.BLUE,
+        width: '30%',
+        height: hp(6),
+        justifyContent: 'center'
     },
 });
 

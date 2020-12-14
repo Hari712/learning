@@ -97,6 +97,7 @@ const images = {
         disableyeicon: require('../../assets/images/eyeicondisable.png'),
         login: require('../../assets/images/login.png'),
         add: require('../../assets/images/add.png'),
+        orangeAdd: require('../../assets/images/orangebell.png'),
         bluebell: require('../../assets/images/bluebell.png'),
         orangrbell: require('../../assets/images/orangebell.png'),
         orangeline: require('../../assets/images/orangeline.png'),

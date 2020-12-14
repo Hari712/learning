@@ -40,6 +40,7 @@ import AssignGroup from '../screen/DeviceSetup/AssignGroup'
 import BarcodeScanner from '../screen/DeviceSetup/BarcodeScanner'
 import CompleteSetup from '../screen/DeviceSetup/CompleteSetup'
 import GetStarted from './GetStarted/GetStarted'
+import GeoFenceCreator from './LiveTracking/PolygonCreator'
 import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
 
 export {
@@ -84,5 +85,6 @@ export {
     BarcodeScanner,
     CompleteSetup,
     GetStarted,
+    GeoFenceCreator,
     SettingsChangePassCode
 }
