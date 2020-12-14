@@ -56,17 +56,17 @@ const AssetList = () => {
 
     const renderSearchBar = () => {
 
-        // const searchFilter = (text) => {
+        const searchFilter = (text) => {
         //     assetData = asset.filter(item=> item.toLowerCase().includes(text.toLowerCase())) 
-        //     setSearch(text)
-        // }
+            setSearch(text)
+        }
 
         return (
             <View style={{ paddingHorizontal: hp(3) }}>
                 <View style={styles.search}>
                     <TextInput
                         placeholder='Search Here'
-                        //  onChangeText={text => searchFilter(text) }                    
+                        onChangeText={text => searchFilter(text) }                    
                         value={search}
                     />
                 </View>

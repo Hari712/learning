@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -10,11 +10,28 @@ import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
 import { translate } from '../../../App'
 import { DropDown, FontSize} from '../../component'
+import { useDispatch, useSelector } from 'react-redux'
+import * as DashboardActions from './Dashboad.Action'
+import { getDeviceDetailsListInfo, getLoginInfo } from '../Selector'
+import iconConstant from '../../constants/iconConstant'
 
 const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState();
+
+  
+  const dispatch = useDispatch()
+
+  const { isConnected, deviceDetails, loginInfo} = useSelector(state => ({
+    isConnected: state.network.isConnected,
+    loginInfo: getLoginInfo(state),
+    deviceDetails: getDeviceDetailsListInfo(state),
+}))
+
+console.log("Device Details",deviceDetails)
+
+  const user_id = loginInfo.id ? loginInfo.id : null
 
 
   React.useLayoutEffect(() => {
@@ -22,6 +39,18 @@ const Dashboard = ({ navigation }) => {
       headerLeft: () => (null),
     });
   },[navigation]);
+
+  useEffect(() => {
+    dispatch(DashboardActions.requestDeviceDetails(user_id, onDeviceDetailsSuccess, onDeviceDetailsError))
+  }, [])
+
+  const onDeviceDetailsSuccess = (data) => {
+    console.log("Success",data)
+  }
+
+  const onDeviceDetailsError = (error) => {
+    console.log("Error",error)
+  }
 
   // Active user component
   const ActiveUser = () => {
@@ -123,7 +152,7 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: 10</Text>
+            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: {deviceDetails.deviceCount}</Text>
 
             <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
@@ -133,29 +162,31 @@ const Dashboard = ({ navigation }) => {
           </View>
 
         </View>
+        {console.log("Dashboad", deviceDetails.deviceList)}
+        {Object.values(deviceDetails.deviceList).map((item, key) =>
 
-        {DeviceSummaryData.map((item, key) =>
-
-          <ShadowView style={styles.summaryContainer}>
+          <ShadowView style={styles.summaryContainer} key={key}>
             <View style={styles.subContainer}>
 
               <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
                 <View style={{ flex: 0.25 }}>
                   <View style={styles.deviceSummaryDetailView}>
-                    <Image source={item.icon} style={styles.image} resizeMode='contain' />
+                    <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' />
                   </View>
                 </View>
-
+                  {console.log("details",item)}
                 <View style={styles.titleText}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.subtitle }>{item.subtitle}</Text>
+                  <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
+                  <Text style={styles.subtitle }>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
                 </View>
 
               </View>
 
               <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
-                <View style={[styles.stateViewStyle, { backgroundColor: item.state === 'Active' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
-                  <Text style={[styles.stateTextStyle, { color: item.title === 'Active' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>{item.state}</Text>
+                <View style={[styles.stateViewStyle, { backgroundColor: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
+                  <Text style={[styles.stateTextStyle, { color: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>
+                    {item.deviceDTO.deviceStatus === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE'}
+                  </Text>
                 </View>
               </View>
 
@@ -478,13 +509,13 @@ const styles = StyleSheet.create({
   deviceSummaryMainViewStyle: Platform.OS=="ios" ? {
     alignItems: 'center',
     flexDirection: 'row',
-    //justifyContent: 'space-between',
+    justifyContent: 'space-between',
     marginTop: hp(2.5),
     zIndex: 5
   }:{
     alignItems: 'center',
     flexDirection: 'row',
-    //justifyContent: 'space-between',
+    justifyContent: 'space-between',
     marginTop: hp(2.5),
   },
 

@@ -106,3 +106,14 @@ export const getAssetTypeListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Device Details List for Dashboard
+ */
+
+const getDeviceDetailsInfo = (state) => state.dashBoard
+
+export const getDeviceDetailsListInfo = createSelector(
+    [getDeviceDetailsInfo],
+    (info) => info
+)
+

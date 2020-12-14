@@ -5,11 +5,13 @@ import { deviceReducer } from './DeviceSetup/Device.Reducer'
 import { reducer as network, offlineActionTypes } from 'react-native-offline'
 import { LOGOUT_REQUEST } from '../constants/ActionTypes'
 import { clearUserData } from '../utils/helper'
+import { dashboardReducer } from './Dashboard/Dashboad.Reducer';
 
 const rootReducer = combineReducers({
     login: loginReducer,
     users: usersReducer,
     device: deviceReducer,
+    dashBoard: dashboardReducer,
     network
 })
 

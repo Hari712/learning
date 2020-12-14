@@ -42,7 +42,8 @@ const ApiConstants = {
     UPDATE_GROUP:(userId) => `${USER}${userId}/${GROUP}`,
     UPDATE_ASSET:(userId) => `${USER}${userId}/assets/update`,
     DELETE_ASSET_BY_ASSETID:(userId, assetId) => `${USER}${userId}/assets/${assetId}`,
-    CHANGE_PASSCODE:(userId) => `${USER}${userId}/changePassword`
+    CHANGE_PASSCODE:(userId) => `${USER}${userId}/changePassword`,
+    GET_DEVICE_DETAILS_BY_ID:(userId) => `${USER}${userId}/dashboard/device`
 }
 
 export default ApiConstants
