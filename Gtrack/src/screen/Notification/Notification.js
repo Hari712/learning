@@ -6,13 +6,14 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { FontSize }from '../../component';
 import { FlatList } from 'react-native-gesture-handler';
 import Tooltip from 'rn-tooltip';
+import { translate } from '../../../App'
 
 const Notification = ({ navigation }) => {
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <Text style={styles.headingTitle}> Notifications </Text>
+                <Text style={styles.headingTitle}> {translate("Notifications")} </Text>
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -34,7 +35,7 @@ const Notification = ({ navigation }) => {
                         </View>
 
                         <View style={styles.notificationRightView}>
-                            <Text style={styles.titleStyle}>{item.title}</Text>
+                            <Text style={styles.titleStyle}>{translate(item.title)}</Text>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={styles.deviceStyle}>{item.device}</Text>
                                 <Tooltip popover={

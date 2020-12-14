@@ -14,6 +14,7 @@ import Modal from 'react-native-modal'
 import { CountrySelection } from 'react-native-country-list'
 import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
+import { translate } from '../../../App'
 
 const SignUp = () => {
 
@@ -31,19 +32,19 @@ const SignUp = () => {
     function onTapSignUp() {
         let message = ''
         if (isEmpty(firstName)) {
-            message = AppConstants.EMPTY_FIRST_NAME
+            message = translate(AppConstants.EMPTY_FIRST_NAME)
         }
         else if (isEmpty(lastName)) {
-            message = AppConstants.EMPTY_LAST_NAME
+            message = translate(AppConstants.EMPTY_LAST_NAME)
         }
         else if (isEmpty(email)) {
-            message = AppConstants.EMPTY_EMAIL
+            message = translate(AppConstants.EMPTY_EMAIL)
         }
         else if (isEmpty(countryCode)) {
-            message = AppConstants.EMPTY_COUNTRY_CODE
+            message = translate(AppConstants.EMPTY_COUNTRY_CODE)
         }
         else if (isEmpty(phoneNumber)) {
-            message = AppConstants.EMPTY_PHONE_NUMBER
+            message = translate(AppConstants.EMPTY_PHONE_NUMBER)
         }
 
         if (!isEmpty(message)) {
@@ -67,7 +68,7 @@ const SignUp = () => {
         AppManager.hideLoader()
         console.log("Success data",data)
         if(data){
-            AppManager.showSimpleMessage('warning', { message: AppConstants.EMAIL_SENT, description: '', floating: true }) 
+            AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: '', floating: true }) 
             NavigationService.navigate('Login')
         }
     }
@@ -100,25 +101,25 @@ const SignUp = () => {
                 <View style={styles.container}>
                     <Image source={images.image.defaultlogo} style={styles.imageStyle} />
                     <View style={styles.textConatiner}>
-                        <Text style={[styles.textStyle, { fontSize: FontSize.FontSize.regular, fontWeight: 'bold', lineHeight: hp(5) }]}>Hello there,</Text>
-                        <Text style={styles.textStyle}>Enter your information below to </Text>
-                        <Text style={styles.textStyle}>create your account</Text>
+                        <Text style={[styles.textStyle, { fontSize: FontSize.FontSize.regular, fontWeight: 'bold', lineHeight: hp(5) }]}>{translate("Signup_string1")}</Text>
+                        <Text style={styles.textStyle}>{translate("Signup_string2")} </Text>
+                        <Text style={styles.textStyle}>{translate("Signup_string3")}</Text>
                     </View>
 
                     <EditText 
-                        placeholder='First Name' 
+                        placeholder={translate("First Name")} 
                         style={styles.editText}  
                         onChangeText={(text) => { setFirstName(text) }}
                         value={firstName} 
                     />
                     <EditText 
-                        placeholder='Last Name' 
+                        placeholder={translate("Last Name")} 
                         style={styles.editText}
                         onChangeText={(text) => { setLastName(text) }}
                         value={lastName} 
                     />
                     <EditText 
-                        placeholder='Email Address' 
+                        placeholder={translate("Email Address")}
                         style={styles.editText}
                         onChangeText={(text) => { setEmail(text) }}
                         value={email} 
@@ -137,14 +138,14 @@ const SignUp = () => {
                                 >
                                 <View style={{flex: 1}}>
                                     <CountrySelection action={(item) => onCountrySelection(item)} selected={country}/>
-                                    <Button title="Done" onPress={()=>setModalVisible(!isModalVisible)} />
+                                    <Button title={translate("Profile_string9")} onPress={()=>setModalVisible(!isModalVisible)} />
                                 </View>                        
                             </Modal>
                     </View> 
 
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText 
-                            placeholder='Mobile Number' 
+                            placeholder={translate("Mobile Number")}
                             style={styles.editText}
                             onChangeText={(text) => { setPhoneNumber(text) }} 
                             value={phoneNumber} />
@@ -160,20 +161,20 @@ const SignUp = () => {
                             onClick={() => { setIsSelected(!isSelected) }}
                             isChecked={isSelected}
                         />
-                        <Text style={styles.termsConditionStyle}>Terms & Conditions</Text>
+                        <Text style={styles.termsConditionStyle}>{translate("Signup_string4")}</Text>
                     </View>
 
                     <CustomButton
-                        title='Create an Account'
+                        title={translate("Signup_string5")}
                         style={styles.buttonStyle}
                         textStyle={styles.buttonTextStyle}
                         onPress={() => onTapSignUp()}
                     />
 
                     <View style={styles.bottomContainer}>
-                        <Text style={styles.bottomText}>Already have an account ? </Text>
+                        <Text style={styles.bottomText}>{translate("Splash_string1")}  </Text>
                         <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
-                            <Text style={styles.bottomBtn}>Log In</Text>
+                            <Text style={styles.bottomBtn}>{translate("Splash_string2")}</Text>
                         </TouchableOpacity>
                     </View>
 

@@ -11,6 +11,7 @@ import _ from 'lodash'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText, FontSize } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
+import { translate } from '../../../App'
 
 const ChangePasscode = ({ navigation, route }) => {
 
@@ -33,16 +34,16 @@ const ChangePasscode = ({ navigation, route }) => {
                 message = AppConstants.EMPTY_PASSWORD
             }
             else if (!validatePassword(passcode)) {
-                message = AppConstants.INVALID_PASSWORD
+                message = translate(AppConstants.INVALID_PASSWORD)
             }
             else if (_.isEmpty(confirmpasscode)) {
-                message = AppConstants.EMPTY_CONFIMR_PASSWORD
+                message = translate(AppConstants.EMPTY_CONFIRM_PASSWORD)
             }
             else if (!validatePassword(confirmpasscode)) {
-                message = AppConstants.INVALID_PASSWORD
+                message = translate(AppConstants.INVALID_PASSWORD)
             }
             else if (!(passcode == confirmpasscode)) {
-                message = AppConstants.PASSWORD_DOES_NOT_MATCH
+                message = translate(AppConstants.PASSWORD_DOES_NOT_MATCH)
             }
             if (!_.isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -114,7 +115,7 @@ const ChangePasscode = ({ navigation, route }) => {
             <View style={styles.container}>
                 <Image source={images.image.defaultlogo} />
                 <View style={styles.subContainer}>
-                    <Text style={styles.resetEmailText}>Set New Passcode</Text>
+                    <Text style={styles.resetEmailText}>{translate("Set Passcode")}</Text>
                     <Text style={[styles.textStyle, { color: ColorConstant.ORANGE }]}>{emailId}</Text>
                 </View>
 
@@ -122,27 +123,27 @@ const ChangePasscode = ({ navigation, route }) => {
                     passcode style={styles.passcode}
                     value={passcode}
                     onChangeText={(value) => setPasscode(value)}
-                    placeholder='Enter New Passcode'
+                    placeholder={translate("New Passcode")}
                 />
 
                 <EditText
                     passcode style={styles.passcode}
                     value={confirmpasscode}
                     onChangeText={(value) => setConfirmPasscode(value)}
-                    placeholder='Confirm New Passcode'
+                    placeholder={translate("Confirm Passcode")}
                 />
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => {
                         navigation.goBack()
                     }} style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>Cancel</Text>
+                        <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={() => loginHandle()}
                         style={styles.LoginButton}>
-                        <Text style={styles.LoginButtonText}>Login</Text>
+                        <Text style={styles.LoginButtonText}>{translate("Login")}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

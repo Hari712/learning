@@ -10,6 +10,7 @@ import { AppConstants } from '../../constants/AppConstants'
 import { EditText, FontSize } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
 import AppManager from '../../constants/AppManager'
+import { translate } from '../../../App'
 
 
 const Passcode = ({ navigation, route }) => {
@@ -64,8 +65,8 @@ const Passcode = ({ navigation, route }) => {
             <View style={styles.container}>
                 <Image source={images.image.defaultlogo} />
                 <View style={styles.subContainer}>
-                    <Text style={styles.resetEmailText}>Passcode Reset Email Sent</Text>
-                    <Text style={styles.textStyle}>The New Passcode is sent on</Text>
+                    <Text style={styles.resetEmailText}>{translate("Passcode_string1")}</Text>
+                    <Text style={styles.textStyle}>{translate("Passcode_string2")}</Text>
                     <Text style={[styles.textStyle, { color: ColorConstant.ORANGE }]}>{emailId}</Text>
                 </View>
 
@@ -73,18 +74,18 @@ const Passcode = ({ navigation, route }) => {
                     passcode style={styles.passcode}
                     value={passcode}
                     onChangeText={(value) => setPasscode(value)}
-                    placeholder='Enter OTP'
+                    placeholder={translate("Passcode_string3")}
                 />
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => navigation.goBack()} style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>Cancel</Text>
+                        <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={() => requestVerifyOTP()}
                         style={styles.LoginButton}>
-                        <Text style={styles.LoginButtonText}>Submit</Text>
+                        <Text style={styles.LoginButtonText}>{translate("Submit")}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

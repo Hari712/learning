@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList }
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
+import { translate } from '.../../../App';
 import { FontSize }from '../../../component';
 
 const NotificationInfo = ({ navigation }) => {
@@ -16,7 +17,7 @@ const NotificationInfo = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Settings
+                    {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
@@ -30,7 +31,7 @@ const NotificationInfo = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>Notifications</Text>
+                <Text style={styles.textViewStyle}>{translate("Notifications")}</Text>
             </View>
         </View>
     )

@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as UsersActions from './Users.Action'
 import AppManager from '../../constants/AppManager';
 import Switches from 'react-native-switches'
+import { translate } from '../../../App';
 
 let searchData;
 
@@ -97,16 +98,16 @@ const Users = ({navigation}) => {
           {/* White Body container */}
           <View style={styles.whiteContainer}>
             <View style={styles.whiteSubView} >
-              <Text style={styles.whiteContainerText}>Role</Text>
+              <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
               {item.roles.map((role,key) =>
                 <Text key={key} style={styles.whiteContainerSubText}>{role.name}</Text> )}       
             </View>
             <View style={{flexDirection:'column',flex:1}} >
-              <Text style={styles.whiteContainerText}>Rights</Text>
+              <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>
               <Text style={styles.whiteContainerSubText}>{item.rights}</Text>       
             </View>
             <View style={{flexDirection:'column'}}>
-              <Text style={styles.whiteContainerText}>Group</Text>
+              <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
               <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
                   <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName :null} </Text>  
                   <Tooltip
@@ -217,7 +218,7 @@ const Users = ({navigation}) => {
           <View style={styles.searchSubContainer}>
             <View style={styles.search}>
                 <TextInput 
-                    placeholder='Search Here...'
+                    placeholder={translate("Search_here")}
                     style={styles.searchText}
                     onChangeText={text => searchHandle(text) }                    
                     value={searchKeyword}

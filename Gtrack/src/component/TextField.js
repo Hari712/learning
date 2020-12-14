@@ -34,7 +34,6 @@ class TextField extends React.Component {
         const {label, innerRef, outerStyle, multiline, onChangeText, ...otherProps} = this.props;
 
         const handleInput = text => {
-            //this.props.valueSet(text)
             this.setState({textValue: text}, ()=>this.props.valueSet(text))
             return text
         }
@@ -52,7 +51,7 @@ class TextField extends React.Component {
                 // contentInset={{ label: hp(0.15), input: hp(7) }}
                 formatText={handleInput}
                 //value={this.state.textValue}
-                //renderRightAccessory={() => handleRightAccessory()}
+                renderRightAccessory={() => otherProps.renderRightAccessory}
                 //editable={false}
                 multiline={multiline}
                 inputContainerStyle={multiline ? styles.descContainer : styles.inputContainer}

@@ -11,6 +11,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import ShadowView from 'react-native-simple-shadow-view'
 import NavigationService from '../../navigation/NavigationService'
+import { translate } from '../../../App'
 import AppManager from '../../constants/AppManager'
 import isEmpty from 'lodash/isEmpty'
 import * as DeviceActions from './Device.Action'
@@ -33,7 +34,7 @@ const ActivateDevice = ({ navigation }) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Device Setup
+                    {translate("Device Setup")}
                 </Text>
             ),
             headerLeft: () => (
@@ -48,9 +49,9 @@ const ActivateDevice = ({ navigation }) => {
     function onTapActivateDevice() {
         let message = ''
         if (isEmpty(deviceId)) {
-            message = AppConstants.EMPTY_DEVICE_ID
+            message = translate(AppConstants.EMPTY_DEVICE_ID)
         } else if (isEmpty(deviceName)) {
-            message = AppConstants.EMPTY_DEVICE_NAME
+            message = translate(AppConstants.EMPTY_DEVICE_NAME)
         }
         if (!isEmpty(message)) {
             AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -101,13 +102,13 @@ const ActivateDevice = ({ navigation }) => {
         <View style={styles.container}>
             <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'center' }}>
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step1} resizeMode="contain" />
-                <Text style={styles.title}>Activate Device</Text>
+                <Text style={styles.title}>{translate("Activate Device")}</Text>
             </View>
             <View style={{ flex: 0.7, paddingHorizontal: hp(3), paddingTop: hp(2) }}>
                 <View style={styles.shadowContainer}>
                     <TextField
                         valueSet={setDeviceId}
-                        label='Device Id*'
+                        label={translate("Device Id")}
                         value={deviceId}
                         onChangeText={(text) => setDeviceId(text)}
                         style={styles.textNameStyle}
@@ -122,7 +123,7 @@ const ActivateDevice = ({ navigation }) => {
                 <View style={styles.shadowContainer}>
                     <TextField
                         valueSet={setDeviceName}
-                        label='Device Name *'
+                        label={translate("Device Name")}
                         value={deviceName}
                         onChangeText={(text) => setDeviceName(text)}
                         style={styles.textNameStyle}
@@ -134,7 +135,7 @@ const ActivateDevice = ({ navigation }) => {
                 </View>
                 <ShadowView style={styles.shadowContainer}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => onTapActivateDevice()}>
-                        <Text style={styles.activateButtonTitle}>Activate</Text>
+                        <Text style={styles.activateButtonTitle}>{translate("Activate")}</Text>
                     </TouchableOpacity>
                 </ShadowView>
             </View>

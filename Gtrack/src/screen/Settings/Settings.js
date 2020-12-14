@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { FontSize } from '../../component'
 import { useDispatch } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
+import { translate } from '../../../App';
 
 const Settings = ({ navigation }) => {
 
@@ -49,6 +50,10 @@ const Settings = ({ navigation }) => {
         navigation.navigate('AdvanceSettings')
       }
 
+      else if (item.title == 'Change Passcode') {
+        navigation.navigate('SettingsChangePassCode')
+      }
+
       else if (item.title == 'Logout') {
         dispatch(LoginActions.requestLogout())
       }
@@ -69,7 +74,7 @@ const Settings = ({ navigation }) => {
 
           <View style={styles.leftMainViewStyle}>
             <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' />
-            <Text style={styles.titleTextStyle}>{item.title}</Text>
+            <Text style={styles.titleTextStyle}>{translate(item.title)}</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
@@ -198,6 +203,12 @@ const SETTINGS_MENU = [
   {
     title: 'Advance Settings',
     icon: images.image.settings.advanceSetting,
+    nextArrow: images.image.settings.nextArrow,
+    next: images.image.settings.next
+  },
+  {
+    title: 'Change Passcode',
+    icon: images.image.changePasscode.changePasscodeIcon,
     nextArrow: images.image.settings.nextArrow,
     next: images.image.settings.next
   },

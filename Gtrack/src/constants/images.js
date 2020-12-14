@@ -171,7 +171,15 @@ const images = {
             step1: require('../../assets/images/deviceSetup/step1.png'),
             step2: require('../../assets/images/deviceSetup/step2.png'),
             step3: require('../../assets/images/deviceSetup/step3.png')
+        },
+        changePasscode: {
+           eyeicon: require('../../assets/images/Settings/ChangePasscode/eye.png'),
+           eyeDisable: require('../../assets/images/Settings/ChangePasscode/eyeDisable.png'),
+           changePasscodeIcon: require('../..//assets/images/Settings/ChangePasscode/feedback.png'),
+           success: require('../../assets/images/Settings/ChangePasscode/success.png')
         }
+
+
     }
 }
 

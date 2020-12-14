@@ -335,6 +335,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNLocalize (1.4.3):
+    - React-Core
   - RNReanimated (1.13.1):
     - React
   - RNScreens (2.11.0):
@@ -406,6 +408,7 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -504,6 +507,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNLocalize:
+    :path: "../node_modules/react-native-localize"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -563,6 +568,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: a37a15a98822c31c3982cb28eba6d336ba4d0968
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
+  RNLocalize: ff8b96bffbe096a158f952a170741208f2c18746
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 0e91da98ab26d5d04c7b59a9b6bd694124caf88c
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
@@ -570,6 +576,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0804eb76a47162266d7ce684563a1bb4234c15c1
+PODFILE CHECKSUM: 4ffa6b72a9b99865ae843f6377a4ef4a101b4645
 
 COCOAPODS: 1.9.3

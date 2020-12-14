@@ -5,6 +5,7 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import  { FontSize }from '../../component';
 import { FlatList } from 'react-native-gesture-handler';
+import { translate } from '../../../App'
 
 const SensorInfo = ({ navigation }) => {
 
@@ -17,7 +18,7 @@ const SensorInfo = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    Sensor Information
+                    {translate("Sensor Information")}
                 </Text>
             ),
             headerLeft: () => (

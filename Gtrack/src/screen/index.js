@@ -41,6 +41,7 @@ import BarcodeScanner from '../screen/DeviceSetup/BarcodeScanner'
 import CompleteSetup from '../screen/DeviceSetup/CompleteSetup'
 import GetStarted from './GetStarted/GetStarted'
 import GeoFenceCreator from './LiveTracking/PolygonCreator'
+import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
 
 export {
     Splash,
@@ -84,5 +85,6 @@ export {
     BarcodeScanner,
     CompleteSetup,
     GetStarted,
-    GeoFenceCreator
+    GeoFenceCreator,
+    SettingsChangePassCode
 }

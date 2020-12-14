@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { FontSize }from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
+import { translate } from '../../../../App'
 
 
 const AlarmDetail = ({navigation,route}) => {
@@ -29,7 +30,7 @@ const AlarmDetail = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Alarms
+                {translate("Alarms")}
             </Text>          
         ),  
         headerLeft:() => (
@@ -45,24 +46,24 @@ return (
       <View style={styles.cardContainer}> 
 
         <View style={styles.detail}>
-            <Text style={styles.detailText}>Details</Text>  
+            <Text style={styles.detailText}>{translate("Details")}</Text>  
             <Image style={{marginBottom:hp(1)}} source={images.liveTracking.list} /> 
         </View>
        
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
             <View style={{flexDirection:'column',flex:2}}>
-                <Text style={styles.textStyle}>Name</Text>
+                <Text style={styles.textStyle}>{translate("Name")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.title}</Text>
             </View> 
 
             <View style={{flexDirection:'column',flex:2}}>
-                <Text style={styles.textStyle}>Type</Text>
+                <Text style={styles.textStyle}>{translate("Type")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.type}</Text>
             </View>
         </View>
 
         <View>
-            <Text style={styles.textStyle}>Selected Device</Text>
+            <Text style={styles.textStyle}>{translate("Geofence_string14")}</Text>
             {data.asset.map((entry,key) =>
                 <View key={key} style={styles.devices}>
                   <Text style={styles.deviceText}>{entry}</Text>
@@ -71,7 +72,7 @@ return (
         </View>
 
         <View style={{marginTop:hp(2)}}>
-          <Text style={styles.textStyle}>Selected Users</Text>
+          <Text style={styles.textStyle}>{translate("Selected Users")}</Text>
           <View style={{flexGrow:1, flexDirection:'row'}}>
             {Name.map((name,key) =>
               <View key={key} style={styles.user}>
@@ -82,12 +83,12 @@ return (
 
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
             <View style={{flexDirection:'column',flex:2}}>
-                <Text style={styles.textStyle}>Time</Text>
+                <Text style={styles.textStyle}>{translate("Time")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.duration}</Text>
             </View> 
 
             <View style={{flexDirection:'column',flex:1.5}}>
-                <Text style={styles.textStyle}>Web Notification</Text>
+                <Text style={styles.textStyle}>{translate("Web Notification")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>No</Text>
             </View>
         </View>

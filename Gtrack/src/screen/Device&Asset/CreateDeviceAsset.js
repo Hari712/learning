@@ -11,9 +11,84 @@ import { getLoginInfo } from '../Selector'
 import isEmpty from 'lodash/isEmpty'
 import Group from './CreateGroup'
 import CreateAsset from './CreateAsset'
+import { translate } from '../../../App';
 
 const CreateDeviceAsset = ({ route, navigation }) => {
 
+    const [group, setGroup]= useState(); 
+    const [detailsToggle, setDetailsToggle] = useState(false);
+    const [type, setType] = useState();
+    const [device, setDevice] = useState();
+    const [description, setDescrption] = useState();
+    const [selectedDevices, setSelectedDevices] = useState([]);
+    
+    useEffect(()=>{
+        group? null : setDetailsToggle(false)
+    }, [group])
+ 
+    const Group = () => (
+        <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+            <View style={styles.container}>
+
+            <View style={styles.scene} >
+                <TextField valueSet={setGroup} label={translate("Group Name")} defaultValue={group} />
+            </View>
+
+            {detailsToggle?
+                <View style={styles.detailsToggle}>
+                    <MultiSelect 
+                        label='Select Device' 
+                        allText='Select All' 
+                        dataList={devicesList} 
+                        valueSet={setSelectedDevices} 
+                        textStyle={{color:ColorConstant.BLUE,fontSize:12,paddingVertical:hp(1),fontFamily:'Nunito-Regular'}} 
+                        selectedData={selectedDevices} 
+                    />                   
+                </View>
+            :null}  
+
+            <View style={styles.scene} >
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.buttonStyle}>
+                        <Text style={styles.cancelText}>{translate("Cancel")}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity disabled={!group} onPress={()=>{detailsToggle ? console.log("Saved") : setDetailsToggle(true) }} style={[styles.nextButton,{backgroundColor:group?ColorConstant.BLUE:ColorConstant.GREY,}]}>
+                        <Text style={styles.saveText}> {detailsToggle ? translate("Save"): translate("Next")} </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+    
+            </View>
+        </ScrollView>     
+    );
+    
+    const Asset = () => (
+        <View style={styles.container}>
+            <View style={styles.scene} >
+
+                <TextField valueSet={setValue} defaultValue={value} label={translate("Name_Star")} /> 
+
+                <DropDown label={translate("Type")} defaultValue={type} valueSet={setType} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} /> 
+
+                <TextField valueSet={setDescrption} defaultValue={description} label={translate("Edit_Device_Asset_string")}  multiline={true} outerStyle={styles.outerStyle} />
+
+                <DropDown defaultValue={device} label={translate("Select_Device")} valueSet={setDevice} dataList={['Group 1','Group 2','Group 3']} outerStyle={styles.outerStyle} />
+                
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.buttonStyle}>
+                        <Text style={styles.cancelText}>{translate("Cancel")}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity  style={[styles.buttonStyle,{backgroundColor:ColorConstant.BLUE}]}>
+                        <Text style={styles.saveText}>{translate("Save")}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+       
+    );
+   
     const initialLayout = { width: Dimensions.get('window').width, height: Dimensions.get('window').height };
 
     const [index, setIndex] = useState(0);
@@ -47,7 +122,7 @@ const CreateDeviceAsset = ({ route, navigation }) => {
                     //letterSpacing: 0,
                     textAlign: 'center'
                 }}>
-                    Device & Assest
+                    {translate("Device_Asset")}
                 </Text>
             ),
             headerLeft: () => (
@@ -58,30 +133,30 @@ const CreateDeviceAsset = ({ route, navigation }) => {
         });
     }, [navigation]);
 
-    return (
-        <View style={{ flex: 1 }}>
-            <TabView
-                //style={{marginTop:hp(5)}}
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                renderTabBar={props => {
-                    console.log('props--------', props, index)
-                    return (
-                        <TabBar
-                            {...props}
-                            indicatorStyle={{ backgroundColor: ColorConstant.ORANGE, height: hp(5) }}
-                            //labelStyle={{ color: ColorConstant.GREY, fontSize: hp(2.2), fontWeight: '600', textTransform: 'capitalize' }}
-                            style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
-                            renderLabel={({ route, focused, color }) => (
-                                <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize: FontSize.FontSize.medium, fontWeight: '300', }}>
-                                    {route.title}
-                                </Text>
-                            )}
-                        />)
-                }}
-                initialLayout={initialLayout} />
-        </View>
+return(
+<View style={{flex:1}}>
+    <TabView
+        //style={{marginTop:hp(5)}}
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={props => {
+            console.log('props--------', props, index)
+            return (
+                <TabBar
+                    {...props}
+                    indicatorStyle={{ backgroundColor: ColorConstant.ORANGE, height: hp(5) }}
+                    //labelStyle={{ color: ColorConstant.GREY, fontSize: hp(2.2), fontWeight: '600', textTransform: 'capitalize' }}
+                    style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
+                    renderLabel={({ route, focused, color }) => (
+                        <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize:FontSize.FontSize.medium, fontWeight: '300', }}>
+                            {translate(route.title)}
+                        </Text>
+                    )}
+                />)
+        }}
+        initialLayout={initialLayout} />
+</View>
     )
 
 }

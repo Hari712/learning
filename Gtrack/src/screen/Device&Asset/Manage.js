@@ -7,6 +7,8 @@ import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
 import { Dialog, ExapandableListView, TextField, DropDown, FontSize } from '../../component';
 import GroupList from './GroupList'
 import AssetList from './AssetList'
+import { translate } from '../../../App';
+
 
 const CONTENT = [
     {
@@ -71,20 +73,20 @@ const Manage = ({ route, navigation }) => {
     const popUp = (item, key) => {
         return (
             <View style={styles.popUp}>
-
-                <TextField valueSet={setTempName} value={tempName} label='Name*' outerStyle={styles.outerStyle} />
-
-                <DropDown label='Type*' defaultValue={type} valueSet={setType} outerStyle={[styles.outerStyle, { alignSelf: 'center' }]} dropdownStyle={styles.dropdownStyle} />
-
-                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label='Description' outerStyle={styles.outerStyle} />
-
+                        
+                <TextField valueSet={setTempName} value={tempName} label={translate("Name_Star")} outerStyle={styles.outerStyle} /> 
+                
+                <DropDown label={translate("Type_star")} defaultValue={type} valueSet={setType}  outerStyle={[styles.outerStyle,{alignSelf:'center'}]} dropdownStyle={styles.dropdownStyle} />
+                
+                <TextField multiline={true} valueSet={setDescrption} defaultValue={description} label={translate("Description")} outerStyle={styles.outerStyle} /> 
+                
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={() => setEditClick(-1)} style={styles.cancelButton}>
-                        <Text style={{ textAlign: 'center', color: ColorConstant.BLUE }}>Cancel</Text>
+                    <TouchableOpacity onPress={()=>setEditClick(-1)} style={styles.cancelButton}>
+                        <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={updateData} style={styles.saveButton}>
-                        <Text style={{ textAlign: 'center', color: ColorConstant.WHITE }}>Save</Text>
+                        <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save")}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -100,9 +102,9 @@ const Manage = ({ route, navigation }) => {
 
         return (
             <View style={styles.search}>
-                <TextInput
-                    placeholder='Search Here'
-                    onChangeText={text => searchFilter(text)}
+                <TextInput 
+                    placeholder={translate("Search_here")}
+                    onChangeText={text => searchFilter(text) }                    
                     value={search}
 
                 />
@@ -118,9 +120,9 @@ const Manage = ({ route, navigation }) => {
 
 
     const deleteConfirmDialog = () => {
-        return (
-            <Dialog
-                heading="Are you sure ?"
+        return(
+            <Dialog 
+                heading={translate("Dailog_string")}
                 message={"Do you really want to delete asset?" + "\n \n" + "It will get detach from the current device."}
                 visible={dialogVisible}
                 onTouchOutside={() => setDialogVisible(false)}
@@ -199,10 +201,9 @@ const Manage = ({ route, navigation }) => {
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
                     //letterSpacing: 0,
-                    textAlign: 'center'
-                }}>
-                    Device & Assest
-                </Text>
+                    textAlign:'center' }}>
+                    {translate("Device_Asset")}
+                </Text>          
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -210,32 +211,32 @@ const Manage = ({ route, navigation }) => {
                 </TouchableOpacity>
             )
         });
-    }, [navigation]);
+      }, [navigation]);
 
-    return (
-        <View style={{ flex: 1 }}>
-            <TabView
-                //style={{marginTop:hp(5)}}
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                onIndexChange={setIndex}
-                renderTabBar={props => {
-                    console.log('props--------', props, index)
-                    return (
-                        <TabBar
-                            {...props}
-                            indicatorStyle={{ backgroundColor: ColorConstant.ORANGE, height: hp(5) }}
-                            //labelStyle={{ color: ColorConstant.GREY, fontSize: hp(2.2), fontWeight: '600', textTransform: 'capitalize' }}
-                            style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
-                            renderLabel={({ route, focused, color }) => (
-                                <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize: FontSize.FontSize.medium, fontWeight: '300', }}>
-                                    {route.title}
-                                </Text>
-                            )}
-                        />)
-                }}
-                initialLayout={initialLayout} />
-        </View>
+return(
+<View style={{flex:1}}>
+    <TabView
+        //style={{marginTop:hp(5)}}
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={props => {
+            console.log('props--------', props, index)
+            return (
+                <TabBar
+                    {...props}
+                    indicatorStyle={{ backgroundColor: ColorConstant.ORANGE, height: hp(5) }}
+                    //labelStyle={{ color: ColorConstant.GREY, fontSize: hp(2.2), fontWeight: '600', textTransform: 'capitalize' }}
+                    style={{ backgroundColor: ColorConstant.WHITE, height: hp(5), justifyContent: 'center', }}
+                    renderLabel={({ route, focused, color }) => (
+                        <Text style={{ color: focused ? ColorConstant.WHITE : ColorConstant.BLUE, fontSize:FontSize.FontSize.medium, fontWeight: '300', }}>
+                            {translate(route.title)}
+                        </Text>
+                    )}
+                />)
+        }}
+        initialLayout={initialLayout} />
+</View>
     )
 
 }

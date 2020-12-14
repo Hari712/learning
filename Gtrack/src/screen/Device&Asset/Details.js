@@ -10,6 +10,7 @@ import AppManager from '../../constants/AppManager'
 import { getLoginInfo } from '../Selector'
 import NavigationService from '../../navigation/NavigationService'
 import isEmpty from 'lodash/isEmpty'
+import { translate } from '../../../App';
 
 const Details = ({ route, navigation }) => {
 
@@ -107,24 +108,24 @@ const Details = ({ route, navigation }) => {
             <>
                 <View style={styles.details}>
                     <View style={[styles.detailsSubView, { flex: 1.5 }]} >
-                        <Text style={styles.textStyle}>Plan</Text>
+                        <Text style={styles.textStyle}>{translate("Plan")}</Text>
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{planType}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 0.9 }]} >
-                        <Text style={styles.textStyle}>Price</Text>
+                        <Text style={styles.textStyle}>{translate("Price")}</Text>
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$60</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 1.2 }]}>
-                        <Text style={styles.textStyle}>Start Date</Text>
+                        <Text style={styles.textStyle}>{translate("Start Date")}</Text>
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{activationDate}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 1 }]}>
-                        <Text style={styles.textStyle}>End Date</Text>
+                        <Text style={styles.textStyle}>{translate("End Date")}</Text>
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{deActivationDate}</Text>
                     </View>
                 </View>
                 <View style={styles.features}>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>Features</Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{translate("Features")}</Text>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    6 month Data Retention</Text></Text>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Phone,Text,Chat and Email Support</Text></Text>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Optional Protection Plan(2.99/mo)</Text></Text>
@@ -148,7 +149,7 @@ const Details = ({ route, navigation }) => {
         return (
             <View style={styles.cardContainer}>
                 <View style={styles.headerDetail}>
-                    <Text style={styles.headerText}>Plan Details</Text>
+                    <Text style={styles.headerText}>{translate("Plan Details")}</Text>
                     <Image source={images.image.list} />
                 </View>
                 <View style={styles.horizontalLine} />
@@ -166,11 +167,11 @@ const Details = ({ route, navigation }) => {
             <>
                 <View style={styles.details}>
                     <View style={[styles.detailsSubView, { flex: 1 }]} >
-                        <Text style={styles.textStyle}>Type</Text>
+                        <Text style={styles.textStyle}>{translate("Type")}</Text>
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{assetType}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 2 }]} >
-                        <Text style={styles.textStyle}>Description</Text>
+                        <Text style={styles.textStyle}>{translate("Description")}</Text>
                         <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{description}</Text>
                     </View>
                 </View>
@@ -197,11 +198,11 @@ const Details = ({ route, navigation }) => {
                 {Data.map((item, key) =>
                     <View key={key} style={styles.userDetails}>
                         <View style={[styles.detailsSubView, { flex: 1 }]} >
-                            <Text style={styles.textStyle}>Name</Text>
+                            <Text style={styles.textStyle}>{translate("Name")}</Text>
                             <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.name}</Text>
                         </View>
                         <View style={[styles.detailsSubView, { flex: 2 }]} >
-                            <Text style={styles.textStyle}>Role</Text>
+                            <Text style={styles.textStyle}>{translate("Role")}</Text>
                             <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.role}</Text>
                         </View>
                     </View>
@@ -214,7 +215,7 @@ const Details = ({ route, navigation }) => {
         return (
             <View style={styles.cardContainer}>
                 <View style={styles.headerDetail}>
-                    <Text style={styles.headerText}>User Details</Text>
+                    <Text style={styles.headerText}>{translate("User Details")}</Text>
                     <Image source={images.image.user} />
                 </View>
                 <View style={styles.horizontalLine} />
@@ -236,22 +237,22 @@ const Details = ({ route, navigation }) => {
                     <View style={styles.container}>
                         <View style={styles.cardContainer}>
                             <View style={styles.headerDetail}>
-                                <Text style={styles.headerText}>Device Details</Text>
+                                <Text style={styles.headerText}>{translate("Device Details")}</Text>
                                 <Image source={images.image.usb} />
                             </View>
                             <View style={styles.horizontalLine} />
 
                             <View style={styles.details}>
                                 <View style={styles.detailsSubView} >
-                                    <Text style={styles.textStyle}>ID</Text>
+                                    <Text style={styles.textStyle}>{translate("ID")}</Text>
                                     <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{deviceId}</Text>
                                 </View>
                                 <View style={[styles.detailsSubView, { flex: 2.5 }]} >
-                                    <Text style={styles.textStyle}>Name</Text>
+                                    <Text style={styles.textStyle}>{translate("Name")}</Text>
                                     <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{title}</Text>
                                 </View>
                                 <View style={[styles.detailsSubView, { flex: 1 }]}>
-                                    <Text style={styles.textStyle}>Group</Text>
+                                    <Text style={styles.textStyle}>{translate("Group")}</Text>
                                     <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{groupname}</Text>
                                 </View>
                             </View>
@@ -265,7 +266,7 @@ const Details = ({ route, navigation }) => {
 
                         <TouchableOpacity style={styles.export} onPress={() => exportDeviceDetail()}>
                             <Image source={images.image.export} />
-                            <Text style={{ color: ColorConstant.WHITE }}>Export Details</Text>
+                            <Text style={{ color: ColorConstant.WHITE }}>{translate("Export Details")}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

@@ -9,6 +9,8 @@ import FontSize from './FontSize'
 import { AppConstants } from '../constants/AppConstants'
 import { ColorConstant } from '../constants/ColorConstants'
 import images from '../constants/images'
+import { translate } from '../../App'
+
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../constants/AppManager'
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
@@ -74,7 +76,7 @@ function AddNewGroupDialog(props) {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>Add New Group</Text>
+                    <Text style={styles.headerText}>{translate("Add New Group")}</Text>
                     <View style={styles.closeButton}>
                         <TouchableOpacity onPress={() => onCancelDialog()}>
                             <Image style={{ width: hp(1.5), height: hp(1.5) }} source={images.geoFence.CrossBlack} />
@@ -83,7 +85,7 @@ function AddNewGroupDialog(props) {
                 </View>
                 <TextField
                     valueSet={setGroupName}
-                    label='Group Name*'
+                    label={translate("Group Name")}
                     value={groupName}
                     onChangeText={(text) => setGroupName(text)}
                     style={styles.textNameStyle}
@@ -95,7 +97,7 @@ function AddNewGroupDialog(props) {
                 />
                 {groupNameError ? <Text style={{ fontSize: FontSize.FontSize.small, color:'red', marginBottom: hp(1) }}>{groupNameError}</Text> : null}
                 <TouchableOpacity style={styles.button} onPress={() => onTapSubmit()}>
-                    <Text style={styles.buttonTitle}>{`Create & Assign`}</Text>
+                    <Text style={styles.buttonTitle}>{translate("Create_Assign")}</Text>
                 </TouchableOpacity>
             </View>
         )

@@ -11,6 +11,7 @@ import AppManager from '../../constants/AppManager'
 import { AppConstants } from '../../constants/AppConstants'
 import NavigationService from '../../navigation/NavigationService'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
+import { translate } from '../../../App';
 
 const EditDeviceAsset = ({ route, navigation }) => {
 
@@ -92,10 +93,10 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     color: ColorConstant.GREY,
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
-                    textAlign: 'center'
-                }}>
-                    Edit Device & Asset
-                </Text>
+                    //letterSpacing: 0,
+                    textAlign:'center' }}>
+                    {translate("Edit Device & Asset")}
+                </Text>          
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
@@ -191,7 +192,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
             <View style={styles.subContainer}>
                 <View style={styles.device}>
                     <Image style={{ resizeMode: 'stretch' }} source={images.image.usb} />
-                    <Text style={styles.textStyle}>Device</Text>
+                    <Text style={styles.textStyle}>{translate("Device")}</Text>
                 </View>
                 <View style={styles.id}>
                     <Text style={styles.idTitle}>Id</Text>
@@ -199,13 +200,13 @@ const EditDeviceAsset = ({ route, navigation }) => {
                 </View>
 
                 <View style={styles.textField}>
-                    <TextField valueSet={setDeviceName} label='Name*' ref={nameRef} value={devName} />
+                    <TextField valueSet={setDeviceName} label={translate("Name_Star")} ref={nameRef} value={devName} />
                 </View>
                 <View style={styles.horizontalLine} />
 
                 <View style={[styles.device, { marginTop: hp(2) }]}>
                     <Image style={{ resizeMode: 'stretch' }} source={images.image.pickupcar} />
-                    <Text style={styles.textStyle}>Asset</Text>
+                    <Text style={styles.textStyle}>{translate("Asset")}</Text>
                 </View>
 
                 <View onLayout={(event) => {
@@ -215,19 +216,19 @@ const EditDeviceAsset = ({ route, navigation }) => {
 
                 <View style={styles.nameDesc}>
                     <View style={styles.column} >
-                        <Text style={styles.nameDescText}>Type</Text>
+                        <Text style={styles.nameDescText}>{translate("Type")}</Text>
                         <Text style={styles.name}>{type}</Text>
                     </View>
                     <View style={styles.column} >
-                        <Text style={styles.nameDescText}>Description (Optional)</Text>
+                        <Text style={styles.nameDescText}>{translate("Edit_Device_Asset_string")}</Text>
                         <Text style={styles.name}>{assetDesc}</Text>
                     </View>
                 </View>
                 <View style={styles.horizontalLine} />
 
-                <View style={[styles.device, { marginTop: hp(2) }]}>
-                    <Image style={{ resizeMode: 'stretch' }} source={images.image.list} />
-                    <Text style={styles.textStyle}>Select Group</Text>
+                <View style={[styles.device,{marginTop:hp(2)}]}>
+                    <Image  style={{resizeMode:'stretch'}} source={images.image.list}/>
+                    <Text style={styles.textStyle}>{translate("Select Group")}</Text>
                 </View>
 
                 <View onLayout={(event) => {
@@ -237,11 +238,11 @@ const EditDeviceAsset = ({ route, navigation }) => {
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => clear()} style={[styles.button, { backgroundColor: ColorConstant.WHITE, borderColor: ColorConstant.BLUE, borderWidth: 1 }]}>
-                        <Text style={[styles.buttonText, { color: ColorConstant.BLUE }]}>Clear</Text>
+                        <Text style={[styles.buttonText, { color: ColorConstant.BLUE }]}>{translate("Clear")}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => onTapSave()} style={styles.button}>
-                        <Text style={styles.buttonText}>Save</Text>
+                        <Text style={styles.buttonText}>{translate("Save")}</Text>
                     </TouchableOpacity>
                 </View>
 

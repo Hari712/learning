@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import NavigationService from '../../navigation/NavigationService'
 import CustomButton from '../../component/Button'
 import FontSize from '../../component/FontSize'
+import { translate } from '../../../App'
 
 const GetStarted = (navigation) => {
     return ( 
@@ -16,14 +17,14 @@ const GetStarted = (navigation) => {
 
                     <View style={styles.mainViewStyle}>
                         <View style={styles.viewStyle}>
-                            <Text style={styles.textStyle}> Already have an account ? </Text>
+                            <Text style={styles.textStyle}> {translate("Splash_string1")} </Text>
                             <TouchableOpacity onPress={() => NavigationService.navigate('Login')}>
-                                <Text style={styles.loginTextStyle}>Log In</Text>
+                                <Text style={styles.loginTextStyle}>{translate("Splash_string2")}</Text>
                             </TouchableOpacity>
                         </View>
 
                         <CustomButton
-                            title='Get Started' 
+                            title={translate("Splash_string3")}
                             style={styles.buttonStyle}
                             textStyle={styles.buttonTextStyle}
                             onPress={() => NavigationService.navigate('SignUp')} 
