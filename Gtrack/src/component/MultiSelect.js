@@ -111,7 +111,7 @@ class MultiSelect extends React.Component {
                 {selectedItem && selectedItem.length ?
                     <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
                         {Object.values(selectedItem).map((item, key) =>
-                            <View style={{ flexWrap: 'wrap', flexShrink: 1 }}>
+                            <View key={key} style={{ flexWrap: 'wrap', flexShrink: 1 }}>
                                 <View style={[otherProps.selectedItemRowStyle]}>
                                     <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} key={key}>{item}</Text>
                                     {otherProps.hideDeleteButton ?
