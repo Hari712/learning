@@ -30,7 +30,7 @@ const Login = () => {
     }))
 
     const [email, setEmail] = useState('Khushbu.solanki+3@ekzero.com')
-    const [password, setPassword] = useState('Khushi@1234')
+    const [password, setPassword] = useState('Khushi@123')
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo, setIsClickInfo] = useState(false)
 

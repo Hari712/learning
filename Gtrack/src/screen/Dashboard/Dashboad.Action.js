@@ -24,3 +24,16 @@ type: types.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID_RESPONSE,
     data
 })
 
+export const requestUserDeviceEventsOrNotifiactionCount = (userId, deviceId, onSuccess, onError) => ({
+    type: types.GET_USER_DEVICE_EVENTS_OR_NOTIFICATION_COUNT_REQUEST,
+    userId,
+    deviceId,
+    onSuccess,
+    onError
+})
+
+export const setUserDeviceEventsOrNotifiactionCountResponse = (data) => ({
+type: types.GET_USER_DEVICE_EVENTS_OR_NOTIFICATION_COUNT_RESPONSE,
+    data
+})
+

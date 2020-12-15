@@ -19,6 +19,7 @@ const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState();
+  const [deviceId, setDeviceId] = useState();
 
   
   const dispatch = useDispatch()
@@ -29,12 +30,11 @@ const Dashboard = ({ navigation }) => {
     deviceDetails: getDeviceDetailsListInfo(state),
 }))
 
-console.log("Device Details",loginInfo.role.map((role)=>role.name))
-
   const user_id = loginInfo.id ? loginInfo.id : null
 
-  const role = loginInfo.role.map((role)=>role.name)
+  // const deviceId = Object.values(deviceDetails.deviceList).map((item, key)=>item.deviceDTO.deviceId)
 
+  // console.log("details",deviceId,user_id)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,7 +45,22 @@ console.log("Device Details",loginInfo.role.map((role)=>role.name))
   useEffect(() => {
     dispatch(DashboardActions.requestDeviceDetails(user_id, onDeviceDetailsSuccess, onDeviceDetailsError))
     dispatch(DashboardActions.requestActiveInactiveCount(user_id, onActiveInactiveCountSucess, onActiveInactiveCountError))
+    
   }, [])
+
+  useEffect(() => {
+    deviceId ?
+    dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId.deviceId, onSuccess, onError))
+    : null
+  },[deviceId])
+
+  const onSuccess = (data) => {
+    console.log("Success",data)
+  }
+
+  const onError = (error) => {
+    console.log("Error",error)
+  }
 
   const onDeviceDetailsSuccess = (data) => {
     console.log("Success",data)
@@ -173,7 +188,6 @@ console.log("Device Details",loginInfo.role.map((role)=>role.name))
           </View>
 
         </View>
-        {console.log("Dashboad", deviceDetails.deviceList)}
         {Object.values(deviceDetails.deviceList).map((item, key) =>
 
           <ShadowView style={styles.summaryContainer} key={key}>
@@ -185,7 +199,6 @@ console.log("Device Details",loginInfo.role.map((role)=>role.name))
                     <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' />
                   </View>
                 </View>
-                  {console.log("details",item)}
                 <View style={styles.titleText}>
                   <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
                   <Text style={styles.subtitle }>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
@@ -211,7 +224,21 @@ console.log("Device Details",loginInfo.role.map((role)=>role.name))
   }
 
   const RecentAlarms = () => {
-    return (
+    const deviceListArr =  Object.values(deviceDetails.deviceList).map((item)=>item.deviceDTO)
+    const deviceNameArr = Object.values(deviceListArr.map((item)=>item.deviceName))
+    console.log("RecentAlarms",deviceListArr, deviceNameArr )
+
+    
+    
+    selectedDevice ? 
+      setDeviceId(deviceListArr.find((item)=> {
+        if(item.deviceName === selectedDevice)  
+        return item} ))    
+    :null;
+
+    console.log("Selected Device ID", deviceId)
+
+        return (
       <ShadowView style={styles.deviceSummaryContainer}>        
 
         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop:hp(8)}}>
@@ -235,7 +262,7 @@ console.log("Device Details",loginInfo.role.map((role)=>role.name))
               label='Type' 
               defaultValue={selectedDevice} 
               valueSet={setSelectedDevice}  
-              dataList={['Group 1','Group 2','Group 3']} 
+              dataList={deviceNameArr} 
               fontSize={hp(1.6)} 
               contentInset={{ input: 6, label: -8 }}
               outerStyle={styles.outerStyle} 

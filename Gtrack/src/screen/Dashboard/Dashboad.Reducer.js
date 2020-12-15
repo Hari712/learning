@@ -5,6 +5,8 @@ import mapKeys from 'lodash/mapKeys'
 const initialState = {
     deviceCount:null,
     deviceList:[],
+    data:[]
+
 
 }
 
@@ -17,6 +19,13 @@ export const dashboardReducer = createReducer(state = initialState, {
             ...state,
             deviceCount: deviceCount,
             deviceList: arryDevices
+        }
+    },
+
+    [types.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID_RESPONSE](state, action) {
+        return {
+            ...state,
+            data: action.data
         }
     },
 })
