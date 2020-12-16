@@ -117,3 +117,25 @@ export const getDeviceDetailsListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get User active/inactive count for Dashboard
+ */
+
+const getActiveInactiveCount = (state) => state.dashBoard.data.chartData
+
+export const getActiveInactiveCountListInfo = createSelector(
+    [getActiveInactiveCount],
+    (info) => info
+)
+
+/**
+ * Get Notification count for Dashboard
+ */
+
+const getNotificationCount = (state) => state.dashBoard.notificationCount
+
+export const getNotificationCountListInfo = createSelector(
+    [getNotificationCount],
+    (info) => info
+)
+

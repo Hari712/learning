@@ -42,6 +42,7 @@ import CompleteSetup from '../screen/DeviceSetup/CompleteSetup'
 import GetStarted from './GetStarted/GetStarted'
 import GeoFenceCreator from './LiveTracking/PolygonCreator'
 import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
+import TrackingDetails from './Dashboard/TrackingDetails'
 
 export {
     Splash,
@@ -86,5 +87,6 @@ export {
     CompleteSetup,
     GetStarted,
     GeoFenceCreator,
-    SettingsChangePassCode
+    SettingsChangePassCode,
+    TrackingDetails
 }

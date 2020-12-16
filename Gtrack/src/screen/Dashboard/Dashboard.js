@@ -12,29 +12,33 @@ import { translate } from '../../../App'
 import { DropDown, FontSize} from '../../component'
 import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardActions from './Dashboad.Action'
-import { getDeviceDetailsListInfo, getLoginInfo } from '../Selector'
+import { getDeviceDetailsListInfo, getLoginInfo, getActiveInactiveCountListInfo, getNotificationCountListInfo } from '../Selector'
 import iconConstant from '../../constants/iconConstant'
+import { round } from 'lodash'
+import AppManager from '../../constants/AppManager'
 
 const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState();
   const [deviceId, setDeviceId] = useState();
+  const [ownerActive, setOwnerActive] = useState(0);
+  const [regularActive, setRegularActive] = useState(0);
 
   
   const dispatch = useDispatch()
 
-  const { isConnected, deviceDetails, loginInfo} = useSelector(state => ({
+  const { isConnected, deviceDetails, loginInfo, countsInfo, notificationCount} = useSelector(state => ({
     isConnected: state.network.isConnected,
     loginInfo: getLoginInfo(state),
     deviceDetails: getDeviceDetailsListInfo(state),
+    countsInfo: getActiveInactiveCountListInfo(state),
+    notificationCount: getNotificationCountListInfo(state)
 }))
 
+console.log("khush", notificationCount)
+
   const user_id = loginInfo.id ? loginInfo.id : null
-
-  // const deviceId = Object.values(deviceDetails.deviceList).map((item, key)=>item.deviceDTO.deviceId)
-
-  // console.log("details",deviceId,user_id)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,123 +47,80 @@ const Dashboard = ({ navigation }) => {
   },[navigation]);
 
   useEffect(() => {
-    dispatch(DashboardActions.requestDeviceDetails(user_id, onDeviceDetailsSuccess, onDeviceDetailsError))
-    dispatch(DashboardActions.requestActiveInactiveCount(user_id, onActiveInactiveCountSucess, onActiveInactiveCountError))
-    
+    fetchDeviceDetails()
+    fetchCounts()
   }, [])
 
   useEffect(() => {
-    deviceId ?
-    dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId.deviceId, onSuccess, onError))
-    : null
+    fetchDeviceRecentAlarms()
   },[deviceId])
 
+  function fetchCounts() {
+    AppManager.showLoader()
+    dispatch(DashboardActions.requestActiveInactiveCount(user_id, onSuccess, onError))
+  }
+
+  function fetchDeviceDetails() {
+    AppManager.showLoader()
+    dispatch(DashboardActions.requestDeviceDetails(user_id, onSuccess, onError))
+  }
+
+  function fetchDeviceRecentAlarms() {
+    AppManager.showLoader()
+    dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId, onSuccess, onError))    
+  }
+
   const onSuccess = (data) => {
+    AppManager.hideLoader()
     console.log("Success",data)
   }
 
   const onError = (error) => {
+    AppManager.hideLoader()
     console.log("Error",error)
   }
 
-  const onDeviceDetailsSuccess = (data) => {
-    console.log("Success",data)
-  }
-
-  const onDeviceDetailsError = (error) => {
-    console.log("Error",error)
-  }
-
-  const onActiveInactiveCountSucess = (data) => {
-    console.log("Success active",data)
-  }
-
-  const onActiveInactiveCountError = (error) => {
-    console.log("Error",error)
-  }
 
   // Active user component
-  const ActiveUser = () => {
+  const ActiveUser = () => { 
     return (
       <View style={styles.activeUserMainView}>
 
-        {/* Regular active user view */}
-        <ShadowView style={styles.cardContainer}>
+        { 
+          countsInfo && countsInfo.map((item)=>{
+          return(
+            <ShadowView style={styles.cardContainer}>
+              <Text style={styles.activeUserTextStyle}>{item.role}</Text>
+              <View style={styles.activeUserView}>
+                <ShadowView style={styles.shadowContainer}>
 
-          <Text style={styles.activeUserTextStyle}>REGULAR</Text>
-
-          <View style={styles.activeUserView}>
-
-            <ShadowView style={styles.shadowContainer}>
-
-              <AnimatedCircularProgress
-                size={hp(13)}
-                backgroundWidth={hp(1)}
-                width={9}
-                fill={40}
-                rotation={200}
-                lineCap="round"
-                style={{ borderRadius: hp(6.5)}}
-                tintTransparency={false}
-                tintColor={ColorConstant.GREEN}
-                onAnimationComplete={() => console.log('onAnimationComplete')}
-                backgroundColor={ColorConstant.WHITE}
-              >
-                {
-                  (fill) => (
-                    <View style={{ alignItems: 'center'}} >
-                      <Text style={styles.percentage}> 40% </Text>
-                      <Text style={styles.textStyle}>Active</Text>
-                    </View>
-
-                  )
-                }
-              </AnimatedCircularProgress>
-
+                  <AnimatedCircularProgress
+                    size={hp(13)}
+                    backgroundWidth={hp(1)}
+                    width={9}
+                    fill={round((100*item.active/(item.active+item.inactive)),2)}
+                    rotation={200}
+                    lineCap="round"
+                    style={{ borderRadius: hp(6.5)}}
+                    tintTransparency={false}
+                    tintColor={ColorConstant.GREEN}
+                    onAnimationComplete={() => console.log('onAnimationComplete')}
+                    backgroundColor={ColorConstant.WHITE}
+                  >
+                    {
+                      (fill) => (
+                        <View style={{ alignItems: 'center'}} >
+                          <Text style={styles.percentage}> {round((100*item.active/(item.active+item.inactive)),2)}% </Text>
+                          <Text style={styles.textStyle}>Active</Text>
+                        </View>
+                      )
+                    }
+                  </AnimatedCircularProgress>
+                </ShadowView>
+              </View>
             </ShadowView>
-
-          </View>
-
-        </ShadowView>
-
-        {/* Owner active user view */}
-        <ShadowView style={styles.cardContainer}>
-
-          <Text style={styles.activeUserTextStyle}>OWNER</Text>
-
-          <View style={styles.activeUserView}>
-
-            <ShadowView style={styles.shadowContainer}>
-
-              <AnimatedCircularProgress
-                size={hp(13)}
-                backgroundWidth={hp(1)}
-                width={9}
-                fill={80}
-                rotation={150}
-                lineCap="round"
-                style={{ borderRadius: hp(6.5) }}
-                tintTransparency={false}
-                tintColor={ColorConstant.GREEN}
-                onAnimationComplete={() => console.log('onAnimationComplete')}
-                backgroundColor={ColorConstant.WHITE}
-              >
-                {
-                  (fill) => (
-                    <View style={{ alignItems: 'center' }} >
-                      <Text style={styles.percentage}> 75% </Text>
-                      <Text style={styles.textStyle}>Active</Text>
-                    </View>
-
-                  )
-                }
-              </AnimatedCircularProgress>
-
-            </ShadowView>
-
-          </View>
-
-        </ShadowView>
+          )})
+        }   
 
       </View>
     )
@@ -184,7 +145,9 @@ const Dashboard = ({ navigation }) => {
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
+            <TouchableOpacity  >
+              <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
+            </TouchableOpacity>
           </View>
 
         </View>
@@ -231,9 +194,10 @@ const Dashboard = ({ navigation }) => {
     
     
     selectedDevice ? 
-      setDeviceId(deviceListArr.find((item)=> {
-        if(item.deviceName === selectedDevice)  
-        return item} ))    
+      deviceListArr.filter((item)=> {
+        if(item.deviceName === selectedDevice)
+          setDeviceId(item.id) 
+        } )   
     :null;
 
     console.log("Selected Device ID", deviceId)
@@ -273,7 +237,7 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={[styles.rightMainViewStyle,{paddingTop:hp(0.5)}]}>
-            <TouchableOpacity style={styles.refreshImageStyle}>
+            <TouchableOpacity style={styles.refreshImageStyle} onPress={()=>{fetchDeviceRecentAlarms()}}>
               <Image source={images.dashBoard.refresh} resizeMode='contain' />
             </TouchableOpacity>
           </View>
@@ -326,7 +290,9 @@ const Dashboard = ({ navigation }) => {
               <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            <TouchableOpacity onPress={() => { fetchCounts() }} >
+              <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            </TouchableOpacity>
           </View>
       
         </View>

@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { View, StyleSheet, Text, Image, Dimensions, Platform } from 'react-native';
-import images from '../constants/images';
-import { ColorConstant } from '../constants/ColorConstants'
+import images from '../../constants/images';
+import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import BottomSheet from 'reanimated-bottom-sheet';
-import FontSize from './FontSize';
-import MapView from './MapView';
+import FontSize from '../../component/FontSize';
+import MapView from '../../component/MapView';
+// import { LiveTracking } from '..';
 
 const {height} = Dimensions.get('window')
 
@@ -61,6 +62,7 @@ const TrackingDetails = () => {
 	return (
 		<View style={styles.container}>
 			<MapView/>
+			{/* <LiveTracking /> */}
 
 			<BottomSheet
 				ref={sheetRef}

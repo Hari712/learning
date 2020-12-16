@@ -5,7 +5,8 @@ import mapKeys from 'lodash/mapKeys'
 const initialState = {
     deviceCount:null,
     deviceList:[],
-    data:[]
+    data:[],
+    notificationCount:[]
 
 
 }
@@ -26,6 +27,13 @@ export const dashboardReducer = createReducer(state = initialState, {
         return {
             ...state,
             data: action.data
+        }
+    },
+
+    [types.GET_USER_DEVICE_EVENTS_OR_NOTIFICATION_COUNT_RESPONSE](state, action) {
+        return {
+            ...state,
+            notificationCount: action.data
         }
     },
 })
