@@ -145,7 +145,7 @@ console.log("khush", notificationCount)
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <TouchableOpacity  >
+            <TouchableOpacity onPress={()=> navigation.navigate('ActivateDevice')} >
               <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
             </TouchableOpacity>
           </View>
