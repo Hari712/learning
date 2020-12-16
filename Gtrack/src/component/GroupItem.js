@@ -45,6 +45,7 @@ const GroupItem = props => {
     }
 
     const onUpdateGroup = () => {
+        AppManager.showLoader()
         let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
         const  requestBody = {
             "deviceDTO" : null,
@@ -75,6 +76,7 @@ const GroupItem = props => {
         AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
         console.log("Success",data)
         setAddClick(-1)
+        setSelectedDevices([])
         AppManager.hideLoader()
     }
 
@@ -85,7 +87,7 @@ const GroupItem = props => {
     }
 
     const onDeleteGroup = () => {
-       setDeleteGroupDialogVisible(true)
+        setDeleteGroupDialogVisible(true)
     }
 
     const deleteGroupConfirm = () => {

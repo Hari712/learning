@@ -87,9 +87,9 @@ console.log("khush", notificationCount)
       <View style={styles.activeUserMainView}>
 
         { 
-          countsInfo && countsInfo.map((item)=>{
+          countsInfo && countsInfo.map((item, key)=>{
           return(
-            <ShadowView style={styles.cardContainer}>
+            <ShadowView key={key} style={styles.cardContainer}>
               <Text style={styles.activeUserTextStyle}>{item.role}</Text>
               <View style={styles.activeUserView}>
                 <ShadowView style={styles.shadowContainer}>
