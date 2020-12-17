@@ -8,6 +8,7 @@ import AppManager from '../../../constants/AppManager';
 import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
 import { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 
 
 const CreateNew = ({navigation,route}) => {
@@ -83,7 +84,7 @@ return (
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('AlarmType',{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
         </View> : null }

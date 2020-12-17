@@ -14,6 +14,7 @@ import { translate } from '../../../App'
 import isEmpty from 'lodash/isEmpty'
 import * as DeviceActions from './Device.Action'
 import mapKeys from 'lodash/mapKeys'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 
 
 const AssignGroup = ({ navigation, route }) => {
@@ -80,7 +81,7 @@ const AssignGroup = ({ navigation, route }) => {
 
     function onAssignGroupSuccess(data) {
         AppManager.hideLoader()
-        NavigationService.push('CompleteSetup')
+        NavigationService.push(SCREEN_CONSTANTS.COMPLETE_SETUP)
     }
 
     function onAssignGroupError(error) {
@@ -88,7 +89,7 @@ const AssignGroup = ({ navigation, route }) => {
     }
 
     function onTapNotNow() {
-        NavigationService.push('CompleteSetup')
+        NavigationService.push(SCREEN_CONSTANTS.COMPLETE_SETUP)
     }
 
     function onSubmit(item) {

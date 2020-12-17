@@ -7,6 +7,7 @@ import images from '../constants/images'
 import NavigationService from '../navigation/NavigationService'
 import Tooltip from 'rn-tooltip'
 import { translate } from '../../App'
+import { SCREEN_CONSTANTS } from '../constants/AppConstants'
 
 const DeviceCell = (props) => {
 
@@ -19,7 +20,7 @@ const DeviceCell = (props) => {
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
     return (
-        <TouchableOpacity onPress={() => { NavigationService.push('Details', { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
+        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
         } style={styles.cardContainer}>
 
             {/* Blue top head */}
@@ -40,7 +41,7 @@ const DeviceCell = (props) => {
                     </Tooltip>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push('EditDeviceAsset', { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
+                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
                     <Image source={images.image.edit} />
                 </TouchableOpacity>
             </View>

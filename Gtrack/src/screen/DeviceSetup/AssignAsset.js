@@ -13,6 +13,7 @@ import { translate } from '../../../App'
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 
 const AssignAsset = ({ navigation, route }) => {
 
@@ -64,7 +65,7 @@ const AssignAsset = ({ navigation, route }) => {
     }
 
     function onTapNotNow() {
-        NavigationService.push('AssignGroup', { device: deviceInfo })
+        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_GROUP, { device: deviceInfo })
     }
 
     function onSubmit(item) {
@@ -73,7 +74,7 @@ const AssignAsset = ({ navigation, route }) => {
 
     function onAssignAssetSuccess(data) {
         AppManager.hideLoader()
-        NavigationService.push('AssignGroup', { device: deviceInfo })
+        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_GROUP, { device: deviceInfo })
     }
 
     function onAssignAssetError(error) {

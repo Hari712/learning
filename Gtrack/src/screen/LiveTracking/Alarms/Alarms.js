@@ -7,7 +7,7 @@ import { FontSize } from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { isRoleRegular } from '../../Selector';
-import { AppConstants } from '../../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 
 
 const Alarms = ({navigation}) => {
@@ -53,7 +53,7 @@ const Alarms = ({navigation}) => {
   const renderItem = ({item,key}) => {
     return(  
     <View style={styles.cardContainer} key={key}>
-      <TouchableOpacity onPress={() => navigation.navigate('AlarmDetail',{data:item})}>
+      <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
@@ -62,7 +62,7 @@ const Alarms = ({navigation}) => {
               </View>
 
               { !isRegular ?
-              <TouchableOpacity style={{zIndex:5, padding: hp(1.5)}} onPress={()=>{navigation.navigate('CreateNew',{editData:item})}}>
+              <TouchableOpacity style={{zIndex:5, padding: hp(1.5)}} onPress={()=>{navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW,{editData:item})}}>
                 <Image source={images.liveTracking.edit} />
               </TouchableOpacity> : null }
 
@@ -100,7 +100,7 @@ const Alarms = ({navigation}) => {
 return ( 
   <View style={styles.container}>
     { !isRegular ?
-      <TouchableOpacity onPress={() => navigation.navigate('CreateNew')} style={styles.header}>
+      <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.header}>
         <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Geofence_string")}</Text>
       </TouchableOpacity> : null }
 

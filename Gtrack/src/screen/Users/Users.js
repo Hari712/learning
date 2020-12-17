@@ -12,6 +12,7 @@ import * as UsersActions from './Users.Action'
 import AppManager from '../../constants/AppManager';
 import Switches from 'react-native-switches'
 import { translate } from '../../../App';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 let searchData;
 
@@ -90,7 +91,7 @@ const Users = ({navigation}) => {
               {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
               <Switches shape={'line'} buttonColor={ColorConstant.ORANGE} showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
               <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
-              <TouchableOpacity onPress={()=>{navigation.navigate('AddUser',{editData:item})}} style={{marginLeft:hp(2)}}>
+              <TouchableOpacity onPress={()=>{navigation.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                 <Image source={images.user.edit} /> 
               </TouchableOpacity>       
           </View>
@@ -228,7 +229,7 @@ const Users = ({navigation}) => {
                   <Image source={filterClick? images.user.filterClick:images.user.filter } />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate('AddUser')} style={styles.addButton}>
+            <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
               <Image source={images.user.add}/>
             </TouchableOpacity>
           

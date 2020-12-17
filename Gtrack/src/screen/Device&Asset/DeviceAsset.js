@@ -13,6 +13,7 @@ import { FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const DeviceAsset = ({ navigation }) => {
 
@@ -74,9 +75,9 @@ const DeviceAsset = ({ navigation }) => {
 
   function menuHandle(item) {
     if (item == 'Create') {
-         NavigationService.push('CreateDeviceAsset')
+         NavigationService.push(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
     } else if (item == 'Manage') {
-         NavigationService.push('Manage')
+         NavigationService.push(SCREEN_CONSTANTS.MANAGE)
     }
     else if (item == 'Export All Devices') {
       exportAllDevices()

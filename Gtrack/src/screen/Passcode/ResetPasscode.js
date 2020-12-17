@@ -7,7 +7,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import NavigationService from '../../navigation/NavigationService'
 import { EditText, CustomButton, FontSize} from '../../component'
 import _ from 'lodash'
-import { AppConstants } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
@@ -38,7 +38,7 @@ const ResetPasscode = () => {
         AppManager.hideLoader()
         console.log("Success", data)
         AppManager.showSimpleMessage('warning', { message: data.message, description: '', floating: true })
-        NavigationService.navigate('Passcode', { emailId: email })
+        NavigationService.navigate(SCREEN_CONSTANTS.PASSCODE, { emailId: email })
     }
 
     function onError(error) {
@@ -71,7 +71,7 @@ const ResetPasscode = () => {
 
                 <View style={styles.LoginIntoMainView}>
                     <Text style={styles.LoginIntoTextView}>{translate("Reset_Passcode_string3")}  </Text>
-                    <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
+                    <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
                         <Image source={images.image.login} />
                     </TouchableOpacity>
                 </View>

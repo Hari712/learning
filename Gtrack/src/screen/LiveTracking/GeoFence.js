@@ -8,6 +8,7 @@ import { Dialog } from 'react-native-simple-dialogs';
 import { translate } from '../../../App';
 import { useSelector } from 'react-redux';
 import { isRoleRegular } from '../Selector';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const GeoFence = ({ navigation }) => {
 
@@ -70,7 +71,7 @@ const GeoFence = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             { !isRegular ?
-            <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate('GeoFenceCreateNew')} >
+            <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW)} >
                 <Text style={styles.createNewText}>{translate("Geofence_string")}</Text>
             </TouchableOpacity> : null }
 

@@ -9,7 +9,7 @@ import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates
 import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
-import { AppConstants } from '../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const LiveTracking = ({navigation}) => {
 
@@ -39,19 +39,19 @@ const LiveTracking = ({navigation}) => {
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if(item === 'Sensor Information') {
-			navigation.navigate('SensorInfo')
+			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
 		else if (item == 'Geo Fence') {
-			navigation.navigate('GeoFence')
+			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
 		}
 		else {
-            navigation.navigate('Alarms')
+            navigation.navigate(SCREEN_CONSTANTS.ALARMS)
         }
 	}
 
 	function navigateToDeviceSetup() {
 		setIsLineClick(false)
-		NavigationService.push('ActivateDevice')
+		NavigationService.push(SCREEN_CONSTANTS.ACTIVATE_DEVICE)
 	}
 
 	return (
@@ -61,7 +61,7 @@ const LiveTracking = ({navigation}) => {
 
 			<View style={styles.subContainer}>
 
-				<TouchableOpacity onPress={() =>  {navigation.navigate('Notification'), setIsLineClick(false)}} style={styles.bellIconStyle}>
+				<TouchableOpacity onPress={() =>  {navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false)}} style={styles.bellIconStyle}>
 					<Image source={images.image.bluebell} />
 				</TouchableOpacity>
 

@@ -16,6 +16,7 @@ import { getDeviceDetailsListInfo, getLoginInfo, getActiveInactiveCountListInfo,
 import iconConstant from '../../constants/iconConstant'
 import { round } from 'lodash'
 import AppManager from '../../constants/AppManager'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 
 const Dashboard = ({ navigation }) => {
 
@@ -145,7 +146,7 @@ console.log("khush", notificationCount)
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=> navigation.navigate('ActivateDevice')} >
+            <TouchableOpacity onPress={()=> navigation.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
               <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
             </TouchableOpacity>
           </View>
@@ -286,7 +287,7 @@ console.log("khush", notificationCount)
               </View>
               : null}
 
-            <TouchableOpacity onPress={() => { navigation.navigate('Users') }} >
+            <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
               <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
             </TouchableOpacity>
 

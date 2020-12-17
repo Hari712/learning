@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOp
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
-import { AppConstants } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import NavigationService from '../../navigation/NavigationService'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
@@ -116,7 +116,7 @@ const Login = () => {
     }
 
     function navigateToResetPasscode() {
-        NavigationService.navigate('ResetPasscode')
+        NavigationService.navigate(SCREEN_CONSTANTS.RESET_PASSCODE)
     }
 
     return (
