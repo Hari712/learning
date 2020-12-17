@@ -20,11 +20,11 @@ const LiveTrackinDashboard = ({ navigation }) => {
 
                 <View style={styles.rightMainViewStyle}>
 
-                    <TouchableOpacity onPress={() =>  NavigationService.navigate("LiveTracking") } >
+                    <TouchableOpacity onPress={() =>  NavigationService.navigate("TrackingDetails") } >
                         <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() =>  NavigationService.navigate("TrackingDetails") }>
+                    <TouchableOpacity >
                         <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
                     </TouchableOpacity>
                 </View>

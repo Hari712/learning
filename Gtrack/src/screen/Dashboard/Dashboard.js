@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useEffect, useState } from 'react'
 import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -10,12 +10,35 @@ import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
 import { translate } from '../../../App'
 import { DropDown, FontSize} from '../../component'
+import { useDispatch, useSelector } from 'react-redux'
+import * as DashboardActions from './Dashboad.Action'
+import { getDeviceDetailsListInfo, getLoginInfo, getActiveInactiveCountListInfo, getNotificationCountListInfo } from '../Selector'
+import iconConstant from '../../constants/iconConstant'
+import { round } from 'lodash'
+import AppManager from '../../constants/AppManager'
 
 const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState();
+  const [deviceId, setDeviceId] = useState();
+  const [ownerActive, setOwnerActive] = useState(0);
+  const [regularActive, setRegularActive] = useState(0);
 
+  
+  const dispatch = useDispatch()
+
+  const { isConnected, deviceDetails, loginInfo, countsInfo, notificationCount} = useSelector(state => ({
+    isConnected: state.network.isConnected,
+    loginInfo: getLoginInfo(state),
+    deviceDetails: getDeviceDetailsListInfo(state),
+    countsInfo: getActiveInactiveCountListInfo(state),
+    notificationCount: getNotificationCountListInfo(state)
+}))
+
+console.log("khush", notificationCount)
+
+  const user_id = loginInfo.id ? loginInfo.id : null
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -23,88 +46,81 @@ const Dashboard = ({ navigation }) => {
     });
   },[navigation]);
 
+  useEffect(() => {
+    fetchDeviceDetails()
+    fetchCounts()
+  }, [])
+
+  useEffect(() => {
+    fetchDeviceRecentAlarms()
+  },[deviceId])
+
+  function fetchCounts() {
+    AppManager.showLoader()
+    dispatch(DashboardActions.requestActiveInactiveCount(user_id, onSuccess, onError))
+  }
+
+  function fetchDeviceDetails() {
+    AppManager.showLoader()
+    dispatch(DashboardActions.requestDeviceDetails(user_id, onSuccess, onError))
+  }
+
+  function fetchDeviceRecentAlarms() {
+    AppManager.showLoader()
+    dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId, onSuccess, onError))    
+  }
+
+  const onSuccess = (data) => {
+    AppManager.hideLoader()
+    console.log("Success",data)
+  }
+
+  const onError = (error) => {
+    AppManager.hideLoader()
+    console.log("Error",error)
+  }
+
+
   // Active user component
-  const ActiveUser = () => {
+  const ActiveUser = () => { 
     return (
       <View style={styles.activeUserMainView}>
 
-        {/* Regular active user view */}
-        <ShadowView style={styles.cardContainer}>
+        { 
+          countsInfo && countsInfo.map((item, key)=>{
+          return(
+            <ShadowView key={key} style={styles.cardContainer}>
+              <Text style={styles.activeUserTextStyle}>{item.role}</Text>
+              <View style={styles.activeUserView}>
+                <ShadowView style={styles.shadowContainer}>
 
-          <Text style={styles.activeUserTextStyle}>REGULAR</Text>
-
-          <View style={styles.activeUserView}>
-
-            <ShadowView style={styles.shadowContainer}>
-
-              <AnimatedCircularProgress
-                size={hp(13)}
-                backgroundWidth={hp(1)}
-                width={9}
-                fill={40}
-                rotation={200}
-                lineCap="round"
-                style={{ borderRadius: hp(6.5)}}
-                tintTransparency={false}
-                tintColor={ColorConstant.GREEN}
-                onAnimationComplete={() => console.log('onAnimationComplete')}
-                backgroundColor={ColorConstant.WHITE}
-              >
-                {
-                  (fill) => (
-                    <View style={{ alignItems: 'center'}} >
-                      <Text style={styles.percentage}> 40% </Text>
-                      <Text style={styles.textStyle}>Active</Text>
-                    </View>
-
-                  )
-                }
-              </AnimatedCircularProgress>
-
+                  <AnimatedCircularProgress
+                    size={hp(13)}
+                    backgroundWidth={hp(1)}
+                    width={9}
+                    fill={round((100*item.active/(item.active+item.inactive)),2)}
+                    rotation={200}
+                    lineCap="round"
+                    style={{ borderRadius: hp(6.5)}}
+                    tintTransparency={false}
+                    tintColor={ColorConstant.GREEN}
+                    onAnimationComplete={() => console.log('onAnimationComplete')}
+                    backgroundColor={ColorConstant.WHITE}
+                  >
+                    {
+                      (fill) => (
+                        <View style={{ alignItems: 'center'}} >
+                          <Text style={styles.percentage}> {round((100*item.active/(item.active+item.inactive)),2)}% </Text>
+                          <Text style={styles.textStyle}>Active</Text>
+                        </View>
+                      )
+                    }
+                  </AnimatedCircularProgress>
+                </ShadowView>
+              </View>
             </ShadowView>
-
-          </View>
-
-        </ShadowView>
-
-        {/* Owner active user view */}
-        <ShadowView style={styles.cardContainer}>
-
-          <Text style={styles.activeUserTextStyle}>OWNER</Text>
-
-          <View style={styles.activeUserView}>
-
-            <ShadowView style={styles.shadowContainer}>
-
-              <AnimatedCircularProgress
-                size={hp(13)}
-                backgroundWidth={hp(1)}
-                width={9}
-                fill={80}
-                rotation={150}
-                lineCap="round"
-                style={{ borderRadius: hp(6.5) }}
-                tintTransparency={false}
-                tintColor={ColorConstant.GREEN}
-                onAnimationComplete={() => console.log('onAnimationComplete')}
-                backgroundColor={ColorConstant.WHITE}
-              >
-                {
-                  (fill) => (
-                    <View style={{ alignItems: 'center' }} >
-                      <Text style={styles.percentage}> 75% </Text>
-                      <Text style={styles.textStyle}>Active</Text>
-                    </View>
-
-                  )
-                }
-              </AnimatedCircularProgress>
-
-            </ShadowView>
-
-          </View>
-
-        </ShadowView>
+          )})
+        }   
 
       </View>
     )
@@ -123,39 +139,41 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: 10</Text>
+            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: {deviceDetails.deviceCount}</Text>
 
             <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
+            <TouchableOpacity onPress={()=> navigation.navigate('ActivateDevice')} >
+              <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
+            </TouchableOpacity>
           </View>
 
         </View>
+        {Object.values(deviceDetails.deviceList).map((item, key) =>
 
-        {DeviceSummaryData.map((item, key) =>
-
-          <ShadowView style={styles.summaryContainer}>
+          <ShadowView style={styles.summaryContainer} key={key}>
             <View style={styles.subContainer}>
 
               <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
                 <View style={{ flex: 0.25 }}>
                   <View style={styles.deviceSummaryDetailView}>
-                    <Image source={item.icon} style={styles.image} resizeMode='contain' />
+                    <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' />
                   </View>
                 </View>
-
                 <View style={styles.titleText}>
-                  <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.subtitle }>{item.subtitle}</Text>
+                  <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
+                  <Text style={styles.subtitle }>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
                 </View>
 
               </View>
 
               <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
-                <View style={[styles.stateViewStyle, { backgroundColor: item.state === 'Active' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
-                  <Text style={[styles.stateTextStyle, { color: item.title === 'Active' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>{item.state}</Text>
+                <View style={[styles.stateViewStyle, { backgroundColor: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
+                  <Text style={[styles.stateTextStyle, { color: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>
+                    {item.deviceDTO.deviceStatus === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE'}
+                  </Text>
                 </View>
               </View>
 
@@ -169,7 +187,22 @@ const Dashboard = ({ navigation }) => {
   }
 
   const RecentAlarms = () => {
-    return (
+    const deviceListArr =  Object.values(deviceDetails.deviceList).map((item)=>item.deviceDTO)
+    const deviceNameArr = Object.values(deviceListArr.map((item)=>item.deviceName))
+    console.log("RecentAlarms",deviceListArr, deviceNameArr )
+
+    
+    
+    selectedDevice ? 
+      deviceListArr.filter((item)=> {
+        if(item.deviceName === selectedDevice)
+          setDeviceId(item.id) 
+        } )   
+    :null;
+
+    console.log("Selected Device ID", deviceId)
+
+        return (
       <ShadowView style={styles.deviceSummaryContainer}>        
 
         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop:hp(8)}}>
@@ -193,7 +226,7 @@ const Dashboard = ({ navigation }) => {
               label='Type' 
               defaultValue={selectedDevice} 
               valueSet={setSelectedDevice}  
-              dataList={['Group 1','Group 2','Group 3']} 
+              dataList={deviceNameArr} 
               fontSize={hp(1.6)} 
               contentInset={{ input: 6, label: -8 }}
               outerStyle={styles.outerStyle} 
@@ -204,7 +237,7 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={[styles.rightMainViewStyle,{paddingTop:hp(0.5)}]}>
-            <TouchableOpacity style={styles.refreshImageStyle}>
+            <TouchableOpacity style={styles.refreshImageStyle} onPress={()=>{fetchDeviceRecentAlarms()}}>
               <Image source={images.dashBoard.refresh} resizeMode='contain' />
             </TouchableOpacity>
           </View>
@@ -257,7 +290,9 @@ const Dashboard = ({ navigation }) => {
               <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            <TouchableOpacity onPress={() => { fetchCounts() }} >
+              <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+            </TouchableOpacity>
           </View>
       
         </View>
@@ -478,13 +513,13 @@ const styles = StyleSheet.create({
   deviceSummaryMainViewStyle: Platform.OS=="ios" ? {
     alignItems: 'center',
     flexDirection: 'row',
-    //justifyContent: 'space-between',
+    justifyContent: 'space-between',
     marginTop: hp(2.5),
     zIndex: 5
   }:{
     alignItems: 'center',
     flexDirection: 'row',
-    //justifyContent: 'space-between',
+    justifyContent: 'space-between',
     marginTop: hp(2.5),
   },
 

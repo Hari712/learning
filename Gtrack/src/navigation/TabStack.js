@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
@@ -69,6 +69,7 @@ const DashBoardStackNavigator = () => {
     return(
         <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none" headerMode="screen" screenOptions={ScreenOptions}>
             <DashBoardStack.Screen name="DashBoard" component={DashBoard} />
+            <DashBoardStack.Screen name="TrackingDetails" component={TrackingDetails} />
         </DashBoardStack.Navigator>
     )
 }
