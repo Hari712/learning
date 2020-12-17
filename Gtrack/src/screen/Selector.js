@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect'
 import isNil from 'lodash/isNil'
 import isEmpty from 'lodash/isEmpty'
+import { AppConstants } from '../constants/AppConstants'
 /**
  * Get User Login Information
  */
@@ -8,12 +9,16 @@ export const getLoginInfo = (state) => state.login
 export const getLoginState = createSelector(
     [getLoginInfo],
     (info) => info
-    
 )
 
 export const isUserLoggedIn = createSelector(
     [getLoginInfo],
     (info) => info && !isEmpty(info.accessToken)
+)
+
+export const isRoleRegular = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_REGULAR )
 )
 
 /**

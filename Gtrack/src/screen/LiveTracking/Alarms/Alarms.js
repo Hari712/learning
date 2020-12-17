@@ -6,11 +6,15 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { FontSize } from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
+import { isRoleRegular } from '../../Selector';
+import { AppConstants } from '../../../constants/AppConstants';
 
 
 const Alarms = ({navigation}) => {
 
-
+  const { isRegular } = useSelector(state => ({
+    isRegular: isRoleRegular(state)
+  }))
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -56,12 +60,16 @@ const Alarms = ({navigation}) => {
                 <Text style={styles.blueBoxTitle}>{item.title}</Text>
                 <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.type}</Text>
               </View>
+
+              { !isRegular ?
               <TouchableOpacity style={{zIndex:5, padding: hp(1.5)}} onPress={()=>{navigation.navigate('CreateNew',{editData:item})}}>
                 <Image source={images.liveTracking.edit} />
-              </TouchableOpacity>
+              </TouchableOpacity> : null }
+
+              { !isRegular ?
               <TouchableOpacity onPress={() => handleRemove(item.id)} style={{zIndex:5, padding:hp(1)}} >
                 <Image source={images.liveTracking.trash} /> 
-              </TouchableOpacity>       
+              </TouchableOpacity> : null }       
           </View>
           
 
@@ -91,9 +99,10 @@ const Alarms = ({navigation}) => {
 
 return ( 
   <View style={styles.container}>
+    { !isRegular ?
       <TouchableOpacity onPress={() => navigation.navigate('CreateNew')} style={styles.header}>
-        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Geofence_string")}</Text>
-      </TouchableOpacity>
+        <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Geofence_string")}</Text>
+      </TouchableOpacity> : null }
 
       <FlatList
         data={list}

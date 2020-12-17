@@ -8,6 +8,9 @@ import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
 import { translate } from '../../App'
+import { isRoleRegular } from '../screen/Selector';
+import { useSelector } from 'react-redux';
+import { AppConstants } from '../constants/AppConstants';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -31,7 +34,9 @@ const ScreenOptions = {
     headerTransparent: false,
 }
 
+
 const LiveTrackingStackNavigator = () => {
+    
     return(
     <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen'  screenOptions={ScreenOptions}>
         <LiveTrackingStack.Screen name='LiveTracking' component={LiveTracking} />
@@ -104,6 +109,10 @@ const SettingsStackNavigator = () => {
 }
 
 export const TabStackNavigator = ({ }) => {
+    const { isRegular } = useSelector(state => ({
+        isRegular: isRoleRegular(state)
+      }))
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -174,9 +183,9 @@ export const TabStackNavigator = ({ }) => {
             
         >
             <Tab.Screen name="Live Tracking" component={LiveTrackingStackNavigator} />
-            <Tab.Screen name="Users" component={UsersStackNavigator} />
-            <Tab.Screen name="DashBoard" component={DashBoardStackNavigator} />
-            <Tab.Screen name="Device & Asset" component={DeviceAssetStackNavigator} />
+            { !isRegular ? <Tab.Screen name="Users" component={UsersStackNavigator} /> : null }
+            { !isRegular ? <Tab.Screen name="DashBoard" component={DashBoardStackNavigator} /> : null  }
+            { !isRegular ? <Tab.Screen name="Device & Asset" component={DeviceAssetStackNavigator} /> : null }
             <Tab.Screen name="Settings" component={SettingsStackNavigator} />
 
         </Tab.Navigator>
