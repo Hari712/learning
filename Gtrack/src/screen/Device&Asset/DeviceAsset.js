@@ -79,9 +79,9 @@ const DeviceAsset = ({ navigation }) => {
     } else if (item == 'Manage') {
          NavigationService.push(SCREEN_CONSTANTS.MANAGE)
     }
-    else if (item == 'Export All Devices') {
-      exportAllDevices()
-    }
+    // else if (item == 'Export All Devices') {
+    //   exportAllDevices()
+    // }
     setMenuClickEvent()
   }
 
@@ -208,7 +208,7 @@ const DeviceAsset = ({ navigation }) => {
   )
 }
 
-const Menu = ['Create', 'Manage', 'Export All Devices']
+const Menu = ['Create', 'Manage']
 
 const styles = StyleSheet.create({
   headerRight: {

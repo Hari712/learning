@@ -11,6 +11,7 @@ import { translate } from '../../App'
 import { isRoleRegular } from '../screen/Selector';
 import { useSelector } from 'react-redux';
 import { AppConstants, SCREEN_CONSTANTS } from '../constants/AppConstants';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -70,7 +71,17 @@ const UsersStackNavigator = () => {
     )
 }
 
-const DashBoardStackNavigator = () => {
+const DashBoardStackNavigator = ({navigation, route}) => {
+    
+    React.useLayoutEffect(() => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        if (routeName === SCREEN_CONSTANTS.TRACKING_DETAILS){
+            navigation.setOptions({tabBarVisible: false});
+        }else {
+            navigation.setOptions({tabBarVisible: true});
+        }
+    }, [navigation, route]);
+
     return(
         <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none" headerMode="screen" screenOptions={ScreenOptions}>
             <DashBoardStack.Screen name={SCREEN_CONSTANTS.DASHBOARD} component={DashBoard} />

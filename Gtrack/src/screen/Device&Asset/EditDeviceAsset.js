@@ -251,7 +251,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
                 </View>
 
                 <View style={{ width:'100%', top:typePositionY, position:'absolute', marginTop:hp(2) }}>
-                    <DropDown label='Type' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
+                    <DropDown label='Name' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
                 </View>
 
                 {renderAssetConfirmationDialog()}

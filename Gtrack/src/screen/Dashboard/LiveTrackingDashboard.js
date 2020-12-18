@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import NavigationService from '../../navigation/NavigationService'
 import ShadowView from 'react-native-simple-shadow-view'
-import { MapView}  from '../../component'
+import { MapView }  from '../../component'
 
 
 const LiveTrackinDashboard = ({ navigation }) => {
