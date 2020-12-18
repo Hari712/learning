@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
             height: 3
         },
         shadowRadius: 3,
-        shadowOpacity: 5,
+        shadowOpacity: 0.3,
         backgroundColor: 'white',
         width: '100%',
         paddingHorizontal: hp(3),
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
             height: 3
         },
         shadowRadius: 3,
-        shadowOpacity: 5,
+        shadowOpacity: 0.3,
         backgroundColor: ColorConstant.WHITE,
         width: '100%',
         paddingHorizontal: hp(3),

@@ -181,7 +181,7 @@ export class MultiSelectGroup extends React.Component {
                         fontSize={FontSize.FontSize.small}
                         //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
                         labelFontSize={FontSize.FontSize.small}
-                        contentInset={{ input: 10.45, label: 1.4 }}
+                        contentInset={{ input: 16, label: 1.4 }}
                         renderRightAccessory={() => handleRightAccessory()}
                         editable={false}
                         value='Select Group'

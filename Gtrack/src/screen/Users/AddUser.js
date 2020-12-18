@@ -178,6 +178,7 @@ const AddUser = ({ navigation, route }) => {
                 valueSet={setRole}
                 dataList={['Regular', 'Owner']}
                 outerStyle={{ marginTop: hp(2) }}
+                contentInset={{ input: 16, label: 1.4 }}
                 // outerStyle={[styles.outerStyle]} 
                 dropdownStyle={styles.dropdownStyle}
                 // dataRowStyle={styles.dataRowStyle}
