@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../component';
 import { MultiSelectGroup } from '../../component/MultiSelect'
-import { AppConstants } from '../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
 import { getLoginState, getSubuserState } from '../Selector'
 import { useDispatch, useSelector } from 'react-redux';
@@ -90,6 +90,7 @@ const AddUser = ({ navigation, route }) => {
   function onSuccess(data) {
     console.log("Success", data)
     AppManager.hideLoader()
+    navigation.pop()
   }
 
   function onError(error) {
