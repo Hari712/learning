@@ -10,6 +10,7 @@ import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BellIcon, BluelineIcon, OrangelineIcon } from '../../component/SvgComponent';
 
 const LiveTracking = ({navigation}) => {
 
@@ -62,13 +63,14 @@ const LiveTracking = ({navigation}) => {
 			<View style={styles.subContainer}>
 
 				<TouchableOpacity onPress={() =>  {navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false)}} style={styles.bellIconStyle}>
-					<Image source={images.image.bluebell} />
+					<BellIcon />
+					{/* <Image source={images.image.bluebell} /> */}
 				</TouchableOpacity>
 
 				<TouchableOpacity activeOpacity={1} onPress={() => setIsLineClick(!isLineClick)} style={styles.lineIconStyle}>
 					{isLineClick ?
-						<Image source={images.image.orangeline} /> :
-						<Image source={images.image.blueline} />
+						<OrangelineIcon /> :
+						<BluelineIcon />
 					}
 				</TouchableOpacity>
 

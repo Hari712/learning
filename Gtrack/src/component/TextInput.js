@@ -4,6 +4,7 @@ import FontSize from '../component/FontSize'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
+import { EyeIcon, EyeClickIcon } from "./SvgComponent";
 
 class EditText extends React.Component {
     constructor(props) {
@@ -34,9 +35,9 @@ class EditText extends React.Component {
 
                 <TouchableOpacity onPress={() => this.setState({isSelected:!this.state.isSelected})}>
                     {this.state.isSelected?
-                    <Image source={images.image.eyeicon}/>
+                    <EyeClickIcon/>
                     :
-                    <Image source={images.image.disableyeicon}/>}
+                    <EyeIcon/>}
                 </TouchableOpacity>
             </View>
 

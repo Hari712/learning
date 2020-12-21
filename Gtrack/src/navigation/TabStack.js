@@ -12,6 +12,11 @@ import { isRoleRegular } from '../screen/Selector';
 import { useSelector } from 'react-redux';
 import { AppConstants, SCREEN_CONSTANTS } from '../constants/AppConstants';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { LiveTrackingIcon, LiveTrackingIconClicked, 
+    DashBoardIconClicked, DashBoardIcon,
+    SettingsIcon, SettingsIconClicked,
+    UserIcon, UserIconClicked, 
+    DeviceAndAssetsIcon, DeviceAndAssetsIconClicked } from '../component/SvgComponent';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -129,56 +134,56 @@ export const TabStackNavigator = ({ }) => {
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, title,size }) => {
                     let iconName;
-
+                    let IconComponent;
                     if (route.name === 'Live Tracking') {
                         if (focused) {
-                            iconName=images.image.liveTrackingClick
                             color=ColorConstant.ORANGE
+                            IconComponent=LiveTrackingIconClicked
                         } else {
-                            iconName = images.image.liveTrackingDefault
-                            color=ColorConstant.GREY
+                            color=ColorConstant.GREY                            
+                            IconComponent=LiveTrackingIcon
                         }
                     }
                     else if (route.name === 'Users') {
                         if (focused) {
-                            iconName = images.image.usersClick
                             color=ColorConstant.ORANGE
+                            IconComponent=UserIconClicked
                         } else {
-                            iconName = images.image.usersDefault
                             color=ColorConstant.GREY
+                            IconComponent=UserIcon
                         }
                     }
                     else if (route.name === 'DashBoard') {
                         if (focused) {
-                            iconName = images.image.dashBoardClick
                             color=ColorConstant.ORANGE
+                            IconComponent = DashBoardIconClicked
                         } else {
-                            iconName = images.image.dashBoardDefault
+                            IconComponent = DashBoardIcon
                             color=ColorConstant.GREY
                         }
                     }
                     else if (route.name === 'Device & Asset') {
                         if (focused) {
-                            iconName = images.image.deviceAssetClick
+                            IconComponent=DeviceAndAssetsIconClicked
                             color=ColorConstant.ORANGE
                         } else {
-                            iconName = images.image.deviceAssetDefault
+                            IconComponent=DeviceAndAssetsIcon
                             color=ColorConstant.GREY
                         }
                     } 
                     else if (route.name === 'Settings') {
                         if (focused) {
-                            iconName = images.image.settingClick
+                            IconComponent=SettingsIconClicked
                             color=ColorConstant.ORANGE
                         } else {
-                            iconName = images.image.settingDefault
+                            IconComponent=SettingsIcon
                             color=ColorConstant.GREY
                         }
                     } 
                     // You can return any component that you like here!
                     return (
                         <View style={{ justifyContent: 'center', alignItems: 'center'}}>
-                            <Image source={iconName} resizeMode='contain' style={styles.tabIcon}/>
+                            <IconComponent style={styles.tabIcon} />
                             <Text style={{textAlign:'center',fontSize:FontSize.FontSize.extraSmall,fontFamily:'Nunito-Regular',color:color}}>{route.name}</Text>
                         </View>
                     )
