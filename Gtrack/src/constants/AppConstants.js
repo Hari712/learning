@@ -7,6 +7,53 @@ export const EMAIL_VALIDATION_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.
 export const FEEDBACK_VALIDATION_ERROR = 'Please add feedback'
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 
+export const SCREEN_CONSTANTS = {
+    SPLASH: 'Splash',
+    SIGNUP: 'SignUp',
+    LOGIN: 'Login',
+    RESET_PASSCODE: 'ResetPasscode',
+    PASSCODE: 'Passcode',
+    LIVE_TRACKING: 'LiveTracking',
+    USERS: 'Users',
+    DASHBOARD: 'DashBoard',
+    DEVICE_ASSET: 'DeviceAsset',
+    SETTINGS: 'Settings',
+    PROFILE: 'Profile',
+    PERMISSION: 'Permission',
+    ABOUT: 'About',
+    RATE_US: 'RateUs',
+    FEEDBACK:'Feedback',
+    DETAILS: 'Details',
+    EDIT_DEVICE_ASSET: 'EditDeviceAsset',
+    CREATE_DEVICE_ASSET: 'CreateDeviceAsset',
+    MANAGE: 'Manage',
+    ADD_USER: 'AddUser',
+    EDIT_PROFILE: 'EditProfile',
+    NOTIFICATION: 'Notification',
+    SENSOR_INFO: 'SensorInfo',
+    DEVICE_INFO: 'DeviceInfo',
+    GEOFENCE: 'GeoFence',
+    GEOFENCE_CREATE_NEW: 'GeoFenceCreateNew',
+    GEOFENCE_TYPE: 'GeoFenceType',
+    GEOFENCE_DETAILS: 'GeoFenceDetails',
+    ADVANCE_SETTINGS: 'AdvanceSettings',
+    ALARMS: 'Alarms',
+    CREATE_NEW: 'CreateNew',
+    ALARMS_TYPE: 'AlarmType',
+    ALARMS_DETAIL: 'AlarmDetail',
+    SETTINGS_NOTIFICATION: 'SettingNotification',
+    CHANGE_PASSCODE: 'ChangePasscode',
+    ACTIVATE_DEVICE: 'ActivateDevice',
+    ASSIGN_ASSET: 'AssignAsset',
+    ASSIGN_GROUP: 'AssignGroup',
+    BARCODE_SCANNER: 'BarcodeScanner',
+    COMPLETE_SETUP: 'CompleteSetup',
+    GET_STARTED: 'GetStarted',
+    GEOFENCE_CREATOR: 'GeoFenceCreator',
+    SETTINGS_CHANGE_PASSCODE: 'SettingsChangePassCode',
+    TRACKING_DETAILS: 'TrackingDetails'  
+}
+
 export const AppConstants = {
     EMPTY_EMAIL_OR_PHONE: "Empty_Email_Or_Phone",
     INVALID_EMAIL_OR_PHONE: "Invalid_Email_Or_Phone",
@@ -32,5 +79,6 @@ export const AppConstants = {
     EMPTY_GROUP_SELECTION: 'Please select group',
     EMPTY_OLD_PASSCODE: "Empty_Old_Passcode",
     EMPTY_NEW_PASSCODE: "Empty_New_Passcode",
+    ROLE_REGULAR: 'ROLE_REGULAR'
     
 }

@@ -6,6 +6,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { FontSize, MapView} from '../../component'
 import Slider from "react-native-slider";
 import { translate } from '../../../App'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const GeoFenceType = ({ navigation, route }) => {
     const { type } = route.params;
@@ -25,7 +26,7 @@ const GeoFenceType = ({ navigation, route }) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity onPress={() => navigation.navigate('GeoFenceDetails')}>
+                <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS)}>
                     <Text style={styles.headerRightStyle}>{translate("Next_string")}</Text>
                 </TouchableOpacity>
             )

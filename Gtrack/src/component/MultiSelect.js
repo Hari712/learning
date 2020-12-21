@@ -172,27 +172,25 @@ export class MultiSelectGroup extends React.Component {
 
         return (
             <SafeAreaView >
-                <ShadowView style={styles.shadowContainer}>
-                    <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
-                        <OutlinedTextField
-                            label={label}
-                            textColor={ColorConstant.BLACK}
-                            tintColor={ColorConstant.GREY}
-                            baseColor={ColorConstant.GREY}
-                            fontSize={FontSize.FontSize.small}
-                            //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
-                            labelFontSize={FontSize.FontSize.small}
-                            contentInset={{ input: 10.45, label: 1.4 }}
-                            renderRightAccessory={() => handleRightAccessory()}
-                            editable={false}
-                            value='Select Group'
-                            inputContainerStyle={styles.inputContainer}
-                            activeLineWidth={1}
-                            containerStyle={styles.inputButton}
-                            {...otherProps}
-                        />
-                    </TouchableOpacity>
-                </ShadowView>
+                <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
+                    <OutlinedTextField
+                        label={label}
+                        textColor={ColorConstant.BLACK}
+                        tintColor={ColorConstant.GREY}
+                        baseColor={ColorConstant.GREY}
+                        fontSize={FontSize.FontSize.small}
+                        //labelTextStyle={{ fontFamily: 'Nunito-Regular' }}
+                        labelFontSize={FontSize.FontSize.small}
+                        contentInset={{ input: 16, label: 1.4 }}
+                        renderRightAccessory={() => handleRightAccessory()}
+                        editable={false}
+                        value='Select Group'
+                        inputContainerStyle={styles.inputContainer}
+                        activeLineWidth={1}
+                        containerStyle={styles.inputButton}
+                        {...otherProps}
+                    />
+                </TouchableOpacity>
 
                 { this.state.isSelected ?
                     <ScrollView style={[styles.dropdown, otherProps.dropdownStyle]}>

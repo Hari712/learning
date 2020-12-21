@@ -6,7 +6,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import _ from 'lodash'
 import NavigationService from '../../navigation/NavigationService'
-import { AppConstants } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { EditText, FontSize } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
 import AppManager from '../../constants/AppManager'
@@ -49,7 +49,7 @@ const Passcode = ({ navigation, route }) => {
     function onVerifyOTPSuccess(data) {
         AppManager.hideLoader()
         console.log("Success data", data)
-        NavigationService.navigate('ChangePasscode', { emailId: emailId })
+        NavigationService.navigate(SCREEN_CONSTANTS.CHANGE_PASSCODE, { emailId: emailId })
     }
 
     function onVerifyOTPError(error) {

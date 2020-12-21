@@ -8,6 +8,10 @@ import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
 import { translate } from '../../App'
+import { isRoleRegular } from '../screen/Selector';
+import { useSelector } from 'react-redux';
+import { AppConstants, SCREEN_CONSTANTS } from '../constants/AppConstants';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -31,27 +35,29 @@ const ScreenOptions = {
     headerTransparent: false,
 }
 
+
 const LiveTrackingStackNavigator = () => {
+    
     return(
     <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen'  screenOptions={ScreenOptions}>
-        <LiveTrackingStack.Screen name='LiveTracking' component={LiveTracking} />
-        <LiveTrackingStack.Screen name='Notification' component={Notification} />
-        <LiveTrackingStack.Screen name='SensorInfo' component={SensorInfo} />
-        <LiveTrackingStack.Screen name='DeviceInfo' component={DeviceInfo} />
-        <LiveTrackingStack.Screen name='GeoFence' component={GeoFence} />
-        <LiveTrackingStack.Screen name='GeoFenceCreateNew' component={GeoFenceCreateNew} />
-        <LiveTrackingStack.Screen name='GeoFenceType' component={GeoFenceType} />
-        <LiveTrackingStack.Screen name='GeoFenceDetails' component={GeoFenceDetails} />
-        <LiveTrackingStack.Screen name='Alarms' component={Alarms} />
-        <LiveTrackingStack.Screen name='CreateNew' component={CreateNew} />
-        <LiveTrackingStack.Screen name='AlarmType' component={AlarmType} />
-        <LiveTrackingStack.Screen name='AlarmDetail' component={AlarmDetail} />
-        <LiveTrackingStack.Screen name='ActivateDevice' component={ActivateDevice} />
-        <LiveTrackingStack.Screen name='AssignAsset' component={AssignAsset} />
-        <LiveTrackingStack.Screen name='AssignGroup' component={AssignGroup} />
-        <LiveTrackingStack.Screen name="BarcodeScanner" component={BarcodeScanner}/>
-        <LiveTrackingStack.Screen name="CompleteSetup" component={CompleteSetup}/>
-        <LiveTrackingStack.Screen name="GeoFenceCreator" component={GeoFenceCreator}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LIVE_TRACKING} component={LiveTracking} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.NOTIFICATION} component={Notification} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.SENSOR_INFO} component={SensorInfo} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DEVICE_INFO} component={DeviceInfo} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE} component={GeoFence} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW} component={GeoFenceCreateNew} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_TYPE} component={GeoFenceType} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_DETAILS} component={GeoFenceDetails} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS} component={Alarms} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_NEW} component={CreateNew} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_TYPE} component={AlarmType} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_DETAIL} component={AlarmDetail} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ACTIVATE_DEVICE} component={ActivateDevice} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_ASSET} component={AssignAsset} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_GROUP} component={AssignGroup} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.BARCODE_SCANNER} component={BarcodeScanner}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.COMPLETE_SETUP} component={CompleteSetup}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator}/>
     </LiveTrackingStack.Navigator>
     )
 }
@@ -59,17 +65,27 @@ const LiveTrackingStackNavigator = () => {
 const UsersStackNavigator = () => {
     return(
         <UsersStack.Navigator initialRouteName="Users" headerMode="screen" screenOptions={ScreenOptions} >
-            <UsersStack.Screen name="Users" component={Users} />
-            <UsersStack.Screen name="AddUser" component={AddUser} />
+            <UsersStack.Screen name={SCREEN_CONSTANTS.USERS} component={Users} />
+            <UsersStack.Screen name={SCREEN_CONSTANTS.ADD_USER} component={AddUser} />
         </UsersStack.Navigator>
     )
 }
 
-const DashBoardStackNavigator = () => {
+const DashBoardStackNavigator = ({navigation, route}) => {
+    
+    React.useLayoutEffect(() => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        if (routeName === SCREEN_CONSTANTS.TRACKING_DETAILS){
+            navigation.setOptions({tabBarVisible: false});
+        }else {
+            navigation.setOptions({tabBarVisible: true});
+        }
+    }, [navigation, route]);
+
     return(
         <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none" headerMode="screen" screenOptions={ScreenOptions}>
-            <DashBoardStack.Screen name="DashBoard" component={DashBoard} />
-            <DashBoardStack.Screen name="TrackingDetails" component={TrackingDetails} />
+            <DashBoardStack.Screen name={SCREEN_CONSTANTS.DASHBOARD} component={DashBoard} />
+            <DashBoardStack.Screen name={SCREEN_CONSTANTS.TRACKING_DETAILS} component={TrackingDetails} />
         </DashBoardStack.Navigator>
     )
 }
@@ -78,10 +94,10 @@ const DeviceAssetStackNavigator = () => {
     return(
         <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions} >
             <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
-            <DeviceAssetStack.Screen name="Details" component={Details}/>
-            <DeviceAssetStack.Screen name="EditDeviceAsset" component={EditDeviceAsset}/>
-            <DeviceAssetStack.Screen name="CreateDeviceAsset" component={CreateDeviceAsset}/>
-            <DeviceAssetStack.Screen name="Manage" component={Manage} />
+            <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.DETAILS} component={Details}/>
+            <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.EDIT_DEVICE_ASSET} component={EditDeviceAsset}/>
+            <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.CREATE_DEVICE_ASSET} component={CreateDeviceAsset}/>
+            <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.MANAGE} component={Manage} />
         </DeviceAssetStack.Navigator>
     )
 }
@@ -89,21 +105,25 @@ const DeviceAssetStackNavigator = () => {
 const SettingsStackNavigator = () => {
     return(
         <SettingsStack.Navigator initialRouteName="Settings" headerMode="screen" screenOptions={ScreenOptions} >
-            <SettingsStack.Screen name="Settings" component={Settings} />
-            <SettingsStack.Screen name="Profile" component={Profile} />
-            <SettingsStack.Screen name="EditProfile" component={EditProfile} />
-            <SettingsStack.Screen name="Permission" component={Permission} />
-            <SettingsStack.Screen name="About" component={About} />
-            <SettingsStack.Screen name="RateUs" component={RateUs} />
-            <SettingsStack.Screen name="Feedback" component={Feedback} />
-            <SettingsStack.Screen name="AdvanceSettings" component={AdvanceSettings} />
-            <SettingsStack.Screen name="SettingsChangePassCode" component={SettingsChangePassCode} />
-            <SettingsStack.Screen name="SettingNotification" component={SettingNotification} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.SETTINGS} component={Settings} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.PROFILE} component={Profile} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.EDIT_PROFILE} component={EditProfile} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.PERMISSION} component={Permission} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.ABOUT} component={About} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.RATE_US} component={RateUs} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.FEEDBACK} component={Feedback} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.ADVANCE_SETTINGS} component={AdvanceSettings} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE} component={SettingsChangePassCode} />
+            <SettingsStack.Screen name={SCREEN_CONSTANTS.SETTINGS_NOTIFICATION} component={SettingNotification} />
         </SettingsStack.Navigator>
     )
 }
 
 export const TabStackNavigator = ({ }) => {
+    const { isRegular } = useSelector(state => ({
+        isRegular: isRoleRegular(state)
+      }))
+
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -174,9 +194,9 @@ export const TabStackNavigator = ({ }) => {
             
         >
             <Tab.Screen name="Live Tracking" component={LiveTrackingStackNavigator} />
-            <Tab.Screen name="Users" component={UsersStackNavigator} />
-            <Tab.Screen name="DashBoard" component={DashBoardStackNavigator} />
-            <Tab.Screen name="Device & Asset" component={DeviceAssetStackNavigator} />
+            { !isRegular ? <Tab.Screen name="Users" component={UsersStackNavigator} /> : null }
+            { !isRegular ? <Tab.Screen name="DashBoard" component={DashBoardStackNavigator} /> : null  }
+            { !isRegular ? <Tab.Screen name="Device & Asset" component={DeviceAssetStackNavigator} /> : null }
             <Tab.Screen name="Settings" component={SettingsStackNavigator} />
 
         </Tab.Navigator>

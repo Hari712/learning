@@ -4,20 +4,21 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useSelector } from 'react-redux'
-import { isUserLoggedIn } from '../Selector'
+import { isRoleRegular, isUserLoggedIn } from '../Selector'
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates'
 import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)	
 	const [currentPosition, setCurrentPosition] = useState([-7.941227, 39.584127]) //by default
 
-	const { isConnected, isLoggedIn } = useSelector(state => ({
-		isConnected: state.network.isConnected,
-		isLoggedIn: isUserLoggedIn(state)
+	const { isLoggedIn, isRegular} = useSelector(state => ({
+		isLoggedIn: isUserLoggedIn(state),
+		isRegular: isRoleRegular(state)
 	}))
 
 	const location = useSubscribeLocationUpdates(isLoggedIn)
@@ -38,19 +39,19 @@ const LiveTracking = ({navigation}) => {
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if(item === 'Sensor Information') {
-			navigation.navigate('SensorInfo')
+			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
 		else if (item == 'Geo Fence') {
-			navigation.navigate('GeoFence')
+			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
 		}
 		else {
-            navigation.navigate('Alarms')
+            navigation.navigate(SCREEN_CONSTANTS.ALARMS)
         }
 	}
 
 	function navigateToDeviceSetup() {
 		setIsLineClick(false)
-		NavigationService.push('ActivateDevice')
+		NavigationService.push(SCREEN_CONSTANTS.ACTIVATE_DEVICE)
 	}
 
 	return (
@@ -60,7 +61,7 @@ const LiveTracking = ({navigation}) => {
 
 			<View style={styles.subContainer}>
 
-				<TouchableOpacity onPress={() =>  {navigation.navigate('Notification'), setIsLineClick(false)}} style={styles.bellIconStyle}>
+				<TouchableOpacity onPress={() =>  {navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false)}} style={styles.bellIconStyle}>
 					<Image source={images.image.bluebell} />
 				</TouchableOpacity>
 
@@ -83,9 +84,10 @@ const LiveTracking = ({navigation}) => {
 					</View>
 					: null}
 
+                { !isRegular ?
 				<TouchableOpacity onPress={() => navigateToDeviceSetup()} style={[styles.lineIconStyle, { backgroundColor: ColorConstant.BLUE }]}>
 					<Image style={{ tintColor: ColorConstant.WHITE }} source={images.image.add} />
-				</TouchableOpacity>
+				</TouchableOpacity> : null}
 			</View>
 		</View>
 	);

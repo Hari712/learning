@@ -8,6 +8,7 @@ import { getLoginState } from '../../Selector';
 import ShadowView from 'react-native-simple-shadow-view';
 import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 
 const Profile = ({ navigation }) => {
 
@@ -67,7 +68,7 @@ const Profile = ({ navigation }) => {
                 <View style={styles.blueBoxStyle}>
                 <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate('EditProfile', {loginData:loginData}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData}) }} >
                         <Image source={images.image.edit} />
                     </TouchableOpacity>
                 </View>

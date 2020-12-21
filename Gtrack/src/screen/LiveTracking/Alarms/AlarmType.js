@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import {FontSize, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -96,7 +97,7 @@ return (
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Alarms')} style={styles.nextButton}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS)} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save")}</Text>
             </TouchableOpacity>
         </View> 

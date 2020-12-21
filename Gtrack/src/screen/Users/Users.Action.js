@@ -46,6 +46,11 @@ export const requestUpdateSubuserDetail = ( body, userId, onSuccess, onError) =>
     onError
 })
 
+export const setUpdateSubuserResponse = (data) => ({
+    type: types.UPDATE_SUBUSER_RESPONSE,
+    data
+})
+
 export const requestSubuserByFilter = ( body, userId, onSuccess, onError) => ({
     type: types.GET_SUBUSER_BY_FILTER_REQUEST,
     body,

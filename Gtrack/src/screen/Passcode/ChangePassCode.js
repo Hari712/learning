@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { validatePassword } from '../../utils/helper'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AppConstants } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import AppManager from '../../constants/AppManager'
 import _ from 'lodash'
 import NavigationService from '../../navigation/NavigationService'
@@ -104,7 +104,7 @@ const ChangePasscode = ({ navigation, route }) => {
     }
 
     function navigateToLiveTracking() {
-        NavigationService.navigate('LiveTracking')
+        NavigationService.navigate(SCREEN_CONSTANTS.CHANGE_PASSCODE)
     }
 
 

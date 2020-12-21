@@ -8,6 +8,7 @@ import { FontSize, TextField }from '../../../component';
 import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
 import { translate } from '../../../../App'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 
 
 const EditProfile = ({ navigation, route, item }) => {
@@ -204,7 +205,7 @@ const EditProfile = ({ navigation, route, item }) => {
         AppManager.hideLoader()
         console.log("Success", data)
         dispatch(ProfileActions.setEditProfileResponse(data))
-        navigation.navigate('Profile')
+        navigation.navigate(SCREEN_CONSTANTS.PROFILE)
     }
 
     function onError(error) {

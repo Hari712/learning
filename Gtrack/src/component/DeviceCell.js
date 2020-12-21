@@ -7,6 +7,7 @@ import images from '../constants/images'
 import NavigationService from '../navigation/NavigationService'
 import Tooltip from 'rn-tooltip'
 import { translate } from '../../App'
+import { SCREEN_CONSTANTS } from '../constants/AppConstants'
 
 const DeviceCell = (props) => {
 
@@ -18,8 +19,9 @@ const DeviceCell = (props) => {
     const devicePlan = item.devicePlan ? item.devicePlan : null
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
+
     return (
-        <TouchableOpacity onPress={() => { NavigationService.push('Details', { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
+        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
         } style={styles.cardContainer}>
 
             {/* Blue top head */}
@@ -40,7 +42,7 @@ const DeviceCell = (props) => {
                     </Tooltip>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push('EditDeviceAsset', { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
+                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
                     <Image source={images.image.edit} />
                 </TouchableOpacity>
             </View>
@@ -60,6 +62,12 @@ const DeviceCell = (props) => {
                     <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{expiryDate}</Text>
                 </View>
             </View>
+
+            {/* Active/Inactive body */}
+            <View style={[styles.activeInactiveText,{backgroundColor:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.LIGHTENGREEN : ColorConstant.LIGHTENPINK}]}>
+                <Text style={{fontSize:FontSize.FontSize.small,color:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK}}>{deviceDTO.deviceStatus == "Active" ? "Active": "Inactive" }</Text>
+            </View>
+
         </TouchableOpacity>
     )
 }
@@ -88,6 +96,14 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         paddingHorizontal: hp(3)
+    },
+    activeInactiveText: {
+        flexDirection: 'row',
+        width: "100%",
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
+        justifyContent:'center'
+       // paddingHorizontal: hp(3)
     },
     blueTopHead: {
         alignContent: 'space-between',

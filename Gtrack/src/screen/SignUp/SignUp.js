@@ -4,7 +4,7 @@ import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AppConstants } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText, CustomButton, FontSize } from '../../component'
 import CheckBox from 'react-native-check-box'
@@ -69,7 +69,7 @@ const SignUp = () => {
         console.log("Success data",data)
         if(data){
             AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: '', floating: true }) 
-            NavigationService.navigate('Login')
+            NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)
         }
     }
 
@@ -173,7 +173,7 @@ const SignUp = () => {
 
                     <View style={styles.bottomContainer}>
                         <Text style={styles.bottomText}>{translate("Splash_string1")}  </Text>
-                        <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate('Login')}>
+                        <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
                             <Text style={styles.bottomBtn}>{translate("Splash_string2")}</Text>
                         </TouchableOpacity>
                     </View>

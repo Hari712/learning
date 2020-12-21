@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import TextField from '../../component/TextField'
-import { AppConstants } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { BarCodeScanIcon } from '../../component/SvgComponent'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
@@ -72,7 +72,7 @@ const ActivateDevice = ({ navigation }) => {
         const deviceDTO = data.deviceDTO ? data.deviceDTO : {  }
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: 'Device registered successfully', description: '', floating: true })
-        NavigationService.push('AssignAsset', { device: deviceDTO })
+        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_ASSET, { device: deviceDTO })
     }
 
     function onError(error) {
@@ -91,11 +91,11 @@ const ActivateDevice = ({ navigation }) => {
     }
 
     function navigateToBarcodeScanner() {
-        NavigationService.push('BarcodeScanner')
+        NavigationService.push(SCREEN_CONSTANTS.BARCODE_SCANNER)
     }
 
     function navigateToAssignAsset() {
-        NavigationService.push('AssignAsset')
+        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_ASSET)
     }
 
     return (

@@ -7,6 +7,7 @@ import { FontSize } from '../../component'
 import { useDispatch } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const Settings = ({ navigation }) => {
 
@@ -23,35 +24,35 @@ const Settings = ({ navigation }) => {
 
     const onPressHandle = ({ navigation, item }) => {
       if (item.title == 'Profile') {
-        navigation.navigate('Profile')
+        navigation.navigate(SCREEN_CONSTANTS.PROFILE)
       }
 
       else if (item.title == 'Permission') {
-        navigation.navigate('Permission')
+        navigation.navigate(SCREEN_CONSTANTS.PERMISSION)
       }
 
       else if (item.title == 'About') {
-        navigation.navigate('About')
+        navigation.navigate(SCREEN_CONSTANTS.ABOUT)
       }
 
       else if (item.title == 'Notifications') {
-        navigation.navigate('SettingNotification')
+        navigation.navigate(SCREEN_CONSTANTS.SETTINGS_NOTIFICATION)
       }
 
       else if (item.title == 'Rate Us') {
-        navigation.navigate('RateUs')
+        navigation.navigate(SCREEN_CONSTANTS.RATE_US)
       }
 
       else if (item.title == 'Feedback') {
-        navigation.navigate('Feedback')
+        navigation.navigate(SCREEN_CONSTANTS.FEEDBACK)
       }
 
       else if (item.title == 'Advance Settings') {
-        navigation.navigate('AdvanceSettings')
+        navigation.navigate(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
       }
 
       else if (item.title == 'Change Passcode') {
-        navigation.navigate('SettingsChangePassCode')
+        navigation.navigate(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
       }
 
       else if (item.title == 'Logout') {

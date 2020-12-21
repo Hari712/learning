@@ -6,6 +6,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import  { FontSize }from '../../component';
 import { FlatList } from 'react-native-gesture-handler';
 import { translate } from '../../../App'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const SensorInfo = ({ navigation }) => {
 
@@ -31,7 +32,7 @@ const SensorInfo = ({ navigation }) => {
 
     const SensorInfoItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.sensorInfoMainView} onPress={() => { navigation.navigate('DeviceInfo', { deviceInfo: item }) }} >
+            <TouchableOpacity style={styles.sensorInfoMainView} onPress={() => { navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, { deviceInfo: item }) }} >
                 <View style={styles.deviceinfoView}>
                     <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.BLACK }}>{item.title}</Text>
                     <Image source={images.sensorInfo.next} style={{ width: wp(2), height: hp(3), marginTop: 2 }} resizeMode="contain" />

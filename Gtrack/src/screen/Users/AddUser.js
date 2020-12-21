@@ -1,11 +1,11 @@
 import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../component';
 import { MultiSelectGroup } from '../../component/MultiSelect'
-import { AppConstants } from '../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
 import { getLoginState, getSubuserState } from '../Selector'
 import { useDispatch, useSelector } from 'react-redux';
@@ -90,6 +90,7 @@ const AddUser = ({ navigation, route }) => {
   function onSuccess(data) {
     console.log("Success", data)
     AppManager.hideLoader()
+    navigation.pop()
   }
 
   function onError(error) {
@@ -178,6 +179,7 @@ const AddUser = ({ navigation, route }) => {
                 valueSet={setRole}
                 dataList={['Regular', 'Owner']}
                 outerStyle={{ marginTop: hp(2) }}
+                contentInset={{ input: 16, label: 1.4 }}
                 // outerStyle={[styles.outerStyle]} 
                 dropdownStyle={styles.dropdownStyle}
                 // dataRowStyle={styles.dataRowStyle}
@@ -193,6 +195,7 @@ const AddUser = ({ navigation, route }) => {
           {infoClick ?
             info()
             : null}
+
           <ShadowView style={styles.shadowContainer}>
             <MultiSelectGroup
               label={translate("Group Access")}
@@ -234,28 +237,32 @@ const styles = StyleSheet.create({
     marginBottom: hp(4),
     alignSelf: 'center',
   },
-  shadowContainer: {
+  shadowContainer: Platform.OS=='ios'?
+  { 
     width: '100%',
     shadowColor: ColorConstant.GREY,
     shadowOffset: {
       width: 0,
       height: 3
     },
-    shadowRadius: 3,
     shadowOpacity: 0.3,
     marginTop: hp(2),
-  },
-  outerStyle: {
+    shadowRadius: 3 
+  }: {
+    width: '100%',
+    marginTop: hp(2),
+  }, 
 
-    //  borderBottomColor:ColorConstant.GREY,
-    //  borderBottomWidth:1,
+  outerStyle: {
     backgroundColor: ColorConstant.WHITE,
-    borderRadius: 4
+    borderRadius: 4,
+    borderBottomWidth: Platform.OS=='android'? 1:0,
+    borderColor: ColorConstant.GREY,
+    elevation:2,
   },
   dropDown: {
     flexDirection: 'row',
     marginTop: hp(0.5)
-
   },
   dropdownStyle: {
     position: 'relative',

@@ -7,6 +7,7 @@ import { FontSize, TextField, DropDown }from '../../component';
 import { ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const GeoFenceDetails = ({ navigation }) => {
     const [name, setName] = useState();
@@ -140,7 +141,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                         <TouchableOpacity
                             onPress={() => {
-                                navigation.navigate('GeoFence'),
+                                navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
                                     setIsClickOnSave(!isClickOnSave),
                                     setName(name),
                                     setDescrption(description),

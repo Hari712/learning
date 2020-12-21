@@ -16,6 +16,8 @@ import { getDeviceDetailsListInfo, getLoginInfo, getActiveInactiveCountListInfo,
 import iconConstant from '../../constants/iconConstant'
 import { round } from 'lodash'
 import AppManager from '../../constants/AppManager'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { color } from 'react-native-reanimated'
 
 const Dashboard = ({ navigation }) => {
 
@@ -36,7 +38,7 @@ const Dashboard = ({ navigation }) => {
     notificationCount: getNotificationCountListInfo(state)
 }))
 
-console.log("khush", notificationCount)
+console.log("khush", deviceDetails)
 
   const user_id = loginInfo.id ? loginInfo.id : null
 
@@ -145,7 +147,7 @@ console.log("khush", notificationCount)
               <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=> navigation.navigate('ActivateDevice')} >
+            <TouchableOpacity onPress={()=> navigation.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
               <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
             </TouchableOpacity>
           </View>
@@ -190,8 +192,7 @@ console.log("khush", notificationCount)
     const deviceListArr =  Object.values(deviceDetails.deviceList).map((item)=>item.deviceDTO)
     const deviceNameArr = Object.values(deviceListArr.map((item)=>item.deviceName))
     console.log("RecentAlarms",deviceListArr, deviceNameArr )
-
-    
+    selectedDevice ? null : setSelectedDevice(deviceNameArr[0]);    
     
     selectedDevice ? 
       deviceListArr.filter((item)=> {
@@ -216,8 +217,8 @@ console.log("khush", notificationCount)
         </View>
 
 
-        <View style={[styles.deviceSummaryMainViewStyle, {position:"absolute"}]}>
-          <View style={[styles.leftMainViewStyle,{paddingTop:hp(0.5)}]}>
+        <View style={[styles.deviceSummaryMainViewStyle, {position:"absolute",marginTop:2}]}>
+          <View style={[styles.leftMainViewStyle,{marginTop:hp(3)}]}>
             <Text style={styles.summary}>{translate("Recent Alarms")}</Text>
           </View>
 
@@ -228,15 +229,15 @@ console.log("khush", notificationCount)
               valueSet={setSelectedDevice}  
               dataList={deviceNameArr} 
               fontSize={hp(1.6)} 
-              contentInset={{ input: 6, label: -8 }}
+              contentInset={{ input: 4, label: -8 }}
               outerStyle={styles.outerStyle} 
               accessoryStyle={{marginBottom:hp(0.5)}}
-              dropdownStyle = {{top:hp(3.5),zIndex:99999}}
+              dropdownStyle = {{top:hp(6)}}
               inputContainerStyle={styles.inputContainerStyle} 
               containerStyle={styles.containerStyle} /> 
           </View>
 
-          <View style={[styles.rightMainViewStyle,{paddingTop:hp(0.5)}]}>
+          <View style={[styles.rightMainViewStyle,{marginTop:hp(3.3)}]}>
             <TouchableOpacity style={styles.refreshImageStyle} onPress={()=>{fetchDeviceRecentAlarms()}}>
               <Image source={images.dashBoard.refresh} resizeMode='contain' />
             </TouchableOpacity>
@@ -286,7 +287,7 @@ console.log("khush", notificationCount)
               </View>
               : null}
 
-            <TouchableOpacity onPress={() => { navigation.navigate('Users') }} >
+            <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
               <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
             </TouchableOpacity>
 
@@ -328,8 +329,8 @@ const styles = StyleSheet.create({
     zIndex:2,
   },
   outerStyle:{
-    height: hp(3.5),
-    marginVertical:0,
+    height: hp(5),
+    paddingTop:hp(1.5),
     flex:1
   },
   inputContainerStyle: {
@@ -338,7 +339,7 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     alignSelf: 'center',
-    height: hp(2),
+    height: hp(5),
     flex:1
   },
   leftMainViewStyle: {
@@ -508,6 +509,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     alignSelf: 'center',
     marginTop: hp(2),
+    paddingBottom: hp(1)
   },
 
   deviceSummaryMainViewStyle: Platform.OS=="ios" ? {
@@ -524,7 +526,7 @@ const styles = StyleSheet.create({
   },
 
   summaryContainer: {
-    marginVertical: hp(2),
+    marginVertical: hp(1.5),
     paddingVertical: '3%',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: hp(5.5/2),

@@ -18,6 +18,7 @@ function* addSubuser(action) {
     const { data, userId, onSuccess, onError } = action
     try {
         const response = yield call(API.post, ApiConstants.ADD_SUBUSER(userId), data)
+        yield put(UserActions.setAddSubuserResponse(response))
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -39,6 +40,7 @@ function* updateSubuserDetails(action) {
     const {body, userId, onSuccess, onError } = action
     try {
         const response = yield call(API.put, ApiConstants.UPDATE_SUBUSER_DETAILS(userId), body)            
+        yield put(UserActions.setUpdateSubuserResponse(response))
         onSuccess(response)
     } catch (error) {
         onError(error)

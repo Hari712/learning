@@ -6,6 +6,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const GeoFenceCreateNew = ({ navigation }) => {
 
@@ -31,7 +32,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
 
     function navigateToPolygonCreator() {
        // navigation.navigate('GeoFenceType', { type: role })
-        NavigationService.push('GeoFenceCreator')
+        NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
     }
 
     return (
