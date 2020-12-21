@@ -1,5 +1,5 @@
 import * as React from "react"
-import Svg, { Defs, G, Circle, Path, Text, TSpan, ClipPath, Ellipse } from "react-native-svg"
+import Svg, { Defs, G, Circle, Path, Text, TSpan, ClipPath, Ellipse, Rect } from "react-native-svg"
 
 function BarCodeScanIcon(props) {
   return (
@@ -1961,7 +1961,146 @@ function DashBoardIcon(props) {
   )
 }
 
+function RadioButtonIcon(props) {
+  return (
+    <Svg viewBox="0 0 18.248 18.248" width={18.248} height={18.248} {...props}>
+      <G
+        fill="#fff"
+        stroke="#b5b5b5"
+        strokeWidth={1}
+        transform="rotate(-51.98 10.505 5.12)"
+        data-name="Ellipse 878"
+      >
+        <Circle stroke="none" cx={6.5} cy={6.5} r={6.5} />
+        <Circle fill="none" cx={6.5} cy={6.5} r={6} />
+      </G>
+    </Svg>
+  )
+}
 
+
+function RadioButtonIconClicked(props) {
+  return (
+    <Svg viewBox="0 0 18.248 18.248" width={18.248} height={18.248} {...props}>
+      <G transform="translate(-25.377 -142.376)" data-name="Group 8608">
+        <G
+          fill="#fff"
+          stroke="#ff7f21"
+          strokeWidth={1}
+          transform="rotate(-51.98 169.195 50.246)"
+          data-name="Ellipse 877"
+        >
+          <Circle stroke="none" cx={6.5} cy={6.5} r={6.5} />
+          <Circle fill="none" cx={6.5} cy={6.5} r={6} />
+        </G>
+        <Circle
+          fill="#ff7f21"
+          transform="translate(31 148)"
+          cx={3.5}
+          cy={3.5}
+          r={3.5}
+          data-name="Ellipse 879"
+        />
+      </G>
+    </Svg>
+  )
+}
+
+
+function ToggleButtonIcon(props) {
+  return (
+    <Svg viewBox="0 0 20 11" width={20} height={11} {...props}>
+      <G data-name="Group 8601">
+        <G data-name="Group 4466">
+          <G
+            data-name="Group 4493"
+            transform="translate(-170 -316) translate(169 316)"
+          >
+            <Rect
+              fill="#e4e4e4"
+              transform="translate(1 2)"
+              width={20}
+              height={7}
+              rx={3}
+              data-name="Rectangle 3623"
+            />
+            <Circle
+              fill="#b5b5b5"
+              transform="translate(1)"
+              cx={5.5}
+              cy={5.5}
+              r={5.5}
+              data-name="Ellipse 604"
+            />
+          </G>
+        </G>
+      </G>
+    </Svg>
+  )
+}
+
+
+function ToggleButtonIconClicked(props) {
+  return (
+    <Svg viewBox="0 0 21 11" width={21} height={11} {...props}>
+      <G data-name="Group 8601">
+        <G data-name="Group 4466">
+          <G
+            data-name="Group 4493"
+            transform="translate(-170 -316) translate(169 316)"
+          >
+            <Rect
+              fill="#ffddc5"
+              transform="translate(1 2)"
+              width={20}
+              height={7}
+              rx={3}
+              data-name="Rectangle 3623"
+            />
+            <Circle
+              fill="#ff7f21"
+              transform="translate(11)"
+              cx={5.5}
+              cy={5.5}
+              r={5.5}
+              data-name="Ellipse 604"
+            />
+          </G>
+        </G>
+      </G>
+    </Svg>
+  )
+}
+
+
+function NextArrowIcon(props) {
+  return (
+    <Svg viewBox="0 0 6.269 10.67" width={6.269} height={10.67} {...props}>
+      <G data-name="Group 478">
+        <Path
+          fill="#b5b5b5"
+          d="M6.1 4.919L1.35.17a.585.585 0 00-.826 0L.175.52a.584.584 0 000 .826l3.987 3.987L.17 9.325a.585.585 0 000 .826l.35.35a.585.585 0 00.826 0L6.1 5.747a.589.589 0 000-.828z"
+          data-name="Path 3338"
+        />
+      </G>
+    </Svg>
+  )
+}
+
+function NextArrowIconClicked(props) {
+  return (
+    <Svg viewBox="0 0 10.67 6.269" width={10.67} height={6.269} {...props}>
+      <G data-name="Group 478">
+        <Path
+          fill="#06418e"
+          d="M6.1 4.919L1.35.17a.585.585 0 00-.826 0L.175.52a.584.584 0 000 .826l3.987 3.987L.17 9.325a.585.585 0 000 .826l.35.35a.585.585 0 00.826 0L6.1 5.747a.589.589 0 000-.828z"
+          data-name="Path 3338"
+          transform="rotate(90 5.335 5.335)"
+        />
+      </G>
+    </Svg>
+  )
+}
 
 export {
   BarCodeScanIcon,
@@ -1985,6 +2124,12 @@ export {
   DeviceAndAssetsIcon,
   DeviceAndAssetsIconClicked,
   SettingsIconClicked,
-  SettingsIcon
+  SettingsIcon,
+  RadioButtonIcon,
+  RadioButtonIconClicked,
+  ToggleButtonIcon,
+  ToggleButtonIconClicked,
+  NextArrowIcon,
+  NextArrowIconClicked
 
 }
