@@ -7,6 +7,7 @@ import { FontSize }from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
 import { translate } from '../../../../App'
+import { ListIcon } from '../../../component/SvgComponent';
 
 
 const AlarmDetail = ({navigation,route}) => {
@@ -47,7 +48,7 @@ return (
 
         <View style={styles.detail}>
             <Text style={styles.detailText}>{translate("Details")}</Text>  
-            <Image style={{marginBottom:hp(1)}} source={images.liveTracking.list} /> 
+            <ListIcon width={13.284} height={17.379} style={{marginBottom:hp(1)}}/>
         </View>
        
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>

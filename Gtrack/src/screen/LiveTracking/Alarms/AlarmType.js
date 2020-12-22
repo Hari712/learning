@@ -7,6 +7,7 @@ import {FontSize, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { CircleIcon, CircleIconSelected, CheckboxIcon } from '../../../component/SvgComponent';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -53,7 +54,7 @@ return (
 
       <View style={{paddingHorizontal:hp(5)}}>
         <View style={{marginVertical:hp(3)}}>
-          <Text style={styles.textStyle}>{translate("Assign_asset_string3")}</Text>
+          <Text style={styles.textStyle}>{translate("Device_Name")}</Text>
           {selectedDeviceList.map((device,key) =>
           <Text key={key} style={[styles.textStyle,{marginVertical:hp(1),color:ColorConstant.BLACK}]}>{device}</Text> )}
         </View>
@@ -79,7 +80,9 @@ return (
           {time.map((item,key) =>
             <View key={key} style={{flexDirection:'row',alignItems:'center'}}>
               <TouchableOpacity onPress={() =>key==selectedCheckbox? setSelectedCheckbox(-1):setSelectedCheckbox(key)}>
-              <Image source={key==selectedCheckbox? images.liveTracking.ellipseClick : images.liveTracking.ellipse} />
+               {key==selectedCheckbox ? 
+                <CircleIconSelected/>  : 
+                <CircleIcon/> } 
               </TouchableOpacity>
               <Text style={[styles.textStyle,{marginVertical:hp(1),color:ColorConstant.BLACK}]}> {item}</Text>
             </View> )}
@@ -88,8 +91,9 @@ return (
       </View>
 
       <View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+          {/* <CheckboxIcon/> */}
           <Image style={{alignSelf:'flex-start'}} source={images.liveTracking.checkboxClick}></Image>
-          <Text style={styles.notificationStyle}> {translate("Setting_Notification_string1")}</Text>
+          <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
       </View>
 
       <View style={styles.buttonContainer}>

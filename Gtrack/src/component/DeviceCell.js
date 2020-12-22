@@ -8,6 +8,7 @@ import NavigationService from '../navigation/NavigationService'
 import Tooltip from 'rn-tooltip'
 import { translate } from '../../App'
 import { SCREEN_CONSTANTS } from '../constants/AppConstants'
+import { EyeIcon, VanIcon, XyzIcon } from './SvgComponent'
 
 const DeviceCell = (props) => {
 
@@ -19,6 +20,43 @@ const DeviceCell = (props) => {
     const devicePlan = item.devicePlan ? item.devicePlan : null
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
+
+    let IconConstantDeviceCell;
+
+    switch ( item.assetDTO && item.assetDTO.assetType) {
+        case 'Family Item': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Personnel Item': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Bus': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Machinery': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Van': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Truck': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Car': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Travel': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Kids': IconConstantDeviceCell = XyzIcon            
+            break;
+
+        case 'Trailer': IconConstantDeviceCell = XyzIcon            
+            break;
+    
+        default: IconConstantDeviceCell = EyeIcon ;
+            break;
+    }
 
     return (
         <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
@@ -32,13 +70,13 @@ const DeviceCell = (props) => {
                 </View>
                 <View style={styles.toolTip}>
                     <Tooltip
-                        popover={<Text style={styles.toolTipText}>{item.desc}</Text>}
+                        popover={<Text style={styles.toolTipText}>{item.assetDTO && item.assetDTO.description}</Text>}
                         backgroundColor={ColorConstant.WHITE}
                         overlayColor={ColorConstant.TRANSPARENT}
                         pointerStyle={styles.pointerStyle}
                         containerStyle={styles.toolTipContainer}
                     >
-                        {item.image ? <Image style={styles.image} source={item.image} /> : null}
+                        <IconConstantDeviceCell />
                     </Tooltip>
                 </View>
 
@@ -65,7 +103,9 @@ const DeviceCell = (props) => {
 
             {/* Active/Inactive body */}
             <View style={[styles.activeInactiveText,{backgroundColor:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.LIGHTENGREEN : ColorConstant.LIGHTENPINK}]}>
-                <Text style={{fontSize:FontSize.FontSize.small,color:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK}}>{deviceDTO.deviceStatus == "Active" ? "Active": "Inactive" }</Text>
+                <Text style={{fontSize:FontSize.FontSize.small,color:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK}}>
+                    {deviceDTO.deviceStatus == "ACTIVE" ? "Active": "Inactive" }
+                </Text>
             </View>
 
         </TouchableOpacity>

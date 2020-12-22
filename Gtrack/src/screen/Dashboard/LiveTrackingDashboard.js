@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import NavigationService from '../../navigation/NavigationService'
 import ShadowView from 'react-native-simple-shadow-view'
 import { MapView }  from '../../component'
+import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent'
 
 
 const LiveTrackinDashboard = ({ navigation }) => {
@@ -21,11 +22,11 @@ const LiveTrackinDashboard = ({ navigation }) => {
                 <View style={styles.rightMainViewStyle}>
 
                     <TouchableOpacity onPress={() =>  NavigationService.navigate("TrackingDetails") } >
-                        <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
+                        <FullScreenIcon style={styles.ViewallStyle} resizeMode='contain'/>
                     </TouchableOpacity>
 
                     <TouchableOpacity >
-                        <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+                        <RefreshIcon style={styles.refreshImageStyle} resizeMode='contain'/>
                     </TouchableOpacity>
                 </View>
 
@@ -41,7 +42,8 @@ const LiveTrackinDashboard = ({ navigation }) => {
                         <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', paddingHorizontal: wp(3)  }}>
                             <Image source={images.dashBoard.leftIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} />
                                 <Text style={{color: ColorConstant.BROWN, fontSize: hp(1.4)}}> TrackPort International </Text>
-                            <Image source={images.dashBoard.rightIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} />
+                            <RightArrowIcon resizeMode='contain' width={6.779} height={10.351} />    
+                            {/* <Image source={images.dashBoard.rightIcon} resizeMode='contain' style={{ width: wp(1.5), height: hp(1.5)}} /> */}
                         </View>
 
                     </View>

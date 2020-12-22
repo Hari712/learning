@@ -133,7 +133,6 @@ export const TabStackNavigator = ({ }) => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, title,size }) => {
-                    let iconName;
                     let IconComponent;
                     if (route.name === 'Live Tracking') {
                         if (focused) {

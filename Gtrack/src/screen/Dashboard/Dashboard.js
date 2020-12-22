@@ -17,7 +17,7 @@ import iconConstant from '../../constants/iconConstant'
 import { round } from 'lodash'
 import AppManager from '../../constants/AppManager'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
-import { color } from 'react-native-reanimated'
+import { DeviceSetupIcon, FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
 
 const Dashboard = ({ navigation }) => {
 
@@ -144,11 +144,11 @@ console.log("khush", deviceDetails)
             <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: {deviceDetails.deviceCount}</Text>
 
             <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
-              <Image source={images.dashBoard.fullScreen} style={styles.ViewallStyle} resizeMode='contain' />
+              <FullScreenIcon style={styles.ViewallStyle} resizeMode='contain'/>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={()=> navigation.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
-              <Image source={images.dashBoard.SettingIcon} style={styles.refreshImageStyle} resizeMode='contain' />
+              <DeviceSetupIcon style={styles.refreshImageStyle} resizeMode='contain'/>
             </TouchableOpacity>
           </View>
 
@@ -239,7 +239,7 @@ console.log("khush", deviceDetails)
 
           <View style={[styles.rightMainViewStyle,{marginTop:hp(3.3)}]}>
             <TouchableOpacity style={styles.refreshImageStyle} onPress={()=>{fetchDeviceRecentAlarms()}}>
-              <Image source={images.dashBoard.refresh} resizeMode='contain' />
+              <RefreshIcon resizeMode='contain'/>
             </TouchableOpacity>
           </View>
         </View>
@@ -288,11 +288,11 @@ console.log("khush", deviceDetails)
               : null}
 
             <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
-              <Image source={images.dashBoard.fullScreen} style={styles.fullScreenStyle} resizeMode='contain' />
+              <FullScreenIcon style={styles.fullScreenStyle} resizeMode='contain'/>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => { fetchCounts() }} >
-              <Image source={images.dashBoard.refresh} style={styles.refreshImageStyle} resizeMode='contain' />
+              <RefreshIcon style={styles.refreshImageStyle} resizeMode='contain'/>
             </TouchableOpacity>
           </View>
       

@@ -22,7 +22,7 @@ const CreateNew = ({navigation,route}) => {
   useEffect(() => {    
     if(route){
       const editData = route.params;
-      console.log("khushi",editData)
+      console.log("Edit data",editData)
       if(editData){
         setSelectedDevice(editData.editData.asset)
         setSelectedAlarm(editData.editData.title)
