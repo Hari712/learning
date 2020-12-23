@@ -65,12 +65,13 @@ const GeoFenceCreateNew = ({ navigation }) => {
                         defaultValue={role}
                         valueSet={setRole}
                         dataList={DATA}
+                        contentInset={{ input:13, label: 4.5 }}
                         outerStyle={[styles.outerViewStyle]}
                         dropdownStyle={styles.dropdownStyle}
                         dataRowStyle={styles.dataRowStyle}
                         dataTextStyle={{ color: ColorConstant.BLUE, marginTop: hp(1), marginBottom: hp(1) }}
-                        labelFontSize={hp(1.4)}
-                        labelTextStyle={{ top: hp(0.5) }}
+                        // labelFontSize={hp(1.4)}
+                        // labelTextStyle={{ top: hp(0.5) }}
                     />
                 </View>
             </View>

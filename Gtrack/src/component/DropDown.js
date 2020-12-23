@@ -77,7 +77,7 @@ class DropDown extends React.Component {
                         styles.relativeDropdown :
                         [styles.absoluteDropdown, { top: this.state.buttonMeasurement.y + this.state.buttonMeasurement.height }],
                         dropdownStyle]}>
-                            <ScrollView keyboardShouldPersistTaps='always' contentContainerStyle={{ flexGrow: 1 }} style={{height: 'auto', maxHeight:hp(20),zIndex:99}}>
+                            <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' contentContainerStyle={{ flexGrow: 1 }} style={{height: 'auto', maxHeight:hp(17),zIndex:99}}>
                                 {(dataList ? dataList : data).map((item, key) => {
                                     return (
                                         <TouchableOpacity style={[{flex:1}, otherProps.dataRowStyle]} key={key}

@@ -64,7 +64,7 @@ class MultiSelect extends React.Component {
                 </ShadowView>
 
                 { this.state.isSelected ?
-                    <ScrollView style={[styles.dropdown, otherProps.dropdownStyle]}>
+                    <ScrollView nestedScrollEnabled={true} style={[styles.dropdown, otherProps.dropdownStyle]}>
                         {/* Select All */}
                         <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
                             onPress={() => {
@@ -193,7 +193,7 @@ export class MultiSelectGroup extends React.Component {
                 </TouchableOpacity>
 
                 { this.state.isSelected ?
-                    <ScrollView style={[styles.dropdown, otherProps.dropdownStyle]}>
+                    <ScrollView nestedScrollEnabled={true} style={[styles.dropdown, otherProps.dropdownStyle]}>
                         {/* Select All */}
                         <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
                             onPress={() => {

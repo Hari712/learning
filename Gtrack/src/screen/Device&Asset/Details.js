@@ -11,6 +11,7 @@ import { getLoginInfo } from '../Selector'
 import NavigationService from '../../navigation/NavigationService'
 import isEmpty from 'lodash/isEmpty'
 import { translate } from '../../../App';
+import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon } from '../../component/SvgComponent';
 
 const Details = ({ route, navigation }) => {
 
@@ -150,7 +151,7 @@ const Details = ({ route, navigation }) => {
             <View style={styles.cardContainer}>
                 <View style={styles.headerDetail}>
                     <Text style={styles.headerText}>{translate("Plan Details")}</Text>
-                    <Image source={images.image.list} />
+                    <DeviceAssetListIcon width={11.624} height={15.166}/>
                 </View>
                 <View style={styles.horizontalLine} />
                 {devicePlan ? renderDevicePlanDetail(devicePlan) : renderNoDetailsAvailable()}
@@ -184,7 +185,7 @@ const Details = ({ route, navigation }) => {
             <View style={styles.cardContainer}>
                 <View style={styles.headerDetail}>
                     <Text style={styles.headerText}>Asset Details</Text>
-                    <Image source={images.image.pickupcar} />
+                    <PickupCarIcon width={16.501} height={14.563}/>
                 </View>
                 <View style={styles.horizontalLine} />
                 {assetDTO ? renderAssetDetail(assetDTO) : renderNoDetailsAvailable()}
@@ -216,7 +217,7 @@ const Details = ({ route, navigation }) => {
             <View style={styles.cardContainer}>
                 <View style={styles.headerDetail}>
                     <Text style={styles.headerText}>{translate("User Details")}</Text>
-                    <Image source={images.image.user} />
+                    <DeviceAssetUserIcon  width={13.316} height={15.563}/>
                 </View>
                 <View style={styles.horizontalLine} />
                 {isEmpty(users) ? renderNoDetailsAvailable() : renderUserDetail()}
@@ -238,7 +239,7 @@ const Details = ({ route, navigation }) => {
                         <View style={styles.cardContainer}>
                             <View style={styles.headerDetail}>
                                 <Text style={styles.headerText}>{translate("Device Details")}</Text>
-                                <Image source={images.image.usb} />
+                                <UsbIcon width={13.892} height={15.213}/>
                             </View>
                             <View style={styles.horizontalLine} />
 

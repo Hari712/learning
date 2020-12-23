@@ -191,7 +191,7 @@ const DeviceAsset = ({ navigation }) => {
               refreshing={isRefreshing}
               onRefresh={onRefresh}
             />
-          }
+          }    
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
           ListFooterComponent={renderFooter}

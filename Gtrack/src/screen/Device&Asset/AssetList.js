@@ -14,6 +14,7 @@ const AssetList = () => {
     const dispatch = useDispatch()
 
     const [isRefreshing, setIsRefreshing] = useState(false)
+    const [editClick, setEditClick] = useState(-1)
 
     const { assetList, isConnected, loginInfo } = useSelector(state => ({
         assetList: getAssetListInfo(state),
@@ -80,6 +81,8 @@ const AssetList = () => {
                 <AssteItem
                     item={item}
                     index={index}
+                    editClick={editClick}
+                    setEditClick={setEditClick}
                 />
             </>
         )
@@ -92,19 +95,22 @@ const AssetList = () => {
     return (
         <View styles={styles.container}>
             {renderSearchBar()}
+            {/* <View style={{flex:1}}> */}
             <FlatList
-                style={{ height: '100%' }}
+                style={{ height:'85%' }}
+                nestedScrollEnabled={true}
                 refreshControl={
                     <RefreshControl
-                      style={styles.refreshIndicator}
-                      refreshing={isRefreshing}
-                      onRefresh={onRefresh}
+                        style={styles.refreshIndicator}
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}
                     />
                 }
                 data={assetList}
                 renderItem={(data) => renderItem(data)}
                 keyExtractor={(item, index) => index.toString()}
             />
+            {/* </View> */}
         </View>
     )
 }
