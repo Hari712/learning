@@ -10,7 +10,7 @@ import { MapView, FontSize }from '../../component';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BellIcon, BluelineIcon, OrangelineIcon } from '../../component/SvgComponent';
+import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon } from '../../component/SvgComponent';
 
 const LiveTracking = ({navigation}) => {
 
@@ -88,7 +88,7 @@ const LiveTracking = ({navigation}) => {
 
                 { !isRegular ?
 				<TouchableOpacity onPress={() => navigateToDeviceSetup()} style={[styles.lineIconStyle, { backgroundColor: ColorConstant.BLUE }]}>
-					<Image style={{ tintColor: ColorConstant.WHITE }} source={images.image.add} />
+					<LiveTrackingPlusIcon/>
 				</TouchableOpacity> : null}
 			</View>
 		</View>

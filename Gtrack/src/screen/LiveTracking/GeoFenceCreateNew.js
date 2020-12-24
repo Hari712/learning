@@ -38,7 +38,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{translate("Geofence_string")}</Text>
+                <Text style={styles.textViewStyle}>{translate("Create New")}</Text>
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown

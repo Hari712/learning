@@ -6,6 +6,7 @@ import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from 'react-native-material-textfield'
 import FontSize from './FontSize';
 import ShadowView from 'react-native-simple-shadow-view'
+import { NextIcon } from "./SvgComponent";
 
 
 
@@ -35,7 +36,8 @@ class DropDown extends React.Component {
 
         function handleRightAccessory() {
             return <View style={[styles.imageContainer, accessoryStyle]}>
-                <Image source={images.image.next} resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle} />
+                <NextIcon resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle}/>
+                {/* <Image source={images.image.next} resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle} /> */}
             </View>
         }
 

@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 
 const Settings = ({ navigation }) => {
 
@@ -21,6 +22,40 @@ const Settings = ({ navigation }) => {
 
   const SettingsItems = ({ item }) => {
     // const [listData, setListData] = useState(SETTINGS_MENU)
+
+    let IconConstant;
+
+    switch (item.title) {
+        case 'Profile': IconConstant = ProfileIcon            
+            break;
+
+        case 'Permission': IconConstant = PermissionIcon           
+            break;
+
+        case 'About': IconConstant = AboutIcon            
+            break;
+
+        case 'Notifications': IconConstant = NotificationIcon            
+            break;
+
+        case 'Rate Us': IconConstant = RateUsIcon            
+            break;
+
+        case 'Feedback': IconConstant = FeedbackIcon            
+            break;
+
+        case 'Advance Settings': IconConstant = AdvanceSettingsIcon            
+            break;
+
+        case 'Change Passcode': IconConstant = FeedbackIcon            
+            break;
+
+        case 'Logout': IconConstant = LogoutIcon            
+            break;
+    
+        default: 
+            break;
+    }
 
     const onPressHandle = ({ navigation, item }) => {
       if (item.title == 'Profile') {
@@ -74,12 +109,13 @@ const Settings = ({ navigation }) => {
         <View style={styles.mainViewStyle}>
 
           <View style={styles.leftMainViewStyle}>
-            <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' />
-            <Text style={styles.titleTextStyle}>{translate(item.title)}</Text>
+            <IconConstant style={styles.titleIconStyle} resizeMode='contain'/>
+            {/* <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' /> */}
+            <Text style={styles.titleTextStyle}> {translate(item.title)}</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Image source={item.nextArrow} style={{}} resizeMode='contain' />
+            <NextArrowIcon resizeMode='contain'/>
           </View>
 
         </View>

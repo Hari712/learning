@@ -19,7 +19,7 @@ import * as SettingsActions from '../Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info';
 import { translate } from '../../../App'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
-import { LoginInfoIcon, LoginWelcomeIcon,LoginInfoClickIcon } from '../../component/SvgComponent'
+import { LoginInfoIcon, LoginWelcomeIcon, LoginInfoClickIcon } from '../../component/SvgComponent'
 
 
 const Login = () => {
@@ -131,7 +131,6 @@ const Login = () => {
 
                 <View style={styles.container}>
                     <LoginWelcomeIcon/>
-                    {/* <Image source={images.image.defaultlogo} style={styles.imageStyle} /> */}
                     <View style={styles.subContner}>
                         <Text style={styles.welcomeText}>{translate("Login_string1")}</Text>
                     </View>

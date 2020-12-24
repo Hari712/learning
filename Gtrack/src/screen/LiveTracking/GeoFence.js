@@ -9,6 +9,7 @@ import { translate } from '../../../App';
 import { useSelector } from 'react-redux';
 import { isRoleRegular } from '../Selector';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon } from '../../component/SvgComponent';
 
 const GeoFence = ({ navigation }) => {
 
@@ -48,7 +49,7 @@ const GeoFence = ({ navigation }) => {
                     <Text style={styles.blueBoxTitle}> {item.title} </Text>
                     { !isRegular ?
                     <TouchableOpacity onPress={() => { setDeleteDialogBox(!deleteDialogBox) }}>
-                        <Image source={item.deleteIcon} resizeMode="contain" />
+                        <GeoFenceTrashIcon/>
                     </TouchableOpacity> : null}
                 </View>
 
@@ -72,7 +73,7 @@ const GeoFence = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             { !isRegular ?
             <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW)} >
-                <Text style={styles.createNewText}>{translate("Geofence_string")}</Text>
+                <Text style={styles.createNewText}>{translate("Create New")}</Text>
             </TouchableOpacity> : null }
 
             <FlatList
@@ -91,7 +92,7 @@ const GeoFence = ({ navigation }) => {
 
     <View style={styles.mainViewHeading}>
         <View style={styles.subHeadingView}>
-            <Text style={styles.headingText}>{translate("Geofence_string17")}</Text>
+            <Text style={styles.headingText}>{translate("View")}</Text>
             <TouchableOpacity onPress={() => { hideDialog() }}>
                 <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
             </TouchableOpacity>
@@ -100,7 +101,7 @@ const GeoFence = ({ navigation }) => {
         <View style={styles.popUpCardContainer}>
             <View style={styles.titleViewStyle}>
                 <Text style={styles.titleTextStyle}>{translate("Details")}</Text>
-                <Image source={images.geoFence.listIcon} resizeMode='contain' />
+                <GeoFenceListIcon width={12.287} height={16.382} resizeMode='contain' />
             </View>
 
             <View style={styles.lineStyle} />
@@ -121,12 +122,12 @@ const GeoFence = ({ navigation }) => {
                 <View style={styles.detailsMainView}>
                     <View style={styles.secondRowMainView}>
                         <View style={styles.secondRowSubView}>
-                            <Text style={styles.mainTextStyle}>{translate("Geofence_string6")}</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Colour")}</Text>
                             <View style={styles.deviceSummaryDetailView}></View>
                         </View>
 
                         <View style={styles.fontSizeMainView}>
-                            <Text style={styles.mainTextStyle}>{translate("Geofence_string7")}</Text>
+                            <Text style={styles.mainTextStyle}>{translate("FontSize")}</Text>
                             <Text style={styles.fontSizeStyle}>08</Text>
                         </View>
 
@@ -138,24 +139,24 @@ const GeoFence = ({ navigation }) => {
 
                     <View style={styles.secondRowMainView}>
                         <View style={styles.visibilityMainView}>
-                            <Text style={styles.mainTextStyle}>{translate("Geofence_string10")}</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Visibility")}</Text>
                             <Text style={styles.fontSizeStyle}>02 to 20</Text>
                         </View>
 
                         <View style={styles.areaMainView}>
-                            <Text style={styles.mainTextStyle}>{translate("Geofence_string11")}</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Area")}</Text>
                             <Text style={styles.fontSizeStyle}>100m2</Text>
                         </View>
 
                         <View style={styles.perimeterMainView}>
-                            <Text style={styles.mainTextStyle}>{translate("Geofence_string12")}</Text>
+                            <Text style={styles.mainTextStyle}>{translate("Perimeter")}</Text>
                             <Text style={styles.fontSizeStyle}>75m</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.secondRowMainView}>
                     <View style={styles.descriptionMainStyle}>
-                        <Text style={styles.mainTextStyle}>{translate("Geofence_string13")}</Text>
+                        <Text style={styles.mainTextStyle}>{translate("Image")}</Text>
                         <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
                     </View>
                 </View>
@@ -163,7 +164,7 @@ const GeoFence = ({ navigation }) => {
 
             <View style={styles.secondRowMainView}>
                 <View style={styles.descriptionMainStyle}>
-                    <Text style={styles.mainTextStyle}>{translate("Geofence_string14")}</Text>
+                    <Text style={styles.mainTextStyle}>{translate("Selected Devices")}</Text>
                     <Text style={styles.fontSizeStyle}>TrackPort International</Text>
                     <Text style={styles.fontSizeStyle}>Spark Nano 7 GPS Tracker</Text>
                 </View>
@@ -172,8 +173,8 @@ const GeoFence = ({ navigation }) => {
 
         <View style={styles.popUpCardContainer}>
             <View style={styles.titleViewStyle}>
-                <Text style={styles.titleTextStyle}>{translate("Geofence_string15")}</Text>
-                <Image source={images.geoFence.pin} resizeMode='contain' />
+                <Text style={styles.titleTextStyle}>{translate("Location")}</Text>
+                <PinIcon width={12.652} height={16.982} resizeMode='contain'/>
             </View>
 
             <View style={styles.lineStyle} />
@@ -186,7 +187,7 @@ const GeoFence = ({ navigation }) => {
         { !isRegular ?
         <View style={styles.buttonMainContainer}>
             <TouchableOpacity onPress={() => { }} style={styles.nextButton}>
-                <Text style={styles.nextButtonText}>{translate("Geofence_string16")}</Text>
+                <Text style={styles.nextButtonText}>{translate("Edit")}</Text>
             </TouchableOpacity>
         </View>  : null }
 
