@@ -58,7 +58,7 @@ return (
       <TouchableOpacity style={styles.header}>
         <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit': 'Create New'}</Text>
       </TouchableOpacity>
-      <View style={{paddingHorizontal:hp(4),marginTop:hp(3)}}>
+      <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5}}>
         <MultiSelect 
                 label={translate("Select_Device")}
                 dataList={devicesList} 
@@ -137,7 +137,6 @@ buttonContainer: {
     justifyContent:'space-evenly',
     //width:'75%',
     //margin:hp(3),
-    
     bottom:10,
     flex:1,
     alignItems:'flex-end'
