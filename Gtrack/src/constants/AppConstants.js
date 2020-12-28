@@ -6,6 +6,8 @@ export const EMAIL_PHONE_REGEX = /^(\d{10}|\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,
 export const EMAIL_VALIDATION_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 export const FEEDBACK_VALIDATION_ERROR = 'Please add feedback'
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+export const UNAUTHORIZED_ERROR_MESSAGE = 'Unauthorized : Invalid Token OR Token Expired'
+export const JWT_EXPIRED = "JWT expired"
 
 export const SCREEN_CONSTANTS = {
     SPLASH: 'Splash',

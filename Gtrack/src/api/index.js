@@ -1,8 +1,12 @@
 import ApiConstants from './ApiConstants';
-import axios from 'axios';
+import axios from 'axios'
+import { UNAUTHORIZED_ERROR_MESSAGE, USER_DATA, JWT_EXPIRED } from '../constants/AppConstants'
 import url from 'url'
 import { getItem, storeItem } from '../utils/storage'
-import _ from 'lodash';
+import store from '../store/Store'
+import isEmpty from 'lodash/isEmpty'
+import isString from 'lodash/isString'
+import * as LoginActions from '../screen/Login/Login.Action'
 
 export const api = axios.create({
     baseURL: url.format(ApiConstants.BASE_URL)
@@ -68,6 +72,28 @@ async function refreshToken(error) {
         const { status, data } = response
         console.log('Status.....', status)
         console.log('Error....', data)
+        const message = data && data.message ? data.message : ''
+        if ((status == 401 && message === UNAUTHORIZED_ERROR_MESSAGE)) {
+            clearToken()
+            const userInfo = await getItem(USER_DATA)
+           
+            if (!isEmpty(userInfo)) {
+                const refreshToken = userInfo.refreshToken
+                const userId = userInfo.userDTO.id
+                const requestBody = { refreshToken: refreshToken }
+                const url = ApiConstants.REFRESH_TOKEN(userId)
+                const response = await executeRequest('post', url, requestBody);
+                const result = response.result
+                setToken(result.access_token)
+                await storeItem(USER_DATA, result)
+                LoginActions.setLoginResponse(result)
+                originalRequest.headers['Authorization'] = 'Bearer ' + result.access_token;
+                return api(originalRequest);
+            }
+        }
+        else if (status == 500 && message.includes(JWT_EXPIRED)) {
+            setTimeout(() => store.dispatch(LoginActions.requestLogout()), 1000)
+        }
        
     } else {
        
@@ -99,7 +125,7 @@ const parseError = error => {
     if (error && error.response != undefined) {
         if (error.response.data) {
             var data = error.response.data;
-            if (_.isString(data)) {
+            if (isString(data)) {
                 message = data
             } else {
                 let errorData = data.message;

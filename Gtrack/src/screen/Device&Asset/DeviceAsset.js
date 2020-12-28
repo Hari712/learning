@@ -9,7 +9,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { isEmpty, set } from 'lodash';
-import { FontSize }from '../../component';
+import { FontSize } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App';
@@ -75,9 +75,9 @@ const DeviceAsset = ({ navigation }) => {
 
   function menuHandle(item) {
     if (item == 'Create') {
-         NavigationService.push(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
+      NavigationService.push(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
     } else if (item == 'Manage') {
-         NavigationService.push(SCREEN_CONSTANTS.MANAGE)
+      NavigationService.push(SCREEN_CONSTANTS.MANAGE)
     }
     // else if (item == 'Export All Devices') {
     //   exportAllDevices()
@@ -97,7 +97,7 @@ const DeviceAsset = ({ navigation }) => {
 
   function onDeviceExportError(error) {
     AppManager.hideLoader()
-    AppManager.showSimpleMessage('danger', { message: error , description: '' })
+    AppManager.showSimpleMessage('danger', { message: error, description: '' })
   }
 
   function fetchDeviceList() {
