@@ -5,7 +5,7 @@ import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from 'react-native-material-textfield'
 import FontSize from './FontSize';
-import ShadowView from 'react-native-simple-shadow-view'
+import ShadowView from "react-native-simple-shadow-view";
 
 let data = [];
 let selectedItem = [];
@@ -118,7 +118,7 @@ class MultiSelect extends React.Component {
                                         <TouchableOpacity onPress={() => otherProps.deleteHandle(item, key)} /*onPress={()=>{
                                 if (selectedItem.includes(item)) {
                                     valueSet(oldArray => oldArray.filter(function(value){return value != item}) )}}} */
-                                            style={{ paddingTop: hp(0.5), justifyContent: 'center' }}>
+                                            style={{ paddingTop: hp(0.5), justifyContent: 'center' }}>  
                                             <Image style={{ height: hp(2) }} source={images.manage.closeClick} />
                                         </TouchableOpacity> : null}
                                 </View>
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         backgroundColor: ColorConstant.WHITE,
         width: '100%',
-        paddingHorizontal: hp(2)
+        paddingHorizontal: hp(2),
     },
     inputContainer: {
         height: hp(6),

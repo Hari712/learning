@@ -7,7 +7,7 @@ import { FontSize }from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
 import { translate } from '../../../../App'
-import { ListIcon } from '../../../component/SvgComponent';
+import { BackIcon, ListIcon } from '../../../component/SvgComponent';
 
 
 const AlarmDetail = ({navigation,route}) => {
@@ -36,7 +36,7 @@ const AlarmDetail = ({navigation,route}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });

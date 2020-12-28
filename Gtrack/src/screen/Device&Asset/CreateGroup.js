@@ -134,8 +134,9 @@ function Group() {
 
 const styles = StyleSheet.create({
     contentContainerStyle: {
-        height: Dimensions.get('window').height,
-        backgroundColor: ColorConstant.WHITE
+        flexGrow:1,
+        //height: Dimensions.get('window').height,
+        backgroundColor: ColorConstant.WHITE,
     },
     container: {
         alignItems: 'center',
@@ -184,7 +185,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         //width:'75%',
         //margin:hp(3),
-        marginTop: hp(3),
+        marginVertical:hp(3),
+        // marginTop: hp(3),
         alignItems: 'center'
     }
 })

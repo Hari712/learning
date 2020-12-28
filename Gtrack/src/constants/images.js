@@ -23,6 +23,10 @@ const images = {
         rightIcon: require('../../assets/images/DashBoard/Right.png')
     },
 
+    manage: {
+        closeClick: require('../../assets/images/Manage/closeClick.png'),        
+    },
+
     notification: {
         crossIcon: require('../../assets/images/Notification/cross.png'),
         speed: require('../../assets/images/Notification/speed.png'),

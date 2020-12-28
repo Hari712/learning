@@ -32,8 +32,8 @@ const GeoFenceCreateNew = ({ navigation }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
-       // navigation.navigate('GeoFenceType', { type: role })
-        NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
+       navigation.navigate('GeoFenceType', { type: role })
+        // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
     }
 
     return (
