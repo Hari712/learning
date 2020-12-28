@@ -8,6 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BackIcon } from '../../component/SvgComponent';
 
 const GeoFenceDetails = ({ navigation }) => {
     const [name, setName] = useState();
@@ -31,7 +32,7 @@ const GeoFenceDetails = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             ),
         });

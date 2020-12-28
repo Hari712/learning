@@ -9,7 +9,7 @@ import { translate } from '../../../App';
 import { useSelector } from 'react-redux';
 import { isRoleRegular } from '../Selector';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon } from '../../component/SvgComponent';
+import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon, BackIcon } from '../../component/SvgComponent';
 
 const GeoFence = ({ navigation }) => {
 
@@ -30,7 +30,7 @@ const GeoFence = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

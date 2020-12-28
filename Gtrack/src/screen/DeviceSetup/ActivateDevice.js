@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import TextField from '../../component/TextField'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
-import { BarCodeScanIcon } from '../../component/SvgComponent'
+import { BackIcon, BarCodeScanIcon } from '../../component/SvgComponent'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
@@ -39,7 +39,7 @@ const ActivateDevice = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

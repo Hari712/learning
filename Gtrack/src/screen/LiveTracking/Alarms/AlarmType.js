@@ -7,7 +7,7 @@ import {FontSize, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { CircleIcon, CircleIconSelected, CheckboxIcon } from '../../../component/SvgComponent';
+import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon } from '../../../component/SvgComponent';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -39,7 +39,7 @@ const AlarmType = ({navigation,route}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });

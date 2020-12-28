@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as SettingsActions from '../Settings.Action'
 import { getLoginState } from '../../Selector';
 import { translate } from '../../../../App';
+import { BackIcon, SettingsEyeIcon, SettingsEyeIconClicked } from '../../../component/SvgComponent';
 
 const SettingsChangePassCode = ({navigation,route}) => {
 
@@ -41,12 +42,12 @@ const SettingsChangePassCode = ({navigation,route}) => {
                 fontWeight: '500',
                 //letterSpacing: 0,
                 textAlign:'center' }}>
-                Settings
+                {translate("Settings")}
             </Text>          
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });
@@ -55,7 +56,7 @@ const SettingsChangePassCode = ({navigation,route}) => {
 const oldPasscodeHandleRightAccessory = () =>{
     return(
         <TouchableOpacity onPress={()=>setOldpwdEyeClick(!oldpwdEyeClick)}>
-          <Image source={oldpwdEyeClick? images.image.changePasscode.eyeicon : images.image.changePasscode.eyeDisable} />
+          { oldpwdEyeClick ? <SettingsEyeIconClicked/> : <SettingsEyeIcon/> }
         </TouchableOpacity>
        
     )
@@ -64,7 +65,7 @@ const oldPasscodeHandleRightAccessory = () =>{
 const newPasscodeHandleRightAccessory = () =>{
     return(
       <TouchableOpacity onPress={()=>setNewpwdEyeClick(!NewpwdEyeClick)}>
-       <Image source={NewpwdEyeClick? images.image.changePasscode.eyeicon : images.image.changePasscode.eyeDisable} />
+        { NewpwdEyeClick ? <SettingsEyeIconClicked/> : <SettingsEyeIcon/> }
       </TouchableOpacity>
     )
 }

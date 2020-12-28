@@ -8,6 +8,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import { translate } from '../../../App'
+import { BackIcon } from '../../component/SvgComponent';
 
 const BarcodeScanner = ({ navigation }) => {
 
@@ -21,7 +22,7 @@ const BarcodeScanner = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

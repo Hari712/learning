@@ -9,7 +9,7 @@ import ShadowView from 'react-native-simple-shadow-view';
 import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { EditIcon } from '../../../component/SvgComponent';
+import { BackIcon, EditIcon } from '../../../component/SvgComponent';
 
 const Profile = ({ navigation }) => {
 
@@ -33,7 +33,7 @@ const Profile = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                   <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
             

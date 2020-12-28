@@ -14,6 +14,7 @@ import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { MenuIcon, MenuIconClicked } from '../../component/SvgComponent';
 
 const DeviceAsset = ({ navigation }) => {
 
@@ -41,7 +42,7 @@ const DeviceAsset = ({ navigation }) => {
       headerLeft: () => (null),
       headerRight: () => (
         <TouchableOpacity activeOpacity={1} onPress={() => setMenuClickEvent()}>
-          <Image source={menuClick ? images.image.menuclick : images.image.menu} style={styles.headerRight} />
+          {menuClick ? <MenuIconClicked style={styles.headerRight}/> :  <MenuIcon style={styles.headerRight}/> }
         </TouchableOpacity>
       )
     });

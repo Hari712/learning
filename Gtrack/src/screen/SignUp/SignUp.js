@@ -15,6 +15,7 @@ import { CountrySelection } from 'react-native-country-list'
 import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App'
+import { LoginWelcomeIcon } from '../../component/SvgComponent'
 
 const SignUp = () => {
 
@@ -99,7 +100,7 @@ const SignUp = () => {
                 enableOnAndroid={false}
                 scrollEnabled={false}>
                 <View style={styles.container}>
-                    <Image source={images.image.defaultlogo} style={styles.imageStyle} />
+                    <LoginWelcomeIcon width={59.196} height={79.371} style={styles.imageStyle}/>    
                     <View style={styles.textConatiner}>
                         <Text style={[styles.textStyle, { fontSize: FontSize.FontSize.regular, fontWeight: 'bold', lineHeight: hp(5) }]}>{translate("Signup_string1")}</Text>
                         <Text style={styles.textStyle}>{translate("Signup_string2")} </Text>

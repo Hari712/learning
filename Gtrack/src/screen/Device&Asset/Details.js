@@ -11,7 +11,7 @@ import { getLoginInfo } from '../Selector'
 import NavigationService from '../../navigation/NavigationService'
 import isEmpty from 'lodash/isEmpty'
 import { translate } from '../../../App';
-import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon } from '../../component/SvgComponent';
+import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon, ExportIcon, BackIcon } from '../../component/SvgComponent';
 
 const Details = ({ route, navigation }) => {
 
@@ -95,7 +95,7 @@ const Details = ({ route, navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });
@@ -266,7 +266,7 @@ const Details = ({ route, navigation }) => {
 
 
                         <TouchableOpacity style={styles.export} onPress={() => exportDeviceDetail()}>
-                            <Image source={images.image.export} />
+                            <ExportIcon/>
                             <Text style={{ color: ColorConstant.WHITE }}>{translate("Export Details")}</Text>
                         </TouchableOpacity>
                     </View>

@@ -7,6 +7,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BackIcon } from '../../component/SvgComponent';
 
 const GeoFenceCreateNew = ({ navigation }) => {
 
@@ -24,7 +25,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                   <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

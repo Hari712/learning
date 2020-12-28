@@ -7,7 +7,7 @@ import { translate } from '../../../../App';
 import { FontSize } from '../../../component';
 import { RadioButtonIcon,  RadioButtonIconClicked,
     ToggleButtonIcon,  ToggleButtonIconClicked,
-    NextArrowIcon,  NextArrowIconClicked } from '../../../component/SvgComponent';
+    NextArrowIcon,  NextArrowIconClicked, BackIcon } from '../../../component/SvgComponent';
 
 const AdvanceSettings = ({navigation,route}) => {
 
@@ -31,7 +31,7 @@ const AdvanceSettings = ({navigation,route}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { isRoleRegular } from '../../Selector';
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { DeleteIcon, EditIcon } from '../../../component/SvgComponent';
+import { BackIcon, DeleteIcon, EditIcon } from '../../../component/SvgComponent';
 
 
 const Alarms = ({navigation}) => {
@@ -40,7 +40,7 @@ const Alarms = ({navigation}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });
@@ -102,7 +102,7 @@ return (
   <View style={styles.container}>
     { !isRegular ?
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.header}>
-        <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Geofence_string")}</Text>
+        <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Create New")}</Text>
       </TouchableOpacity> : null }
 
       <FlatList

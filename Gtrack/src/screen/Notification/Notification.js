@@ -19,7 +19,6 @@ const Notification = ({ navigation }) => {
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <BackIcon style={{ marginLeft: hp(2) }}/>
-                    {/* <Image style={{ marginLeft: hp(2) }} source={images.image.back} /> */}
                 </TouchableOpacity>
             )
         });

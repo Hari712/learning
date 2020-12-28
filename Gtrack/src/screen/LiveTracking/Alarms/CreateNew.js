@@ -9,6 +9,7 @@ import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSel
 import { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon } from '../../../component/SvgComponent';
 
 
 const CreateNew = ({navigation,route}) => {
@@ -44,7 +45,7 @@ const CreateNew = ({navigation,route}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });

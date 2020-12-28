@@ -12,7 +12,7 @@ import { AppConstants } from '../../constants/AppConstants'
 import NavigationService from '../../navigation/NavigationService'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { translate } from '../../../App';
-import { DeviceAssetListIcon, PickupCarIcon, UsbIcon } from '../../component/SvgComponent';
+import { BackIcon, DeviceAssetListIcon, PickupCarIcon, UsbIcon } from '../../component/SvgComponent';
 
 const EditDeviceAsset = ({ route, navigation }) => {
 
@@ -101,7 +101,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

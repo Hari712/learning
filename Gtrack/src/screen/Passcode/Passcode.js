@@ -11,6 +11,7 @@ import { EditText, FontSize } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
 import AppManager from '../../constants/AppManager'
 import { translate } from '../../../App'
+import { LoginWelcomeIcon } from '../../component/SvgComponent'
 
 
 const Passcode = ({ navigation, route }) => {
@@ -63,7 +64,7 @@ const Passcode = ({ navigation, route }) => {
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
-                <Image source={images.image.defaultlogo} />
+                <LoginWelcomeIcon/>
                 <View style={styles.subContainer}>
                     <Text style={styles.resetEmailText}>{translate("Passcode_string1")}</Text>
                     <Text style={styles.textStyle}>{translate("Passcode_string2")}</Text>
