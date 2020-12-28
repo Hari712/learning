@@ -8,6 +8,7 @@ import { Dialog, ExapandableListView, TextField, DropDown, FontSize } from '../.
 import GroupList from './GroupList'
 import AssetList from './AssetList'
 import { translate } from '../../../App';
+import { BackIcon } from '../../component/SvgComponent';
 
 
 const CONTENT = [
@@ -207,7 +208,7 @@ const Manage = ({ route, navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

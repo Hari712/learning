@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput, DeviceEventEmitter } from 'react-native';
-import images from '../constants/images'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { DropDown, TextField, DeleteConfirmationDialog } from '../component'
@@ -9,12 +8,13 @@ import AppManager from '../constants/AppManager'
 import { getAssetTypeListInfo, getLoginInfo } from '../screen/Selector'
 import isEmpty from 'lodash/isEmpty'
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
+import { DeviceAssetEditIconClicked, DeviceAssetEditIcon, TrashIcon } from './SvgComponent';
 
 const AssteItem = (props) => {
 
     const dispatch = useDispatch()
 
-    const { item, index } = props
+    const { item, index, editClick, setEditClick } = props
 
     const { loginInfo ,assetTypeList } = useSelector((state) => ({
         loginInfo: getLoginInfo(state),
@@ -25,7 +25,7 @@ const AssteItem = (props) => {
     const { assetName, assetType, description } = item
     const [isDeleteConfirmationDialogVisible, setIsDeleteConfirmationDialog] = useState(false)
     const arrAssetTypeList = isEmpty(assetTypeList) ? [] : assetTypeList.map((item) => item.assetType)
-    const [editClick, setEditClick] = useState()
+    // const [editClick, setEditClick] = useState()
     const [assetLtype, setAssetLType] = useState(assetType);
     const [assetLName, setAssetLName] = useState(assetName);
     const [assetLdescription, setAssetLDescription] = useState(description)
@@ -122,13 +122,12 @@ const AssteItem = (props) => {
                 <View style={styles.whiteCard}>
                     <Text style={{ flex: 1, color: (index == editClick) ? ColorConstant.BLUE : ColorConstant.BLACK }}>{assetName}</Text>
                     <TouchableOpacity onPress={() => {
-                        (index == editClick) ? setEditClick(-1) :
-                            setEditClick(index)
+                        (index == editClick) ? setEditClick(-1) : setEditClick(index)
                     }} style={{ marginRight: hp(2) }}>
-                        <Image source={(index == editClick) ? images.manage.editClick : images.manage.edit} />
+                        {(index == editClick) ? <DeviceAssetEditIconClicked width={16.93} height={17.011}/> : <DeviceAssetEditIcon width={16.93} height={17.011}/>}
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => showDeleteAssetConfirmationDialog()} >
-                        <Image source={images.manage.trashBlack} />
+                        <TrashIcon width={17.567} height={19.547}/>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -12,6 +12,7 @@ import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
 import { translate } from '../../../App'
+import { LoginIcon, LoginWelcomeIcon } from '../../component/SvgComponent'
 
 const ResetPasscode = () => {
     const [email, setEmail] = useState('')
@@ -50,7 +51,7 @@ const ResetPasscode = () => {
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
-                <Image source={images.image.defaultlogo} />
+                <LoginWelcomeIcon/>
                 <View style={styles.headingMainStyle}>
                     <Text style={styles.headingTextStyle}>{translate("Reset_Passcode_string1")}</Text>
                 </View>
@@ -72,7 +73,8 @@ const ResetPasscode = () => {
                 <View style={styles.LoginIntoMainView}>
                     <Text style={styles.LoginIntoTextView}>{translate("Reset_Passcode_string3")}  </Text>
                     <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
-                        <Image source={images.image.login} />
+                        <LoginIcon/>
+                        {/* <Image source={images.image.login} /> */}
                     </TouchableOpacity>
                 </View>
 

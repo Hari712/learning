@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { CompleteSetupImage } from '../../component/SvgComponent'
+import { BackIcon, CompleteSetupImage } from '../../component/SvgComponent'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
@@ -20,7 +20,7 @@ const CompleteSetup = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

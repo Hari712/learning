@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { translate } from '../../../App'
 import { FontSize } from '../../component';
+import { BackIcon, ListIcon, SensorIcon } from '../../component/SvgComponent';
 
 
 const DeviceInfo = ({ navigation, route }) => {
@@ -24,7 +24,7 @@ const DeviceInfo = ({ navigation, route }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{ marginLeft: hp(2) }}/>
                 </TouchableOpacity>
             )
         });
@@ -40,7 +40,7 @@ const DeviceInfo = ({ navigation, route }) => {
                 <View style={styles.cardContainer}>
                     <View style={styles.titleViewStyle}>
                         <Text style={styles.titleTextStyle}>{translate("Sensor_Info_string2")}</Text>
-                        <Image source={images.sensorInfo.list} resizeMode='contain' />
+                        <ListIcon/>
                     </View>
 
                     <View style={styles.lineStyle} />
@@ -93,7 +93,7 @@ const DeviceInfo = ({ navigation, route }) => {
                 <View style={styles.cardContainer}>
                     <View style={styles.titleViewStyle}>
                         <Text style={styles.titleTextStyle}>{translate("Sensor")}</Text>
-                        <Image source={images.sensorInfo.sensor} resizeMode='contain' />
+                        <SensorIcon resizeMode='contain'/>
                     </View>
 
                     <View style={styles.lineStyle} />

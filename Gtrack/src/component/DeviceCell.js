@@ -1,13 +1,13 @@
 import React from 'react'
-import { View, TouchableOpacity, StyleSheet, Text, Image, Dimensions } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text, Dimensions } from 'react-native'
 import FontSize from './FontSize'
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import images from '../constants/images'
 import NavigationService from '../navigation/NavigationService'
 import Tooltip from 'rn-tooltip'
 import { translate } from '../../App'
 import { SCREEN_CONSTANTS } from '../constants/AppConstants'
+import { TruckIcon, TravelIcon, ShuttleVanIcon, MachineryIcon, CarIcon, KidsIcon, PersonnelItemIcon, FamilyVanIcon, BusIcon, TrailerIcon, EditIcon } from './SvgComponent'
 
 const DeviceCell = (props) => {
 
@@ -19,6 +19,43 @@ const DeviceCell = (props) => {
     const devicePlan = item.devicePlan ? item.devicePlan : null
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
+
+    let IconConstantDeviceCell;
+
+    switch ( item.assetDTO && item.assetDTO.assetType) {
+        case 'Family Item': IconConstantDeviceCell = FamilyVanIcon            
+            break;
+
+        case 'Personnel Item': IconConstantDeviceCell = PersonnelItemIcon           
+            break;
+
+        case 'Bus': IconConstantDeviceCell = BusIcon            
+            break;
+
+        case 'Machinery': IconConstantDeviceCell = MachineryIcon            
+            break;
+
+        case 'Van': IconConstantDeviceCell = ShuttleVanIcon            
+            break;
+
+        case 'Truck': IconConstantDeviceCell = TruckIcon            
+            break;
+
+        case 'Car': IconConstantDeviceCell = CarIcon            
+            break;
+
+        case 'Travel': IconConstantDeviceCell = TravelIcon            
+            break;
+
+        case 'Kids': IconConstantDeviceCell = KidsIcon            
+            break;
+
+        case 'Trailer': IconConstantDeviceCell = TrailerIcon            
+            break;
+    
+        default: IconConstantDeviceCell = CarIcon ;
+            break;
+    }
 
     return (
         <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
@@ -32,18 +69,18 @@ const DeviceCell = (props) => {
                 </View>
                 <View style={styles.toolTip}>
                     <Tooltip
-                        popover={<Text style={styles.toolTipText}>{item.desc}</Text>}
+                        popover={<Text style={styles.toolTipText}>{item.assetDTO && item.assetDTO.description ? item.assetDTO.description : '-'}</Text>}
                         backgroundColor={ColorConstant.WHITE}
                         overlayColor={ColorConstant.TRANSPARENT}
                         pointerStyle={styles.pointerStyle}
                         containerStyle={styles.toolTipContainer}
                     >
-                        {item.image ? <Image style={styles.image} source={item.image} /> : null}
+                        <IconConstantDeviceCell />
                     </Tooltip>
                 </View>
 
                 <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
-                    <Image source={images.image.edit} />
+                    <EditIcon width={11.947} height={11.947}/>
                 </TouchableOpacity>
             </View>
 
@@ -65,7 +102,9 @@ const DeviceCell = (props) => {
 
             {/* Active/Inactive body */}
             <View style={[styles.activeInactiveText,{backgroundColor:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.LIGHTENGREEN : ColorConstant.LIGHTENPINK}]}>
-                <Text style={{fontSize:FontSize.FontSize.small,color:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK}}>{deviceDTO.deviceStatus == "Active" ? "Active": "Inactive" }</Text>
+                <Text style={{fontSize:FontSize.FontSize.small,color:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK}}>
+                    {deviceDTO.deviceStatus == "ACTIVE" ? "Active": "Inactive" }
+                </Text>
             </View>
 
         </TouchableOpacity>
@@ -76,7 +115,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         //width:'100%',
         width: Dimensions.get('screen').width - 30,
-        marginTop: hp(2),
+        marginVertical: hp(1.5),
         // height:hp(18),
         alignSelf: 'center',
         backgroundColor: ColorConstant.WHITE,
@@ -120,8 +159,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.small
     },
     toolTipText: {
-        alignSelf: 'flex-start',
-        fontSize: FontSize.FontSize.medium
+        alignSelf: 'center',
+        fontSize: FontSize.FontSize.medium,
     },
     pointerStyle: {
         elevation: 0.1,
@@ -149,7 +188,8 @@ const styles = StyleSheet.create({
     },
     toolTip: {
         marginTop: hp(1),
-        left: 10
+        left: 10,
+        zIndex:10
     },
     textStyle: {
         margin: hp(0.5),

@@ -1,4 +1,5 @@
 import images from "./images";
+import {XyzIcon } from "../component/SvgComponent"
 
 const iconConstant = (type) => {
     switch (type) {

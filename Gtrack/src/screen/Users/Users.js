@@ -13,6 +13,7 @@ import AppManager from '../../constants/AppManager';
 import Switches from 'react-native-switches'
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { UsersEditIcon, EmailIcon, UserAddIcon, FilterIcon, FilterIconClicked, PhoneIcon } from '../../component/SvgComponent';
 
 let searchData;
 
@@ -92,7 +93,7 @@ const Users = ({navigation}) => {
               <Switches shape={'line'} buttonColor={ColorConstant.ORANGE} showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
               <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
               <TouchableOpacity onPress={()=>{navigation.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
-                <Image source={images.user.edit} /> 
+                <UsersEditIcon/>
               </TouchableOpacity>       
           </View>
 
@@ -145,9 +146,11 @@ const Users = ({navigation}) => {
           {/* Email and Phone */}
           <View style={styles.horizontalLine} />
             <View style={styles.emailPhone}>
-              <Image style={styles.emailImage} source={images.user.email} />
+              <EmailIcon />
+              {/* <Image style={styles.emailImage} source={images.user.email} /> */}
               <Text style={styles.emailText}>    {item.email}</Text>
-              <Image style={styles.phoneImage} source={images.user.phone} />
+              <PhoneIcon/>
+              {/* <Image style={styles.phoneImage} source={images.user.phone} /> */}
               <Text style={styles.phoneText}>  {item.phoneNo}</Text>
             </View>
     </View>
@@ -226,11 +229,11 @@ const Users = ({navigation}) => {
                     
                 />
                 <TouchableOpacity  onPress={()=> setFilterClick(!filterClick)} >
-                  <Image source={filterClick? images.user.filterClick:images.user.filter } />
+                  {filterClick? <FilterIconClicked/> : <FilterIcon/> }
                 </TouchableOpacity>
             </View>
             <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
-              <Image source={images.user.add}/>
+              <UserAddIcon/>
             </TouchableOpacity>
           
           </View>

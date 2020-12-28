@@ -8,13 +8,15 @@ import CustomButton from '../../component/Button'
 import FontSize from '../../component/FontSize'
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { GtrackLogoIcon } from '../../component/SvgComponent'
 
 const GetStarted = (navigation) => {
     return ( 
         <View style={styles.container}>
             <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
 
-                <Image style={styles.imageStyle} source={images.image.logo}/>
+                <GtrackLogoIcon/>
+                {/* <Image style={styles.imageStyle} source={images.image.logo}/> */}
 
                     <View style={styles.mainViewStyle}>
                         <View style={styles.viewStyle}>

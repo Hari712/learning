@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { isRoleRegular } from '../../Selector';
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon, DeleteIcon, EditIcon } from '../../../component/SvgComponent';
 
 
 const Alarms = ({navigation}) => {
@@ -39,7 +40,7 @@ const Alarms = ({navigation}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });
@@ -63,12 +64,12 @@ const Alarms = ({navigation}) => {
 
               { !isRegular ?
               <TouchableOpacity style={{zIndex:5, padding: hp(1.5)}} onPress={()=>{navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW,{editData:item})}}>
-                <Image source={images.liveTracking.edit} />
+                <EditIcon  width={13.947}  height={13.947}/>
               </TouchableOpacity> : null }
 
               { !isRegular ?
               <TouchableOpacity onPress={() => handleRemove(item.id)} style={{zIndex:5, padding:hp(1)}} >
-                <Image source={images.liveTracking.trash} /> 
+                <DeleteIcon width={13.943} height={15.463}/>
               </TouchableOpacity> : null }       
           </View>
           
@@ -101,7 +102,7 @@ return (
   <View style={styles.container}>
     { !isRegular ?
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.header}>
-        <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Geofence_string")}</Text>
+        <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Create New")}</Text>
       </TouchableOpacity> : null }
 
       <FlatList

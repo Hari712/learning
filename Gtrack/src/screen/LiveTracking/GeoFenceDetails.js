@@ -8,6 +8,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BackIcon } from '../../component/SvgComponent';
 
 const GeoFenceDetails = ({ navigation }) => {
     const [name, setName] = useState();
@@ -31,7 +32,7 @@ const GeoFenceDetails = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             ),
         });
@@ -51,7 +52,7 @@ const GeoFenceDetails = ({ navigation }) => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{translate("Geofence_Details_string4")}</Text>
+                <Text style={styles.textViewStyle}>{translate("Polygon_Type")}</Text>
             </View>
 
             <View style={styles.subContainer}>
@@ -87,7 +88,7 @@ const GeoFenceDetails = ({ navigation }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setColorPicker}
-                            label={translate("Geofence_Details_string")}
+                            label={translate("Pick_Color")}
                             value={colorPicker}
                             onChangeText={(text) => setColorPicker(text)}
                             style={styles.textNameStyle}
@@ -101,7 +102,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         <View style={styles.dropdownView}>
                             <DropDown
                                 defaultValue={fontsize}
-                                label={translate("Geofence_string7")}
+                                label={translate("FontSize")}
                                 valueSet={setFontsize}
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
@@ -109,7 +110,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                             <DropDown
                                 defaultValue={visibilityFrom}
-                                label={translate("Geofence_Details_string1")}
+                                label={translate("Select_Visibility_From")}
                                 valueSet={setVisibilityFrom}
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
@@ -117,7 +118,7 @@ const GeoFenceDetails = ({ navigation }) => {
 
                             <DropDown
                                 defaultValue={visibilityTo}
-                                label={translate("Geofence_Details_string2")}
+                                label={translate("Select_Visibility_To")}
                                 valueSet={setVisibilityTo}
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
@@ -127,7 +128,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         {/* {uploadImage ? */}
                         <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
                             <Image source={images.geoFence.uploadGrey} resizeMode="contain" />
-                            <Text style={styles.uploadText}>{translate("Geofence_Details_string3")}</Text>
+                            <Text style={styles.uploadText}>{translate("Upload Image")}</Text>
                         </TouchableOpacity>
                         {/* :
                             <Image source ={{uri:uploadImage}}/> */}

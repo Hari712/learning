@@ -13,6 +13,7 @@ import isEmpty from 'lodash/isEmpty'
 import DeviceInfo from 'react-native-device-info';
 import { ScrollView } from 'react-native-gesture-handler';
 import { translate } from '../../../../App';
+import { BackIcon } from '../../../component/SvgComponent';
 
 const Feedback = ({ navigation }) => {
 
@@ -41,7 +42,7 @@ const Feedback = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{ marginLeft: hp(2) }}/>
                 </TouchableOpacity>
             )
         });

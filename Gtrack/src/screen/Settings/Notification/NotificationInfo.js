@@ -5,6 +5,7 @@ import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { translate } from '.../../../App';
 import { FontSize }from '../../../component';
+import { BackIcon } from '../../../component/SvgComponent';
 
 const NotificationInfo = ({ navigation }) => {
 
@@ -22,7 +23,7 @@ const NotificationInfo = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{ marginLeft: hp(2) }}/>
                 </TouchableOpacity>
             )
         });

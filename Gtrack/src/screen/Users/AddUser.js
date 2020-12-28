@@ -1,6 +1,5 @@
 import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform } from 'react-native';
-import images from '../../constants/images';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../component';
@@ -13,6 +12,7 @@ import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
 import ShadowView from 'react-native-simple-shadow-view'
 import { translate } from '../../../App';
+import { BackIcon, UsersInfoIcon, UsersInfoIconClicked } from '../../component/SvgComponent';
 
 const AddUser = ({ navigation, route }) => {
 
@@ -114,7 +114,7 @@ const AddUser = ({ navigation, route }) => {
       ),
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+          <BackIcon style={{ marginLeft: hp(2) }}/>
         </TouchableOpacity>
       )
     });
@@ -187,7 +187,7 @@ const AddUser = ({ navigation, route }) => {
               />
             </View>
             <TouchableOpacity onPress={() => setInfoClick(!infoClick)} style={styles.infoButton}>
-              <Image source={infoClick ? images.user.infoClick : images.user.info} />
+              {infoClick ? <UsersInfoIconClicked/> : <UsersInfoIcon/> } 
             </TouchableOpacity>
 
           </View>
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   infoButton: {
     paddingHorizontal: hp(2),
-    paddingVertical: hp(5)
+    paddingVertical: hp(4)
   },
   role: {
     //fontSize:FontSize.FontSize.small,

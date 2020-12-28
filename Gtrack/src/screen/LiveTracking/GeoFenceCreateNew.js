@@ -7,6 +7,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BackIcon } from '../../component/SvgComponent';
 
 const GeoFenceCreateNew = ({ navigation }) => {
 
@@ -24,7 +25,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                   <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });
@@ -38,7 +39,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{translate("Geofence_string")}</Text>
+                <Text style={styles.textViewStyle}>{translate("Create New")}</Text>
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
@@ -65,12 +66,13 @@ const GeoFenceCreateNew = ({ navigation }) => {
                         defaultValue={role}
                         valueSet={setRole}
                         dataList={DATA}
+                        contentInset={{ input:13, label: 4.5 }}
                         outerStyle={[styles.outerViewStyle]}
                         dropdownStyle={styles.dropdownStyle}
                         dataRowStyle={styles.dataRowStyle}
                         dataTextStyle={{ color: ColorConstant.BLUE, marginTop: hp(1), marginBottom: hp(1) }}
-                        labelFontSize={hp(1.4)}
-                        labelTextStyle={{ top: hp(0.5) }}
+                        // labelFontSize={hp(1.4)}
+                        // labelTextStyle={{ top: hp(0.5) }}
                     />
                 </View>
             </View>

@@ -9,6 +9,7 @@ import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon } from '../../../component/SvgComponent';
 
 
 const EditProfile = ({ navigation, route, item }) => {
@@ -68,7 +69,7 @@ const EditProfile = ({ navigation, route, item }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

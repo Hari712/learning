@@ -15,6 +15,7 @@ import isEmpty from 'lodash/isEmpty'
 import * as DeviceActions from './Device.Action'
 import mapKeys from 'lodash/mapKeys'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { BackIcon } from '../../component/SvgComponent'
 
 
 const AssignGroup = ({ navigation, route }) => {
@@ -46,7 +47,7 @@ const AssignGroup = ({ navigation, route }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

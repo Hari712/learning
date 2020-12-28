@@ -11,6 +11,7 @@ import { getLoginInfo } from '../Selector'
 import isEmpty from 'lodash/isEmpty'
 import Group from './CreateGroup'
 import CreateAsset from './CreateAsset'
+import { BackIcon } from '../../component/SvgComponent'
 
 const CreateDeviceAsset = ({ route, navigation }) => {
 
@@ -52,7 +53,7 @@ const CreateDeviceAsset = ({ route, navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });

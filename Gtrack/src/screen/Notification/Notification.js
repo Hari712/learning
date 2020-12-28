@@ -7,6 +7,7 @@ import { FontSize }from '../../component';
 import { FlatList } from 'react-native-gesture-handler';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App'
+import { BackIcon, GreyCrossIcon } from '../../component/SvgComponent'
 
 const Notification = ({ navigation }) => {
 
@@ -17,7 +18,7 @@ const Notification = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{ marginLeft: hp(2) }}/>
                 </TouchableOpacity>
             )
         });
@@ -60,7 +61,7 @@ const Notification = ({ navigation }) => {
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
                             <Text style={styles.timeTextStyle}>{item.time}</Text>
-                            <Image source={item.crossIcon} style={styles.crossImageStyle} resizeMode='contain' />
+                            <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
                         </View>
                     </View>
                 </View>

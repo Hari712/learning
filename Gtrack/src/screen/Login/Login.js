@@ -19,6 +19,7 @@ import * as SettingsActions from '../Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info';
 import { translate } from '../../../App'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
+import { LoginInfoIcon, LoginWelcomeIcon, LoginInfoClickIcon } from '../../component/SvgComponent'
 
 
 const Login = () => {
@@ -129,7 +130,7 @@ const Login = () => {
                 scrollEnabled={false}>
 
                 <View style={styles.container}>
-                    <Image source={images.image.defaultlogo} style={styles.imageStyle} />
+                    <LoginWelcomeIcon/>
                     <View style={styles.subContner}>
                         <Text style={styles.welcomeText}>{translate("Login_string1")}</Text>
                     </View>
@@ -140,7 +141,7 @@ const Login = () => {
                         placeholder={translate("Login_string2")}
                         rightContainer={
                             <TouchableOpacity onPress={() => setIsClickInfo(!isClickInfo)} style={{ width: wp(3), zIndex: 1 }}>
-                                <Image source={isClickInfo ? images.login.infoClick : images.login.info} />
+                                {isClickInfo ? <LoginInfoClickIcon/> : <LoginInfoIcon/>} 
                             </TouchableOpacity>
                         }
                         style={{ paddingHorizontal: hp(1.5), alignItems: 'center' }}

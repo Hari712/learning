@@ -7,6 +7,7 @@ import { FontSize, MapView} from '../../component'
 import Slider from "react-native-slider";
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BackIcon } from '../../component/SvgComponent';
 
 const GeoFenceType = ({ navigation, route }) => {
     const { type } = route.params;
@@ -22,7 +23,7 @@ const GeoFenceType = ({ navigation, route }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={styles.headerLeftStyle} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             ),
             headerRight: () => (

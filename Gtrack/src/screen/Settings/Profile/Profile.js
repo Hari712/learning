@@ -9,6 +9,7 @@ import ShadowView from 'react-native-simple-shadow-view';
 import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon, EditIcon } from '../../../component/SvgComponent';
 
 const Profile = ({ navigation }) => {
 
@@ -32,7 +33,7 @@ const Profile = ({ navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                   <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
             
@@ -69,7 +70,7 @@ const Profile = ({ navigation }) => {
                 <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
                     <TouchableOpacity onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData}) }} >
-                        <Image source={images.image.edit} />
+                        <EditIcon width={12.947} height={12.947}/>
                     </TouchableOpacity>
                 </View>
 

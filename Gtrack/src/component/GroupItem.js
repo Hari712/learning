@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native';
-import images from '../constants/images'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ColorConstant } from '../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import FontSize from './FontSize'
@@ -11,6 +10,7 @@ import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
 import { getLoginInfo } from '../screen/Selector';
 import AppManager from '../constants/AppManager';
 import CustomDialog from './Dialog';
+import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon } from './SvgComponent';
 
 const GroupItem = props => {
 
@@ -128,7 +128,8 @@ const GroupItem = props => {
                         <Text style={{ color: ColorConstant.ORANGE, fontSize: FontSize.FontSize.medium, fontWeight: 'bold' }}>Add Device</Text>
                     </View>
                     <TouchableOpacity onPress={() => setAddClick(-1)} style={{ alignSelf: 'center', height: hp(2) }}>
-                        <Image source={images.manage.close} />
+                        <CrossIcon/>
+                        {/* <Image source={images.manage.close} /> */}
                     </TouchableOpacity>
                 </View>
                 <View style={{ width:wp(85), alignSelf: 'center' }}>
@@ -165,24 +166,24 @@ const GroupItem = props => {
 
             {/* Arrow Left Side */}
             <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
-                <Image source={(index == selectedKey) ? images.image.upArrow : images.image.downarrow} />
+                {(index == selectedKey) ? <UpArrowIcon/> : <DownArrowIcon/> }
             </TouchableOpacity>
 
             <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
                 {/* heading */}
                 <View  style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                     <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                    <TouchableOpacity onPress={()=> onDeleteGroup()} >
-                        <Image style={styles.icon} source={images.image.trashBlack} />
+                    <TouchableOpacity style={{flex:0.3}} onPress={()=> onDeleteGroup()} >
+                        <TrashIcon style={styles.icon} width={16.567} height={18.547}/>
                     </TouchableOpacity>                   
-                    <TouchableOpacity style={{ alignSelf: 'center' }} 
+                    <TouchableOpacity style={{flex:0.3}} style={{ alignSelf: 'center' }} 
                         onPress={() => {
                             (item.id == addClick) ?
                                 setAddClick(-1) :
                                 setAddClick(item.id)
                         }}
                     >
-                        <Image style={styles.icon} source={index == addClick ? images.image.orangeAdd : images.image.add} />
+                        {item.id == addClick ? <AddIconClicked width={14.487} height={14.487}/> : <AddIcon width={14.487} height={14.487}/> }
                     </TouchableOpacity>
                 </View>
 
@@ -197,7 +198,7 @@ const GroupItem = props => {
                                     <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                                     <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
                                     <TouchableOpacity onPress={()=>onDeleteDevice(subitem.id, subkey)}>
-                                    <Image style={styles.icon} source={images.image.trash} />
+                                        <TrashBlueIcon width={16.567} height={18.547} style={styles.icon}/>
                                     </TouchableOpacity>
                                 </View>
                             )

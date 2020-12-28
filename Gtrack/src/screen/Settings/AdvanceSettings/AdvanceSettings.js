@@ -5,6 +5,9 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { translate } from '../../../../App';
 import { FontSize } from '../../../component';
+import { RadioButtonIcon,  RadioButtonIconClicked,
+    ToggleButtonIcon,  ToggleButtonIconClicked,
+    NextArrowIcon,  NextArrowIconClicked, BackIcon } from '../../../component/SvgComponent';
 
 const AdvanceSettings = ({navigation,route}) => {
 
@@ -28,7 +31,7 @@ const AdvanceSettings = ({navigation,route}) => {
         ),  
         headerLeft:() => (
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <Image style={{marginLeft:hp(2)}} source={images.image.back}/>
+              <BackIcon style={{marginLeft:hp(2)}}/>
             </TouchableOpacity>
         )  
     });
@@ -50,18 +53,22 @@ return (
                     <Text style={styles.subText}>English</Text>
                 </View>
                 <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
-                  <Image source={isLanguageClick?images.image.settings.down :images.image.settings.arrow} />
+                  { 
+                    isLanguageClick ?
+                      <NextArrowIconClicked /> :
+                      <NextArrowIcon />
+                  }
                 </TouchableOpacity>
             </View>
 
             {isLanguageClick?
                 <View style={{flexDirection:'row'}}>
                     <View style={{flexDirection:'row',flex:1}}>
-                        <Image source={images.image.settings.ellipseClick} />
+                        <RadioButtonIconClicked />
                         <Text style={styles.language}> English</Text>
                     </View>
                     <View style={{flexDirection:'row',flex:2}}>
-                        <Image source={images.image.settings.ellipse} />
+                        <RadioButtonIcon />
                         <Text style={styles.language}> French</Text>
                     </View>
                 </View>
@@ -74,7 +81,11 @@ return (
                     <Text style={styles.subText}>Use network provided time</Text> 
                 </View>
                 <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{alignSelf:'center'}}>
-                <Image source={isToggleClick? images.image.settings.toggleOff : images.image.settings.toggleOn} />
+                  {
+                    isToggleClick ?
+                    <ToggleButtonIcon /> :
+                    <ToggleButtonIconClicked />
+                  }
                 </TouchableOpacity>
             </View>
 
@@ -87,7 +98,11 @@ return (
             <View style={styles.unitContainer}>
                 <Text style={styles.unit}>{translate("Units")}</Text>
                 <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)}>
-                    <Image  source={isUnitClick?images.image.settings.down : images.image.settings.arrow} />
+                  {
+                    isUnitClick ? 
+                      <NextArrowIconClicked />:
+                      <NextArrowIcon />
+                  }
                 </TouchableOpacity>
             </View>
 
@@ -96,9 +111,10 @@ return (
                     <View>
                         <Text style={[styles.language,{color:ColorConstant.BLUE}]}>{translate("Distance")}</Text>
                         <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
-                            <Image source={images.image.settings.ellipseClick} />
+                            <RadioButtonIconClicked />
                             <Text style={styles.unitText}>{translate("Miles")}</Text>
-                            <Image source={images.image.settings.ellipse} />
+                            
+                            <RadioButtonIcon />
                             <Text style={[styles.unitText,{flex:2}]}>{translate("Kilometer")}</Text>
                         </View>  
                     </View>
@@ -106,9 +122,10 @@ return (
                     <View style={{marginTop:hp(3)}}>
                         <Text style={[styles.language,{color:ColorConstant.BLUE}]}>{translate("Temperature")}</Text>
                         <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
-                            <Image source={images.image.settings.ellipseClick} />
+                            <RadioButtonIconClicked />
                             <Text style={styles.unitText}>{translate("Celsius")} </Text>
-                            <Image source={images.image.settings.ellipse} />
+
+                            <RadioButtonIcon />
                             <Text style={[styles.unitText,{flex:2}]}>{translate("Fahrenheit")}</Text>
                         </View>  
                     </View>

@@ -12,6 +12,7 @@ import { AppConstants } from '../../constants/AppConstants'
 import NavigationService from '../../navigation/NavigationService'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { translate } from '../../../App';
+import { BackIcon, DeviceAssetListIcon, PickupCarIcon, UsbIcon } from '../../component/SvgComponent';
 
 const EditDeviceAsset = ({ route, navigation }) => {
 
@@ -100,7 +101,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
             ),
             headerLeft: () => (
                 <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <Image style={{ marginLeft: hp(2) }} source={images.image.back} />
+                    <BackIcon style={{marginLeft:hp(2)}}/>
                 </TouchableOpacity>
             )
         });
@@ -191,7 +192,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
         <View style={styles.container}>
             <View style={styles.subContainer}>
                 <View style={styles.device}>
-                    <Image style={{ resizeMode: 'stretch' }} source={images.image.usb} />
+                    <UsbIcon width={13.892} height={15.213} style={{ resizeMode: 'stretch' }}/>
                     <Text style={styles.textStyle}>{translate("Device")}</Text>
                 </View>
                 <View style={styles.id}>
@@ -205,7 +206,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
                 <View style={styles.horizontalLine} />
 
                 <View style={[styles.device, { marginTop: hp(2) }]}>
-                    <Image style={{ resizeMode: 'stretch' }} source={images.image.pickupcar} />
+                    <PickupCarIcon width={16.501} height={14.563}/>
                     <Text style={styles.textStyle}>{translate("Asset")}</Text>
                 </View>
 
@@ -227,7 +228,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
                 <View style={styles.horizontalLine} />
 
                 <View style={[styles.device,{marginTop:hp(2)}]}>
-                    <Image  style={{resizeMode:'stretch'}} source={images.image.list}/>
+                    <DeviceAssetListIcon width={11.624} height={15.166}/>
                     <Text style={styles.textStyle}>{translate("Select Group")}</Text>
                 </View>
 
