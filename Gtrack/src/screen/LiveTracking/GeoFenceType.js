@@ -28,7 +28,7 @@ const GeoFenceType = ({ navigation, route }) => {
             ),
             headerRight: () => (
                 <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS)}>
-                    <Text style={styles.headerRightStyle}>{translate("Next_string")}</Text>
+                    <Text style={styles.headerRightStyle}>{translate("Next")}</Text>
                 </TouchableOpacity>
             )
         });
