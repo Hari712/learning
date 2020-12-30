@@ -17,7 +17,8 @@ const CreateNew = ({navigation,route}) => {
   const dispatch = useDispatch()
 
   const [selectedDevice, setSelectedDevice] = useState([]);
-  const [selectedAlarm, setSelectedAlarm] = useState()
+  const [selectedAlarm, setSelectedAlarm] = useState();
+  const [editingValues, setEditingValues] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {    
@@ -25,8 +26,9 @@ const CreateNew = ({navigation,route}) => {
       const editData = route.params;
       console.log("Edit data",editData)
       if(editData){
-        setSelectedDevice(editData.editData.asset)
-        setSelectedAlarm(editData.editData.title)
+        setSelectedDevice(editData.editData.devices)
+        setSelectedAlarm(editData.editData.notification.attributes.name)
+        setEditingValues(editData.editData)
     }}
   }, [])
 
@@ -85,7 +87,7 @@ return (
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice, editData:editingValues})} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
         </View> : null }

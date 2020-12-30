@@ -144,3 +144,26 @@ export const getNotificationCountListInfo = createSelector(
     (info) => info
 )
 
+const getAlarmsTypeInfo = (state) => getAlarmTypeList(state)
+function getAlarmTypeList(state) {
+    const alarmList = state.livetracking && state.livetracking.alarmsList ? state.livetracking.alarmsList : {}
+    const arrAlarm = Object.values(alarmList)
+    // arrAlarm.sort((item1, item2) => item2.id - item1.id)
+    return arrAlarm
+}
+export const getAlarmTypeListInfo = createSelector(
+    [getAlarmsTypeInfo],
+    (info) => info
+)
+
+/**
+ * Get Alarms List for Livetracking
+ */
+
+const getAlarmsList = (state) => state.livetracking.alarmsList
+
+export const getAlarmsListInfo = createSelector(
+    [getAlarmsList],
+    (info) => info
+)
+

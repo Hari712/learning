@@ -5,25 +5,46 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize } from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
+import * as LoginActions from '../../Login/Login.Action'
+import * as LivetrackingActions from '../Livetracking.Action'
 import { translate } from '../../../../App'
-import { isRoleRegular } from '../../Selector';
+import { getAlarmsListInfo, getAlarmTypeListInfo, getLoginState, isRoleRegular } from '../../Selector';
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon, DeleteIcon, EditIcon } from '../../../component/SvgComponent';
+import AppManager from '../../../constants/AppManager';
 
 
 const Alarms = ({navigation}) => {
 
-  const { isRegular } = useSelector(state => ({
-    isRegular: isRoleRegular(state)
+  const { isRegular, loginData, alarmListData } = useSelector(state => ({
+    isRegular: isRoleRegular(state),
+    loginData: getLoginState(state),
+    alarmListData: getAlarmTypeListInfo(state)
   }))
+
+  console.log("alarm data",alarmListData)
+
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [list, setList] = useState(DATA);
 
-  useEffect(() => {    
-   
+  useEffect(() => {  
+    AppManager.showLoader()  
+    dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
   }, [])
+
+ 
+  function onSuccess(data) {    
+    console.log("Success",data) 
+    AppManager.hideLoader()
+  }
+  
+  function onError(error) {
+    AppManager.hideLoader()
+    console.log("Error",error)  
+    setIsRefreshing(false) 
+  }
 
   React.useLayoutEffect(() => {
 
@@ -52,14 +73,15 @@ const Alarms = ({navigation}) => {
   }
 
   const renderItem = ({item,key}) => {
+    console.log("Item no: ",key, item)
     return(  
     <View style={styles.cardContainer} key={key}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
-                <Text style={styles.blueBoxTitle}>{item.title}</Text>
-                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.type}</Text>
+                <Text style={styles.blueBoxTitle}>{item.notification.attributes.name}</Text>
+                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.notification.type}</Text>
               </View>
 
               { !isRegular ?
@@ -68,7 +90,7 @@ const Alarms = ({navigation}) => {
               </TouchableOpacity> : null }
 
               { !isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(item.id)} style={{zIndex:5, padding:hp(1)}} >
+              <TouchableOpacity onPress={() => handleRemove(key)} style={{zIndex:5, padding:hp(1)}} >
                 <DeleteIcon width={13.943} height={15.463}/>
               </TouchableOpacity> : null }       
           </View>
@@ -76,9 +98,9 @@ const Alarms = ({navigation}) => {
 
           {/* White Body container */}
           <View style={styles.whiteContainer}>
-            {item.asset.map((entry,key) =>
+            {item.devices.map((entry,key) =>
               <View key={key} style={styles.whiteSubView}>
-                <Text style={styles.assetText}>{entry}</Text>
+                <Text style={styles.assetText}>{entry.deviceName}</Text>
               </View>
             )}
           </View>
@@ -86,7 +108,11 @@ const Alarms = ({navigation}) => {
           {/* Duration*/}
           <View style={styles.horizontalLine} />
             <View style={styles.duration}>
-                <Text style={styles.durationText}>{item.duration}</Text>
+                <Text style={styles.durationText}>
+                  {item.notification.attributes.everyday ? 
+                    "Everyday (All hours)" : 
+                    "Weekdays ("+item.notification.attributes.weekdays+",All hours)" }
+                </Text>
           </View>
         </TouchableOpacity>
     </View>
@@ -106,9 +132,9 @@ return (
       </TouchableOpacity> : null }
 
       <FlatList
-        data={list}
+        data={alarmListData}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item,index) => {return index}}
         refreshControl={
           <RefreshControl 
             refreshing={isRefreshing}
