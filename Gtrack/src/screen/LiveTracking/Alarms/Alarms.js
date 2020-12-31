@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../../Login/Login.Action'
 import * as LivetrackingActions from '../Livetracking.Action'
 import { translate } from '../../../../App'
-import { getAlarmsListInfo, getAlarmTypeListInfo, getLoginState, isRoleRegular } from '../../Selector';
+import { getAlarmsListInfo, getLoginState, isRoleRegular } from '../../Selector';
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon, DeleteIcon, EditIcon } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
@@ -19,7 +19,7 @@ const Alarms = ({navigation}) => {
   const { isRegular, loginData, alarmListData } = useSelector(state => ({
     isRegular: isRoleRegular(state),
     loginData: getLoginState(state),
-    alarmListData: getAlarmTypeListInfo(state)
+    alarmListData: getAlarmsListInfo(state)
   }))
 
   const dispatch = useDispatch()
@@ -70,10 +70,10 @@ const Alarms = ({navigation}) => {
     setList(newList);
   }
 
-  const renderItem = ({item,key}) => {
-    console.log("Item no: ",key, item)
+  const renderItem = ({item,index}) => {
+    // console.log("Item no: ",index, item)
     return(  
-    <View style={styles.cardContainer} key={key}>
+    <View style={styles.cardContainer} key={index}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
           {/* Blue top head */}
           <View style={styles.blueBox}>

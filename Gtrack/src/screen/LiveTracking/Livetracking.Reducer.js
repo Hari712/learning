@@ -3,7 +3,8 @@ import * as types from '../../constants/ActionTypes'
 import mapKeys from 'lodash/mapKeys'
 
 const initialState = {
-    alarmsList: []
+    alarmsList: [],
+    devicesList: []
 }
 
 
@@ -12,6 +13,14 @@ export const livetrackingReducer = createReducer(state = initialState, {
         return {
             ...state,
             alarmsList: action.data
+        }
+    },
+
+    [types.GET_DEVICES_BY_USER_ID_RESPONSE](state, action) {
+        const devicesListInfo = mapKeys(action.data, 'id')
+        return {
+            ...state,
+            devicesList: devicesListInfo
         }
     },
 })

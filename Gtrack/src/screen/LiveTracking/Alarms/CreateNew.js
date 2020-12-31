@@ -5,12 +5,14 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
-import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
-import { translate } from '../../../../App'
+import * as DeviceActions from '../../DeviceSetup/Device.Action'
+import * as LivetrackingActions from '../Livetracking.Action'
+import App, { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
-
+import { getLoginInfo } from '../../Selector';
+import { isEmpty, zipObjectDeep } from 'lodash';
 
 const CreateNew = ({navigation,route}) => {
 
@@ -20,6 +22,15 @@ const CreateNew = ({navigation,route}) => {
   const [selectedAlarm, setSelectedAlarm] = useState();
   const [editingValues, setEditingValues] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [arrSelectedDeviceID, setSelectedDeviceID] = useState([])
+  const [arrDeviceList, setDeviceList] = useState([])
+  const [arrDeviceNames, setDeviceNames] = useState([])
+  const [deviceId,setDeviceId] = useState([])
+
+  const { isConnected, loginInfo } = useSelector(state => ({
+    isConnected: state.network.isConnected,
+    loginInfo: getLoginInfo(state),
+}))
 
   useEffect(() => {    
     if(route){
@@ -31,6 +42,70 @@ const CreateNew = ({navigation,route}) => {
         setEditingValues(editData.editData)
     }}
   }, [])
+
+  useEffect(() => {
+    dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onDeviceSuccess, onDeviceError))
+  }, [])
+
+  function onDeviceSuccess(data) {
+      console.log("Data",data)
+      let arr = Object.values(data.result).map((item,key)=>item)
+      setDeviceList(arr)
+      let arrDeviceNames = arr.map((item,key)=>item.deviceName)
+      setDeviceNames(arrDeviceNames)
+  }
+
+  function onDeviceError(error) {
+      console.log(error)
+  }
+
+  const onPressNext = () => {   
+    let arry = [];
+    selectedDevice ? 
+    arrDeviceList.filter((item)=> {      
+      selectedDevice.filter((selectedItem)=>{        
+        if(item.deviceName === selectedItem){ 
+          console.log("loop",item.id,selectedItem)   
+          arry.push(item.id)
+        }
+      })  }) 
+    :null;
+
+    console.log(arry)
+    setSelectedDeviceID(arry)
+
+    sendData(arry)
+    
+  }
+
+  function sendData(selectedDeviceID) {
+    console.log("xyz",arrSelectedDeviceID, selectedDeviceID)
+    AppManager.showLoader()
+    const requestBody = {
+      // "userIds" : [],
+      "deviceIds" : selectedDeviceID,
+      "notification" : {
+        // "id" : 0,
+        "name" : selectedAlarm,
+        "type" : selectedAlarm,
+        "always" : false,
+        "notificators" : "mail,web",
+        // "attributes" : null,
+        "calendarId" : 0
+      }
+    }
+    dispatch(LivetrackingActions.requestAddAlarmsNotification(loginInfo.id, requestBody, onSuccess, onError))
+  }
+
+  function onSuccess(data) {
+    AppManager.hideLoader()
+    console.log(data)
+    navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice, editData:editingValues})
+  }
+
+  function onError(error) {
+    console.log(error)
+  }
 
   React.useLayoutEffect(() => {
 
@@ -63,7 +138,7 @@ return (
       <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5}}>
         <MultiSelect 
                 label={translate("Select_Device")}
-                dataList={devicesList} 
+                dataList={arrDeviceNames} 
                 allText={translate("All_string")}
                 hideSelectedDeviceLable={true}
                 hideDeleteButton={true}
@@ -87,7 +162,7 @@ return (
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice, editData:editingValues})} style={styles.nextButton}>
+            <TouchableOpacity onPress={() => onPressNext()} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
         </View> : null }
@@ -95,14 +170,6 @@ return (
   </>
       )
     }
-
-const devicesList = [
-    'TrackPort International', 
-    'TrackPort International1', 
-    'TrackPort International2', 
-    'TrackPort International3', 
-    'TrackPort International4'
-    ]
 
 const alarmList = ['Overspeed','Movement','Ignition','Fuel'] ;
 

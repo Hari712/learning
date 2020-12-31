@@ -11,3 +11,24 @@ export const setAlarmsListResponse = (data) => ({
     type: types.GET_ALARMS_LIST_RESPONSE,
     data
 })
+
+export const requestAddAlarmsNotification = (userId, data ,onSuccess, onError) => ({
+    type: types.ADD_ALARMS_NOTIFICATION_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
+
+export const requestGetDevicesByUserId = (userId ,onSuccess, onError) => ({
+    type: types.GET_DEVICES_BY_USER_ID_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setDevicesByUserId = (data) => ({
+    type: types.GET_DEVICES_BY_USER_ID_RESPONSE,
+    data
+})
+

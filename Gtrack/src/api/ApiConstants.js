@@ -46,7 +46,9 @@ const ApiConstants = {
     GET_DEVICE_DETAILS_BY_ID:(userId) => `${USER}${userId}/dashboard/device`,
     GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID:(userId) => `${USER}${userId}/dashboard/user/count?role=all`,
     GET_USER_DEVICE_OR_NOTIFICATION_COUNT:(userId, deviceId) => `${USER}${userId}/dashboard/alarms?deviceId=${deviceId}`,
-    GET_ALARMS_LIST:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`
+    GET_ALARMS_LIST:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
+    ADD_ALARMS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts`,
+    GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/consolidated?value=false`
 }
 
 export default ApiConstants
