@@ -13,13 +13,6 @@ import { BackIcon, ListIcon } from '../../../component/SvgComponent';
 const AlarmDetail = ({navigation,route}) => {
 
   const { data } = route.params
-  const dispatch = useDispatch()
-
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
-  useEffect(() => {    
-   
-  }, [])
 
   React.useLayoutEffect(() => {
 
@@ -54,30 +47,30 @@ return (
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
             <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Name")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.title}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.attributes.name}</Text>
             </View> 
 
             <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Type")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.type}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.type}</Text>
             </View>
         </View>
 
         <View>
-            <Text style={styles.textStyle}>{translate("Geofence_string14")}</Text>
-            {data.asset.map((entry,key) =>
+            <Text style={styles.textStyle}>{translate("Selected Devices")}</Text> 
+            {data.devices.map((entry,key) =>
                 <View key={key} style={styles.devices}>
-                  <Text style={styles.deviceText}>{entry}</Text>
+                  <Text style={styles.deviceText}>{entry.deviceName}</Text>
                 </View>
             )}
         </View>
 
         <View style={{marginTop:hp(2)}}>
           <Text style={styles.textStyle}>{translate("Selected Users")}</Text>
-          <View style={{flexGrow:1, flexDirection:'row'}}>
-            {Name.map((name,key) =>
+          <View style={{flexGrow:1, flexDirection:'row'}}>      
+            {Object.values(data.users).map((name,key) =>
               <View key={key} style={styles.user}>
-                <Text style={styles.deviceText}>{name}</Text>
+                <Text style={styles.deviceText}>{name.firstName} {name.lastName}</Text>
               </View>)}
           </View>
         </View>
@@ -85,12 +78,16 @@ return (
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
             <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Time")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.duration}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>
+                {data.notification.attributes.everyday ? 
+                    "Everyday (All hours)" : 
+                     data.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
+                </Text>
             </View> 
 
             <View style={{flexDirection:'column',flex:1.5}}>
                 <Text style={styles.textStyle}>{translate("Web Notification")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>No</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.attributes.notificators ? "On" : "Off"}</Text>
             </View>
         </View>
 
@@ -98,23 +95,6 @@ return (
   </View>
       )
     }
-const DATA = [
-    {
-        title: 'Speed',
-        type: 'Overspeed Alarm',
-        asset: ['TrackPort International'],
-        duration: 'Weekdays(Monday-Friday, All hours)'
-    },
-    {
-        title: 'Emergency',
-        type: 'Panic Alarm',
-        asset: ['Spark Nano 7 GPS Tracker', 'TrackPort International', 'TrackPort 4G Vehicle GPS Tracker'],
-        duration: 'Everyday(All hours)'
-    },
-    
-];
-
-const Name = ['John Smith','Johnny clark']
 
 const styles = StyleSheet.create({
 

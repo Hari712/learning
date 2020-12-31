@@ -22,8 +22,6 @@ const Alarms = ({navigation}) => {
     alarmListData: getAlarmTypeListInfo(state)
   }))
 
-  console.log("alarm data",alarmListData)
-
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -111,7 +109,7 @@ const Alarms = ({navigation}) => {
                 <Text style={styles.durationText}>
                   {item.notification.attributes.everyday ? 
                     "Everyday (All hours)" : 
-                    "Weekdays ("+item.notification.attributes.weekdays+",All hours)" }
+                     item.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
           </View>
         </TouchableOpacity>
