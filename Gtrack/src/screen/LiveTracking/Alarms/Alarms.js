@@ -35,6 +35,7 @@ const Alarms = ({navigation}) => {
  
   function onSuccess(data) {    
     console.log("Success",data) 
+    setIsRefreshing(false) 
     AppManager.hideLoader()
   }
   
@@ -120,6 +121,7 @@ const Alarms = ({navigation}) => {
 
     const onRefresh = () => {
       setIsRefreshing(true) 
+      dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
   }
 
 

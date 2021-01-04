@@ -105,7 +105,7 @@ const AlarmType = ({navigation,route}) => {
         "calendarId" : 0
       }
     }
-    console.log("khushi",JSON.stringify(requestBody))
+    console.log("khushi",requestBody)
     dispatch(LivetrackingActions.requestAddAlarmsNotification(loginInfo.id, requestBody, onSuccess, onError))
   }
 

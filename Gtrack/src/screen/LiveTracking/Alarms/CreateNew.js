@@ -71,24 +71,23 @@ const CreateNew = ({navigation,route}) => {
   }
 
   const onPressNext = () => {   
-    let arry = [];
+    let arrSelectedId = [];
     selectedDevice ? 
     arrDeviceList.filter((item)=> {      
       selectedDevice.filter((selectedItem)=>{        
         if(item.deviceName === selectedItem){ 
           console.log("loop",item.id,selectedItem)   
-          arry.push(item.id)
+          arrSelectedId.push(item.id)
         }
       })  }) 
     :null;
 
-    console.log(arry)
-    setSelectedDeviceID(arry)
+    console.log(arrSelectedId)
 
     navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
       alarmType:selectedAlarm, 
       selectedDeviceList:selectedDevice, 
-      selectedDeviceID: arrSelectedDeviceID, 
+      selectedDeviceID: arrSelectedId, 
       editData:editingValues})
     
   }
