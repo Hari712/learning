@@ -4,7 +4,8 @@ import mapKeys from 'lodash/mapKeys'
 
 const initialState = {
     alarmsList: [],
-    devicesList: []
+    devicesList: [],
+    alertTypes: []
 }
 
 
@@ -21,6 +22,12 @@ export const livetrackingReducer = createReducer(state = initialState, {
         return {
             ...state,
             devicesList: devicesListInfo
+        }
+    },
+    [types.GET_ALERT_TYPES_RESPONSE](state, action) {
+        return {
+            ...state,
+            alertTypes: action.data
         }
     },
 })

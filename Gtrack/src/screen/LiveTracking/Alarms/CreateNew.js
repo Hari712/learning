@@ -11,7 +11,7 @@ import App, { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
-import { getLoginInfo } from '../../Selector';
+import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
 import { isEmpty, zipObjectDeep } from 'lodash';
 
 const CreateNew = ({navigation,route}) => {
@@ -27,9 +27,10 @@ const CreateNew = ({navigation,route}) => {
   const [arrDeviceNames, setDeviceNames] = useState([])
   const [deviceId,setDeviceId] = useState([])
 
-  const { isConnected, loginInfo } = useSelector(state => ({
+  const { isConnected, loginInfo, alertList } = useSelector(state => ({
     isConnected: state.network.isConnected,
     loginInfo: getLoginInfo(state),
+    alertList: getAlertTypetListInfo(state)
 }))
 
   useEffect(() => {    
@@ -44,8 +45,18 @@ const CreateNew = ({navigation,route}) => {
   }, [])
 
   useEffect(() => {
-    dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onDeviceSuccess, onDeviceError))
+    dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onDeviceSuccess, onDeviceError)),
+    dispatch(LivetrackingActions.requestGetAlertTypes(loginInfo.id, onSuccess, onError))
   }, [])
+
+  function onSuccess(data) {
+    AppManager.hideLoader()
+  }
+
+  function onError(error) {
+    console.log(error)
+    AppManager.hideLoader()
+  }
 
   function onDeviceSuccess(data) {
       console.log("Data",data)
@@ -74,37 +85,12 @@ const CreateNew = ({navigation,route}) => {
     console.log(arry)
     setSelectedDeviceID(arry)
 
-    sendData(arry)
+    navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
+      alarmType:selectedAlarm, 
+      selectedDeviceList:selectedDevice, 
+      selectedDeviceID: arrSelectedDeviceID, 
+      editData:editingValues})
     
-  }
-
-  function sendData(selectedDeviceID) {
-    console.log("xyz",arrSelectedDeviceID, selectedDeviceID)
-    AppManager.showLoader()
-    const requestBody = {
-      // "userIds" : [],
-      "deviceIds" : selectedDeviceID,
-      "notification" : {
-        // "id" : 0,
-        "name" : selectedAlarm,
-        "type" : selectedAlarm,
-        "always" : false,
-        "notificators" : "mail,web",
-        // "attributes" : null,
-        "calendarId" : 0
-      }
-    }
-    dispatch(LivetrackingActions.requestAddAlarmsNotification(loginInfo.id, requestBody, onSuccess, onError))
-  }
-
-  function onSuccess(data) {
-    AppManager.hideLoader()
-    console.log(data)
-    navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice, editData:editingValues})
-  }
-
-  function onError(error) {
-    console.log(error)
   }
 
   React.useLayoutEffect(() => {
@@ -135,7 +121,7 @@ return (
       <TouchableOpacity style={styles.header}>
         <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit': 'Create New'}</Text>
       </TouchableOpacity>
-      <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5}}>
+      <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5, flex:1}}>
         <MultiSelect 
                 label={translate("Select_Device")}
                 dataList={arrDeviceNames} 
@@ -156,7 +142,7 @@ return (
         </View>   
      </View>  
 
-     {selectedDevice.length>0 && selectedAlarm ?
+     {selectedDevice.length>=0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
@@ -171,7 +157,7 @@ return (
       )
     }
 
-const alarmList = ['Overspeed','Movement','Ignition','Fuel'] ;
+const alarmList = ["alarm","textMessage","maintenance","ignitionOn","ignitionOff","deviceFuelDrop"] ;
 
 const styles = StyleSheet.create({
 

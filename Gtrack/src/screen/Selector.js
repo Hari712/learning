@@ -159,5 +159,20 @@ export const getAlarmsListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Alert Types List for Livetracking
+ */
+
+const getAlertTypeList = (state) => getAlertTypeInfo(state)
+function getAlertTypeInfo(state) {
+    const alertTypeList = state.livetracking && state.livetracking.alertTypes ? state.livetracking.alertTypes : {}
+    const arrAlertTypes = alertTypeList.map((item)=>{return item.type})
+    return arrAlertTypes
+}
+export const getAlertTypetListInfo = createSelector(
+    [getAlertTypeList],
+    (info) => info
+)
+
 
 

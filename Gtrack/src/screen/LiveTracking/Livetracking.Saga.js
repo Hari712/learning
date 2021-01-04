@@ -21,8 +21,10 @@ function* requestAddAlarmsNotification(action) {
     const { userId, data, onSuccess, onError } = action
     try {
         const url = ApiConstants.ADD_ALARMS_NOTIFICATION(userId)
-        const response = yield call(API.post, url,data)
-        const result = response.result ? response.result : []
+        console.log("URL",url)
+        const response = yield call(API.post, url, data)
+        console.log("Resposne", response)
+        // const result = response.result ? response.result : []
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -42,8 +44,22 @@ function* requestGetDevicesByUserId(action) {
     }
 }
 
+function* requestGetAlertTypes(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_ALERT_TYPES(userId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setAlertTypes(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
-    yield takeLatest(types.GET_DEVICES_BY_USER_ID_REQUEST, requestGetDevicesByUserId)
+    yield takeLatest(types.GET_DEVICES_BY_USER_ID_REQUEST, requestGetDevicesByUserId),
+    yield takeLatest(types.GET_ALERT_TYPES_REQUEST, requestGetAlertTypes)
 }

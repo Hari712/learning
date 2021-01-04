@@ -72,13 +72,14 @@ const Alarms = ({navigation}) => {
 
   const renderItem = ({item,index}) => {
     // console.log("Item no: ",index, item)
+    const {attributes} = item.notification
     return(  
     <View style={styles.cardContainer} key={index}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
-                <Text style={styles.blueBoxTitle}>{item.notification.attributes.name}</Text>
+                <Text style={styles.blueBoxTitle}>{attributes && attributes.name ? attributes.name : null}</Text>
                 <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.notification.type}</Text>
               </View>
 
@@ -107,9 +108,9 @@ const Alarms = ({navigation}) => {
           <View style={styles.horizontalLine} />
             <View style={styles.duration}>
                 <Text style={styles.durationText}>
-                  {item.notification.attributes.everyday ? 
+                  { attributes && attributes.everyday ? 
                     "Everyday (All hours)" : 
-                     item.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
+                    attributes && attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
           </View>
         </TouchableOpacity>

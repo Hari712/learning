@@ -32,3 +32,15 @@ export const setDevicesByUserId = (data) => ({
     data
 })
 
+export const requestGetAlertTypes = (userId ,onSuccess, onError) => ({
+    type: types.GET_ALERT_TYPES_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setAlertTypes = (data) => ({
+    type: types.GET_ALERT_TYPES_RESPONSE,
+    data
+})
+
