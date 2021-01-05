@@ -57,9 +57,22 @@ function* requestGetAlertTypes(action) {
     }
 }
 
+function* requestDeleteNotification(action) {
+    const { userId, notificationId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.DELETE_NOTIFICATION(userId, notificationId)
+        const response = yield call(API.delete, url)
+        const result = response.result ? response.result : []
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
     yield takeLatest(types.GET_DEVICES_BY_USER_ID_REQUEST, requestGetDevicesByUserId),
-    yield takeLatest(types.GET_ALERT_TYPES_REQUEST, requestGetAlertTypes)
+    yield takeLatest(types.GET_ALERT_TYPES_REQUEST, requestGetAlertTypes),
+    yield takeLatest(types.DELETE_NOTIFICATION_REQUEST, requestDeleteNotification)
 }

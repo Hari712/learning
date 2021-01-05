@@ -31,6 +31,20 @@ const AlarmType = ({navigation,route}) => {
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
 
   useEffect(() => {    
+    if(route){
+      const { editData } = route.params;
+      console.log("Edit data",editData,selectedCheckbox)
+      if(editData){        
+        setAlarmName(editData.notification.attributes.name)
+        if(editData.notification.attributes.name.everyday === true){
+          
+        }
+    }
+  }
+  }, 
+  [])
+
+  useEffect(() => {    
     if(alarmType === "ignitionOn" || alarmType === "ignitionOff")
       setIsIgnition(true)
 

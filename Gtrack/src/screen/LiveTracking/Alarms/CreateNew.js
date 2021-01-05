@@ -38,11 +38,15 @@ const CreateNew = ({navigation,route}) => {
       const editData = route.params;
       console.log("Edit data",editData)
       if(editData){
-        setSelectedDevice(editData.editData.devices)
-        setSelectedAlarm(editData.editData.notification.attributes.name)
+        const devices = Object.values(editData.editData.devices).map((item)=>item.deviceName)
+        console.log("khushi",devices)
+        setSelectedDevice(devices)
+        setSelectedAlarm(editData.editData.notification.type)
         setEditingValues(editData.editData)
-    }}
-  }, [])
+    }
+  }
+  }, 
+  [])
 
   useEffect(() => {
     dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onDeviceSuccess, onDeviceError)),
@@ -137,7 +141,7 @@ return (
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
         <View style={{marginTop:hp(3), marginBottom:hp(12)}}>       
-            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
+            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alertList} />   
         </View>   
      </View>  
 

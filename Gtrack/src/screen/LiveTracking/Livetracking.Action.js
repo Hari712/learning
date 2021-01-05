@@ -44,3 +44,11 @@ export const setAlertTypes = (data) => ({
     data
 })
 
+export const requestDeleteNotification = (userId, notificationId, onSuccess, onError) => ({
+    type: types.DELETE_NOTIFICATION_REQUEST,
+    userId,
+    notificationId,
+    onSuccess,
+    onError
+})
+

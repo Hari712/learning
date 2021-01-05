@@ -28,11 +28,13 @@ const Alarms = ({navigation}) => {
   const [list, setList] = useState(DATA);
 
   useEffect(() => {  
-    AppManager.showLoader()  
-    dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+    loadAlarmList()
   }, [])
 
- 
+ function loadAlarmList() {
+  AppManager.showLoader()  
+  dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+ }
   function onSuccess(data) {    
     console.log("Success",data) 
     setIsRefreshing(false) 
@@ -66,9 +68,20 @@ const Alarms = ({navigation}) => {
     });
   },[navigation]);
 
-  function handleRemove(id) {
-    const newList = list.filter((item) => item.id !== id); 
-    setList(newList);
+  function handleRemove(notificationId) {
+    AppManager.showLoader()
+    dispatch(LivetrackingActions.requestDeleteNotification(loginData.id, notificationId, onDeleteSuccess, onDeleteError))    
+  }
+
+  const onDeleteSuccess = (data) => {
+    AppManager.hideLoader()
+    loadAlarmList()
+    console.log("Success",data)
+  }
+
+  const onDeleteError = (error) => {
+    AppManager.hideLoader()
+    console.log("Error",data)    
   }
 
   const renderItem = ({item,index}) => {
@@ -90,7 +103,7 @@ const Alarms = ({navigation}) => {
               </TouchableOpacity> : null }
 
               { !isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(key)} style={{zIndex:5, padding:hp(1)}} >
+              <TouchableOpacity onPress={() => handleRemove(item.notification.id)} style={{zIndex:5, padding:hp(1)}} >
                 <DeleteIcon width={13.943} height={15.463}/>
               </TouchableOpacity> : null }       
           </View>
@@ -121,7 +134,7 @@ const Alarms = ({navigation}) => {
 
     const onRefresh = () => {
       setIsRefreshing(true) 
-      dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+      loadAlarmList()
   }
 
 

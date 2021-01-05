@@ -1,5 +1,5 @@
 import React, { Component, useState,useEffect } from 'react'
-import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, Button } from 'react-native'
+import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, Button, Platform } from 'react-native'
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -129,17 +129,17 @@ const SignUp = () => {
 
                         <View style={styles.countryPicker }>
                             <Text style={styles.countryCode}>+{countryCode}</Text>
-                        <TouchableOpacity  onPress={toggleModal}>
-                            <Image style={{height:hp(1)}} source={images.countryPicker.downArrow}/> 
+                        <TouchableOpacity style={{zIndex:5}}  onPress={toggleModal}>
+                            <Image style={{width:wp(3),height:hp(1),padding:hp(0.7)}} source={images.countryPicker.downArrow}/> 
                         </TouchableOpacity>
                             <Modal 
                                 isVisible={!isModalVisible} 
                                 coverScreen={true}
                                 //onBackButtonPress={() => setModalVisible(false)}
                                 >
-                                <View style={{flex: 1}}>
-                                    <CountrySelection action={(item) => onCountrySelection(item)} selected={country}/>
-                                    <Button title={translate("Profile_string9")} onPress={()=>setModalVisible(!isModalVisible)} />
+                                <View style={styles.countrySelection}>
+                                    <CountrySelection  action={(item) => onCountrySelection(item)} selected={country}/>
+                                    <Button title={translate("Done")} onPress={()=>setModalVisible(!isModalVisible)} />
                                 </View>                        
                             </Modal>
                     </View> 
@@ -253,8 +253,14 @@ const styles = StyleSheet.create({
         backgroundColor:ColorConstant.WHITE,        
         height:hp(5.5),
         marginBottom:hp(2.5),
-        alignItems:'center',
+        alignItems:'center'
         
+    },
+    countrySelection: {
+        width:wp(100),
+        height:hp(100),
+        alignSelf:'center', 
+        paddingVertical:Platform.OS=='ios' ? hp(2) : null
     },
     countryCode: {
         flex:1,
