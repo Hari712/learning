@@ -12,8 +12,9 @@ export const setAlarmsListResponse = (data) => ({
     data
 })
 
-export const requestAddAlarmsNotification = (userId, data ,onSuccess, onError) => ({
+export const requestAddAlarmsNotification = (isUpdate, userId, data ,onSuccess, onError) => ({
     type: types.ADD_ALARMS_NOTIFICATION_REQUEST,
+    isUpdate,
     userId,
     data,
     onSuccess,

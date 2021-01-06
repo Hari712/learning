@@ -21,7 +21,8 @@ const AlarmType = ({navigation,route}) => {
 
   const [alarmName, setAlarmName] = useState()
   const [speed, setSpeed] = useState()
-  const [selectedCheckbox, setSelectedCheckbox] = useState()
+  const [selectedCheckbox, setSelectedCheckbox] = useState(-1) 
+  const [notification, setNotification] = useState(false)
 
   const { loginInfo } = useSelector(state => ({
     loginInfo: getLoginInfo(state)
@@ -33,16 +34,18 @@ const AlarmType = ({navigation,route}) => {
   useEffect(() => {    
     if(route){
       const { editData } = route.params;
-      console.log("Edit data",editData,selectedCheckbox)
-      if(editData){        
-        setAlarmName(editData.notification.attributes.name)
-        if(editData.notification.attributes.name.everyday === true){
-          
-        }
+
+      if(editData){  
+        setAlarmName(editData.notification.attributes.name)      
+        { editData.notification.attributes.everyday? setSelectedCheckbox(0) :
+        editData.notification.attributes.weekdays ? setSelectedCheckbox(1) :
+        setSelectedCheckbox(2) } 
+
+        if(editData.notification.notificators)
+          setNotification(true)
+      }
     }
-  }
-  }, 
-  [])
+  },[])
 
   useEffect(() => {    
     if(alarmType === "ignitionOn" || alarmType === "ignitionOff")
@@ -75,7 +78,7 @@ const AlarmType = ({navigation,route}) => {
   },[navigation]);
 
   function sendData() {
-    console.log("xyz", selectedCheckbox)
+    AppManager.showLoader()
     var everyday, weekdays, weekends;
 
     switch (selectedCheckbox) {
@@ -101,36 +104,66 @@ const AlarmType = ({navigation,route}) => {
     }
 
     const {selectedDeviceID} = route.params;
-
-    const requestBody = {
-      "userIds" : [],
-      "deviceIds" : selectedDeviceID,
-      "notification" : {
-        "id" : 0,
-        "type" : alarmType,
-        "always" : false,
-        "notificators" : "mail,web",
-        "attributes" : {
-          "name": alarmName,
-          "everyday": everyday,              
-          "weekdays": weekdays,
-          "weekends": weekends
-        },
-        "calendarId" : 0
+    var requestBody, isUpdate;
+    if(route && route.params && route.params.editData) {
+      // Editing/update body
+      isUpdate = true;
+      requestBody = {
+        "userIds" : [],
+        "deviceIds" : selectedDeviceID,
+        "notification" : {
+          "id" : route.params.editData.notification.id,
+          "type" : alarmType,
+          "always" : false,
+          "notificators" : notification ? "mail,web" : null,
+          "attributes" : {
+            "name": alarmName,
+            "everyday": everyday,              
+            "weekdays": weekdays,
+            "weekends": weekends
+          },
+          "calendarId" : 0
+        }
+      }      
+    } else {
+      // create body 
+      isUpdate = false;
+      requestBody = {
+        "userIds" : [],
+        "deviceIds" : selectedDeviceID,
+        "notification" : {
+          "id" : 0,
+          "type" : alarmType,
+          "always" : false,
+          "notificators" : notification ? "mail,web" : null,
+          "attributes" : {
+            "name": alarmName,
+            "everyday": everyday,              
+            "weekdays": weekdays,
+            "weekends": weekends
+          },
+          "calendarId" : 0
+        }
       }
-    }
-    console.log("khushi",requestBody)
-    dispatch(LivetrackingActions.requestAddAlarmsNotification(loginInfo.id, requestBody, onSuccess, onError))
+    } 
+    console.log("requestbody",requestBody)
+    dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
+  }
+
+  function onAddSuccess(data) {
+    AppManager.hideLoader()    
+    navigation.navigate(SCREEN_CONSTANTS.ALARMS)  
+    AppManager.showSimpleMessage('success', { message: data.message, description: '' })
+    dispatch(LivetrackingActions.requestGetAlarmsList(loginInfo.id, onSuccess, onError))  
   }
 
   function onSuccess(data) {
-    AppManager.hideLoader()
-    navigation.navigate(SCREEN_CONSTANTS.ALARMS)
-    console.log("khushi",data)
+    AppManager.hideLoader()     
   }
 
   function onError(error) {
     console.log(error)
+    AppManager.showSimpleMessage('danger', { message: error, description: '' })
     AppManager.hideLoader()
   }
 
@@ -182,14 +215,14 @@ return (
           
       </View>
 
-      <View style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+      <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
           {/* <CheckboxIcon/> */}
-          <Image style={{alignSelf:'flex-start'}} source={images.liveTracking.checkboxClick}></Image>
+          <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.cancelButton}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 

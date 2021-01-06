@@ -31,16 +31,17 @@ const Alarms = ({navigation}) => {
     loadAlarmList()
   }, [])
 
- function loadAlarmList() {
-  AppManager.showLoader()  
-  dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
- }
+  function loadAlarmList() {
+    AppManager.showLoader()  
+    dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+  }
+
   function onSuccess(data) {    
     console.log("Success",data) 
     setIsRefreshing(false) 
     AppManager.hideLoader()
   }
-  
+
   function onError(error) {
     AppManager.hideLoader()
     console.log("Error",error)  
@@ -76,12 +77,14 @@ const Alarms = ({navigation}) => {
   const onDeleteSuccess = (data) => {
     AppManager.hideLoader()
     loadAlarmList()
+    AppManager.showSimpleMessage('success', { message: data.message, description: '' })
     console.log("Success",data)
   }
 
   const onDeleteError = (error) => {
     AppManager.hideLoader()
-    console.log("Error",data)    
+    console.log("Error",data)  
+    AppManager.showSimpleMessage('success', { message: data.message, description: '' })  
   }
 
   const renderItem = ({item,index}) => {

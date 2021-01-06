@@ -39,7 +39,6 @@ const CreateNew = ({navigation,route}) => {
       console.log("Edit data",editData)
       if(editData){
         const devices = Object.values(editData.editData.devices).map((item)=>item.deviceName)
-        console.log("khushi",devices)
         setSelectedDevice(devices)
         setSelectedAlarm(editData.editData.notification.type)
         setEditingValues(editData.editData)
@@ -147,7 +146,7 @@ return (
 
      {selectedDevice.length>=0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.cancelButton}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS)} style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 

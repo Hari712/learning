@@ -18,13 +18,12 @@ function* requestGetAlarmsList(action) {
 }
 
 function* requestAddAlarmsNotification(action) {
-    const { userId, data, onSuccess, onError } = action
+    const { isUpdate, userId, data, onSuccess, onError } = action
     try {
         const url = ApiConstants.ADD_ALARMS_NOTIFICATION(userId)
-        console.log("URL",url)
-        const response = yield call(API.post, url, data)
+        console.log("URL",url, isUpdate)
+        const response = isUpdate ? yield call(API.put, url, data) : yield call(API.post, url, data)
         console.log("Resposne", response)
-        // const result = response.result ? response.result : []
         onSuccess(response)
     } catch (error) {
         onError(error)
