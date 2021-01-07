@@ -176,6 +176,7 @@ return (
         <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{alarmType}</Text>
       </View>
 
+      <ScrollView style={{flex:1}}>
       <View style={{paddingHorizontal:hp(5)}}>
         <View style={{marginVertical:hp(3)}}>
           <Text style={styles.textStyle}>{translate("Device_Name")}</Text>
@@ -191,7 +192,7 @@ return (
           label={translate("Alarms_name")}
           defaultValue={alarmName}
           outerStyle={styles.outerStyle} 
-          />
+        />
 
         <MultiSelect 
             label="Select User"
@@ -248,7 +249,8 @@ return (
             <TouchableOpacity onPress={() => sendData()} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Save")}</Text>
             </TouchableOpacity>
-        </View> 
+      </View> 
+    </ScrollView>
   </View>
       )
     }
@@ -282,19 +284,19 @@ notificationStyle: {
   color:ColorConstant.BLUE
 },
 outerStyle:{
-  elevation:4,
+  //elevation:4,
   marginTop:hp(0.5),
   borderBottomColor:ColorConstant.GREY,
-  borderBottomWidth:1,
+  //borderBottomWidth:1,
   backgroundColor:ColorConstant.WHITE,
   borderRadius:4,
-  shadowColor: ColorConstant.GREY,
-  shadowOffset: {
-    width: 0,
-    height: 0
-  },
-  shadowRadius: 3,
-  shadowOpacity: 1,
+//   shadowColor: ColorConstant.GREY,
+//   shadowOffset: {
+//     width: 0,
+//     height: 0
+//   },
+//   shadowRadius: 3,
+//   shadowOpacity: 1,
 },
 inputTextStyle: {
   borderRadius:4,
@@ -317,7 +319,8 @@ buttonContainer: {
     justifyContent:'space-evenly',
     marginTop:hp(5),
     paddingHorizontal:hp(5),
-    alignItems:'center'
+    alignItems:'center',
+    paddingBottom:hp(2)
 },
 cancelButton: {
     borderRadius:6,
