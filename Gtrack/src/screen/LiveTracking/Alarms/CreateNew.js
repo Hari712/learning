@@ -5,30 +5,95 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
-import MultiSelectDevice, { MultiSelectGroup } from '../../../component/MultiSelect';
-import { translate } from '../../../../App'
+import * as DeviceActions from '../../DeviceSetup/Device.Action'
+import * as LivetrackingActions from '../Livetracking.Action'
+import App, { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
-
+import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
+import { isEmpty, zipObjectDeep } from 'lodash';
 
 const CreateNew = ({navigation,route}) => {
 
   const dispatch = useDispatch()
 
   const [selectedDevice, setSelectedDevice] = useState([]);
-  const [selectedAlarm, setSelectedAlarm] = useState()
+  const [selectedAlarm, setSelectedAlarm] = useState();
+  const [editingValues, setEditingValues] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [arrSelectedDeviceID, setSelectedDeviceID] = useState([])
+  const [arrDeviceList, setDeviceList] = useState([])
+  const [arrDeviceNames, setDeviceNames] = useState([])
+  const [deviceId,setDeviceId] = useState([])
+
+  const { isConnected, loginInfo, alertList } = useSelector(state => ({
+    isConnected: state.network.isConnected,
+    loginInfo: getLoginInfo(state),
+    alertList: getAlertTypetListInfo(state)
+}))
 
   useEffect(() => {    
     if(route){
       const editData = route.params;
       console.log("Edit data",editData)
       if(editData){
-        setSelectedDevice(editData.editData.asset)
-        setSelectedAlarm(editData.editData.title)
-    }}
+        const devices = Object.values(editData.editData.devices).map((item)=>item.deviceName)
+        setSelectedDevice(devices)
+        setSelectedAlarm(editData.editData.notification.type)
+        setEditingValues(editData.editData)
+    }
+  }
+  }, 
+  [])
+
+  useEffect(() => {
+    dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onDeviceSuccess, onDeviceError)),
+    dispatch(LivetrackingActions.requestGetAlertTypes(loginInfo.id, onSuccess, onError))
   }, [])
+
+  function onSuccess(data) {
+    AppManager.hideLoader()
+  }
+
+  function onError(error) {
+    console.log(error)
+    AppManager.hideLoader()
+  }
+
+  function onDeviceSuccess(data) {
+      console.log("Data",data)
+      let arr = Object.values(data.result).map((item,key)=>item)
+      setDeviceList(arr)
+      let arrDeviceNames = arr.map((item,key)=>item.deviceName)
+      setDeviceNames(arrDeviceNames)
+  }
+
+  function onDeviceError(error) {
+      console.log(error)
+  }
+
+  const onPressNext = () => {   
+    let arrSelectedId = [];
+    selectedDevice ? 
+    arrDeviceList.filter((item)=> {      
+      selectedDevice.filter((selectedItem)=>{        
+        if(item.deviceName === selectedItem){ 
+          console.log("loop",item.id,selectedItem)   
+          arrSelectedId.push(item.id)
+        }
+      })  }) 
+    :null;
+
+    console.log(arrSelectedId)
+
+    navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
+      alarmType:selectedAlarm, 
+      selectedDeviceList:selectedDevice, 
+      selectedDeviceID: arrSelectedId, 
+      editData:editingValues})
+    
+  }
 
   React.useLayoutEffect(() => {
 
@@ -58,10 +123,10 @@ return (
       <TouchableOpacity style={styles.header}>
         <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit': 'Create New'}</Text>
       </TouchableOpacity>
-      <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5}}>
+      <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5, flex:1}}>
         <MultiSelect 
                 label={translate("Select_Device")}
-                dataList={devicesList} 
+                dataList={arrDeviceNames} 
                 allText={translate("All_string")}
                 hideSelectedDeviceLable={true}
                 hideDeleteButton={true}
@@ -75,17 +140,17 @@ return (
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
         <View style={{marginTop:hp(3), marginBottom:hp(12)}}>       
-            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmList} />   
+            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alertList} />   
         </View>   
      </View>  
 
-     {selectedDevice.length>0 && selectedAlarm ?
+     {selectedDevice.length>=0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.cancelButton}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS)} style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{alarmType:selectedAlarm, selectedDeviceList:selectedDevice})} style={styles.nextButton}>
+            <TouchableOpacity onPress={() => onPressNext()} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
         </View> : null }
@@ -94,15 +159,7 @@ return (
       )
     }
 
-const devicesList = [
-    'TrackPort International', 
-    'TrackPort International1', 
-    'TrackPort International2', 
-    'TrackPort International3', 
-    'TrackPort International4'
-    ]
-
-const alarmList = ['Overspeed','Movement','Ignition','Fuel'] ;
+const alarmList = ["alarm","textMessage","maintenance","ignitionOn","ignitionOff","deviceFuelDrop"] ;
 
 const styles = StyleSheet.create({
 

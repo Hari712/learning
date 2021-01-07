@@ -38,7 +38,6 @@ const Dashboard = ({ navigation }) => {
     notificationCount: getNotificationCountListInfo(state)
 }))
 
-console.log("khush", deviceDetails)
 
   const user_id = loginInfo.id ? loginInfo.id : null
 

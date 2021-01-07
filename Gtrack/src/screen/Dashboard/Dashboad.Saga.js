@@ -34,7 +34,6 @@ function* requestUserDeviceEventsOrNotifiactionCount(action) {
     const { userId, deviceId, onSuccess, onError } = action
     try {
         const url = ApiConstants.GET_USER_DEVICE_OR_NOTIFICATION_COUNT(userId, deviceId)
-        console.log("khushi",url)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(DashboardActions.setUserDeviceEventsOrNotifiactionCountResponse(result))

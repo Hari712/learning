@@ -5,25 +5,48 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize } from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
+import * as LoginActions from '../../Login/Login.Action'
+import * as LivetrackingActions from '../Livetracking.Action'
 import { translate } from '../../../../App'
-import { isRoleRegular } from '../../Selector';
+import { getAlarmsListInfo, getLoginState, isRoleRegular } from '../../Selector';
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon, DeleteIcon, EditIcon } from '../../../component/SvgComponent';
+import AppManager from '../../../constants/AppManager';
 
 
 const Alarms = ({navigation}) => {
 
-  const { isRegular } = useSelector(state => ({
-    isRegular: isRoleRegular(state)
+  const { isRegular, loginData, alarmListData } = useSelector(state => ({
+    isRegular: isRoleRegular(state),
+    loginData: getLoginState(state),
+    alarmListData: getAlarmsListInfo(state)
   }))
+
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [list, setList] = useState(DATA);
 
-  useEffect(() => {    
-   
+  useEffect(() => {  
+    loadAlarmList()
   }, [])
+
+  function loadAlarmList() {
+    AppManager.showLoader()  
+    dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+  }
+
+  function onSuccess(data) {    
+    console.log("Success",data) 
+    setIsRefreshing(false) 
+    AppManager.hideLoader()
+  }
+
+  function onError(error) {
+    AppManager.hideLoader()
+    console.log("Error",error)  
+    setIsRefreshing(false) 
+  }
 
   React.useLayoutEffect(() => {
 
@@ -46,20 +69,35 @@ const Alarms = ({navigation}) => {
     });
   },[navigation]);
 
-  function handleRemove(id) {
-    const newList = list.filter((item) => item.id !== id); 
-    setList(newList);
+  function handleRemove(notificationId) {
+    AppManager.showLoader()
+    dispatch(LivetrackingActions.requestDeleteNotification(loginData.id, notificationId, onDeleteSuccess, onDeleteError))    
   }
 
-  const renderItem = ({item,key}) => {
+  const onDeleteSuccess = (data) => {
+    AppManager.hideLoader()
+    loadAlarmList()
+    AppManager.showSimpleMessage('success', { message: data.message, description: '' })
+    console.log("Success",data)
+  }
+
+  const onDeleteError = (error) => {
+    AppManager.hideLoader()
+    console.log("Error",data)  
+    AppManager.showSimpleMessage('success', { message: data.message, description: '' })  
+  }
+
+  const renderItem = ({item,index}) => {
+    // console.log("Item no: ",index, item)
+    const {attributes} = item.notification
     return(  
-    <View style={styles.cardContainer} key={key}>
+    <View style={styles.cardContainer} key={index}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
-                <Text style={styles.blueBoxTitle}>{item.title}</Text>
-                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.type}</Text>
+                <Text style={styles.blueBoxTitle}>{attributes && attributes.name ? attributes.name : null}</Text>
+                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.notification.type}</Text>
               </View>
 
               { !isRegular ?
@@ -68,7 +106,7 @@ const Alarms = ({navigation}) => {
               </TouchableOpacity> : null }
 
               { !isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(item.id)} style={{zIndex:5, padding:hp(1)}} >
+              <TouchableOpacity onPress={() => handleRemove(item.notification.id)} style={{zIndex:5, padding:hp(1)}} >
                 <DeleteIcon width={13.943} height={15.463}/>
               </TouchableOpacity> : null }       
           </View>
@@ -76,9 +114,9 @@ const Alarms = ({navigation}) => {
 
           {/* White Body container */}
           <View style={styles.whiteContainer}>
-            {item.asset.map((entry,key) =>
+            {item.devices.map((entry,key) =>
               <View key={key} style={styles.whiteSubView}>
-                <Text style={styles.assetText}>{entry}</Text>
+                <Text style={styles.assetText}>{entry.deviceName}</Text>
               </View>
             )}
           </View>
@@ -86,7 +124,11 @@ const Alarms = ({navigation}) => {
           {/* Duration*/}
           <View style={styles.horizontalLine} />
             <View style={styles.duration}>
-                <Text style={styles.durationText}>{item.duration}</Text>
+                <Text style={styles.durationText}>
+                  { attributes && attributes.everyday ? 
+                    "Everyday (All hours)" : 
+                    attributes && attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
+                </Text>
           </View>
         </TouchableOpacity>
     </View>
@@ -95,6 +137,7 @@ const Alarms = ({navigation}) => {
 
     const onRefresh = () => {
       setIsRefreshing(true) 
+      loadAlarmList()
   }
 
 
@@ -106,9 +149,9 @@ return (
       </TouchableOpacity> : null }
 
       <FlatList
-        data={list}
+        data={alarmListData}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={(item,index) => {return index}}
         refreshControl={
           <RefreshControl 
             refreshing={isRefreshing}
