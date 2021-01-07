@@ -5,6 +5,7 @@ import { watchSettings } from './Settings/Settings.Saga'
 import { watchUsers } from './Users/Users.Saga'
 import { watchDeviceSetup } from './DeviceSetup/Devcie.Saga'
 import { watchDashboard } from './Dashboard/Dashboad.Saga'
+import { watchLivetracking } from './LiveTracking/Livetracking.Saga';
 
 function* rootSaga() {
     yield all([
@@ -13,7 +14,8 @@ function* rootSaga() {
         watchUsers(),
         watchSettings(),
         watchDeviceSetup(),
-        watchDashboard()
+        watchDashboard(),
+        watchLivetracking()
     ])
 }
 
