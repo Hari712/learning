@@ -7,7 +7,7 @@ import {FontSize, MultiSelect, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon } from '../../../component/SvgComponent';
+import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { getLoginInfo, getSubuserState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
@@ -229,7 +229,7 @@ return (
             textStyle={{color:ColorConstant.BLUE}}
             valueSet={setSelectedUser} 
             selectedData={selectUser}
-            CloseIcon={<Text style={{color:ColorConstant.BLUE}}>X</Text>}
+            CloseIcon={<CrossIconBlue/>}
             selectedItemContainerStyle={styles.selectedItemContainerStyle} 
             selectedItemRowStyle={styles.selectedItemRowStyle}
             deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
