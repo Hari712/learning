@@ -64,7 +64,7 @@ class MultiSelect extends React.Component {
                 </ShadowView>
 
                 { this.state.isSelected ?
-                    <ScrollView nestedScrollEnabled={true} style={[styles.dropdown, otherProps.dropdownStyle]}>
+                    <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' style={[styles.dropdown, otherProps.dropdownStyle]}>
                         {/* Select All */}
                         <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
                             onPress={() => {
@@ -94,7 +94,7 @@ class MultiSelect extends React.Component {
                                         }
                                     }}>
                                     <Image source={selectedItem.includes(item) ? images.image.checkboxClick : images.image.checkbox} />
-                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: 12 }}>{item}</Text>
+                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: 12, textTransform: 'capitalize'  }}>{item}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -115,11 +115,9 @@ class MultiSelect extends React.Component {
                                 <View style={[otherProps.selectedItemRowStyle]}>
                                     <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} key={key}>{item}</Text>
                                     {otherProps.hideDeleteButton ?
-                                        <TouchableOpacity onPress={() => otherProps.deleteHandle(item, key)} /*onPress={()=>{
-                                if (selectedItem.includes(item)) {
-                                    valueSet(oldArray => oldArray.filter(function(value){return value != item}) )}}} */
+                                        <TouchableOpacity onPress={() => otherProps.deleteHandle(item, key)} 
                                             style={{ paddingTop: hp(0.5), justifyContent: 'center' }}>  
-                                            <Image style={{ height: hp(2) }} source={images.manage.closeClick} />
+                                            {otherProps.CloseIcon ? otherProps.CloseIcon : <Image style={{ height: hp(2) }} source={images.manage.closeClick} />}
                                         </TouchableOpacity> : null}
                                 </View>
                             </View>
@@ -223,7 +221,7 @@ export class MultiSelectGroup extends React.Component {
                                         }
                                     }}>
                                     <Image source={selectedItem.find((element) => { return element.id === item.id }) ? images.image.checkboxClick : images.image.checkbox} />
-                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: 12 }}>{item.groupName}</Text>
+                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: 12, textTransform: 'capitalize' }}>{item.groupName}</Text>
                                 </TouchableOpacity>
                             )
                         })}
