@@ -122,7 +122,7 @@ function AddNewAssetDialog(props) {
                     dataList={arrAssetTypeList}
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={styles.inputContainer}
-                    accessoryStyle={{ top: hp(0.9) }}
+                    accessoryStyle={{ top: hp(0.5) }}
                     outerStyle={{ marginBottom: hp(0.5), zIndex: 10 }}
                 />
                 </View>

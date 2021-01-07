@@ -30,8 +30,8 @@ class MultiSelect extends React.Component {
         data = dataList ? dataList : ['Car', 'Truck', 'Tempo'];    
 
         function handleRightAccessory() {
-            return <View style={styles.imageContainer}>
-                <Image source={images.image.next} resizemode='contain' style={styles.downArrow} />
+            return <View style={[{height:styles.inputButton.height-hp(2), justifyContent:'center'}]}>
+                <Image source={images.image.next} resizemode='contain'  />
             </View>
         }
 
@@ -116,7 +116,7 @@ class MultiSelect extends React.Component {
                                     <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} key={key}>{item}</Text>
                                     {otherProps.hideDeleteButton ?
                                         <TouchableOpacity onPress={() => otherProps.deleteHandle(item, key)} 
-                                            style={{ paddingTop: hp(0.5), justifyContent: 'center' }}>  
+                                            style={{ height:otherProps.selectedItemRowStyle.height ? otherProps.selectedItemRowStyle.height : hp(2), justifyContent: 'center' }}>  
                                             {otherProps.CloseIcon ? otherProps.CloseIcon : <Image style={{ height: hp(2) }} source={images.manage.closeClick} />}
                                         </TouchableOpacity> : null}
                                 </View>
@@ -159,8 +159,8 @@ export class MultiSelectGroup extends React.Component {
         }];
 
         function handleRightAccessory() {
-            return <View style={styles.imageContainer}>
-                <Image source={images.image.next} resizemode='contain' style={styles.downArrow} />
+            return <View style={[{height:outerStyle && outerStyle.height?outerStyle.height-hp(3): styles.inputButton.height-hp(3), justifyContent:'center'}]}>
+                <Image source={images.image.next} resizemode='contain'  />
             </View>
         }
 
@@ -243,7 +243,7 @@ export class MultiSelectGroup extends React.Component {
                                     <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} >{item.groupName}</Text>
                                     {otherProps.hideDeleteButton ?
                                         <TouchableOpacity onPress={() => otherProps.deleteHandle(item)}
-                                            style={{ paddingTop: hp(0.5), justifyContent: 'center' }}>
+                                            style={{ height:otherProps.selectedItemRowStyle.height ? otherProps.selectedItemRowStyle.height : hp(2),  justifyContent: 'center' }}>
                                             <Image style={{ height: hp(2) }} source={images.manage.closeClick} />
                                         </TouchableOpacity> : null}
                                 </View>
