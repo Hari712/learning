@@ -3,7 +3,7 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, 
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import {FontSize, TextField} from '../../../component';
+import {FontSize, MultiSelect, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
@@ -11,6 +11,7 @@ import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon } from '../../..
 import * as LivetrackingActions from '../Livetracking.Action'
 import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
+import { color } from 'react-native-reanimated';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -23,6 +24,7 @@ const AlarmType = ({navigation,route}) => {
   const [speed, setSpeed] = useState()
   const [selectedCheckbox, setSelectedCheckbox] = useState(-1) 
   const [notification, setNotification] = useState(false)
+  const [selectUser, setSelectedUser] = useState([])
 
   const { loginInfo } = useSelector(state => ({
     loginInfo: getLoginInfo(state)
@@ -191,6 +193,23 @@ return (
           outerStyle={styles.outerStyle} 
           />
 
+        <MultiSelect 
+            label="Select User"
+            dataList={user} 
+            allText={translate("All_string")}
+            hideSelectedDeviceLable={true}
+            hideDeleteButton={true}
+            rowStyle={styles.rowStyle}
+            dropdownStyle={{height:hp(20)}}
+            outerStyle={{marginTop:hp(2)}}
+            textStyle={{color:ColorConstant.BLUE,flexWrap: 'wrap', flexShrink: 1}}
+            valueSet={setSelectedUser} 
+            selectedData={selectUser}
+            selectedItemContainerStyle={styles.selectedItemContainerStyle} 
+            selectedItemRowStyle={styles.selectedItemRowStyle}
+            deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
+          /> 
+
         {isIgnition ? null : 
           <View style={styles.inputTextStyle}>
             <TextInput 
@@ -236,6 +255,7 @@ return (
 
 const time = ['Every day(All hours)', 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' ]
 
+const user = ["John Smith", "John Carter", "John abc"]
 const styles = StyleSheet.create({
 
 container: {
@@ -315,6 +335,36 @@ nextButton: {
     height:hp(6),
     justifyContent:'center'
 },
+rowStyle: {
+  borderBottomColor:ColorConstant.LIGHTGREY, 
+  borderBottomWidth:1
+},
+selectedItemContainerStyle:{
+  backgroundColor:"#F9FAFC",
+  //backgroundColor:ColorConstant.LIGHTRED,
+  borderRadius:8,
+  marginTop:hp(2),
+  elevation:0,
+  padding:hp(1)
+},
+selectedItemRowStyle: {
+  flexDirection:'row',
+  elevation:4,
+  shadowColor: ColorConstant.GREY,
+  shadowOffset: {
+      width: 0,
+      height: 0
+  },
+  shadowRadius: 3,
+  shadowOpacity: 1,
+  backgroundColor:ColorConstant.LIGHTBLUE,
+  borderRadius:5,
+  alignItems:'center',
+  paddingHorizontal:hp(1),
+  //flexWrap:'wrap',
+  margin:4,
+  height:hp(4),
+  },
 });
 
 
