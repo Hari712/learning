@@ -235,7 +235,7 @@ return (
             deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
           /> 
 
-        {isIgnition ? null : 
+        {/* {isIgnition ? null : 
           <View style={styles.inputTextStyle}>
             <TextInput 
               placeholder={inputLabel}
@@ -244,7 +244,7 @@ return (
               value={speed}                    
             />
           </View>
-        }
+        } */}
 
         <View style={{marginVertical:hp(3)}}>
           <Text style={styles.textStyle}>{translate("Time")}</Text>
