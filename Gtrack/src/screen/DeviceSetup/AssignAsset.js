@@ -35,6 +35,7 @@ const AssignAsset = ({ navigation, route }) => {
     const assetNameList = isEmpty(assetList) ? [] : assetList.map((item) => item.assetName)
     const [asset, setAsset] = useState('')
     const [isAssetDialogVisible, setIsAssetDialogVisible] = useState(false)
+    const [dropdownPosy, setDropdownPosy] = useState()
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -112,19 +113,9 @@ const AssignAsset = ({ navigation, route }) => {
                         <Text style={[styles.deviceInfo, { marginTop: hp(0.5), color: ColorConstant.BLUE }]}>{device.deviceName}</Text>
                     </View>
                 </View>
-                <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2), zIndex: 10 }}>
-                    <View style={{ zIndex: 10 }}>
-                        <DropDown
-                            defaultValue={asset}
-                            label={translate("Select Existing Asset")}
-                            valueSet={setAsset}
-                            dataList={assetNameList}
-                            contentInset={{ label: hp(-0.2) }}
-                            inputContainerStyle={styles.inputContainer}
-                            accessoryStyle={{ top: hp(0.5) }}
-                            outerStyle={{ marginBottom: hp(0) }}
-                        />
-                    </View>
+                <View style={{ paddingHorizontal: hp(3), paddingTop: hp(8) }}  
+                    onLayout={(event)=>{setDropdownPosy(event.nativeEvent.layout.y)}}>
+                    
                     <ShadowView style={styles.shadowContainer}>
                         <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewAsset()}>
                             <Text style={styles.activateButtonTitle}>{translate("Add_New_Asset")}</Text>
@@ -143,6 +134,21 @@ const AssignAsset = ({ navigation, route }) => {
                         </TouchableOpacity>
                     </ShadowView>
                 </View>
+
+                <DropDown
+                    defaultValue={asset}
+                    label={translate("Select Existing Asset")}
+                    valueSet={setAsset}
+                    dataList={assetNameList}
+                    contentInset={{ label: hp(-0.2) }}
+                    inputContainerStyle={[styles.inputContainer,{zIndex:20}]}
+                    dropdownStyle={{paddingHorizontal: hp(3),width:'90%',zIndex:20}}
+                    accessoryStyle={{ top: hp(0.5) }}
+                    outerStyle={{ marginBottom: hp(0), zIndex:20, 
+                        paddingHorizontal: hp(3), maxHeight:hp(22), 
+                        paddingTop: hp(2), width:'100%', 
+                        position:'absolute',top:dropdownPosy }}
+                />
             </View>
             {renderAddNewAssetDialog()}
         </>
