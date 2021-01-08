@@ -121,7 +121,7 @@ const AssignAsset = ({ navigation, route }) => {
                             dataList={assetNameList}
                             contentInset={{ label: hp(-0.2) }}
                             inputContainerStyle={styles.inputContainer}
-                            accessoryStyle={{ top: hp(0.0) }}
+                            accessoryStyle={{ top: hp(0.5) }}
                             outerStyle={{ marginBottom: hp(0) }}
                         />
                     </View>

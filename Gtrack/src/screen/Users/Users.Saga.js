@@ -8,6 +8,7 @@ function* getSubuser(action) {
     const { userId, onSuccess, onError } = action
     try {
         const response = yield call(API.get, ApiConstants.GET_SUBUSER(userId))
+        yield put(UserActions.setSubuserResponse(response))
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -50,7 +51,8 @@ function* updateSubuserDetails(action) {
 function* getSubuserByFilter(action) {
     const {body, userId, onSuccess, onError } = action
     try {
-        const response = yield call(API.post, ApiConstants.GET_SUBUSER_BY_FILTER(userId), body)            
+        const response = yield call(API.post, ApiConstants.GET_SUBUSER_BY_FILTER(userId), body) 
+        yield put(UserActions.setSubuserByFilter(response))           
         onSuccess(response)
     } catch (error) {
         onError(error)
