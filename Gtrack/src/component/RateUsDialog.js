@@ -19,7 +19,7 @@ const RateUsDialog = (props) => {
         <View>
             <Dialog 
             visible={visible}
-            dialogStyle={{backgroundColor:ColorConstant.WHITE}}  
+            dialogStyle={{backgroundColor:ColorConstant.WHITE,borderRadius:20}}  
             onTouchOutside={() => setVisible(false)}
             > 
             <TouchableOpacity onPress={()=>setVisible(false)} style={{alignSelf:'flex-end'}}>
