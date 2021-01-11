@@ -4706,31 +4706,6 @@ function RateUsDialogIcon(props) {
   )
 }
 
-function StarIconClick(props) {
-  return (
-    <Svg width={21} height={20} viewBox="0 0 21 20" {...props}>
-      <Path
-        data-name="Polygon 8"
-        d="M10.5 0l3.15 6.714 7.35.925-5.4 5.075L16.989 20 10.5 16.422 4.011 20 5.4 12.714 0 7.639l7.35-.925z"
-        fill="#ff7f21"
-      />
-    </Svg>
-  )
-}
-
-function StarIcon(props) {
-  return (
-    <Svg width={21} height={20} viewBox="0 0 21 20" {...props}>
-      <Path
-        data-name="Polygon 8"
-        d="M10.5 0l3.15 6.714 7.35.925-5.4 5.075L16.989 20 10.5 16.422 4.011 20 5.4 12.714 0 7.639l7.35-.925z"
-        fill="#fef6f1"
-      />
-    </Svg>
-  )
-}
-
-
 export {
   BarCodeScanIcon,
   CompleteSetupImage,
@@ -4848,7 +4823,5 @@ export {
   MenuIconClicked,
   LoginIcon,
   CrossIconBlue,
-  RateUsDialogIcon,
-  StarIconClick,
-  StarIcon
+  RateUsDialogIcon
 }

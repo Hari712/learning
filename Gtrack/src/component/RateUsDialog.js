@@ -2,15 +2,11 @@ import React, { useState, Component } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { Dialog } from 'react-native-simple-dialogs';
-import { EditText, FontSize, TextField } from '.';
+import { FontSize } from '.';
 import { translate } from '../../App';
 import { ColorConstant } from '../constants/ColorConstants';
-import { RateUsDialogIcon, StarIcon, StarIconClick } from './SvgComponent'
-// import { AirbnbRating  } from 'react-native-ratings'
-import StarRating from './StarRating';
-// import Icon from 'react-native-vector-icons/Ionicons'
-
-
+import { CloseIcon, RateUsDialogIcon} from './SvgComponent'
+import StarRating from './StarRating'
 
 const RateUsDialog = (props) => {
     console.log("inside Rateus ",props)
@@ -23,13 +19,16 @@ const RateUsDialog = (props) => {
         <View>
             <Dialog 
             visible={visible}
-            //dialogStyle={styles.dialogStyle}  
+            dialogStyle={{backgroundColor:ColorConstant.WHITE}}  
             onTouchOutside={() => setVisible(false)}
             > 
+            <TouchableOpacity onPress={()=>setVisible(false)} style={{alignSelf:'flex-end'}}>
+                <CloseIcon/>
+            </TouchableOpacity>
             <RateUsDialogIcon style={{alignSelf:'center'}} />
-            <Text style={{textAlign:'center',fontFamily:'Nunito-Regular',fontSize:14,paddingHorizontal:hp(5)}}>How would you rate your experience with us ?</Text>
-            <View style={{flexDirection:'row',alignSelf:'center',marginVertical:hp(3),paddingHorizontal:hp(2)}}>
-                <Text style={{color:ColorConstant.LIGHTGREY,fontFamily:'Nunito-SemiBold',fontSize:hp(1.2),alignSelf:'center',textAlign:'right'}}>Poor</Text> 
+            <Text style={styles.textStyle}>How would you rate your experience with us ?</Text>
+            <View style={styles.rateView}>
+                <Text style={styles.rateText}>Poor</Text> 
                 
                 <View style={{paddingHorizontal:wp(3)}} >
                     <StarRating
@@ -39,7 +38,7 @@ const RateUsDialog = (props) => {
                     />
                 </View>
                 
-                <Text style={{color:ColorConstant.LIGHTGREY,fontFamily:'Nunito-SemiBold',fontSize:hp(1.2),alignSelf:'center',textAlign:'left'}}>Excellent</Text> 
+                <Text style={[styles.rateText,{textAlign:'left'}]}>Excellent</Text> 
             </View>
             <View style={styles.decsContainer}>
                 <TextInput
@@ -67,7 +66,27 @@ const styles = StyleSheet.create({
         height:hp(20),
         textAlignVertical: 'top',
         fontSize: FontSize.FontSize.small,
-        padding:hp(1.5)
+        padding:hp(1.5),
+        fontFamily:'Nunito-Regular'
+    },
+    textStyle: {
+        textAlign:'center',
+        fontFamily:'Nunito-Regular',
+        fontSize:14,
+        paddingHorizontal:hp(5)
+    },
+    rateText: {
+        color:ColorConstant.LIGHTGREY,
+        fontFamily:'Nunito-SemiBold',
+        fontSize:hp(1.2),
+        alignSelf:'center',
+        textAlign:'right'
+    },
+    rateView: {
+        flexDirection:'row',
+        alignSelf:'center',
+        marginVertical:hp(3),
+        paddingHorizontal:hp(2)
     },
     decsContainer: {
         shadowColor: "#000",
