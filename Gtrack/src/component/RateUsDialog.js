@@ -26,9 +26,9 @@ const RateUsDialog = (props) => {
                 <CloseIcon/>
             </TouchableOpacity>
             <RateUsDialogIcon style={{alignSelf:'center'}} />
-            <Text style={styles.textStyle}>How would you rate your experience with us ?</Text>
+            <Text style={styles.textStyle}>{translate("Rate_Us_String")}</Text>
             <View style={styles.rateView}>
-                <Text style={styles.rateText}>Poor</Text> 
+                <Text style={styles.rateText}>{translate("Poor")}</Text> 
                 
                 <View style={{paddingHorizontal:wp(3)}} >
                     <StarRating
@@ -38,7 +38,7 @@ const RateUsDialog = (props) => {
                     />
                 </View>
                 
-                <Text style={[styles.rateText,{textAlign:'left'}]}>Excellent</Text> 
+                <Text style={[styles.rateText,{textAlign:'left'}]}>{translate("Excellent")}</Text> 
             </View>
             <View style={styles.decsContainer}>
                 <TextInput
