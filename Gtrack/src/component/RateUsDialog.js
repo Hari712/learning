@@ -6,7 +6,8 @@ import { EditText, FontSize, TextField } from '.';
 import { translate } from '../../App';
 import { ColorConstant } from '../constants/ColorConstants';
 import { RateUsDialogIcon, StarIcon, StarIconClick } from './SvgComponent'
-import { AirbnbRating  } from 'react-native-ratings'
+// import { AirbnbRating  } from 'react-native-ratings'
+import StarRating from './StarRating';
 // import Icon from 'react-native-vector-icons/Ionicons'
 
 
@@ -28,20 +29,17 @@ const RateUsDialog = (props) => {
             <RateUsDialogIcon style={{alignSelf:'center'}} />
             <Text style={{textAlign:'center',fontFamily:'Nunito-Regular',fontSize:14,paddingHorizontal:hp(5)}}>How would you rate your experience with us ?</Text>
             <View style={{flexDirection:'row',alignSelf:'center',marginVertical:hp(3),paddingHorizontal:hp(2)}}>
-                <Text style={{color:ColorConstant.LIGHTGREY,fontFamily:'Nunito-SemiBold',fontSize:12,flex:1,alignSelf:'center',textAlign:'right'}}>Poor</Text> 
+                <Text style={{color:ColorConstant.LIGHTGREY,fontFamily:'Nunito-SemiBold',fontSize:hp(1.2),alignSelf:'center',textAlign:'right'}}>Poor</Text> 
                 
-                <View style={{paddingHorizontal:wp(1)}} >
-                    <AirbnbRating
-                        count={5}
-                        showRating={false}
+                <View style={{paddingHorizontal:wp(3)}} >
+                    <StarRating
                         defaultRating={starCount}
-                        selectedColor={'#ff7f21'}
                         size={20}
                         onFinishRating={(rate)=>setStarCount(rate)}
                     />
                 </View>
                 
-                <Text style={{color:ColorConstant.LIGHTGREY,fontFamily:'Nunito-SemiBold',fontSize:12 ,flex:1,alignSelf:'center',textAlign:'left'}}>Excellent</Text> 
+                <Text style={{color:ColorConstant.LIGHTGREY,fontFamily:'Nunito-SemiBold',fontSize:hp(1.2),alignSelf:'center',textAlign:'left'}}>Excellent</Text> 
             </View>
             <View style={styles.decsContainer}>
                 <TextInput
@@ -72,7 +70,14 @@ const styles = StyleSheet.create({
         padding:hp(1.5)
     },
     decsContainer: {
-        elevation:4,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
         backgroundColor:ColorConstant.WHITE,
         borderRadius:10,
         borderWidth:0.5,
