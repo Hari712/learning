@@ -3,8 +3,8 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize } from '../../component'
-import { useDispatch } from 'react-redux';
+import { FontSize, RateUsDialog } from '../../component'
+import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
@@ -13,6 +13,7 @@ import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrow
 const Settings = ({ navigation }) => {
 
   const dispatch = useDispatch()
+  const [rateusVisible, setRateusVisible] = useState(false)
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,7 +22,7 @@ const Settings = ({ navigation }) => {
   },[navigation]);
 
   const SettingsItems = ({ item }) => {
-    // const [listData, setListData] = useState(SETTINGS_MENU)
+    // const [listData, setListData] = useState(SETTINGS_MENU)    
 
     let IconConstant;
 
@@ -75,7 +76,7 @@ const Settings = ({ navigation }) => {
       }
 
       else if (item.title == 'Rate Us') {
-        navigation.navigate(SCREEN_CONSTANTS.RATE_US)
+        setRateusVisible(true)
       }
 
       else if (item.title == 'Feedback') {
@@ -127,6 +128,12 @@ const Settings = ({ navigation }) => {
     )
   }
 
+  function renderRateUsDialog() {
+    return(
+      <RateUsDialog visible={rateusVisible} setVisible={setRateusVisible} />
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -136,6 +143,7 @@ const Settings = ({ navigation }) => {
         renderItem={SettingsItems}
         keyExtractor={(item, index) => index.toString()}
       />
+      {renderRateUsDialog()}
     </SafeAreaView>
 
   )

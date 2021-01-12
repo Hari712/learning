@@ -17,6 +17,7 @@ import GroupItem from './GroupItem'
 import AssteItem from './AssetItem'
 import CustomDialog from './Dialog'
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
+import RateUsDialog from './RateUsDialog'
 
 export { 
     EditText,
@@ -37,5 +38,6 @@ export {
     AssetConfirmationDialog,
     GroupItem,
     AssteItem,
-    DeleteConfirmationDialog
+    DeleteConfirmationDialog,
+    RateUsDialog
 }

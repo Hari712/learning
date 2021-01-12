@@ -247,5 +247,9 @@
     "Empty_Device_Id": "Please enter device id",
     "Empty_Device_Name": "Please enter device name",
     "Empty_Old_Passcode": "Please enter old password",
-    "Empty_New_Passcode": "Please enter new password"
+    "Empty_New_Passcode": "Please enter new password",
+    "Rate_Us_String": "How would you rate your experience with us ?",
+    "Excellent": "Excellent",
+    "Poor":"Poor"
+
 }
