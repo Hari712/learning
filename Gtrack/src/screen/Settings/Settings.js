@@ -3,22 +3,25 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize } from '../../component'
+import { FontSize, LogoutConfirmationDialog } from '../../component'
 import { useDispatch } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 
 const Settings = ({ navigation }) => {
 
   const dispatch = useDispatch()
 
+  const [isLogoutConfirmationDialogVisible, setIsLogoutConfirmationDialogVisible] = useState(false)
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (null),
     });
-  },[navigation]);
+  }, [navigation]);
 
   const SettingsItems = ({ item }) => {
     // const [listData, setListData] = useState(SETTINGS_MENU)
@@ -26,78 +29,78 @@ const Settings = ({ navigation }) => {
     let IconConstant;
 
     switch (item.title) {
-        case 'Profile': IconConstant = ProfileIcon            
-            break;
+      case 'Profile': IconConstant = ProfileIcon
+        break;
 
-        case 'Permission': IconConstant = PermissionIcon           
-            break;
+      case 'Permission': IconConstant = PermissionIcon
+        break;
 
-        case 'About': IconConstant = AboutIcon            
-            break;
+      case 'About': IconConstant = AboutIcon
+        break;
 
-        case 'Notifications': IconConstant = NotificationIcon            
-            break;
+      case 'Notifications': IconConstant = NotificationIcon
+        break;
 
-        case 'Rate Us': IconConstant = RateUsIcon            
-            break;
+      case 'Rate Us': IconConstant = RateUsIcon
+        break;
 
-        case 'Feedback': IconConstant = FeedbackIcon            
-            break;
+      case 'Feedback': IconConstant = FeedbackIcon
+        break;
 
-        case 'Advance Settings': IconConstant = AdvanceSettingsIcon            
-            break;
+      case 'Advance Settings': IconConstant = AdvanceSettingsIcon
+        break;
 
-        case 'Change Passcode': IconConstant = FeedbackIcon            
-            break;
+      case 'Change Passcode': IconConstant = FeedbackIcon
+        break;
 
-        case 'Logout': IconConstant = LogoutIcon            
-            break;
-    
-        default: 
-            break;
+      case 'Logout': IconConstant = LogoutIcon
+        break;
+
+      default:
+        break;
     }
 
     const onPressHandle = ({ navigation, item }) => {
-      if (item.title == 'Profile') {
-        navigation.navigate(SCREEN_CONSTANTS.PROFILE)
-      }
+      switch (item.title) {
+        case 'Profile':
+          NavigationService.push((SCREEN_CONSTANTS.PROFILE))
+          break;
 
-      else if (item.title == 'Permission') {
-        navigation.navigate(SCREEN_CONSTANTS.PERMISSION)
-      }
+        case 'Permission':
+          NavigationService.push((SCREEN_CONSTANTS.PERMISSION))
+          break;
 
-      else if (item.title == 'About') {
-        navigation.navigate(SCREEN_CONSTANTS.ABOUT)
-      }
+        case 'About':
+          NavigationService.push((SCREEN_CONSTANTS.ABOUT))
+          break;
 
-      else if (item.title == 'Notifications') {
-        navigation.navigate(SCREEN_CONSTANTS.SETTINGS_NOTIFICATION)
-      }
+        case 'Notifications':
+          NavigationService.push((SCREEN_CONSTANTS.SETTINGS_NOTIFICATION))
+          break;
 
-      else if (item.title == 'Rate Us') {
-        navigation.navigate(SCREEN_CONSTANTS.RATE_US)
-      }
+        case 'Rate Us':
+          NavigationService.push((SCREEN_CONSTANTS.RATE_US))
+          break;
 
-      else if (item.title == 'Feedback') {
-        navigation.navigate(SCREEN_CONSTANTS.FEEDBACK)
-      }
+        case 'Feedback':
+          NavigationService.push((SCREEN_CONSTANTS.FEEDBACK))
+          break;
 
-      else if (item.title == 'Advance Settings') {
-        navigation.navigate(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
-      }
+        case 'Advance Settings':
+          NavigationService.push(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
+          break;
 
-      else if (item.title == 'Change Passcode') {
-        navigation.navigate(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
-      }
+        case 'Change Passcode':
+          NavigationService.push(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
+          break;
 
-      else if (item.title == 'Logout') {
-        dispatch(LoginActions.requestLogout())
-      }
+        case 'Logout':
+          setIsLogoutConfirmationDialogVisible(true)
+          break;
 
-      else {
-        dispatch(LoginActions.requestLogout())
+        default:
+          break;
       }
-
     }
 
     return (
@@ -109,13 +112,13 @@ const Settings = ({ navigation }) => {
         <View style={styles.mainViewStyle}>
 
           <View style={styles.leftMainViewStyle}>
-            <IconConstant style={styles.titleIconStyle} resizeMode='contain'/>
+            <IconConstant style={styles.titleIconStyle} resizeMode='contain' />
             {/* <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' /> */}
             <Text style={styles.titleTextStyle}> {translate(item.title)}</Text>
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <NextArrowIcon resizeMode='contain'/>
+            <NextArrowIcon resizeMode='contain' />
           </View>
 
         </View>
@@ -124,6 +127,26 @@ const Settings = ({ navigation }) => {
 
       </TouchableOpacity>
 
+    )
+  }
+
+  function onHideLogoutConfirmationDialog() {
+    setIsLogoutConfirmationDialogVisible(false)
+  }
+
+  function onTapConfirm() {
+    onHideLogoutConfirmationDialog()
+    dispatch(LoginActions.requestLogout())
+  }
+
+  function renderLogoutConfirmationDialog() {
+    return (
+      <LogoutConfirmationDialog
+        isVisible={isLogoutConfirmationDialogVisible}
+        onTapConfirm={() => onTapConfirm()}
+        onTapClose={() => onHideLogoutConfirmationDialog(false)}
+        onSwipeComplete={() => onHideLogoutConfirmationDialog(false)}
+      />
     )
   }
 
@@ -136,6 +159,7 @@ const Settings = ({ navigation }) => {
         renderItem={SettingsItems}
         keyExtractor={(item, index) => index.toString()}
       />
+      {renderLogoutConfirmationDialog()}
     </SafeAreaView>
 
   )
