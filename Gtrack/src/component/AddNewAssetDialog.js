@@ -32,6 +32,7 @@ function AddNewAssetDialog(props) {
     const [assetname, setAssetName] = useState('')
     const [assetType, setAssetType] = useState('')
     const [assetDescription, setAssetDescription] = useState('')
+    const [dropdownPosY,setDropdownPosY] = useState()
 
     const [assetNameError, setAssetNameError] = useState(null)
     const [assetTypeError, setAssetTypeError] = useState(null)
@@ -114,18 +115,10 @@ function AddNewAssetDialog(props) {
                     outerStyle={{ marginBottom: hp(0.5) }}
                 />
                 {assetNameError ? <Text style={{ fontSize: FontSize.FontSize.small, color:'red', marginBottom: hp(1) }}>{assetNameError}</Text> : null}
-                <View style={{ zIndex: 10 }}>
-                <DropDown
-                    defaultValue={assetType}
-                    label={translate("Type_star")}
-                    valueSet={setAssetType}
-                    dataList={arrAssetTypeList}
-                    contentInset={{ label: hp(-0.2) }}
-                    inputContainerStyle={styles.inputContainer}
-                    accessoryStyle={{ top: hp(0.9) }}
-                    outerStyle={{ marginBottom: hp(0.5), zIndex: 10 }}
-                />
-                </View>
+                <View style={{ zIndex: 10, height:hp(7) }}
+                    onLayout={(event)=>{setDropdownPosY(event.nativeEvent.layout.y)}}/>
+                
+                
                 {assetTypeError ? <Text style={{ fontSize: FontSize.FontSize.small, color:'red', marginBottom: hp(1) }}>{assetTypeError}</Text> : null}
                 <TextField
                     valueSet={setAssetDescription}
@@ -142,6 +135,17 @@ function AddNewAssetDialog(props) {
                 <TouchableOpacity style={styles.button} onPress={() => onTapCreateAssign()}>
                     <Text style={styles.buttonTitle}>{translate("Create_Assign")}</Text>
                 </TouchableOpacity>
+
+                <DropDown
+                    defaultValue={assetType}
+                    label={translate("Type_star")}
+                    valueSet={setAssetType}
+                    dataList={arrAssetTypeList}
+                    contentInset={{ label: hp(-0.2) }}
+                    inputContainerStyle={styles.inputContainer}
+                    accessoryStyle={{ top: hp(0.5) }}
+                    outerStyle={{ marginBottom: hp(0.5), marginHorizontal:hp(2), width:'100%', zIndex: 10,position:'absolute',top:dropdownPosY }}
+                />
             </View>
         )
     }

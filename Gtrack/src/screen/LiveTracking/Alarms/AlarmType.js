@@ -7,11 +7,11 @@ import {FontSize, MultiSelect, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon } from '../../../component/SvgComponent';
+import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import * as LivetrackingActions from '../Livetracking.Action'
-import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
+import { getLoginInfo, getSubuserState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
-import { color } from 'react-native-reanimated';
+import * as UsersActions from '../../Users/Users.Action'
 
 
 const AlarmType = ({navigation,route}) => {
@@ -26,14 +26,19 @@ const AlarmType = ({navigation,route}) => {
   const [notification, setNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
-  const { loginInfo } = useSelector(state => ({
-    loginInfo: getLoginInfo(state)
+  const { loginInfo, subUserData } = useSelector(state => ({
+    loginInfo: getLoginInfo(state),
+    subUserData: getSubuserState(state)
   }))
 
+  const userdata = Object.values(subUserData.subUser).map((item)=> item.firstName+" "+item.lastName )
   const [isIgnition, setIsIgnition] = useState(false)
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
-
-  useEffect(() => {    
+  
+  useEffect(() => {  
+    
+    dispatch(UsersActions.requestGetSubuser(loginInfo.id, onSuccess, onError))   
+    
     if(route){
       const { editData } = route.params;
 
@@ -45,6 +50,11 @@ const AlarmType = ({navigation,route}) => {
 
         if(editData.notification.notificators)
           setNotification(true)
+
+        var tempUser = [] ;
+        editData.users ?
+          editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
+        setSelectedUser(tempUser)
       }
     }
   },[])
@@ -105,13 +115,25 @@ const AlarmType = ({navigation,route}) => {
                 break;
     }
 
+    let arrSelectedId = [];
+    selectUser ? 
+    subUserData.subUser.filter((item)=> {      
+      selectUser.filter((selectedItem)=>{        
+        if(item.firstName+" "+item.lastName === selectedItem){  
+          arrSelectedId.push(item.id)
+        }
+      })  }) 
+    :null;
+
+    console.log("User ids",arrSelectedId)
+
     const {selectedDeviceID} = route.params;
     var requestBody, isUpdate;
     if(route && route.params && route.params.editData) {
       // Editing/update body
       isUpdate = true;
       requestBody = {
-        "userIds" : [],
+        "userIds" : arrSelectedId,
         "deviceIds" : selectedDeviceID,
         "notification" : {
           "id" : route.params.editData.notification.id,
@@ -131,7 +153,7 @@ const AlarmType = ({navigation,route}) => {
       // create body 
       isUpdate = false;
       requestBody = {
-        "userIds" : [],
+        "userIds" : arrSelectedId,
         "deviceIds" : selectedDeviceID,
         "notification" : {
           "id" : 0,
@@ -160,6 +182,7 @@ const AlarmType = ({navigation,route}) => {
   }
 
   function onSuccess(data) {
+    console.log(data)
     AppManager.hideLoader()     
   }
 
@@ -172,11 +195,11 @@ const AlarmType = ({navigation,route}) => {
 return ( 
   <View style={styles.container}>
     
-      <View style={styles.header}>
-        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{alarmType}</Text>
-      </View>
+    <View style={styles.header}>
+      <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{alarmType}</Text>
+    </View>
 
-      <ScrollView style={{flex:1}}>
+    <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' style={{flex:1}}>
       <View style={{paddingHorizontal:hp(5)}}>
         <View style={{marginVertical:hp(3)}}>
           <Text style={styles.textStyle}>{translate("Device_Name")}</Text>
@@ -196,22 +219,23 @@ return (
 
         <MultiSelect 
             label="Select User"
-            dataList={user} 
+            dataList={userdata} 
             allText={translate("All_string")}
             hideSelectedDeviceLable={true}
             hideDeleteButton={true}
             rowStyle={styles.rowStyle}
             dropdownStyle={{height:hp(20)}}
             outerStyle={{marginTop:hp(2)}}
-            textStyle={{color:ColorConstant.BLUE,flexWrap: 'wrap', flexShrink: 1}}
+            textStyle={{color:ColorConstant.BLUE}}
             valueSet={setSelectedUser} 
             selectedData={selectUser}
+            CloseIcon={<CrossIconBlue/>}
             selectedItemContainerStyle={styles.selectedItemContainerStyle} 
             selectedItemRowStyle={styles.selectedItemRowStyle}
             deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
           /> 
 
-        {isIgnition ? null : 
+        {/* {isIgnition ? null : 
           <View style={styles.inputTextStyle}>
             <TextInput 
               placeholder={inputLabel}
@@ -220,7 +244,7 @@ return (
               value={speed}                    
             />
           </View>
-        }
+        } */}
 
         <View style={{marginVertical:hp(3)}}>
           <Text style={styles.textStyle}>{translate("Time")}</Text>
@@ -344,6 +368,8 @@ rowStyle: {
 },
 selectedItemContainerStyle:{
   backgroundColor:"#F9FAFC",
+  flexDirection:'row',
+  flexWrap:'wrap',
   //backgroundColor:ColorConstant.LIGHTRED,
   borderRadius:8,
   marginTop:hp(2),
@@ -351,7 +377,7 @@ selectedItemContainerStyle:{
   padding:hp(1)
 },
 selectedItemRowStyle: {
-  flexDirection:'row',
+  flexDirection:'row',  
   elevation:4,
   shadowColor: ColorConstant.GREY,
   shadowOffset: {
@@ -364,7 +390,6 @@ selectedItemRowStyle: {
   borderRadius:5,
   alignItems:'center',
   paddingHorizontal:hp(1),
-  //flexWrap:'wrap',
   margin:4,
   height:hp(4),
   },

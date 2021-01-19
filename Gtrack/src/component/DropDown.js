@@ -35,7 +35,7 @@ class DropDown extends React.Component {
         const data = ['Car', 'Truck', 'Tempo'];
 
         function handleRightAccessory() {
-            return <View style={[styles.imageContainer, accessoryStyle]}>
+            return <View style={[{ justifyContent:'center',height:otherProps.inputContainerStyle && otherProps.inputContainerStyle.height?otherProps.inputContainerStyle.height/2: styles.inputButton.height-hp(2)},accessoryStyle]}>
                 <NextIcon resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle}/>
                 {/* <Image source={images.image.next} resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle} /> */}
             </View>

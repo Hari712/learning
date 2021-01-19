@@ -43,14 +43,12 @@ const Users = ({navigation}) => {
 
   function onSuccess(data) {    
     console.log("Success",data) 
-    dispatch(UsersActions.setSubuserResponse(data))
     AppManager.hideLoader()
     setIsRefreshing(false)
   }
 
   function onFilterSuccess(data) {    
     console.log("Success",data) 
-    dispatch(UsersActions.setSubuserByFilter(data))
     AppManager.hideLoader()
   }
   

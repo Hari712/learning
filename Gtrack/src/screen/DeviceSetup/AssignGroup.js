@@ -37,6 +37,7 @@ const AssignGroup = ({ navigation, route }) => {
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [group, setGroup] = useState('')
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
+    const [dropdownPosy, setDropdownPosy] = useState()
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -115,18 +116,9 @@ const AssignGroup = ({ navigation, route }) => {
                 <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step3} resizeMode="contain" />
                 <Text style={styles.title}>{translate("Assign Group")}</Text>
             </View>
-            <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2), zIndex: 10 }}>
-                <DropDown
-                    defaultValue={group}
-                    label='Select Group'
-                    valueSet={setGroup}
-                    dataList={arrGroupnames}
-                    contentInset={{ label: hp(-0.2) }}
-                    inputContainerStyle={styles.inputContainer}
-                    accessoryStyle={{ top: hp(0.0) }}
-                    outerStyle={{ marginBottom: hp(0) }}
-                />
-            </View>
+            <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2),height:hp(8) }}
+                onLayout={(event)=>{setDropdownPosy(event.nativeEvent.layout.y)}}
+            />
             <ShadowView style={[styles.shadowContainer, { paddingHorizontal: hp(3) }]}>
                     <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
                         <Text style={styles.activateButtonTitle}>{translate("Add New Group")}</Text>
@@ -144,6 +136,17 @@ const AssignGroup = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </ShadowView>
             </View>
+            <DropDown
+                defaultValue={group}
+                label='Select Group'
+                valueSet={setGroup}
+                dataList={arrGroupnames}
+                contentInset={{ label: hp(-0.2) }}
+                inputContainerStyle={styles.inputContainer}
+                dropdownStyle={{paddingHorizontal: hp(3),width:'89%',zIndex:20}}
+                accessoryStyle={{ top: hp(0.5) }}
+                outerStyle={{ marginBottom: hp(0),paddingTop: hp(2),maxHeight:hp(22),paddingHorizontal: hp(3),position:'absolute',top:dropdownPosy, width:'100%' }}
+            />
         </View>
         {renderAddNewGroupDialog()}
         </>
