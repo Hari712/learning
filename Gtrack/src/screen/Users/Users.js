@@ -109,11 +109,11 @@ const Users = ({navigation}) => {
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
               <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
-                  <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName :null} </Text>  
+                  <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :null} </Text>  
                   <Tooltip
                     popover={
                       <View>
-                        {item.groups.map((element, index) => {
+                        {item.groups && item.groups.map((element, index) => {
                           if(index>0)
                             return(
                               <Text key={index} style={{ fontSize:10,fontFamily:'Nunito-Regular'}}>
@@ -128,7 +128,7 @@ const Users = ({navigation}) => {
                     pointerStyle={{elevation:0.1,borderRightWidth:4,borderLeftWidth:4}}
                     containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
                   >           
-                    {item.groups.length>1?
+                    {item.groups && item.groups.length>1?
                       <Text style={{fontSize:10,fontFamily:'Nunito-SemiBold',backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>
                         +{item.groups.length-1}
                       </Text>
