@@ -250,7 +250,8 @@ return (
       <View style={styles.searchContainer}>
       {searchBar()} 
       </View>
-
+  
+      {subUserData.subUser.length > 0 ?
       <FlatList
         data={searchData}
         renderItem={renderItem}
@@ -261,7 +262,12 @@ return (
             onRefresh={onRefresh}     
           />
         }
-      />
+      /> 
+        :
+      <View style={{alignItems:'center',marginVertical:hp(32)}}>
+       <Text style={{fontFamily:"Nunito-Regular"}}>No records found</Text>
+      </View>
+      }
 
       {filterClick?
         <View style={styles.menu}>
@@ -293,7 +299,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 12,
-    // elevation:3,
+    //elevation:3,
     borderWidth: 0.3,
     borderColor: ColorConstant.GREY,
     shadowColor:ColorConstant.GREY,
