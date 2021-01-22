@@ -99,7 +99,7 @@ const Users = ({navigation}) => {
             <View style={styles.whiteSubView} >
               <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
               {item.roles.map((role,key) =>
-                <Text key={key} style={styles.whiteContainerSubText}>{role.name}</Text> )}       
+                <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text> )}       
             </View>
             <View style={{flexDirection:'column',flex:1}} >
               <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>
