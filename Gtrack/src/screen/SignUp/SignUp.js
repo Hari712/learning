@@ -88,7 +88,16 @@ const SignUp = () => {
         setCountryCode(country.callingCode)
         setCountry(country)
         // setModalVisible(!isModalVisible)
-    }  
+    } 
+    
+    function navigateToLogin() {
+        NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)
+        setFirstName('')
+        setLastName('')
+        setEmail('')
+        setPhoneNumber('')
+        setCountryCode('1')
+    }
 
     return (
 
@@ -174,7 +183,7 @@ const SignUp = () => {
 
                     <View style={styles.bottomContainer}>
                         <Text style={styles.bottomText}>{translate("Splash_string1")}  </Text>
-                        <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
+                        <TouchableOpacity style={styles.subContainer} onPress={() =>navigateToLogin()}>
                             <Text style={styles.bottomBtn}>{translate("Splash_string2")}</Text>
                         </TouchableOpacity>
                     </View>
