@@ -45,8 +45,8 @@ const AssignAsset = ({ navigation, route }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity onPress={() => NavigationService.goBack()}>
-                    <BackIcon style={{marginLeft:hp(2)}}/>
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                    <BackIcon />
                 </TouchableOpacity>
             )
         });

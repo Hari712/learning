@@ -52,8 +52,8 @@ const CreateDeviceAsset = ({ route, navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <BackIcon style={{marginLeft:hp(2)}}/>
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                    <BackIcon />
                 </TouchableOpacity>
             )
         });

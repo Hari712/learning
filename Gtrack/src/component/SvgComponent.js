@@ -3367,7 +3367,7 @@ function LiveTrackingPlusIcon(props) {
 
 function BackIcon(props) {
   return (
-    <Svg width={9.972} height={17.655} viewBox="0 0 8.972 16.655" {...props}>
+    <Svg width={10.972} height={18.655} viewBox="0 0 8.972 16.655" {...props}>
       <G data-name="Group 7990">
         <Path
           data-name="Path 4351"
