@@ -89,6 +89,7 @@ const AddUser = ({ navigation, route }) => {
 
   function onSuccess(data) {
     console.log("Success", data)
+    AppManager.showSimpleMessage('success', { message: data.message, description: '' })
     AppManager.hideLoader()
     navigation.pop()
   }
@@ -96,6 +97,7 @@ const AddUser = ({ navigation, route }) => {
   function onError(error) {
     AppManager.hideLoader()
     console.log("Error", error)
+    AppManager.showSimpleMessage('danger', { message: error, description: '' })
   }
 
   React.useLayoutEffect(() => {
