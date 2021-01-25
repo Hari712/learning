@@ -109,11 +109,11 @@ const Users = ({navigation}) => {
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
               <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
-                  <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName : "No Group Assigned"} </Text>  
+                  <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :"No Group Assigned"} </Text>  
                   <Tooltip
                     popover={
                       <View>
-                        {item.groups.map((element, index) => {
+                        {item.groups && item.groups.map((element, index) => {
                           if(index>0)
                             return(
                               <Text key={index} style={{ fontSize:10,fontFamily:'Nunito-Regular'}}>
@@ -128,7 +128,7 @@ const Users = ({navigation}) => {
                     pointerStyle={{elevation:0.1,borderRightWidth:4,borderLeftWidth:4}}
                     containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
                   >           
-                    {item.groups.length>1?
+                    {item.groups && item.groups.length>1?
                       <Text style={{fontSize:10,fontFamily:'Nunito-SemiBold',backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>
                         +{item.groups.length-1}
                       </Text>
@@ -250,7 +250,8 @@ return (
       <View style={styles.searchContainer}>
       {searchBar()} 
       </View>
-
+  
+      {subUserData.subUser.length > 0 ?
       <FlatList
         data={searchData}
         renderItem={renderItem}
@@ -261,7 +262,12 @@ return (
             onRefresh={onRefresh}     
           />
         }
-      />
+      /> 
+        :
+      <View style={{alignItems:'center',marginVertical:hp(32)}}>
+       <Text style={{fontFamily:"Nunito-Regular"}}>No records found</Text>
+      </View>
+      }
 
       {filterClick?
         <View style={styles.menu}>
@@ -293,7 +299,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 12,
-    // elevation:3,
+    //elevation:3,
     borderWidth: 0.3,
     borderColor: ColorConstant.GREY,
     shadowColor:ColorConstant.GREY,
