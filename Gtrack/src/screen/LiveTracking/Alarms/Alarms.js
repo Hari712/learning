@@ -62,9 +62,9 @@ const Alarms = ({navigation}) => {
             </Text>          
         ),  
         headerLeft:() => (
-            <TouchableOpacity onPress={()=>navigation.goBack()}>
-              <BackIcon style={{marginLeft:hp(2)}}/>
-            </TouchableOpacity>
+          <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+            <BackIcon />
+          </TouchableOpacity>
         )  
     });
   },[navigation]);

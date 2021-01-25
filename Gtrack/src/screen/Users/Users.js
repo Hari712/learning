@@ -3,8 +3,6 @@ import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, 
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import FontSize from '../../component/FontSize';
-import NavigationService from '../../navigation/NavigationService';
 import { getLoginState, getSubuserState } from '../Selector'
 import Tooltip from 'rn-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +29,7 @@ const Users = ({navigation}) => {
     loginData: getLoginState(state),
     subUserData: getSubuserState(state)
   }))
+
 
   searchData = subUserData.subUser
   const user_id = loginData.id ? loginData.id : null
@@ -100,16 +99,17 @@ const Users = ({navigation}) => {
             <View style={styles.whiteSubView} >
               <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
               {item.roles.map((role,key) =>
-                <Text key={key} style={styles.whiteContainerSubText}>{role.name}</Text> )}       
+                <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text> )}       
             </View>
             <View style={{flexDirection:'column',flex:1}} >
               <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>
-              <Text style={styles.whiteContainerSubText}>{item.rights}</Text>       
+              {item.roles.map((role,key) =>
+              <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular User" : "Admin"}</Text> )}      
             </View>
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
               <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
-                  <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :null} </Text>  
+                  <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :"No Group Assigned"} </Text>  
                   <Tooltip
                     popover={
                       <View>
