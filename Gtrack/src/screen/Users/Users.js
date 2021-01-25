@@ -244,20 +244,20 @@ const Users = ({navigation}) => {
             </TouchableOpacity>
           </View>
 
-          <View style={{flexDirection:'row',paddingHorizontal:hp(3),justifyContent:'space-between',}}>
+          <View style={styles.filterContainer}>
             <View style={{marginTop:hp(2)}}>
-                <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-SemiBold"}}>Status</Text>
+                <Text style={styles.titleText}>Status</Text>
                 {Status.map((item,key) =>
-                <TouchableOpacity key={key} onPress={() => key == status ? setStatus(-1) : setStatus(key)} style={{flexDirection:'row',marginTop:hp(2)}}>                  
+                <TouchableOpacity key={key} onPress={() => key == status ? setStatus(-1) : setStatus(key)} style={styles.filterBox}>                  
                   {key == status ? <RadioButtonIconClicked style={{alignSelf:'center'}}/> : <RadioButtonIcon  style={{alignSelf:'center'}} /> }
                   <Text style={styles.textFilter}>{item}</Text>
                 </TouchableOpacity> )}                      
             </View>
 
             <View style={{marginTop:hp(2)}}>
-                <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-SemiBold"}}>Roles</Text>    
+                <Text style={styles.titleText}>Roles</Text>    
                 {Role.map((role,key) =>
-                <TouchableOpacity onPress={() => key == IsRole ? setIsRole(-1) : setIsRole(key) } style={{flexDirection:'row',marginTop:hp(2)}}>
+                <TouchableOpacity onPress={() => key == IsRole ? setIsRole(-1) : setIsRole(key) } style={styles.filterBox}>
                   {key == IsRole ? <RadioButtonIconClicked style={{alignSelf:'center'}}/> : <RadioButtonIcon  style={{alignSelf:'center'}} /> }
                   <Text style={styles.textFilter}>{role}</Text>
                 </TouchableOpacity> )} 
@@ -272,8 +272,8 @@ const Users = ({navigation}) => {
                 <TouchableOpacity onPress={() => filterHandle()} style={styles.nextButton}>
                     <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Okay</Text>
                 </TouchableOpacity>
-            </View> 
-          </Dialog>
+          </View> 
+        </Dialog>
       </View>
   )
 }
@@ -497,7 +497,22 @@ addButton : {
   
 },
 textFilter: {
-  paddingLeft:hp(1),fontFamily:"Nunito-Regular",color:ColorConstant.BLACK
+  paddingLeft:hp(1),
+  fontFamily:"Nunito-Regular",
+  color:ColorConstant.BLACK
+},
+titleText: {
+  color:ColorConstant.BLUE,
+  fontFamily:"Nunito-SemiBold"
+},
+filterBox: {
+  flexDirection:'row',
+  marginTop:hp(2)
+},
+filterContainer: {
+  flexDirection:'row',
+  paddingHorizontal:hp(3),
+  justifyContent:'space-between'
 },
 menu:{
   backgroundColor:'white',
