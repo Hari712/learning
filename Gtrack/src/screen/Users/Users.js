@@ -109,7 +109,7 @@ const Users = ({navigation}) => {
             <View style={{flexDirection:'column'}}>
               <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
               <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
-                  <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName :null} </Text>  
+                  <Text style={styles.whiteContainerSubText}>{item.groups[0]?item.groups[0].groupName : "No Group Assigned"} </Text>  
                   <Tooltip
                     popover={
                       <View>
