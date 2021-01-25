@@ -26,9 +26,11 @@ const Users = ({navigation}) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState("")
   const [filterKeyword, setFilterKeyword] = useState([])
-  const [visible, setVisible] = useState()
+  const [visible, setVisible] = useState(false)
   const [status, setStatus] = useState()
   const [IsRole, setIsRole] = useState()
+  const [filterRole, setFilterRole] = useState(["ROLE_OWNER","ROLE_REGULAR"])
+  const [filterStatus, setFilterStatus] = useState([ "Active", "InActive" ])
   
 
   const { loginData, subUserData } = useSelector(state => ({
@@ -167,37 +169,65 @@ const Users = ({navigation}) => {
     AppManager.showLoader()
     setIsRole(-1)
     setStatus(-1)
-    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError)) 
-    setVisible(false) 
+    setTimeout(() => {
+      filterHandle()
+    }, 1000);    
   }
 
   const filterHandle = () => {
+    setVisible(false)
+    switch (IsRole) {
+      case 0: setFilterRole(["ROLE_OWNER"])        
+        break;
+
+      case 1: setFilterRole(["ROLE_REGULAR"])
+        break;
+    
+      default: setFilterRole(["ROLE_OWNER","ROLE_REGULAR"])
+        break;
+    }
+    switch (status) {
+      case 0: setFilterStatus(["Active"])        
+        break;
+
+      case 1: setFilterStatus(["InActive"])        
+      break;
+    
+      default: setFilterStatus(["Active","InActive"])
+        break;
+    }   
 
     AppManager.showLoader()
-    
+
+    setTimeout(() => {
+      filterApiCall()
+    }, 1000);  
+
+  }
+
+  const filterApiCall = () => {
     const requestBody =  {
-        // "pageNumber" : 0,
-        // "pageSize" : 5,
-        // "useMaxSearchAsLimit" : false,
-        "searchColumnsList" : [ 
-          {
-            "columnName" : "searchParam",
-            "searchStr" : searchKeyword
-          }, 
-          {
-            "columnName" : "role",
-            "searchStrList" : IsRole == 0 ?  ["ROLE_OWNER"] : ["ROLE_REGULAR"] 
-          }, 
-          {
-            "columnName" : "isDeactivated",
-            "searchStrList" : status == 0 ? ["Active"] : ["InActive"]
-          } 
-        ],
-        "sortHeader" : "id",
-        "sortDirection" : "DESC"
-      }
-    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
-    //setFilterClick(!filterClick)
+      // "pageNumber" : 0,
+      // "pageSize" : 5,
+      // "useMaxSearchAsLimit" : false,
+      "searchColumnsList" : [ 
+        {
+          "columnName" : "searchParam",
+          "searchStr" : searchKeyword
+        }, 
+        {
+          "columnName" : "role",
+          "searchStrList" : filterRole
+        }, 
+        {
+          "columnName" : "isDeactivated",
+          "searchStrList" : filterStatus
+        } 
+      ],
+      "sortHeader" : "id",
+      "sortDirection" : "DESC"
+    }
+  dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
   }
 
   const searchHandle = (keyword) => {
@@ -229,7 +259,6 @@ const Users = ({navigation}) => {
 
   const filterDialog = () => {
     return(
-      <View>
           <Dialog 
           visible={visible}
           dialogStyle={{backgroundColor:ColorConstant.WHITE,borderRadius:20}}  
@@ -272,7 +301,6 @@ const Users = ({navigation}) => {
                 </TouchableOpacity>
           </View> 
         </Dialog>
-      </View>
   )
 }
 
@@ -330,8 +358,7 @@ return (
       </View>
       }
 
-      {visible?
-        filterDialog() :  null} 
+      {filterDialog()} 
 
   </View>
       )
