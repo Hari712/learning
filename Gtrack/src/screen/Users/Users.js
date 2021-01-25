@@ -1,6 +1,5 @@
 import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
-import images from '../../constants/images';
+import { View, StyleSheet,Text, Image,TouchableOpacity, TextInput, RefreshControl, FlatList} from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { getLoginState, getSubuserState } from '../Selector'
@@ -13,7 +12,6 @@ import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { UsersEditIcon, EmailIcon, UserAddIcon, FilterIcon, FilterIconClicked, PhoneIcon, CloseIcon, RadioButtonIcon, RadioButtonIconClicked } from '../../component/SvgComponent';
 import { Dialog } from 'react-native-simple-dialogs'
-import CheckBox from 'react-native-check-box';
 
 let searchData;
 
