@@ -4,7 +4,7 @@ import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { AppConstants, EMAIL_PHONE_REGEX, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText, CustomButton, FontSize } from '../../component'
 import CheckBox from 'react-native-check-box'
@@ -16,6 +16,7 @@ import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App'
 import { LoginWelcomeIcon } from '../../component/SvgComponent'
+import {  validateEmailorPhoneNumber } from '../../utils/helper'
 import { TermsConditionModal } from './TermsConditionModal'
 
 const SignUp = () => {
@@ -43,11 +44,17 @@ const SignUp = () => {
         else if (isEmpty(email)) {
             message = translate(AppConstants.EMPTY_EMAIL)
         }
+        else if (!validateEmailorPhoneNumber(email)) {    
+            message = translate(AppConstants.INVALID_EMAIL)
+        }        
         else if (isEmpty(countryCode)) {
             message = translate(AppConstants.EMPTY_COUNTRY_CODE)
         }
         else if (isEmpty(phoneNumber)) {
             message = translate(AppConstants.EMPTY_PHONE_NUMBER)
+        }
+        else if (!validateEmailorPhoneNumber(phoneNumber)){
+            message = translate(AppConstants.INVALID_PHONE_NUMBER)
         }
 
         if (!isEmpty(message)) {
