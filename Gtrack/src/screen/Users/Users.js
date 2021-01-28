@@ -1,6 +1,5 @@
 import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
-import images from '../../constants/images';
+import { View, StyleSheet,Text, Image,TouchableOpacity, TextInput, RefreshControl, FlatList} from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { getLoginState, getSubuserState } from '../Selector'
@@ -11,11 +10,14 @@ import AppManager from '../../constants/AppManager';
 import Switches from 'react-native-switches'
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { UsersEditIcon, EmailIcon, UserAddIcon, FilterIcon, FilterIconClicked, PhoneIcon } from '../../component/SvgComponent';
+import { UsersEditIcon, EmailIcon, UserAddIcon, FilterIcon, FilterIconClicked, PhoneIcon, CloseIcon, RadioButtonIcon, RadioButtonIconClicked } from '../../component/SvgComponent';
+import { Dialog } from 'react-native-simple-dialogs'
 
 let searchData;
 
-const filterData = ['Active','Inactive']
+const Status = ['Active','Inactive']
+
+const Role  = ['Admin', 'Regular']
 
 
 const Users = ({navigation}) => {
@@ -24,6 +26,10 @@ const Users = ({navigation}) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState("")
   const [filterKeyword, setFilterKeyword] = useState([])
+  const [visible, setVisible] = useState(false)
+  const [status, setStatus] = useState()
+  const [IsRole, setIsRole] = useState()
+  
 
   const { loginData, subUserData } = useSelector(state => ({
     loginData: getLoginState(state),
@@ -49,12 +55,14 @@ const Users = ({navigation}) => {
   function onFilterSuccess(data) {    
     console.log("Success",data) 
     AppManager.hideLoader()
+    setVisible(false)
   }
   
   function onError(error) {
     AppManager.hideLoader()
     console.log("Error",error)  
     setIsRefreshing(false) 
+    setVisible(false)
   }
 
   React.useLayoutEffect(() => {
@@ -155,37 +163,47 @@ const Users = ({navigation}) => {
     )   
   }
 
-  const filterHandle = (item) => {
-    
-
-    setFilterKeyword([item])
-    // console.log("Filter", item, filterKeyword)
-    
+  const resetHandle = () => {
+    setVisible(false)
     AppManager.showLoader()
-    
+    setIsRole(-1)
+    setStatus(-1)
+    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))
+    // setTimeout(() => {
+    //   filterApiCall()
+    // }, 3000);
+   
+  }
+
+  const filterHandle = () => {
+    setVisible(false)
+    AppManager.showLoader()
+    filterApiCall()
+  }
+
+  const filterApiCall = () => {
     const requestBody =  {
-        // "pageNumber" : 0,
-        // "pageSize" : 5,
-        // "useMaxSearchAsLimit" : false,
-        "searchColumnsList" : [ 
-          {
-            "columnName" : "searchParam",
-            "searchStr" : searchKeyword
-          }, 
-          // {
-          //   "columnName" : "role",
-          //   "searchStrList" : [ "ROLE_REGULAR", "ROLE_OWNER" ]
-          // }, 
-          {
-            "columnName" : "isDeactivated",
-            "searchStrList" : [item]
-          } 
-        ],
-        "sortHeader" : "id",
-        "sortDirection" : "DESC"
-      }
-    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
-    setFilterClick(!filterClick)
+      // "pageNumber" : 0,
+       "pageSize" : 16,
+      // "useMaxSearchAsLimit" : false,
+      "searchColumnsList" : [ 
+        {
+          "columnName" : "searchParam",
+          "searchStr" : searchKeyword
+        }, 
+        {
+          "columnName" : "role",
+          "searchStrList" : IsRole == 0 ?  ["ROLE_OWNER"] : IsRole == 1 ? ["ROLE_REGULAR"] : ["ROLE_REGULAR", "ROLE_OWNER"]
+        }, 
+        {
+          "columnName" : "isDeactivated",
+          "searchStrList" : status == 0 ? ["Active"] : status == 1 ? ["InActive"] : [ "Active", "InActive" ]
+        } 
+      ],
+      "sortHeader" : "id",
+      "sortDirection" : "DESC"
+    }
+  dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
   }
 
   const searchHandle = (keyword) => {
@@ -215,6 +233,53 @@ const Users = ({navigation}) => {
     dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
   }
 
+  const filterDialog = () => {
+    return(
+          <Dialog 
+          visible={visible}
+          dialogStyle={{backgroundColor:ColorConstant.WHITE,borderRadius:20}}  
+          onTouchOutside={() => setVisible(false)}
+          > 
+          <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            <Text style={styles.filterText}>Filter</Text>
+            <TouchableOpacity onPress={()=>setVisible(false)} >
+              <CloseIcon width={14.984} height={14.984}/>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.filterContainer}>
+            <View style={{marginTop:hp(2)}}>
+                <Text style={styles.titleText}>Status</Text>
+                {Status.map((item,key) =>
+                <TouchableOpacity key={key} onPress={() => key == status ? setStatus(-1) : setStatus(key)} style={styles.filterBox}>                  
+                  {key == status ? <RadioButtonIconClicked style={{alignSelf:'center'}}/> : <RadioButtonIcon  style={{alignSelf:'center'}} /> }
+                  <Text style={styles.textFilter}>{item}</Text>
+                </TouchableOpacity> )}                      
+            </View>
+
+            <View style={{marginTop:hp(2)}}>
+                <Text style={styles.titleText}>Roles</Text>    
+                {Role.map((role,key) =>
+                <TouchableOpacity onPress={() => key == IsRole ? setIsRole(-1) : setIsRole(key) } style={styles.filterBox}>
+                  {key == IsRole ? <RadioButtonIconClicked style={{alignSelf:'center'}}/> : <RadioButtonIcon  style={{alignSelf:'center'}} /> }
+                  <Text style={styles.textFilter}>{role}</Text>
+                </TouchableOpacity> )} 
+            </View>
+          </View>
+
+          <View style={styles.buttonContainer}>
+                <TouchableOpacity onPress={() => resetHandle()} style={styles.cancelButton}>
+                    <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Reset")}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => filterHandle()} style={styles.nextButton}>
+                    <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Okay</Text>
+                </TouchableOpacity>
+          </View> 
+        </Dialog>
+  )
+}
+
   const searchBar = () => {  
         return (
           <View style={styles.searchSubContainer}>
@@ -226,8 +291,8 @@ const Users = ({navigation}) => {
                     value={searchKeyword}
                     
                 />
-                <TouchableOpacity  onPress={()=> setFilterClick(!filterClick)} >
-                  {filterClick? <FilterIconClicked/> : <FilterIcon/> }
+                <TouchableOpacity  onPress={()=> setVisible(!visible)} >
+                  {visible? <FilterIconClicked/> : <FilterIcon/> }
                 </TouchableOpacity>
             </View>
             <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
@@ -251,7 +316,7 @@ return (
       {searchBar()} 
       </View>
   
-      {subUserData.subUser.length > 0 ?
+      {subUserData.subUser && subUserData.subUser.length > 0 ?
       <FlatList
         data={searchData}
         renderItem={renderItem}
@@ -269,19 +334,7 @@ return (
       </View>
       }
 
-      {filterClick?
-        <View style={styles.menu}>
-          {filterData.map((item,key) =>
-            <TouchableOpacity key={key} 
-              onPress={() => filterHandle(item)}
-              style={{
-                borderBottomColor:ColorConstant.GREY,                 
-                borderBottomWidth:key!=filterData.length-1 ?1:0}}>
-              <Text style={styles.textStyle, {color: filterKeyword.find((element)=>{return element === item}) ? ColorConstant.ORANGE : ColorConstant.BLUE }}>{item}</Text>
-            </TouchableOpacity>
-          )}
-        </View>:
-      null} 
+      {filterDialog()} 
 
   </View>
       )
@@ -416,6 +469,12 @@ search: {
   shadowOpacity: 1,
   backgroundColor:ColorConstant.WHITE
 },
+filterText: {
+  color:ColorConstant.ORANGE,
+  marginLeft:hp(15),
+  fontFamily:"Nunito-Bold",
+  fontSize:hp(2)
+},
 addButton : {
     //paddingHorizontal:hp(2),
     //marginHorizontal:hp(2),
@@ -437,6 +496,24 @@ addButton : {
     shadowOpacity: 1,
     backgroundColor:ColorConstant.WHITE
   
+},
+textFilter: {
+  paddingLeft:hp(1),
+  fontFamily:"Nunito-Regular",
+  color:ColorConstant.BLACK
+},
+titleText: {
+  color:ColorConstant.BLUE,
+  fontFamily:"Nunito-SemiBold"
+},
+filterBox: {
+  flexDirection:'row',
+  marginTop:hp(2)
+},
+filterContainer: {
+  flexDirection:'row',
+  paddingHorizontal:hp(3),
+  justifyContent:'space-between'
 },
 menu:{
   backgroundColor:'white',
@@ -473,7 +550,31 @@ searchSubContainer: {
   flexDirection:'row',
   width:'100%',
   justifyContent:'space-between'
-}
+},
+buttonContainer: {
+  flexDirection:'row',
+  justifyContent:'space-between',
+  marginTop:hp(5),
+  //paddingHorizontal:hp(1),
+  alignItems:'center',
+  paddingBottom:hp(2)
+},
+cancelButton: {
+  borderRadius:6,
+  borderColor:ColorConstant.BLUE,
+  borderWidth:1,
+  backgroundColor:ColorConstant.WHITE,
+  width:'45%',
+  height:hp(6),
+  justifyContent:'center'
+},
+nextButton: {
+  borderRadius:6,
+  backgroundColor:ColorConstant.BLUE,
+  width:'45%',
+  height:hp(6),
+  justifyContent:'center'
+},
 });
 
 
