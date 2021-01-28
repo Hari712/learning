@@ -29,8 +29,6 @@ const Users = ({navigation}) => {
   const [visible, setVisible] = useState(false)
   const [status, setStatus] = useState()
   const [IsRole, setIsRole] = useState()
-  const [filterRole, setFilterRole] = useState(["ROLE_OWNER","ROLE_REGULAR"])
-  const [filterStatus, setFilterStatus] = useState([ "Active", "InActive" ])
   
 
   const { loginData, subUserData } = useSelector(state => ({
@@ -166,49 +164,27 @@ const Users = ({navigation}) => {
   }
 
   const resetHandle = () => {
+    setVisible(false)
     AppManager.showLoader()
     setIsRole(-1)
     setStatus(-1)
-    setTimeout(() => {
-      filterHandle()
-    }, 1000);    
+    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))
+    // setTimeout(() => {
+    //   filterApiCall()
+    // }, 3000);
+   
   }
 
   const filterHandle = () => {
     setVisible(false)
-    switch (IsRole) {
-      case 0: setFilterRole(["ROLE_OWNER"])        
-        break;
-
-      case 1: setFilterRole(["ROLE_REGULAR"])
-        break;
-    
-      default: setFilterRole(["ROLE_OWNER","ROLE_REGULAR"])
-        break;
-    }
-    switch (status) {
-      case 0: setFilterStatus(["Active"])        
-        break;
-
-      case 1: setFilterStatus(["InActive"])        
-      break;
-    
-      default: setFilterStatus(["Active","InActive"])
-        break;
-    }   
-
     AppManager.showLoader()
-
-    setTimeout(() => {
-      filterApiCall()
-    }, 1000);  
-
+    filterApiCall()
   }
 
   const filterApiCall = () => {
     const requestBody =  {
       // "pageNumber" : 0,
-      // "pageSize" : 5,
+       "pageSize" : 16,
       // "useMaxSearchAsLimit" : false,
       "searchColumnsList" : [ 
         {
@@ -217,11 +193,11 @@ const Users = ({navigation}) => {
         }, 
         {
           "columnName" : "role",
-          "searchStrList" : filterRole
+          "searchStrList" : IsRole == 0 ?  ["ROLE_OWNER"] : IsRole == 1 ? ["ROLE_REGULAR"] : ["ROLE_REGULAR", "ROLE_OWNER"]
         }, 
         {
           "columnName" : "isDeactivated",
-          "searchStrList" : filterStatus
+          "searchStrList" : status == 0 ? ["Active"] : status == 1 ? ["InActive"] : [ "Active", "InActive" ]
         } 
       ],
       "sortHeader" : "id",
