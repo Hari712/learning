@@ -255,7 +255,7 @@ return (
       <FlatList
         data={searchData}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
         refreshControl={
           <RefreshControl 
             refreshing={isRefreshing}

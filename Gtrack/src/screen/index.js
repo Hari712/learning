@@ -43,6 +43,7 @@ import GetStarted from './GetStarted/GetStarted'
 import GeoFenceCreator from './LiveTracking/PolygonCreator'
 import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
 import TrackingDetails from './Dashboard/TrackingDetails'
+import GeoFenceCircle from './LiveTracking/GeoFenceCircle'
 
 export {
     Splash,
@@ -88,5 +89,6 @@ export {
     GetStarted,
     GeoFenceCreator,
     SettingsChangePassCode,
-    TrackingDetails
+    TrackingDetails,
+    GeoFenceCircle
 }
