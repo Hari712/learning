@@ -71,7 +71,7 @@ const SignUp = () => {
         AppManager.hideLoader()
         console.log("Success data",data)
         if(data){
-            AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: '', floating: true }) 
+            AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: translate(AppConstants.EMAIL_SENT_DESC), floating: true }) 
             NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)
         }
     }

@@ -72,6 +72,7 @@ export const AppConstants = {
     EMPTY_COUNTRY_CODE: "Empty_Country_Code",
     INVALID_PHONE_NUMBER: "Invalid_Phone_Number",
     EMAIL_SENT:"Email_Sent",
+    EMAIL_SENT_DESC:"Email_Sent_Desc",
     LOGIN_SUCCESS:"Login_Success",
     EMPTY_DEVICE_ID: "Empty_Device_Id",
     EMPTY_DEVICE_NAME: "Empty_Device_Name",
