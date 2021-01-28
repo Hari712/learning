@@ -53,7 +53,8 @@ export const SCREEN_CONSTANTS = {
     GET_STARTED: 'GetStarted',
     GEOFENCE_CREATOR: 'GeoFenceCreator',
     SETTINGS_CHANGE_PASSCODE: 'SettingsChangePassCode',
-    TRACKING_DETAILS: 'TrackingDetails'  
+    TRACKING_DETAILS: 'TrackingDetails',
+    GEOFENCE_CIRCLE: 'GeoFenceCircle'  
 }
 
 export const AppConstants = {

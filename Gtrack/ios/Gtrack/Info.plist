@@ -40,7 +40,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>GTrack would like access to your photo gallery</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>Gtrack would like to get your current location to show on map</string>
 	<key>NSCameraUsageDescription</key>
 	<string>GTrack would like to access your camera to scan barcode</string>
 	<key>NSMicrophoneUsageDescription</key>

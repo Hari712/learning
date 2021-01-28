@@ -2,15 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, LayoutAnimation } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
+import { getGroupListInfo } from "../Selector";
+import { useSelector } from "react-redux";
 import { ColorConstant } from '../../constants/ColorConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BackIcon } from '../../component/SvgComponent';
+import isEmpty from 'lodash/isEmpty'
 
 const GeoFenceCreateNew = ({ navigation }) => {
 
+    const { groupList, isConnected } = useSelector(state => ({
+        groupList: getGroupListInfo(state),
+        isConnected: state.network.isConnected
+    })) 
+
+    const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [cancel, setCancel] = useState(false)
     const [selectedGroup, setSelectedGroup] = useState([]);
     const [role, setRole] = useState();
@@ -33,7 +42,8 @@ const GeoFenceCreateNew = ({ navigation }) => {
 
     function navigateToPolygonCreator() {
       // navigation.navigate('GeoFenceType', { type: role })
-         NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
+         NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE)
+       // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
     }
 
     return (
@@ -44,7 +54,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
                     label={translate("Group Access")}
-                    //  dataList={Data} 
+                    dataList={arrGroupnames} 
                     allText={translate("Select_all_string")}
                     hideSelectedDeviceLable={true}
                     hideDeleteButton={true}
