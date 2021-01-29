@@ -30,8 +30,9 @@ const SignUp = () => {
     const [countryCode, setCountryCode] = useState(1)
     const [country, setCountry] = useState()
     const [phoneNumber, setPhoneNumber] = useState()
-    const [isModalVisible, setModalVisible] = useState(true)
+    const [isModalVisible, setModalVisible] = useState(false)
     const [tocVisible, setTocVisible] = useState(false);
+    let temp;
 
     function onTapSignUp() {
         let message = ''
@@ -91,14 +92,9 @@ const SignUp = () => {
         }
     }
     const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+        setModalVisible(true);
     };
-    const onCountrySelection = (country) => {
-        setCountryCode(country.callingCode)
-        setCountry(country)
-        // setModalVisible(!isModalVisible)
-    } 
-    
+        
     function navigateToLogin() {
         NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)
         setFirstName('')
@@ -151,16 +147,19 @@ const SignUp = () => {
                             <Image style={{width:wp(3),height:hp(1),padding:hp(0.7)}} source={images.countryPicker.downArrow}/> 
                         </TouchableOpacity>
                             <Modal 
-                                isVisible={!isModalVisible} 
-                                coverScreen={true}
-                                //onBackButtonPress={() => setModalVisible(false)}
+                                isVisible={isModalVisible} 
+                                style={styles.modal}
+                                onBackButtonPress={() => setModalVisible(false)}
                                 >
-                                <View style={styles.countrySelection}>
-                                    <CountrySelection  action={(item) => onCountrySelection(item)} selected={country}/>
-                                    <Button title={translate("Done")} onPress={()=>setModalVisible(!isModalVisible)} />
-                                </View>                        
+                                {/* <View style={[styles.countrySelection]}> */}
+                                    <CountrySelection  action={(item) => setCountry(item) } selected={country}/>
+                                    <Button  title={translate("Done")} onPress={()=>{ 
+                                        setCountryCode(country.callingCode)
+                                        setModalVisible(false)
+                                        }} />
+                                {/* </View>                         */}
                             </Modal>
-                    </View> 
+                        </View> 
 
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText 
@@ -285,6 +284,12 @@ const styles = StyleSheet.create({
         marginBottom:hp(2.5),
         alignItems:'center'
         
+    },
+    modal: {
+        margin:0, 
+        paddingVertical:Platform.OS == 'ios' ? hp(2) : null,
+        height:"100%",
+        backgroundColor:"#f4f4f4"
     },
     countrySelection: {
         width:wp(100),
