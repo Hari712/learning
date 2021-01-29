@@ -148,16 +148,12 @@ const SignUp = () => {
                         </TouchableOpacity>
                             <Modal 
                                 isVisible={isModalVisible} 
-                                //coverScreen={true}
-                                //animationIn='bounceIn'
-                                style={{margin:0}}
-                                //transparent={true}
-                                //presentationStyle='fullScreen'
+                                style={{margin:0,paddingVertical:hp(2),height:"100%",backgroundColor:"#f4f4f4"}}
                                 onBackButtonPress={() => setModalVisible(false)}
                                 >
                                 {/* <View style={[styles.countrySelection]}> */}
                                     <CountrySelection  action={(item) => setCountry(item) } selected={country}/>
-                                    <Button title={translate("Done")} onPress={()=>{ 
+                                    <Button  title={translate("Done")} onPress={()=>{ 
                                         setCountryCode(country.callingCode)
                                         setModalVisible(false)
                                         }} />
