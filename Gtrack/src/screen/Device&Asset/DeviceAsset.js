@@ -205,7 +205,7 @@ const DeviceAsset = ({ navigation }) => {
           />
            : 
            
-          <View style={{marginVertical:hp(38),alignItems:'center',height:'100%'}}>
+          <View style={{marginVertical:hp(38),alignItems:'center'}}>
             <Text style={{fontFamily:"Nunito-Regular",fontSize:hp(2)}}>No devices found</Text>
           </View> }
 
