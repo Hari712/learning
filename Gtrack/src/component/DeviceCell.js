@@ -15,7 +15,7 @@ const DeviceCell = (props) => {
     const { deviceDTO } = item
     const groupDTO = item.groupDTO ? item.groupDTO : null
     const assetDTO = item.assetDTO ? item.assetDTO : null
-    const groupName = groupDTO ? groupDTO.groupName : 'Default'
+    const groupName = groupDTO ? groupDTO.groupName : 'No group found'
     const devicePlan = item.devicePlan ? item.devicePlan : null
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
