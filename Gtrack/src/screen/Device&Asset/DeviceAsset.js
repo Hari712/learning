@@ -205,8 +205,8 @@ const DeviceAsset = ({ navigation }) => {
           />
            : 
            
-          <View style={{marginVertical:hp(38),alignItems:'center'}}>
-            <Text style={{fontFamily:"Nunito-Regular",fontSize:hp(2)}}>No devices found</Text>
+          <View style={styles.noRecords}>
+            <Text style={styles.noRecordsText}>No devices found</Text>
           </View> }
 
       </View>
@@ -251,6 +251,14 @@ const styles = StyleSheet.create({
   activityIndicator: {
     color: "#000",
     marginTop: '2%'
+  },
+  noRecords: {
+    marginVertical:hp(38),
+    alignItems:'center'
+  },
+  noRecordsText: {
+    fontFamily:"Nunito-Regular",
+    fontSize:hp(2)
   },
   refreshIndicator: { tintColor: 'white' }
 })
