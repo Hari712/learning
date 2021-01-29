@@ -85,7 +85,7 @@ const Feedback = ({ navigation }) => {
     }
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView keyboardShouldPersistTaps='handled' style={styles.container}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>{translate("Feedback")}</Text>
             </View>
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     textViewStyle: {
         color: ColorConstant.WHITE, 
         fontWeight: 'bold', 
-        fontSize: FontSize.FontSize.medium
+        fontSize: FontSize.FontSize.medium,
     },
     descStyle: {
         //minHeight: hp(40),
@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: '85%',
         alignSelf: 'center',
+        alignItems:'flex-start',
         marginTop: hp(4),
         fontSize: FontSize.FontSize.small
     },
