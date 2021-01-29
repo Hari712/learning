@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails, GeoFenceCircle } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails, GeoFenceCircle, GeoFencePolyGon } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
@@ -64,6 +64,7 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.COMPLETE_SETUP} component={CompleteSetup}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CIRCLE} component={GeoFenceCircle}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_POLYGON} component={GeoFencePolyGon}/>
     </LiveTrackingStack.Navigator>
     )
 }

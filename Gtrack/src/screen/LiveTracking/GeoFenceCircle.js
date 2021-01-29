@@ -10,7 +10,6 @@ import { isUserLoggedIn } from '../Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
-import { map } from 'lodash';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.1;
@@ -179,7 +178,7 @@ const GeoFenceCircle = () => {
     }
 
     function onChangeRadius(val) {
-        let radius = isAndroid ? val  : val / 1000
+        let radius = isAndroid ? val  : val * 1000
         console.log(radius)
         setRadius(Math.round(radius))
     }

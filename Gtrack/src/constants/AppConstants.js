@@ -54,7 +54,8 @@ export const SCREEN_CONSTANTS = {
     GEOFENCE_CREATOR: 'GeoFenceCreator',
     SETTINGS_CHANGE_PASSCODE: 'SettingsChangePassCode',
     TRACKING_DETAILS: 'TrackingDetails',
-    GEOFENCE_CIRCLE: 'GeoFenceCircle'  
+    GEOFENCE_CIRCLE: 'GeoFenceCircle',
+    GEOFENCE_POLYGON: 'GeoFencePolyGon'  
 }
 
 export const AppConstants = {

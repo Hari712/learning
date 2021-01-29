@@ -44,6 +44,7 @@ import GeoFenceCreator from './LiveTracking/PolygonCreator'
 import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
 import TrackingDetails from './Dashboard/TrackingDetails'
 import GeoFenceCircle from './LiveTracking/GeoFenceCircle'
+import GeoFencePolyGon from './LiveTracking/GeoFencePolygon'
 
 export {
     Splash,
@@ -90,5 +91,6 @@ export {
     GeoFenceCreator,
     SettingsChangePassCode,
     TrackingDetails,
-    GeoFenceCircle
+    GeoFenceCircle,
+    GeoFencePolyGon
 }

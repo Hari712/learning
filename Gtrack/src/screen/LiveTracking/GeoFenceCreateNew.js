@@ -42,8 +42,9 @@ const GeoFenceCreateNew = ({ navigation }) => {
 
     function navigateToPolygonCreator() {
       // navigation.navigate('GeoFenceType', { type: role })
-         NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE)
+        // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE)
        // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
+        NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON)
     }
 
     return (
