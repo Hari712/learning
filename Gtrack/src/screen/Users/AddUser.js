@@ -40,7 +40,7 @@ const AddUser = ({ navigation, route }) => {
         setFirstName(editData.editData.firstName)
         setLastName(editData.editData.lastName)
         setEmail(editData.editData.email)
-        setRole(editData.editData.roles[0].id == 1 ? "Owner" : "Regular")
+        setRole(editData.editData.roles[0].id == 1 ? "Admin" : "Regular")
         setSelectedGroup(editData.editData.groups)
       }
     }
@@ -70,7 +70,7 @@ const AddUser = ({ navigation, route }) => {
         "lastName": lastName,
         "email": email,
         "roles": [{
-          "id": role == "Owner" ? 1 : 2
+          "id": role == "Admin" ? 1 : 2
         }],
         "groups": selectedGroup
       }
@@ -84,7 +84,7 @@ const AddUser = ({ navigation, route }) => {
           "lastName": lastName,
           "markAsOwner": null,
           "roles": [{
-            "id": role == "Owner" ? 1 : 2
+            "id": role == "Admin" ? 1 : 2
           }],
           "groups": selectedGroup
         }]
@@ -188,7 +188,7 @@ const AddUser = ({ navigation, route }) => {
                 label={translate("Assign Role")}
                 defaultValue={role}
                 valueSet={setRole}
-                dataList={['Regular', 'Owner']}
+                dataList={['Regular', 'Admin']}
                 outerStyle={{ marginTop: hp(2) }}
                 inputContainerStyle={{height: hp(6)}}
                 contentInset={{ input: 16, label: 1.4 }}
