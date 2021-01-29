@@ -185,23 +185,30 @@ const DeviceAsset = ({ navigation }) => {
     <>
       {menuClick ? renderMenu() : null}
       <View style={{ flex: 1 }}>
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              style={styles.refreshIndicator}
-              refreshing={isRefreshing}
-              onRefresh={onRefresh}
-            />
-          }    
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          ListFooterComponent={renderFooter}
-          onEndReached={() => loadMoreDevices()}
-          onEndReachedThreshold={0.1}
-          onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
-          data={deviceList}
-          renderItem={(data) => renderDeviceCell(data)}
-        />
+        {deviceList.length > 0 ? 
+          <FlatList
+            refreshControl={
+              <RefreshControl
+                style={styles.refreshIndicator}
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
+              />
+            }    
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            ListFooterComponent={renderFooter}
+            onEndReached={() => loadMoreDevices()}
+            onEndReachedThreshold={0.1}
+            onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
+            data={deviceList}
+            renderItem={(data) => renderDeviceCell(data)}
+          />
+           : 
+           
+          <View style={styles.noRecords}>
+            <Text style={styles.noRecordsText}>No devices found</Text>
+          </View> }
+
       </View>
 
     </>
@@ -244,6 +251,14 @@ const styles = StyleSheet.create({
   activityIndicator: {
     color: "#000",
     marginTop: '2%'
+  },
+  noRecords: {
+    marginVertical:hp(38),
+    alignItems:'center'
+  },
+  noRecordsText: {
+    fontFamily:"Nunito-Regular",
+    fontSize:hp(2)
   },
   refreshIndicator: { tintColor: 'white' }
 })
