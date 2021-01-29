@@ -95,7 +95,7 @@ const Users = ({navigation}) => {
           <View style={styles.blueBox}>
               <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
               {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
-              <Switches shape={'line'} buttonColor={ColorConstant.ORANGE} showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
+              <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
               <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
               <TouchableOpacity onPress={()=>{navigation.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                 <UsersEditIcon/>
