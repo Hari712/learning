@@ -30,8 +30,9 @@ const SignUp = () => {
     const [countryCode, setCountryCode] = useState(1)
     const [country, setCountry] = useState()
     const [phoneNumber, setPhoneNumber] = useState()
-    const [isModalVisible, setModalVisible] = useState(true)
+    const [isModalVisible, setModalVisible] = useState(false)
     const [tocVisible, setTocVisible] = useState(false);
+    let temp;
 
     function onTapSignUp() {
         let message = ''
@@ -91,9 +92,10 @@ const SignUp = () => {
         }
     }
     const toggleModal = () => {
-        setModalVisible(!isModalVisible);
+        setModalVisible(true);
     };
     const onCountrySelection = (country) => {
+        temp = country
         setCountryCode(country.callingCode)
         setCountry(country)
         // setModalVisible(!isModalVisible)
@@ -151,14 +153,14 @@ const SignUp = () => {
                             <Image style={{width:wp(3),height:hp(1),padding:hp(0.7)}} source={images.countryPicker.downArrow}/> 
                         </TouchableOpacity>
                             <Modal 
-                                isVisible={!isModalVisible} 
-                                coverScreen={true}
-                                //onBackButtonPress={() => setModalVisible(false)}
+                                isVisible={isModalVisible} 
+                                //coverScreen={true}
+                                onBackButtonPress={() => setModalVisible(false)}
                                 >
-                                <View style={styles.countrySelection}>
+                                {/* <View style={[styles.countrySelection]}> */}
                                     <CountrySelection  action={(item) => onCountrySelection(item)} selected={country}/>
-                                    <Button title={translate("Done")} onPress={()=>setModalVisible(!isModalVisible)} />
-                                </View>                        
+                                    <Button title={translate("Done")} onPress={()=>{setModalVisible(false),setCountry(temp)}} />
+                                {/* </View>                         */}
                             </Modal>
                     </View> 
 
