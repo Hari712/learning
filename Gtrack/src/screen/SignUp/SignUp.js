@@ -94,13 +94,7 @@ const SignUp = () => {
     const toggleModal = () => {
         setModalVisible(true);
     };
-    const onCountrySelection = (country) => {
-        temp = country
-        setCountryCode(country.callingCode)
-        setCountry(country)
-        // setModalVisible(!isModalVisible)
-    } 
-    
+        
     function navigateToLogin() {
         NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)
         setFirstName('')
@@ -155,14 +149,21 @@ const SignUp = () => {
                             <Modal 
                                 isVisible={isModalVisible} 
                                 //coverScreen={true}
+                                //animationIn='bounceIn'
+                                style={{margin:0}}
+                                //transparent={true}
+                                //presentationStyle='fullScreen'
                                 onBackButtonPress={() => setModalVisible(false)}
                                 >
                                 {/* <View style={[styles.countrySelection]}> */}
-                                    <CountrySelection  action={(item) => onCountrySelection(item)} selected={country}/>
-                                    <Button title={translate("Done")} onPress={()=>{setModalVisible(false),setCountry(temp)}} />
+                                    <CountrySelection  action={(item) => setCountry(item) } selected={country}/>
+                                    <Button title={translate("Done")} onPress={()=>{ 
+                                        setCountryCode(country.callingCode)
+                                        setModalVisible(false)
+                                        }} />
                                 {/* </View>                         */}
                             </Modal>
-                    </View> 
+                        </View> 
 
                         <View style={{ flex:0.75, paddingLeft:hp(1.5) }}>
                         <EditText 
