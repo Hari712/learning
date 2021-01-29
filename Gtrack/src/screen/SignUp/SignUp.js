@@ -148,7 +148,7 @@ const SignUp = () => {
                         </TouchableOpacity>
                             <Modal 
                                 isVisible={isModalVisible} 
-                                style={{margin:0,paddingVertical:hp(2),height:"100%",backgroundColor:"#f4f4f4"}}
+                                style={styles.modal}
                                 onBackButtonPress={() => setModalVisible(false)}
                                 >
                                 {/* <View style={[styles.countrySelection]}> */}
@@ -284,6 +284,12 @@ const styles = StyleSheet.create({
         marginBottom:hp(2.5),
         alignItems:'center'
         
+    },
+    modal: {
+        margin:0, 
+        paddingVertical:Platform.OS == 'ios' ? hp(2) : null,
+        height:"100%",
+        backgroundColor:"#f4f4f4"
     },
     countrySelection: {
         width:wp(100),
