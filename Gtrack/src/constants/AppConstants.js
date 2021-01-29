@@ -3,7 +3,7 @@ import { translate } from "../../App";
 export const MAP_BOX_TOKEN = 'pk.eyJ1Ijoia2h1c2hidTEyMyIsImEiOiJja2U4ZHBvdmsxbTZtMnpsNjY5M3FidDhnIn0.oHzVctH2vRk-DSj6o0IhsQ'
 export const USER_DATA = 'USER_DATA';
 export const EMAIL_PHONE_REGEX = /^(\d{10}|\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3}))$/
-export const EMAIL_VALIDATION_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+export const EMAIL_VALIDATION_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export const FEEDBACK_VALIDATION_ERROR = 'Please add feedback'
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 export const UNAUTHORIZED_ERROR_MESSAGE = 'Unauthorized : Invalid Token OR Token Expired'
@@ -73,6 +73,7 @@ export const AppConstants = {
     EMPTY_COUNTRY_CODE: "Empty_Country_Code",
     INVALID_PHONE_NUMBER: "Invalid_Phone_Number",
     EMAIL_SENT:"Email_Sent",
+    EMAIL_SENT_DESC:"Email_Sent_Desc",
     LOGIN_SUCCESS:"Login_Success",
     EMPTY_DEVICE_ID: "Empty_Device_Id",
     EMPTY_DEVICE_NAME: "Empty_Device_Name",

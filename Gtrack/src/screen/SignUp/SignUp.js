@@ -4,7 +4,7 @@ import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { AppConstants, EMAIL_PHONE_REGEX, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import NavigationService from '../../navigation/NavigationService'
 import { EditText, CustomButton, FontSize } from '../../component'
 import CheckBox from 'react-native-check-box'
@@ -16,19 +16,22 @@ import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App'
 import { LoginWelcomeIcon } from '../../component/SvgComponent'
+import {  validateEmailorPhoneNumber } from '../../utils/helper'
+import { TermsConditionModal } from './TermsConditionModal'
 
 const SignUp = () => {
 
     const dispatch = useDispatch()
 
-    const [isSelected, setIsSelected] = useState(false)
+    const [isTocAccepted, setIsTocAccepted] = useState(false)
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
     const [email, setEmail] = useState()
     const [countryCode, setCountryCode] = useState(1)
     const [country, setCountry] = useState()
     const [phoneNumber, setPhoneNumber] = useState()
-    const [isModalVisible, setModalVisible] = useState(true);
+    const [isModalVisible, setModalVisible] = useState(true)
+    const [tocVisible, setTocVisible] = useState(false);
 
     function onTapSignUp() {
         let message = ''
@@ -41,11 +44,17 @@ const SignUp = () => {
         else if (isEmpty(email)) {
             message = translate(AppConstants.EMPTY_EMAIL)
         }
+        else if (!validateEmailorPhoneNumber(email)) {    
+            message = translate(AppConstants.INVALID_EMAIL)
+        }        
         else if (isEmpty(countryCode)) {
             message = translate(AppConstants.EMPTY_COUNTRY_CODE)
         }
         else if (isEmpty(phoneNumber)) {
             message = translate(AppConstants.EMPTY_PHONE_NUMBER)
+        }
+        else if (!validateEmailorPhoneNumber(phoneNumber)){
+            message = translate(AppConstants.INVALID_PHONE_NUMBER)
         }
 
         if (!isEmpty(message)) {
@@ -69,7 +78,7 @@ const SignUp = () => {
         AppManager.hideLoader()
         console.log("Success data",data)
         if(data){
-            AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: '', floating: true }) 
+            AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMAIL_SENT), description: translate(AppConstants.EMAIL_SENT_DESC), floating: true }) 
             NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)
         }
     }
@@ -83,7 +92,7 @@ const SignUp = () => {
     }
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
-      };
+    };
     const onCountrySelection = (country) => {
         setCountryCode(country.callingCode)
         setCountry(country)
@@ -168,15 +177,20 @@ const SignUp = () => {
                             style={{alignSelf:'center'}}
                             unCheckedImage={<Image source={images.login.uncheckedbox}></Image>}
                             checkedImage={<Image source={images.login.checkedbox}></Image>}
-                            onClick={() => { setIsSelected(!isSelected) }}
-                            isChecked={isSelected}
+                            onClick={() => { setIsTocAccepted(!isTocAccepted) }}
+                            isChecked={isTocAccepted}
                         />
-                        <Text style={styles.termsConditionStyle}>{translate("Signup_string4")}</Text>
+                        <Text style={styles.termsConditionStyle}>I accept </Text>
+                        <TouchableOpacity onPress={()=>setTocVisible(!tocVisible)}>
+                            <Text style={styles.termsConditionStyleLink}>Terms & conditions</Text>
+                        </TouchableOpacity>
+                        
                     </View>
 
                     <CustomButton
+                        disabled={!isTocAccepted}
                         title={translate("Signup_string5")}
-                        style={styles.buttonStyle}
+                        style={[styles.buttonStyle,{backgroundColor: !isTocAccepted ? ColorConstant.GREY : ColorConstant.ORANGE}]}
                         textStyle={styles.buttonTextStyle}
                         onPress={() => onTapSignUp()}
                     />
@@ -187,6 +201,8 @@ const SignUp = () => {
                             <Text style={styles.bottomBtn}>{translate("Splash_string2")}</Text>
                         </TouchableOpacity>
                     </View>
+
+                    {tocVisible&&<TermsConditionModal tocVisible={tocVisible} setTocVisible={setTocVisible} />}
 
                 </View>
             </KeyboardAwareScrollView>
@@ -229,7 +245,12 @@ const styles = StyleSheet.create({
         color: ColorConstant.WHITE,
         fontFamily:'Nunito-Regular',
         fontSize: hp(2.2),
-        marginLeft: wp(3)
+        marginLeft: wp(3),
+    },
+    termsConditionStyleLink: {
+        color: ColorConstant.ORANGE,
+        fontFamily:'Nunito-Regular',
+        fontSize: hp(2.2),
     },
     buttonStyle: {
         width: '100%',

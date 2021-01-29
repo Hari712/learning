@@ -5,10 +5,10 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import FontSize from './FontSize'
 
 const CustomButton = (props) => {
-    const { title = '', style = {}, textStyle = {}, onPress } = props;
+    const { title = '', style = {}, textStyle = {}, disabled , onPress } = props;
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+        <TouchableOpacity disabled={disabled} onPress={onPress} style={[styles.button, style]}>
             <Text style={[styles.text, textStyle]}>{title}</Text>
         </TouchableOpacity>
     );
