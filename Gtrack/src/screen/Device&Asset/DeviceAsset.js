@@ -185,7 +185,6 @@ const DeviceAsset = ({ navigation }) => {
     <>
       {menuClick ? renderMenu() : null}
       <View style={{ flex: 1 }}>
-        {console.log("devicelist",deviceList)}
         {deviceList.length > 0 ? 
           <FlatList
             refreshControl={
