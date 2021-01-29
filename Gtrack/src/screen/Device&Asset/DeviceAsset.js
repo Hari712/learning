@@ -185,23 +185,31 @@ const DeviceAsset = ({ navigation }) => {
     <>
       {menuClick ? renderMenu() : null}
       <View style={{ flex: 1 }}>
-        <FlatList
-          refreshControl={
-            <RefreshControl
-              style={styles.refreshIndicator}
-              refreshing={isRefreshing}
-              onRefresh={onRefresh}
-            />
-          }    
-          showsVerticalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
-          ListFooterComponent={renderFooter}
-          onEndReached={() => loadMoreDevices()}
-          onEndReachedThreshold={0.1}
-          onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
-          data={deviceList}
-          renderItem={(data) => renderDeviceCell(data)}
-        />
+        {console.log("devicelist",deviceList)}
+        {deviceList.length > 0 ? 
+          <FlatList
+            refreshControl={
+              <RefreshControl
+                style={styles.refreshIndicator}
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
+              />
+            }    
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item, index) => index.toString()}
+            ListFooterComponent={renderFooter}
+            onEndReached={() => loadMoreDevices()}
+            onEndReachedThreshold={0.1}
+            onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
+            data={deviceList}
+            renderItem={(data) => renderDeviceCell(data)}
+          />
+           : 
+           
+          <View style={{alignSelf:'center',marginVertical:hp(40)}}>
+          <Text style={{fontFamily:"Nunito-Regular"}}>No devices found</Text>
+        </View> }
+
       </View>
 
     </>
