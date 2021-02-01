@@ -1,4 +1,4 @@
-import React, { useState ,Component} from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, ColorPropType } from 'react-native';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
@@ -25,6 +25,7 @@ const SettingsChangePassCode = ({navigation,route}) => {
     const [dialogVisible,setDialogVisible] = useState(false)
     const [oldpwdEyeClick, setOldpwdEyeClick] = useState(false)
     const [NewpwdEyeClick, setNewpwdEyeClick] = useState(false)
+    const [confirmPwdEyeClick, setConfirmPwdEyeClick] = useState(false)
 
     const { loginData,isConnected } = useSelector(state => ({
       loginData: getLoginState(state),
@@ -68,6 +69,14 @@ const newPasscodeHandleRightAccessory = () =>{
         { NewpwdEyeClick ? <SettingsEyeIconClicked/> : <SettingsEyeIcon/> }
       </TouchableOpacity>
     )
+}
+
+const confirmPasscodeHandleRightAccessory = () =>{
+  return(
+    <TouchableOpacity onPress={()=>setConfirmPwdEyeClick(!confirmPwdEyeClick)}>
+      { confirmPwdEyeClick ? <SettingsEyeIconClicked/> : <SettingsEyeIcon/> }
+    </TouchableOpacity>
+  )
 }
 
 function onSubmitPasscode() {
@@ -159,6 +168,7 @@ return (
                   secureTextEntry={true}
                   value={confirmPasscode} 
                   label='Confirm Passcode*' 
+                  renderRightAccessory={() => confirmPasscodeHandleRightAccessory()}
                   onChangeText={(text) => setConfirmPassword(text)}
               />
           </View>
