@@ -61,32 +61,27 @@ function CreateAsset() {
     function onTapSave() {
         let message = ''
         if (isEmpty(assetName)) {
-            message = AppConstants.EMPTY_ASSET_TYPE
+            message = AppConstants.EMPTY_ASSET
         }
         else if (isEmpty(type)) {
             message = AppConstants.EMPTY_ASSET_TYPE
         }
-        else if (isEmpty(device)) {
-            message = AppConstants.EMPTY_DEVICE_SELECTION
-        }
         if (!isEmpty(message)) {
             AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
         } else {
-            let arrSelectedDevices = arrConsolidatedDeviceList.filter((item) => item.deviceName == device)
-            if (!isEmpty(arrSelectedDevices)) {
-                let selectedDevice = arrSelectedDevices[0]
+            let arrSelectedDevices = arrConsolidatedDeviceList ? arrConsolidatedDeviceList.filter((item) => item.deviceName == device) : []
+                let selectedDevice = arrSelectedDevices ? arrSelectedDevices[0] : null
                 let requestBody = {
                     assetDTO: {
                         assetType: type,
                         assetName: assetName,
-                        deviceId: selectedDevice.id,
+                        deviceId: selectedDevice ? selectedDevice.id : null,
                         isQuickAdd: false,
                         description: description
                     }
                 }
                 AppManager.showLoader()
                 dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onCreateAssetSuccess, onCreateAssetError))
-            }
         }
     }
 
