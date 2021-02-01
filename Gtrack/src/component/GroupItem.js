@@ -73,7 +73,7 @@ const GroupItem = props => {
 
     
     const onRemoveDeviceSuccess = (data) => {
-        AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
+        AppManager.showSimpleMessage('success', { message: 'Device removed successfully from the group', description: '', floating: true })
         console.log("Success",data)
         setAddClick(-1)
         setSelectedDevices([])
