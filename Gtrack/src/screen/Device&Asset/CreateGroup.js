@@ -121,7 +121,7 @@ function Group() {
                             <Text style={styles.cancelText}>Cancel</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity disabled={!group} onPress={() => { detailsToggle ? onTapSave() : setDetailsToggle(true) }} style={[styles.nextButton, { backgroundColor: group ? ColorConstant.BLUE : ColorConstant.GREY, }]}>
+                        <TouchableOpacity disabled={!group} onPress={() => { detailsToggle ? onTapSave() : setDetailsToggle(true) }} style={[styles.nextButton, { backgroundColor: group ? ColorConstant.BLUE : '#06418E50', }]}>
                             <Text style={styles.saveText}> {detailsToggle ? 'Save' : 'Next'} </Text>
                         </TouchableOpacity>
                     </View>
