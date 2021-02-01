@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE,
     },
     mainView: {
-        width: '95%', 
+        width: "100%", 
         alignSelf: 'center', 
         alignItems: 'center', 
         justifyContent: 'space-evenly', 
