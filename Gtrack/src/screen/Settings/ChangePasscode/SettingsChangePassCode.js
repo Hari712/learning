@@ -14,10 +14,15 @@ import * as SettingsActions from '../Settings.Action'
 import { getLoginState } from '../../Selector';
 import { translate } from '../../../../App';
 import { BackIcon, SettingsEyeIcon, SettingsEyeIconClicked } from '../../../component/SvgComponent';
+import { useRef } from 'react';
 
 const SettingsChangePassCode = ({navigation,route}) => {
 
     const dispatch = useDispatch()
+
+    const oldPwdRef = useRef();
+    const newPwdRef = useRef();
+    const confirmPwdRef = useRef();
 
     const [oldPasscode, setOldPasscode] = useState('')
     const [newPasscode, setNewPasscode] = useState('')
@@ -70,6 +75,16 @@ const newPasscodeHandleRightAccessory = () =>{
     )
 }
 
+function resetText() { 
+  setDialogVisible(!dialogVisible) 
+  setOldPasscode('')
+  oldPwdRef.current.clear()
+  setNewPasscode('')
+  newPwdRef.current.clear()
+  setConfirmPassword('')
+  confirmPwdRef.current.clear()
+}
+
 function onSubmitPasscode() {
   if (isConnected) {
       let message = ''
@@ -111,7 +126,6 @@ const onSuccess = (data) => {
   setDialogVisible(!dialogVisible)
   console.log("Success data", data)
   AppManager.showSimpleMessage('success', { message: 'Successfully Changed Password', description: '', floating: true })
- 
 }
 
 const onError = (error) => {
@@ -137,6 +151,7 @@ return (
                   secureTextEntry={!oldpwdEyeClick?true:false} 
                   value={oldPasscode} 
                   label='Old Passcode*' 
+                  ref={oldPwdRef}
                   renderRightAccessory={() => oldPasscodeHandleRightAccessory()}
                   onChangeText={(text) => setOldPasscode(text)}
               />
@@ -148,6 +163,7 @@ return (
                   secureTextEntry={!NewpwdEyeClick?true:false} 
                   value={newPasscode} 
                   label='New Passcode*' 
+                  ref={newPwdRef}
                   renderRightAccessory={() => newPasscodeHandleRightAccessory()}
                   onChangeText={(text) => setNewPasscode(text)}
               />
@@ -159,6 +175,7 @@ return (
                   secureTextEntry={true}
                   value={confirmPasscode} 
                   label='Confirm Passcode*' 
+                  ref={confirmPwdRef}
                   onChangeText={(text) => setConfirmPassword(text)}
               />
           </View>
@@ -180,7 +197,7 @@ return (
         > 
         <Image resizeMode='contain' style={styles.dialogImg} source={images.image.changePasscode.success} />
         <Text style={{textAlign:'center'}}>{translate("Password_Sucess")}</Text>
-        <TouchableOpacity onPress={()=>setDialogVisible(!dialogVisible)} style={styles.okButton}>
+        <TouchableOpacity onPress={()=>resetText()} style={styles.okButton}>
             <Text style={styles.okText}>{translate("OK")}</Text>
         </TouchableOpacity>
         </Dialog>
