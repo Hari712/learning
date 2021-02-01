@@ -31,7 +31,7 @@ const Login = () => {
     }))
 
     const [email, setEmail] = useState('khushbu.solanki@gmail.com')
-    const [password, setPassword] = useState('747775')
+    const [password, setPassword] = useState('Khushi@123')
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo, setIsClickInfo] = useState(false)
 
