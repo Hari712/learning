@@ -8,8 +8,10 @@ import { FontSize, TextField }from '../../../component';
 import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
 import { translate } from '../../../../App'
-import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
+import { isEmpty } from 'lodash';
+import { validateEmailorPhoneNumber } from '../../../utils/helper';
 
 
 const EditProfile = ({ navigation, route, item }) => {
@@ -189,6 +191,13 @@ const EditProfile = ({ navigation, route, item }) => {
     }
 
     function editProfile() {
+        let message = ''
+        if(!validateEmailorPhoneNumber(phoneNumber)){
+            message = translate(AppConstants.INVALID_PHONE_NUMBER) 
+        }
+        if(!isEmpty(message)){
+            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+        } else {
         AppManager.showLoader()
         const requestBody = {
             "id": id,
@@ -201,17 +210,20 @@ const EditProfile = ({ navigation, route, item }) => {
         console.log("Data", requestBody);
         dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
     }
+}
 
     function onSuccess(data) {
         AppManager.hideLoader()
         console.log("Success", data)
         dispatch(ProfileActions.setEditProfileResponse(data))
+        AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
         navigation.navigate(SCREEN_CONSTANTS.PROFILE)
     }
 
     function onError(error) {
         AppManager.hideLoader()
         console.log("Error", error)
+        AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
     }
 
     return (
@@ -220,7 +232,7 @@ const EditProfile = ({ navigation, route, item }) => {
                 <Text style={styles.textViewStyle}>{translate("Edit Profile")}</Text>
             </View>
 
-            <ScrollView style={{ height: "100%" }}>
+            <ScrollView keyboardShouldPersistTaps='handled' style={{ height: "100%" }}>
                 <View style={styles.mainViewStyle}>
                     <View style={styles.textInputField}>
                         <TextField
