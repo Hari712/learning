@@ -57,30 +57,17 @@ function Group() {
     }
 
     function onTapSave() {
-        let message = ''
-        if (isEmpty(group)) {
-            message = AppConstants.EMPTY_GROUP_NAME
-        }
-        else if (isEmpty(selectedDevices)) {
-            message = AppConstants.EMPTY_DEVICE_SELECTION
-        }
-        if (!isEmpty(message)) {
-            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
-        } else {
-            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
-            if (!isEmpty(arrSelectedDevices)) {
-                let requestBody = {
-                    groupDTO: {
-                        groupName: group,
-                        devices: arrSelectedDevices
-                    }
+        let arrSelectedDevices = arrDeviceList ? arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName)) : []
+            let requestBody = {
+                groupDTO: {
+                    groupName: group,
+                    devices: arrSelectedDevices
                 }
-                AppManager.showLoader()
-                dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onCreateGroupSuccess, onCreateGroupError))
             }
-        }
+            AppManager.showLoader()
+            dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onCreateGroupSuccess, onCreateGroupError))
     }
-
+ 
     function onCreateGroupSuccess(data) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: 'Group successfully created', description: '', floating: true })
