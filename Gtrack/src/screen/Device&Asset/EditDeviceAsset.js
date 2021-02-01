@@ -118,7 +118,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
     function onTapSave() {
         let message = ''
         if (isEmpty(deviceName)) {
-            message = AppConstants.EMPTY_DEVICE_NAME
+            message = translate(AppConstants.EMPTY_DEVICE_NAME)
         }
         // else if (isEmpty(type)) {
         //     message = AppConstants.EMPTY_ASSET_TYPE
