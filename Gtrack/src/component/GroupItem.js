@@ -97,7 +97,7 @@ const GroupItem = props => {
     }
 
     const onDeleteGroupSuccess = (data) => {
-        AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
+        AppManager.showSimpleMessage('success', { message: 'Group deleted successfully', description: '', floating: true })
         console.log("Success",data)
         AppManager.hideLoader()
     }
