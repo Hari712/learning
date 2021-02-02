@@ -162,7 +162,7 @@ const Details = ({ route, navigation }) => {
 
     function renderAssetDetail(assetDTO) {
         const assetName = assetDTO.assetName ? assetDTO.assetName : ''
-        const description = assetDTO.description ? assetDTO.description : ''
+        const description = assetDTO.description ? assetDTO.description : 'none'
         const assetType = assetDTO.assetType ? assetDTO.assetType : ''
         return (
             <>
