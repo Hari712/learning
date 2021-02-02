@@ -95,7 +95,14 @@ const AssignGroup = ({ navigation, route }) => {
     }
 
     function onSubmit(item) {
-
+        AppManager.showLoader()
+        let devicelist = { ...deviceobjs, [device.id]: device }
+        let updatedArrList = Object.values(devicelist)
+        setGroup(item.result.groupDTO.groupName)
+        let requestBody = {
+            groupDTO: { ...item.result.groupDTO, ...{ devices: updatedArrList, isQuickAdd: false  } }
+        }
+        dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
     }
 
     function renderAddNewGroupDialog() {

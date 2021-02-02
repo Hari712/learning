@@ -14,8 +14,11 @@ import { translate } from '../../App'
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../constants/AppManager'
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
+import FlashMessage from 'react-native-flash-message'
+import { useRef } from 'react'
 
 function AddNewGroupDialog(props) {
+    const modalFlashRef = useRef()
 
     const dispatch = useDispatch()
 
@@ -26,7 +29,7 @@ function AddNewGroupDialog(props) {
 
     const user_id = loginInfo.id ? loginInfo.id : null 
 
-    const { isVisible, onSwipeComplete, onTapClose } = props
+    const { isVisible, onSwipeComplete, onTapClose, onSubmit } = props
 
     const [groupName, setGroupName] = useState('')
 
@@ -63,13 +66,19 @@ function AddNewGroupDialog(props) {
     }
 
     function onGroupAddSuccess(data) {
+        onSubmit(data)
         AppManager.hideLoader()
         hideDialog()
     }
 
     function onGroupAddError(error) {
         AppManager.hideLoader()
-        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
+        modalFlashRef.current.showMessage({ message: error, description: '', floating: true, icon: { icon: "auto", position: "left" },
+        duration: 5000,
+        type:'danger' })
+        //AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true,position:'top' })
+        
+
     }
 
     function renderBody() {
@@ -112,6 +121,7 @@ function AddNewGroupDialog(props) {
             swipeDirection={['down']}
             propagateSwipe={true}>
             {renderBody()}
+            <FlashMessage ref={modalFlashRef} position='top' />
         </Modal>
     )
 
