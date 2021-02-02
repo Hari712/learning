@@ -71,7 +71,7 @@ const ActivateDevice = ({ navigation }) => {
     function onSuccess(data) {
         const deviceDTO = data.deviceDTO ? data.deviceDTO : {  }
         AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: 'Device registered successfully', description: '', floating: true })
+        AppManager.showSimpleMessage('success', { message: 'Device created successfully', description: '', floating: true })
         NavigationService.push(SCREEN_CONSTANTS.ASSIGN_ASSET, { device: deviceDTO })
     }
 
