@@ -32,7 +32,7 @@ export const usersReducer = createReducer(state = initialState, {
         const { result } = action.data
         return {
             ...state,
-            subUser:[...state.subUser, ...result]
+            subUser:[...result, ...state.subUser]
         }
     },    
     [types.UPDATE_SUBUSER_RESPONSE](state, action) {
