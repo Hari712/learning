@@ -31,8 +31,8 @@ const LogoutConfirmationDialog = (props) => {
                 <View style={styles.textContainer}>
                     <Text style={styles.text}>{text}</Text>
                 </View>
-                <View style={styles.buttonContainer} onPress={() => hideDialog()}>
-                    <TouchableOpacity style={styles.buttonNo}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.buttonNo} onPress={() => hideDialog()}>
                         <Text style={styles.textNo}>No</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonYes} onPress={() => onConfirm()}>
