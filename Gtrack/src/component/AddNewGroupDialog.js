@@ -29,7 +29,7 @@ function AddNewGroupDialog(props) {
 
     const user_id = loginInfo.id ? loginInfo.id : null 
 
-    const { isVisible, onSwipeComplete, onTapClose } = props
+    const { isVisible, onSwipeComplete, onTapClose, onSubmit } = props
 
     const [groupName, setGroupName] = useState('')
 
@@ -66,6 +66,7 @@ function AddNewGroupDialog(props) {
     }
 
     function onGroupAddSuccess(data) {
+        onSubmit(data)
         AppManager.hideLoader()
         hideDialog()
     }
