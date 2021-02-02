@@ -73,6 +73,7 @@ function AddNewAssetDialog(props) {
     }
 
     function onAddAssetSuccess(data) {
+        onSubmit(data)
         AppManager.hideLoader()
         hideDialog()
     }

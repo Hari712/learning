@@ -71,7 +71,11 @@ const AssignAsset = ({ navigation, route }) => {
     }
 
     function onSubmit(item) {
-        setIsAssetDialogVisible(false)
+        AppManager.showLoader()
+        let requestBody = { ...item.result.assetDTO, ...{ deviceId: device.id } }
+        setAsset(item.result.assetDTO.assetName)
+        dispatch(DeviceActions.requestLinkDeviceWithAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+
     }
 
     function onAssignAssetSuccess(data) {
