@@ -96,6 +96,7 @@ const AssetList = () => {
         <View styles={styles.container}>
             {renderSearchBar()}
             {/* <View style={{flex:1}}> */}
+            {assetList.length > 0 ?
             <FlatList
                 style={{ height:'85%' }}
                 nestedScrollEnabled={true}
@@ -109,7 +110,10 @@ const AssetList = () => {
                 data={assetList}
                 renderItem={(data) => renderItem(data)}
                 keyExtractor={(item, index) => index.toString()}
-            />
+            /> :
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View> }
             {/* </View> */}
         </View>
     )
@@ -118,6 +122,14 @@ const AssetList = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    noRecords: {
+        marginVertical:hp(32),
+        alignItems:'center'
+    },
+        noRecordsText: {
+        fontFamily:"Nunito-Regular",
+        fontSize:hp(2)
     },
     search: {
         paddingHorizontal: hp(2),
