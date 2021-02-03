@@ -104,6 +104,7 @@ const GroupList = () => {
 
     return (
         <View styles={styles.container}>
+            {groupList.length > 0 ?
             <FlatList
                 refreshControl={
                     <RefreshControl
@@ -115,7 +116,10 @@ const GroupList = () => {
                 data={groupList}
                 renderItem={(data) => renderItem(data)}
                 keyExtractor={(item, index) => index.toString()}
-            />
+            /> :
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View> }
         </View>
     )
 }
@@ -123,6 +127,14 @@ const GroupList = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    noRecords: {
+        marginVertical:hp(38),
+        alignItems:'center'
+    },
+    noRecordsText: {
+    fontFamily:"Nunito-Regular",
+    fontSize:hp(2)
     },
     refreshIndicator: { tintColor: 'white' }
 })

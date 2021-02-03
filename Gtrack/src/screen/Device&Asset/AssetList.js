@@ -127,9 +127,9 @@ const styles = StyleSheet.create({
         marginVertical:hp(32),
         alignItems:'center'
     },
-        noRecordsText: {
-        fontFamily:"Nunito-Regular",
-        fontSize:hp(2)
+    noRecordsText: {
+    fontFamily:"Nunito-Regular",
+    fontSize:hp(2)
     },
     search: {
         paddingHorizontal: hp(2),
