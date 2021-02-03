@@ -96,6 +96,9 @@ const AssignGroup = ({ navigation, route }) => {
 
     function onSubmit(item) {
         AppManager.showLoader()
+        let selectedGroups = groupList.filter((item) => item.groupName == group)
+        let arrDeviceList = selectedGroups.devices ? selectedGroups.devices : []
+        let deviceobjs = mapKeys(arrDeviceList, 'id')
         let devicelist = { ...deviceobjs, [device.id]: device }
         let updatedArrList = Object.values(devicelist)
         setGroup(item.result.groupDTO.groupName)
