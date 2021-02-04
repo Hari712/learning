@@ -103,7 +103,7 @@ const getAssetTypeInfo = (state) => getAssetTypeList(state)
 function getAssetTypeList(state) {
     const assetInfo = state.device && state.device.assetType ? state.device.assetType : {}
     const arrAssets = Object.values(assetInfo)
-    arrAssets.sort((item1, item2) => item2.id - item1.id)
+    //arrAssets.sort((item1, item2) => item2.id - item1.id)
     return arrAssets
 }
 export const getAssetTypeListInfo = createSelector(

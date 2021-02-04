@@ -103,6 +103,18 @@ const styles = StyleSheet.create({
         marginBottom: hp(2)
     },
     buttonNo: {
+        backgroundColor: ColorConstant.BLUE,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: hp(1),
+        width: wp(30)
+    },
+    textNo: {
+        color: ColorConstant.WHITE,
+        fontSize: FontSize.FontSize.medium
+    },
+    buttonYes: {
         borderColor: ColorConstant.BLUE,
         borderWidth: 1.0,
         borderRadius: 5,
@@ -111,20 +123,8 @@ const styles = StyleSheet.create({
         paddingVertical: hp(1),
         width: wp(30)
     },
-    textNo: {
-        color: ColorConstant.BLUE,
-        fontSize: FontSize.FontSize.medium
-    },
-    buttonYes: {
-        backgroundColor: ColorConstant.BLUE,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingVertical: hp(1),
-        width: wp(30)
-    },
     textYes: {
-        color: 'white',
+        color: ColorConstant.BLUE,
         fontSize: FontSize.FontSize.medium
     }
 })

@@ -165,6 +165,7 @@ const SignUp = () => {
                         <EditText 
                             placeholder={translate("Mobile Number")}
                             style={styles.editText}
+                            maxLength={10}
                             onChangeText={(text) => { setPhoneNumber(text) }} 
                             value={phoneNumber} />
                         </View>    
