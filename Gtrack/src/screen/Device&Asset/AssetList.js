@@ -55,10 +55,18 @@ const AssetList = () => {
         setIsRefreshing(false)
     }
 
+    function onSuccess(data) {
+        console.log("SearchData",data)
+    }
+        
+    function onError(error) {
+        console.log("Error",error)
+    }
+
     const renderSearchBar = () => {
 
         const searchFilter = (text) => {
-        //     assetData = asset.filter(item=> item.toLowerCase().includes(text.toLowerCase())) 
+            dispatch(DeviceActions.searchAssetRequset(user_id, text, onSuccess, onError))
             setSearch(text)
         }
 

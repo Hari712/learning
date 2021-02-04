@@ -218,3 +218,11 @@ export const setDeleteDeviceFromGroupResponse = (deviceId, groupId) => ({
     deviceId,
     groupId
 })
+
+export const searchAssetRequset = (userId, name, onSuccess, onError) => ({
+    type: types.SEARCH_ASSET_REQUEST,
+    userId,
+    name,
+    onSuccess,
+    onError
+})
