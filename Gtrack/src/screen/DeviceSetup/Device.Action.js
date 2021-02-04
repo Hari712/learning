@@ -226,3 +226,8 @@ export const searchAssetRequset = (userId, name, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const setsearchAssetResponse = (data) => ({
+    type: types.SEARCH_ASSET_RESPONSE,
+    data
+})

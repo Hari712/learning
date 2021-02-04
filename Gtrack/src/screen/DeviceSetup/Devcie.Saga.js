@@ -284,6 +284,7 @@ function* requestSearchAsset(action) {
         const url = ApiConstants.SEARCH_ASSET(userId, name)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
+        yield put(DeviceActions.setsearchAssetResponse(result))
         onSuccess(result)
     } catch (error) {
         onError(error)

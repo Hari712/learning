@@ -96,5 +96,12 @@ export const deviceReducer = createReducer(state = initialState, {
             ...state,
             groups: groupListObj
         }
-    }
+    },
+    [types.SEARCH_ASSET_RESPONSE](state, action) {
+        const assetInfo = mapKeys(action.data, 'id')
+        return {
+            ...state,
+            assets: assetInfo
+        }
+    },
 })
