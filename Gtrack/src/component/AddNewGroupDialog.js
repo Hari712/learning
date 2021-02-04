@@ -48,6 +48,7 @@ function AddNewGroupDialog(props) {
 
     function onCancelDialog() {
         onTapClose && onTapClose()
+        setGroupName('')
     }
 
     function onTapSubmit() {
@@ -76,9 +77,6 @@ function AddNewGroupDialog(props) {
         modalFlashRef.current.showMessage({ message: error, description: '', floating: true, icon: { icon: "auto", position: "left" },
         duration: 5000,
         type:'danger' })
-        //AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true,position:'top' })
-        
-
     }
 
     function renderBody() {
