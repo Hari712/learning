@@ -20,7 +20,7 @@ export const deviceReducer = createReducer(state = initialState, {
     },
     [types.ADD_DEVICE_RESPONSE](state, action) {
         const deviceInfo = mapKeys(action.data, 'deviceDTO.id')
-        const updatedDevices = { ...state.devices, ...deviceInfo }
+        const updatedDevices = { ...deviceInfo, ...state.devices }
         return {
             ...state,
             devices: updatedDevices
