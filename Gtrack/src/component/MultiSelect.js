@@ -6,6 +6,7 @@ import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from 'react-native-material-textfield'
 import FontSize from './FontSize';
 import ShadowView from "react-native-simple-shadow-view";
+import { isEqual } from "lodash";
 
 let data = [];
 let selectedItem = [];
@@ -19,8 +20,6 @@ class MultiSelect extends React.Component {
             isSelected: false,
         }
     }
-
-
 
     render() {
 
@@ -136,8 +135,9 @@ export class MultiSelectGroup extends React.Component {
         this.state = {
             isSelected: false,
         }
+        
+        
     }
-
 
     render() {
 
@@ -157,6 +157,14 @@ export class MultiSelectGroup extends React.Component {
             "isQuickAdd": false,
             "users": []
         }];
+        console.log("selected",selectedItem,data)
+        function condition() {
+            const newArray = JSON.stringify(selectedItem.sort((a, b) => a.id > b.id ? 1 : -1)) === JSON.stringify(data.sort((a, b) => a.id > b.id ? 1 : -1))
+            console.log("khushi",newArray)
+            return (newArray)
+        } 
+        selectedAll = condition()
+        
 
         function handleRightAccessory() {
             return <View style={[{height:outerStyle && outerStyle.height?outerStyle.height-hp(3): styles.inputButton.height-hp(3), justifyContent:'center'}]}>
@@ -196,11 +204,11 @@ export class MultiSelectGroup extends React.Component {
                         <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
                             onPress={() => {
                                 if (selectedAll) {
-                                    selectedAll = false;
+                                    // selectedAll = false;
                                     valueSet(oldArray => [])
                                 }
                                 else {
-                                    selectedAll = true;
+                                    // selectedAll = true;
                                     valueSet(oldArray => data)
                                 }
                             }}>
@@ -214,10 +222,12 @@ export class MultiSelectGroup extends React.Component {
                                 <TouchableOpacity key={item.id} style={[styles.row, otherProps.rowStyle]}
                                     onPress={() => {
                                         if (selectedItem.find((element) => { return element.id === item.id })) {
+                                            // selectedAll=false
                                             valueSet(oldArray => oldArray.filter(function (value) { return value.id != item.id }))
                                         }
                                         else {
                                             valueSet(oldArray => [...oldArray, item])
+                                            
                                         }
                                     }}>
                                     <Image source={selectedItem.find((element) => { return element.id === item.id }) ? images.image.checkboxClick : images.image.checkbox} />
