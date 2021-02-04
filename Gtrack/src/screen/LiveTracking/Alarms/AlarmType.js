@@ -175,9 +175,15 @@ const AlarmType = ({navigation,route}) => {
   }
 
   function onAddSuccess(data) {
-    AppManager.hideLoader()    
+    AppManager.hideLoader()  
+    let message  
+    if(route && route.params && route.params.editData){
+      message = 'Alarm updated successfully'
+    }else {
+      message = 'Alarm created successfully'
+    }
     navigation.navigate(SCREEN_CONSTANTS.ALARMS)  
-    AppManager.showSimpleMessage('success', { message: data.message, description: '' })
+    AppManager.showSimpleMessage('success', { message: message, description: '' })
     dispatch(LivetrackingActions.requestGetAlarmsList(loginInfo.id, onSuccess, onError))  
   }
 
