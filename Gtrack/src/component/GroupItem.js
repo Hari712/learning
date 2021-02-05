@@ -47,16 +47,16 @@ const GroupItem = props => {
     const onUpdateGroup = () => {
         AppManager.showLoader()
         let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
-        const  requestBody = {
-            "deviceDTO" : null,
-            "assetDTO" : null,
-            "groupDTO" : {
-            "id" : id,
-            "groupName" : groupName,
-            "devices" : arrSelectedDevices,
-            "isQuickAdd" : false
+        const requestBody = {
+            "deviceDTO": null,
+            "assetDTO": null,
+            "groupDTO": {
+                "id": id,
+                "groupName": groupName,
+                "devices": arrSelectedDevices,
+                "isQuickAdd": false
             },
-            "devicePlan" : null
+            "devicePlan": null
         }
         dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
     }
@@ -65,16 +65,16 @@ const GroupItem = props => {
         setDialogVisible(false)
         AppManager.showLoader()
         const requestBody = {
-            "groupId" : id,
-            "deviceId" : removeDeviceId.toString()
-        }          
+            "groupId": id,
+            "deviceId": removeDeviceId.toString()
+        }
         dispatch(DeviceActions.requestRemoveDevice(loginInfo.id, requestBody, removeDeviceKey, item.id, onRemoveDeviceSuccess, onRemoveDeviceError))
     }
 
-    
+
     const onRemoveDeviceSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Device removed successfully from the group', description: '', floating: true })
-        console.log("Success",data)
+        console.log("Success", data)
         setAddClick(-1)
         setSelectedDevices([])
         AppManager.hideLoader()
@@ -83,7 +83,7 @@ const GroupItem = props => {
     const onRemoveDeviceError = (error) => {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
-        console.log("Error",error)
+        console.log("Error", error)
     }
 
     const onDeleteGroup = () => {
@@ -98,21 +98,21 @@ const GroupItem = props => {
 
     const onDeleteGroupSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Group deleted successfully', description: '', floating: true })
-        console.log("Success",data)
+        console.log("Success", data)
         AppManager.hideLoader()
     }
 
     const onDeleteGroupError = (error) => {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
-        console.log("Error",error)
+        console.log("Error", error)
     }
 
-    
+
     const onDeleteDevice = (deviceId, key) => {
         setRemoveDeviceId(deviceId)
         setRemoveDeviceKey(key)
-        setDialogVisible(true) 
+        setDialogVisible(true)
     }
 
     const onPressCancel = () => {
@@ -128,30 +128,30 @@ const GroupItem = props => {
                         <Text style={{ color: ColorConstant.ORANGE, fontSize: FontSize.FontSize.medium, fontWeight: 'bold' }}>Add Device</Text>
                     </View>
                     <TouchableOpacity onPress={() => setAddClick(-1)} style={{ alignSelf: 'center', height: hp(2) }}>
-                        <CrossIcon/>
+                        <CrossIcon />
                         {/* <Image source={images.manage.close} /> */}
                     </TouchableOpacity>
                 </View>
-                <View style={{ width:wp(85), alignSelf: 'center' }}>
+                <View style={{ width: wp(85), alignSelf: 'center' }}>
                     <MultiSelect
                         label='Select Device'
-                        dataList={arrDeviceNames} 
+                        dataList={arrDeviceNames}
                         valueSet={setSelectedDevices}
                         selectedData={selectedDevices}
                         selectedItemContainerStyle={styles.selectedItemContainerStyle}
                         hideDeleteButton={true}
                         hideSelectedDeviceLable={true}
                         deleteHandle={deleteFunction}
-                        dropdownStyle={{width:wp(70)}}
+                        dropdownStyle={{ width: wp(70) }}
                         selectedItemRowStyle={styles.selectedItemRowStyle}
                         outerStyle={{ width: wp(70), alignSelf: 'center' }} />
                 </View>
 
                 <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={()=> onPressCancel()} style={{ borderRadius: 6, borderWidth: 1, borderColor: ColorConstant.BLUE, backgroundColor: ColorConstant.WHITE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => onPressCancel()} style={{ borderRadius: 6, borderWidth: 1, borderColor: ColorConstant.BLUE, backgroundColor: ColorConstant.WHITE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', color: ColorConstant.BLUE }}>Cancel</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=> onUpdateGroup()} style={{ borderRadius: 6, backgroundColor: ColorConstant.BLUE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => onUpdateGroup()} style={{ borderRadius: 6, backgroundColor: ColorConstant.BLUE, width: '42.5%', height: hp(6), justifyContent: 'center' }}>
                         <Text style={{ textAlign: 'center', color: ColorConstant.WHITE }}>Okay</Text>
                     </TouchableOpacity>
                 </View>
@@ -159,80 +159,88 @@ const GroupItem = props => {
         )
     }
 
+    function renderDevices() {
+        return (
+            <>
+                {arrDevices.map((subitem, subkey) => {
+                    const itemKey = `${subkey}${index}`
+                    return (
+                        <View key={itemKey} style={styles.subCategory}>
+                            <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
+                            <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
+                            <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
+                                <TrashBlueIcon width={16.567} height={18.547} style={styles.icon} />
+                            </TouchableOpacity>
+                        </View>
+                    )
+                })}
+            </>
+        )
+    }
+
 
     return (
-        <View style={{ width: '100%', alignItems: 'center', paddingVertical:hp(2) }}>
-        <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2) }}>
+            <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
 
-            {/* Arrow Left Side */}
-            <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
-                {(index == selectedKey) ? <UpArrowIcon/> : <DownArrowIcon/> }
-            </TouchableOpacity>
+                {/* Arrow Left Side */}
+                <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
+                    {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
+                </TouchableOpacity>
 
-            <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
-                {/* heading */}
-                <View  style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
-                    <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                    <TouchableOpacity style={{flex:0.3}} onPress={()=> onDeleteGroup()} >
-                        <TrashIcon style={styles.icon} width={16.567} height={18.547}/>
-                    </TouchableOpacity>                   
-                    <TouchableOpacity style={{flex:0.3}} style={{ alignSelf: 'center' }} 
-                        onPress={() => {
-                            (item.id == addClick) ?
-                                setAddClick(-1) :
-                                setAddClick(item.id)
-                        }}
-                    >
-                        {item.id == addClick ? <AddIconClicked width={14.487} height={14.487}/> : <AddIcon width={14.487} height={14.487}/> }
-                    </TouchableOpacity>
-                </View>
-
-                {/* Expanded data View */}
-
-                {(index == selectedKey) ?
-                    <View style={{ marginTop: hp(2) }} >
-                        {arrDevices.map((subitem, subkey) => {
-                            const itemKey = `${subkey}${index}`
-                            return (
-                                <View key={itemKey} style={styles.subCategory}>
-                                    <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
-                                    <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
-                                    <TouchableOpacity onPress={()=>onDeleteDevice(subitem.id, subkey)}>
-                                        <TrashBlueIcon width={16.567} height={18.547} style={styles.icon}/>
-                                    </TouchableOpacity>
-                                </View>
-                            )
-                        })}
+                <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
+                    {/* heading */}
+                    <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                        <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
+                        <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
+                            <TrashIcon style={styles.icon} width={16.567} height={18.547} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{ flex: 0.3 }} style={{ alignSelf: 'center' }}
+                            onPress={() => {
+                                (item.id == addClick) ?
+                                    setAddClick(-1) :
+                                    setAddClick(item.id)
+                            }}
+                        >
+                            {item.id == addClick ? <AddIconClicked width={14.487} height={14.487} /> : <AddIcon width={14.487} height={14.487} />}
+                        </TouchableOpacity>
                     </View>
-                : null}
+
+                    {/* Expanded data View */}
+
+                    {(index == selectedKey) ?
+                        <View style={{ marginTop: hp(1) }} >
+                            {!isEmpty(arrDevices) ? renderDevices() : <Text style={styles.noDevicesText}>No Devices</Text>}
+                        </View>
+                        : null}
 
 
+                </View>
             </View>
-        </View>
 
             {/* Popup View */}
             {(item.id == addClick) ? addDevicePopup() : null}
 
-                <CustomDialog
-                    heading="Are you sure ?"
-                    message={"Do you really want to delete the group ?" + "\n \n" + "All the devices will be assigned to default group"}
-                    visible={deleteGroupDialogVisible}
-                    onTouchOutside={() => setDeleteGroupDialogVisible(false)}
-                    negativeHandle={() => setDeleteGroupDialogVisible(false)}
-                    positiveHandle={deleteGroupConfirm}                    
-                />
+            <CustomDialog
+                heading="Are you sure ?"
+                message={"Do you really want to delete the group ?" + "\n \n" + "All the devices will be assigned to default group"}
+                visible={deleteGroupDialogVisible}
+                onTouchOutside={() => setDeleteGroupDialogVisible(false)}
+                negativeHandle={() => setDeleteGroupDialogVisible(false)}
+                positiveHandle={deleteGroupConfirm}
+            />
 
-                <CustomDialog
-                    heading="Are you sure ?"
-                    message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
-                    visible={dialogVisible}
-                    onTouchOutside={() => setDialogVisible(false)}
-                    negativeHandle={() => setDialogVisible(false)}
-                    positiveHandle={removeConfirm}
-                />
-        
+            <CustomDialog
+                heading="Are you sure ?"
+                message={"Do you really want to remove device from the group?" + "\n \n" + "This process can be undone."}
+                visible={dialogVisible}
+                onTouchOutside={() => setDialogVisible(false)}
+                negativeHandle={() => setDialogVisible(false)}
+                positiveHandle={removeConfirm}
+            />
+
         </View>
-        
+
     )
 }
 
@@ -338,9 +346,15 @@ const styles = StyleSheet.create({
         marginTop: hp(2),
         elevation: 0,
         padding: hp(1),
-        flexDirection:'row',
-        flexWrap:'wrap',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         width: wp(70)
+    },
+    noDevicesText: {
+        fontWeight:'400', 
+        fontSize: FontSize.FontSize.small, 
+        color:ColorConstant.BLACK, 
+        marginLeft: hp(1)
     }
 });
 
