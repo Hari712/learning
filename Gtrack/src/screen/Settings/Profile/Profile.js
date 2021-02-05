@@ -71,7 +71,7 @@ const Profile = ({ navigation }) => {
                 <View style={styles.blueBoxStyle}>
                 <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData, userType:userType}) }} >
                         <EditIcon width={12.947} height={12.947}/>
                     </TouchableOpacity>
                 </View>
