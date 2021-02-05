@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { BackIcon, CompleteSetupImage } from '../../component/SvgComponent'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -27,7 +27,7 @@ const CompleteSetup = ({ navigation }) => {
     }, [navigation]);
 
     function onTapLink() {
-
+        Linking.openURL("https://gtrack.vegitone.com/")
     }
 
     return (
