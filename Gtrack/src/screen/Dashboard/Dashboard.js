@@ -140,7 +140,7 @@ const Dashboard = ({ navigation }) => {
           </View>
 
           <View style={styles.rightMainViewStyle}>
-            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")}: {deviceDetails.deviceCount}</Text>
+            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")} {deviceDetails.deviceCount}</Text>
 
             <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
               <FullScreenIcon style={styles.ViewallStyle} resizeMode='contain'/>
