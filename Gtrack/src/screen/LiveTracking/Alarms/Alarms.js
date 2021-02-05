@@ -74,7 +74,6 @@ const Alarms = ({navigation}) => {
   },[navigation]);
 
   function handleRemove(item) {
-    console.log("item",item)
     setAlarmName(item.notification.attributes.name)
     setNotificationId(item.notification.id)
     setDeleteDialogVisible(true)
@@ -118,7 +117,7 @@ const Alarms = ({navigation}) => {
               </TouchableOpacity> : null }
 
               { !isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(item,index)} style={{zIndex:5, padding:hp(1)}} >
+              <TouchableOpacity onPress={() => handleRemove(item)} style={{zIndex:5, padding:hp(1)}} >
                 <DeleteIcon width={13.943} height={15.463}/>
               </TouchableOpacity> : null }       
           </View>
