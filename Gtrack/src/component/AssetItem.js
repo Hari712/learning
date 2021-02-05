@@ -36,7 +36,7 @@ const AssteItem = (props) => {
 
                 <TextField valueSet={setAssetLName} value={assetLName} label='Name*' outerStyle={{ width: '85%', backgroundColor: ColorConstant.WHITE }} />
 
-                <TextField multiline={true} valueSet={setAssetLDescription} defaultValue={assetLdescription} label='Description' outerStyle={{ width: '85%', backgroundColor: ColorConstant.WHITE, marginTop: hp(10) }} />
+                <TextField multiline={true} valueSet={setAssetLDescription} defaultValue={assetLdescription} label='Description (Optional)' outerStyle={{ width: '85%', backgroundColor: ColorConstant.WHITE, marginTop: hp(10) }} />
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity onPress={() => setEditClick(-1)} style={{ borderRadius: 6, borderColor: ColorConstant.BLUE, borderWidth: 1, backgroundColor: ColorConstant.WHITE, width: '30%', height: hp(6), justifyContent: 'center' }}>
