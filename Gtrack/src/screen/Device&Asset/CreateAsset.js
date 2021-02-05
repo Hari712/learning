@@ -114,6 +114,7 @@ function CreateAsset() {
                     valueSet={setDescrption}
                     defaultValue={description}
                     label='Description (Optional)'
+                    maxLength={50}
                     multiline={true}
                     contentInset={{ input:hp(1) }}
                     outerStyle={styles.outerStyle}
