@@ -146,7 +146,7 @@ function CreateAsset() {
                 />
 
                 <DropDown
-                    label='Type'
+                    label='Type*'
                     defaultValue={type}
                     valueSet={setType}
                     dataList={arrAssetTypeList}
