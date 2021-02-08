@@ -1,4 +1,4 @@
-const BASE_URL = 'https://gtrackdev.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://gtrackqa.vegitone.com/gtrackapi/'
 
 const SUFFIX_URL = 'public/'
 
