@@ -15,7 +15,7 @@ import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon, Expor
 
 const Details = ({ route, navigation }) => {
 
-    const { deviceId, title } = route.params
+    const { deviceId, title, devicePrimaryId } = route.params
 
     const [deviceData, setDeviceData] = useState(null)
 
@@ -36,7 +36,7 @@ const Details = ({ route, navigation }) => {
 
     function loadDeviceDetail() {
         AppManager.showLoader()
-        dispatch(DeviceActions.requestGetDeviceDetailByIdAndUserId(user_id, deviceId, onDeviceDetailLoadedSuccess, onDeviceDetailLoadedError))
+        dispatch(DeviceActions.requestGetDeviceDetailByIdAndUserId(user_id, devicePrimaryId, onDeviceDetailLoadedSuccess, onDeviceDetailLoadedError))
     }
 
     function onDeviceDetailLoadedSuccess(data) {
@@ -103,6 +103,7 @@ const Details = ({ route, navigation }) => {
 
     function renderDevicePlanDetail(devicePlan) {
         const planType = devicePlan && devicePlan.planType ? devicePlan.planType : 'None'
+        const devicePlanName = devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan && devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName : 'None'
         const activationDate = devicePlan && devicePlan.activationDate ? devicePlan.activationDate : ''
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         return (
@@ -110,7 +111,7 @@ const Details = ({ route, navigation }) => {
                 <View style={styles.details}>
                     <View style={[styles.detailsSubView, { flex: 1.5 }]} >
                         <Text style={styles.textStyle}>{translate("Plan")}</Text>
-                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{planType}</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{devicePlanName}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 0.9 }]} >
                         <Text style={styles.textStyle}>{translate("Price")}</Text>

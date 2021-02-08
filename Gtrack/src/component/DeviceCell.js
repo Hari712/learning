@@ -19,6 +19,7 @@ const DeviceCell = (props) => {
     const devicePlan = item.devicePlan ? item.devicePlan : null
     const planStatus = devicePlan ? devicePlan.planName : 'None'
     const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
+    
 
     let IconConstantDeviceCell;
 
@@ -58,7 +59,7 @@ const DeviceCell = (props) => {
     }
 
     return (
-        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.deviceId, title: deviceDTO.deviceName }) }
+        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.deviceId, title: deviceDTO.deviceName, devicePrimaryId: deviceDTO.id }) }
         } style={styles.cardContainer}>
 
             {/* Blue top head */}
