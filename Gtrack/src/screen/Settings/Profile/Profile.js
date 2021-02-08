@@ -94,7 +94,7 @@ const Profile = ({ navigation }) => {
                             <Text  style={styles.emailText}> {translate("User Type")} </Text>
                         </View>
                         <View style = {{ }}>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone}</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone :'-'}</Text>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.email}</Text>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>Member</Text>
                         </View>
