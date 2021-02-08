@@ -58,7 +58,7 @@ const DeviceCell = (props) => {
     }
 
     return (
-        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.id, title: deviceDTO.deviceId }) }
+        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.deviceId, title: deviceDTO.deviceName }) }
         } style={styles.cardContainer}>
 
             {/* Blue top head */}
