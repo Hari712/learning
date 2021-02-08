@@ -149,11 +149,13 @@ const AssignGroup = ({ navigation, route }) => {
             <DropDown
                 defaultValue={group}
                 label='Select Group'
+                emptyDataText="No Group found"
                 valueSet={setGroup}
                 dataList={arrGroupnames}
                 contentInset={{ label: hp(-0.2) }}
                 inputContainerStyle={styles.inputContainer}
-                dropdownStyle={{paddingHorizontal: hp(3),width:'89%',zIndex:20}}
+                dropdownStyle={{backgroundColor:arrGroupnames.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK,paddingHorizontal: hp(3),zIndex:20,width:'89%'}}  
+                //dropdownStyle={{paddingHorizontal: hp(3),width:'89%',zIndex:20}}
                 accessoryStyle={{ top: hp(0.5) }}
                 outerStyle={{ marginBottom: hp(0),paddingTop: hp(2),maxHeight:hp(22),paddingHorizontal: hp(3),position:'absolute',top:dropdownPosy, width:'100%' }}
             />
