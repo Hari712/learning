@@ -40,12 +40,15 @@ const LiveTracking = ({navigation}) => {
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if(item === 'Sensor Information') {
+			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
 		else if (item == 'Geo Fence') {
+			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
 		}
 		else {
+			setIsLineClick(false)
             navigation.navigate(SCREEN_CONSTANTS.ALARMS)
         }
 	}
@@ -56,7 +59,7 @@ const LiveTracking = ({navigation}) => {
 	}
 
 	return (
-		<View style={styles.container}>
+		<View onStartShouldSetResponder={()=>setIsLineClick(false)} style={styles.container}>
 
 			<MapView currentLocation={currentPosition} />
 
