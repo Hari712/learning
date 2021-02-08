@@ -87,7 +87,7 @@ return (
 
             <View style={{flexDirection:'column',flex:1.5}}>
                 <Text style={styles.textStyle}>{translate("Web Notification")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.attributes.notificators ? "On" : "Off"}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.notificators ? "On" : "Off"}</Text>
             </View>
         </View>
 
