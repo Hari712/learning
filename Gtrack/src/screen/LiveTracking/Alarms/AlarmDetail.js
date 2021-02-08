@@ -67,7 +67,7 @@ return (
 
         <View style={{marginTop:hp(2)}}>
           <Text style={styles.textStyle}>{translate("Selected Users")}</Text>
-          <View style={{flexGrow:1, flexDirection:'row'}}>      
+          <View style={{flexGrow:1, flexWrap:'wrap', flexDirection:'row'}}>      
             {Object.values(data.users).map((name,key) =>
               <View key={key} style={styles.user}>
                 <Text style={styles.deviceText}>{name.firstName} {name.lastName}</Text>
