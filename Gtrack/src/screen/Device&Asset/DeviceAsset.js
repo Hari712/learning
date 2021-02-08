@@ -151,7 +151,7 @@ const DeviceAsset = ({ navigation }) => {
 
   const loadMoreDevices = () => {
     if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
-      if (totalCount < deviceList.length) {
+      if (deviceList.length < totalCount) {
         setIsRefreshing(false)
         setIsLoadMoreData(true)
         setOnEndReachedCalledDuringMomentum(true)
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     fontFamily:"Nunito-Regular",
     fontSize:hp(2)
   },
-  refreshIndicator: { tintColor: 'white' }
+  refreshIndicator: { tintColor: 'black' }
 })
 
 
