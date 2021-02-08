@@ -248,11 +248,25 @@ const EditDeviceAsset = ({ route, navigation }) => {
                 </View>
 
                 <View style={{ width:'100%', top:groupPositionY, position:'absolute', marginTop:hp(2) }}>
-                    <DropDown label='Select Group' defaultValue={group} valueSet={setGroup} dataList={arrGroupnames} />
+                    <DropDown 
+                        label='Select Group' 
+                        emptyDataText="No Group found"
+                        defaultValue={group} 
+                        valueSet={setGroup} 
+                        dataList={arrGroupnames}
+                        dropdownStyle={{backgroundColor:arrGroupnames.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK}}  
+                    />
                 </View>
 
                 <View style={{ width:'100%', top:typePositionY, position:'absolute', marginTop:hp(2) }}>
-                    <DropDown label='Name' defaultValue={assetName} valueSet={setAssetName} dataList={arrAssetList} />
+                    <DropDown 
+                        label='Name' 
+                        emptyDataText="No Asset found"
+                        defaultValue={assetName} 
+                        valueSet={setAssetName} 
+                        dataList={arrAssetList} 
+                        dropdownStyle={{backgroundColor:arrAssetList.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK}} 
+                    />
                 </View>
 
                 {renderAssetConfirmationDialog()}

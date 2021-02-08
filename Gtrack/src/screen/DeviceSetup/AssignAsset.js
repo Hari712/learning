@@ -137,12 +137,17 @@ const AssignAsset = ({ navigation, route }) => {
 
                 <DropDown
                     defaultValue={asset}
+                    emptyDataText="No Asset found"
                     label={translate("Select Existing Asset")}
                     valueSet={setAsset}
                     dataList={assetNameList}
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={[styles.inputContainer,{zIndex:20}]}
-                    dropdownStyle={{paddingHorizontal: hp(3),width:'90%',zIndex:20}}
+                    dropdownStyle={{backgroundColor:assetNameList.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK,
+                        width:'90%' ,
+                        paddingHorizontal: hp(3)
+                    }}  
+                    //dropdownStyle={{paddingHorizontal: hp(3),width:'90%',zIndex:20}}
                     accessoryStyle={{ top: hp(0.5) }}
                     outerStyle={{ marginBottom: hp(0), zIndex:20, 
                         paddingHorizontal: hp(3), maxHeight:hp(22), 

@@ -30,7 +30,7 @@ class DropDown extends React.Component {
     render() {
 
         //isRelative will set the dropdown view absolute or relative ie over other components or expanding other component
-        const { label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, accessoryStyle, ...otherProps } = this.props;
+        const { label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, accessoryStyle, emptyDataText, ...otherProps } = this.props;
 
         const data = ['Car', 'Truck', 'Tempo'];
 
@@ -80,7 +80,7 @@ class DropDown extends React.Component {
                         [styles.absoluteDropdown, { top: this.state.buttonMeasurement.y + this.state.buttonMeasurement.height }],
                         dropdownStyle]}>
                             <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' contentContainerStyle={{ flexGrow: 1 }} style={{height: 'auto', maxHeight:hp(17),zIndex:99}}>
-                                {(dataList ? dataList : data).map((item, key) => {
+                                {dataList && dataList.length > 0 ? dataList.map((item, key) => {
                                     return (
                                         <TouchableOpacity style={[{flex:1}, otherProps.dataRowStyle]} key={key}
                                             onPress={() => {
@@ -99,7 +99,11 @@ class DropDown extends React.Component {
 
                                         </TouchableOpacity>
                                     )
-                                })}
+                                }) : 
+                                <View>
+                                    <Text>{emptyDataText ? emptyDataText:"No data"}</Text>
+                                </View>
+                             }
                             </ScrollView>
                     </View>
                     : null}
