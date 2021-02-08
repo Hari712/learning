@@ -39,6 +39,7 @@ const DeviceAsset = ({ navigation }) => {
   React.useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setMenuClick(false)
+      loadData()
     });
       return unsubscribe;
   },[]);
@@ -53,7 +54,7 @@ const DeviceAsset = ({ navigation }) => {
         </TouchableOpacity>
       )
     });
-  }, [navigation]);
+  }, [navigation,menuClick]);
 
   function setMenuClickEvent() {
    setMenuClick(prevState => !prevState)
