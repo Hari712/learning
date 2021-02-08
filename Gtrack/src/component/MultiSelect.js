@@ -130,14 +130,20 @@ class MultiSelect extends React.Component {
 
 export class MultiSelectGroup extends React.Component {
 
+    selectedAll = false;
+
     constructor(props) {
         super();
         this.state = {
             isSelected: false,
         }
         
-        
     }
+    
+    condition(array1, array2) {
+        const newArray = JSON.stringify(array1.map((item)=>item.id).sort((a,b) => a > b ? 1 : -1)) === JSON.stringify(array2.map((item)=>item.id).sort((a,b) => a > b ? 1 : -1))
+        return (newArray)
+    } 
 
     render() {
 
@@ -158,12 +164,8 @@ export class MultiSelectGroup extends React.Component {
             "users": []
         }];
         console.log("selected",selectedItem,data)
-        function condition() {
-            const newArray = JSON.stringify(selectedItem.sort((a, b) => a.id > b.id ? 1 : -1)) === JSON.stringify(data.sort((a, b) => a.id > b.id ? 1 : -1))
-            console.log("khushi",newArray)
-            return (newArray)
-        } 
-        selectedAll = condition()
+        
+        selectedAll = this.condition(selectedItem, data)
         
 
         function handleRightAccessory() {
