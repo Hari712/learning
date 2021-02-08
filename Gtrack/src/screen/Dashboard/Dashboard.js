@@ -24,6 +24,7 @@ const Dashboard = ({ navigation }) => {
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState();
   const [deviceId, setDeviceId] = useState();
+  const [isMenuClick, setIsMenuClick] = useState()
   const [ownerActive, setOwnerActive] = useState(0);
   const [regularActive, setRegularActive] = useState(0);
 
@@ -273,19 +274,6 @@ const Dashboard = ({ navigation }) => {
             <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
             </TouchableOpacity>
 
-
-            {isClickDownArrow ?
-              <View style={styles.userMenu}>
-                {User.map((item, key) =>
-                  <TouchableOpacity key={key}>
-                    <Text style={styles.userStyle}>{item}</Text>
-                    {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
-                  </TouchableOpacity>
-                )
-                }
-              </View>
-              : null}
-
             <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
               <FullScreenIcon style={styles.fullScreenStyle} resizeMode='contain'/>
             </TouchableOpacity>
@@ -296,6 +284,18 @@ const Dashboard = ({ navigation }) => {
           </View>
       
         </View>
+
+        {isClickDownArrow ?
+              <View style={styles.userMenu}>
+                {User.map((item, key) =>
+                  <TouchableOpacity  key={key} onPress={()=> (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)}>
+                    <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
+                    {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
+                  </TouchableOpacity>
+                )
+                }
+              </View>
+              : null}
 
         <ActiveUser />
 
@@ -472,8 +472,8 @@ const styles = StyleSheet.create({
     right: wp(26),
     zIndex:10,
 		borderRadius: 16,
-		width: '80%',
-		top: hp(3),
+		width: '30%',
+		top: hp(6),
 		justifyContent: 'space-between',
 		position: 'absolute',
 		shadowColor: ColorConstant.GREY,
@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
 	},
   userStyle: {
 		margin: hp(0.5),
-		color: ColorConstant.BLUE,
+		//color: ColorConstant.BLUE,
 		textAlignVertical: 'center',
 		paddingLeft: hp(0.5),
 		fontSize:FontSize.FontSize.small,
