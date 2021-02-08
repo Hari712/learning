@@ -1,11 +1,9 @@
 import React, { useState ,Component, useEffect} from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
-import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize } from '../../../component';
+import { CustomDialog, FontSize } from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
-import * as LoginActions from '../../Login/Login.Action'
 import * as LivetrackingActions from '../Livetracking.Action'
 import { translate } from '../../../../App'
 import { getAlarmsListInfo, getLoginState, isRoleRegular } from '../../Selector';
@@ -25,6 +23,10 @@ const Alarms = ({navigation}) => {
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const [alarmName, setAlarmName] = useState()
+  const [notificationId, setNotificationId] = useState()
+  const [deleteDialogVisible,setDeleteDialogVisible] = useState(false)
   const [list, setList] = useState(DATA);
 
   useEffect(() => {  
@@ -69,9 +71,16 @@ const Alarms = ({navigation}) => {
     });
   },[navigation]);
 
-  function handleRemove(notificationId) {
+  function handleRemove(item) {
+    setAlarmName(item.notification.attributes.name)
+    setNotificationId(item.notification.id)
+    setDeleteDialogVisible(true)
+  }
+
+  function deleteAlarmConfirm() {
+    setDeleteDialogVisible(false)
     AppManager.showLoader()
-    dispatch(LivetrackingActions.requestDeleteNotification(loginData.id, notificationId, onDeleteSuccess, onDeleteError))    
+    dispatch(LivetrackingActions.requestDeleteNotification(loginData.id, notificationId, onDeleteSuccess, onDeleteError)) 
   }
 
   const onDeleteSuccess = (data) => {
@@ -106,7 +115,7 @@ const Alarms = ({navigation}) => {
               </TouchableOpacity> : null }
 
               { !isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(item.notification.id)} style={{zIndex:5, padding:hp(1)}} >
+              <TouchableOpacity onPress={() => handleRemove(item)} style={{zIndex:5, padding:hp(1)}} >
                 <DeleteIcon width={13.943} height={15.463}/>
               </TouchableOpacity> : null }       
           </View>
@@ -159,7 +168,14 @@ return (
           />
         }
       />
-
+       <CustomDialog
+          heading="Are you sure ?"
+          message={"Do you really want to delete "+ alarmName +" alarm ?" }
+          visible={deleteDialogVisible}
+          onTouchOutside={() => setDeleteDialogVisible(false)}
+          negativeHandle={() => setDeleteDialogVisible(false)}
+          positiveHandle={deleteAlarmConfirm}
+      />
   </View>
       )
     }
