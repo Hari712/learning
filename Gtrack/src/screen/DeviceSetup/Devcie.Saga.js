@@ -184,7 +184,15 @@ function* requestGetAllDeviceById(action) {
         const url = ApiConstants.GET_DEVICE_BY_ID(userId, deviceId)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : {}
-        onSuccess(result)
+        let finalResponse = result
+        if (result && result.devicePlan) {
+            const taxUrl = ApiConstants.FETCH_TAX_BY_PROVINCE(userId)
+            const taxResponse = yield call(API.get, taxUrl)
+            const tax = taxResponse.result ? taxResponse.result : 0
+            const devicePlan = { ...result.devicePlan, ...{ tax: tax }}
+            finalResponse = {...finalResponse, ...{ devicePlan: devicePlan }}
+        }
+        onSuccess(finalResponse)
     } catch (error) {
         onError(error)
     }

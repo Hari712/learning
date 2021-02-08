@@ -57,6 +57,13 @@ export const requestResetPasscode = (data, onSuccess, onError) => ({
     onError
 })
 
+export const requestFetchUserTax = (userId, onSuccess, onError) => ({
+    type: types.FETCH_TAX_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
 export const requestLogout = () => ({
     type: types.LOGOUT_REQUEST
 })

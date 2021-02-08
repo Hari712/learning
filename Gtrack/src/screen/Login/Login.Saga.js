@@ -72,6 +72,17 @@ function* resetPasscode(action) {
     }
 }
 
+function* requestFetchUserTax(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.FETCH_TAX_BY_PROVINCE(userId)
+        const response = yield call(API.get, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 
 export function* watchLogin() {
@@ -80,5 +91,6 @@ export function* watchLogin() {
     yield takeLatest(types.RESET_PASSWORD, resetPassword),
     yield takeLatest(types.GET_OTP_REQUEST, requestGetOTP),
     yield takeLatest(types.VERIFY_OTP_REQUEST, requestVerifyOTP),
-    yield takeLatest(types.RESET_PASSCODE_REQUEST, resetPasscode)
+    yield takeLatest(types.RESET_PASSCODE_REQUEST, resetPasscode),
+    yield takeLatest(types.FETCH_TAX_REQUEST, requestFetchUserTax)
 }
