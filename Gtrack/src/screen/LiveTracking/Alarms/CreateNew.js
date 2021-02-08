@@ -12,7 +12,8 @@ import { DropDown, MultiSelect, FontSize} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
 import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
-import { isEmpty, zipObjectDeep } from 'lodash';
+import isEmpty from 'lodash/isEmpty'
+
 
 const CreateNew = ({navigation,route}) => {
 
@@ -74,25 +75,29 @@ const CreateNew = ({navigation,route}) => {
   }
 
   const onPressNext = () => {   
-    let arrSelectedId = [];
-    selectedDevice ? 
-    arrDeviceList.filter((item)=> {      
-      selectedDevice.filter((selectedItem)=>{        
-        if(item.deviceName === selectedItem){ 
-          console.log("loop",item.id,selectedItem)   
-          arrSelectedId.push(item.id)
-        }
-      })  }) 
-    :null;
-
-    console.log(arrSelectedId)
-
-    navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
-      alarmType:selectedAlarm, 
-      selectedDeviceList:selectedDevice, 
-      selectedDeviceID: arrSelectedId, 
-      editData:editingValues})
-    
+    if (isEmpty(selectedDevice)) {
+      AppManager.showSimpleMessage('warning', { message: 'Please select atleast one device', description:'', floating: true })
+    } else {
+      let arrSelectedId = [];
+      selectedDevice ? 
+      arrDeviceList.filter((item)=> {      
+        selectedDevice.filter((selectedItem)=>{        
+          if(item.deviceName === selectedItem){ 
+            console.log("loop",item.id,selectedItem)   
+            arrSelectedId.push(item.id)
+          }
+        })  }) 
+      :null;
+      
+      console.log(arrSelectedId)
+  
+      navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
+        alarmType:selectedAlarm, 
+        selectedDeviceList:selectedDevice, 
+        selectedDeviceID: arrSelectedId, 
+        editData:editingValues})
+      
+    }
   }
 
   React.useLayoutEffect(() => {
