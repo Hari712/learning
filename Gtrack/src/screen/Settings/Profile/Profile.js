@@ -19,6 +19,8 @@ const Profile = ({ navigation }) => {
         loginData: getLoginState(state),
     }))
 
+    const userType = loginData.role.map((item) => item.name )
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -69,7 +71,7 @@ const Profile = ({ navigation }) => {
                 <View style={styles.blueBoxStyle}>
                 <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData}) }} >
+                    <TouchableOpacity onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData, userType:userType}) }} >
                         <EditIcon width={12.947} height={12.947}/>
                     </TouchableOpacity>
                 </View>
@@ -94,9 +96,9 @@ const Profile = ({ navigation }) => {
                             <Text  style={styles.emailText}> {translate("User Type")} </Text>
                         </View>
                         <View style = {{ }}>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone}</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone :'-'}</Text>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.email}</Text>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>Member</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{userType == "ROLE_OWNER" ? "Owner" : "Regular"}</Text>
                         </View>
                         
                     </View>

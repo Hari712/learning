@@ -17,8 +17,9 @@ import { validateEmailorPhoneNumber } from '../../../utils/helper';
 const EditProfile = ({ navigation, route, item }) => {
     const dispatch = useDispatch()
 
-    const { loginData } = route.params;
+    const { loginData, userType } = route.params;
     const { id } = loginData;
+
 
     //User data variables
     const [firstName, setFirstName] = useState(loginData.firstName);
@@ -216,7 +217,7 @@ const EditProfile = ({ navigation, route, item }) => {
         AppManager.hideLoader()
         console.log("Success", data)
         dispatch(ProfileActions.setEditProfileResponse(data))
-        AppManager.showSimpleMessage('success', { message: data.message, description: '', floating: true })
+        AppManager.showSimpleMessage('success', { message: 'Profile updated successfully', description: '', floating: true })
         navigation.navigate(SCREEN_CONSTANTS.PROFILE)
     }
 
@@ -275,7 +276,7 @@ const EditProfile = ({ navigation, route, item }) => {
                            
                         <View style = {{ marginLeft: wp(15)}}>
                             <Text style={styles.EmailTextStyle}>{translate("User Type")}</Text>
-                            <Text style={styles.textNameStyle}>Member</Text>
+                            <Text style={styles.textNameStyle}>{userType == "ROLE_OWNER" ? "Owner" : "Regular"}</Text>
                         </View>
                     </View>
 
