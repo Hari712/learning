@@ -41,7 +41,7 @@ const DeviceAsset = ({ navigation }) => {
       setMenuClick(false)
     });
       return unsubscribe;
-  })
+  },[]);
 
   useLayoutEffect(() => {
 
