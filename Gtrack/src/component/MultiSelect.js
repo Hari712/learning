@@ -5,8 +5,7 @@ import images from '../constants/images'
 import { ColorConstant } from '../constants/ColorConstants'
 import { OutlinedTextField } from 'react-native-material-textfield'
 import FontSize from './FontSize';
-import ShadowView from "react-native-simple-shadow-view";
-import { isEqual } from "lodash";
+import ShadowView from "react-native-simple-shadow-view"
 
 let data = [];
 let selectedItem = [];

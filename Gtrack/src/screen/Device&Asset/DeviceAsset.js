@@ -8,7 +8,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
-import { isEmpty, set } from 'lodash';
+import isEmpty from 'lodash/isEmpty'
 import { FontSize } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';

@@ -13,7 +13,7 @@ import CheckBox from 'react-native-check-box'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview'
 import { storeItem } from '../../utils/storage'
 import { USER_DATA } from '../../constants/AppConstants'
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import * as LoginActions from './Login.Action'
 import * as SettingsActions from '../Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info';
@@ -30,24 +30,24 @@ const Login = () => {
         isConnected: state.network.isConnected,
     }))
 
-    const [email, setEmail] = useState('Jjapee4@ekzero.com')
-    const [password, setPassword] = useState('Jini@123')
+    const [email, setEmail] = useState('khushbu.solanki@gmail.com') //Jjapee4@ekzero.com
+    const [password, setPassword] = useState('Khushi@123') //Jini@123
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo, setIsClickInfo] = useState(false)
 
     function onTapLoginButton() {
         if (isConnected) {
             let message = ''
-            if (_.isEmpty(email)) {
+            if (isEmpty(email)) {
                 message = translate(AppConstants.EMPTY_EMAIL_OR_PHONE)
             }
             else if (!validateEmailorPhoneNumber(email)) {
                 message = translate(AppConstants.INVALID_EMAIL_OR_PHONE)
             }
-            else if (_.isEmpty(password)) {
+            else if (isEmpty(password)) {
                 message = translate(AppConstants.EMPTY_PASSWORD)
             }
-            if (!_.isEmpty(message)) {
+            if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
                 AppManager.showLoader()

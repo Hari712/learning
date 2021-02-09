@@ -31,7 +31,7 @@ const AssignGroup = ({ navigation, route }) => {
         groupList: getGroupListInfo(state),
         isConnected: state.network.isConnected,
         device: getDeviceDetail(state, deviceInfo.id),
-    })) 
+    }))
 
     const user_id = loginInfo.id ? loginInfo.id : null
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
@@ -47,9 +47,9 @@ const AssignGroup = ({ navigation, route }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
-                     <BackIcon />
-                 </TouchableOpacity>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
+                    <BackIcon />
+                </TouchableOpacity>
             )
         });
     }, [navigation]);
@@ -72,13 +72,13 @@ const AssignGroup = ({ navigation, route }) => {
                 let devicelist = { ...deviceobjs, [device.id]: device }
                 let updatedArrList = Object.values(devicelist)
                 let requestBody = {
-                    groupDTO: { ...selectedGroup, ...{ devices: updatedArrList, isQuickAdd: false  } }
+                    groupDTO: { ...selectedGroup, ...{ devices: updatedArrList, isQuickAdd: false } }
                 }
                 AppManager.showLoader()
                 dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
-            } 
+            }
         }
-        
+
     }
 
     function onAssignGroupSuccess(data) {
@@ -103,7 +103,7 @@ const AssignGroup = ({ navigation, route }) => {
         let updatedArrList = Object.values(devicelist)
         setGroup(item.result.groupDTO.groupName)
         let requestBody = {
-            groupDTO: { ...item.result.groupDTO, ...{ devices: updatedArrList, isQuickAdd: false  } }
+            groupDTO: { ...item.result.groupDTO, ...{ devices: updatedArrList, isQuickAdd: false } }
         }
         dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
     }
@@ -121,46 +121,49 @@ const AssignGroup = ({ navigation, route }) => {
 
     return (
         <>
-        <View style={styles.container}>
-            <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3) }}>
-                <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step3} resizeMode="contain" />
-                <Text style={styles.title}>{translate("Assign Group")}</Text>
+            <View style={styles.container}>
+                <View style={{ alignItems: 'center', paddingTop: hp(1), paddingHorizontal: hp(3) }}>
+                    <Image style={{ width: hp(16), height: hp(16) }} source={images.image.deviceSetup.step3} resizeMode="contain" />
+                    <Text style={styles.title}>{translate("Assign Group")}</Text>
+                </View>
+                <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2), height: hp(8) }}
+                    onLayout={(event) => { setDropdownPosy(event.nativeEvent.layout.y) }}
+                />
+                <View style={{ width: '100%', paddingHorizontal: hp(2), marginTop: hp(2) }}>
+                    <View style={[styles.buttonContainer, { paddingHorizontal: hp(2) }]}>
+                        <Text style={{ fontWeight: '400', fontSize: FontSize.FontSize.medium, marginBottom: hp(1) }}>GTrack Group</Text>
+                        <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
+                            <Text style={styles.activateButtonTitle}>{translate("Add New Group")}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.buttonMainContainer}>
+                    <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
+                        <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>
+                            <Text style={styles.buttonTextColor}>{translate("Not Now")}</Text>
+                        </TouchableOpacity>
+                    </ShadowView>
+                    <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
+                        <TouchableOpacity style={styles.nextButton} onPress={() => onTapNext()}>
+                            <Text style={styles.nextButtonText}>{translate("Next")}</Text>
+                        </TouchableOpacity>
+                    </ShadowView>
+                </View>
+                <DropDown
+                    defaultValue={group}
+                    label='Select Group'
+                    emptyDataText="No Group found"
+                    valueSet={setGroup}
+                    dataList={arrGroupnames}
+                    contentInset={{ label: hp(-0.2) }}
+                    inputContainerStyle={styles.inputContainer}
+                    dropdownStyle={{ backgroundColor: arrGroupnames.length > 0 ? ColorConstant.WHITE : ColorConstant.LIGHTPINK, paddingHorizontal: hp(3), zIndex: 20, width: '89%' }}
+                    //dropdownStyle={{paddingHorizontal: hp(3),width:'89%',zIndex:20}}
+                    accessoryStyle={{ top: hp(0.5) }}
+                    outerStyle={{ marginBottom: hp(0), paddingTop: hp(2), maxHeight: hp(22), paddingHorizontal: hp(3), position: 'absolute', top: dropdownPosy, width: '100%' }}
+                />
             </View>
-            <View style={{ paddingHorizontal: hp(3), paddingTop: hp(2),height:hp(8) }}
-                onLayout={(event)=>{setDropdownPosy(event.nativeEvent.layout.y)}}
-            />
-            <ShadowView style={[styles.shadowContainer, { paddingHorizontal: hp(3) }]}>
-                    <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
-                        <Text style={styles.activateButtonTitle}>{translate("Add New Group")}</Text>
-                    </TouchableOpacity>
-            </ShadowView>
-            <View style={styles.buttonMainContainer}>
-                <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                    <TouchableOpacity style={[styles.cancelButton]} onPress={() => onTapNotNow()}>
-                        <Text style={styles.buttonTextColor}>{translate("Not Now")}</Text>
-                    </TouchableOpacity>
-                </ShadowView>
-                <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                    <TouchableOpacity style={styles.nextButton} onPress={() => onTapNext()}>
-                        <Text style={styles.nextButtonText}>{translate("Next")}</Text>
-                    </TouchableOpacity>
-                </ShadowView>
-            </View>
-            <DropDown
-                defaultValue={group}
-                label='Select Group'
-                emptyDataText="No Group found"
-                valueSet={setGroup}
-                dataList={arrGroupnames}
-                contentInset={{ label: hp(-0.2) }}
-                inputContainerStyle={styles.inputContainer}
-                dropdownStyle={{backgroundColor:arrGroupnames.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK,paddingHorizontal: hp(3),zIndex:20,width:'89%'}}  
-                //dropdownStyle={{paddingHorizontal: hp(3),width:'89%',zIndex:20}}
-                accessoryStyle={{ top: hp(0.5) }}
-                outerStyle={{ marginBottom: hp(0),paddingTop: hp(2),maxHeight:hp(22),paddingHorizontal: hp(3),position:'absolute',top:dropdownPosy, width:'100%' }}
-            />
-        </View>
-        {renderAddNewGroupDialog()}
+            {renderAddNewGroupDialog()}
         </>
     )
 }
@@ -200,6 +203,23 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 3,
         shadowOpacity: 0.3
+    },
+    buttonContainer: {
+        width: '100%',
+        marginTop: hp(1),
+        backgroundColor: ColorConstant.PINK,
+        paddingVertical: hp(2),
+        borderRadius: hp(2),
+        shadowColor: ColorConstant.GREY,
+        marginTop: hp(1),
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 3,
+        shadowOpacity: 0.3,
+        // alignSelf:'center',
+        // height: hp(16)
     },
     inputContainer: {
         height: hp(5),
