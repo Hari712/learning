@@ -8,7 +8,7 @@ import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AppManager from '../../constants/AppManager'
 import { getLoginInfo, getGroupListInfo } from '../Selector'
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty'
 
 const GroupList = () => {
 

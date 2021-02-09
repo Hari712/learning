@@ -1,4 +1,4 @@
-const BASE_URL = 'https://gtrackqa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://gtrackdev.vegitone.com/gtrackapi/'
 
 const SUFFIX_URL = 'public/'
 
@@ -51,7 +51,8 @@ const ApiConstants = {
     GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/consolidated?value=false`,
     GET_ALERT_TYPES:(userId) => `${USER}${userId}/trace/alerts/types`,
     DELETE_NOTIFICATION:(userId, deviceId) => `${USER}${userId}/trace/notifications/${deviceId}`,
-    SEARCH_ASSET: (userId, name) => `${USER}${userId}/assets/search?name=${name}`
+    SEARCH_ASSET: (userId, name) => `${USER}${userId}/assets/search?name=${name}`,
+    FETCH_TAX_BY_PROVINCE: (userId) => `${USER}${userId}/tax`
 }
 
 export default ApiConstants

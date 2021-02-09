@@ -5,7 +5,7 @@ import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize, TextField } from '../../../component';
 import { Dialog } from 'react-native-simple-dialogs';
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import { AppConstants } from '../../../constants/AppConstants';
 import { validatePassword } from '../../../utils/helper';
 import AppManager from '../../../constants/AppManager';
@@ -97,22 +97,22 @@ function resetText() {
 function onSubmitPasscode() {
   if (isConnected) {
       let message = ''
-      if (_.isEmpty(oldPasscode)) {
+      if (isEmpty(oldPasscode)) {
           message = translate(AppConstants.EMPTY_OLD_PASSCODE)
       }
-      else if (_.isEmpty(newPasscode)) {
+      else if (isEmpty(newPasscode)) {
           message = translate(AppConstants.EMPTY_NEW_PASSCODE)
       }
       else if (!validatePassword(newPasscode)) {
           message = translate(AppConstants.INVALID_PASSWORD)
       }
-      else if (_.isEmpty(confirmPasscode)) {
+      else if (isEmpty(confirmPasscode)) {
           message = translate(AppConstants.EMPTY_CONFIRM_PASSWORD)
       }
       else if (newPasscode != confirmPasscode) {
           message = translate(AppConstants.PASSWORD_DOES_NOT_MATCH)
       }
-      if (!_.isEmpty(message)) {
+      if (!isEmpty(message)) {
           AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
       } 
       else {

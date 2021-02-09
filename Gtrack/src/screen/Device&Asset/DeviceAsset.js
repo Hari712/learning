@@ -8,7 +8,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
-import { isEmpty, set } from 'lodash';
+import isEmpty from 'lodash/isEmpty'
 import { FontSize } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import Tooltip from 'rn-tooltip';
@@ -40,9 +40,9 @@ const DeviceAsset = ({ navigation }) => {
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
-    isFocused ? null : setMenuClick(false)
+    isFocused ? loadData() : setMenuClick(false)
   },[isFocused]);
-
+  
   useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -53,7 +53,7 @@ const DeviceAsset = ({ navigation }) => {
         </TouchableOpacity>
       )
     });
-  }, [navigation]);
+  }, [navigation,menuClick]);
 
   function setMenuClickEvent() {
    setMenuClick(prevState => !prevState)

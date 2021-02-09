@@ -7,7 +7,7 @@ import { validatePassword } from '../../utils/helper'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import AppManager from '../../constants/AppManager'
-import _ from 'lodash'
+import isEmpty from "lodash/isEmpty"
 import NavigationService from '../../navigation/NavigationService'
 import { EditText, FontSize } from '../../component'
 import * as LoginActions from '../Login/Login.Action'
@@ -30,13 +30,13 @@ const ChangePasscode = ({ navigation, route }) => {
     function loginHandle() {
         if (isConnected) {
             let message = ''
-            if (_.isEmpty(passcode)) {
+            if (isEmpty(passcode)) {
                 message = AppConstants.EMPTY_PASSWORD
             }
             else if (!validatePassword(passcode)) {
                 message = translate(AppConstants.INVALID_PASSWORD)
             }
-            else if (_.isEmpty(confirmpasscode)) {
+            else if (isEmpty(confirmpasscode)) {
                 message = translate(AppConstants.EMPTY_CONFIRM_PASSWORD)
             }
             else if (!validatePassword(confirmpasscode)) {
@@ -45,7 +45,7 @@ const ChangePasscode = ({ navigation, route }) => {
             else if (!(passcode == confirmpasscode)) {
                 message = translate(AppConstants.PASSWORD_DOES_NOT_MATCH)
             }
-            if (!_.isEmpty(message)) {
+            if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
                 AppManager.showLoader()

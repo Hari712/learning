@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, Text, View} from 'react-native';
-import _ from 'lodash';
+import map from 'lodash/map'
+import times from 'lodash/times'
 
 // import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
@@ -103,7 +104,7 @@ export default class StarRating extends React.Component{
       }
     
       renderStars(rating_array) {
-        return _.map(rating_array, (star, index) => {
+        return map(rating_array, (star, index) => {
           return star
         })
       }
@@ -126,7 +127,7 @@ export default class StarRating extends React.Component{
             starContainerStyle.push(this.props.starContainerStyle);
         }
     
-        _.times(count, index => {
+        times(count, index => {
           rating_array.push(
             <Star
               key={index}

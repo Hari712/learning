@@ -1,4 +1,3 @@
-import { map, set } from 'lodash';
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import isEmpty from 'lodash/isEmpty'

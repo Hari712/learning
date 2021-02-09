@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     },
     datatextStyle: {
         paddingVertical:hp(1.5),
-        flex:1,
+        flex:1
     },
     inputButton: {
         alignSelf: 'center',

@@ -102,10 +102,14 @@ const Details = ({ route, navigation }) => {
     }, [navigation]);
 
     function renderDevicePlanDetail(devicePlan) {
-        const planType = devicePlan && devicePlan.planType ? devicePlan.planType : 'None'
         const devicePlanName = devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan && devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName : 'None'
         const activationDate = devicePlan && devicePlan.activationDate ? devicePlan.activationDate : ''
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
+        const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
+        const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.monthlyFee : devicePlan.yearlyFee
+        const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
+        const actualTax = (planPrice * tax) / 100
+        const payableAmount = planPrice + actualTax
         return (
             <>
                 <View style={styles.details}>
@@ -115,7 +119,7 @@ const Details = ({ route, navigation }) => {
                     </View>
                     <View style={[styles.detailsSubView, { flex: 0.9 }]} >
                         <Text style={styles.textStyle}>{translate("Price")}</Text>
-                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$60</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$ {payableAmount}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 1.2 }]}>
                         <Text style={styles.textStyle}>{translate("Start Date")}</Text>

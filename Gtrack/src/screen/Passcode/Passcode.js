@@ -4,7 +4,7 @@ import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import _ from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import NavigationService from '../../navigation/NavigationService'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { EditText, FontSize } from '../../component'
@@ -29,10 +29,10 @@ const Passcode = ({ navigation, route }) => {
     function requestVerifyOTP() {
         if (isConnected) {
             let message = ''
-            if (_.isEmpty(passcode)) {
+            if (isEmpty(passcode)) {
                 message = AppConstants.EMPTY_PASSWORD
             }
-            if (!_.isEmpty(message)) {
+            if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
                 AppManager.showLoader()

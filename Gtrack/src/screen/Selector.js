@@ -1,8 +1,7 @@
 import { createSelector } from 'reselect'
-import isNil from 'lodash/isNil'
 import isEmpty from 'lodash/isEmpty'
 import { AppConstants } from '../constants/AppConstants'
-import { mapKeys } from 'lodash'
+
 /**
  * Get User Login Information
  */

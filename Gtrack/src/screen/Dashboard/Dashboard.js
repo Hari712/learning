@@ -14,15 +14,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardActions from './Dashboad.Action'
 import { getDeviceDetailsListInfo, getLoginInfo, getActiveInactiveCountListInfo, getNotificationCountListInfo } from '../Selector'
 import iconConstant from '../../constants/iconConstant'
-import { round } from 'lodash'
+import round from 'lodash/round'
 import AppManager from '../../constants/AppManager'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { DeviceSetupIcon, FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
+import RecentAlarms from './RecentAlarm'
 
 const Dashboard = ({ navigation }) => {
 
-  const [isClickDownArrow, setIsClickDownArrow] = useState(false)
-  const [selectedDevice, setSelectedDevice] = useState();
+  const [isClickDownArrow, setIsClickDownArrow] = useState(false)  
   const [deviceId, setDeviceId] = useState();
   const [isMenuClick, setIsMenuClick] = useState()
   const [ownerActive, setOwnerActive] = useState(0);
@@ -53,9 +53,14 @@ const Dashboard = ({ navigation }) => {
     fetchCounts()
   }, [])
 
-  useEffect(() => {
-    fetchDeviceRecentAlarms()
-  },[deviceId])
+  // useEffect(() => {
+  //   fetchDeviceRecentAlarms()
+  // },[deviceId])
+
+  // function fetchDeviceRecentAlarms() {
+  //   AppManager.showLoader()
+  //   dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId, onSuccess, onError))    
+  // }
 
   function fetchCounts() {
     AppManager.showLoader()
@@ -65,11 +70,6 @@ const Dashboard = ({ navigation }) => {
   function fetchDeviceDetails() {
     AppManager.showLoader()
     dispatch(DashboardActions.requestDeviceDetails(user_id, onSuccess, onError))
-  }
-
-  function fetchDeviceRecentAlarms() {
-    AppManager.showLoader()
-    dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId, onSuccess, onError))    
   }
 
   const onSuccess = (data) => {
@@ -188,77 +188,7 @@ const Dashboard = ({ navigation }) => {
     )
   }
 
-  const RecentAlarms = () => {
-    const deviceListArr =  Object.values(deviceDetails.deviceList).map((item)=>item.deviceDTO)
-    const deviceNameArr = Object.values(deviceListArr.map((item)=>item.deviceName))
-    console.log("RecentAlarms",deviceListArr, deviceNameArr )
-    selectedDevice ? null : setSelectedDevice(deviceNameArr[0]);    
-    
-    selectedDevice ? 
-      deviceListArr.filter((item)=> {
-        if(item.deviceName === selectedDevice)
-          setDeviceId(item.id) 
-        } )   
-    :null;
-
-    console.log("Selected Device ID", deviceId)
-
-        return (
-      <ShadowView style={styles.deviceSummaryContainer}>        
-
-        <View style={{ alignItems: 'center', justifyContent: 'center', marginTop:hp(8)}}>
-          <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', zIndex:0, backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
-            <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
-            <Text style={[styles.alertText,{marginLeft: wp(1)}]}>30</Text>
-            <Text style={styles.alertText }>{translate("Alerts")}</Text>
-          </View>
-
-          <ActivityRings data={activityData} config={activityConfig} />
-        </View>
-
-
-        <View style={[styles.deviceSummaryMainViewStyle, {position:"absolute",marginTop:2}]}>
-          <View style={[styles.leftMainViewStyle,{marginTop:hp(3)}]}>
-            <Text style={styles.summary}>{translate("Recent Alarms")}</Text>
-          </View>
-
-          <View style={{alignItems: 'flex-start', justifyContent:'flex-start', flex:1}}>
-            <DropDown 
-              label='Type' 
-              defaultValue={selectedDevice} 
-              valueSet={setSelectedDevice}  
-              dataList={deviceNameArr} 
-              fontSize={hp(1.6)} 
-              contentInset={{ input: 4, label: -8 }}
-              outerStyle={styles.outerStyle} 
-              accessoryStyle={{marginBottom:hp(0.5)}}
-              dropdownStyle = {{top:hp(6)}}
-              inputContainerStyle={styles.inputContainerStyle} 
-              containerStyle={styles.containerStyle} /> 
-          </View>
-
-          <View style={[styles.rightMainViewStyle,{marginTop:hp(3.3)}]}>
-            <TouchableOpacity style={styles.refreshImageStyle} onPress={()=>{fetchDeviceRecentAlarms()}}>
-              <RefreshIcon resizeMode='contain'/>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2) }}>
-          <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.LIGHTBROWN }]}></View>
-          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Low Battery")}</Text>
-
-          <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.BROWN }]}></View>
-          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Movement")}</Text>
-
-          <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.DARKBROWN }]}></View>
-          <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Dashboard_string7")}</Text>
-        </View>
-
-      </ShadowView>
-    )
-  }
-
+  
   return (
     <ScrollView>
       <SafeAreaView style={styles.container}>
@@ -301,7 +231,9 @@ const Dashboard = ({ navigation }) => {
 
         <DeviceSummary />
 
-        <RecentAlarms />
+        <RecentAlarms deviceList={deviceDetails}/>
+
+       {/* {deviceDetails?<RecentAlarms deviceList={deviceDetails}/>:null} */}
 
         <LiveTrackingDashboard />
 
@@ -611,30 +543,3 @@ const DeviceSummaryData = [
   },
 ]
 
-const activityData = [
-  {
-    value: 0.8,
-    color: ColorConstant.BROWN,
-    backgroundColor: ColorConstant.GREY,
-    label: "ACTIVITY",
-  },
-  {
-    value: 0.6,
-    color: ColorConstant.DARKBROWN,
-    backgroundColor: ColorConstant.GREY,
-    label: "ACTIVITY",
-  },
-  {
-    label: "RINGS",
-    value: 0.2,
-    color: ColorConstant.LIGHTBROWN,
-    backgroundColor: ColorConstant.GREY,
-  }
-];
-
-const activityConfig = {
-  width: 180,
-  height: 180,
-  radius: 55,
-  ringSize: 5,
-};

@@ -10,7 +10,7 @@ import AppManager from '../../../constants/AppManager'
 import { translate } from '../../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
-import { isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty'
 import { validateEmailorPhoneNumber } from '../../../utils/helper';
 
 
