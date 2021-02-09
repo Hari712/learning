@@ -102,7 +102,6 @@ const Details = ({ route, navigation }) => {
     }, [navigation]);
 
     function renderDevicePlanDetail(devicePlan) {
-        const planType = devicePlan && devicePlan.planType ? devicePlan.planType : 'None'
         const devicePlanName = devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan && devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName : 'None'
         const activationDate = devicePlan && devicePlan.activationDate ? devicePlan.activationDate : ''
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
