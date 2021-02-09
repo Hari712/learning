@@ -218,6 +218,7 @@ return (
 
         <TextField 
           valueSet={setAlarmName} 
+          maxLength={30}
           label={translate("Alarms_name")}
           defaultValue={alarmName}
           outerStyle={styles.outerStyle} 
