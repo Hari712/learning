@@ -20,12 +20,19 @@ class MultiSelect extends React.Component {
         }
     }
 
+    condition(array1, array2) {
+        const newArray = JSON.stringify(array1.map((item)=>item.id).sort((a,b) => a > b ? 1 : -1)) === JSON.stringify(array2.map((item)=>item.id).sort((a,b) => a > b ? 1 : -1))
+        return (newArray)
+    } 
+
     render() {
 
         const { label, dataList, selectedData, innerRef, valueSet, outerStyle, selectedItemContainerStyle, ...otherProps } = this.props;
 
         selectedItem = selectedData ? selectedData : [];
         data = dataList ? dataList : ['Car', 'Truck', 'Tempo'];    
+
+        selectedAll = this.condition(selectedItem, data)
 
         function handleRightAccessory() {
             return <View style={[{height:styles.inputButton.height-hp(2), justifyContent:'center'}]}>
@@ -67,11 +74,11 @@ class MultiSelect extends React.Component {
                         <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
                             onPress={() => {
                                 if (selectedAll) {
-                                    selectedAll = false;
+                                    //selectedAll = false;
                                     valueSet(oldArray => [])
                                 }
                                 else {
-                                    selectedAll = true;
+                                    //selectedAll = true;
                                     valueSet(oldArray => data)
                                 }
                             }}>
