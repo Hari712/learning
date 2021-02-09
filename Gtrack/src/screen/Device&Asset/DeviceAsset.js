@@ -15,6 +15,7 @@ import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { MenuIcon, MenuIconClicked } from '../../component/SvgComponent';
+import { useIsFocused } from '@react-navigation/native';
 
 const DeviceAsset = ({ navigation }) => {
 
@@ -36,12 +37,11 @@ const DeviceAsset = ({ navigation }) => {
  console.log("deviceList",deviceList)
   const user_id = loginInfo.id ? loginInfo.id : null
 
+  const isFocused = useIsFocused();
+
   React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      setMenuClick(false)
-    });
-      return unsubscribe;
-  },[]);
+    isFocused ? null : setMenuClick(false)
+  },[isFocused]);
 
   useLayoutEffect(() => {
 
