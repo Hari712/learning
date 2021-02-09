@@ -22,6 +22,8 @@ const GroupItem = props => {
 
     const arrDevices = isEmpty(devices) ? [] : devices
 
+    const isDefault = item.isDefault
+
     const dispatch = useDispatch()
 
     const { isConnected, loginInfo } = useSelector(state => ({
@@ -168,12 +170,40 @@ const GroupItem = props => {
                         <View key={itemKey} style={styles.subCategory}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
-                            <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
+                            {isDefault ? null : <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
                                 <TrashBlueIcon width={16.567} height={18.547} style={styles.icon} />
-                            </TouchableOpacity>
+                            </TouchableOpacity>}
+
                         </View>
                     )
                 })}
+            </>
+        )
+    }
+
+    function renderDefaultContainer() {
+        return (
+            <View style={{ paddingVertical: hp(0.7), justifyContent: 'center', alignItems: 'center', backgroundColor: ColorConstant.LIGHTGREY, borderRadius: hp(1), paddingHorizontal: hp(1) }}>
+                <Text style={{ fontSize: hp(1.5), fontWeight: '300' }}>Default</Text>
+            </View>
+        )
+    }
+
+    function renderActionButton() {
+        return (
+            <>
+                <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
+                    <TrashIcon style={styles.icon} width={16.567} height={18.547} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ flex: 0.3 }} style={{ alignSelf: 'center' }}
+                    onPress={() => {
+                        (item.id == addClick) ?
+                            setAddClick(-1) :
+                            setAddClick(item.id)
+                    }}
+                >
+                    {item.id == addClick ? <AddIconClicked width={14.487} height={14.487} /> : <AddIcon width={14.487} height={14.487} />}
+                </TouchableOpacity>
             </>
         )
     }
@@ -192,18 +222,7 @@ const GroupItem = props => {
                     {/* heading */}
                     <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                         <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                        <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
-                            <TrashIcon style={styles.icon} width={16.567} height={18.547} />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{ flex: 0.3 }} style={{ alignSelf: 'center' }}
-                            onPress={() => {
-                                (item.id == addClick) ?
-                                    setAddClick(-1) :
-                                    setAddClick(item.id)
-                            }}
-                        >
-                            {item.id == addClick ? <AddIconClicked width={14.487} height={14.487} /> : <AddIcon width={14.487} height={14.487} />}
-                        </TouchableOpacity>
+                        {isDefault ? renderDefaultContainer() : renderActionButton()}
                     </View>
 
                     {/* Expanded data View */}
@@ -351,9 +370,9 @@ const styles = StyleSheet.create({
         width: wp(70)
     },
     noDevicesText: {
-        fontWeight:'400', 
-        fontSize: FontSize.FontSize.small, 
-        color:ColorConstant.BLACK, 
+        fontWeight: '400',
+        fontSize: FontSize.FontSize.small,
+        color: ColorConstant.BLACK,
         marginLeft: hp(1)
     }
 });

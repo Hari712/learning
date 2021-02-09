@@ -242,6 +242,10 @@ function* requestRemoveDevice(action) {
         const url = ApiConstants.REMOVE_DEVICE(userId)
         const response = yield call(API.put, url, data)
         yield put(DeviceActions.setDeleteDeviceFromGroupResponse(key, groupId))
+        const groupUrl = ApiConstants.GET_GROUP(userId)
+        const groupResponse = yield call(API.get, groupUrl)
+        const result = groupResponse.result ? groupResponse.result : []
+        yield put(DeviceActions.setGroupResponse(result))
         onSuccess(response)
     } catch (error) {
         onError(error)
