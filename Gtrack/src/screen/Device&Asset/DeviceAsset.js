@@ -42,7 +42,7 @@ const DeviceAsset = ({ navigation }) => {
   React.useEffect(() => {
     isFocused ? loadData() : setMenuClick(false)
   },[isFocused]);
-  
+
   useLayoutEffect(() => {
 
     navigation.setOptions({
