@@ -56,7 +56,7 @@ const AssignAsset = ({ navigation, route }) => {
         if (isEmpty(asset)) {
             AppManager.showSimpleMessage('warning', { message: 'Please select asset', description: '', floating: true })
         } else {
-            let selectedAssets = assetList.filter((item) => item.assetName)
+            let selectedAssets = assetList.filter((item) => item.assetName == asset)
             if (!isEmpty(selectedAssets)) {
                 let selectedAsset = selectedAssets[0]
                 let requestBody = { ...selectedAsset, ...{ deviceId: device.id } }
