@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, FlatList, ActivityIndicator, RefreshControl, TouchableWithoutFeedback, Modal } from 'react-native';
 import images from '../../constants/images'
 import { DeviceCell } from '../../component'
 import { useSelector, useDispatch } from 'react-redux'
@@ -33,23 +33,31 @@ const DeviceAsset = ({ navigation }) => {
     isConnected: state.network.isConnected,
     loginInfo: getLoginInfo(state)
   }))
-
+ console.log("deviceList",deviceList)
   const user_id = loginInfo.id ? loginInfo.id : null
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setMenuClick(false)
+      loadData()
+    });
+      return unsubscribe;
+  },[]);
 
   useLayoutEffect(() => {
 
     navigation.setOptions({
       headerLeft: () => (null),
       headerRight: () => (
-        <TouchableOpacity activeOpacity={1} onPress={() => setMenuClickEvent()}>
+        <TouchableOpacity  activeOpacity={1} onPress={() => setMenuClickEvent()}>
           {menuClick ? <MenuIconClicked style={styles.headerRight}/> :  <MenuIcon style={styles.headerRight}/> }
         </TouchableOpacity>
       )
     });
-  }, [navigation]);
+  }, [navigation,menuClick]);
 
   function setMenuClickEvent() {
-    setMenuClick(prevState => !prevState)
+   setMenuClick(prevState => !prevState)
   }
 
   useEffect(() => {
@@ -64,9 +72,6 @@ const DeviceAsset = ({ navigation }) => {
     fetchDeviceList()
   }
 
-  useEffect(() => {
-    console.log('Menu Click Done')
-  }, [menuClick])
 
   useEffect(() => {
     if (isRefreshing == true || isLoadMoreData == true) {
@@ -118,6 +123,7 @@ const DeviceAsset = ({ navigation }) => {
   }
 
   function onDeviceListLoadedSuccess(data) {
+    console.log("Data",data)
     AppManager.hideLoader()
     const arrList = data.data ? data.data : []
     const totalCount = data.totalCount ? data.totalCount : 0
@@ -172,7 +178,7 @@ const DeviceAsset = ({ navigation }) => {
     return (
       <View style={styles.menuPopup}>
         {Menu.map((item, key) =>
-          <TouchableOpacity key={key} style={{ borderBottomColor: ColorConstant.GREY, borderBottomWidth: key != Menu.length - 1 ? 0.4 : 0 }} onPress={() => menuHandle(item)}>
+          <TouchableOpacity  key={key} style={{ borderBottomColor: ColorConstant.GREY, borderBottomWidth: key != Menu.length - 1 ? 0.4 : 0 }} onPress={() => menuHandle(item)}>
             <Text style={styles.textStyle}>{item}</Text>
           </TouchableOpacity>
         )
@@ -183,7 +189,9 @@ const DeviceAsset = ({ navigation }) => {
 
   return (
     <>
-      {menuClick ? renderMenu() : null}
+    {menuClick ? renderMenu() : null}
+    <TouchableWithoutFeedback onPress={()=> setMenuClick(false)}>
+      
       <View style={{ flex: 1 }}>
         {deviceList.length > 0 ? 
           <FlatList
@@ -210,7 +218,7 @@ const DeviceAsset = ({ navigation }) => {
           </View> }
 
       </View>
-
+      </TouchableWithoutFeedback>
     </>
 
   )
