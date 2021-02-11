@@ -11,7 +11,7 @@ import { translate } from '../../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
-import { validateEmailorPhoneNumber } from '../../../utils/helper';
+import { validateEmailorPhoneNumber, validateName } from '../../../utils/helper';
 
 
 const EditProfile = ({ navigation, route, item }) => {
@@ -193,6 +193,12 @@ const EditProfile = ({ navigation, route, item }) => {
 
     function editProfile() {
         let message = ''
+        if(!validateName(firstName)){
+            message = "Name should contain only alphabets" 
+        }
+        if(!validateName(lastName)){
+            message = "Name should contain only alphabets" 
+        }
         if(!validateEmailorPhoneNumber(phoneNumber)){
             message = translate(AppConstants.INVALID_PHONE_NUMBER) 
         }
