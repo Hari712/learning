@@ -41,7 +41,7 @@ export const usersReducer = createReducer(state = initialState, {
         const arrSubUsersRemovedUser = arrSubUsers.filter((item) => item.id !== result.id)
         return {
             ...state,
-            subUser:[...arrSubUsersRemovedUser, result]
+            subUser:[result, ...arrSubUsersRemovedUser]
         }
     },
     [types.ACTIVATE_DEACTIVATE_DEVICE_RESPONSE](state, action) {
