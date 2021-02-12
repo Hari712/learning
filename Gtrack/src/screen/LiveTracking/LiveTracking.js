@@ -11,6 +11,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon } from '../../component/SvgComponent';
+import { useIsFocused } from '@react-navigation/native';
 
 const LiveTracking = ({navigation}) => {
 
@@ -21,6 +22,12 @@ const LiveTracking = ({navigation}) => {
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state)
 	}))
+
+	const isFocused = useIsFocused();
+
+	React.useEffect(() => {
+		isFocused ? null : setIsLineClick(false)
+	},[isFocused]);
 
 	const location = useSubscribeLocationUpdates(isLoggedIn)
 
