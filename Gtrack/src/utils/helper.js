@@ -1,4 +1,4 @@
-import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX } from '../constants/AppConstants'
+import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX, NUMBER_REGEX } from '../constants/AppConstants'
 import { removeItem } from '../utils/storage';
 import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
@@ -35,6 +35,19 @@ export const checkLocationPermission = async () => {
     });
     return permission
 }
+
+export function getFormattedPhoneNumber(value) {
+    const phone = value.replace(NUMBER_REGEX, '')
+    if (phone.length < 4) {
+      return phone
+    } else if (phone.length < 7) {
+      const formatPhone = `(${phone.slice(0, 3)}) ${phone.slice(3)}`
+      return formatPhone
+    } else {
+      const formatPhone = `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`
+      return formatPhone
+    }
+  }
 
 export const requestLocationPermission = async () => {
     const permission = await RNLocation.requestPermission({
