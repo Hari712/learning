@@ -30,21 +30,22 @@ const CompleteSetup = ({ navigation }) => {
         Linking.openURL("https://gtrack.vegitone.com/")
     }
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.subContainer}>
-                <Text style={styles.subscriptionText}>{translate("Device_setup_string1")}</Text>
-                <TouchableOpacity style={{ marginBottom: hp(3) }} onPress={() => onTapLink()}>
-                    <Text style={styles.webLink}>www.gtrack.com</Text>
-                </TouchableOpacity>
-                <CompleteSetupImage />
-                <Text style={styles.completeSetupGuideText}>{translate("Device_setup_string2")}</Text>
-                <TouchableOpacity style={styles.button}  onPress={() => NavigationService.popToTop()}>
-                    <Text style={styles.buttonText}>{translate("Complete Setup")}</Text>
-                </TouchableOpacity>
-            </View>
+return (
+    <View style={styles.container}>
+        <View style={styles.subContainer}>
+            <Text style={styles.completeSetupGuideText}>{translate("Device_setup_string2")}</Text>
+            <Text style={[styles.subscriptionText,{color:ColorConstant.GREY,marginVertical:hp(1),fontFamily:'Nunito-Italic'}]}>*Your device will be inactive as no plan is subscribed</Text>
+            <TouchableOpacity style={styles.button}  onPress={() => NavigationService.popToTop()}>
+                <Text style={styles.buttonText}>{translate("Complete Setup")}</Text>
+            </TouchableOpacity>
+            <CompleteSetupImage style={{marginVertical:hp(6)}} />
+            <Text style={styles.subscriptionText}>{translate("Device_setup_string1")}</Text>
+            <TouchableOpacity onPress={() => onTapLink()}>
+                <Text style={styles.webLink}>www.gtrack.com</Text>
+            </TouchableOpacity>
         </View>
-    )
+    </View>
+)
 }
 
 const styles = StyleSheet.create({
@@ -67,9 +68,9 @@ const styles = StyleSheet.create({
         marginTop: hp(2), 
         width: '100%'
     },
-    subscriptionText: { color: ColorConstant.BLACK, fontSize: FontSize.FontSize.small, fontWeight: '600', textAlign: 'center' },
-    webLink: { color: ColorConstant.BLUE, fontSize: FontSize.FontSize.small, fontWeight: '700', marginTop: hp(2), textAlign: 'center' },
-    completeSetupGuideText: { color: ColorConstant.BLACK, fontSize: FontSize.FontSize.small, fontWeight: '600', marginTop: hp(4), textAlign: 'center', marginBottom: hp(3) },
+    subscriptionText: { color: ColorConstant.BLACK, fontSize: FontSize.FontSize.small, fontFamily:'Nunito-Semibold', textAlign: 'center' },
+    webLink: { color: ColorConstant.ORANGE,fontFamily:'Nunito-Bold', fontSize: FontSize.FontSize.small, marginTop: hp(2), textAlign: 'center' },
+    completeSetupGuideText: { color: ColorConstant.BLACK, fontSize: FontSize.FontSize.small,fontFamily:'Nunito-Semibold', marginTop: hp(4), textAlign: 'center', marginBottom: hp(1) },
     shadowContainer: {
         width: '100%',
         shadowColor: ColorConstant.GREY,
@@ -87,11 +88,12 @@ const styles = StyleSheet.create({
         width: wp(40),
         justifyContent: 'center',
         backgroundColor: ColorConstant.BLUE,
+        marginTop:hp(1)
     },
     buttonText: {
         textAlign: 'center',
         color: ColorConstant.WHITE,
-        fontWeight: 'bold'
+        fontFamily:'Nunito-Bold'
     },
 })
 
