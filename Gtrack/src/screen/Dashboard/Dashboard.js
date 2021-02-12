@@ -24,7 +24,7 @@ const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)  
   const [deviceId, setDeviceId] = useState();
-  const [isMenuClick, setIsMenuClick] = useState()
+  const [isMenuClick, setIsMenuClick] = useState(0)
   const [ownerActive, setOwnerActive] = useState(0);
   const [regularActive, setRegularActive] = useState(0);
 
