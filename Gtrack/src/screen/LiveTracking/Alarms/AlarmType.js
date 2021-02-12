@@ -23,7 +23,7 @@ const AlarmType = ({navigation,route}) => {
 
   const [alarmName, setAlarmName] = useState()
   const [speed, setSpeed] = useState()
-  const [selectedCheckbox, setSelectedCheckbox] = useState(-1) 
+  const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
   const [notification, setNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
