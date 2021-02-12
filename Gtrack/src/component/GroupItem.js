@@ -60,7 +60,7 @@ const GroupItem = props => {
             },
             "devicePlan": null
         }
-        dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onRemoveDeviceSuccess, onRemoveDeviceError))
+        dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
     }
 
     const removeConfirm = () => {
@@ -71,6 +71,14 @@ const GroupItem = props => {
             "deviceId": removeDeviceId.toString()
         }
         dispatch(DeviceActions.requestRemoveDevice(loginInfo.id, requestBody, removeDeviceKey, item.id, onRemoveDeviceSuccess, onRemoveDeviceError))
+    }
+
+    const onSuccess = (data) => {
+        AppManager.showSimpleMessage('success', { message: 'Device added to the group successfully', description: '', floating: true })
+        console.log("Success", data)
+        setAddClick(-1)
+        setSelectedDevices([])
+        AppManager.hideLoader()
     }
 
 
