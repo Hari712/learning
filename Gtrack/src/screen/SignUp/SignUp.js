@@ -16,7 +16,7 @@ import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App'
 import { LoginWelcomeIcon } from '../../component/SvgComponent'
-import {  validateEmailorPhoneNumber } from '../../utils/helper'
+import {  validateEmailorPhoneNumber, validateName } from '../../utils/helper'
 import { TermsConditionModal } from './TermsConditionModal'
 
 const SignUp = () => {
@@ -39,8 +39,14 @@ const SignUp = () => {
         if (isEmpty(firstName)) {
             message = translate(AppConstants.EMPTY_FIRST_NAME)
         }
+        else if(!validateName(firstName)){
+            message = "Name should contain only alphabets" 
+        }
         else if (isEmpty(lastName)) {
             message = translate(AppConstants.EMPTY_LAST_NAME)
+        }
+        else if (!validateName(lastName)) {
+            message = "Name should contain only alphabets" 
         }
         else if (isEmpty(email)) {
             message = translate(AppConstants.EMPTY_EMAIL)

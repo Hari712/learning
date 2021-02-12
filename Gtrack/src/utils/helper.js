@@ -1,4 +1,4 @@
-import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, PASSWORD_REGEX } from '../constants/AppConstants'
+import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX } from '../constants/AppConstants'
 import { removeItem } from '../utils/storage';
 import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
@@ -14,6 +14,11 @@ export const validateEmailorPhoneNumber = (input) => {
 export const validatePassword = (input) => {
     const passwordRE = PASSWORD_REGEX
     return passwordRE.test(input)
+}
+
+export const validateName = (input) => {
+    const nameRE = NAME_VALIDATION_REGEX
+    return nameRE.test(input)
 }
 
 export const clearUserData = async () => {
