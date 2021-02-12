@@ -58,11 +58,13 @@ return (
 
         <View>
             <Text style={styles.textStyle}>{translate("Selected Devices")}</Text> 
+            <View style={{flexWrap:'wrap',flexDirection:'row'}}>
             {data.devices.map((entry,key) =>
                 <View key={key} style={styles.devices}>
                   <Text style={styles.deviceText}>{entry.deviceName}</Text>
                 </View>
             )}
+            </View>
         </View>
 
         <View style={{marginTop:hp(2)}}>
@@ -134,7 +136,8 @@ const styles = StyleSheet.create({
     backgroundColor:ColorConstant.PINK,
     borderRadius:5,
     marginVertical:hp(1),
-    alignSelf: 'flex-start'
+    marginRight:hp(0.8),
+    alignSelf: 'flex-start',
   },
   deviceText: {
     fontSize:12,
