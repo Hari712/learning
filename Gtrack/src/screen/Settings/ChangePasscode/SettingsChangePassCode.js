@@ -181,7 +181,7 @@ return (
           <View style={{marginTop:hp(3)}}>
               <TextField 
                   valueSet={setConfirmPassword} 
-                  secureTextEntry={true}
+                  secureTextEntry={!confirmPwdEyeClick?true:false}
                   value={confirmPasscode} 
                   label='Confirm Passcode*' 
                   renderRightAccessory={() => confirmPasscodeHandleRightAccessory()}
