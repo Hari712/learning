@@ -6,12 +6,13 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import {FontSize, MultiSelect, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
-import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { getLoginInfo, getSubuserState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
 import * as UsersActions from '../../Users/Users.Action'
+import { isEmpty } from 'lodash';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -90,6 +91,9 @@ const AlarmType = ({navigation,route}) => {
   },[navigation]);
 
   function sendData() {
+    if (isEmpty(alarmName)) {
+      AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
+    } else {
     AppManager.showLoader()
     var everyday, weekdays, weekends;
 
@@ -172,7 +176,7 @@ const AlarmType = ({navigation,route}) => {
     } 
     console.log("requestbody",requestBody)
     dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
-  }
+  }}
 
   function onAddSuccess(data) {
     AppManager.hideLoader()  
