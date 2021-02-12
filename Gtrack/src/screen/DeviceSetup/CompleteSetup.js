@@ -7,6 +7,7 @@ import FontSize from '../../component/FontSize'
 import NavigationService from '../../navigation/NavigationService'
 import images from '../../constants/images'
 import { translate } from '../../../App'
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 
 
 const CompleteSetup = ({ navigation }) => {
@@ -35,7 +36,7 @@ return (
         <View style={styles.subContainer}>
             <Text style={styles.completeSetupGuideText}>{translate("Device_setup_string2")}</Text>
             <Text style={[styles.subscriptionText,{color:ColorConstant.GREY,marginVertical:hp(1),fontFamily:'Nunito-Italic'}]}>*Your device will be inactive as no plan is subscribed</Text>
-            <TouchableOpacity style={styles.button}  onPress={() => NavigationService.popToTop()}>
+            <TouchableOpacity style={styles.button}  onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DEVICE_ASSET)}>
                 <Text style={styles.buttonText}>{translate("Complete Setup")}</Text>
             </TouchableOpacity>
             <CompleteSetupImage style={{marginVertical:hp(6)}} />
