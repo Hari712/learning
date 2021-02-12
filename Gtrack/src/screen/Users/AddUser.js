@@ -156,7 +156,7 @@ const AddUser = ({ navigation, route }) => {
           <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 16, color: ColorConstant.WHITE }}>{route.params ? 'Edit User' : 'Add User'}</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={{ width: '100%' }}>
+      <ScrollView keyboardShouldPersistTaps={'handled'} style={{ width: '100%' }}>
         <View style={styles.subContainer}>
           <ShadowView style={styles.shadowContainer}>
             <TextField
