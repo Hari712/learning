@@ -71,10 +71,11 @@ function* requestLinkDeviceWithAsset(action) {
         const url = ApiConstants.ADD_ASSET(userId)
         const response = yield call(API.put, url, data)
         const result = response.result ? response.result : {}
-        const assetInfo = result.assetDTO ? result.assetDTO : {}
-        const arr = []
-        arr.push(assetInfo)
-        yield put(DeviceActions.setAddAssetResponse(arr))
+        //const assetInfo = result.assetDTO ? result.assetDTO : {}
+        // const arr = []
+        // arr.push(assetInfo)
+        const assetInfo = response.result ? [response.result] : [{}]
+        yield put(DeviceActions.setAddAssetResponse(assetInfo))
         onSuccess(response)
     } catch (error) {
         onError(error)
