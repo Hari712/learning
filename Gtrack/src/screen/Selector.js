@@ -174,5 +174,14 @@ export const getAlertTypetListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Geofence List for Livetracking
+ */
 
+const getGeofenceList = (state) => state.livetracking && state.livetracking.geofenceList ? state.livetracking.geofenceList : {}
+
+export const getGeofenceListInfo = createSelector(
+    [getGeofenceList],
+    (info) => info
+)
 

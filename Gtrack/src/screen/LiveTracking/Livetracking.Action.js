@@ -53,3 +53,15 @@ export const requestDeleteNotification = (userId, notificationId, onSuccess, onE
     onError
 })
 
+export const requestGetGeofence = (userId, onSuccess, onError) => ({
+    type: types.GET_GEOFENCE_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setGeofenceResponse = (data) => ({
+    type: types.GET_GEOFENCE_RESPONSE,
+    data
+})
+

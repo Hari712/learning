@@ -5,7 +5,8 @@ import mapKeys from 'lodash/mapKeys'
 const initialState = {
     alarmsList: [],
     devicesList: [],
-    alertTypes: []
+    alertTypes: [],
+    geofenceList: []
 }
 
 
@@ -28,6 +29,12 @@ export const livetrackingReducer = createReducer(state = initialState, {
         return {
             ...state,
             alertTypes: action.data
+        }
+    },
+    [types.GET_GEOFENCE_RESPONSE](state, action) {
+        return {
+            ...state,
+            geofenceList: action.data
         }
     },
 })

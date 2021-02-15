@@ -6,10 +6,12 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { FontSize, MapView} from '../../component';
 import { Dialog } from 'react-native-simple-dialogs';
 import { translate } from '../../../App';
-import { useSelector } from 'react-redux';
-import { isRoleRegular } from '../Selector';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGeofenceListInfo, getLoginState, isRoleRegular } from '../Selector';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon, BackIcon } from '../../component/SvgComponent';
+import AppManager from '../../constants/AppManager';
 
 const GeoFence = ({ navigation }) => {
 
@@ -21,6 +23,14 @@ const GeoFence = ({ navigation }) => {
     const [deleteDialogBox, setDeleteDialogBox] = useState(false);
     const [cancel, setCancel] = useState(false);
 
+    const dispatch = useDispatch()
+
+    const { loginData, geofenceList } = useSelector(state => ({
+        loginData: getLoginState(state),
+        geofenceList: getGeofenceListInfo(state)
+    }))
+
+    console.log("muku",geofenceList)
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -36,17 +46,40 @@ const GeoFence = ({ navigation }) => {
         });
     }, [navigation]);
 
+    useEffect(() => {  
+        loadGeofenceList()
+      }, [])
+
+    function loadGeofenceList() {
+        AppManager.showLoader()  
+        dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
+    }
+
+    function onSuccess(data) {    
+        console.log("Success",data) 
+       // setIsRefreshing(false) 
+        AppManager.hideLoader()
+      }
+    
+      function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+        //setIsRefreshing(false) 
+      }
+    
+
     function hideDialog() {
         setDeleteDialogBox(false)
         setDialogVisible(false)
     }
 
     const GeoFenceInfoItem = ({ item }) => {
+        {console.log("item",item)}
         return (
             
             <TouchableOpacity style={styles.cardContainer} onPress={() => { setDialogVisible(!dialogVisible) }}>
                 <View style={styles.blueBox}>
-                    <Text style={styles.blueBoxTitle}> {item.title} </Text>
+                    <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
                     { !isRegular ?
                     <TouchableOpacity onPress={() => { setDeleteDialogBox(!deleteDialogBox) }}>
                         <GeoFenceTrashIcon/>
@@ -55,13 +88,18 @@ const GeoFence = ({ navigation }) => {
 
                 <View style={styles.whiteContainer}>
                     <View style={styles.GroupMainView}>
-                        <Text style={styles.whiteContainerText}>{item.Group}</Text>
+                        <Text style={styles.whiteContainerText}>Group</Text>
                         <Text style={styles.whiteContainerSubText}>{item.GroupData}</Text>
                     </View>
 
                     <View style={styles.deviceNameMainView}>
-                        <Text style={styles.whiteContainerText}>{item.DeviceName}</Text>
-                        <Text style={styles.whiteContainerSubText}>{item.DeviceNameData}</Text>
+                        <Text style={styles.whiteContainerText}>Device Name</Text>
+                        {item.deviceList.map((device) => {
+                            {console.log("device",device.deviceName)}
+                            return(
+                                <Text style={styles.whiteContainerSubText}>{device.deviceName}</Text>
+                            )
+                        })}
                     </View>
                 </View>
             </TouchableOpacity>
@@ -79,7 +117,7 @@ const GeoFence = ({ navigation }) => {
             <FlatList
                 style={{}}
                 contentContainerStyle={{}}
-                data={GEOFENCEINFO}
+                data={geofenceList}
                 renderItem={GeoFenceInfoItem}
                 keyExtractor={(item, index) => index.toString()}
             />
