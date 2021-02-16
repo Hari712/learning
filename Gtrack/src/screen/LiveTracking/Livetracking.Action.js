@@ -73,3 +73,11 @@ export const requestDeleteGeofence = (userId, geofenceId, onSuccess, onError) =>
     onError
 })
 
+export const requestAddGeofence = (userId, body, onSuccess, onError) => ({
+    type: types.CREATE_NEW_GEOFENCE_REQUEST,
+    userId,
+    body,
+    onSuccess,
+    onError
+})
+

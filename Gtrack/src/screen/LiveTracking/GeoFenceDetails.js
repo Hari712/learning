@@ -9,8 +9,20 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BackIcon } from '../../component/SvgComponent';
+import AppManager from '../../constants/AppManager';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
+import { getLoginInfo } from '../Selector';
+import { useDispatch, useSelector } from 'react-redux';
 
 const GeoFenceDetails = ({ navigation }) => {
+
+    const { isConnected, loginInfo } = useSelector(state => ({
+        isConnected: state.network.isConnected,
+        loginInfo: getLoginInfo(state),
+    })) 
+
+    const dispatch = useDispatch()
+
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
     const [colorPicker, setColorPicker] = useState();
@@ -47,6 +59,44 @@ const GeoFenceDetails = ({ navigation }) => {
             setUploadImage(image.path)
             console.log("images....", image);
         });
+    }
+
+    function onTapSave() {
+        AppManager.showLoader()
+        const requestBody = {
+            area: "CIRCLE(51.51259677447953 -0.0976614382096597,1233.8010635131648)",
+            attributes: {
+                color: "#E87575"
+            },
+            calendarId: 0,
+            description: description,
+            id: null,
+            name: name
+        }
+        console.log("body",requestBody)
+        dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
+        // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
+        // setIsClickOnSave(!isClickOnSave),
+        // setName(name),
+        // setDescrption(description),
+        // setColorPicker(colorPicker),
+        // setFontsize(fontsize),
+        // setVisibilityFrom(visibilityFrom),
+        // setVisibilityTo(visibilityTo),
+        // setUploadImage(uploadImage)
+    }
+
+    function onSuccess(data) {    
+        console.log("Success",data) 
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
+        navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
+    }
+    
+      function onError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
+        console.log("Error",error)  
     }
 
     return (
@@ -141,17 +191,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
-                                    setIsClickOnSave(!isClickOnSave),
-                                    setName(name),
-                                    setDescrption(description),
-                                    setColorPicker(colorPicker),
-                                    setFontsize(fontsize),
-                                    setVisibilityFrom(visibilityFrom),
-                                    setVisibilityTo(visibilityTo),
-                                    setUploadImage(uploadImage)
-                            }} style={styles.nextButton}>
+                            onPress={() => onTapSave()} style={styles.nextButton}>
                             <Text style={styles.nextButtonText}>{translate("Save")}</Text>
                         </TouchableOpacity>
                     </View>

@@ -185,3 +185,14 @@ export const getGeofenceListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Geofence Device List for Livetracking
+ */
+
+const getGeofenceDeviceList = (state) => state.livetracking && state.livetracking.devicesList ? state.livetracking.devicesList : {}
+
+export const getGeofenceDeviceListInfo = createSelector(
+    [getGeofenceDeviceList],
+    (info) => info
+)
+
