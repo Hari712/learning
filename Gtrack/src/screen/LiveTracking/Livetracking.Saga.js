@@ -81,11 +81,23 @@ function* requestGetGeofence(action) {
     }
 }
 
+function* requestDeleteGeofence(action) {
+    const { userId, geofenceId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.DELETE_GEOFENCE(userId, geofenceId)
+        const response = yield call(API.delete, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
     yield takeLatest(types.GET_DEVICES_BY_USER_ID_REQUEST, requestGetDevicesByUserId),
     yield takeLatest(types.GET_ALERT_TYPES_REQUEST, requestGetAlertTypes),
     yield takeLatest(types.DELETE_NOTIFICATION_REQUEST, requestDeleteNotification)
-    yield takeLatest(types.GET_GEOFENCE_REQUEST, requestGetGeofence)
+    yield takeLatest(types.GET_GEOFENCE_REQUEST, requestGetGeofence),
+    yield takeLatest(types.DELETE_GEOFENCE_REQUEST, requestDeleteGeofence)
 }

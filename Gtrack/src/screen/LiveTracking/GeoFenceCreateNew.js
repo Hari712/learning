@@ -19,6 +19,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
         isConnected: state.network.isConnected
     })) 
 
+
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [cancel, setCancel] = useState(false)
     const [selectedGroup, setSelectedGroup] = useState([]);
@@ -54,7 +55,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
-                    label={translate("Group Access")}
+                    label="Select Device"
                     dataList={arrGroupnames} 
                     allText={translate("Select_all_string")}
                     hideSelectedDeviceLable={true}

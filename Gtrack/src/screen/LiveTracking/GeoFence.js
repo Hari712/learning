@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList, RefreshControl } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
@@ -18,11 +18,13 @@ const GeoFence = ({ navigation }) => {
     const { isRegular} = useSelector(state => ({
         isRegular: isRoleRegular(state)
     }))
+    
     const [dialogVisible, setDialogVisible] = useState(false)
-
-    const [deleteDialogBox, setDeleteDialogBox] = useState(false);
-    const [cancel, setCancel] = useState(false);
+    const [deleteDialogBox, setDeleteDialogBox] = useState(false)
     const [activeGeofence, setActiveGeofence] = useState()
+    const [geofenceId, setGeofenceId] = useState()
+    const [geofenceName, setGeofenceName] = useState("")
+    const [isRefreshing, setIsRefreshing] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -31,7 +33,6 @@ const GeoFence = ({ navigation }) => {
         geofenceList: getGeofenceListInfo(state)
     }))
 
-    console.log("muku",geofenceList)
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -58,26 +59,40 @@ const GeoFence = ({ navigation }) => {
 
     function onSuccess(data) {    
         console.log("Success",data) 
-       // setIsRefreshing(false) 
+        setIsRefreshing(false) 
         AppManager.hideLoader()
       }
     
       function onError(error) {
         AppManager.hideLoader()
         console.log("Error",error)  
-        //setIsRefreshing(false) 
+        setIsRefreshing(false) 
       }
     
-
     function hideDialog() {
         setDeleteDialogBox(false)
         setDialogVisible(false)
     }
 
+    function ondeleteGeofence() {
+        setDeleteDialogBox(false)   
+        AppManager.showLoader()  
+        dispatch(LivetrackingActions.requestDeleteGeofence(loginData.id, geofenceId, onGeofenceDeleteSuccess, onGeofenceDeleteError))
+    }
+
+    function onGeofenceDeleteSuccess(data) { 
+        AppManager.showSimpleMessage('success', { message: "Geofence deleted successfully", description: '', floating: true })
+        dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
+        AppManager.hideLoader()
+      }
+    
+      function onGeofenceDeleteError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+      }
+
     const GeoFenceInfoItem = ({ item }) => {
-        {console.log("item",item)}
         return (
-            
             <TouchableOpacity style={styles.cardContainer} onPress={() => { 
                 setActiveGeofence(item)
                 setDialogVisible(!dialogVisible)
@@ -85,7 +100,11 @@ const GeoFence = ({ navigation }) => {
                 <View style={styles.blueBox}>
                     <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
                     { !isRegular ?
-                    <TouchableOpacity onPress={() => { setDeleteDialogBox(!deleteDialogBox) }}>
+                    <TouchableOpacity style={{padding:hp(1)}} onPress={() => { 
+                        setGeofenceId(item.geofence.id)
+                        setGeofenceName(item.geofence.name)
+                        setDeleteDialogBox(!deleteDialogBox)
+                    }}>
                         <GeoFenceTrashIcon/>
                     </TouchableOpacity> : null}
                 </View>
@@ -265,15 +284,15 @@ const GeoFence = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.textMainView}>
-                        <Text style={styles.textViewStyle}>{translate("Geofence_string18")}</Text>
+                        <Text style={styles.textViewStyle}>Do you really want to delete {geofenceName} ? </Text>
                     </View>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
+                        <TouchableOpacity onPress={() => hideDialog()  } style={[styles.cancelButton]}>
                             <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => { hideDialog() }} style={styles.nextButton}>
+                        <TouchableOpacity onPress={() => ondeleteGeofence()} style={styles.nextButton}>
                             <Text style={styles.nextButtonText}>{translate("Delete_string")}</Text>
                         </TouchableOpacity>
                     </View>
@@ -281,6 +300,11 @@ const GeoFence = ({ navigation }) => {
                 </View>
             </Dialog>
         )
+    }
+
+    const onRefresh = () => {
+        setIsRefreshing(true)
+        loadGeofenceList() 
     }
 
     return (
@@ -296,13 +320,17 @@ const GeoFence = ({ navigation }) => {
                 data={geofenceList}
                 renderItem={GeoFenceInfoItem}
                 keyExtractor={(item, index) => index.toString()}
+                refreshControl={
+                    <RefreshControl 
+                      refreshing={isRefreshing}
+                      onRefresh={onRefresh}     
+                    />
+                  }
             />
 
             {renderViewDialog()} 
 
-            {renderDeleteDialog()}    
-
-    
+            {renderDeleteDialog()}   
 
         </SafeAreaView>
     )

@@ -53,7 +53,8 @@ const ApiConstants = {
     DELETE_NOTIFICATION:(userId, deviceId) => `${USER}${userId}/trace/notifications/${deviceId}`,
     SEARCH_ASSET: (userId, name) => `${USER}${userId}/assets/search?name=${name}`,
     FETCH_TAX_BY_PROVINCE: (userId) => `${USER}${userId}/tax`,
-    GET_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences?typeOrName=`
+    GET_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences?typeOrName=`,
+    DELETE_GEOFENCE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}`
 }
 
 export default ApiConstants

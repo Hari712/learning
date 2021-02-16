@@ -65,3 +65,11 @@ export const setGeofenceResponse = (data) => ({
     data
 })
 
+export const requestDeleteGeofence = (userId, geofenceId, onSuccess, onError) => ({
+    type: types.DELETE_GEOFENCE_REQUEST,
+    userId,
+    geofenceId,
+    onSuccess,
+    onError
+})
+
