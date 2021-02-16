@@ -27,7 +27,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [cancel, setCancel] = useState(false)
     const [arrDeviceList, setArrDeviceList] = useState([])
-    const [selectedGroup, setSelectedGroup] = useState([]);
+    const [selectedDevice, setSelectedDevice] = useState([]);
     const [role, setRole] = useState();
     const DATA =['Circle','Polygon']
 
@@ -73,10 +73,10 @@ const GeoFenceCreateNew = ({ navigation }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
-       navigation.navigate('GeoFenceType', { type: role })
-        // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE)
-       // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
-        //NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON)
+        role === 'Circle' ?
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE) :
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON)
+       //navigation.navigate('GeoFenceType', { type: role })
     }
 
     return (
@@ -94,11 +94,11 @@ const GeoFenceCreateNew = ({ navigation }) => {
                     rowStyle={styles.rowStyle}
                     dropdownStyle={{ height: hp(20) }}
                     outerStyle={[styles.outerStyle, { marginTop: hp(4) }]}
-                    valueSet={setSelectedGroup}
-                    selectedData={selectedGroup}
+                    valueSet={setSelectedDevice}
+                    selectedData={selectedDevice}
                     selectedItemContainerStyle={styles.selectedItemContainerStyle}
                     selectedItemRowStyle={styles.selectedItemRowStyle}
-                    deleteHandle={(item, key) => setSelectedGroup(selectedGroup.filter((item1, key1) => key1 != key))}
+                    deleteHandle={(item, key) => setSelectedDevice(selectedDevice.filter((item1, key1) => key1 != key))}
                 />
             </View>
 

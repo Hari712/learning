@@ -14,12 +14,16 @@ import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { getLoginInfo } from '../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 
-const GeoFenceDetails = ({ navigation }) => {
+const GeoFenceDetails = ({ navigation, route }) => {
 
     const { isConnected, loginInfo } = useSelector(state => ({
         isConnected: state.network.isConnected,
         loginInfo: getLoginInfo(state),
-    })) 
+    }))
+    
+    const { selectedArea } = route.params
+
+    console.log("area circle",selectedArea)
 
     const dispatch = useDispatch()
 
@@ -64,7 +68,7 @@ const GeoFenceDetails = ({ navigation }) => {
     function onTapSave() {
         AppManager.showLoader()
         const requestBody = {
-            area: "CIRCLE(51.51259677447953 -0.0976614382096597,1233.8010635131648)",
+            area: selectedArea,
             attributes: {
                 color: "#E87575"
             },

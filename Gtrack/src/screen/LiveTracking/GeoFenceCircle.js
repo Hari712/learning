@@ -10,6 +10,9 @@ import { isUserLoggedIn } from '../Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
+import { BackIcon, NextIcon } from '../../component/SvgComponent';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.1;
@@ -21,7 +24,7 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const GeoFenceCircle = () => {
+const GeoFenceCircle = ({navigation}) => {
 
     const { isLoggedIn } = useSelector(state => ({
         isLoggedIn: isUserLoggedIn(state)
@@ -31,14 +34,39 @@ const GeoFenceCircle = () => {
 
     const [isEditing, setIsEditing] = useState(false)
 
+    const [completeEditing, setCompleteEditing] = useState(false)
+
     const [isScrollEnabled, setIsScrollEnabled] = useState(true)
 
     const [selectedCoordinate, setSelectedCoordinate] = useState(null)
+
+    const [area, setArea] = useState('')
 
     const [radius, setRadius] = useState(500)
 
     const [value, setValue] = useState(0.3);
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={styles.headerTitle}>
+                    Create Circle
+                </Text>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => {
+                    setIsEditing(false)
+                    navigation.goBack()}}>
+                    <BackIcon />
+                </TouchableOpacity>
+            ),
+            headerRight: () => (
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area })}>
+                    <NextIcon />
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation]);
 
     useEffect(() => {
         GetLocation.getCurrentPosition({
@@ -55,6 +83,16 @@ const GeoFenceCircle = () => {
                 console.warn(code, message);
             })
     }, [])
+
+    useEffect(() => {
+        console.log("test",isEditing,completeEditing,selectedCoordinate,radius)
+        if(completeEditing && selectedCoordinate){
+            let tempArea = "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
+            console.log("area",tempArea)
+            setArea(tempArea)
+        }
+    }, [completeEditing,selectedCoordinate,radius])
+
 
     useEffect(() => {
 
@@ -187,12 +225,16 @@ const GeoFenceCircle = () => {
         return (
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={() => setIsEditing(prevState => !prevState)}
-                    style={[styles.bubble, styles.button]}
-                >
+                    onPress={() => {
+                        isEditing ? setCompleteEditing(true) : null;
+                        setIsEditing(prevState => !prevState)
+                    }}
+                    style={[styles.bubble, styles.button]} >
+
                     <Text>
                         {isEditing ? 'Finish Circle' : 'Draw Circle'}
                     </Text>
+                    
                 </TouchableOpacity>
             </View>
         )
@@ -232,8 +274,10 @@ const GeoFenceCircle = () => {
     return (
         <View style={styles.container}>
             {isAndroid ? renderMapBox() : renderAppleMap()}
-            {renderButton()}
-            {renderSlider()}
+            <ScrollView>
+                {renderButton()}
+                {renderSlider()}
+            </ScrollView>            
         </View>
     )
 
