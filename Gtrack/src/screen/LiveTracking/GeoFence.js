@@ -58,14 +58,12 @@ const GeoFence = ({ navigation }) => {
     }
 
     function onSuccess(data) {    
-        console.log("Success",data) 
         setIsRefreshing(false) 
         AppManager.hideLoader()
       }
     
       function onError(error) {
         AppManager.hideLoader()
-        console.log("Error",error)  
         setIsRefreshing(false) 
       }
     
@@ -118,7 +116,6 @@ const GeoFence = ({ navigation }) => {
                     <View style={styles.deviceNameMainView}>
                         <Text style={styles.whiteContainerText}>Device Name</Text>
                         {item.deviceList.map((device) => {
-                            {console.log("device",device.deviceName)}
                             return(
                                 <Text style={styles.whiteContainerSubText}>{device.deviceName}</Text>
                             )

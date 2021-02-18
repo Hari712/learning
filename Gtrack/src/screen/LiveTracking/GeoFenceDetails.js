@@ -21,9 +21,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         loginInfo: getLoginInfo(state),
     }))
     
-    const { selectedArea } = route.params
-
-    console.log("area circle",selectedArea)
+    const { selectedArea, type, devices } = route.params
 
     const dispatch = useDispatch()
 
@@ -77,7 +75,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
             id: null,
             name: name
         }
-        console.log("body",requestBody)
         dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
         // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
         // setIsClickOnSave(!isClickOnSave),
@@ -90,23 +87,27 @@ const GeoFenceDetails = ({ navigation, route }) => {
         // setUploadImage(uploadImage)
     }
 
-    function onSuccess(data) {    
-        console.log("Success",data) 
+    function onSuccess(data) { 
+        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
+        
+    }
+
+    function onLinkSuccess(data) {
+        AppManager.hideLoader()
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
-    
-      function onError(error) {
-        AppManager.hideLoader()
-        AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
-        console.log("Error",error)  
+
+    function onError(error) {
+    AppManager.hideLoader()
+    AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
     }
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{translate("Polygon_Type")}</Text>
+                <Text style={styles.textViewStyle}>Type : {type}</Text>
             </View>
 
             <View style={styles.subContainer}>

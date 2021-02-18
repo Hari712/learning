@@ -12,7 +12,6 @@ const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
 import { BackIcon, NextIcon } from '../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.1;
@@ -24,7 +23,9 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const GeoFenceCircle = ({navigation}) => {
+const GeoFenceCircle = ({navigation,route}) => {
+
+    const { devices } = route.params
 
     const { isLoggedIn } = useSelector(state => ({
         isLoggedIn: isUserLoggedIn(state)
@@ -61,12 +62,12 @@ const GeoFenceCircle = ({navigation}) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area })}>
-                    <NextIcon />
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices })}>
+                   <Text>Next</Text>
                 </TouchableOpacity>
             )
         });
-    }, [navigation]);
+    }, [navigation,area]);
 
     useEffect(() => {
         GetLocation.getCurrentPosition({
@@ -85,10 +86,8 @@ const GeoFenceCircle = ({navigation}) => {
     }, [])
 
     useEffect(() => {
-        console.log("test",isEditing,completeEditing,selectedCoordinate,radius)
         if(completeEditing && selectedCoordinate){
             let tempArea = "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
-            console.log("area",tempArea)
             setArea(tempArea)
         }
     }, [completeEditing,selectedCoordinate,radius])
@@ -274,10 +273,8 @@ const GeoFenceCircle = ({navigation}) => {
     return (
         <View style={styles.container}>
             {isAndroid ? renderMapBox() : renderAppleMap()}
-            <ScrollView>
                 {renderButton()}
-                {renderSlider()}
-            </ScrollView>            
+                {renderSlider()}           
         </View>
     )
 

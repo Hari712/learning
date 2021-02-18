@@ -28,6 +28,7 @@ const GeoFenceCreateNew = ({ navigation }) => {
     const [cancel, setCancel] = useState(false)
     const [arrDeviceList, setArrDeviceList] = useState([])
     const [selectedDevice, setSelectedDevice] = useState([]);
+    const [selectedDeviceDetail, setSelectedDeviceDetail] = useState([])
     const [role, setRole] = useState();
     const DATA =['Circle','Polygon']
 
@@ -35,8 +36,20 @@ const GeoFenceCreateNew = ({ navigation }) => {
 
     useEffect(() => {  
         setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item.deviceName))
-        console.log("list",arrDeviceList)
     }, [geofenceDeviceList])
+
+    useEffect(() => { 
+        let list = [] 
+        Object.values(geofenceDeviceList).filter((item)=> {      
+            selectedDevice.filter((selectedItem)=>{        
+                if(item.deviceName === selectedItem){  
+                    list.push(item)
+                }
+            })  
+        }) 
+        setSelectedDeviceDetail(list)
+    }, [selectedDevice])
+
 
     useEffect(() => {  
         loadDeviceList()
@@ -74,8 +87,8 @@ const GeoFenceCreateNew = ({ navigation }) => {
 
     function navigateToPolygonCreator() {
         role === 'Circle' ?
-            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE) :
-            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON)
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail}) :
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail})
        //navigation.navigate('GeoFenceType', { type: role })
     }
 

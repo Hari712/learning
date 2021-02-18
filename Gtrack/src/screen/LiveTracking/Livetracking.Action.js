@@ -81,3 +81,12 @@ export const requestAddGeofence = (userId, body, onSuccess, onError) => ({
     onError
 })
 
+export const requestLinkGeofenceToDevices = (userId, geofenceId, body, onSuccess, onError) => ({
+    type: types.LINK_GEOFENCE_TO_DEVICES,
+    userId,
+    geofenceId,
+    body,
+    onSuccess,
+    onError
+})
+
