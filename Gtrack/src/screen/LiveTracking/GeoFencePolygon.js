@@ -33,6 +33,8 @@ const GeoFencePolyGon = ({navigation, route}) => {
 
     const [area, setArea] = useState('')
 
+    const [oldData, setOldData] = useState()
+
 
     useEffect(() => {
         GetLocation.getCurrentPosition({
@@ -50,6 +52,14 @@ const GeoFencePolyGon = ({navigation, route}) => {
             })
     }, [])
 
+    useEffect(() => { 
+        if(route.params && route.params.editingData) {
+             const { editingData } = route.params
+             setOldData(editingData)
+           
+        }
+     }, [navigation,route])
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -66,7 +76,7 @@ const GeoFencePolyGon = ({navigation, route}) => {
             ),
             headerRight: () => (
               
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices })}>
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
                     <Text>Next</Text>
                 </TouchableOpacity>
             )

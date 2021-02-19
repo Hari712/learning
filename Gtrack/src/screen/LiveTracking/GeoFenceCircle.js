@@ -12,6 +12,7 @@ const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
 import { BackIcon, NextIcon } from '../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.1;
@@ -33,6 +34,8 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     const [region, setRegion] = useState()
 
+    const [regionAndroid, setRegionAndroid] = useState()
+
     const [isEditing, setIsEditing] = useState(false)
 
     const [completeEditing, setCompleteEditing] = useState(false)
@@ -46,6 +49,10 @@ const GeoFenceCircle = ({navigation,route}) => {
     const [radius, setRadius] = useState(500)
 
     const [value, setValue] = useState(0.3);
+
+    const [oldData, setOldData] = useState()
+
+    const location = useSubscribeLocationUpdates(isLoggedIn)
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -62,28 +69,43 @@ const GeoFenceCircle = ({navigation,route}) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices })}>
-                   <Text>Next</Text>
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
+                    <Text>Next</Text>
                 </TouchableOpacity>
             )
         });
-    }, [navigation,area]);
+    }, [navigation,area,oldData]);
 
-    useEffect(() => {
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000,
-        })
-            .then(location => {
-                const { latitude, longitude } = location
-                const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
-                setRegion(initialRegion)
+    useEffect(() => { 
+        if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            setOldData(editingData)
+            setSelectedCoordinate(editingData.coordinate)
+            const latitude = editingData.coordinate[0]
+            const longitude = editingData.coordinate[1]
+            //const { latitude, longitude } = location
+            const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+            setRegion(initialRegion)
+            setRegionAndroid(editingData.coordinate)
+            
+        }else{
+            GetLocation.getCurrentPosition({
+                enableHighAccuracy: false,
+                timeout: 15000,
             })
-            .catch(error => {
-                const { code, message } = error;
-                console.warn(code, message);
-            })
-    }, [])
+                .then(location => {
+                    const { latitude, longitude } = location     
+                    const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+                    setRegion(initialRegion)
+                    setRegionAndroid([longitude, latitude])
+                })
+                .catch(error => {
+                    const { code, message } = error;
+                    console.warn(code, message);
+                })
+        }
+        
+    }, [route])
 
     useEffect(() => {
         if(completeEditing && selectedCoordinate){
@@ -207,6 +229,11 @@ const GeoFenceCircle = ({navigation,route}) => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
+                    <Map.default.Camera
+						centerCoordinate={regionAndroid}
+						// followUserLocation={true}
+						zoomLevel={3.5}
+					/>
                     {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
                     {!isEmpty(selectedCoordinate) ? renderMapBoxCircle() : null}
                 </Map.default.MapView>

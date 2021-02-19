@@ -25,6 +25,7 @@ const GeoFence = ({ navigation }) => {
     const [geofenceId, setGeofenceId] = useState()
     const [geofenceName, setGeofenceName] = useState("")
     const [isRefreshing, setIsRefreshing] = useState(false)
+    const [selectedDevice, setSelectedDevice] = useState([]);
 
     const dispatch = useDispatch()
 
@@ -91,8 +92,10 @@ const GeoFence = ({ navigation }) => {
 
     const GeoFenceInfoItem = ({ item }) => {
         return (
+            
             <TouchableOpacity style={styles.cardContainer} onPress={() => { 
                 setActiveGeofence(item)
+                setSelectedDevice(item.deviceList)
                 setDialogVisible(!dialogVisible)
             }}>
                 <View style={styles.blueBox}>
@@ -129,28 +132,34 @@ const GeoFence = ({ navigation }) => {
 
     const renderViewDialog = () => {
 
-        let coordinate;
         const [type, setType] = useState('')
         const [area, setArea] = useState(0)
         const [perimeter, setPerimeter] = useState(0)
+        const [coordinate, setCoordinate] = useState([])
 
         const CIRCLE = (coor,radius) =>{
-            console.log("test",coor)
+            let temp = activeGeofence.geofence.area.split("(")[1].split(",")[0].split(" ") 
+            setCoordinate([temp[1],temp[0]])
+            
             console.log("rad",radius)
+            console.log("area",activeGeofence.geofence.area.split("(")[1].split(",")[0].split(" "))
             setArea(Math.round(Math.PI*radius*radius/10000))
             setPerimeter(Math.round(Math.PI*2*radius/100))
             setType("CIRCLE")
         }
+        console.log("test",coordinate)
 
         //POLYGON((51.55253981124028 -0.20042544870096046,51.52009038200462 -0.22515532251328632,51.486762961974385 -0.1729478111317273,51.50129329561426 -0.08776713466708053,51.549978855256334 -0.09463654405939882,51.59349550214694 -0.15371346483325612))
-        const POLYGON = (coor) =>{
+        const POLYGON = (coor) => {
             console.log("test",coor)
             setType("POLYGON")
         }
 
         useEffect(()=>{
-            activeGeofence && eval(activeGeofence.geofence.area)
+            activeGeofence && eval((activeGeofence.geofence.area))
         },[activeGeofence])
+
+
 
         return(
         <Dialog
@@ -251,13 +260,25 @@ const GeoFence = ({ navigation }) => {
                 <View style={styles.lineStyle} />
 
                 <View style={styles.mapViewMainView}>
-                    <MapView />
+                    <MapView currentLocation={coordinate} />
                 </View>
             </View>
 
             { !isRegular ?
             <View style={styles.buttonMainContainer}>
-                <TouchableOpacity onPress={() => { }} style={styles.nextButton}>
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW,{
+                        editingData:{ 
+                            selectedArea:area,
+                            type:type,
+                            devices:selectedDevice,
+                            name:activeGeofence.geofence.name,
+                            description:activeGeofence.geofence.description, 
+                            coordinate:coordinate
+                        }})
+                        hideDialog()
+                    }
+                } style={styles.nextButton}>
                     <Text style={styles.nextButtonText}>{translate("Edit")}</Text>
                 </TouchableOpacity>
             </View>  : null } 

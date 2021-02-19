@@ -21,7 +21,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         loginInfo: getLoginInfo(state),
     }))
     
-    const { selectedArea, type, devices } = route.params
+    const { selectedArea, type, devices, editingData } = route.params
 
     const dispatch = useDispatch()
 
@@ -36,6 +36,16 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const [isClickOnSave, setIsClickOnSave] = useState(false);
     const [saveButton, setSaveButton] = useState(false);
     const fontsizeList = ['08', '06', '04'];
+    const [oldData, setOldData] = useState()
+
+    useEffect(() => { 
+        if(editingData) {
+            console.log("details",editingData.name)
+            setName(editingData.name)
+            setDescrption(editingData.description) 
+            //setColorPicker(editingData.attributes.color)
+        }
+     }, [editingData,navigation,route])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -117,7 +127,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         <TextField
                             valueSet={setName}
                             label={translate( "Name")}
-                            value={name}
+                            defaultValue={name}
                             onChangeText={(text) => setName(text)}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -130,7 +140,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         <TextField
                             valueSet={setDescrption}
                             label={translate("Description")}
-                            value={description}
+                            defaultValue={description}
                             onChangeText={(text) => setDescrption(text)}
                             // style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -144,7 +154,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         <TextField
                             valueSet={setColorPicker}
                             label={translate("Pick_Color")}
-                            value={colorPicker}
+                            defaultValue={colorPicker}
                             onChangeText={(text) => setColorPicker(text)}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}

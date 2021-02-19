@@ -14,7 +14,7 @@ import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 
-const GeoFenceCreateNew = ({ navigation }) => {
+const GeoFenceCreateNew = ({ navigation, route }) => {
 
     const { groupList, isConnected, geofenceDeviceList, loginInfo } = useSelector(state => ({
         groupList: getGroupListInfo(state),
@@ -30,9 +30,22 @@ const GeoFenceCreateNew = ({ navigation }) => {
     const [selectedDevice, setSelectedDevice] = useState([]);
     const [selectedDeviceDetail, setSelectedDeviceDetail] = useState([])
     const [role, setRole] = useState();
-    const DATA =['Circle','Polygon']
+    const [oldData, setOldData] = useState()
+    const DATA =['CIRCLE','POLYGON']
 
     const dispatch = useDispatch()
+
+    useEffect(() => { 
+       if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            console.log("Type",editingData)
+            setRole(editingData.type)
+            setSelectedDevice(editingData.devices.map((device) => device.deviceName))
+            setOldData(editingData)
+          
+       }
+    }, [navigation,route])
+
 
     useEffect(() => {  
         setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item.deviceName))
@@ -86,9 +99,9 @@ const GeoFenceCreateNew = ({ navigation }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
-        role === 'Circle' ?
-            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail}) :
-            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail})
+        role === 'CIRCLE' ?
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail,editingData:oldData}) :
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail,editingData:oldData})
        //navigation.navigate('GeoFenceType', { type: role })
     }
 
