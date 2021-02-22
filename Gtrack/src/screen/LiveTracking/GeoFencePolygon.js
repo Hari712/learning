@@ -54,9 +54,10 @@ const GeoFencePolyGon = ({navigation, route}) => {
 
     useEffect(() => { 
         if(route.params && route.params.editingData) {
-             const { editingData } = route.params
-             setOldData(editingData)
-           
+            const { editingData } = route.params
+            setOldData(editingData)
+            console.log("OldCoorniate",editingData.coordinates)
+            //setSelectedCoordinates(editingData.coordinates)
         }
      }, [navigation,route])
 

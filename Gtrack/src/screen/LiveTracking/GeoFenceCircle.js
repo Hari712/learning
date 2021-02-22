@@ -46,7 +46,7 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     const [area, setArea] = useState('')
 
-    const [radius, setRadius] = useState(500)
+    const [radius, setRadius] = useState(500.001)
 
     const [value, setValue] = useState(0.3);
 
@@ -87,6 +87,7 @@ const GeoFenceCircle = ({navigation,route}) => {
             const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)
+            setRadius(editingData.radius)
             
         }else{
             GetLocation.getCurrentPosition({

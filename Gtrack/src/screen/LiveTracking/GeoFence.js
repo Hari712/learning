@@ -8,10 +8,12 @@ import { Dialog } from 'react-native-simple-dialogs';
 import { translate } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGeofenceListInfo, getLoginState, isRoleRegular } from '../Selector';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { CIRCLE_REGEX, POLYGON_REGEX, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon, BackIcon } from '../../component/SvgComponent';
 import AppManager from '../../constants/AppManager';
+import { isCircle } from '../../utils/helper';
+import { toNumber } from 'lodash';
 
 const GeoFence = ({ navigation }) => {
 
@@ -134,31 +136,38 @@ const GeoFence = ({ navigation }) => {
 
         const [type, setType] = useState('')
         const [area, setArea] = useState(0)
+        const [radius, setRadius] = useState(0)
         const [perimeter, setPerimeter] = useState(0)
-        const [coordinate, setCoordinate] = useState([])
+        const [coordinate, setCoordinate] = useState()
+        const [coordinates, setCoordinates] = useState()
 
-        const CIRCLE = (coor,radius) =>{
-            let temp = activeGeofence.geofence.area.split("(")[1].split(",")[0].split(" ") 
-            setCoordinate([temp[1],temp[0]])
-            
-            console.log("rad",radius)
-            console.log("area",activeGeofence.geofence.area.split("(")[1].split(",")[0].split(" "))
-            setArea(Math.round(Math.PI*radius*radius/10000))
-            setPerimeter(Math.round(Math.PI*2*radius/100))
+        const CIRCLE = (item) => {
             setType("CIRCLE")
+            setRadius(CIRCLE_REGEX.exec(item)[2])
+            let rad = CIRCLE_REGEX.exec(item)[2]
+            let lat = parseFloat(CIRCLE_REGEX.exec(item)[1].split(" ")[0])
+            let lng = parseFloat(CIRCLE_REGEX.exec(item)[1].split(" ")[1])
+            setCoordinate([lng, lat])
+            setArea(Math.round(Math.PI*rad*rad/10000))
+            setPerimeter(Math.round(Math.PI*2*rad/100))
         }
-        console.log("test",coordinate)
 
-        //POLYGON((51.55253981124028 -0.20042544870096046,51.52009038200462 -0.22515532251328632,51.486762961974385 -0.1729478111317273,51.50129329561426 -0.08776713466708053,51.549978855256334 -0.09463654405939882,51.59349550214694 -0.15371346483325612))
-        const POLYGON = (coor) => {
-            console.log("test",coor)
+        const POLYGON = (item) => {
             setType("POLYGON")
+            const re = /\(\((.*)\)\)/;
+            console.log("Polypoly ",item.match(re)[1].split(","))
+            setCoordinate(item.match(re)[1].split(",")[0].split(" "))
+            setCoordinates(item.match(re)[1].split(","))
         }
 
         useEffect(()=>{
-            activeGeofence && eval((activeGeofence.geofence.area))
+            if(activeGeofence){
+                console.log("khushi", isCircle(activeGeofence.geofence.area))
+                isCircle(activeGeofence.geofence.area) ? 
+                    CIRCLE(activeGeofence.geofence.area):
+                    POLYGON(activeGeofence.geofence.area)
+            }            
         },[activeGeofence])
-
 
 
         return(
@@ -274,7 +283,9 @@ const GeoFence = ({ navigation }) => {
                             devices:selectedDevice,
                             name:activeGeofence.geofence.name,
                             description:activeGeofence.geofence.description, 
-                            coordinate:coordinate
+                            coordinate:coordinate,
+                            radius: radius,
+                            coordinates: coordinates
                         }})
                         hideDialog()
                     }
