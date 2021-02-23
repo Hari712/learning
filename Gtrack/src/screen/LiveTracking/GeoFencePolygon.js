@@ -35,31 +35,48 @@ const GeoFencePolyGon = ({navigation, route}) => {
 
     const [oldData, setOldData] = useState()
 
+    const [regionAndroid, setRegionAndroid] = useState()
+
 
     useEffect(() => {
+        if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            setOldData(editingData)
+            console.log("OldCoorniate",editingData.coordinates)
+            const initialRegion = { latitude: editingData.coordinate[1], longitude: editingData.coordinate[0], latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+            setRegion(initialRegion)
+            setRegionAndroid(editingData.coordinate)
+            setSelectedCoordinates(editingData.coordinates)
+            
+        } else {
         GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
+            enableHighAccuracy: false,
             timeout: 15000,
         })
             .then(location => {
                 const { latitude, longitude } = location
                 const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
                 setRegion(initialRegion)
+                setRegionAndroid([longitude, latitude])
             })
             .catch(error => {
                 const { code, message } = error;
                 console.warn(code, message);
             })
+            
+        }
     }, [])
 
-    useEffect(() => { 
-        if(route.params && route.params.editingData) {
-            const { editingData } = route.params
-            setOldData(editingData)
-            console.log("OldCoorniate",editingData.coordinates)
-            //setSelectedCoordinates(editingData.coordinates)
-        }
-     }, [navigation,route])
+    console.log("muku",selectedCoordinates)
+
+    // useEffect(() => { 
+    //     if(route.params && route.params.editingData) {
+    //         const { editingData } = route.params
+    //         setOldData(editingData)
+    //         console.log("OldCoorniate",editingData.coordinates)
+    //         //setSelectedCoordinates(editingData.coordinates)
+    //     }
+    //  }, [navigation,route])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -235,6 +252,11 @@ const GeoFencePolyGon = ({navigation, route}) => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
+                    <Map.default.Camera
+						centerCoordinate={regionAndroid}
+						// followUserLocation={true}
+						zoomLevel={3.5}
+					/>
                     {!isEmpty(selectedCoordinates) ? renderCoordinates() : null}
                     {!isEmpty(selectedCoordinates) && selectedCoordinates.length > 2 ? renderPolygon() : null}
                 </Map.default.MapView>

@@ -156,8 +156,13 @@ const GeoFence = ({ navigation }) => {
             setType("POLYGON")
             const re = /\(\((.*)\)\)/;
             console.log("Polypoly ",item.match(re)[1].split(","))
-            setCoordinate(item.match(re)[1].split(",")[0].split(" "))
-            setCoordinates(item.match(re)[1].split(","))
+            const coord = item.match(re)[1].split(",").map((pos) => pos.split(" "))
+            const cords = coord.map((item,key) =>{ return {
+                coordinates:[parseFloat(item[1]),parseFloat(item[0])],
+                id:key
+            }})
+            setCoordinates(cords)
+            setCoordinate(cords[0].coordinates)
         }
 
         useEffect(()=>{

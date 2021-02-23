@@ -81,10 +81,7 @@ const GeoFenceCircle = ({navigation,route}) => {
             const { editingData } = route.params
             setOldData(editingData)
             setSelectedCoordinate(editingData.coordinate)
-            const latitude = editingData.coordinate[0]
-            const longitude = editingData.coordinate[1]
-            //const { latitude, longitude } = location
-            const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+            const initialRegion = { latitude: editingData.coordinate[1], longitude: editingData.coordinate[0], latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)
             setRadius(editingData.radius)
