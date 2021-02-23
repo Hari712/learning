@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get('window');
 
 const isAndroid = Platform.OS === 'android'
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.1;
+const LATITUDE_DELTA = 30;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const Map = Platform.select({
@@ -43,7 +43,7 @@ const GeoFencePolyGon = ({navigation, route}) => {
             const { editingData } = route.params
             setOldData(editingData)
             console.log("OldCoorniate",editingData.coordinates)
-            const initialRegion = { latitude: editingData.coordinate[1], longitude: editingData.coordinate[0], latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+            const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)
             setSelectedCoordinates(editingData.coordinates)
@@ -67,16 +67,6 @@ const GeoFencePolyGon = ({navigation, route}) => {
         }
     }, [])
 
-    console.log("muku",selectedCoordinates)
-
-    // useEffect(() => { 
-    //     if(route.params && route.params.editingData) {
-    //         const { editingData } = route.params
-    //         setOldData(editingData)
-    //         console.log("OldCoorniate",editingData.coordinates)
-    //         //setSelectedCoordinates(editingData.coordinates)
-    //     }
-    //  }, [navigation,route])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

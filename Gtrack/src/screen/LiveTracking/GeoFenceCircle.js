@@ -15,7 +15,7 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.1;
+const LATITUDE_DELTA = 30;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const isAndroid = Platform.OS === 'android'
 
@@ -81,7 +81,7 @@ const GeoFenceCircle = ({navigation,route}) => {
             const { editingData } = route.params
             setOldData(editingData)
             setSelectedCoordinate(editingData.coordinate)
-            const initialRegion = { latitude: editingData.coordinate[1], longitude: editingData.coordinate[0], latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+            const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)
             setRadius(editingData.radius)

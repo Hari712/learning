@@ -147,7 +147,11 @@ const GeoFence = ({ navigation }) => {
             let rad = CIRCLE_REGEX.exec(item)[2]
             let lat = parseFloat(CIRCLE_REGEX.exec(item)[1].split(" ")[0])
             let lng = parseFloat(CIRCLE_REGEX.exec(item)[1].split(" ")[1])
+            // setCoordinate([lng, lat])
+            Platform.OS == 'ios'?
+            setCoordinate({"latitude": lat, "longitude": lng}):
             setCoordinate([lng, lat])
+
             setArea(Math.round(Math.PI*rad*rad/10000))
             setPerimeter(Math.round(Math.PI*2*rad/100))
         }
@@ -157,17 +161,23 @@ const GeoFence = ({ navigation }) => {
             const re = /\(\((.*)\)\)/;
             console.log("Polypoly ",item.match(re)[1].split(","))
             const coord = item.match(re)[1].split(",").map((pos) => pos.split(" "))
-            const cords = coord.map((item,key) =>{ return {
-                coordinates:[parseFloat(item[1]),parseFloat(item[0])],
-                id:key
-            }})
+            const cords = coord.map((item,key) =>{ return Platform.OS == 'ios'? 
+                {
+                    coordinates:{ 
+                        "latitude":     parseFloat(item[1]),
+                        "longitude":    parseFloat(item[0])
+                    }, id:key
+                }:
+                {
+                    coordinates:[parseFloat(item[1]),parseFloat(item[0])],
+                    id:key
+                }})
             setCoordinates(cords)
             setCoordinate(cords[0].coordinates)
         }
 
         useEffect(()=>{
             if(activeGeofence){
-                console.log("khushi", isCircle(activeGeofence.geofence.area))
                 isCircle(activeGeofence.geofence.area) ? 
                     CIRCLE(activeGeofence.geofence.area):
                     POLYGON(activeGeofence.geofence.area)
