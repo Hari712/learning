@@ -306,7 +306,7 @@ const Users = ({navigation}) => {
     const onRefresh = () => {
       setIsRefreshing(true)
       dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
-  }
+    }
 
 
 return ( 

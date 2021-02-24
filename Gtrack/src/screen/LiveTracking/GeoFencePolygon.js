@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import isEmpty from 'lodash/isEmpty'
 import GetLocation from 'react-native-get-location'
+import { BackIcon, NextIcon } from '../../component/SvgComponent';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 const { width, height } = Dimensions.get('window');
 
 const isAndroid = Platform.OS === 'android'
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.1;
+const LATITUDE_DELTA = 30;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const Map = Platform.select({
@@ -14,7 +17,9 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const GeoFencePolyGon = () => {
+const GeoFencePolyGon = ({navigation, route}) => {
+
+    const { devices } = route.params
 
     const [region, setRegion] = useState()
 
@@ -24,22 +29,75 @@ const GeoFencePolyGon = () => {
 
     const [selectedCoordinates, setSelectedCoordinates] = useState([])
 
+    const [completeEditing, setCompleteEditing] = useState(false)
+
+    const [area, setArea] = useState('')
+
+    const [oldData, setOldData] = useState()
+
+    const [regionAndroid, setRegionAndroid] = useState()
+
 
     useEffect(() => {
+        if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            setOldData(editingData)
+            console.log("OldCoorniate",editingData.coordinates)
+            const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
+            setRegion(initialRegion)
+            setRegionAndroid(editingData.coordinate)
+            setSelectedCoordinates(editingData.coordinates)
+            
+        } else {
         GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
+            enableHighAccuracy: false,
             timeout: 15000,
         })
             .then(location => {
                 const { latitude, longitude } = location
                 const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
                 setRegion(initialRegion)
+                setRegionAndroid([longitude, latitude])
             })
             .catch(error => {
                 const { code, message } = error;
                 console.warn(code, message);
             })
+            
+        }
     }, [])
+
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={styles.headerTitle}>
+                    Create Polygon
+                </Text>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => {
+                    setIsEditing(false)
+                    navigation.goBack()}}>
+                    <BackIcon />
+                </TouchableOpacity>
+            ),
+            headerRight: () => (
+              
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
+                    <Text>Next</Text>
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation,area]);
+
+    useEffect(() => {
+        const cords = Object.values(selectedCoordinates).map((item)=>{return item.coordinates[1] +' '+ item.coordinates[0]})
+        if(completeEditing && selectedCoordinates){
+            let tempArea = "POLYGON((" + cords + "))"
+            setArea(tempArea)
+        }
+    }, [completeEditing,selectedCoordinates])
 
 
     useEffect(() => {
@@ -184,6 +242,11 @@ const GeoFencePolyGon = () => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
+                    <Map.default.Camera
+						centerCoordinate={regionAndroid}
+						// followUserLocation={true}
+						zoomLevel={3.5}
+					/>
                     {!isEmpty(selectedCoordinates) ? renderCoordinates() : null}
                     {!isEmpty(selectedCoordinates) && selectedCoordinates.length > 2 ? renderPolygon() : null}
                 </Map.default.MapView>
@@ -195,7 +258,10 @@ const GeoFencePolyGon = () => {
         return (
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={() => setIsEditing(prevState => !prevState)}
+                    onPress={() => {
+                        isEditing ? setCompleteEditing(true) : null;
+                        setIsEditing(prevState => !prevState)
+                    }}
                     style={[styles.bubble, styles.button]}
                 >
                     <Text>

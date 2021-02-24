@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, LayoutAnimation } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../constants/images';
-import { getGroupListInfo } from "../Selector";
-import { useSelector } from "react-redux";
+import { getGroupListInfo, getGeofenceDeviceListInfo, getLoginInfo } from "../Selector";
+import { useDispatch, useSelector } from "react-redux";
 import { ColorConstant } from '../../constants/ColorConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { translate } from '../../../App'
@@ -11,19 +11,77 @@ import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BackIcon } from '../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
+import AppManager from '../../constants/AppManager'
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 
-const GeoFenceCreateNew = ({ navigation }) => {
+const GeoFenceCreateNew = ({ navigation, route }) => {
 
-    const { groupList, isConnected } = useSelector(state => ({
+    const { groupList, isConnected, geofenceDeviceList, loginInfo } = useSelector(state => ({
         groupList: getGroupListInfo(state),
-        isConnected: state.network.isConnected
+        isConnected: state.network.isConnected,
+        geofenceDeviceList: getGeofenceDeviceListInfo(state),
+        loginInfo: getLoginInfo(state),
     })) 
+
 
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
     const [cancel, setCancel] = useState(false)
-    const [selectedGroup, setSelectedGroup] = useState([]);
+    const [arrDeviceList, setArrDeviceList] = useState([])
+    const [selectedDevice, setSelectedDevice] = useState([]);
+    const [selectedDeviceDetail, setSelectedDeviceDetail] = useState([])
     const [role, setRole] = useState();
-    const DATA =['Circle','Polygon']
+    const [oldData, setOldData] = useState()
+    const DATA =['CIRCLE','POLYGON']
+
+    const dispatch = useDispatch()
+
+    useEffect(() => { 
+       if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            console.log("Type",editingData)
+            setRole(editingData.type)
+            setSelectedDevice(editingData.devices.map((device) => device.deviceName))
+            setOldData(editingData)
+          
+       }
+    }, [navigation,route])
+
+
+    useEffect(() => {  
+        setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item.deviceName))
+    }, [geofenceDeviceList])
+
+    useEffect(() => { 
+        let list = [] 
+        Object.values(geofenceDeviceList).filter((item)=> {      
+            selectedDevice.filter((selectedItem)=>{        
+                if(item.deviceName === selectedItem){  
+                    list.push(item)
+                }
+            })  
+        }) 
+        setSelectedDeviceDetail(list)
+    }, [selectedDevice])
+
+
+    useEffect(() => {  
+        loadDeviceList()
+    }, [])
+
+      function loadDeviceList() {
+        AppManager.showLoader()  
+        dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onSuccess, onError))
+      }
+    
+      function onSuccess(data) {    
+        console.log("Success",data) 
+        AppManager.hideLoader()
+      }
+    
+      function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+      }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -41,10 +99,10 @@ const GeoFenceCreateNew = ({ navigation }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
-      // navigation.navigate('GeoFenceType', { type: role })
-        // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE)
-       // NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CREATOR)
-        NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON)
+        role === 'CIRCLE' ?
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail,editingData:oldData}) :
+            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail,editingData:oldData})
+       //navigation.navigate('GeoFenceType', { type: role })
     }
 
     return (
@@ -54,19 +112,19 @@ const GeoFenceCreateNew = ({ navigation }) => {
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
-                    label={translate("Group Access")}
-                    dataList={arrGroupnames} 
+                    label="Select Device"
+                    dataList={arrDeviceList} 
                     allText={translate("Select_all_string")}
                     hideSelectedDeviceLable={true}
                     hideDeleteButton={true}
                     rowStyle={styles.rowStyle}
                     dropdownStyle={{ height: hp(20) }}
                     outerStyle={[styles.outerStyle, { marginTop: hp(4) }]}
-                    valueSet={setSelectedGroup}
-                    selectedData={selectedGroup}
+                    valueSet={setSelectedDevice}
+                    selectedData={selectedDevice}
                     selectedItemContainerStyle={styles.selectedItemContainerStyle}
                     selectedItemRowStyle={styles.selectedItemRowStyle}
-                    deleteHandle={(item, key) => setSelectedGroup(selectedGroup.filter((item1, key1) => key1 != key))}
+                    deleteHandle={(item, key) => setSelectedDevice(selectedDevice.filter((item1, key1) => key1 != key))}
                 />
             </View>
 

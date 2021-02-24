@@ -10,9 +10,12 @@ import { isUserLoggedIn } from '../Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
+import { BackIcon, NextIcon } from '../../component/SvgComponent';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.1;
+const LATITUDE_DELTA = 30;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const isAndroid = Platform.OS === 'android'
 
@@ -21,7 +24,9 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const GeoFenceCircle = () => {
+const GeoFenceCircle = ({navigation,route}) => {
+
+    const { devices } = route.params
 
     const { isLoggedIn } = useSelector(state => ({
         isLoggedIn: isUserLoggedIn(state)
@@ -29,32 +34,84 @@ const GeoFenceCircle = () => {
 
     const [region, setRegion] = useState()
 
+    const [regionAndroid, setRegionAndroid] = useState()
+
     const [isEditing, setIsEditing] = useState(false)
+
+    const [completeEditing, setCompleteEditing] = useState(false)
 
     const [isScrollEnabled, setIsScrollEnabled] = useState(true)
 
     const [selectedCoordinate, setSelectedCoordinate] = useState(null)
 
-    const [radius, setRadius] = useState(500)
+    const [area, setArea] = useState('')
+
+    const [radius, setRadius] = useState(500.001)
 
     const [value, setValue] = useState(0.3);
 
+    const [oldData, setOldData] = useState()
+
+    const location = useSubscribeLocationUpdates(isLoggedIn)
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={styles.headerTitle}>
+                    Create Circle
+                </Text>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => {
+                    setIsEditing(false)
+                    navigation.goBack()}}>
+                    <BackIcon />
+                </TouchableOpacity>
+            ),
+            headerRight: () => (
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
+                    <Text>Next</Text>
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation,area,oldData]);
+
+    useEffect(() => { 
+        if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            setOldData(editingData)
+            setSelectedCoordinate(editingData.coordinate)
+            const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
+            setRegion(initialRegion)
+            setRegionAndroid(editingData.coordinate)
+            setRadius(editingData.radius)
+            
+        }else{
+            GetLocation.getCurrentPosition({
+                enableHighAccuracy: false,
+                timeout: 15000,
+            })
+                .then(location => {
+                    const { latitude, longitude } = location     
+                    const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+                    setRegion(initialRegion)
+                    setRegionAndroid([longitude, latitude])
+                })
+                .catch(error => {
+                    const { code, message } = error;
+                    console.warn(code, message);
+                })
+        }
+        
+    }, [route])
 
     useEffect(() => {
-        GetLocation.getCurrentPosition({
-            enableHighAccuracy: true,
-            timeout: 15000,
-        })
-            .then(location => {
-                const { latitude, longitude } = location
-                const initialRegion = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
-                setRegion(initialRegion)
-            })
-            .catch(error => {
-                const { code, message } = error;
-                console.warn(code, message);
-            })
-    }, [])
+        if(completeEditing && selectedCoordinate){
+            let tempArea = "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
+            setArea(tempArea)
+        }
+    }, [completeEditing,selectedCoordinate,radius])
+
 
     useEffect(() => {
 
@@ -170,6 +227,11 @@ const GeoFenceCircle = () => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
+                    <Map.default.Camera
+						centerCoordinate={regionAndroid}
+						// followUserLocation={true}
+						zoomLevel={3.5}
+					/>
                     {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
                     {!isEmpty(selectedCoordinate) ? renderMapBoxCircle() : null}
                 </Map.default.MapView>
@@ -187,12 +249,16 @@ const GeoFenceCircle = () => {
         return (
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={() => setIsEditing(prevState => !prevState)}
-                    style={[styles.bubble, styles.button]}
-                >
+                    onPress={() => {
+                        isEditing ? setCompleteEditing(true) : null;
+                        setIsEditing(prevState => !prevState)
+                    }}
+                    style={[styles.bubble, styles.button]} >
+
                     <Text>
                         {isEditing ? 'Finish Circle' : 'Draw Circle'}
                     </Text>
+                    
                 </TouchableOpacity>
             </View>
         )
@@ -232,8 +298,8 @@ const GeoFenceCircle = () => {
     return (
         <View style={styles.container}>
             {isAndroid ? renderMapBox() : renderAppleMap()}
-            {renderButton()}
-            {renderSlider()}
+                {renderButton()}
+                {renderSlider()}           
         </View>
     )
 

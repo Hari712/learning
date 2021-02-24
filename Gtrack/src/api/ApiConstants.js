@@ -52,7 +52,11 @@ const ApiConstants = {
     GET_ALERT_TYPES:(userId) => `${USER}${userId}/trace/alerts/types`,
     DELETE_NOTIFICATION:(userId, deviceId) => `${USER}${userId}/trace/notifications/${deviceId}`,
     SEARCH_ASSET: (userId, name) => `${USER}${userId}/assets/search?name=${name}`,
-    FETCH_TAX_BY_PROVINCE: (userId) => `${USER}${userId}/tax`
+    FETCH_TAX_BY_PROVINCE: (userId) => `${USER}${userId}/tax`,
+    GET_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences?typeOrName=`,
+    DELETE_GEOFENCE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}`,
+    ADD_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
+    LINK_GEOFENCE_DEVICES:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices?link=true`,
 }
 
 export default ApiConstants

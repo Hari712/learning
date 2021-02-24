@@ -11,6 +11,8 @@ export const UNAUTHORIZED_ERROR_MESSAGE = 'Unauthorized : Invalid Token OR Token
 export const JWT_EXPIRED = "JWT expired"
 export const PHONE_REGEX = new RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
 export const NUMBER_REGEX = new RegExp(/\D/, 'g')
+export const CIRCLE_REGEX = /^CIRCLE\((\-?\d*\.?\d* \-?\d*\.?\d*)\,(\d*\.?\d*)\)$/
+
 
 export const SCREEN_CONSTANTS = {
     SPLASH: 'Splash',

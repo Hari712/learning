@@ -1,4 +1,4 @@
-import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX, NUMBER_REGEX } from '../constants/AppConstants'
+import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX, NUMBER_REGEX, CIRCLE_REGEX } from '../constants/AppConstants'
 import { removeItem } from '../utils/storage';
 import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
@@ -25,6 +25,11 @@ export const clearUserData = async () => {
     await removeItem(USER_DATA)
     clearToken();
 };
+
+export const isCircle = (input) => {
+    const cirlceRE = CIRCLE_REGEX
+    return cirlceRE.test(input)
+}
 
 export const checkLocationPermission = async () => {
     const permission = await RNLocation.checkPermission({

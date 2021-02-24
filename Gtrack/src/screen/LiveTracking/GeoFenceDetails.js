@@ -9,8 +9,22 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BackIcon } from '../../component/SvgComponent';
+import AppManager from '../../constants/AppManager';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
+import { getLoginInfo } from '../Selector';
+import { useDispatch, useSelector } from 'react-redux';
 
-const GeoFenceDetails = ({ navigation }) => {
+const GeoFenceDetails = ({ navigation, route }) => {
+
+    const { isConnected, loginInfo } = useSelector(state => ({
+        isConnected: state.network.isConnected,
+        loginInfo: getLoginInfo(state),
+    }))
+    
+    const { selectedArea, type, devices, editingData } = route.params
+
+    const dispatch = useDispatch()
+
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
     const [colorPicker, setColorPicker] = useState();
@@ -22,6 +36,16 @@ const GeoFenceDetails = ({ navigation }) => {
     const [isClickOnSave, setIsClickOnSave] = useState(false);
     const [saveButton, setSaveButton] = useState(false);
     const fontsizeList = ['08', '06', '04'];
+    const [oldData, setOldData] = useState()
+
+    useEffect(() => { 
+        if(editingData) {
+            console.log("details",editingData.name)
+            setName(editingData.name)
+            setDescrption(editingData.description) 
+            //setColorPicker(editingData.attributes.color)
+        }
+     }, [editingData,navigation,route])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -49,10 +73,51 @@ const GeoFenceDetails = ({ navigation }) => {
         });
     }
 
+    function onTapSave() {
+        AppManager.showLoader()
+        const requestBody = {
+            area: selectedArea,
+            attributes: {
+                color: "#E87575"
+            },
+            calendarId: 0,
+            description: description,
+            id: null,
+            name: name
+        }
+        dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
+        // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
+        // setIsClickOnSave(!isClickOnSave),
+        // setName(name),
+        // setDescrption(description),
+        // setColorPicker(colorPicker),
+        // setFontsize(fontsize),
+        // setVisibilityFrom(visibilityFrom),
+        // setVisibilityTo(visibilityTo),
+        // setUploadImage(uploadImage)
+    }
+
+    function onSuccess(data) { 
+        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
+        
+    }
+
+    function onLinkSuccess(data) {
+        AppManager.hideLoader()
+        navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
+    }
+
+    function onError(error) {
+    AppManager.hideLoader()
+    AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
+    }
+
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{translate("Polygon_Type")}</Text>
+                <Text style={styles.textViewStyle}>Type : {type}</Text>
             </View>
 
             <View style={styles.subContainer}>
@@ -62,7 +127,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         <TextField
                             valueSet={setName}
                             label={translate( "Name")}
-                            value={name}
+                            defaultValue={name}
                             onChangeText={(text) => setName(text)}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -75,7 +140,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         <TextField
                             valueSet={setDescrption}
                             label={translate("Description")}
-                            value={description}
+                            defaultValue={description}
                             onChangeText={(text) => setDescrption(text)}
                             // style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -89,7 +154,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         <TextField
                             valueSet={setColorPicker}
                             label={translate("Pick_Color")}
-                            value={colorPicker}
+                            defaultValue={colorPicker}
                             onChangeText={(text) => setColorPicker(text)}
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
@@ -141,17 +206,7 @@ const GeoFenceDetails = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
-                                    setIsClickOnSave(!isClickOnSave),
-                                    setName(name),
-                                    setDescrption(description),
-                                    setColorPicker(colorPicker),
-                                    setFontsize(fontsize),
-                                    setVisibilityFrom(visibilityFrom),
-                                    setVisibilityTo(visibilityTo),
-                                    setUploadImage(uploadImage)
-                            }} style={styles.nextButton}>
+                            onPress={() => onTapSave()} style={styles.nextButton}>
                             <Text style={styles.nextButtonText}>{translate("Save")}</Text>
                         </TouchableOpacity>
                     </View>
