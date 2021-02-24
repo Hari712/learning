@@ -43,7 +43,7 @@ const GeoFencePolyGon = ({navigation, route}) => {
         if(route.params && route.params.editingData) {
             const { editingData } = route.params
             setOldData(editingData)
-            console.log("OldCoorniate",editingData.coordinates)
+            console.log("OldCoorniate",editingData.coordinates, editingData.coordinate)
             const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)

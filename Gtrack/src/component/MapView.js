@@ -12,6 +12,10 @@ const {height} = Dimensions.get('window')
 
 //var points1 = [-7.941227, 39.584127]
 var centerCoord = [-7.941227, 39.584127]
+var initialRegion = {
+	latitude:39.584127,
+	longitude:-7.941227
+}
 
 
 const Map = Platform.select({
@@ -36,6 +40,17 @@ const MapView = (props) => {
 		if (location) {
 			const { latitude, longitude, course, speed, accuracy, altitude } = location
 			centerCoord = [longitude, latitude]
+			initialRegion ={
+				latitude:latitude,
+				longitude:longitude
+			}
+		}
+		if(props.currentLocation) {
+			centerCoord = props.currentLocation
+			initialRegion ={
+				latitude:props.currentLocation.latitude? props.currentLocation.latitude : props.currentLocation[0],
+				longitude:props.currentLocation.longitude? props.currentLocation.longitude: props.currentLocation[1]
+			}
 		}
 
 	},[location])
@@ -164,13 +179,11 @@ const MapView = (props) => {
 		return (
             <View style={styles.container}>
                 <View style={StyleSheet.absoluteFillObject}>
-                    <Map.default style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
-                        {/* {<Map.Marker
-                            coordinate={coordinate}
-							title={selectedRoute.shipmentName}
-
-                        />} */}
-						<Map.default.Polygon></Map.default.Polygon>
+                    <Map.default region={initialRegion} style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
+                        {props.currentLocation &&
+						<Map.Marker
+                            coordinate={props.currentLocation} />}
+						{/* <Map.default.Polygon></Map.default.Polygon> */}
                     </Map.default>
                     <View style={{ position: 'absolute', top: 100, left: 50 }} />
                 </View>

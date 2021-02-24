@@ -69,7 +69,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => area && navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
+                <TouchableOpacity  style={{marginRight:hp(2)}} onPress={() => area && navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
                     <Text style={{color:area?ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
@@ -278,7 +278,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                     <View style={styles.sliderSubView}>
                         <Text style={styles.radiusTextSize}>{translate("Geofence_CreateNew_string3")}</Text>
                         <View style={styles.radiusMainView}>
-                            <Text style={styles.textStyleInfo}>400m</Text>
+                            <Text style={styles.textStyleInfo}>{radius} m</Text>
                             <Text style={styles.otherTextStyle}>2</Text>
                         </View>
                     </View>

@@ -164,8 +164,8 @@ const GeoFence = ({ navigation }) => {
             const cords = coord.map((item,key) =>{ return Platform.OS == 'ios'? 
                 {
                     coordinates:{ 
-                        "latitude":     parseFloat(item[1]),
-                        "longitude":    parseFloat(item[0])
+                        "latitude":     parseFloat(item[0]),
+                        "longitude":    parseFloat(item[1])
                     }, id:key
                 }:
                 {
