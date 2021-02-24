@@ -5,6 +5,7 @@ import GetLocation from 'react-native-get-location'
 import { BackIcon, NextIcon } from '../../component/SvgComponent';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { ColorConstant } from '../../constants/ColorConstants';
 const { width, height } = Dimensions.get('window');
 
 const isAndroid = Platform.OS === 'android'
@@ -84,20 +85,29 @@ const GeoFencePolyGon = ({navigation, route}) => {
             ),
             headerRight: () => (
               
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
-                    <Text>Next</Text>
+                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => area && navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
+                    <Text style={{color:area?ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
         });
     }, [navigation,area]);
 
     useEffect(() => {
-        const cords = Object.values(selectedCoordinates).map((item)=>{return item.coordinates[1] +' '+ item.coordinates[0]})
+        const cords = Object.values(selectedCoordinates).map((item)=>{
+            return Platform.OS == 'ios' ? 
+            item.coordinates.latitude +' '+ item.coordinates.longitude
+            : item.coordinates[1] +' '+ item.coordinates[0]
+        })
         if(completeEditing && selectedCoordinates){
             let tempArea = "POLYGON((" + cords + "))"
             setArea(tempArea)
+        }else if(oldData && selectedCoordinates){
+            let tempArea = "POLYGON((" + cords + "))"
+            setArea(tempArea)
         }
-    }, [completeEditing,selectedCoordinates])
+    }, [completeEditing,selectedCoordinates,oldData])
+
+    console.log("khushi",area)
 
 
     useEffect(() => {

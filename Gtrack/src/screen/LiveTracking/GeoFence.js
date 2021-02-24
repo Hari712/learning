@@ -198,7 +198,7 @@ const GeoFence = ({ navigation }) => {
                     <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
                 </TouchableOpacity>
             </View>
-
+            <ScrollView contentContainerStyle={{paddingHorizontal:hp(1)}}>
             <View style={styles.popUpCardContainer}>
                 <View style={styles.titleViewStyle}>
                     <Text style={styles.titleTextStyle}>{translate("Details")}</Text>
@@ -227,18 +227,27 @@ const GeoFence = ({ navigation }) => {
                                 <View style={[styles.deviceSummaryDetailView,{backgroundColor:activeGeofence ? activeGeofence.geofence.attributes.color : ColorConstant.WHITE}]}></View>
                             </View>
 
-                            <View style={styles.fontSizeMainView}>
+                            {/* <View style={styles.fontSizeMainView}>
                                 <Text style={styles.mainTextStyle}>{translate("FontSize")}</Text>
                                 <Text style={styles.fontSizeStyle}>08</Text>
-                            </View>
+                            </View> */}
 
                             <View style={styles.typeMainViewStyle}>
                                 <Text style={styles.mainTextStyle}>{translate("Type")}</Text>
                                 <Text style={styles.fontSizeStyle}>{type && type}</Text>
                             </View>
+
+                            <View style={styles.descriptionMainStyle}>
+                                <Text style={styles.mainTextStyle}>{translate("Selected Devices")}</Text>
+                                {activeGeofence && activeGeofence.deviceList.map((device) =>{
+                                    return(
+                                        <Text style={styles.fontSizeStyle}>{device.deviceName}</Text>
+                                    )
+                                })}
+                            </View>
                         </View>
 
-                        <View style={styles.secondRowMainView}>
+                        {/* <View style={styles.secondRowMainView}>
                             <View style={styles.visibilityMainView}>
                                 <Text style={styles.mainTextStyle}>{translate("Visibility")}</Text>
                                 <Text style={styles.fontSizeStyle}>02 to 20</Text>
@@ -253,17 +262,17 @@ const GeoFence = ({ navigation }) => {
                                 <Text style={styles.mainTextStyle}>{translate("Perimeter")}</Text>
                                 <Text style={styles.fontSizeStyle}>{perimeter} m</Text>
                             </View>
-                        </View>
+                        </View> */}
                     </View>
-                    <View style={styles.secondRowMainView}>
+                    {/* <View style={styles.secondRowMainView}>
                         <View style={styles.descriptionMainStyle}>
                             <Text style={styles.mainTextStyle}>{translate("Image")}</Text>
                             <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
                         </View>
-                    </View>
+                    </View> */}
                 </View>
 
-                <View style={styles.secondRowMainView}>
+                {/* <View style={styles.secondRowMainView}>
                     <View style={styles.descriptionMainStyle}>
                         <Text style={styles.mainTextStyle}>{translate("Selected Devices")}</Text>
                         {activeGeofence && activeGeofence.deviceList.map((device) =>{
@@ -272,7 +281,7 @@ const GeoFence = ({ navigation }) => {
                             )
                         })}
                     </View>
-                </View>
+                </View> */}
             </View>
 
             <View style={styles.popUpCardContainer}>
@@ -300,7 +309,8 @@ const GeoFence = ({ navigation }) => {
                             description:activeGeofence.geofence.description, 
                             coordinate:coordinate,
                             radius: radius,
-                            coordinates: coordinates
+                            coordinates: coordinates,
+                            id:activeGeofence.geofence.id
                         }})
                         hideDialog()
                     }
@@ -308,7 +318,7 @@ const GeoFence = ({ navigation }) => {
                     <Text style={styles.nextButtonText}>{translate("Edit")}</Text>
                 </TouchableOpacity>
             </View>  : null } 
-
+        </ScrollView>
         </View>
 
         </Dialog>
@@ -366,8 +376,8 @@ const GeoFence = ({ navigation }) => {
                 keyExtractor={(item, index) => index.toString()}
                 refreshControl={
                     <RefreshControl 
-                      refreshing={isRefreshing}
-                      onRefresh={onRefresh}     
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}     
                     />
                   }
             />
@@ -479,7 +489,7 @@ const styles = StyleSheet.create({
     },
     subHeadingView: {
         flexDirection: 'row',
-        marginTop: hp(2),
+        //marginTop: hp(2),
         justifyContent: 'space-between'
     },
     deleteText: {
@@ -500,11 +510,13 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.medium,
         color: ColorConstant.ORANGE,
         fontWeight: 'bold',
-        marginLeft: wp(30)
+        textAlign:'center',
+        flex:1
+        //marginLeft: wp(30)
     },
     crossImageStyle: {
         marginTop: hp(0.5),
-        marginRight: wp(5)
+        marginRight: wp(2)
     },
     popUpCardContainer: {
         width: '100%',
@@ -591,7 +603,7 @@ const styles = StyleSheet.create({
     },
     secondRowMainView: {
         flexDirection: 'row',
-        paddingHorizontal: hp(1.5),
+        paddingHorizontal: hp(2.5),
         paddingBottom: hp(1)
     },
     visibilityMainView: {
@@ -649,7 +661,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     detailsMainView: {
-        width: '68%'
+        width: '90%'
     },
     descriptionMainStyle: {
         flexDirection: 'column'
