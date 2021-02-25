@@ -159,7 +159,6 @@ const GeoFence = ({ navigation }) => {
         const POLYGON = (item) => {
             setType("POLYGON")
             const re = /\(\((.*)\)\)/;
-            console.log("Polypoly ",item.match(re)[1].split(","))
             const coord = item.match(re)[1].split(",").map((pos) => pos.split(" "))
             const cords = coord.map((item,key) =>{ return Platform.OS == 'ios'? 
                 {
@@ -406,6 +405,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        paddingHorizontal:hp(1.5),
         backgroundColor: ColorConstant.WHITE,
     },
     createNewMainView: {

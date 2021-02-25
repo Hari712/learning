@@ -107,8 +107,6 @@ const GeoFencePolyGon = ({navigation, route}) => {
         }
     }, [completeEditing,selectedCoordinates,oldData])
 
-    console.log("khushi",area)
-
 
     useEffect(() => {
 

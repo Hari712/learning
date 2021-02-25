@@ -194,7 +194,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         />
                     </View>
 
-                    <View style={styles.dropDownMainView}>
+                    {/* <View style={styles.dropDownMainView}>
                         <View style={styles.dropdownView}>
                             <DropDown
                                 defaultValue={fontsize}
@@ -219,17 +219,17 @@ const GeoFenceDetails = ({ navigation, route }) => {
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
                             />
-                        </View>
+                        </View> */}
 
                         {/* {uploadImage ? */}
-                        <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
+                        {/* <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
                             <Image source={images.geoFence.uploadGrey} resizeMode="contain" />
                             <Text style={styles.uploadText}>{translate("Upload Image")}</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         {/* :
                             <Image source ={{uri:uploadImage}}/> */}
                         {/* } */}
-                    </View>
+                    {/* </View> */}
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
