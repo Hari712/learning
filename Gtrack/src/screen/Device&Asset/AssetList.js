@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, RefreshControl, TouchableOpacity, Dimensions, FlatList, TextInput } from 'react-native';
+import { View, StyleSheet, Text, RefreshControl, TouchableOpacity, Dimensions, FlatList, TextInput, KeyboardAvoidingView, SafeAreaView } from 'react-native';
 import images from '../../constants/images'
 import { AssteItem } from '../../component'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -71,7 +71,7 @@ const AssetList = () => {
         }
 
         return (
-            <View style={{ paddingHorizontal: hp(3) }}>
+            <View style={{ paddingHorizontal: hp(3), zIndex:10 }}>
                 <View style={styles.search}>
                     <TextInput
                         placeholder='Search Here'
@@ -101,29 +101,38 @@ const AssetList = () => {
     }
 
     return (
+        <SafeAreaView style={{flex:1}}>
+        <KeyboardAvoidingView keyboardVerticalOffset={hp(10)} behavior='position'
+         style={{flexGrow:1 }}
+         >
+                
         <View styles={styles.container}>
             {renderSearchBar()}
             {/* <View style={{flex:1}}> */}
             {assetList.length > 0 ?
             <FlatList
-                style={{ height:'85%' }}
-                nestedScrollEnabled={true}
-                refreshControl={
-                    <RefreshControl
-                        style={styles.refreshIndicator}
-                        refreshing={isRefreshing}
-                        onRefresh={onRefresh}
-                    />
-                }
-                data={assetList}
-                renderItem={(data) => renderItem(data)}
-                keyExtractor={(item, index) => index.toString()}
-            /> :
+                    style={{ height:'85%' }}
+                    nestedScrollEnabled={true}
+                    keyboardShouldPersistTaps='handled'
+                    refreshControl={
+                        <RefreshControl
+                            style={styles.refreshIndicator}
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                    data={assetList}
+                    renderItem={(data) => renderItem(data)}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+             :
             <View style={styles.noRecords}>
                 <Text style={styles.noRecordsText}>No records found</Text>
             </View> }
             {/* </View> */}
         </View>
+        </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }
 
