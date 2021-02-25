@@ -69,8 +69,8 @@ const GeoFenceCircle = ({navigation,route}) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
-                    <Text>Next</Text>
+                <TouchableOpacity  style={{marginRight:hp(2)}} onPress={() => area && navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
+                    <Text style={{color:area?ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
         });
@@ -107,10 +107,17 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     useEffect(() => {
         if(completeEditing && selectedCoordinate){
-            let tempArea = "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
+            let tempArea = Platform.OS === 'ios' ?  "CIRCLE(" + selectedCoordinate.latitude + " " + selectedCoordinate.longitude + "," + radius + ")"
+            : "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
             setArea(tempArea)
-        }
-    }, [completeEditing,selectedCoordinate,radius])
+        } else if(oldData && selectedCoordinate){
+            let tempArea = Platform.OS === 'ios' ?  "CIRCLE(" + selectedCoordinate.latitude + " " + selectedCoordinate.longitude + "," + radius + ")"
+            : "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
+            setArea(tempArea)
+        } 
+    }, [completeEditing,selectedCoordinate,radius, oldData])
+
+    console.log("Aread in circle ", area)
 
 
     useEffect(() => {
@@ -271,7 +278,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                     <View style={styles.sliderSubView}>
                         <Text style={styles.radiusTextSize}>{translate("Geofence_CreateNew_string3")}</Text>
                         <View style={styles.radiusMainView}>
-                            <Text style={styles.textStyleInfo}>400m</Text>
+                            <Text style={styles.textStyleInfo}>{radius} m</Text>
                             <Text style={styles.otherTextStyle}>2</Text>
                         </View>
                     </View>
