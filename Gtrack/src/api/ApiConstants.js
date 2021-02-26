@@ -1,4 +1,4 @@
-const BASE_URL = 'https://gtrackdev.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://gtrackapi-dev.vegitone.com/gtrackapi'
 
 const SUFFIX_URL = 'public/'
 
@@ -44,7 +44,7 @@ const ApiConstants = {
     DELETE_ASSET_BY_ASSETID:(userId, assetId) => `${USER}${userId}/assets/${assetId}`,
     CHANGE_PASSCODE:(userId) => `${USER}${userId}/changePassword`,
     GET_DEVICE_DETAILS_BY_ID:(userId) => `${USER}${userId}/dashboard/device`,
-    GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID:(userId) => `${USER}${userId}/dashboard/user/count?role=all`,
+    GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID:(userId, role) => `${USER}${userId}/dashboard/user/count?role=${role}`,
     GET_USER_DEVICE_OR_NOTIFICATION_COUNT:(userId, deviceId) => `${USER}${userId}/dashboard/alarms?deviceId=${deviceId}`,
     GET_ALARMS_LIST:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
     ADD_ALARMS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts`,

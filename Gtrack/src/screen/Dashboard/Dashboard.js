@@ -23,11 +23,9 @@ import RecentAlarms from './RecentAlarm'
 const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)  
-  const [deviceId, setDeviceId] = useState();
   const [isMenuClick, setIsMenuClick] = useState(0)
-  const [ownerActive, setOwnerActive] = useState(0);
-  const [regularActive, setRegularActive] = useState(0);
   const [dropDownPos, setDropDownPos] = useState();
+  const [selectedRole, setSelectedRole] = useState('all')
 
   
   const dispatch = useDispatch()
@@ -51,21 +49,16 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     fetchDeviceDetails()
-    fetchCounts()
+   // fetchCounts()
   }, [])
 
-  // useEffect(() => {
-  //   fetchDeviceRecentAlarms()
-  // },[deviceId])
-
-  // function fetchDeviceRecentAlarms() {
-  //   AppManager.showLoader()
-  //   dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId, onSuccess, onError))    
-  // }
+  useEffect(()=>{
+    fetchCounts()
+  },[selectedRole])
 
   function fetchCounts() {
     AppManager.showLoader()
-    dispatch(DashboardActions.requestActiveInactiveCount(user_id, onSuccess, onError))
+    dispatch(DashboardActions.requestActiveInactiveCount(user_id, selectedRole, onSuccess, onError))
   }
 
   function fetchDeviceDetails() {
@@ -76,11 +69,24 @@ const Dashboard = ({ navigation }) => {
   const onSuccess = (data) => {
     AppManager.hideLoader()
     console.log("Success",data)
+    setIsClickDownArrow(false)
   }
 
   const onError = (error) => {
     AppManager.hideLoader()
     console.log("Error",error)
+  }
+
+  const onRoleHandle = (item,key) => {
+    (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
+    if(item == 'All Users') {
+      setSelectedRole('all')
+    }else if(item == 'Regular') {
+      setSelectedRole('regular')
+    }else{
+      setSelectedRole('owner')
+    }
+    fetchCounts()
   }
 
 
@@ -154,7 +160,7 @@ const Dashboard = ({ navigation }) => {
         {isClickDownArrow ?
               <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
                 {User.map((item, key) =>
-                  <TouchableOpacity  key={key} onPress={()=> (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)}>
+                  <TouchableOpacity  key={key} onPress={()=> onRoleHandle(item,key)}>
                     <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
                     {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
                   </TouchableOpacity>
