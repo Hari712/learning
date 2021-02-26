@@ -89,6 +89,7 @@ const Users = ({navigation}) => {
   }
 
   const renderItem = ({item,key}) => {
+    console.log("khushi",item.roles.map((role)=>role.name))
     return(  
     <View style={styles.cardContainer} key={key}>
           {/* Blue top head */}
