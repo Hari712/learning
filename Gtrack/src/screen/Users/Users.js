@@ -36,8 +36,10 @@ const Users = ({navigation}) => {
     subUserData: getSubuserState(state)
   }))
 
+  console.log("khushi1",subUserData)
 
-  searchData = subUserData.subUser
+
+  searchData = subUserData
   const user_id = loginData.id ? loginData.id : null
   const dispatch = useDispatch()
 
@@ -316,7 +318,7 @@ return (
       {searchBar()} 
       </View>
   
-      {subUserData.subUser && subUserData.subUser.length > 0 ?
+      {subUserData && subUserData.length > 0 ?
       <FlatList
         data={searchData}
         renderItem={renderItem}

@@ -25,11 +25,16 @@ export const isRoleRegular = createSelector(
  * Get SubUser Information
  */
 
-export const getSubuserInfo = (state) => state.users
+const getSubuserInfo = (state) => getSubuserInfoList(state)
+function getSubuserInfoList(state) {
+    const userInfo = state.users && state.users.subUser ? state.users.subUser  : {}
+    const arrUserInfo = Object.values(userInfo)
+    arrUserInfo.sort((item1, item2) => item2.id - item1.id)
+    return arrUserInfo
+}
 export const getSubuserState = createSelector(
     [getSubuserInfo],
     (info) => info
-    
 )
 
 /**
