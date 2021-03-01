@@ -34,6 +34,8 @@ const CreateNew = ({navigation,route}) => {
     alertList: getAlertTypetListInfo(state)
 }))
 
+const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase() + x.slice(1); })
+
   useEffect(() => {    
     if(route){
       const editData = route.params;
@@ -145,7 +147,7 @@ return (
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
         <View style={{marginTop:hp(3), marginBottom:hp(12)}}>       
-            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alertList} dataTextStyle={{textTransform:'capitalize'}} />   
+            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmTypeList} />   
         </View>   
      </View>  
 
