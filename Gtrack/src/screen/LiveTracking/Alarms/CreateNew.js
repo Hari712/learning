@@ -27,6 +27,8 @@ const CreateNew = ({navigation,route}) => {
   const [arrDeviceList, setDeviceList] = useState([])
   const [arrDeviceNames, setDeviceNames] = useState([])
   const [deviceId,setDeviceId] = useState([])
+  const [selectedAlarmType, setSelectedAlarmType] = useState()
+  const [selectAlarmDDy, setSelectAlarmDDy] = useState()
 
   const { isConnected, loginInfo, alertList } = useSelector(state => ({
     isConnected: state.network.isConnected,
@@ -45,6 +47,7 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
         setSelectedDevice(devices)
         setSelectedAlarm(editData.editData.notification.type)
         setEditingValues(editData.editData)
+        setSelectedAlarmType(editData.editData.notification.attributes.alarms)
     }
   }
   }, 
@@ -95,7 +98,8 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
   
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
         alarmType:selectedAlarm, 
-        selectedDeviceList:selectedDevice, 
+        selectedDeviceList:selectedDevice,
+        notificationType:selectedAlarmType, 
         selectedDeviceID: arrSelectedId, 
         editData:editingValues})
       
@@ -146,10 +150,20 @@ return (
                 selectedItemRowStyle={styles.selectedItemRowStyle}
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
-        <View style={{marginTop:hp(3), marginBottom:hp(12)}}>       
+        <View onLayout={({nativeEvent}) => setSelectAlarmDDy(nativeEvent.layout.y)} />    
+            
+
+        {selectedAlarm == 'Alarm' ?
+          <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
+            <DropDown label={translate("Alarm_Type")} defaultValue={selectedAlarmType} valueSet={setSelectedAlarmType} dataList={alarmTypes} />   
+          </View>
+        : null }
+
+        <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
             <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmTypeList} />   
-        </View>   
-     </View>  
+        </View>
+
+     </View>
 
      {selectedDevice.length>=0 && selectedAlarm ?
         <View style={styles.buttonContainer}>
@@ -166,7 +180,7 @@ return (
       )
     }
 
-const alarmList = ["alarm","textMessage","maintenance","ignitionOn","ignitionOff","deviceFuelDrop"] ;
+const alarmTypes = ["Overspeed","Low speed","Battery Level","Movement","Panic"] ;
 
 const styles = StyleSheet.create({
 
