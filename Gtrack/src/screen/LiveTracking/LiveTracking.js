@@ -54,10 +54,13 @@ const LiveTracking = ({navigation}) => {
 			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
 		}
-		else {
+		else if (item == 'Alarms') {
 			setIsLineClick(false)
             navigation.navigate(SCREEN_CONSTANTS.ALARMS)
         }
+		else{
+			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY)
+		}
 	}
 
 	function navigateToDeviceSetup() {
@@ -105,7 +108,7 @@ const LiveTracking = ({navigation}) => {
 	);
 }
 
-const data = ['Geo Fence', 'Sensor Information', 'Alarms']
+const data = ['Geo Fence', 'Sensor Information', 'Alarms',"Trip History"]
 
 const styles = StyleSheet.create({
 	container: {

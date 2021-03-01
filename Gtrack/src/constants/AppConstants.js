@@ -48,6 +48,8 @@ export const SCREEN_CONSTANTS = {
     CREATE_NEW: 'CreateNew',
     ALARMS_TYPE: 'AlarmType',
     ALARMS_DETAIL: 'AlarmDetail',
+    TRIP_HISTORY: 'TripHistory',
+    TRIP_HISTORY_DETAILS: 'TripHistoryDetails',
     SETTINGS_NOTIFICATION: 'SettingNotification',
     CHANGE_PASSCODE: 'ChangePasscode',
     ACTIVATE_DEVICE: 'ActivateDevice',

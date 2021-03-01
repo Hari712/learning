@@ -45,6 +45,8 @@ import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePass
 import TrackingDetails from './Dashboard/TrackingDetails'
 import GeoFenceCircle from './LiveTracking/GeoFenceCircle'
 import GeoFencePolyGon from './LiveTracking/GeoFencePolygon'
+import TripHistory from './LiveTracking/TripHistory/TripHistory'
+import TripHistoryDetails from './LiveTracking/TripHistory/TripHistoryDetails'
 
 export {
     Splash,
@@ -77,6 +79,8 @@ export {
     GeoFenceDetails,
     AdvanceSettings,
     Alarms,
+    TripHistory,
+    TripHistoryDetails,
     CreateNew,
     AlarmType,
     AlarmDetail,    

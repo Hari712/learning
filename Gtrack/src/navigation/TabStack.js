@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails, GeoFenceCircle, GeoFencePolyGon } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Subscription,PaymentSettings,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
@@ -57,6 +57,8 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_NEW} component={CreateNew} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_TYPE} component={AlarmType} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_DETAIL} component={AlarmDetail} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY} component={TripHistory} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS} component={TripHistoryDetails} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ACTIVATE_DEVICE} component={ActivateDevice} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_ASSET} component={AssignAsset} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_GROUP} component={AssignGroup} />
