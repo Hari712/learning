@@ -6,7 +6,7 @@ import  { DropDown, TextField, FontSize }from '../../../component';
 import { getLoginState, getSubuserState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App';
-import { BackIcon, CalenderIcon, CalenderIconBlue, CalenderIconWhite, EditIcon, ListIcon } from '../../../component/SvgComponent';
+import { BackIcon, CalenderIcon, CalenderIconBlue, CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../component/SvgComponent';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import Moment from 'moment'
 
@@ -37,7 +37,7 @@ const SummaryDetails = ({ navigation }) => {
                     </View>
     
                     <TouchableOpacity style={styles.editButton}>
-                        <EditIcon width={11.947} height={11.947}/>
+                        <LocationIcon/>
                     </TouchableOpacity>
                 </View>
     
