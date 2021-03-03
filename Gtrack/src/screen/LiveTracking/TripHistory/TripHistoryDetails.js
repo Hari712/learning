@@ -47,6 +47,7 @@ const TripHistoryDetails = ({ navigation }) => {
     const [isStartDateVisible, setIsStartDateVisible] = useState(false);
     const [isEndDateVisible, setIsEndDateVisible] = useState(false);
     const [selectedDay, setSelectedDay] = useState()
+    const [dropdownPosY, setDropdownPosY] = useState()
     // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     const showDatePicker = (item) => {
@@ -78,28 +79,34 @@ const TripHistoryDetails = ({ navigation }) => {
                 <View style={styles.addButton}>
                     <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 16, color: ColorConstant.WHITE }}>Trackport 4G Vehicle GPS Tracker</Text>
                 </View>
-                <ScrollView contentContainerStyle={{flex:1}}> 
-                    <View style={{padding:hp(3)}}>
-                        <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-Regular"}}>Data Range</Text>  
-                        <View style={{flexDirection:'row',justifyContent:"space-between",marginVertical:hp(2)}}>
-                            <View style={styles.dateCardView}>
-                                <Text>{startDate ? startDate : "From"}</Text>
-                                <TouchableOpacity onPress={()=>showDatePicker("From")}>
-                                    <CalenderIconBlue/>
-                                </TouchableOpacity>
+                
+                <View style={{flex:1}}>
+                    <ScrollView> 
+                        <View style={{padding:hp(3)}}>
+                            <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-Regular"}}>Data Range</Text>  
+                            <View style={{flexDirection:'row',justifyContent:"space-between",marginVertical:hp(2)}}>
+                                <View style={styles.dateCardView}>
+                                    <Text>{startDate ? startDate : "From"}</Text>
+                                    <TouchableOpacity onPress={()=>showDatePicker("From")}>
+                                        <CalenderIconBlue/>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.dateCardView} >
+                                    <Text>{endDate ? endDate : "To"}</Text>
+                                    <TouchableOpacity onPress={()=>showDatePicker("To")}>
+                                        <CalenderIconBlue/>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={styles.dateCardView} >
-                                <Text>{endDate ? endDate : "To"}</Text>
-                                <TouchableOpacity onPress={()=>showDatePicker("To")}>
-                                    <CalenderIconBlue/>
-                                </TouchableOpacity>
-                            </View>
+                            
+                            <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
                         </View>
-                        <View style={{marginVertical:hp(1)}}>
-                            <DropDown label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList}/>  
-                        </View> 
 
                         <SummaryDetails />
+
+                        <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
+                            <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
+                        </View>
 
                         <DateTimePickerModal
                             isVisible={isStartDateVisible || isEndDateVisible}
@@ -107,8 +114,8 @@ const TripHistoryDetails = ({ navigation }) => {
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
                         />
-                    </View>
-                </ScrollView> 
+                    </ScrollView> 
+                </View>
         </View>
 
     )
