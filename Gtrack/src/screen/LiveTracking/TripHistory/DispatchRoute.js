@@ -16,7 +16,7 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const TripHistoryMapView = ({ navigation }) => {
+const DispatchRoute = ({ navigation }) => {
 
     // const { data, coords } = route.params
     // const arrCords = isEmpty(coords) ? [] : coords
@@ -25,41 +25,29 @@ const TripHistoryMapView = ({ navigation }) => {
     // const longitude = parseFloat(coord.coords.Lon) || 0.0
     // const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
 
-    const arrInitialCoord = arrCords.map((item, index) => {
-        const latitude = parseFloat(item.coords.Lat) || 0.0
-        const longitude = parseFloat(item.coords.Lon) || 0.0
-        let arr = []
-        arr.push(longitude)
-        arr.push(latitude)
-        return arr
-    })
+    // const arrInitialCoord = arrCords.map((item, index) => {
+    //     const latitude = parseFloat(item.coords.Lat) || 0.0
+    //     const longitude = parseFloat(item.coords.Lon) || 0.0
+    //     let arr = []
+    //     arr.push(longitude)
+    //     arr.push(latitude)
+    //     return arr
+    // })
     const [coordList, setCoordList] = useState([])
     const [lineString, setLineString] = useState(null)
 
     const mapRef = useRef()
 
-    const dispatch = useDispatch()
-    const backArrowprop = {
-        marginRight: hp(3), width: hp(3.5), height: hp(3.5)
-    } 
+    // const dispatch = useDispatch()
+    // const backArrowprop = {
+    //     marginRight: hp(3), width: hp(3.5), height: hp(3.5)
+    // } 
   
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            headerTitle: 'Dispatch Route',
-            headerTitleAlign: 'center',
-            headerRight: () => null,
-            headerLeft: () => (
-                <View style={{ flexDirection: 'row', paddingLeft: wp(3) }}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <SvgGoBackArrow { ...backArrowprop }/>
-                    </TouchableOpacity>
-                </View>
-            )
-        });
-        return () => {
-
-        };
+           header: () => null ,
+        })
     }, [navigation])
 
     function onSuccess(data) {
@@ -105,12 +93,13 @@ const TripHistoryMapView = ({ navigation }) => {
                 />
                 <Map.default.Camera
                     zoomLevel={3}
-                    bounds={{
-                        ne: arrInitialCoord[0],
-                        sw: arrInitialCoord[arrInitialCoord.length - 1],
-                    }}
+                    // bounds={{
+                    //     ne: arrInitialCoord[0],
+                    //     sw: arrInitialCoord[arrInitialCoord.length - 1],
+                    // }}
                 />
-                {!isEmpty(lineString) ? <Map.default.ShapeSource
+                {!isEmpty(lineString) ?
+                 <Map.default.ShapeSource
                     id='route'
                     shape={lineString}>
                     <Map.default.LineLayer
@@ -119,11 +108,12 @@ const TripHistoryMapView = ({ navigation }) => {
                             lineCap: 'round',
                             lineWidth: 3,
                             lineOpacity: 0.84,
-                            lineColor: ColorConstant.orange,
+                            lineColor: "red",
                         }}
                     />
                 </Map.default.ShapeSource> : null}
-                {arrCords.map((item, index) => {
+                
+                {/* {arrCords.map((item, index) => {
                     const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
                     const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
                     const latitude = parseFloat(item.coords.Lat) || 0.0
@@ -140,7 +130,7 @@ const TripHistoryMapView = ({ navigation }) => {
                             <Map.default.Callout title={address} />
                         </Map.default.PointAnnotation>
                     )
-                })}
+                })} */}
 
             </Map.default.MapView>
         )
@@ -157,10 +147,10 @@ const TripHistoryMapView = ({ navigation }) => {
             >
                 <Map.Polyline
                     coordinates={coordList}
-                    strokeColor={ColorConstant.orange} // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeColor={"red"} // fallback for when `strokeColors` is not supported by the map-provider
                     strokeWidth={3}
                 />
-                {arrCords.map((item, index) => {
+                {/* {arrCords.map((item, index) => {
                     const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
                     const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
                     const latitude = parseFloat(item.coords.Lat) || 0.0
@@ -172,7 +162,8 @@ const TripHistoryMapView = ({ navigation }) => {
                             title={title}
                             description={address}
                         />)
-                })}
+                }
+                )} */}
             </Map.default>
         )
     }
@@ -194,4 +185,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default TripHistoryMapView
+export default DispatchRoute

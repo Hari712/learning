@@ -47,6 +47,7 @@ import GeoFenceCircle from './LiveTracking/GeoFenceCircle'
 import GeoFencePolyGon from './LiveTracking/GeoFencePolygon'
 import TripHistory from './LiveTracking/TripHistory/TripHistory'
 import TripHistoryDetails from './LiveTracking/TripHistory/TripHistoryDetails'
+import DispatchRoute from './LiveTracking/TripHistory/DispatchRoute'
 
 export {
     Splash,
@@ -81,6 +82,7 @@ export {
     Alarms,
     TripHistory,
     TripHistoryDetails,
+    DispatchRoute,
     CreateNew,
     AlarmType,
     AlarmDetail,    

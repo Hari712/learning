@@ -50,6 +50,7 @@ export const SCREEN_CONSTANTS = {
     ALARMS_DETAIL: 'AlarmDetail',
     TRIP_HISTORY: 'TripHistory',
     TRIP_HISTORY_DETAILS: 'TripHistoryDetails',
+    DISPATCH_ROUTE: 'DispatchRoute',
     SETTINGS_NOTIFICATION: 'SettingNotification',
     CHANGE_PASSCODE: 'ChangePasscode',
     ACTIVATE_DEVICE: 'ActivateDevice',

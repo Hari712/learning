@@ -9,6 +9,8 @@ import { translate } from '../../../../App';
 import { BackIcon, CalenderIcon, CalenderIconBlue, CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../component/SvgComponent';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import Moment from 'moment'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import NavigationService from '../../../navigation/NavigationService';
 
 const SummaryDetails = ({ navigation }) => {
 
@@ -24,7 +26,7 @@ const SummaryDetails = ({ navigation }) => {
 
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.cardContainer}>
+            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE)} style={styles.cardContainer}>
     
                 {/* Blue top head */}
                 <View style={styles.blueConatiner}>
