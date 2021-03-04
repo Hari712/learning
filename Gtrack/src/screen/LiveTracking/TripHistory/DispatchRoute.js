@@ -16,23 +16,22 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const DispatchRoute = ({ navigation }) => {
+const DispatchRoute = ({ navigation, route }) => {
+    const { coords } = route.params
+    const arrCords = coords && isEmpty(coords) ? [] : coords
+    const coord = arrCords[0]
+    const latitude = parseFloat(coord && coord.coords.Lat) || 0.0
+    const longitude = parseFloat(coord && coord.coords.Lon) || 0.0
+    const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
 
-    // const { data, coords } = route.params
-    // const arrCords = isEmpty(coords) ? [] : coords
-    // const coord = arrCords[0]
-    // const latitude = parseFloat(coord.coords.Lat) || 0.0
-    // const longitude = parseFloat(coord.coords.Lon) || 0.0
-    // const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
-
-    // const arrInitialCoord = arrCords.map((item, index) => {
-    //     const latitude = parseFloat(item.coords.Lat) || 0.0
-    //     const longitude = parseFloat(item.coords.Lon) || 0.0
-    //     let arr = []
-    //     arr.push(longitude)
-    //     arr.push(latitude)
-    //     return arr
-    // })
+    const arrInitialCoord = arrCords.map((item, index) => {
+        const latitude = parseFloat(item.coords.Lat) || 0.0
+        const longitude = parseFloat(item.coords.Lon) || 0.0
+        let arr = []
+        arr.push(longitude)
+        arr.push(latitude)
+        return arr
+    })
     const [coordList, setCoordList] = useState([])
     const [lineString, setLineString] = useState(null)
 
@@ -150,7 +149,7 @@ const DispatchRoute = ({ navigation }) => {
                     strokeColor={"red"} // fallback for when `strokeColors` is not supported by the map-provider
                     strokeWidth={3}
                 />
-                {/* {arrCords.map((item, index) => {
+                {arrCords.map((item, index) => {
                     const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
                     const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
                     const latitude = parseFloat(item.coords.Lat) || 0.0
@@ -163,7 +162,7 @@ const DispatchRoute = ({ navigation }) => {
                             description={address}
                         />)
                 }
-                )} */}
+                )}
             </Map.default>
         )
     }

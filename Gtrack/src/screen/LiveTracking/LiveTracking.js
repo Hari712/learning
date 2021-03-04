@@ -16,7 +16,7 @@ import { useIsFocused } from '@react-navigation/native';
 const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)	
-	const [currentPosition, setCurrentPosition] = useState([-7.941227, 39.584127]) //by default
+	const [currentPosition, setCurrentPosition] = useState() //by default
 
 	const { isLoggedIn, isRegular} = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
@@ -40,7 +40,7 @@ const LiveTracking = ({navigation}) => {
 	useEffect(()=> {
 		if (location) {
 			const { latitude, longitude, course, speed, accuracy, altitude } = location
-			let centerCoord = [longitude, latitude]
+			let centerCoord = Platform.OS == 'ios' ?  {coordinates:{latitude:latitude, longitude:longitude}}  : [longitude, latitude]
 			setCurrentPosition(centerCoord);
 		}
 	},[location])

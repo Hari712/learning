@@ -26,7 +26,7 @@ const SummaryDetails = ({ navigation }) => {
 
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE)} style={styles.cardContainer}>
+            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{coords:[]})} style={styles.cardContainer}>
     
                 {/* Blue top head */}
                 <View style={styles.blueConatiner}>
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     },
     blueTopHead: {
         alignContent: 'space-between',
-        marginVertical: hp(0.5)
+        marginVertical: Platform.OS == 'ios' ? hp(1.3) : hp(0.5),
     },
     editButton: {
         flexDirection: 'row',
@@ -247,6 +247,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         color: ColorConstant.WHITE,
         textAlignVertical:'center',
+        //alignSelf:'center',
         flex:1,
         fontFamily:'Nunito-Bold',
         fontSize: FontSize.FontSize.small
