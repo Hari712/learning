@@ -30,8 +30,8 @@ const SummaryDetails = ({ navigation }) => {
     
                 {/* Blue top head */}
                 <View style={styles.blueConatiner}>
-                    <View style={{padding:hp(1.5)}}>
-                        <CalenderIconWhite width={11.947} height={11.947}/>
+                    <View style={{padding:hp(1.5),alignSelf:'center'}}>
+                        <CalenderIconWhite width={14.947} height={14.947}/>
                     </View>
                     
                     <View style={styles.blueTopHead}>
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         color: ColorConstant.WHITE,
         textAlignVertical:'center',
-        //alignSelf:'center',
+        //backgroundColor:'red',
         flex:1,
         fontFamily:'Nunito-Bold',
         fontSize: FontSize.FontSize.small
