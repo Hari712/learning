@@ -100,8 +100,8 @@ class DropDown extends React.Component {
                                         </TouchableOpacity>
                                     )
                                 }) : 
-                                <View>
-                                    <Text>{emptyDataText ? emptyDataText:"No data"}</Text>
+                                <View style={{height:hp(6)}}>
+                                    <Text style={{textAlign:'center',textAlignVertical:'center',flex:1}}>{emptyDataText ? emptyDataText:"No data"}</Text>
                                 </View>
                              }
                             </ScrollView>
