@@ -226,14 +226,6 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 10,
         paddingHorizontal: hp(1.5)
     },
-    activeInactiveText: {
-        flexDirection: 'row',
-        width: "100%",
-        borderBottomLeftRadius: 15,
-        borderBottomRightRadius: 15,
-        justifyContent:'center',
-        paddingHorizontal: hp(3)
-    },
     blueTopHead: {
         alignContent: 'space-between',
         marginVertical: Platform.OS == 'ios' ? hp(1.3) : hp(0.5),
@@ -251,31 +243,6 @@ const styles = StyleSheet.create({
         flex:1,
         fontFamily:'Nunito-Bold',
         fontSize: FontSize.FontSize.small
-    },
-    pointerStyle: {
-        elevation: 0.1,
-        top: 3,
-        borderBottomWidth: 12,
-    },
-    image: {
-        height: hp(1.5),
-        resizeMode: 'contain'
-    },
-    id: {
-        color: ColorConstant.ORANGE,
-        fontSize: FontSize.FontSize.extraSmall
-    },
-    headerRight: {
-        marginRight: wp(5),
-        height: hp(2.2),
-        width: wp(3),
-        resizeMode: 'contain'
-    },
-    textStyle: {
-        margin: hp(0.5),
-        color: ColorConstant.BLUE,
-        textAlignVertical: 'center',
-        paddingLeft: hp(0.5)
     },
     whiteBodyContainer: {
         flexDirection: 'row',
