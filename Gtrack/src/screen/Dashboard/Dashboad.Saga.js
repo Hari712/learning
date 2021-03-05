@@ -18,9 +18,9 @@ function* requestDeviceDetails(action) {
 }
 
 function* requestActiveInactiveCount(action) {
-    const { userId, onSuccess, onError } = action
+    const { userId, role, onSuccess, onError } = action
     try {
-        const url = ApiConstants.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID(userId)
+        const url = ApiConstants.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID(userId, role)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(DashboardActions.setActiveInactiveCountResponse(result))
