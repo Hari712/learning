@@ -63,6 +63,10 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.BARCODE_SCANNER} component={BarcodeScanner}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.COMPLETE_SETUP} component={CompleteSetup}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DEVICE_ASSET} component={DeviceAsset} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DETAILS} component={Details}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.EDIT_DEVICE_ASSET} component={EditDeviceAsset}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_DEVICE_ASSET} component={CreateDeviceAsset}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.MANAGE} component={Manage} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CIRCLE} component={GeoFenceCircle}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_POLYGON} component={GeoFencePolyGon}/>
