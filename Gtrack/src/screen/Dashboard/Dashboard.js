@@ -6,10 +6,8 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import ShadowView from 'react-native-simple-shadow-view'
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import { ScrollView } from 'react-native-gesture-handler'
-import ActivityRings from "react-native-activity-rings";
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
-import { translate } from '../../../App'
-import { DropDown, FontSize} from '../../component'
+import { FontSize} from '../../component'
 import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardActions from './Dashboad.Action'
 import { getDeviceDetailsListInfo, getLoginInfo, getActiveInactiveCountListInfo, getNotificationCountListInfo } from '../Selector'
@@ -17,8 +15,9 @@ import iconConstant from '../../constants/iconConstant'
 import round from 'lodash/round'
 import AppManager from '../../constants/AppManager'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
-import { DeviceSetupIcon, FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
+import { FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
 import RecentAlarms from './RecentAlarm'
+import DeviceSummary from './DeviceSummary'
 
 const Dashboard = ({ navigation }) => {
 
@@ -173,74 +172,13 @@ const Dashboard = ({ navigation }) => {
     )
   }
 
-
-  // Device summary component
-  const DeviceSummary = () => {
-    return (
-      <ShadowView style={styles.deviceSummaryContainer}>
-
-        <View style={styles.deviceSummaryMainViewStyle}>
-
-          <View style={styles.leftMainViewStyle}>
-            <Text style={styles.summary}>{translate("Device Summary")}</Text>
-          </View>
-
-          <View style={styles.rightMainViewStyle}>
-            <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")} {deviceDetails.deviceCount}</Text>
-
-            <TouchableOpacity onPress={() => { navigation.navigate('Device & Asset') }} >
-              <FullScreenIcon style={styles.ViewallStyle} resizeMode='contain'/>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={()=> navigation.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
-              <DeviceSetupIcon style={styles.refreshImageStyle} resizeMode='contain'/>
-            </TouchableOpacity>
-          </View>
-
-        </View>
-        {Object.values(deviceDetails.deviceList).map((item, key) =>
-
-          <ShadowView style={styles.summaryContainer} key={key}>
-            <View style={styles.subContainer}>
-
-              <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
-                <View style={{ flex: 0.25 }}>
-                  <View style={styles.deviceSummaryDetailView}>
-                    <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' />
-                  </View>
-                </View>
-                <View style={styles.titleText}>
-                  <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
-                  <Text style={styles.subtitle }>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
-                </View>
-
-              </View>
-
-              <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
-                <View style={[styles.stateViewStyle, { backgroundColor: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
-                  <Text style={[styles.stateTextStyle, { color: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>
-                    {item.deviceDTO.deviceStatus === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE'}
-                  </Text>
-                </View>
-              </View>
-
-            </View>
-          </ShadowView>
-
-        )}
-
-      </ShadowView>
-    )
-  }
-
-  
   return (
     <ScrollView>
       <SafeAreaView style={styles.container}>
 
       <LiveTrackingDashboard />
 
-      <DeviceSummary />
+      <DeviceSummary deviceList={deviceDetails} />
 
       <RecentAlarms deviceList={deviceDetails}/>
 
@@ -262,7 +200,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: ColorConstant.WHITE,
   },
-
   mainViewStyle: {
     alignItems: 'center',
     backgroundColor:ColorConstant.WHITE,
@@ -271,29 +208,10 @@ const styles = StyleSheet.create({
     marginTop: hp(1),
     zIndex:10,
   },
-  outerStyle:{
-    height: hp(5),
-    paddingTop:hp(1.5),
-    flex:1
-  },
-  inputContainerStyle: {
-    height: hp(3.5),
-    width:'100%',
-  },
-  containerStyle: {
-    alignSelf: 'center',
-    height: hp(5),
-    flex:1
-  },
   leftMainViewStyle: {
     paddingLeft: wp(5),
     paddingRight: wp(3),
     // paddingBottom: hp(1)
-  },
-  summary: {
-    fontSize: hp(1.4), 
-    fontWeight: 'bold', 
-    color: ColorConstant.BLACK
   },
   percentage: {
     fontSize: FontSize.FontSize.regular, 
@@ -311,13 +229,6 @@ const styles = StyleSheet.create({
     paddingLeft: wp(3),
     // paddingBottom: hp(0)
   },
-  alertText: {
-    marginLeft: wp(3), 
-    fontWeight: 'bold', 
-    fontSize: hp(1.4), 
-    color: ColorConstant.BLUE
-  },
-
   allUsersTextStyle: {
     marginRight: wp(3),
     color: ColorConstant.BLUE,
@@ -343,32 +254,20 @@ const styles = StyleSheet.create({
     top: 5,
     marginRight: wp(7)
   },
-
   fullScreenStyle: {
     height: hp(2),
     width: hp(2),
     marginRight: wp(5)
   },
-
   refreshImageStyle: {
     height: hp(2),
     width: hp(2)
   },
-
-  alarmStatusMainView: {
-    width: wp(4),
-    height: hp(1.8),
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
   activeUserMainView: {
     justifyContent: 'space-evenly',
     flexDirection: 'row',
     backgroundColor:ColorConstant.WHITE
   },
-
   cardContainer: {
     backgroundColor: ColorConstant.WHITE,
     marginVertical:hp(2),
@@ -438,122 +337,9 @@ const styles = StyleSheet.create({
 		paddingLeft: hp(0.5),
 		fontSize:FontSize.FontSize.small,
 		fontFamily:'Nunito-Regular'
-	},
-  deviceSummaryContainer: {
-    backgroundColor: ColorConstant.WHITE,
-    width: '93%',
-    marginVertical: hp(2),
-    // height: hp(40),
-    flex:1,
-    borderRadius: hp(5.5 / 2),
-    borderWidth: 0.5,
-    borderColor: ColorConstant.WHITE,
-    shadowColor: ColorConstant.BLACK,
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 0 },
-    alignSelf: 'center',
-    marginTop: hp(2),
-    paddingBottom: hp(1)
-  },
-
-  deviceSummaryMainViewStyle: Platform.OS=="ios" ? {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: hp(2.5),
-    zIndex: 5
-  }:{
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: hp(2.5),
-  },
-
-  summaryContainer: {
-    marginVertical: hp(1.5),
-    paddingVertical: '3%',
-    backgroundColor: ColorConstant.WHITE,
-    borderRadius: hp(5.5/2),
-    borderWidth:  Platform.OS=="ios" ? 0.5 : 0,
-    borderColor: ColorConstant.GREY,
-    shadowColor: ColorConstant.BLACK,
-    shadowOffset: {width: 0, height: 5},
-    shadowOpacity: 0.3,
-    elevation: 10,
-    paddingHorizontal: '3%',
-    marginHorizontal: '4%'
-  },
-  subContainer: {
-    flexDirection: 'row', 
-    flex: 1
-  },
-
-  deviceSummaryDetailView: {
-    width: hp(6),
-    height: hp(6),
-    backgroundColor: ColorConstant.LIGHTBLUE,
-    borderRadius: hp(8),
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  titleText: {
-    paddingHorizontal: '3%', 
-    marginTop: hp(1), 
-    flex: 0.75
-  },
-  title: {
-    color: ColorConstant.BLACK, 
-    fontSize: hp(1.4), 
-    fontWeight: '500'
-  },
-  subtitle: {
-    color: ColorConstant.GREY, 
-    fontSize: hp(1.4), 
-    marginTop: hp(1)
-  },
-  image: {
-    height: hp(3.5), 
-    width: hp(3.5)
-  },
-
-  stateViewStyle: {
-    width: '90%',
-    height: hp(2.5),
-    backgroundColor: ColorConstant.GREY,
-    borderRadius: hp(2.5 / 2),
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: '3%'
-  },
-
-  stateTextStyle: {
-    fontSize: hp(1.0),
-    fontWeight: '500'
-  }
-
+	}
 })
 
 export default Dashboard;
 
-const DeviceSummaryData = [
-  {
-    title: 'TrackPort International',
-    subtitle: 'Home',
-    state: 'Active',
-    icon: images.dashBoard.carIcon
-  },
-  {
-    title: 'TrackPort 4G Vehicle GPS Tracker',
-    subtitle: 'Fedex Ground',
-    state: 'Inactive',
-    icon: images.dashBoard.truckIcon
-  },
-  {
-    title: 'Spark Nano 7 GPS Tracker',
-    subtitle: 'Industrial',
-    state: 'Active',
-    icon: images.dashBoard.carIcon
-  },
-]
 
