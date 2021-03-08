@@ -9,6 +9,10 @@ export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-
 export const NAME_VALIDATION_REGEX = /^[a-zA-Z]+$/
 export const UNAUTHORIZED_ERROR_MESSAGE = 'Unauthorized : Invalid Token OR Token Expired'
 export const JWT_EXPIRED = "JWT expired"
+export const PHONE_REGEX = new RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
+export const NUMBER_REGEX = new RegExp(/\D/, 'g')
+export const CIRCLE_REGEX = /^CIRCLE\((\-?\d*\.?\d* \-?\d*\.?\d*)\,(\d*\.?\d*)\)$/
+
 
 export const SCREEN_CONSTANTS = {
     SPLASH: 'Splash',
@@ -44,6 +48,9 @@ export const SCREEN_CONSTANTS = {
     CREATE_NEW: 'CreateNew',
     ALARMS_TYPE: 'AlarmType',
     ALARMS_DETAIL: 'AlarmDetail',
+    TRIP_HISTORY: 'TripHistory',
+    TRIP_HISTORY_DETAILS: 'TripHistoryDetails',
+    DISPATCH_ROUTE: 'DispatchRoute',
     SETTINGS_NOTIFICATION: 'SettingNotification',
     CHANGE_PASSCODE: 'ChangePasscode',
     ACTIVATE_DEVICE: 'ActivateDevice',
@@ -85,6 +92,7 @@ export const AppConstants = {
     EMPTY_GROUP_SELECTION: 'Please select group',
     EMPTY_OLD_PASSCODE: "Empty_Old_Passcode",
     EMPTY_NEW_PASSCODE: "Empty_New_Passcode",
-    ROLE_REGULAR: 'ROLE_REGULAR'
+    ROLE_REGULAR: 'ROLE_REGULAR',
+    EMPTY_ALARM_NAME: 'Empty_Alarm_Name'
     
 }

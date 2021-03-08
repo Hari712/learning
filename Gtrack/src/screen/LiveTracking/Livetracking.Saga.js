@@ -68,10 +68,72 @@ function* requestDeleteNotification(action) {
     }
 }
 
+function* requestGetGeofence(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_GEOFENCE(userId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setGeofenceResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestDeleteGeofence(action) {
+    const { userId, geofenceId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.DELETE_GEOFENCE(userId, geofenceId)
+        const response = yield call(API.delete, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestAddGeofence(action) {
+    const { userId, body, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_GEOFENCE(userId)
+        const response = yield call(API.post, url, body)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestLinkGeofenceToDevices(action) {
+    const { userId, geofenceId, body, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.LINK_GEOFENCE_DEVICES(userId, geofenceId)
+        const response = yield call(API.put, url, body)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestUpdateGeofence(action) {
+    const { userId, body, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.UPDATE_GEOFENCE(userId)
+        const response = yield call(API.put, url, body)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
     yield takeLatest(types.GET_DEVICES_BY_USER_ID_REQUEST, requestGetDevicesByUserId),
     yield takeLatest(types.GET_ALERT_TYPES_REQUEST, requestGetAlertTypes),
     yield takeLatest(types.DELETE_NOTIFICATION_REQUEST, requestDeleteNotification)
+    yield takeLatest(types.GET_GEOFENCE_REQUEST, requestGetGeofence),
+    yield takeLatest(types.DELETE_GEOFENCE_REQUEST, requestDeleteGeofence),
+    yield takeLatest(types.CREATE_NEW_GEOFENCE_REQUEST, requestAddGeofence),
+    yield takeLatest(types.LINK_GEOFENCE_TO_DEVICES, requestLinkGeofenceToDevices),
+    yield takeLatest(types.UPDATE_GEOFENCE_REQUEST, requestUpdateGeofence)
 }

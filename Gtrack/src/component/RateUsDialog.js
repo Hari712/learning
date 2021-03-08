@@ -9,7 +9,6 @@ import { CloseIcon, RateUsDialogIcon} from './SvgComponent'
 import StarRating from './StarRating'
 
 const RateUsDialog = (props) => {
-    console.log("inside Rateus ",props)
     const {visible, setVisible} = props;
     const [starCount, setStarCount] = useState(4)
     const [description, setDescrption] = useState()

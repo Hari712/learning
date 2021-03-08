@@ -12,9 +12,10 @@ export const setDeviceDetailsResponse = (data) => ({
     data
 })
 
-export const requestActiveInactiveCount = (userId, onSuccess, onError) => ({
+export const requestActiveInactiveCount = (userId, role, onSuccess, onError) => ({
     type: types.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID_REQUEST,
     userId,
+    role,
     onSuccess,
     onError
 })

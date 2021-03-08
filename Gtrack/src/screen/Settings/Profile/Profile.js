@@ -8,8 +8,9 @@ import { getLoginState } from '../../Selector';
 import ShadowView from 'react-native-simple-shadow-view';
 import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
-import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { SCREEN_CONSTANTS, PHONE_REGEX } from '../../../constants/AppConstants';
 import { BackIcon, EditIcon } from '../../../component/SvgComponent';
+import { getFormattedPhoneNumber } from '../../../utils/helper'
 
 const Profile = ({ navigation }) => {
 
@@ -96,7 +97,7 @@ const Profile = ({ navigation }) => {
                             <Text  style={styles.emailText}> {translate("User Type")} </Text>
                         </View>
                         <View style = {{ }}>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone :'-'}</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone.replace(PHONE_REGEX, '$1-$2-$3') :'-'}</Text>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.email}</Text>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{userType == "ROLE_OWNER" ? "Owner" : "Regular"}</Text>
                         </View>

@@ -53,3 +53,48 @@ export const requestDeleteNotification = (userId, notificationId, onSuccess, onE
     onError
 })
 
+export const requestGetGeofence = (userId, onSuccess, onError) => ({
+    type: types.GET_GEOFENCE_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setGeofenceResponse = (data) => ({
+    type: types.GET_GEOFENCE_RESPONSE,
+    data
+})
+
+export const requestDeleteGeofence = (userId, geofenceId, onSuccess, onError) => ({
+    type: types.DELETE_GEOFENCE_REQUEST,
+    userId,
+    geofenceId,
+    onSuccess,
+    onError
+})
+
+export const requestAddGeofence = (userId, body, onSuccess, onError) => ({
+    type: types.CREATE_NEW_GEOFENCE_REQUEST,
+    userId,
+    body,
+    onSuccess,
+    onError
+})
+
+export const requestLinkGeofenceToDevices = (userId, geofenceId, body, onSuccess, onError) => ({
+    type: types.LINK_GEOFENCE_TO_DEVICES,
+    userId,
+    geofenceId,
+    body,
+    onSuccess,
+    onError
+})
+
+export const requestUpdateGeofence = (userId, body, onSuccess, onError) => ({
+    type: types.UPDATE_GEOFENCE_REQUEST,
+    userId,
+    body,
+    onSuccess,
+    onError
+})
+
