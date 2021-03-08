@@ -16,7 +16,7 @@ import { useIsFocused } from '@react-navigation/native';
 const LiveTracking = ({navigation}) => {
 
 	const [isLineClick, setIsLineClick] = useState(false)	
-	const [currentPosition, setCurrentPosition] = useState([-7.941227, 39.584127]) //by default
+	const [currentPosition, setCurrentPosition] = useState() //by default
 
 	const { isLoggedIn, isRegular} = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
@@ -40,7 +40,7 @@ const LiveTracking = ({navigation}) => {
 	useEffect(()=> {
 		if (location) {
 			const { latitude, longitude, course, speed, accuracy, altitude } = location
-			let centerCoord = [longitude, latitude]
+			let centerCoord = Platform.OS == 'ios' ?  {coordinates:{latitude:latitude, longitude:longitude}}  : [longitude, latitude]
 			setCurrentPosition(centerCoord);
 		}
 	},[location])
@@ -54,10 +54,13 @@ const LiveTracking = ({navigation}) => {
 			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
 		}
-		else {
+		else if (item == 'Alarms') {
 			setIsLineClick(false)
             navigation.navigate(SCREEN_CONSTANTS.ALARMS)
         }
+		else{
+			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY)
+		}
 	}
 
 	function navigateToDeviceSetup() {
@@ -105,7 +108,7 @@ const LiveTracking = ({navigation}) => {
 	);
 }
 
-const data = ['Geo Fence', 'Sensor Information', 'Alarms']
+const data = ['Geo Fence', 'Sensor Information', 'Alarms',"Trip History"]
 
 const styles = StyleSheet.create({
 	container: {
