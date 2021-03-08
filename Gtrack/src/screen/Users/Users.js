@@ -37,7 +37,7 @@ const Users = ({navigation}) => {
     subUserData: getSubuserState(state)
   }))
 
-  searchData = subUserData.subUser
+  searchData = subUserData
   const user_id = loginData.id ? loginData.id : null
   const dispatch = useDispatch()
 
