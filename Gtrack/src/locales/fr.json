@@ -252,7 +252,9 @@
     "Rate_Us_String": "How would you rate your experience with us ?",
     "Excellent": "Excellent",
     "Poor":"Poor",
-    "Empty_Alarm_Name":"Enter alarm name"
+    "Empty_Alarm_Name":"Enter alarm name",
+    "Trip History": "Trip History",
+    "Alarm_Type":"Alarm Type"
 
 
 }

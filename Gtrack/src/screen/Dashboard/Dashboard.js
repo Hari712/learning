@@ -23,10 +23,9 @@ import RecentAlarms from './RecentAlarm'
 const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)  
-  const [deviceId, setDeviceId] = useState();
   const [isMenuClick, setIsMenuClick] = useState(0)
-  const [ownerActive, setOwnerActive] = useState(0);
-  const [regularActive, setRegularActive] = useState(0);
+  const [dropDownPos, setDropDownPos] = useState();
+  const [selectedRole, setSelectedRole] = useState('all')
 
   
   const dispatch = useDispatch()
@@ -50,21 +49,16 @@ const Dashboard = ({ navigation }) => {
 
   useEffect(() => {
     fetchDeviceDetails()
-    fetchCounts()
+   // fetchCounts()
   }, [])
 
-  // useEffect(() => {
-  //   fetchDeviceRecentAlarms()
-  // },[deviceId])
-
-  // function fetchDeviceRecentAlarms() {
-  //   AppManager.showLoader()
-  //   dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(user_id, deviceId, onSuccess, onError))    
-  // }
+  useEffect(()=>{
+    fetchCounts()
+  },[selectedRole])
 
   function fetchCounts() {
     AppManager.showLoader()
-    dispatch(DashboardActions.requestActiveInactiveCount(user_id, onSuccess, onError))
+    dispatch(DashboardActions.requestActiveInactiveCount(user_id, selectedRole, onSuccess, onError))
   }
 
   function fetchDeviceDetails() {
@@ -75,6 +69,7 @@ const Dashboard = ({ navigation }) => {
   const onSuccess = (data) => {
     AppManager.hideLoader()
     console.log("Success",data)
+    setIsClickDownArrow(false)
   }
 
   const onError = (error) => {
@@ -82,11 +77,47 @@ const Dashboard = ({ navigation }) => {
     console.log("Error",error)
   }
 
+  const onRoleHandle = (item,key) => {
+    (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
+    if(item == 'All Users') {
+      setSelectedRole('all')
+    }else if(item == 'Regular') {
+      setSelectedRole('regular')
+    }else{
+      setSelectedRole('owner')
+    }
+    fetchCounts()
+  }
+
 
   // Active user component
   const ActiveUser = () => { 
     return (
-      <View style={styles.activeUserMainView}>
+      <View>
+        <View style={styles.mainViewStyle}>
+
+          <View style={styles.leftMainViewStyle}>
+            <Text style={{ fontSize: FontSize.FontSize.small, fontWeight: 'bold', color: ColorConstant.BLACK }} >Users View</Text>
+          </View>
+
+          <View style={styles.rightMainViewStyle}>
+            <Text style={styles.allUsersTextStyle}>All Users</Text>
+            <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
+            <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
+              <FullScreenIcon style={styles.fullScreenStyle} resizeMode='contain'/>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => { fetchCounts() }} >
+              <RefreshIcon style={styles.refreshImageStyle} resizeMode='contain'/>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+      
+      <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} >        
 
         { 
           countsInfo && countsInfo.map((item, key)=>{
@@ -122,7 +153,21 @@ const Dashboard = ({ navigation }) => {
               </View>
             </ShadowView>
           )})
-        }   
+        }
+
+        </View> 
+
+        {isClickDownArrow ?
+              <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
+                {User.map((item, key) =>
+                  <TouchableOpacity  key={key} onPress={()=> onRoleHandle(item,key)}>
+                    <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
+                    {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
+                  </TouchableOpacity>
+                )
+                }
+              </View>
+              : null}
 
       </View>
     )
@@ -192,50 +237,16 @@ const Dashboard = ({ navigation }) => {
   return (
     <ScrollView>
       <SafeAreaView style={styles.container}>
-        <View style={styles.mainViewStyle}>
 
-          <View style={styles.leftMainViewStyle}>
-            <Text style={{ fontSize: FontSize.FontSize.small, fontWeight: 'bold', color: ColorConstant.BLACK }} >Users View</Text>
-          </View>
+      <LiveTrackingDashboard />
 
-          <View style={styles.rightMainViewStyle}>
-            <Text style={styles.allUsersTextStyle}>All Users</Text>
-            <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
-            <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
-            </TouchableOpacity>
+      <DeviceSummary />
 
-            <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
-              <FullScreenIcon style={styles.fullScreenStyle} resizeMode='contain'/>
-            </TouchableOpacity>
+      <RecentAlarms deviceList={deviceDetails}/>
 
-            <TouchableOpacity onPress={() => { fetchCounts() }} >
-              <RefreshIcon style={styles.refreshImageStyle} resizeMode='contain'/>
-            </TouchableOpacity>
-          </View>
-      
-        </View>
-
-        {isClickDownArrow ?
-              <View style={styles.userMenu}>
-                {User.map((item, key) =>
-                  <TouchableOpacity  key={key} onPress={()=> (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)}>
-                    <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
-                    {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
-                  </TouchableOpacity>
-                )
-                }
-              </View>
-              : null}
+      {/* {deviceDetails?<RecentAlarms deviceList={deviceDetails}/>:null} */}
 
         <ActiveUser />
-
-        <DeviceSummary />
-
-        <RecentAlarms deviceList={deviceDetails}/>
-
-       {/* {deviceDetails?<RecentAlarms deviceList={deviceDetails}/>:null} */}
-
-        <LiveTrackingDashboard />
 
       </SafeAreaView>
       
@@ -254,10 +265,11 @@ const styles = StyleSheet.create({
 
   mainViewStyle: {
     alignItems: 'center',
+    backgroundColor:ColorConstant.WHITE,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: hp(3),
-    zIndex:2,
+    marginTop: hp(1),
+    zIndex:10,
   },
   outerStyle:{
     height: hp(5),
@@ -276,7 +288,7 @@ const styles = StyleSheet.create({
   leftMainViewStyle: {
     paddingLeft: wp(5),
     paddingRight: wp(3),
-    paddingBottom: hp(3)
+    // paddingBottom: hp(1)
   },
   summary: {
     fontSize: hp(1.4), 
@@ -297,7 +309,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: wp(6),
     paddingLeft: wp(3),
-    paddingBottom: hp(3)
+    // paddingBottom: hp(0)
   },
   alertText: {
     marginLeft: wp(3), 
@@ -353,11 +365,13 @@ const styles = StyleSheet.create({
 
   activeUserMainView: {
     justifyContent: 'space-evenly',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor:ColorConstant.WHITE
   },
 
   cardContainer: {
     backgroundColor: ColorConstant.WHITE,
+    marginVertical:hp(2),
     width: '45%',
     // height: hp(25),
     paddingBottom:hp(3),
@@ -398,14 +412,14 @@ const styles = StyleSheet.create({
     paddingBottom:50
   },
   userMenu: {
-		backgroundColor: 'white',
+		backgroundColor: ColorConstant.WHITE,
 		padding: 5,
 		paddingVertical: hp(1.5),
-    right: wp(26),
-    zIndex:10,
+    right: wp(24),
+    //zIndex:10,
 		borderRadius: 16,
 		width: '30%',
-		top: hp(6),
+		bottom: hp(11),
 		justifyContent: 'space-between',
 		position: 'absolute',
 		shadowColor: ColorConstant.GREY,

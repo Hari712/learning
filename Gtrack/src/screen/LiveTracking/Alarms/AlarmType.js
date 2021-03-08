@@ -17,7 +17,7 @@ import { isEmpty } from 'lodash';
 
 const AlarmType = ({navigation,route}) => {
     
-  const { alarmType, selectedDeviceList} = route.params
+  const { alarmType, selectedDeviceList, notificationType} = route.params
   
   const dispatch = useDispatch()
 
@@ -42,7 +42,6 @@ const AlarmType = ({navigation,route}) => {
     
     if(route){
       const { editData } = route.params;
-
       if(editData){  
         setAlarmName(editData.notification.attributes.name)      
         { editData.notification.attributes.everyday? setSelectedCheckbox(0) :
@@ -145,6 +144,7 @@ const AlarmType = ({navigation,route}) => {
           "always" : false,
           "notificators" : notification ? "mail,web" : null,
           "attributes" : {
+            "alarms": notificationType,
             "name": alarmName,
             "everyday": everyday,              
             "weekdays": weekdays,
@@ -165,6 +165,7 @@ const AlarmType = ({navigation,route}) => {
           "always" : false,
           "notificators" : notification ? "mail,web" : null,
           "attributes" : {
+            "alarms": notificationType,
             "name": alarmName,
             "everyday": everyday,              
             "weekdays": weekdays,
@@ -179,6 +180,7 @@ const AlarmType = ({navigation,route}) => {
   }}
 
   function onAddSuccess(data) {
+    console.log("data",data)
     AppManager.hideLoader()  
     let message  
     if(route && route.params && route.params.editData){

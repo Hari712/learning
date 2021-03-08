@@ -4706,6 +4706,55 @@ function RateUsDialogIcon(props) {
   )
 }
 
+function CalenderIconWhite(props) {
+  return (
+    <Svg
+      data-name="calendar (3)"
+      width={12.199}
+      height={12.199}
+      viewBox="0 0 12.199 12.199"
+      {...props}
+    >
+      <Path
+        data-name="Path 4745"
+        d="M10.626.953H9.53V.381a.381.381 0 00-.762 0v.572H3.431V.381a.381.381 0 00-.762 0v.572h-1.1A1.574 1.574 0 000 2.526v8.1A1.574 1.574 0 001.572 12.2h9.054a1.574 1.574 0 001.574-1.574v-8.1A1.574 1.574 0 0010.626.953zm.81 9.673a.81.81 0 01-.81.81H1.572a.81.81 0 01-.81-.81V4.312a.119.119 0 01.119-.119h10.436a.119.119 0 01.119.119z"
+        fill="#fff"
+      />
+    </Svg>
+  )
+}
+
+function CalenderIconBlue(props) {
+  return (
+    <Svg
+      data-name="calendar (3)"
+      width={13.967}
+      height={13.967}
+      viewBox="0 0 13.967 13.967"
+      {...props}
+    >
+      <Path
+        data-name="Path 4745"
+        d="M12.166 1.091h-1.254V.436a.436.436 0 00-.873 0v.655H3.928V.436a.436.436 0 00-.873 0v.655H1.8A1.8 1.8 0 000 2.892v9.275a1.8 1.8 0 001.8 1.8h10.366a1.8 1.8 0 001.8-1.8V2.892a1.8 1.8 0 00-1.8-1.801zm.927 11.075a.927.927 0 01-.927.927H1.8a.927.927 0 01-.927-.927V4.937a.136.136 0 01.136-.137h11.948a.136.136 0 01.136.136z"
+        fill="#06418e"
+      />
+    </Svg>
+  )
+}
+
+function LocationIcon(props) {
+  return (
+    <Svg width={12.007} height={16.01} viewBox="0 0 12.007 16.01" {...props}>
+      <Path
+        data-name="location-pin (1)"
+        d="M9 0a6.032 6.032 0 00-6 6.047c0 4.738 5.439 9.631 5.671 9.836a.5.5 0 00.666 0c.231-.206 5.671-5.1 5.671-9.837A6.032 6.032 0 009 0zm0 9.339A3.335 3.335 0 1112.339 6 3.339 3.339 0 019 9.339z"
+        transform="translate(-3)"
+        fill="#fff"
+      />
+    </Svg>
+  )
+}
+
 export {
   BarCodeScanIcon,
   CompleteSetupImage,
@@ -4823,5 +4872,8 @@ export {
   MenuIconClicked,
   LoginIcon,
   CrossIconBlue,
-  RateUsDialogIcon
+  RateUsDialogIcon,
+  CalenderIconBlue,
+  CalenderIconWhite,
+  LocationIcon
 }

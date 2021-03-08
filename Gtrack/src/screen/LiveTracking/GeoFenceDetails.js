@@ -40,7 +40,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     useEffect(() => { 
         if(editingData) {
-            console.log("details",editingData.name)
+            console.log("details",editingData)
             setName(editingData.name)
             setDescrption(editingData.description) 
             //setColorPicker(editingData.attributes.color)
@@ -75,6 +75,20 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onTapSave() {
         AppManager.showLoader()
+        if(editingData){
+            const requestBody = {
+                area: selectedArea,
+                attributes: {
+                    color: "#E87575"
+                },
+                calendarId: 0,
+                description: description,
+                id: editingData.id,
+                name: name
+            }
+            console.log("bodyedit",requestBody)
+            dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
+        } else {
         const requestBody = {
             area: selectedArea,
             attributes: {
@@ -85,7 +99,10 @@ const GeoFenceDetails = ({ navigation, route }) => {
             id: null,
             name: name
         }
+        console.log("body",requestBody)
         dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
+    }
+        
         // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
         // setIsClickOnSave(!isClickOnSave),
         // setName(name),
@@ -97,7 +114,20 @@ const GeoFenceDetails = ({ navigation, route }) => {
         // setUploadImage(uploadImage)
     }
 
+    function onUpdateSuccess(data) { 
+        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
+        
+    }
+
+    function onUpdateError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
+        }
+
     function onSuccess(data) { 
+        console.log("createNewdata",data)
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
@@ -105,6 +135,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
+        console.log("createNewdatalink",data)
         AppManager.hideLoader()
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
@@ -163,7 +194,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         />
                     </View>
 
-                    <View style={styles.dropDownMainView}>
+                    {/* <View style={styles.dropDownMainView}>
                         <View style={styles.dropdownView}>
                             <DropDown
                                 defaultValue={fontsize}
@@ -188,17 +219,17 @@ const GeoFenceDetails = ({ navigation, route }) => {
                                 dataList={fontsizeList}
                                 outerStyle={{ marginBottom: hp(2) }}
                             />
-                        </View>
+                        </View> */}
 
                         {/* {uploadImage ? */}
-                        <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
+                        {/* <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
                             <Image source={images.geoFence.uploadGrey} resizeMode="contain" />
                             <Text style={styles.uploadText}>{translate("Upload Image")}</Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                         {/* :
                             <Image source ={{uri:uploadImage}}/> */}
                         {/* } */}
-                    </View>
+                    {/* </View> */}
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
