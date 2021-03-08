@@ -18,6 +18,7 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
 import RecentAlarms from './RecentAlarm'
 import DeviceSummary from './DeviceSummary'
+import ActiveUser from './ActiveUser'
 
 const Dashboard = ({ navigation }) => {
 
@@ -51,14 +52,14 @@ const Dashboard = ({ navigation }) => {
    // fetchCounts()
   }, [])
 
-  useEffect(()=>{
-    fetchCounts()
-  },[selectedRole])
+  // useEffect(()=>{
+  //   fetchCounts()
+  // },[selectedRole])
 
-  function fetchCounts() {
-    AppManager.showLoader()
-    dispatch(DashboardActions.requestActiveInactiveCount(user_id, selectedRole, onSuccess, onError))
-  }
+  // function fetchCounts() {
+  //   AppManager.showLoader()
+  //   dispatch(DashboardActions.requestActiveInactiveCount(user_id, selectedRole, onSuccess, onError))
+  // }
 
   function fetchDeviceDetails() {
     AppManager.showLoader()
@@ -76,101 +77,101 @@ const Dashboard = ({ navigation }) => {
     console.log("Error",error)
   }
 
-  const onRoleHandle = (item,key) => {
-    (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
-    if(item == 'All Users') {
-      setSelectedRole('all')
-    }else if(item == 'Regular') {
-      setSelectedRole('regular')
-    }else{
-      setSelectedRole('owner')
-    }
-    fetchCounts()
-  }
+  // const onRoleHandle = (item,key) => {
+  //   (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
+  //   if(item == 'All Users') {
+  //     setSelectedRole('all')
+  //   }else if(item == 'Regular') {
+  //     setSelectedRole('regular')
+  //   }else{
+  //     setSelectedRole('owner')
+  //   }
+  //   fetchCounts()
+  // }
 
 
   // Active user component
-  const ActiveUser = () => { 
-    return (
-      <View>
-        <View style={styles.mainViewStyle}>
+  // const ActiveUser = () => { 
+  //   return (
+  //     <View>
+  //       <View style={styles.mainViewStyle}>
 
-          <View style={styles.leftMainViewStyle}>
-            <Text style={{ fontSize: FontSize.FontSize.small, fontWeight: 'bold', color: ColorConstant.BLACK }} >Users View</Text>
-          </View>
+  //         <View style={styles.leftMainViewStyle}>
+  //           <Text style={{ fontSize: FontSize.FontSize.small, fontWeight: 'bold', color: ColorConstant.BLACK }} >Users View</Text>
+  //         </View>
 
-          <View style={styles.rightMainViewStyle}>
-            <Text style={styles.allUsersTextStyle}>All Users</Text>
-            <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
-            <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
-            </TouchableOpacity>
+  //         <View style={styles.rightMainViewStyle}>
+  //           <Text style={styles.allUsersTextStyle}>All Users</Text>
+  //           <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
+  //           <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
+  //           </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
-              <FullScreenIcon style={styles.fullScreenStyle} resizeMode='contain'/>
-            </TouchableOpacity>
+  //           <TouchableOpacity onPress={() => { navigation.navigate(SCREEN_CONSTANTS.USERS) }} >
+  //             <FullScreenIcon style={styles.fullScreenStyle} resizeMode='contain'/>
+  //           </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => { fetchCounts() }} >
-              <RefreshIcon style={styles.refreshImageStyle} resizeMode='contain'/>
-            </TouchableOpacity>
-          </View>
+  //           <TouchableOpacity onPress={() => { fetchCounts() }} >
+  //             <RefreshIcon style={styles.refreshImageStyle} resizeMode='contain'/>
+  //           </TouchableOpacity>
+  //         </View>
 
-        </View>
+  //       </View>
       
-      <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} >        
+  //     <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} >        
 
-        { 
-          countsInfo && countsInfo.map((item, key)=>{
-          return(
-            <ShadowView key={key} style={styles.cardContainer}>
-              <Text style={styles.activeUserTextStyle}>{item.role}</Text>
-              <View style={styles.activeUserView}>
-                <ShadowView style={styles.shadowContainer}>
+  //       { 
+  //         countsInfo && countsInfo.map((item, key)=>{
+  //         return(
+  //           <ShadowView key={key} style={styles.cardContainer}>
+  //             <Text style={styles.activeUserTextStyle}>{item.role}</Text>
+  //             <View style={styles.activeUserView}>
+  //               <ShadowView style={styles.shadowContainer}>
 
-                  <AnimatedCircularProgress
-                    size={hp(13)}
-                    backgroundWidth={hp(1)}
-                    width={9}
-                    fill={round((100*item.active/(item.active+item.inactive)),2)}
-                    rotation={200}
-                    lineCap="round"
-                    style={{ borderRadius: hp(6.5)}}
-                    tintTransparency={false}
-                    tintColor={ColorConstant.GREEN}
-                    onAnimationComplete={() => console.log('onAnimationComplete')}
-                    backgroundColor={ColorConstant.WHITE}
-                  >
-                    {
-                      (fill) => (
-                        <View style={{ alignItems: 'center'}} >
-                          <Text style={styles.percentage}> {round((100*item.active/(item.active+item.inactive)),2)}% </Text>
-                          <Text style={styles.textStyle}>Active</Text>
-                        </View>
-                      )
-                    }
-                  </AnimatedCircularProgress>
-                </ShadowView>
-              </View>
-            </ShadowView>
-          )})
-        }
+  //                 <AnimatedCircularProgress
+  //                   size={hp(13)}
+  //                   backgroundWidth={hp(1)}
+  //                   width={9}
+  //                   fill={round((100*item.active/(item.active+item.inactive)),2)}
+  //                   rotation={200}
+  //                   lineCap="round"
+  //                   style={{ borderRadius: hp(6.5)}}
+  //                   tintTransparency={false}
+  //                   tintColor={ColorConstant.GREEN}
+  //                   onAnimationComplete={() => console.log('onAnimationComplete')}
+  //                   backgroundColor={ColorConstant.WHITE}
+  //                 >
+  //                   {
+  //                     (fill) => (
+  //                       <View style={{ alignItems: 'center'}} >
+  //                         <Text style={styles.percentage}> {round((100*item.active/(item.active+item.inactive)),2)}% </Text>
+  //                         <Text style={styles.textStyle}>Active</Text>
+  //                       </View>
+  //                     )
+  //                   }
+  //                 </AnimatedCircularProgress>
+  //               </ShadowView>
+  //             </View>
+  //           </ShadowView>
+  //         )})
+  //       }
 
-        </View> 
+  //       </View> 
 
-        {isClickDownArrow ?
-              <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
-                {User.map((item, key) =>
-                  <TouchableOpacity  key={key} onPress={()=> onRoleHandle(item,key)}>
-                    <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
-                    {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
-                  </TouchableOpacity>
-                )
-                }
-              </View>
-              : null}
+  //       {isClickDownArrow ?
+  //             <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
+  //               {User.map((item, key) =>
+  //                 <TouchableOpacity  key={key} onPress={()=> onRoleHandle(item,key)}>
+  //                   <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
+  //                   {key != User.length - 1 ? <View style={styles.horizontalLine} /> : null}
+  //                 </TouchableOpacity>
+  //               )
+  //               }
+  //             </View>
+  //             : null}
 
-      </View>
-    )
-  }
+  //     </View>
+  //   )
+  // }
 
   return (
     <ScrollView>
@@ -193,7 +194,7 @@ const Dashboard = ({ navigation }) => {
 
 }
 
-const User =["All Users","Regular","Owner"]
+// const User =["All Users","Regular","Owner"]
 
 const styles = StyleSheet.create({
   container: {

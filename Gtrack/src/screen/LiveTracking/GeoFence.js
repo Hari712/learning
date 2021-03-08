@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList, RefreshControl } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -13,7 +14,6 @@ import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon, BackIcon } from '../../component/SvgComponent';
 import AppManager from '../../constants/AppManager';
 import { isCircle } from '../../utils/helper';
-import { toNumber } from 'lodash';
 
 const GeoFence = ({ navigation }) => {
 
