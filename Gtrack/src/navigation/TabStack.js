@@ -79,6 +79,8 @@ const UsersStackNavigator = () => {
         <UsersStack.Navigator initialRouteName="Users" headerMode="screen" screenOptions={ScreenOptions} >
             <UsersStack.Screen name={SCREEN_CONSTANTS.USERS} component={Users} />
             <UsersStack.Screen name={SCREEN_CONSTANTS.ADD_USER} component={AddUser} />
+            <UsersStack.Screen name={SCREEN_CONSTANTS.PROFILE} component={Profile} />
+            <UsersStack.Screen name={SCREEN_CONSTANTS.EDIT_PROFILE} component={EditProfile} />
         </UsersStack.Navigator>
     )
 }
