@@ -1,5 +1,5 @@
 import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, TextInput, RefreshControl, FlatList} from 'react-native';
+import { View, StyleSheet,Text, Image,TouchableOpacity, TextInput, RefreshControl, FlatList, ScrollView} from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { getLoginState, getSubuserState } from '../Selector'
@@ -12,6 +12,7 @@ import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { UsersEditIcon, EmailIcon, UserAddIcon, FilterIcon, FilterIconClicked, PhoneIcon, CloseIcon, RadioButtonIcon, RadioButtonIconClicked } from '../../component/SvgComponent';
 import { Dialog } from 'react-native-simple-dialogs'
+import NavigationService from '../../navigation/NavigationService';
 
 let searchData;
 
@@ -35,9 +36,6 @@ const Users = ({navigation}) => {
     loginData: getLoginState(state),
     subUserData: getSubuserState(state)
   }))
-
-  console.log("khushi1",subUserData)
-
 
   searchData = subUserData
   const user_id = loginData.id ? loginData.id : null
@@ -91,7 +89,7 @@ const Users = ({navigation}) => {
   }
 
   const renderItem = ({item,key}) => {
-    return(  
+    return( 
     <View style={styles.cardContainer} key={key}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
@@ -155,10 +153,8 @@ const Users = ({navigation}) => {
           <View style={styles.horizontalLine} />
             <View style={styles.emailPhone}>
               <EmailIcon />
-              {/* <Image style={styles.emailImage} source={images.user.email} /> */}
               <Text style={styles.emailText}>    {item.email}</Text>
               <PhoneIcon/>
-              {/* <Image style={styles.phoneImage} source={images.user.phone} /> */}
               <Text style={styles.phoneText}>  {item.phoneNo}</Text>
             </View>
     </View>
@@ -308,7 +304,81 @@ const Users = ({navigation}) => {
     const onRefresh = () => {
       setIsRefreshing(true)
       dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
-  }
+    }
+
+
+const AdminData = () => {
+  
+  return(
+    <View style={[styles.cardContainer]}>
+
+    {/* Blue top head */}
+    <View style={styles.blueBox}>
+        <Text style={styles.blueBoxTitle}>{loginData.firstName} {loginData.lastName}</Text>
+        <TouchableOpacity style={{marginLeft:hp(2)}}>
+          <UsersEditIcon onPress={()=>NavigationService.push(SCREEN_CONSTANTS.PROFILE)} />
+        </TouchableOpacity>       
+    </View>
+
+    {/* White Body container */}
+    <View style={styles.whiteContainer}>
+      <View style={styles.whiteSubView} >
+        <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
+        {loginData.role.map((role,key) =>
+          <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text> )}       
+      </View>
+      <View style={{flexDirection:'column',flex:1}} >
+        <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>
+        {loginData.role.map((role,key) =>
+        <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular User" : "Admin"}</Text> )}      
+      </View>
+      <View style={{flexDirection:'column'}}>
+        <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
+        <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
+            <Text style={styles.whiteContainerSubText}>{loginData && loginData.group && loginData.group[0]?loginData.group[0].groupName :"No Group Assigned"} </Text>  
+            <Tooltip
+              popover={
+                <View>
+                  {loginData.group && loginData.group.map((element, index) => {
+                    if(index>0)
+                      return(
+                        <Text key={index} style={{ fontSize:10,fontFamily:'Nunito-Regular'}}>
+                          {element.groupName}
+                        </Text>
+                      )
+                    })}
+                </View>
+              } 
+              backgroundColor={ColorConstant.WHITE}
+              overlayColor={ColorConstant.TRANSPARENT}
+              pointerStyle={{elevation:0.1,borderRightWidth:4,borderLeftWidth:4}}
+              containerStyle={{borderColor:ColorConstant.ORANGE, borderWidth:1, borderRadius:6}}
+            >           
+              {loginData.group && loginData.group.length>1?
+                <Text style={{fontSize:10,fontFamily:'Nunito-SemiBold',backgroundColor:ColorConstant.LIGHTGREY,marginLeft:2,padding:2,borderColor:ColorConstant.GREY,borderRadius:4,borderWidth:1}}>
+                  +{loginData.group.length-1}
+                </Text>
+                :null
+              }
+            </Tooltip>               
+        </View>              
+        
+      </View> 
+
+    </View>
+
+    {/* Email and Phone */}
+    <View style={styles.horizontalLine} />
+      <View style={styles.emailPhone}>
+        <EmailIcon />
+          <Text style={styles.emailText}>    {loginData.email}</Text>
+        <PhoneIcon/>
+          <Text style={styles.phoneText}>  {loginData.phone}</Text>
+      </View>
+</View>
+
+  )
+}   
 
 
 return ( 
@@ -318,23 +388,23 @@ return (
       {searchBar()} 
       </View>
   
-      {subUserData && subUserData.length > 0 ?
-      <FlatList
-        data={searchData}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-        refreshControl={
-          <RefreshControl 
-            refreshing={isRefreshing}
-            onRefresh={onRefresh}     
-          />
-        }
-      /> 
-        :
-      <View style={{alignItems:'center',marginVertical:hp(32)}}>
-       <Text style={{fontFamily:"Nunito-Regular"}}>No records found</Text>
-      </View>
-      }
+     <ScrollView>
+
+        {AdminData()}
+
+        <FlatList
+          data={searchData}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()}
+          refreshControl={
+            <RefreshControl 
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}     
+            />
+          }
+        /> 
+
+    </ScrollView>
 
       {filterDialog()} 
 
