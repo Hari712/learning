@@ -11,8 +11,6 @@ const GeofenceList = ( props ) => {
 
     const { item, setActiveGeofence, setSelectedDevice, setDialogVisible, dialogVisible, setGeofenceId, setGeofenceName, setDeleteDialogBox, deleteDialogBox } = props
 
-    console.log("khusho", item.geofence.name)
-
     const { isRegular} = useSelector(state => ({
         isRegular: isRoleRegular(state)
     }))
