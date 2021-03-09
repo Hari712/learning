@@ -14,6 +14,7 @@ import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { GeoFenceListIcon, PinIcon, GeoFenceTrashIcon, BackIcon } from '../../component/SvgComponent';
 import AppManager from '../../constants/AppManager';
 import { isCircle } from '../../utils/helper';
+import GeofenceList from './GeofenceList';
 
 const GeoFence = ({ navigation }) => {
 
@@ -85,50 +86,26 @@ const GeoFence = ({ navigation }) => {
         AppManager.showSimpleMessage('success', { message: "Geofence deleted successfully", description: '', floating: true })
         dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
         AppManager.hideLoader()
-      }
+    }
     
-      function onGeofenceDeleteError(error) {
+    function onGeofenceDeleteError(error) {
         AppManager.hideLoader()
         console.log("Error",error)  
-      }
+    }
 
-    const GeoFenceInfoItem = ({ item }) => {
-        return (
-            
-            <TouchableOpacity style={styles.cardContainer} onPress={() => { 
-                setActiveGeofence(item)
-                setSelectedDevice(item.deviceList)
-                setDialogVisible(!dialogVisible)
-            }}>
-                <View style={styles.blueBox}>
-                    <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
-                    { !isRegular ?
-                    <TouchableOpacity style={{padding:hp(1)}} onPress={() => { 
-                        setGeofenceId(item.geofence.id)
-                        setGeofenceName(item.geofence.name)
-                        setDeleteDialogBox(!deleteDialogBox)
-                    }}>
-                        <GeoFenceTrashIcon/>
-                    </TouchableOpacity> : null}
-                </View>
-
-                <View style={styles.whiteContainer}>
-                    <View style={styles.GroupMainView}>
-                        <Text style={styles.whiteContainerText}>Group</Text>
-                        <Text style={styles.whiteContainerSubText}>{item.GroupData}</Text>
-                    </View>
-
-                    <View style={styles.deviceNameMainView}>
-                        <Text style={styles.whiteContainerText}>Device Name</Text>
-                        {item.deviceList.map((device) => {
-                            return(
-                                <Text style={styles.whiteContainerSubText}>{device.deviceName}</Text>
-                            )
-                        })}
-                    </View>
-                </View>
-            </TouchableOpacity>
-
+    function GeoFenceInfoItem({ item }) {
+        return(
+            <GeofenceList  
+                item={item}
+                setActiveGeofence={setActiveGeofence}
+                setSelectedDevice={setSelectedDevice}
+                setDialogVisible={setDialogVisible}
+                dialogVisible={dialogVisible}
+                setGeofenceId={setGeofenceId}
+                setGeofenceName={setGeofenceName}
+                setDeleteDialogBox={setDeleteDialogBox}
+                deleteDialogBox={deleteDialogBox}
+            />
         )
     }
 
@@ -226,11 +203,6 @@ const GeoFence = ({ navigation }) => {
                                 <View style={[styles.deviceSummaryDetailView,{backgroundColor:activeGeofence ? activeGeofence.geofence.attributes.color : ColorConstant.WHITE}]}></View>
                             </View>
 
-                            {/* <View style={styles.fontSizeMainView}>
-                                <Text style={styles.mainTextStyle}>{translate("FontSize")}</Text>
-                                <Text style={styles.fontSizeStyle}>08</Text>
-                            </View> */}
-
                             <View style={styles.typeMainViewStyle}>
                                 <Text style={styles.mainTextStyle}>{translate("Type")}</Text>
                                 <Text style={styles.fontSizeStyle}>{type && type}</Text>
@@ -245,42 +217,8 @@ const GeoFence = ({ navigation }) => {
                                 })}
                             </View>
                         </View>
-
-                        {/* <View style={styles.secondRowMainView}>
-                            <View style={styles.visibilityMainView}>
-                                <Text style={styles.mainTextStyle}>{translate("Visibility")}</Text>
-                                <Text style={styles.fontSizeStyle}>02 to 20</Text>
-                            </View>
-
-                            <View style={styles.areaMainView}>
-                                <Text style={styles.mainTextStyle}>{translate("Area")}</Text>
-                                <Text style={styles.fontSizeStyle}>{area + " sq m"}</Text>
-                            </View>
-
-                            <View style={styles.perimeterMainView}>
-                                <Text style={styles.mainTextStyle}>{translate("Perimeter")}</Text>
-                                <Text style={styles.fontSizeStyle}>{perimeter} m</Text>
-                            </View>
-                        </View> */}
                     </View>
-                    {/* <View style={styles.secondRowMainView}>
-                        <View style={styles.descriptionMainStyle}>
-                            <Text style={styles.mainTextStyle}>{translate("Image")}</Text>
-                            <Image source={images.geoFence.Intersection} resizeMode='stretch' style={styles.intersectionImageStyle} />
-                        </View>
-                    </View> */}
                 </View>
-
-                {/* <View style={styles.secondRowMainView}>
-                    <View style={styles.descriptionMainStyle}>
-                        <Text style={styles.mainTextStyle}>{translate("Selected Devices")}</Text>
-                        {activeGeofence && activeGeofence.deviceList.map((device) =>{
-                            return(
-                                <Text style={styles.fontSizeStyle}>{device.deviceName}</Text>
-                            )
-                        })}
-                    </View>
-                </View> */}
             </View>
 
             <View style={styles.popUpCardContainer}>
