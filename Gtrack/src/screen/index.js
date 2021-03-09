@@ -21,12 +21,12 @@ import Manage from '../screen/Device&Asset/Manage';
 import AddUser from '../screen/Users/AddUser';
 import EditProfile from '../screen/Settings/Profile/EditProfile';
 import Notification from '../screen/Notification/Notification';
-import SensorInfo from '../screen/SensorInfo/SensorInfo';
-import DeviceInfo from '../screen/SensorInfo/DeviceInfo';
-import GeoFence from '../screen/LiveTracking/GeoFence';
-import GeoFenceCreateNew from '../screen/LiveTracking/GeoFenceCreateNew';
-import GeoFenceType from '../screen/LiveTracking/GeoFenceType';
-import GeoFenceDetails from '../screen/LiveTracking/GeoFenceDetails';
+import SensorInfo from '../screen/LiveTracking/SensorInfo/SensorInfo';
+import DeviceInfo from '../screen/LiveTracking/SensorInfo/DeviceInfo';
+import GeoFence from './LiveTracking/GeoFence/GeoFence';
+import GeoFenceCreateNew from './LiveTracking/GeoFence/GeoFenceCreateNew';
+import GeoFenceType from '../screen/LiveTracking/GeoFence/GeoFenceType';
+import GeoFenceDetails from './LiveTracking/GeoFence/GeoFenceDetails';
 import AdvanceSettings from '../screen/Settings/AdvanceSettings/AdvanceSettings';
 import Alarms from '../screen/LiveTracking/Alarms/Alarms'
 import CreateNew from '../screen/LiveTracking/Alarms/CreateNew'
@@ -43,8 +43,8 @@ import GetStarted from './GetStarted/GetStarted'
 import GeoFenceCreator from './LiveTracking/PolygonCreator'
 import SettingsChangePassCode from './Settings/ChangePasscode/SettingsChangePassCode'
 import TrackingDetails from './Dashboard/TrackingDetails'
-import GeoFenceCircle from './LiveTracking/GeoFenceCircle'
-import GeoFencePolyGon from './LiveTracking/GeoFencePolygon'
+import GeoFenceCircle from './LiveTracking/GeoFence/GeoFenceCircle'
+import GeoFencePolyGon from './LiveTracking/GeoFence/GeoFencePolygon'
 
 export {
     Splash,

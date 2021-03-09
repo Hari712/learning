@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList, RefreshControl } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { ColorConstant } from '../../constants/ColorConstants';
-import { FontSize, MapView} from '../../component';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { FontSize, MapView} from '../../../component';
 import { useSelector } from 'react-redux';
-import {  isRoleRegular } from '../Selector';
-import { GeoFenceTrashIcon } from '../../component/SvgComponent';
+import {  isRoleRegular } from '../../Selector';
+import { GeoFenceTrashIcon } from '../../../component/SvgComponent';
 
 const GeofenceList = ( props ) => {
 

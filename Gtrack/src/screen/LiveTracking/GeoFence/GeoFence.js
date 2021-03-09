@@ -2,18 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { ColorConstant } from '../../constants/ColorConstants';
-import { FontSize } from '../../component';
-import { translate } from '../../../App';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { FontSize } from '../../../component';
+import { translate } from '../../../../App';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGeofenceListInfo, getLoginState, isRoleRegular } from '../Selector';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
-import { BackIcon } from '../../component/SvgComponent';
-import AppManager from '../../constants/AppManager';
+import { getGeofenceListInfo, getLoginState, isRoleRegular } from '../../Selector';
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import * as LivetrackingActions from '../Livetracking.Action'
+import { BackIcon } from '../../../component/SvgComponent';
+import AppManager from '../../../constants/AppManager';
 import GeofenceList from './GeofenceList';
-import GeofenceEditDialog from '../../component/GeofenceEditDialog';
-import GeofenceDeleteDialog from '../../component/GeofenceDeleteDialog';
+import GeofenceEditDialog from '../../../component/GeofenceEditDialog';
+import GeofenceDeleteDialog from '../../../component/GeofenceDeleteDialog';
 
 const GeoFence = ({ navigation }) => {
 

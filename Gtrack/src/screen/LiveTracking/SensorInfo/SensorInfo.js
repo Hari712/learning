@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../constants/images';
-import { ColorConstant } from '../../constants/ColorConstants';
-import  { FontSize }from '../../component';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import  { FontSize }from '../../../component';
 import { FlatList } from 'react-native-gesture-handler';
-import { translate } from '../../../App'
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BackIcon, NextOrangeIcon } from '../../component/SvgComponent';
+import { translate } from '../../../../App'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon, NextOrangeIcon } from '../../../component/SvgComponent';
 
 const SensorInfo = ({ navigation }) => {
 

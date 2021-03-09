@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { ColorConstant } from '../../constants/ColorConstants';
-import { translate } from '../../../App'
-import { FontSize } from '../../component';
-import { BackIcon, ListIcon, SensorIcon } from '../../component/SvgComponent';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { translate } from '../../../../App'
+import { FontSize } from '../../../component';
+import { BackIcon, ListIcon, SensorIcon } from '../../../component/SvgComponent';
 
 
 const DeviceInfo = ({ navigation, route }) => {
