@@ -30,8 +30,8 @@ const Login = () => {
         isConnected: state.network.isConnected,
     }))
 
-    const [email, setEmail] = useState('khushbu.solanki@gmail.com') //Jjapee4@ekzero.com
-    const [password, setPassword] = useState('Khushi@123') //Jini@123
+    const [email, setEmail] = useState('') //Jjapee4@ekzero.com
+    const [password, setPassword] = useState('') //Jini@123
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo, setIsClickInfo] = useState(false)
 

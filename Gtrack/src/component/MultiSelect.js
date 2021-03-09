@@ -21,8 +21,8 @@ class MultiSelect extends React.Component {
     }
 
     condition(array1, array2) {
-        const newArray = JSON.stringify(array1.map((item)=>item.id).sort((a,b) => a > b ? 1 : -1)) === JSON.stringify(array2.map((item)=>item.id).sort((a,b) => a > b ? 1 : -1))
-        return (newArray)
+        const newArray = JSON.stringify(array1.map((item)=>item).sort((a,b) => a > b ? 1 : -1)) === JSON.stringify(array2.map((item)=>item).sort((a,b) => a > b ? 1 : -1))
+        return (array1.length==0 ? false : newArray)
     } 
 
     render() {
