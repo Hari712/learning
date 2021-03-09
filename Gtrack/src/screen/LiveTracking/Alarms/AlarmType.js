@@ -32,7 +32,7 @@ const AlarmType = ({navigation,route}) => {
     subUserData: getSubuserState(state)
   }))
 
-  const userdata = Object.values(subUserData.subUser).map((item)=> item.firstName+" "+item.lastName )
+  const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
   const [isIgnition, setIsIgnition] = useState(false)
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
   
@@ -120,7 +120,7 @@ const AlarmType = ({navigation,route}) => {
 
     let arrSelectedId = [];
     selectUser ? 
-    subUserData.subUser.filter((item)=> {      
+    subUserData.filter((item)=> {      
       selectUser.filter((selectedItem)=>{        
         if(item.firstName+" "+item.lastName === selectedItem){  
           arrSelectedId.push(item.id)

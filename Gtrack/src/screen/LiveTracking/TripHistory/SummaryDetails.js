@@ -2,21 +2,17 @@ import React, { useState, Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform, Button, FlatList } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import  { DropDown, TextField, FontSize }from '../../../component';
-import { getLoginState, getSubuserState } from '../../Selector'
+import  { FontSize }from '../../../component';
+import { getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
-import { translate } from '../../../../App';
-import { BackIcon, CalenderIcon, CalenderIconBlue, CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../component/SvgComponent';
-import DateTimePickerModal from "react-native-modal-datetime-picker"
-import Moment from 'moment'
+import {  CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService';
 
 const SummaryDetails = ({ navigation }) => {
 
-    const { loginData, subUserData } = useSelector(state => ({
-        loginData: getLoginState(state),
-        subUserData: getSubuserState(state)
+    const { loginData } = useSelector(state => ({
+        loginData: getLoginState(state)
     }))
 
     const dispatch = useDispatch()
