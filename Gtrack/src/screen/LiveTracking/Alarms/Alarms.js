@@ -97,7 +97,7 @@ const Alarms = ({navigation}) => {
   }
 
   const renderItem = ({item,index}) => {
-    // console.log("Item no: ",index, item)
+    
     const {attributes} = item.notification
     return(  
     <View style={styles.cardContainer} key={index}>

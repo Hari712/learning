@@ -1,5 +1,5 @@
-import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
+import React, { useState, useEffect} from 'react';
+import { View, StyleSheet,Text, Image,TouchableOpacity, ScrollView } from 'react-native';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -7,7 +7,7 @@ import {FontSize, MultiSelect, TextField} from '../../../component';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { CircleIcon, CircleIconSelected, CheckboxIcon, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
+import { CircleIcon, CircleIconSelected, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { getLoginInfo, getSubuserState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
@@ -273,7 +273,6 @@ return (
       </View>
 
       <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
-          {/* <CheckboxIcon/> */}
           <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
       </TouchableOpacity>
