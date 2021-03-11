@@ -31,9 +31,10 @@ const GeoFence = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
-    const { loginData, geofenceList } = useSelector(state => ({
+    const { loginData, geofenceList, isConnected } = useSelector(state => ({
         loginData: getLoginState(state),
-        geofenceList: getGeofenceListInfo(state)
+        geofenceList: getGeofenceListInfo(state),
+        isConnected: state.network.isConnected
     }))
 
     React.useLayoutEffect(() => {
@@ -76,15 +77,23 @@ const GeoFence = ({ navigation }) => {
     }
 
     function ondeleteGeofence() {
-        setDeleteDialogBox(false)   
-        AppManager.showLoader()  
-        dispatch(LivetrackingActions.requestDeleteGeofence(loginData.id, geofenceId, onGeofenceDeleteSuccess, onGeofenceDeleteError))
+        if (isConnected) {
+            setDeleteDialogBox(false)   
+            AppManager.showLoader()  
+            dispatch(LivetrackingActions.requestDeleteGeofence(loginData.id, geofenceId, onGeofenceDeleteSuccess, onGeofenceDeleteError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
 
     function onGeofenceDeleteSuccess(data) { 
-        AppManager.showSimpleMessage('success', { message: "Geofence deleted successfully", description: '', floating: true })
-        dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
-        AppManager.hideLoader()
+        if (isConnected) {
+            AppManager.showSimpleMessage('success', { message: "Geofence deleted successfully", description: '', floating: true })
+            dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
+            AppManager.hideLoader()
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
       }
     
       function onGeofenceDeleteError(error) {

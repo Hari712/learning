@@ -67,6 +67,8 @@ const Feedback = ({ navigation }) => {
                 AppManager.showLoader()
                 dispatch(SettingsActions.requestAddFeedback(requestBody, loginData.id, onSuccess, onError))
             }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
     }
 

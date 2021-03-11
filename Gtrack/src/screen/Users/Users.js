@@ -32,9 +32,10 @@ const Users = ({navigation}) => {
   const [IsRole, setIsRole] = useState()
   
 
-  const { loginData, subUserData } = useSelector(state => ({
+  const { loginData, subUserData, isConnected } = useSelector(state => ({
     loginData: getLoginState(state),
-    subUserData: getSubuserState(state)
+    subUserData: getSubuserState(state),
+    isConnected: state.network.isConnected,
   }))
 
   searchData = subUserData
@@ -73,8 +74,12 @@ const Users = ({navigation}) => {
   },[navigation]);
 
   function onChangeSwitch(item) {
-    AppManager.showLoader()
-    dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+    if (isConnected) {
+      AppManager.showLoader()
+      dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+    } else {
+      AppManager.showNoInternetConnectivityError()
+    }
   }
 
   function onChangeUserStatusSuccess(data) {
@@ -180,6 +185,7 @@ const Users = ({navigation}) => {
   }
 
   const filterApiCall = () => {
+    if (isConnected) {
     const requestBody =  {
       // "pageNumber" : 0,
        "pageSize" : 16,
@@ -201,34 +207,41 @@ const Users = ({navigation}) => {
       "sortHeader" : "id",
       "sortDirection" : "DESC"
     }
-  dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
+    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
+  } else {
+    AppManager.showNoInternetConnectivityError()
   }
+}
 
   const searchHandle = (keyword) => {
-    setSearchKeyword(keyword)
-    // AppManager.showLoader()
-    const requestBody =  {
-        // "pageNumber" : 0,
-        // "pageSize" : 5,
-        // "useMaxSearchAsLimit" : false,
-        "searchColumnsList" : [ 
-          {
-            "columnName" : "searchParam",
-            "searchStr" : keyword
-          },
-          // {
-          //   "columnName" : "role",
-          //   "searchStrList" : [ "ROLE_REGULAR", "ROLE_OWNER" ]
-          // }, 
-          {
-            "columnName" : "isDeactivated",
-            "searchStrList" : filterKeyword
-          } 
-        ],
-        "sortHeader" : "id",
-        "sortDirection" : "DESC"
-      }
-    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
+    if (isConnected) {
+      setSearchKeyword(keyword)
+      // AppManager.showLoader()
+      const requestBody =  {
+          // "pageNumber" : 0,
+          // "pageSize" : 5,
+          // "useMaxSearchAsLimit" : false,
+          "searchColumnsList" : [ 
+            {
+              "columnName" : "searchParam",
+              "searchStr" : keyword
+            },
+            // {
+            //   "columnName" : "role",
+            //   "searchStrList" : [ "ROLE_REGULAR", "ROLE_OWNER" ]
+            // }, 
+            {
+              "columnName" : "isDeactivated",
+              "searchStrList" : filterKeyword
+            } 
+          ],
+          "sortHeader" : "id",
+          "sortDirection" : "DESC"
+        }
+      dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
+    } else {
+      AppManager.showNoInternetConnectivityError()
+    }
   }
 
   const filterDialog = () => {

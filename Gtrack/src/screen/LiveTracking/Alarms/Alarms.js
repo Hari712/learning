@@ -14,9 +14,10 @@ import AppManager from '../../../constants/AppManager';
 
 const Alarms = ({navigation}) => {
 
-  const { isRegular, loginData, alarmListData } = useSelector(state => ({
+  const { isRegular, loginData, alarmListData, isConnected } = useSelector(state => ({
     isRegular: isRoleRegular(state),
     loginData: getLoginState(state),
+    isConnected: state.network.isConnected,
     alarmListData: getAlarmsListInfo(state)
   }))
 
@@ -78,9 +79,13 @@ const Alarms = ({navigation}) => {
   }
 
   function deleteAlarmConfirm() {
-    setDeleteDialogVisible(false)
-    AppManager.showLoader()
-    dispatch(LivetrackingActions.requestDeleteNotification(loginData.id, notificationId, onDeleteSuccess, onDeleteError)) 
+    if (isConnected) {
+      setDeleteDialogVisible(false)
+      AppManager.showLoader()
+      dispatch(LivetrackingActions.requestDeleteNotification(loginData.id, notificationId, onDeleteSuccess, onDeleteError)) 
+    } else {
+      AppManager.showNoInternetConnectivityError()
+    } 
   }
 
   const onDeleteSuccess = (data) => {

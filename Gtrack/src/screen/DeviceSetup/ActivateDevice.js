@@ -47,23 +47,27 @@ const ActivateDevice = ({ navigation }) => {
 
 
     function onTapActivateDevice() {
-        let message = ''
-        if (isEmpty(deviceId)) {
-            message = translate(AppConstants.EMPTY_DEVICE_ID)
-        } else if (isEmpty(deviceName)) {
-            message = translate(AppConstants.EMPTY_DEVICE_NAME)
-        }
-        if (!isEmpty(message)) {
-            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
-        } else {
-            AppManager.showLoader()
-            let requestBody = {
-                deviceDTO: {
-                    deviceId: deviceId,
-                    deviceName: deviceName
-                }
+        if (isConnected) {
+            let message = ''
+            if (isEmpty(deviceId)) {
+                message = translate(AppConstants.EMPTY_DEVICE_ID)
+            } else if (isEmpty(deviceName)) {
+                message = translate(AppConstants.EMPTY_DEVICE_NAME)
             }
-            dispatch(DeviceActions.requestAddDevice(user_id, requestBody, onSuccess, onError))
+            if (!isEmpty(message)) {
+                AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+            } else {
+                AppManager.showLoader()
+                let requestBody = {
+                    deviceDTO: {
+                        deviceId: deviceId,
+                        deviceName: deviceName
+                    }
+                }
+                dispatch(DeviceActions.requestAddDevice(user_id, requestBody, onSuccess, onError))
+            }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
 
     }

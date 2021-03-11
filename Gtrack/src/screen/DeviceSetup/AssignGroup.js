@@ -60,23 +60,27 @@ const AssignGroup = ({ navigation, route }) => {
     }
 
     function onTapNext() {
-        if (isEmpty(group)) {
-            AppManager.showSimpleMessage('warning', { message: 'Please select group', description: '', floating: true })
-        }
-        else {
-            let selectedGroups = groupList.filter((item) => item.groupName == group)
-            if (!isEmpty(selectedGroups)) {
-                let selectedGroup = selectedGroups[0]
-                let arrDeviceList = selectedGroups.devices ? selectedGroups.devices : []
-                let deviceobjs = mapKeys(arrDeviceList, 'id')
-                let devicelist = { ...deviceobjs, [device.id]: device }
-                let updatedArrList = Object.values(devicelist)
-                let requestBody = {
-                    groupDTO: { ...selectedGroup, ...{ devices: updatedArrList, isQuickAdd: false } }
-                }
-                AppManager.showLoader()
-                dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
+        if (isConnected) {
+            if (isEmpty(group)) {
+                AppManager.showSimpleMessage('warning', { message: 'Please select group', description: '', floating: true })
             }
+            else {
+                let selectedGroups = groupList.filter((item) => item.groupName == group)
+                if (!isEmpty(selectedGroups)) {
+                    let selectedGroup = selectedGroups[0]
+                    let arrDeviceList = selectedGroups.devices ? selectedGroups.devices : []
+                    let deviceobjs = mapKeys(arrDeviceList, 'id')
+                    let devicelist = { ...deviceobjs, [device.id]: device }
+                    let updatedArrList = Object.values(devicelist)
+                    let requestBody = {
+                        groupDTO: { ...selectedGroup, ...{ devices: updatedArrList, isQuickAdd: false } }
+                    }
+                    AppManager.showLoader()
+                    dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
+                }
+            }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
 
     }
@@ -95,17 +99,21 @@ const AssignGroup = ({ navigation, route }) => {
     }
 
     function onSubmit(item) {
-        AppManager.showLoader()
-        let selectedGroups = groupList.filter((item) => item.groupName == group)
-        let arrDeviceList = selectedGroups.devices ? selectedGroups.devices : []
-        let deviceobjs = mapKeys(arrDeviceList, 'id')
-        let devicelist = { ...deviceobjs, [device.id]: device }
-        let updatedArrList = Object.values(devicelist)
-        setGroup(item.result.groupDTO.groupName)
-        let requestBody = {
-            groupDTO: { ...item.result.groupDTO, ...{ devices: updatedArrList, isQuickAdd: false } }
+        if (isConnected) {
+            AppManager.showLoader()
+            let selectedGroups = groupList.filter((item) => item.groupName == group)
+            let arrDeviceList = selectedGroups.devices ? selectedGroups.devices : []
+            let deviceobjs = mapKeys(arrDeviceList, 'id')
+            let devicelist = { ...deviceobjs, [device.id]: device }
+            let updatedArrList = Object.values(devicelist)
+            setGroup(item.result.groupDTO.groupName)
+            let requestBody = {
+                groupDTO: { ...item.result.groupDTO, ...{ devices: updatedArrList, isQuickAdd: false } }
+            }
+            dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
-        dispatch(DeviceActions.requestLinkDeviceWithGroup(user_id, requestBody, onAssignGroupSuccess, onAssignGroupError))
     }
 
     function renderAddNewGroupDialog() {

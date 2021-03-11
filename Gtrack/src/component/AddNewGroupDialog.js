@@ -52,17 +52,21 @@ function AddNewGroupDialog(props) {
     }
 
     function onTapSubmit() {
-        if (isEmpty(groupName)) {
-            setgroupNameError(AppConstants.EMPTY_GROUP_NAME)
-        } else {
-            let requestBody = {
-                groupDTO: {
-                    groupName: groupName,
-                    isQuickAdd: false
+        if (isConnected) {
+            if (isEmpty(groupName)) {
+                setgroupNameError(AppConstants.EMPTY_GROUP_NAME)
+            } else {
+                let requestBody = {
+                    groupDTO: {
+                        groupName: groupName,
+                        isQuickAdd: false
+                    }
                 }
+                AppManager.showLoader()
+                dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onGroupAddSuccess, onGroupAddError))
             }
-            AppManager.showLoader()
-            dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onGroupAddSuccess, onGroupAddError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
     }
 
