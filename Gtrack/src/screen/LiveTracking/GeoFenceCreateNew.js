@@ -112,7 +112,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
-                    label="Select Device"
+                    label="Select Device*"
                     dataList={arrDeviceList} 
                     allText={translate("Select_all_string")}
                     hideSelectedDeviceLable={true}
