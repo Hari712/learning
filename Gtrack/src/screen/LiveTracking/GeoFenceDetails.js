@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, TextInput, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import { FontSize, TextField, DropDown }from '../../component';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FontSize, TextField  }from '../../component';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
