@@ -11,7 +11,6 @@ const DeleteConfirmationDialog = (props) => {
     const { isVisible, onSwipeComplete, onTapClose, onTapConfirm, text = 'Are you sure you really want to delete asset ?' } = props
 
     function hideDialog() {
-        console.log("khushi")
         onTapClose && onTapClose()
     }
 
