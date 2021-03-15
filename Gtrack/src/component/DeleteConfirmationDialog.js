@@ -11,6 +11,7 @@ const DeleteConfirmationDialog = (props) => {
     const { isVisible, onSwipeComplete, onTapClose, onTapConfirm, text = 'Are you sure you really want to delete asset ?' } = props
 
     function hideDialog() {
+        console.log("khushi")
         onTapClose && onTapClose()
     }
 
@@ -30,8 +31,8 @@ const DeleteConfirmationDialog = (props) => {
                 <View style={styles.textContainer}>
                     <Text style={styles.text}>{text}</Text>
                 </View>
-                <View style={styles.buttonContainer} onPress={() => hideDialog()}>
-                    <TouchableOpacity style={styles.buttonNo}>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => hideDialog()} style={styles.buttonNo}>
                         <Text style={styles.textNo}>No</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonYes} onPress={() => onConfirm()}>
