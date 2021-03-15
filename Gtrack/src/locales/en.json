@@ -88,7 +88,7 @@
     "Select_all_string": "Select All",
     "All_string": "All",
     "Geofence_CreateNew_string1": "Group Access",
-    "Geofence_CreateNew_string2": "GeoFence Type*",
+    "GeoFence_Type": "GeoFence Type*",
     "Search_here": "Search Here..",
     "Geofence_CreateNew_string3": "Change Radius",
     "Name": "Name",

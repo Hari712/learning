@@ -31,7 +31,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     const [selectedDeviceDetail, setSelectedDeviceDetail] = useState([])
     const [role, setRole] = useState();
     const [oldData, setOldData] = useState()
-    const DATA =['CIRCLE','POLYGON']
+    const DATA =['Circle','Polygon']
 
     const dispatch = useDispatch()
 
@@ -99,7 +99,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
-        role === 'CIRCLE' ?
+        role === 'Circle' ?
             NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail,editingData:oldData}) :
             NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail,editingData:oldData})
        //navigation.navigate('GeoFenceType', { type: role })
@@ -131,7 +131,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
             <View style={styles.dropDown}>
                 <View style={styles.dropDownSubView}>
                     <DropDown
-                        label={translate("Geofence_CreateNew_string2")}
+                        label={translate("GeoFence_Type")}
                         defaultValue={role}
                         valueSet={setRole}
                         dataList={DATA}
@@ -145,12 +145,16 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
                     />
                 </View>
             </View>
+            
             {/* {DATA.map((item,index) => */}
                 <View style={styles.buttonMainContainer}>
                     <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
                         <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigateToPolygonCreator()}  style={styles.nextButton}>
+                    <TouchableOpacity 
+                        disabled={!(selectedDevice.length > 0 && role)} 
+                        onPress={() => navigateToPolygonCreator()}  
+                        style={[styles.nextButton, {backgroundColor: (selectedDevice.length > 0 && role)  ? ColorConstant.BLUE : '#06418E50'}]}>
                         <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                     </TouchableOpacity>
                 </View>

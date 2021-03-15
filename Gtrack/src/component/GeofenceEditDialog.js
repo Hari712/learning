@@ -29,7 +29,7 @@ const GeofenceEditDialog = (props) => {
     const [coordinates, setCoordinates] = useState()
 
     const CIRCLE = (item) => {
-        setType("CIRCLE")
+        setType("Circle")
         setRadius(CIRCLE_REGEX.exec(item)[2])
         let rad = CIRCLE_REGEX.exec(item)[2]
         let lat = parseFloat(CIRCLE_REGEX.exec(item)[1].split(" ")[0])
@@ -44,7 +44,7 @@ const GeofenceEditDialog = (props) => {
     }
 
     const POLYGON = (item) => {
-        setType("POLYGON")
+        setType("Polygon")
         const re = /\(\((.*)\)\)/;
         const coord = item.match(re)[1].split(",").map((pos) => pos.split(" "))
         const cords = coord.map((item,key) =>{ return Platform.OS == 'ios'? 
