@@ -37,4 +37,10 @@ export const livetrackingReducer = createReducer(state = initialState, {
             geofenceList: action.data
         }
     },
+    [types.GET_ADD_GEOFENCE_RESPONSE](state, action) {
+        return {
+            ...state,
+            geofenceList: [action.data, ...state.geofenceList]
+        }
+    },
 })

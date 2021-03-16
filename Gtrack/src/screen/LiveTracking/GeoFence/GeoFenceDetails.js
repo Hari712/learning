@@ -37,6 +37,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const [saveButton, setSaveButton] = useState(false);
     const fontsizeList = ['08', '06', '04'];
     const [oldData, setOldData] = useState()
+    let response = { 
+        deviceList : [],
+        geofence: {},
+        isActive: null
+    }
 
     useEffect(() => { 
         if(editingData) {
@@ -115,6 +120,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onUpdateSuccess(data) { 
+        response.geofence = data.result
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
@@ -128,6 +134,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onSuccess(data) { 
         console.log("createNewdata",data)
+        response.geofence = data.result
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
@@ -136,6 +143,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onLinkSuccess(data) {
         console.log("createNewdatalink",data)
+        response.deviceList = devices
+        dispatch(LivetrackingActions.setAddGeofenceResponse(response))
         AppManager.hideLoader()
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
