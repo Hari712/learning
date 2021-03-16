@@ -125,6 +125,17 @@ function* requestUpdateGeofence(action) {
     }
 }
 
+function* requestEnableDisableGeofence(action) {
+    const { userId, geofenceId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ENABLE_DISABLE_GEOFENCE(userId, geofenceId)
+        const response = yield call(API.put, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
@@ -135,5 +146,6 @@ export function* watchLivetracking() {
     yield takeLatest(types.DELETE_GEOFENCE_REQUEST, requestDeleteGeofence),
     yield takeLatest(types.CREATE_NEW_GEOFENCE_REQUEST, requestAddGeofence),
     yield takeLatest(types.LINK_GEOFENCE_TO_DEVICES, requestLinkGeofenceToDevices),
-    yield takeLatest(types.UPDATE_GEOFENCE_REQUEST, requestUpdateGeofence)
+    yield takeLatest(types.UPDATE_GEOFENCE_REQUEST, requestUpdateGeofence),
+    yield takeLatest(types.ENABLE_DISABLE_GEOFENCE_REQUEST, requestEnableDisableGeofence)
 }

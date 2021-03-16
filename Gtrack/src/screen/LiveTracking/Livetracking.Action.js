@@ -98,3 +98,13 @@ export const requestUpdateGeofence = (userId, body, onSuccess, onError) => ({
     onError
 })
 
+export const enableDisableGeofence = (userId, geofenceId, onSuccess, onError) => ({
+    type: types.ENABLE_DISABLE_GEOFENCE_REQUEST,
+    userId,
+    geofenceId,
+    onSuccess,
+    onError
+})
+
+
+
