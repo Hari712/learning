@@ -60,7 +60,6 @@ const ActiveUser = () => {
         }else{
           setSelectedRole('owner')
         }
-        fetchCounts()
       }
 
     return (
