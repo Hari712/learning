@@ -57,15 +57,19 @@ function Group() {
     }
 
     function onTapSave() {
-        let arrSelectedDevices = arrDeviceList ? arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName)) : []
-            let requestBody = {
-                groupDTO: {
-                    groupName: group,
-                    devices: arrSelectedDevices
+        if (isConnected) {
+            let arrSelectedDevices = arrDeviceList ? arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName)) : []
+                let requestBody = {
+                    groupDTO: {
+                        groupName: group,
+                        devices: arrSelectedDevices
+                    }
                 }
-            }
-            AppManager.showLoader()
-            dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onCreateGroupSuccess, onCreateGroupError))
+                AppManager.showLoader()
+                dispatch(DeviceActions.requestAddGroup(user_id, requestBody, onCreateGroupSuccess, onCreateGroupError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
  
     function onCreateGroupSuccess(data) {

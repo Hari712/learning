@@ -17,16 +17,21 @@ const UsersList = (props) => {
 
     const { item } = props
 
-    const { loginData } = useSelector(state => ({
-        loginData: getLoginState(state)
+    const { loginData, isConnected } = useSelector(state => ({
+        loginData: getLoginState(state),
+        isConnected: state.network.isConnected,
     }))
 
     const user_id = loginData.id ? loginData.id : null
     const dispatch = useDispatch()
 
     function onChangeSwitch(item) {
-        AppManager.showLoader()
-        dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+        if (isConnected) {
+            AppManager.showLoader()
+            dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
     
     function onChangeUserStatusSuccess(data) {

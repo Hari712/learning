@@ -35,7 +35,7 @@ function messageWithPosition(position = "top", hasDescription = true, extra = {}
 }
 
 function showNoInternetConnectivityError(){
-    showSimpleMessage('warning', { message: 'No Internet Connectivity', description: 'Please check your internet connection', floating: true })()
+    showSimpleMessage('warning', { message: 'No Internet Connectivity', description: 'Please check your internet connection', floating: true })
 }
 
 

@@ -53,16 +53,20 @@ const AssignAsset = ({ navigation, route }) => {
     }, [navigation]);
 
     function navigateToAssignGroup() {
-        if (isEmpty(asset)) {
-            AppManager.showSimpleMessage('warning', { message: 'Please select asset', description: '', floating: true })
-        } else {
-            let selectedAssets = assetList.filter((item) => item.assetName == asset)
-            if (!isEmpty(selectedAssets)) {
-                let selectedAsset = selectedAssets[0]
-                let requestBody = { ...selectedAsset, ...{ deviceId: device.id } }
-                AppManager.showLoader()
-                dispatch(DeviceActions.requestLinkDeviceWithAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+        if (isConnected) {
+            if (isEmpty(asset)) {
+                AppManager.showSimpleMessage('warning', { message: 'Please select asset', description: '', floating: true })
+            } else {
+                let selectedAssets = assetList.filter((item) => item.assetName == asset)
+                if (!isEmpty(selectedAssets)) {
+                    let selectedAsset = selectedAssets[0]
+                    let requestBody = { ...selectedAsset, ...{ deviceId: device.id } }
+                    AppManager.showLoader()
+                    dispatch(DeviceActions.requestLinkDeviceWithAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+                }
             }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
     }
 
@@ -71,10 +75,14 @@ const AssignAsset = ({ navigation, route }) => {
     }
 
     function onSubmit(item) {
-        AppManager.showLoader()
-        let requestBody = { ...item.result.assetDTO, ...{ deviceId: device.id } }
-        setAsset(item.result.assetDTO.assetName)
-        dispatch(DeviceActions.requestLinkDeviceWithAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+        if (isConnected) {
+            AppManager.showLoader()
+            let requestBody = { ...item.result.assetDTO, ...{ deviceId: device.id } }
+            setAsset(item.result.assetDTO.assetName)
+            dispatch(DeviceActions.requestLinkDeviceWithAsset(user_id, requestBody, onAssignAssetSuccess, onAssignAssetError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
 
     }
 

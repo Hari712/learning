@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, TextInput, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FontSize, TextField, DropDown }from '../../../component';
-import { ScrollView } from 'react-native-gesture-handler';
+// import { ScrollView } from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
@@ -79,8 +79,22 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onTapSave() {
-        AppManager.showLoader()
-        if(editingData){
+        if (isConnected) {
+            AppManager.showLoader()
+            if(editingData){
+                const requestBody = {
+                    area: selectedArea,
+                    attributes: {
+                        color: "#E87575"
+                    },
+                    calendarId: 0,
+                    description: description,
+                    id: editingData.id,
+                    name: name
+                }
+                console.log("bodyedit",requestBody)
+                dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
+            } else {
             const requestBody = {
                 area: selectedArea,
                 attributes: {
@@ -88,24 +102,14 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 },
                 calendarId: 0,
                 description: description,
-                id: editingData.id,
+                id: null,
                 name: name
             }
-            console.log("bodyedit",requestBody)
-            dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
-        } else {
-        const requestBody = {
-            area: selectedArea,
-            attributes: {
-                color: "#E87575"
-            },
-            calendarId: 0,
-            description: description,
-            id: null,
-            name: name
+            console.log("body",requestBody)
+            dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
         }
-        console.log("body",requestBody)
-        dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
+    } else {
+        AppManager.showNoInternetConnectivityError()
     }
         
         // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
@@ -121,10 +125,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onUpdateSuccess(data) { 
         response.geofence = data.result
-        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
-        AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
-        
+        if (isConnected) {
+            dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+            AppManager.hideLoader()
+            AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
 
     function onUpdateError(error) {

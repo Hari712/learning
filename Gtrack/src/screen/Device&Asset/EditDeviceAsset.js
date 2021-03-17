@@ -135,33 +135,37 @@ const EditDeviceAsset = ({ route, navigation }) => {
     }
 
     function onTapConfirm() {
-        setDialogVisible(false)
-        let deviceDTO = { ...deviceInfo, ...{ deviceName: deviceName } }
-            let groupDTObj = groupDTO ? groupDTO : null
-            if (!isEmpty(group)) {
-                let arrSelectedGroup = groupList.filter((item) => item.groupName == group)
-                if (!isEmpty(arrSelectedGroup)) {
-                    let selectedGroup = arrSelectedGroup[0]
-                    groupDTObj = selectedGroup
+        if (isConnected) {
+            setDialogVisible(false)
+            let deviceDTO = { ...deviceInfo, ...{ deviceName: deviceName } }
+                let groupDTObj = groupDTO ? groupDTO : null
+                if (!isEmpty(group)) {
+                    let arrSelectedGroup = groupList.filter((item) => item.groupName == group)
+                    if (!isEmpty(arrSelectedGroup)) {
+                        let selectedGroup = arrSelectedGroup[0]
+                        groupDTObj = selectedGroup
+                    }
                 }
-            }
 
-            let assetDtObj = assetDTO ? assetDTO : null
-            if (!isEmpty(assetName)) {
-                let arrSelectedAsset = assetList.filter((item) => item.assetName == assetName)
-                if (!isEmpty(arrSelectedAsset)) {
-                    let selectedAsset = arrSelectedAsset[0]
-                    assetDtObj = selectedAsset
+                let assetDtObj = assetDTO ? assetDTO : null
+                if (!isEmpty(assetName)) {
+                    let arrSelectedAsset = assetList.filter((item) => item.assetName == assetName)
+                    if (!isEmpty(arrSelectedAsset)) {
+                        let selectedAsset = arrSelectedAsset[0]
+                        assetDtObj = selectedAsset
+                    }
                 }
-            }
 
-            AppManager.showLoader()
-            let requestBody = {
-                deviceDTO: deviceDTO,
-                assetDTO: assetDtObj,
-                groupDTO: groupDTObj
+                AppManager.showLoader()
+                let requestBody = {
+                    deviceDTO: deviceDTO,
+                    assetDTO: assetDtObj,
+                    groupDTO: groupDTObj
+                }
+                dispatch(DeviceActions.requestUpdateDevice(user_id, requestBody, onUpdateDeviceSuccess, onUpdateDevcieError))
+            } else {
+                AppManager.showNoInternetConnectivityError()
             }
-            dispatch(DeviceActions.requestUpdateDevice(user_id, requestBody, onUpdateDeviceSuccess, onUpdateDevcieError))
     }
 
     function onUpdateDeviceSuccess(data) {

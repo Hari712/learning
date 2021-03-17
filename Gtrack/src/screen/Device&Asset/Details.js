@@ -52,23 +52,27 @@ const Details = ({ route, navigation }) => {
     }
 
     function exportDeviceDetail() {
-        AppManager.showLoader()
-        let requestBody = {
-            "paginationDTO": {
-                "pageNumber": 0,
-                "pageSize": 5,
-                "useMaxSearchAsLimit": false,
-                "searchColumnsList": [{
-                    "columnName": "searchParam",
-                    "searchStr": `${deviceId}`
-                }],
-                "sortHeader": "id",
-                "sortDirection": "DESC"
-            },
-            "type": null,
-            "sendMail": false
+        if (isConnected) {
+            AppManager.showLoader()
+            let requestBody = {
+                "paginationDTO": {
+                    "pageNumber": 0,
+                    "pageSize": 5,
+                    "useMaxSearchAsLimit": false,
+                    "searchColumnsList": [{
+                        "columnName": "searchParam",
+                        "searchStr": `${deviceId}`
+                    }],
+                    "sortHeader": "id",
+                    "sortDirection": "DESC"
+                },
+                "type": null,
+                "sendMail": false
+            }
+            dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
-        dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
     }
 
     function onDeviceDetailExportedSuccessfully(data) {
@@ -107,9 +111,9 @@ const Details = ({ route, navigation }) => {
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
         const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.monthlyFee : devicePlan.yearlyFee
-        const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
-        const actualTax = (planPrice * tax) / 100
-        const payableAmount = planPrice + actualTax
+        // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
+        // const actualTax = (planPrice * tax) / 100
+        // const payableAmount = planPrice + actualTax
         return (
             <>
                 <View style={styles.details}>
@@ -119,7 +123,7 @@ const Details = ({ route, navigation }) => {
                     </View>
                     <View style={[styles.detailsSubView, { flex: 0.9 }]} >
                         <Text style={styles.textStyle}>{translate("Price")}</Text>
-                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$ {payableAmount}</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$ {planPrice}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 1.2 }]}>
                         <Text style={styles.textStyle}>{translate("Start Date")}</Text>

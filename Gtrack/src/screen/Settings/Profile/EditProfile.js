@@ -17,6 +17,10 @@ import { validateEmailorPhoneNumber, validateName } from '../../../utils/helper'
 const EditProfile = ({ navigation, route, item }) => {
     const dispatch = useDispatch()
 
+    const { isConnected } = useSelector(state => ({
+        isConnected: state.network.isConnected
+    }))
+
     const { loginData, userType } = route.params;
     const { id } = loginData;
 
@@ -192,30 +196,34 @@ const EditProfile = ({ navigation, route, item }) => {
     }
 
     function editProfile() {
-        let message = ''
-        if(!validateName(firstName)){
-            message = "Name should contain only alphabets" 
-        }
-        if(!validateName(lastName)){
-            message = "Name should contain only alphabets" 
-        }
-        if(!validateEmailorPhoneNumber(phoneNumber)){
-            message = translate(AppConstants.INVALID_PHONE_NUMBER) 
-        }
-        if(!isEmpty(message)){
-            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
-        } else {
-        AppManager.showLoader()
-        const requestBody = {
-            "id": id,
-            "firstName": firstName,
-            "lastName": lastName,
-            "email": loginData.email,
-            "phone": phoneNumber
-            //"phonePrefix": phonePrefix
-        }
-        console.log("Data", requestBody);
-        dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
+        if (isConnected) {
+            let message = ''
+            if(!validateName(firstName)){
+                message = "Name should contain only alphabets" 
+            }
+            if(!validateName(lastName)){
+                message = "Name should contain only alphabets" 
+            }
+            if(!validateEmailorPhoneNumber(phoneNumber)){
+                message = translate(AppConstants.INVALID_PHONE_NUMBER) 
+            }
+            if(!isEmpty(message)){
+                AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+            } else {
+            AppManager.showLoader()
+            const requestBody = {
+                "id": id,
+                "firstName": firstName,
+                "lastName": lastName,
+                "email": loginData.email,
+                "phone": phoneNumber
+                //"phonePrefix": phonePrefix
+            }
+            console.log("Data", requestBody);
+            dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
+    }
+    } else {
+        AppManager.showNoInternetConnectivityError()
     }
 }
 

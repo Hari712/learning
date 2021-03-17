@@ -27,12 +27,13 @@ const AlarmType = ({navigation,route}) => {
   const [notification, setNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
-  const { loginInfo, subUserData } = useSelector(state => ({
+  const { loginInfo, subUserData, isConnected } = useSelector(state => ({
     loginInfo: getLoginInfo(state),
-    subUserData: getSubuserState(state)
+    subUserData: getSubuserState(state),
+    isConnected: state.network.isConnected,
   }))
 
-  const userdata = Object.values(subUserData.subUser).map((item)=> item.firstName+" "+item.lastName )
+  const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
   const [isIgnition, setIsIgnition] = useState(false)
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
   
@@ -90,107 +91,116 @@ const AlarmType = ({navigation,route}) => {
   },[navigation]);
 
   function sendData() {
-    if (isEmpty(alarmName)) {
-      AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
-    } else {
-    AppManager.showLoader()
-    var everyday, weekdays, weekends;
+    if (isConnected) {
+      if (isEmpty(alarmName)) {
+        AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
+      } else {
+      AppManager.showLoader()
+      var everyday, weekdays, weekends;
 
-    switch (selectedCheckbox) {
-      case 0: everyday = true
-              weekdays = false
-              weekends = false 
-              break;
-
-      case 1: everyday = false
-              weekdays = true
-              weekends = false 
-              break;
-
-      case 2: everyday = false
-              weekdays = false
-              weekends = true 
-              break;
-    
-      default:  everyday = false
+      switch (selectedCheckbox) {
+        case 0: everyday = true
                 weekdays = false
                 weekends = false 
                 break;
-    }
 
-    let arrSelectedId = [];
-    selectUser ? 
-    subUserData.subUser.filter((item)=> {      
-      selectUser.filter((selectedItem)=>{        
-        if(item.firstName+" "+item.lastName === selectedItem){  
-          arrSelectedId.push(item.id)
-        }
-      })  }) 
-    :null;
+        case 1: everyday = false
+                weekdays = true
+                weekends = false 
+                break;
 
-    console.log("User ids",arrSelectedId)
-
-    const {selectedDeviceID} = route.params;
-    var requestBody, isUpdate;
-    if(route && route.params && route.params.editData) {
-      // Editing/update body
-      isUpdate = true;
-      requestBody = {
-        "userIds" : arrSelectedId,
-        "deviceIds" : selectedDeviceID,
-        "notification" : {
-          "id" : route.params.editData.notification.id,
-          "type" : alarmType,
-          "always" : false,
-          "notificators" : notification ? "mail,web" : null,
-          "attributes" : {
-            "alarms": notificationType,
-            "name": alarmName,
-            "everyday": everyday,              
-            "weekdays": weekdays,
-            "weekends": weekends
-          },
-          "calendarId" : 0
-        }
-      }      
-    } else {
-      // create body 
-      isUpdate = false;
-      requestBody = {
-        "userIds" : arrSelectedId,
-        "deviceIds" : selectedDeviceID,
-        "notification" : {
-          "id" : 0,
-          "type" : alarmType,
-          "always" : false,
-          "notificators" : notification ? "mail,web" : null,
-          "attributes" : {
-            "alarms": notificationType,
-            "name": alarmName,
-            "everyday": everyday,              
-            "weekdays": weekdays,
-            "weekends": weekends
-          },
-          "calendarId" : 0
-        }
+        case 2: everyday = false
+                weekdays = false
+                weekends = true 
+                break;
+      
+        default:  everyday = false
+                  weekdays = false
+                  weekends = false 
+                  break;
       }
-    } 
-    console.log("requestbody",requestBody)
-    dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
-  }}
+
+      let arrSelectedId = [];
+      selectUser ? 
+      subUserData.subUser.filter((item)=> {      
+        selectUser.filter((selectedItem)=>{        
+          if(item.firstName+" "+item.lastName === selectedItem){  
+            arrSelectedId.push(item.id)
+          }
+        })  }) 
+      :null;
+
+      console.log("User ids",arrSelectedId)
+
+      const {selectedDeviceID} = route.params;
+      var requestBody, isUpdate;
+      if(route && route.params && route.params.editData) {
+        // Editing/update body
+        isUpdate = true;
+        requestBody = {
+          "userIds" : arrSelectedId,
+          "deviceIds" : selectedDeviceID,
+          "notification" : {
+            "id" : route.params.editData.notification.id,
+            "type" : alarmType,
+            "always" : false,
+            "notificators" : notification ? "mail,web" : null,
+            "attributes" : {
+              "alarms": notificationType,
+              "name": alarmName,
+              "everyday": everyday,              
+              "weekdays": weekdays,
+              "weekends": weekends
+            },
+            "calendarId" : 0
+          }
+        }      
+      } else {
+        // create body 
+        isUpdate = false;
+        requestBody = {
+          "userIds" : arrSelectedId,
+          "deviceIds" : selectedDeviceID,
+          "notification" : {
+            "id" : 0,
+            "type" : alarmType,
+            "always" : false,
+            "notificators" : notification ? "mail,web" : null,
+            "attributes" : {
+              "alarms": notificationType,
+              "name": alarmName,
+              "everyday": everyday,              
+              "weekdays": weekdays,
+              "weekends": weekends
+            },
+            "calendarId" : 0
+          }
+        }
+      } 
+      console.log("requestbody",requestBody)
+      dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
+  }
+} else {
+  AppManager.showNoInternetConnectivityError()
+}
+}
 
   function onAddSuccess(data) {
-    console.log("data",data)
-    AppManager.hideLoader()  
-    let message  
-    if(route && route.params && route.params.editData){
-      message = 'Alarm updated successfully'
-    }else {
-      message = 'Alarm created successfully'
+    if (isConnected) {
+      console.log("data",data)
+      AppManager.hideLoader()  
+      let message  
+      if(route && route.params && route.params.editData){
+        message = 'Alarm updated successfully'
+      }else {
+        message = 'Alarm created successfully'
+      }
+      navigation.navigate(SCREEN_CONSTANTS.ALARMS)  
+      AppManager.showSimpleMessage('success', { message: message, description: '' })
+      dispatch(LivetrackingActions.requestGetAlarmsList(loginInfo.id, onSuccess, onError)) 
+    } else {
+      AppManager.showNoInternetConnectivityError()
     }
-    navigation.navigate(SCREEN_CONSTANTS.ALARMS)  
-    AppManager.showSimpleMessage('success', { message: message, description: '' })
-    dispatch(LivetrackingActions.requestGetAlarmsList(loginInfo.id, onSuccess, onError))  
   }
 
   function onSuccess(data) {

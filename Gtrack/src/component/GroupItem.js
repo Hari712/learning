@@ -47,20 +47,24 @@ const GroupItem = props => {
     }
 
     const onUpdateGroup = () => {
-        AppManager.showLoader()
-        let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
-        const requestBody = {
-            "deviceDTO": null,
-            "assetDTO": null,
-            "groupDTO": {
-                "id": id,
-                "groupName": groupName,
-                "devices": arrSelectedDevices,
-                "isQuickAdd": false
-            },
-            "devicePlan": null
+        if (isConnected) {
+            AppManager.showLoader()
+            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
+            const requestBody = {
+                "deviceDTO": null,
+                "assetDTO": null,
+                "groupDTO": {
+                    "id": id,
+                    "groupName": groupName,
+                    "devices": arrSelectedDevices,
+                    "isQuickAdd": false
+                },
+                "devicePlan": null
+            }
+            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
-        dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
     }
 
     const removeConfirm = () => {
@@ -101,9 +105,13 @@ const GroupItem = props => {
     }
 
     const deleteGroupConfirm = () => {
-        setDeleteGroupDialogVisible(false)
-        AppManager.showLoader()
-        dispatch(DeviceActions.requestDeleteGroup(loginInfo.id, id, onDeleteGroupSuccess, onDeleteGroupError))
+        if (isConnected) {
+            setDeleteGroupDialogVisible(false)
+            AppManager.showLoader()
+            dispatch(DeviceActions.requestDeleteGroup(loginInfo.id, id, onDeleteGroupSuccess, onDeleteGroupError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
 
     const onDeleteGroupSuccess = (data) => {

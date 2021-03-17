@@ -1,12 +1,12 @@
-import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../component';
 import { MultiSelectGroup } from '../../component/MultiSelect'
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { AppConstants } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
-import { getLoginState, getSubuserState } from '../Selector'
+import { getGroupListInfo, getLoginState } from '../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
@@ -17,11 +17,11 @@ import { validateEmailorPhoneNumber } from '../../utils/helper';
 
 const AddUser = ({ navigation, route }) => {
 
-  const { loginData, subUserData } = useSelector(state => ({
+  const { loginData, groupList, isConnected } = useSelector(state => ({
     loginData: getLoginState(state),
-    subUserData: getSubuserState(state)
+    groupList: getGroupListInfo(state),
+    isConnected: state.network.isConnected,
   }))
-
 
   const dispatch = useDispatch()
 
@@ -55,43 +55,47 @@ const AddUser = ({ navigation, route }) => {
   }
 
   function addUser() {
-    let message = ''
-    if (!validateEmailorPhoneNumber(email)) {    
-        message = translate(AppConstants.INVALID_EMAIL)
-    } 
-    if (!isEmpty(message)) {
-      AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true }) }
-    else {
-    AppManager.showLoader()
-    if (route && route.params) {
-      const requestBody = {
-        "id": route.params.editData.id,
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "roles": [{
-          "id": role == "Admin" ? 1 : 2
-        }],
-        "groups": selectedGroup
-      }
-      dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
-    } else {
-      const requestBody = {
-        "userDTOS": [{
-          "id": null,
-          "email": email,
+    if (isConnected) {
+      let message = ''
+      if (!validateEmailorPhoneNumber(email)) {    
+          message = translate(AppConstants.INVALID_EMAIL)
+      } 
+      if (!isEmpty(message)) {
+        AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true }) }
+      else {
+      AppManager.showLoader()
+      if (route && route.params) {
+        const requestBody = {
+          "id": route.params.editData.id,
           "firstName": firstName,
           "lastName": lastName,
-          "markAsOwner": null,
+          "email": email,
           "roles": [{
             "id": role == "Admin" ? 1 : 2
           }],
           "groups": selectedGroup
-        }]
+        }
+        dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
+      } else {
+        const requestBody = {
+          "userDTOS": [{
+            "id": null,
+            "email": email,
+            "firstName": firstName,
+            "lastName": lastName,
+            "markAsOwner": null,
+            "roles": [{
+              "id": role == "Admin" ? 1 : 2
+            }],
+            "groups": selectedGroup
+          }]
+        }
+        dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
       }
-      dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
-    }
 
+    }
+    } else {
+      AppManager.showNoInternetConnectivityError()
   }
 }
 
@@ -211,7 +215,7 @@ const AddUser = ({ navigation, route }) => {
           <ShadowView style={styles.shadowContainer}>
             <MultiSelectGroup
               label={translate("Group Access")}
-              dataList={subUserData.group}
+              dataList={groupList}
               allText={translate("All_string")}
               hideSelectedDeviceLable={true}
               hideDeleteButton={true}
