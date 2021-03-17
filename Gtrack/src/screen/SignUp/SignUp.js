@@ -23,6 +23,10 @@ const SignUp = () => {
 
     const dispatch = useDispatch()
 
+    const { isConnected } = useSelector(state => ({
+        isConnected: state.network.isConnected,
+    }))
+
     const [isTocAccepted, setIsTocAccepted] = useState(false)
     const [firstName, setFirstName] = useState()
     const [lastName, setLastName] = useState()
@@ -35,6 +39,7 @@ const SignUp = () => {
     let temp;
 
     function onTapSignUp() {
+        if (isConnected) {
         let message = ''
         if (isEmpty(firstName)) {
             message = translate(AppConstants.EMPTY_FIRST_NAME)
@@ -77,8 +82,10 @@ const SignUp = () => {
                 "phonePrefix" : "+" + countryCode.toString()
             }
             dispatch(LoginActions.requestSignUp(requestBody, onSuccess, onError))
-
         }
+    } else {
+        AppManager.showNoInternetConnectivityError()
+    }
     }
 
     function onSuccess(data) {

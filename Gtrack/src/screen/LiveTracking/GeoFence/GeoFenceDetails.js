@@ -74,8 +74,22 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onTapSave() {
-        AppManager.showLoader()
-        if(editingData){
+        if (isConnected) {
+            AppManager.showLoader()
+            if(editingData){
+                const requestBody = {
+                    area: selectedArea,
+                    attributes: {
+                        color: "#E87575"
+                    },
+                    calendarId: 0,
+                    description: description,
+                    id: editingData.id,
+                    name: name
+                }
+                console.log("bodyedit",requestBody)
+                dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
+            } else {
             const requestBody = {
                 area: selectedArea,
                 attributes: {
@@ -83,24 +97,14 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 },
                 calendarId: 0,
                 description: description,
-                id: editingData.id,
+                id: null,
                 name: name
             }
-            console.log("bodyedit",requestBody)
-            dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
-        } else {
-        const requestBody = {
-            area: selectedArea,
-            attributes: {
-                color: "#E87575"
-            },
-            calendarId: 0,
-            description: description,
-            id: null,
-            name: name
+            console.log("body",requestBody)
+            dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
         }
-        console.log("body",requestBody)
-        dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
+    } else {
+        AppManager.showNoInternetConnectivityError()
     }
         
         // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
@@ -115,10 +119,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onUpdateSuccess(data) { 
-        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
-        AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
-        
+        if (isConnected) {
+            dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+            AppManager.hideLoader()
+            AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
 
     function onUpdateError(error) {

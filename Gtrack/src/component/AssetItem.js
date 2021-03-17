@@ -16,8 +16,9 @@ const AssteItem = (props) => {
 
     const { item, index, editClick, setEditClick } = props
 
-    const { loginInfo ,assetTypeList } = useSelector((state) => ({
+    const { loginInfo ,assetTypeList, isConnected } = useSelector((state) => ({
         loginInfo: getLoginInfo(state),
+        isConnected: state.network.isConnected,
         assetTypeList: getAssetTypeListInfo(state)
     }))
 
@@ -55,15 +56,20 @@ const AssteItem = (props) => {
     }
 
     function requestUpdateAsset() {
-        AppManager.showLoader()
-        let requestBody = {
-            id: item.id,
-            assetType: assetLtype,
-            assetName: assetLName,
-            description: assetLdescription
+        if (isConnected) {
+            AppManager.showLoader()
+            let requestBody = {
+                id: item.id,
+                assetType: assetLtype,
+                assetName: assetLName,
+                description: assetLdescription
+            }
+            dispatch(DeviceActions.requestUpdateAssetInfo(user_id, requestBody, onAssetUpdateSuccess, onAssetUpdateError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
-        dispatch(DeviceActions.requestUpdateAssetInfo(user_id, requestBody, onAssetUpdateSuccess, onAssetUpdateError))
     }
+
 
     function onAssetUpdateSuccess(data) {
         AppManager.hideLoader()
@@ -77,8 +83,12 @@ const AssteItem = (props) => {
     }
 
     function requestDeleteAsset() {
-        AppManager.showLoader()
-        dispatch(DeviceActions.requestDeleteAssetByAssetId(user_id, item.id, onAssetDeleteSucccess, onAssetDeleteError))
+        if (isConnected) {
+            AppManager.showLoader()
+            dispatch(DeviceActions.requestDeleteAssetByAssetId(user_id, item.id, onAssetDeleteSucccess, onAssetDeleteError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
 
     function onAssetDeleteSucccess(data) {

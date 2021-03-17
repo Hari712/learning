@@ -52,23 +52,27 @@ const Details = ({ route, navigation }) => {
     }
 
     function exportDeviceDetail() {
-        AppManager.showLoader()
-        let requestBody = {
-            "paginationDTO": {
-                "pageNumber": 0,
-                "pageSize": 5,
-                "useMaxSearchAsLimit": false,
-                "searchColumnsList": [{
-                    "columnName": "searchParam",
-                    "searchStr": `${deviceId}`
-                }],
-                "sortHeader": "id",
-                "sortDirection": "DESC"
-            },
-            "type": null,
-            "sendMail": false
+        if (isConnected) {
+            AppManager.showLoader()
+            let requestBody = {
+                "paginationDTO": {
+                    "pageNumber": 0,
+                    "pageSize": 5,
+                    "useMaxSearchAsLimit": false,
+                    "searchColumnsList": [{
+                        "columnName": "searchParam",
+                        "searchStr": `${deviceId}`
+                    }],
+                    "sortHeader": "id",
+                    "sortDirection": "DESC"
+                },
+                "type": null,
+                "sendMail": false
+            }
+            dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
-        dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
     }
 
     function onDeviceDetailExportedSuccessfully(data) {

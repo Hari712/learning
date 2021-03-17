@@ -52,23 +52,27 @@ function AddNewAssetDialog(props) {
     },[assetType])
 
     function onTapCreateAssign() {
-        if (isEmpty(assetname)) {
-            setAssetNameError(AppConstants.EMPTY_ASSET)
-        }
-        else if (isEmpty(assetType)) {
-            setAssetTypeError(AppConstants.EMPTY_ASSET_TYPE)
-        }
-        else {
-            let obj = {
-                assetType: assetType,
-                assetName: assetname,
-                isQuickAdd: false
+        if (isConnected) {
+            if (isEmpty(assetname)) {
+                setAssetNameError(AppConstants.EMPTY_ASSET)
             }
-            let requestBody = {
-                assetDTO : obj
+            else if (isEmpty(assetType)) {
+                setAssetTypeError(AppConstants.EMPTY_ASSET_TYPE)
             }
-            AppManager.showLoader()
-            dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onAddAssetSuccess, onAddAssetError))
+            else {
+                let obj = {
+                    assetType: assetType,
+                    assetName: assetname,
+                    isQuickAdd: false
+                }
+                let requestBody = {
+                    assetDTO : obj
+                }
+                AppManager.showLoader()
+                dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onAddAssetSuccess, onAddAssetError))
+            }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
     }
 

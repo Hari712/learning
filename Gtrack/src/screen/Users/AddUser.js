@@ -17,9 +17,10 @@ import { validateEmailorPhoneNumber } from '../../utils/helper';
 
 const AddUser = ({ navigation, route }) => {
 
-  const { loginData, groupList } = useSelector(state => ({
+  const { loginData, groupList, isConnected } = useSelector(state => ({
     loginData: getLoginState(state),
-    groupList: getGroupListInfo(state)
+    groupList: getGroupListInfo(state),
+    isConnected: state.network.isConnected,
   }))
 
   const dispatch = useDispatch()
@@ -54,43 +55,47 @@ const AddUser = ({ navigation, route }) => {
   }
 
   function addUser() {
-    let message = ''
-    if (!validateEmailorPhoneNumber(email)) {    
-        message = translate(AppConstants.INVALID_EMAIL)
-    } 
-    if (!isEmpty(message)) {
-      AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true }) }
-    else {
-    AppManager.showLoader()
-    if (route && route.params) {
-      const requestBody = {
-        "id": route.params.editData.id,
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "roles": [{
-          "id": role == "Admin" ? 1 : 2
-        }],
-        "groups": selectedGroup
-      }
-      dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
-    } else {
-      const requestBody = {
-        "userDTOS": [{
-          "id": null,
-          "email": email,
+    if (isConnected) {
+      let message = ''
+      if (!validateEmailorPhoneNumber(email)) {    
+          message = translate(AppConstants.INVALID_EMAIL)
+      } 
+      if (!isEmpty(message)) {
+        AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true }) }
+      else {
+      AppManager.showLoader()
+      if (route && route.params) {
+        const requestBody = {
+          "id": route.params.editData.id,
           "firstName": firstName,
           "lastName": lastName,
-          "markAsOwner": null,
+          "email": email,
           "roles": [{
             "id": role == "Admin" ? 1 : 2
           }],
           "groups": selectedGroup
-        }]
+        }
+        dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
+      } else {
+        const requestBody = {
+          "userDTOS": [{
+            "id": null,
+            "email": email,
+            "firstName": firstName,
+            "lastName": lastName,
+            "markAsOwner": null,
+            "roles": [{
+              "id": role == "Admin" ? 1 : 2
+            }],
+            "groups": selectedGroup
+          }]
+        }
+        dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
       }
-      dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
-    }
 
+    }
+    } else {
+      AppManager.showNoInternetConnectivityError()
   }
 }
 

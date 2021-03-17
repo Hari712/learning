@@ -32,6 +32,8 @@ const ResetPasscode = () => {
                 }
                 dispatch(LoginActions.requestGetOTP(requestBody, onSuccess, onError))
             }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
     }
     function onSuccess(data) {

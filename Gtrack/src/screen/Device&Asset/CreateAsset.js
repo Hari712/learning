@@ -59,29 +59,33 @@ function CreateAsset() {
     }
 
     function onTapSave() {
-        let message = ''
-        if (isEmpty(assetName)) {
-            message = AppConstants.EMPTY_ASSET
-        }
-        else if (isEmpty(type)) {
-            message = AppConstants.EMPTY_ASSET_TYPE
-        }
-        if (!isEmpty(message)) {
-            AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
-        } else {
-            let arrSelectedDevices = arrConsolidatedDeviceList ? arrConsolidatedDeviceList.filter((item) => item.deviceName == device) : []
-                let selectedDevice = arrSelectedDevices ? arrSelectedDevices[0] : null
-                let requestBody = {
-                    assetDTO: {
-                        assetType: type,
-                        assetName: assetName,
-                        deviceId: selectedDevice ? selectedDevice.id : null,
-                        isQuickAdd: false,
-                        description: description
+        if (isConnected) {
+            let message = ''
+            if (isEmpty(assetName)) {
+                message = AppConstants.EMPTY_ASSET
+            }
+            else if (isEmpty(type)) {
+                message = AppConstants.EMPTY_ASSET_TYPE
+            }
+            if (!isEmpty(message)) {
+                AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+            } else {
+                let arrSelectedDevices = arrConsolidatedDeviceList ? arrConsolidatedDeviceList.filter((item) => item.deviceName == device) : []
+                    let selectedDevice = arrSelectedDevices ? arrSelectedDevices[0] : null
+                    let requestBody = {
+                        assetDTO: {
+                            assetType: type,
+                            assetName: assetName,
+                            deviceId: selectedDevice ? selectedDevice.id : null,
+                            isQuickAdd: false,
+                            description: description
+                        }
                     }
-                }
-                AppManager.showLoader()
-                dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onCreateAssetSuccess, onCreateAssetError))
+                    AppManager.showLoader()
+                    dispatch(DeviceActions.requestAddAsset(user_id, requestBody, onCreateAssetSuccess, onCreateAssetError))
+            }
+        } else {
+            AppManager.showNoInternetConnectivityError()
         }
     }
 
