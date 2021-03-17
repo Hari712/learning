@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react'
-import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, SafeAreaView, Platform } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -54,7 +54,7 @@ const RecentAlarms = (props) => {
         AppManager.hideLoader()
         console.log("Success",data)
         setAlarmData(data.result)
-        console.log("Alarm Data",alarmData)
+        
     }
     
     const onError = (error) => {
@@ -172,7 +172,6 @@ const RecentAlarms = (props) => {
       fontWeight: 'bold', 
       color: ColorConstant.BLACK
     },
-
     rightMainViewStyle: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -226,8 +225,6 @@ const RecentAlarms = (props) => {
       justifyContent: 'space-between',
       marginTop: hp(2.5),
     },
-  
-
   })
 
   export default RecentAlarms

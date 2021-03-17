@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOpacity, TextInput, Platform } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -72,41 +72,34 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: hp(2),
     },
-
     deviceSummaryMainViewStyle: {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: hp(2.5),
     },
-
     leftMainViewStyle: {
         paddingHorizontal: wp(5),
         paddingBottom: hp(3)
     },
-   
     rightMainViewStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: wp(6),
         paddingBottom: hp(3)
     },
-
     ViewallStyle: {
         height: hp(2),
         width: hp(2),
         marginRight: wp(3),
     },
-
     refreshImageStyle: {
         height: hp(2),
         width: hp(2)
     },
-
     subContainer: {
         position: 'absolute', width: '80%', alignSelf: 'center'
     },
-
     bellIconStyle: {
         borderRadius: 13,
         height: hp(7.3),
@@ -114,5 +107,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%', backgroundColor: ColorConstant.WHITE
     },
-
 });
