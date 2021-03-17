@@ -126,10 +126,11 @@ function* requestUpdateGeofence(action) {
 }
 
 function* requestEnableDisableGeofence(action) {
-    const { userId, geofenceId, onSuccess, onError } = action
+    const { userId, geofenceId, enable, onSuccess, onError } = action
     try {
-        const url = ApiConstants.ENABLE_DISABLE_GEOFENCE(userId, geofenceId)
+        const url = ApiConstants.ENABLE_DISABLE_GEOFENCE(userId, geofenceId, enable)
         const response = yield call(API.put, url)
+        yield put(LivetrackingActions.setenableDisableGeofenceResponse(geofenceId))
         onSuccess(response)
     } catch (error) {
         onError(error)

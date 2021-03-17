@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize, MapView} from '../../../component';
+import { FontSize } from '../../../component';
 import { useSelector, useDispatch } from 'react-redux';
 import {  getLoginState, isRoleRegular } from '../../Selector';
 import { GeoFenceTrashIcon } from '../../../component/SvgComponent';
@@ -23,7 +23,7 @@ const GeofenceList = ( props ) => {
 
     function onChangeSwitch(item) {
         AppManager.showLoader()
-        dispatch(LivetrackingActions.enableDisableGeofence(loginData.id, item.geofence.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+        dispatch(LivetrackingActions.enableDisableGeofence(loginData.id, item.geofence.id, !item.isActive, onChangeUserStatusSuccess, onChangeUserStatusError))
     }
 
     function onChangeUserStatusSuccess(data) {
@@ -49,7 +49,7 @@ const GeofenceList = ( props ) => {
                 <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
                 <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
                 { !isRegular ?
-                <TouchableOpacity style={{padding:hp(1)}} onPress={() => { 
+                <TouchableOpacity style={{padding:hp(1),marginLeft:hp(2)}} onPress={() => { 
                     setGeofenceId(item.geofence.id)
                     setGeofenceName(item.geofence.name)
                     setDeleteDialogBox(!deleteDialogBox)
