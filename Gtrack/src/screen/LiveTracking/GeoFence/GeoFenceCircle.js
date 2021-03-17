@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Platform, Dimensions } from 'react-native'
 import isEmpty from 'lodash/isEmpty'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { ColorConstant } from '../../constants/ColorConstants';
-import { translate } from '../../../App'
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { translate } from '../../../../App'
 import Slider from "react-native-slider";
 import { useSelector } from 'react-redux'
-import { isUserLoggedIn } from '../Selector'
+import { isUserLoggedIn } from '../../Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
-import { BackIcon, NextIcon } from '../../component/SvgComponent';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
+import { BackIcon, NextIcon } from '../../../component/SvgComponent';
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import useSubscribeLocationUpdates from '../../../utils/useSubscribeLocationUpdates';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 30;

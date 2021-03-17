@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Platform, Dimensions } from 'react-native'
 import isEmpty from 'lodash/isEmpty'
 import GetLocation from 'react-native-get-location'
-import { BackIcon, NextIcon } from '../../component/SvgComponent';
+import { BackIcon, NextIcon } from '../../../component/SvgComponent';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { ColorConstant } from '../../constants/ColorConstants';
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { ColorConstant } from '../../../constants/ColorConstants';
 const { width, height } = Dimensions.get('window');
 
 const isAndroid = Platform.OS === 'android'

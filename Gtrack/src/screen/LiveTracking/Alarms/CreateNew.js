@@ -1,11 +1,9 @@
-import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
-import images from '../../../constants/images';
+import React, { useState, useEffect} from 'react';
+import { View, StyleSheet,Text, Image,TouchableOpacity, ScrollView } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
-import * as DeviceActions from '../../DeviceSetup/Device.Action'
 import * as LivetrackingActions from '../Livetracking.Action'
 import App, { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize} from '../../../component';
@@ -22,11 +20,8 @@ const CreateNew = ({navigation,route}) => {
   const [selectedDevice, setSelectedDevice] = useState([]);
   const [selectedAlarm, setSelectedAlarm] = useState();
   const [editingValues, setEditingValues] = useState();
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [arrSelectedDeviceID, setSelectedDeviceID] = useState([])
   const [arrDeviceList, setDeviceList] = useState([])
   const [arrDeviceNames, setDeviceNames] = useState([])
-  const [deviceId,setDeviceId] = useState([])
   const [selectedAlarmType, setSelectedAlarmType] = useState()
   const [selectAlarmDDy, setSelectAlarmDDy] = useState()
 

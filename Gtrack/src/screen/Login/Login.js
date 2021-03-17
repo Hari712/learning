@@ -52,7 +52,7 @@ const Login = () => {
             } else {
                 AppManager.showLoader()
                 const requestBody = {
-                    emailOrPhone: email,
+                    emailOrPhone: email.toLowerCase(),
                     password: password
                 }
                 dispatch(LoginActions.requestLogin(requestBody, onLoginSuccess, onLoginError))
