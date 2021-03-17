@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, LayoutAnimation } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../constants/images';
-import { getGroupListInfo, getGeofenceDeviceListInfo, getLoginInfo } from "../Selector";
+import images from '../../../constants/images';
+import { getGroupListInfo, getGeofenceDeviceListInfo, getLoginInfo } from "../../Selector";
 import { useDispatch, useSelector } from "react-redux";
-import { ColorConstant } from '../../constants/ColorConstants';
-import NavigationService from '../../navigation/NavigationService'
-import { translate } from '../../../App'
-import { DropDown, MultiSelectDropdown, FontSize }from '../../component';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BackIcon } from '../../component/SvgComponent';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import NavigationService from '../../../navigation/NavigationService'
+import { translate } from '../../../../App'
+import { DropDown, MultiSelectDropdown, FontSize }from '../../../component';
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon } from '../../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
-import AppManager from '../../constants/AppManager'
-import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
+import AppManager from '../../../constants/AppManager'
+import * as LivetrackingActions from '../Livetracking.Action'
 
 const GeoFenceCreateNew = ({ navigation, route }) => {
 
@@ -112,7 +112,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelectDropdown
-                    label="Select Device"
+                    label="Select Device*"
                     dataList={arrDeviceList} 
                     allText={translate("Select_all_string")}
                     hideSelectedDeviceLable={true}

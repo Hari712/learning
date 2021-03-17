@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, TextInput, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../constants/images';
-import { ColorConstant } from '../../constants/ColorConstants';
-import { FontSize, MapView} from '../../component'
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { FontSize, MapView} from '../../../component'
 import Slider from "react-native-slider";
-import { translate } from '../../../App'
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BackIcon } from '../../component/SvgComponent';
+import { translate } from '../../../../App'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { BackIcon } from '../../../component/SvgComponent';
 
 const GeoFenceType = ({ navigation, route }) => {
     const { type } = route.params;

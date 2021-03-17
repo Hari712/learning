@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextI
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../../component';
-import { getLoginState, getSubuserState } from '../../Selector'
+import { getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue } from '../../../component/SvgComponent';
@@ -13,9 +13,8 @@ import SummaryDetails from './SummaryDetails';
 
 const TripHistoryDetails = ({ navigation }) => {
 
-    const { loginData, subUserData } = useSelector(state => ({
-        loginData: getLoginState(state),
-        subUserData: getSubuserState(state)
+    const { loginData } = useSelector(state => ({
+        loginData: getLoginState(state)
     }))
 
     React.useLayoutEffect(() => {

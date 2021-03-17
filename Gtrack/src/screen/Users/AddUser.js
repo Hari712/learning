@@ -1,12 +1,12 @@
-import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../component';
 import { MultiSelectGroup } from '../../component/MultiSelect'
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { AppConstants } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
-import { getLoginState, getSubuserState } from '../Selector'
+import { getGroupListInfo, getLoginState } from '../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty'
 import AppManager from '../../constants/AppManager'
@@ -17,12 +17,11 @@ import { validateEmailorPhoneNumber } from '../../utils/helper';
 
 const AddUser = ({ navigation, route }) => {
 
-  const { loginData, subUserData, isConnected } = useSelector(state => ({
+  const { loginData, groupList, isConnected } = useSelector(state => ({
     loginData: getLoginState(state),
-    subUserData: getSubuserState(state),
+    groupList: getGroupListInfo(state),
     isConnected: state.network.isConnected,
   }))
-
 
   const dispatch = useDispatch()
 
@@ -216,7 +215,7 @@ const AddUser = ({ navigation, route }) => {
           <ShadowView style={styles.shadowContainer}>
             <MultiSelectGroup
               label={translate("Group Access")}
-              dataList={subUserData.group}
+              dataList={groupList}
               allText={translate("All_string")}
               hideSelectedDeviceLable={true}
               hideDeleteButton={true}

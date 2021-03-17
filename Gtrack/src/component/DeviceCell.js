@@ -16,10 +16,12 @@ const DeviceCell = (props) => {
     const groupDTO = item.groupDTO ? item.groupDTO : null
     const assetDTO = item.assetDTO ? item.assetDTO : null
     const groupName = groupDTO ? groupDTO.groupName : 'No group found'
-    const devicePlan = item.devicePlan ? item.devicePlan : null
-    const planStatus = devicePlan ? devicePlan.planName : 'None'
-    const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
-    
+    //const devicePlan = item.devicePlan ? item.devicePlan : null
+    const devicePlan = item && item.devicePlan && item.devicePlan.subscriptionPlanCurrency && item.devicePlan.subscriptionPlanCurrency.subscriptionPlan && item.devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName ? item.devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName : 'None'
+    //const planStatus = devicePlan ? devicePlan.planName : 'None'
+    //const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
+    const expiryDate = item && item.devicePlan && item.devicePlan.deActivationDate ? item.devicePlan.deActivationDate : 'None'
+
 
     let IconConstantDeviceCell;
 
@@ -93,7 +95,8 @@ const DeviceCell = (props) => {
                 </View>
                 <View style={[styles.column, { width: '40%' }]} >
                     <Text style={styles.whiteBodyText}>{translate("Selected Plan")}</Text>
-                    <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{planStatus} {devicePlan && devicePlan.planDuration ? <Text style={{ color: ColorConstant.GREY }}>({item.duration})</Text> : null}</Text>
+                    <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{devicePlan} {devicePlan  ? <Text style={{ color: ColorConstant.GREY }}> {item && item.devicePlan ? '(' + item.devicePlan.planDuration + ')' : null} </Text> : 'null'}</Text>
+                    {/* <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{planStatus} {devicePlan && devicePlan.planDuration ? <Text style={{ color: ColorConstant.GREY }}>({item.duration})</Text> : null}</Text> */}
                 </View>
                 <View style={[styles.column, { width: '25%' }]}>
                     <Text style={styles.whiteBodyText}>{translate("Plan Expiry")}</Text>

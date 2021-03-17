@@ -75,7 +75,7 @@ const SignUp = () => {
         } else {
             AppManager.showLoader()
             const requestBody = {
-                "email" : email,
+                "email" : email.toLowerCase(),
                 "firstName" :firstName,
                 "lastName" :lastName,
                 "phone" : phoneNumber,
