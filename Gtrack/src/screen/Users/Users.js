@@ -21,8 +21,9 @@ const Users = ({navigation}) => {
   const [searchKeyword, setSearchKeyword] = useState("")
   const [filterKeyword, setFilterKeyword] = useState([])
   const [visible, setVisible] = useState(false)
-  const [status, setStatus] = useState()
-  const [IsRole, setIsRole] = useState()
+  const [status, setStatus] = useState(-1)
+  const [IsRole, setIsRole] = useState(-1)
+  const [adminVisible, setAdminVisible] = useState(false)
   
 
   const { loginData, subUserData, isConnected } = useSelector(state => ({
@@ -44,6 +45,7 @@ const Users = ({navigation}) => {
     console.log("Success",data) 
     AppManager.hideLoader()
     setIsRefreshing(false)
+    setAdminVisible(false)
   }
 
   function onFilterSuccess(data) {    
@@ -76,6 +78,7 @@ const Users = ({navigation}) => {
 
   const resetHandle = () => {
     setVisible(false)
+    setAdminVisible(false)
     AppManager.showLoader()
     setIsRole(-1)
     setStatus(-1)
@@ -87,6 +90,7 @@ const Users = ({navigation}) => {
 
   const filterHandle = () => {
     setVisible(false)
+    setAdminVisible(true)
     AppManager.showLoader()
     filterApiCall()
   }
@@ -216,7 +220,7 @@ return (
       }
     >
 
-        {AdminData()}
+      { !adminVisible ? AdminData() : null }
 
         <FlatList
           data={searchData}
