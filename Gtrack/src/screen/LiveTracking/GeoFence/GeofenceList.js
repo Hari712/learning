@@ -19,6 +19,8 @@ const GeofenceList = ( props ) => {
         isRegular: isRoleRegular(state)
     }))
 
+    const geoFenceType = item.geofence.area.slice(0,6)
+
     const dispatch = useDispatch()
 
     function onChangeSwitch(item) {
@@ -39,7 +41,7 @@ const GeofenceList = ( props ) => {
     }
 
     return (
-        
+
         <TouchableOpacity style={styles.cardContainer} onPress={() => { 
             setActiveGeofence(item)
             setSelectedDevice(item.deviceList)
@@ -60,8 +62,8 @@ const GeofenceList = ( props ) => {
 
             <View style={styles.whiteContainer}>
                 <View style={styles.GroupMainView}>
-                    <Text style={styles.whiteContainerText}>Group</Text>
-                    <Text style={styles.whiteContainerSubText}>{item.GroupData}</Text>
+                    <Text style={styles.whiteContainerText}>Geofence Type</Text>
+                    <Text style={styles.whiteContainerSubText}>{geoFenceType == "CIRCLE" ? "Circle" : "Polygon"}</Text>
                 </View>
 
                 <View style={styles.deviceNameMainView}>
