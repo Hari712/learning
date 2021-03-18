@@ -1,19 +1,42 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, ScrollView, FlatList, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize, MapView} from '../../../component';
-import { useSelector } from 'react-redux';
-import {  isRoleRegular } from '../../Selector';
+import { FontSize } from '../../../component';
+import { useSelector, useDispatch } from 'react-redux';
+import {  getLoginState, isRoleRegular } from '../../Selector';
 import { GeoFenceTrashIcon } from '../../../component/SvgComponent';
+import Switches from 'react-native-switches'
+import AppManager from '../../../constants/AppManager';
+import * as LivetrackingActions from '../Livetracking.Action'
 
 const GeofenceList = ( props ) => {
 
     const { item, setActiveGeofence, setSelectedDevice, setDialogVisible, dialogVisible, setGeofenceId, setGeofenceName, setDeleteDialogBox, deleteDialogBox } = props
 
-    const { isRegular} = useSelector(state => ({
+    const { loginData, isRegular } = useSelector(state => ({
+        loginData: getLoginState(state),
         isRegular: isRoleRegular(state)
     }))
+
+    const dispatch = useDispatch()
+
+    function onChangeSwitch(item) {
+        AppManager.showLoader()
+        dispatch(LivetrackingActions.enableDisableGeofence(loginData.id, item.geofence.id, !item.isActive, onChangeUserStatusSuccess, onChangeUserStatusError))
+    }
+
+    function onChangeUserStatusSuccess(data) {
+        console.log("Success",data)
+        const { result } = data
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: result, description: '' })
+    }
+    
+    function onChangeUserStatusError(error) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '' })
+    }
 
     return (
         
@@ -24,8 +47,9 @@ const GeofenceList = ( props ) => {
         }}>
             <View style={styles.blueBox}>
                 <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
+                <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
                 { !isRegular ?
-                <TouchableOpacity style={{padding:hp(1)}} onPress={() => { 
+                <TouchableOpacity style={{padding:hp(1),marginLeft:hp(2)}} onPress={() => { 
                     setGeofenceId(item.geofence.id)
                     setGeofenceName(item.geofence.name)
                     setDeleteDialogBox(!deleteDialogBox)
