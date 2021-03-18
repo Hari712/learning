@@ -35,7 +35,7 @@ const AssignGroup = ({ navigation, route }) => {
 
     const user_id = loginInfo.id ? loginInfo.id : null
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
-    const [group, setGroup] = useState('')
+    const [group, setGroup] = useState(arrGroupnames[2])
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
     const [dropdownPosy, setDropdownPosy] = useState()
 
