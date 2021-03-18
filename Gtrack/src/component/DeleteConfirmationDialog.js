@@ -8,7 +8,7 @@ import { CloseIcon, ConfirmationDeleteIcon } from '../component/SvgComponent'
 
 const DeleteConfirmationDialog = (props) => {
 
-    const { isVisible, onSwipeComplete, onTapClose, onTapConfirm, text = 'Are you sure you really want to delete asset ?' } = props
+    const { isVisible, onSwipeComplete, onTapClose, onTapConfirm, text = 'Do you really want to delete asset ?' +'\n'+ 'It will get detach from the current device.'} = props
 
     function hideDialog() {
         onTapClose && onTapClose()
