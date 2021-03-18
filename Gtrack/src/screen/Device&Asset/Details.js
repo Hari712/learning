@@ -202,18 +202,19 @@ const Details = ({ route, navigation }) => {
         )
     }
 
-    function renderUserDetail() {
+    function renderUserDetail(users) {
         return (
             <>
-                {Data.map((item, key) =>
+                {users.map((item, key) =>
                     <View key={key} style={styles.userDetails}>
                         <View style={[styles.detailsSubView, { flex: 1 }]} >
                             <Text style={styles.textStyle}>{translate("Name")}</Text>
-                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.name}</Text>
+                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.firstName} {item.lastName}</Text>
                         </View>
                         <View style={[styles.detailsSubView, { flex: 2 }]} >
                             <Text style={styles.textStyle}>{translate("Role")}</Text>
-                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{item.role}</Text>
+                            {item.roles.map((role) =>
+                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text>)}
                         </View>
                     </View>
                 )}
@@ -229,7 +230,7 @@ const Details = ({ route, navigation }) => {
                     <DeviceAssetUserIcon  width={13.316} height={15.563}/>
                 </View>
                 <View style={styles.horizontalLine} />
-                {isEmpty(users) ? renderNoDetailsAvailable() : renderUserDetail()}
+                {isEmpty(users) ? renderNoDetailsAvailable() : renderUserDetail(users)}
             </View>
         )
     }
@@ -271,7 +272,7 @@ const Details = ({ route, navigation }) => {
 
                         {renderDevicePlan(devicePlan)}
                         {renderAsetInfo(assetDTO)}
-                        {renderUserInfo()}
+                        {renderUserInfo(users)}
 
 
                         <TouchableOpacity style={styles.export} onPress={() => exportDeviceDetail()}>
