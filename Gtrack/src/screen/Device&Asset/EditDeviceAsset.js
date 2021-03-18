@@ -1,9 +1,8 @@
 import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
-import images from '../../constants/images';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Dialog, FontSize, TextField, DropDown, AssetConfirmationDialog } from '../../component'
+import { FontSize, TextField, DropDown, AssetConfirmationDialog } from '../../component'
 import { useSelector, useDispatch } from 'react-redux'
 import { getLoginInfo, makeGetDeviceDetail, getAssetTypeListInfo, getGroupListInfo, getAssetListInfo } from '../Selector'
 import isEmpty from 'lodash/isEmpty'
@@ -130,13 +129,14 @@ const EditDeviceAsset = ({ route, navigation }) => {
             AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
         } else {
             
-            setDialogVisible(true)
+            onTapConfirm()
+            //setDialogVisible(true)
         }
     }
 
     function onTapConfirm() {
         if (isConnected) {
-            setDialogVisible(false)
+            //setDialogVisible(false)
             let deviceDTO = { ...deviceInfo, ...{ deviceName: deviceName } }
                 let groupDTObj = groupDTO ? groupDTO : null
                 if (!isEmpty(group)) {
@@ -179,18 +179,18 @@ const EditDeviceAsset = ({ route, navigation }) => {
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
     }
 
-    function renderAssetConfirmationDialog() {
-        return (
-            <AssetConfirmationDialog
-                isVisible={dialogVisible}
-                // deviceId={device.deviceId}
-                // onSubmit={(item) => onSubmit(item)}
-                onTapConfirm={() => onTapConfirm()}
-                onTapClose={() => setDialogVisible(false)}
-                onSwipeComplete={() => setDialogVisible(false)}
-            />
-        )
-    }
+    // function renderAssetConfirmationDialog() {
+    //     return (
+    //         <AssetConfirmationDialog
+    //             isVisible={dialogVisible}
+    //             // deviceId={device.deviceId}
+    //             // onSubmit={(item) => onSubmit(item)}
+    //             onTapConfirm={() => onTapConfirm()}
+    //             onTapClose={() => setDialogVisible(false)}
+    //             onSwipeComplete={() => setDialogVisible(false)}
+    //         />
+    //     )
+    // }
 
     return (
         <View style={styles.container}>
@@ -273,7 +273,7 @@ const EditDeviceAsset = ({ route, navigation }) => {
                     />
                 </View>
 
-                {renderAssetConfirmationDialog()}
+                {/* {renderAssetConfirmationDialog()} */}
             </View>
 
         </View>
