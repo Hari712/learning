@@ -43,4 +43,18 @@ export const livetrackingReducer = createReducer(state = initialState, {
             geofenceList: [action.data, ...state.geofenceList]
         }
     },
+    [types.ENABLE_DISABLE_GEOFENCE_RESPONSE](state, action) {
+        const { geofenceId } = action
+        const arrGeofence = state.geofenceList ? state.geofenceList : []
+        const arrSelectedGeofence = arrGeofence.map((item) => {
+            if(item.geofence.id == geofenceId){
+                item.isActive = !item.isActive
+            }
+            return item
+        })
+        return {
+            ...state,
+            geofenceList: arrSelectedGeofence
+        }
+    }
 })

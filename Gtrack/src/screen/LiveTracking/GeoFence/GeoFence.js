@@ -16,10 +16,6 @@ import GeofenceEditDialog from '../../../component/GeofenceEditDialog';
 import GeofenceDeleteDialog from '../../../component/GeofenceDeleteDialog';
 
 const GeoFence = ({ navigation }) => {
-
-    const { isRegular} = useSelector(state => ({
-        isRegular: isRoleRegular(state)
-    }))
     
     const [dialogVisible, setDialogVisible] = useState(false)
     const [deleteDialogBox, setDeleteDialogBox] = useState(false)
@@ -31,9 +27,10 @@ const GeoFence = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
-    const { loginData, geofenceList } = useSelector(state => ({
+    const { loginData, geofenceList, isRegular } = useSelector(state => ({
         loginData: getLoginState(state),
-        geofenceList: getGeofenceListInfo(state)
+        geofenceList: getGeofenceListInfo(state),
+        isRegular: isRoleRegular(state)
     }))
 
     React.useLayoutEffect(() => {

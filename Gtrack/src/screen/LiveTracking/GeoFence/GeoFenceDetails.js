@@ -173,7 +173,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                     <View style={styles.textInputField}>
                         <TextField
                             valueSet={setName}
-                            label={translate( "Name")}
+                            label={translate( "Name") + '*' }
                             defaultValue={name}
                             onChangeText={(text) => setName(text)}
                             style={styles.textNameStyle}
@@ -253,7 +253,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() => onTapSave()} style={styles.nextButton}>
+                            disabled={!name}
+                            onPress={() => onTapSave()} style={[styles.nextButton,{backgroundColor: name ? ColorConstant.BLUE : '#06418E50'}]}>
                             <Text style={styles.nextButtonText}>{translate("Save")}</Text>
                         </TouchableOpacity>
                     </View>
@@ -368,8 +369,7 @@ const styles = StyleSheet.create({
         width: '40%',
         height: hp(5),
         justifyContent: 'center',
-        backgroundColor: ColorConstant.BLUE,
-        opacity: 0.5
+        backgroundColor: ColorConstant.BLUE
     },
     nextButtonText: {
         textAlign: 'center',
