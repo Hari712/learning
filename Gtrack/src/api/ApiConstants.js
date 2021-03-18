@@ -57,7 +57,8 @@ const ApiConstants = {
     DELETE_GEOFENCE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}`,
     ADD_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     LINK_GEOFENCE_DEVICES:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices?link=true`,
-    UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`
+    UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
+    ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`
 }
 
 export default ApiConstants

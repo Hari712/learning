@@ -57,7 +57,8 @@ const GeoFence = ({ navigation }) => {
         dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
     }
 
-    function onSuccess(data) {    
+    function onSuccess(data) { 
+        console.log("geofence",data)   
         setIsRefreshing(false) 
         AppManager.hideLoader()
     }
