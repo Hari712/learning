@@ -61,19 +61,30 @@ const EditDeviceAsset = ({ route, navigation }) => {
     const [dialogVisible, setDialogVisible] = useState(false)
     const [typePositionY, setTypePositionY] = useState();
     const [groupPositionY, setGroupPositionY] = useState();
+    const [dropdownClick, setDropdownClick] = useState()
 
 
     useEffect(() => {
+        if(dropdownClick){
+            setAssetName(dropdownClick)
+        }
         if (assetName) {
             let selectedAssetList = assetList.filter((item) => item.assetName == assetName)
+            console.log("khushim",assetList)
             if (!isEmpty(selectedAssetList)) {
                 let selectedAset = selectedAssetList[0]
                 setType(selectedAset.assetType)
                 setAssetDescription(selectedAset.description)
+                if(dropdownClick){
+                    setDialogVisible(selectedAset.status == 'LINKED')
+                }
             }
+            
         }
 
-    }, [assetName])
+    }, [assetName, dropdownClick])
+
+   
 
     useEffect(() => {
         if (group) {
@@ -128,7 +139,6 @@ const EditDeviceAsset = ({ route, navigation }) => {
         if (!isEmpty(message)) {
             AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
         } else {
-            
             onTapConfirm()
             //setDialogVisible(true)
         }
@@ -179,18 +189,18 @@ const EditDeviceAsset = ({ route, navigation }) => {
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
     }
 
-    // function renderAssetConfirmationDialog() {
-    //     return (
-    //         <AssetConfirmationDialog
-    //             isVisible={dialogVisible}
-    //             // deviceId={device.deviceId}
-    //             // onSubmit={(item) => onSubmit(item)}
-    //             onTapConfirm={() => onTapConfirm()}
-    //             onTapClose={() => setDialogVisible(false)}
-    //             onSwipeComplete={() => setDialogVisible(false)}
-    //         />
-    //     )
-    // }
+    function renderAssetConfirmationDialog() {
+        return (
+            <AssetConfirmationDialog
+                isVisible={dialogVisible}
+                // deviceId={device.deviceId}
+                // onSubmit={(item) => onSubmit(item)}
+                onTapConfirm={() => onTapConfirm()}
+                onTapClose={() => setDialogVisible(false)}
+                onSwipeComplete={() => setDialogVisible(false)}
+            />
+        )
+    }
 
     return (
         <View style={styles.container}>
@@ -267,13 +277,13 @@ const EditDeviceAsset = ({ route, navigation }) => {
                         label='Name' 
                         emptyDataText="No Asset found"
                         defaultValue={assetName} 
-                        valueSet={setAssetName} 
+                        valueSet={setDropdownClick} 
                         dataList={arrAssetList} 
                         dropdownStyle={{backgroundColor:arrAssetList.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK}} 
                     />
                 </View>
 
-                {/* {renderAssetConfirmationDialog()} */}
+                {dialogVisible && renderAssetConfirmationDialog()}
             </View>
 
         </View>
