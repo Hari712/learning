@@ -55,9 +55,7 @@ const AssignAsset = ({ navigation, route }) => {
             )
         });
     }, [navigation]);
-
-    console.log("khushi",assetList)
-
+    
     useEffect(() => {
         if(dropdownClick){
             setAsset(dropdownClick)
@@ -70,9 +68,6 @@ const AssignAsset = ({ navigation, route }) => {
                 if(dropdownClick){
                     setDialogVisible(selectedAset.status == 'LINKED')
                 }
-                // setType(selectedAset.assetType)
-                // setAssetDescription(selectedAset.description)
-                console.log("Muku",selectedAset.status == 'LINKED',selectedAset.deviceName)
             }
             
         }
