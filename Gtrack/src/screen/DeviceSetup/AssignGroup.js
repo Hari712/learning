@@ -35,9 +35,11 @@ const AssignGroup = ({ navigation, route }) => {
 
     const user_id = loginInfo.id ? loginInfo.id : null
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
-    const [group, setGroup] = useState(arrGroupnames[2])
+    const defaultGroup = arrGroupnames.filter((item) => item == "GTrack Group" ? item : null )
+    const [group, setGroup] = useState(defaultGroup)
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
     const [dropdownPosy, setDropdownPosy] = useState()
+
 
     useLayoutEffect(() => {
         navigation.setOptions({
