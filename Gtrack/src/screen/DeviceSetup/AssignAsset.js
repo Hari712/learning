@@ -15,6 +15,7 @@ import AppManager from '../../constants/AppManager'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { BackIcon } from '../../component/SvgComponent'
+import AssetConfirmationDialog from './../../component/AssetConfirmationDialog';
 
 const AssignAsset = ({ navigation, route }) => {
 
@@ -36,6 +37,9 @@ const AssignAsset = ({ navigation, route }) => {
     const [asset, setAsset] = useState('')
     const [isAssetDialogVisible, setIsAssetDialogVisible] = useState(false)
     const [dropdownPosy, setDropdownPosy] = useState()
+    const [dropdownClick, setdropdownClick] = useState()
+    const [dialogVisible, setDialogVisible] = useState(false)
+    const [deviceName, setDeviceName] = useState()
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -51,6 +55,28 @@ const AssignAsset = ({ navigation, route }) => {
             )
         });
     }, [navigation]);
+
+    console.log("khushi",assetList)
+
+    useEffect(() => {
+        if(dropdownClick){
+            setAsset(dropdownClick)
+        }
+        if (asset) {
+            let selectedAssetList = assetList.filter((item) => item.assetName == asset)
+            if (!isEmpty(selectedAssetList)) {
+                let selectedAset = selectedAssetList[0]
+                setDeviceName(selectedAset.deviceName)
+                if(dropdownClick){
+                    setDialogVisible(selectedAset.status == 'LINKED')
+                }
+                // setType(selectedAset.assetType)
+                // setAssetDescription(selectedAset.description)
+                console.log("Muku",selectedAset.status == 'LINKED',selectedAset.deviceName)
+            }
+            
+        }
+    }, [asset, dropdownClick])
 
     function navigateToAssignGroup() {
         if (isConnected) {
@@ -112,6 +138,20 @@ const AssignAsset = ({ navigation, route }) => {
         setIsAssetDialogVisible(true)
     }
 
+    function renderAssetConfirmationDialog() {
+        return (
+            <AssetConfirmationDialog
+                isVisible={dialogVisible}
+                deviceText={deviceName}
+                // deviceId={device.deviceId}
+                // onSubmit={(item) => onSubmit(item)}
+                //onTapConfirm={() => onTapConfirm()}
+                onTapClose={() => setDialogVisible(false)}
+                onSwipeComplete={() => setDialogVisible(false)}
+            />
+        )
+    }
+
     return (
         <>
             <View style={styles.container}>
@@ -151,7 +191,7 @@ const AssignAsset = ({ navigation, route }) => {
                     defaultValue={asset}
                     emptyDataText="No Asset found"
                     label={translate("Select Existing Asset")}
-                    valueSet={setAsset}
+                    valueSet={setdropdownClick}
                     dataList={assetNameList}
                     contentInset={{ label: hp(-0.2) }}
                     inputContainerStyle={[styles.inputContainer,{zIndex:20}]}
@@ -168,6 +208,7 @@ const AssignAsset = ({ navigation, route }) => {
                 />
             </View>
             {renderAddNewAssetDialog()}
+            {dialogVisible && renderAssetConfirmationDialog()}
         </>
     )
 }
