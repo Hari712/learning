@@ -19,9 +19,9 @@ const AssetConfirmationDialog = (props) => {
         onTapClose && onTapClose()
     }
 
-    function onTapOkay() {
-        onTapConfirm && onTapConfirm()
-    }
+    // function onTapOkay() {
+    //     onTapConfirm && onTapConfirm()
+    // }
 
     function renderBody() {
         return (
@@ -42,7 +42,8 @@ const AssetConfirmationDialog = (props) => {
                     <TouchableOpacity style={styles.button} onPress={() => hideDialog()}>
                         <Text style={styles.buttonTitle}>Cancel</Text>
                     </TouchableOpacity> 
-                    <TouchableOpacity style={[styles.button, { backgroundColor: ColorConstant.BLUE }]} onPress={() => onTapOkay()}>
+                    {/* <TouchableOpacity style={[styles.button, { backgroundColor: ColorConstant.BLUE }]} onPress={() => onTapOkay()}> */}
+                    <TouchableOpacity style={[styles.button, { backgroundColor: ColorConstant.BLUE }]} onPress={() => onCancelDialog()}>
                         <Text style={[styles.buttonTitle, { color: ColorConstant.WHITE }]}>Okay</Text>
                     </TouchableOpacity>    
                 </View>        

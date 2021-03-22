@@ -1,9 +1,8 @@
 import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
-import images from '../../constants/images';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { Dialog, FontSize, TextField, DropDown, AssetConfirmationDialog } from '../../component'
+import { FontSize, TextField, DropDown, AssetConfirmationDialog } from '../../component'
 import { useSelector, useDispatch } from 'react-redux'
 import { getLoginInfo, makeGetDeviceDetail, getAssetTypeListInfo, getGroupListInfo, getAssetListInfo } from '../Selector'
 import isEmpty from 'lodash/isEmpty'
@@ -62,19 +61,30 @@ const EditDeviceAsset = ({ route, navigation }) => {
     const [dialogVisible, setDialogVisible] = useState(false)
     const [typePositionY, setTypePositionY] = useState();
     const [groupPositionY, setGroupPositionY] = useState();
+    const [dropdownClick, setDropdownClick] = useState()
 
 
     useEffect(() => {
+        if(dropdownClick){
+            setAssetName(dropdownClick)
+        }
         if (assetName) {
             let selectedAssetList = assetList.filter((item) => item.assetName == assetName)
+            console.log("khushim",assetList)
             if (!isEmpty(selectedAssetList)) {
                 let selectedAset = selectedAssetList[0]
                 setType(selectedAset.assetType)
                 setAssetDescription(selectedAset.description)
+                if(dropdownClick){
+                    setDialogVisible(selectedAset.status == 'LINKED')
+                }
             }
+            
         }
 
-    }, [assetName])
+    }, [assetName, dropdownClick])
+
+   
 
     useEffect(() => {
         if (group) {
@@ -129,14 +139,14 @@ const EditDeviceAsset = ({ route, navigation }) => {
         if (!isEmpty(message)) {
             AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
         } else {
-            
-            setDialogVisible(true)
+            onTapConfirm()
+            //setDialogVisible(true)
         }
     }
 
     function onTapConfirm() {
         if (isConnected) {
-            setDialogVisible(false)
+            //setDialogVisible(false)
             let deviceDTO = { ...deviceInfo, ...{ deviceName: deviceName } }
                 let groupDTObj = groupDTO ? groupDTO : null
                 if (!isEmpty(group)) {
@@ -267,13 +277,13 @@ const EditDeviceAsset = ({ route, navigation }) => {
                         label='Name' 
                         emptyDataText="No Asset found"
                         defaultValue={assetName} 
-                        valueSet={setAssetName} 
+                        valueSet={setDropdownClick} 
                         dataList={arrAssetList} 
                         dropdownStyle={{backgroundColor:arrAssetList.length > 0 ? ColorConstant.WHITE: ColorConstant.LIGHTPINK}} 
                     />
                 </View>
 
-                {renderAssetConfirmationDialog()}
+                {dialogVisible && renderAssetConfirmationDialog()}
             </View>
 
         </View>
