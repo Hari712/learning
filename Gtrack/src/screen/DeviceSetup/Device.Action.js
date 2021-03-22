@@ -203,6 +203,11 @@ export const requestUpdateGroupDevice = (userId, data, onSuccess, onError) => ({
     onError
 })
 
+export const setUpdateGroupDeviceResponse = (data) => ({
+    type: types.UPDATE_GROUP_DEVICE_RESPONSE,
+    data
+})
+
 export const setDeleteAssetResponse = (assetId) => ({
     type: types.DELETE_ASSET_BY_ASSET_ID_RESPONSE,
     assetId

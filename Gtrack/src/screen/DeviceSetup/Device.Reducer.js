@@ -104,4 +104,19 @@ export const deviceReducer = createReducer(state = initialState, {
             assets: assetInfo
         }
     },
+    [types.UPDATE_GROUP_DEVICE_RESPONSE](state, action) {
+        const group = action.data.groupDTO
+        const arrGroup = state.groups ? state.groups : []
+        const updatedGroupArr = Object.values(arrGroup).map((item) =>{
+            if(item.id == group.id){
+                item.devices.push(group.devices[0])
+            }
+            return item
+        })
+        const mapUpdatedGroups = mapKeys(updatedGroupArr, 'id')
+        return {
+            ...state,
+            groups: mapUpdatedGroups
+        }
+    },
 })
