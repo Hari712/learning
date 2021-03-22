@@ -9,6 +9,7 @@ import { GeoFenceTrashIcon } from '../../../component/SvgComponent';
 import Switches from 'react-native-switches'
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
+import { isCircle } from './../../../utils/helper';
 
 const GeofenceList = ( props ) => {
 
@@ -18,6 +19,8 @@ const GeofenceList = ( props ) => {
         loginData: getLoginState(state),
         isRegular: isRoleRegular(state)
     }))
+
+    const geoFenceType = isCircle(item.geofence.area) ? 'Circle' : 'Polygon'
 
     const dispatch = useDispatch()
 
@@ -39,7 +42,7 @@ const GeofenceList = ( props ) => {
     }
 
     return (
-        
+
         <TouchableOpacity style={styles.cardContainer} onPress={() => { 
             setActiveGeofence(item)
             setSelectedDevice(item.deviceList)
@@ -60,8 +63,8 @@ const GeofenceList = ( props ) => {
 
             <View style={styles.whiteContainer}>
                 <View style={styles.GroupMainView}>
-                    <Text style={styles.whiteContainerText}>Group</Text>
-                    <Text style={styles.whiteContainerSubText}>{item.GroupData}</Text>
+                    <Text style={styles.whiteContainerText}>Geofence Type</Text>
+                    <Text style={styles.whiteContainerSubText}>{geoFenceType}</Text>
                 </View>
 
                 <View style={styles.deviceNameMainView}>
