@@ -10,7 +10,6 @@ import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
 import { SCREEN_CONSTANTS, PHONE_REGEX } from '../../../constants/AppConstants';
 import { BackIcon, EditIcon } from '../../../component/SvgComponent';
-import { getFormattedPhoneNumber } from '../../../utils/helper'
 
 const Profile = ({ navigation }) => {
 

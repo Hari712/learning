@@ -1,18 +1,20 @@
-import React, { useState, Component, useEffect } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, FlatList, SafeAreaView } from 'react-native';
+import React, { useState, Component, useEffect, useRef } from 'react';
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions, FlatList, SafeAreaView, Button } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize, TextField }from '../../../component';
+import { DropDown, FontSize, TextField } from '../../../component';
 import * as ProfileActions from '../Profile/Profile.Action'
 import AppManager from '../../../constants/AppManager'
 import { translate } from '../../../../App'
-import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { BackIcon } from '../../../component/SvgComponent';
+import Modal from 'react-native-modal'
+import { CountrySelection } from 'react-native-country-list'
+import { AppConstants, SCREEN_CONSTANTS, PHONE_REGEX, NUMBER_REGEX } from '../../../constants/AppConstants';
+import { BackIcon, DownArrowIcon } from '../../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
 import { validateEmailorPhoneNumber, validateName } from '../../../utils/helper';
-
+import { getFormattedPhoneNumber } from '../../../utils/helper'
 
 const EditProfile = ({ navigation, route, item }) => {
     const dispatch = useDispatch()
@@ -28,8 +30,9 @@ const EditProfile = ({ navigation, route, item }) => {
     //User data variables
     const [firstName, setFirstName] = useState(loginData.firstName);
     const [lastName, setLastName] = useState(loginData.lastName);
-    const [phoneNumber, setPhoneNumber] = useState(loginData.phone)
-
+    const [phoneNumber, setPhoneNumber] = useState(loginData.phone ? loginData.phone.replace(PHONE_REGEX, '$1-$2-$3') : '')
+    const [phonePrefix, setPhonePrefix] = useState(loginData.phonePrefix)
+    const [isModalVisible, setModalVisible] = useState(false)
     // useEffect ()
 
     const [value, setValue] = useState();
@@ -51,6 +54,8 @@ const EditProfile = ({ navigation, route, item }) => {
 
     const [isClickOnSave, setIsClickOnSave] = useState(false);
 
+    const phonePrefixRef = useRef()
+
     // RenderShippingEditDialog
     const [viewEditDialogBox, setViewEditDialogBox] = useState(false)
     const [viewEditShippingAddName, setViewEditShippingAddName] = useState()
@@ -71,11 +76,11 @@ const EditProfile = ({ navigation, route, item }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                   {translate("Settings")}
+                    {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
             )
@@ -198,34 +203,38 @@ const EditProfile = ({ navigation, route, item }) => {
     function editProfile() {
         if (isConnected) {
             let message = ''
-            if(!validateName(firstName)){
-                message = "Name should contain only alphabets" 
+            const phone = getPhone(phoneNumber)
+            if (!validateName(firstName)) {
+                message = "Name should contain only alphabets"
             }
-            if(!validateName(lastName)){
-                message = "Name should contain only alphabets" 
+            else if (!validateName(lastName)) {
+                message = "Name should contain only alphabets"
             }
-            if(!validateEmailorPhoneNumber(phoneNumber)){
-                message = translate(AppConstants.INVALID_PHONE_NUMBER) 
+            else if (isEmpty(phonePrefix)) {
+                message = 'Please select country code'
             }
-            if(!isEmpty(message)){
+            else if (!validateEmailorPhoneNumber(phone)) {
+                message = translate(AppConstants.INVALID_PHONE_NUMBER)
+            }
+            if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
-            AppManager.showLoader()
-            const requestBody = {
-                "id": id,
-                "firstName": firstName,
-                "lastName": lastName,
-                "email": loginData.email,
-                "phone": phoneNumber
-                //"phonePrefix": phonePrefix
+                AppManager.showLoader()
+                const requestBody = {
+                    "id": id,
+                    "firstName": firstName,
+                    "lastName": lastName,
+                    "email": loginData.email,
+                    "phone": phone,
+                    "phonePrefix": phonePrefix
+                }
+                console.log("Data", requestBody);
+                dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
             }
-            console.log("Data", requestBody);
-            dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
     }
-    } else {
-        AppManager.showNoInternetConnectivityError()
-    }
-}
 
     function onSuccess(data) {
         AppManager.hideLoader()
@@ -241,6 +250,44 @@ const EditProfile = ({ navigation, route, item }) => {
         AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true })
     }
 
+    const handleOnChangePhone = (value) => {
+        const phone = getFormattedPhoneNumber(value)
+        setPhoneNumber(phone)
+        return phone
+    }
+
+    function toggleModal() {
+        setModalVisible(true);
+    }
+
+    const getPhone = (phone) => {
+        return phoneNumber.replace(NUMBER_REGEX, '')
+    }
+
+    function setCountryCodeData() {
+        if (!isEmpty(country)) {
+            const ccode = `+${country.callingCode}`
+            phonePrefixRef && phonePrefixRef.current && phonePrefixRef.current.setValue(ccode)
+            setPhonePrefix(ccode)
+        }
+    }
+
+    function renderCountrySelection() {
+        return (
+            <Modal
+                isVisible={isModalVisible}
+                style={styles.modal}
+                onBackButtonPress={() => setModalVisible(false)}
+            >
+                <CountrySelection action={(item) => setCountry(item)} selected={country} />
+                <Button title={translate("Done")} onPress={() => {
+                    setCountryCodeData()
+                    setModalVisible(false)
+                }} />
+            </Modal>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.mainView}>
@@ -249,7 +296,7 @@ const EditProfile = ({ navigation, route, item }) => {
 
             <ScrollView keyboardShouldPersistTaps='handled' style={{ height: "100%" }}>
                 <View style={styles.mainViewStyle}>
-                    <View style={styles.textInputField}>
+                    <TouchableOpacity style={styles.textInputField}>
                         <TextField
                             valueSet={setFirstName}
                             label={translate("First Name")}
@@ -257,8 +304,9 @@ const EditProfile = ({ navigation, route, item }) => {
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.5) }}
+                            editable={false}
                         />
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={styles.textInputField}>
                         <TextField
@@ -270,25 +318,42 @@ const EditProfile = ({ navigation, route, item }) => {
                             labelTextStyle={{ top: hp(0.5) }}
                         />
                     </View>
-
-                    <View style={styles.textInputField}>
-                        <TextField
-                            valueSet={setPhoneNumber}
-                            label={translate("Phone Number")}
-                            value={phoneNumber}
-                            style={styles.textNameStyle}
-                            labelFontSize={hp(1.4)}
-                            labelTextStyle={{ top: hp(0.5) }}
-                        />
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity style={styles.countryPicker} onPress={() => setModalVisible(true)}>
+                            <TextField
+                                valueSet={setPhonePrefix}
+                                label={translate("Country_Code")}
+                                ref={phonePrefixRef}
+                                renderRightAccessory={() => <DownArrowIcon {...styles.dropdownImage} />}
+                                editable={false}
+                                value={phonePrefix}
+                                formatText={input => handleOnChangePhone(input)}
+                                style={styles.textNameStyle}
+                                labelFontSize={hp(1.4)}
+                                labelTextStyle={{ top: hp(0.5) }}
+                            />
+                        </TouchableOpacity>
+                        <View style={{ flex: 0.6, paddingLeft: hp(1.5) }}>
+                            <TextField
+                                valueSet={setPhoneNumber}
+                                label={translate("Phone Number")}
+                                value={phoneNumber}
+                                formatText={input => handleOnChangePhone(input)}
+                                style={styles.textNameStyle}
+                                labelFontSize={hp(1.4)}
+                                labelTextStyle={{ top: hp(0.5) }}
+                            />
+                        </View>
                     </View>
 
-                    <View style = {{flexDirection: 'row'}}>
-                        <View style = {{ marginLeft: wp(1) }}>
+
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ marginLeft: wp(1) }}>
                             <Text style={styles.EmailTextStyle}>{translate("Email Address")}</Text>
                             <Text style={styles.textNameStyle}>{loginData.email}</Text>
                         </View>
-                           
-                        <View style = {{ marginLeft: wp(15)}}>
+
+                        <View style={{ marginLeft: wp(15) }}>
                             <Text style={styles.EmailTextStyle}>{translate("User Type")}</Text>
                             <Text style={styles.textNameStyle}>{userType == "ROLE_OWNER" ? "Owner" : "Regular"}</Text>
                         </View>
@@ -307,7 +372,7 @@ const EditProfile = ({ navigation, route, item }) => {
                     </View>
                 </View>
             </ScrollView>
-
+            {renderCountrySelection()}
         </SafeAreaView>
     )
 }
@@ -477,6 +542,34 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.small,
         fontWeight: '500'
     },
+    countryCode: {
+        flex: 1,
+        fontSize: FontSize.FontSize.small,
+        fontFamily: 'Nunito-Regular',
+        color: ColorConstant.BLACK,
+    },
+    countryPicker: {
+        flex: 0.4,
+    },
+    dropdownImage: {
+        height: hp(1.3),
+        width: hp(1.3),
+        marginTop: hp(2.3),
+        alignSelf: 'center',
+        color: '#000'
+    },
+    modal: {
+        margin: 0,
+        paddingVertical: Platform.OS == 'ios' ? hp(2) : null,
+        height: "100%",
+        backgroundColor: "#f4f4f4"
+    },
+    countrySelection: {
+        width: wp(100),
+        height: hp(100),
+        alignSelf: 'center',
+        paddingVertical: Platform.OS == 'ios' ? hp(2) : null
+    }
 })
 
 export default EditProfile;

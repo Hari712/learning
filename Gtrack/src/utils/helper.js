@@ -46,10 +46,10 @@ export function getFormattedPhoneNumber(value) {
     if (phone.length < 4) {
       return phone
     } else if (phone.length < 7) {
-      const formatPhone = `(${phone.slice(0, 3)}) ${phone.slice(3)}`
+      const formatPhone = `${phone.slice(0, 3)}-${phone.slice(3)}`
       return formatPhone
     } else {
-      const formatPhone = `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6, 10)}`
+      const formatPhone = `${phone.slice(0, 3)}-${phone.slice(3, 6)}-${phone.slice(6, 10)}`
       return formatPhone
     }
   }

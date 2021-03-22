@@ -254,7 +254,7 @@
     "Poor":"Poor",
     "Empty_Alarm_Name":"Enter alarm name",
     "Trip History": "Trip History",
-    "Alarm_Type":"Alarm Type"
-
+    "Alarm_Type":"Alarm Type",
+    "Country_Code": "Country Code"
 
 }
