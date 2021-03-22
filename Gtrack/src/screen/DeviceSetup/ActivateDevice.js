@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import TextField from '../../component/TextField'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
@@ -24,6 +24,9 @@ const ActivateDevice = ({ navigation }) => {
         loginInfo: getLoginInfo(state),
         isConnected: state.network.isConnected
     }))
+
+    const deviceNameRef = useRef()
+    const deviceIdRef = useRef()
 
     const user_id = loginInfo.id ? loginInfo.id : null
     const [deviceId, setDeviceId] = useState('')
@@ -73,6 +76,8 @@ const ActivateDevice = ({ navigation }) => {
     }
 
     function onSuccess(data) {
+        deviceNameRef.current.clear()
+        deviceIdRef.current.clear()
         const deviceDTO = data.deviceDTO ? data.deviceDTO : {  }
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: 'Device created successfully', description: '', floating: true })
@@ -120,6 +125,7 @@ const ActivateDevice = ({ navigation }) => {
                         labelTextStyle={{ top: hp(0.3) }}
                         renderRightAccessory={() => handleRightAccessory()}
                         contentInset={{ label: hp(-0.5) }}
+                        ref={deviceIdRef}
                         inputContainerStyle={styles.inputContainer}
                     />
 
@@ -134,6 +140,7 @@ const ActivateDevice = ({ navigation }) => {
                         labelFontSize={hp(1.4)}
                         labelTextStyle={{ top: hp(0.3) }}
                         contentInset={{ label: hp(-0.5) }}
+                        ref={deviceNameRef}
                         inputContainerStyle={styles.inputContainer}
                     />
                 </View>
