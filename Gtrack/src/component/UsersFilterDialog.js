@@ -48,7 +48,8 @@ const UsersFilterDialog = (props) => {
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Reset")}</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => filterHandle()} style={styles.nextButton}>
+            <TouchableOpacity disabled={IsRole == -1 && status == -1} onPress={() => filterHandle()} 
+                style={[styles.nextButton, {backgroundColor: (IsRole == -1 && status == -1) ? '#06418E50' : ColorConstant.BLUE}]}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>Okay</Text>
             </TouchableOpacity>
         </View> 
