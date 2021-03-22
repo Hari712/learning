@@ -273,6 +273,8 @@ function* requestUpdateGroupDevice(action) {
     try {
         const url = ApiConstants.UPDATE_GROUP(userId)
         const response = yield call(API.put, url, data)
+        const result = response.result ? response.result : {}
+        yield put(DeviceActions.setUpdateGroupDeviceResponse(result))
         onSuccess(response)
     } catch (error) {
         onError(error)
