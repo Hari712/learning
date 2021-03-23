@@ -35,15 +35,15 @@ export const loginReducer = createReducer(state = initialState, {
         }
     },
     [types.EDIT_PROFILE_RESPONSE](state, action) {
-        const { result } = action.data
+        const { data } = action
         return {
             ...state,
-            firstName: result.firstName,
-            lastName: result.lastName,
-            // phonePrefix: result.phonePrefix,
-            phone: result.phone,
-            group: result.groups,
-            role: result.roles
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phonePrefix: data.phonePrefix,
+            phone: data.phone,
+            group: data.groups,
+            role: data.roles
         }
     },
     [types.GET_FEEDBACK_RESPONSE](state, action) {

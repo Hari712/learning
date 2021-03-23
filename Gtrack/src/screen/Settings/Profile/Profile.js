@@ -30,7 +30,7 @@ const Profile = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                     {translate("Settings")}
+                    {translate("Settings")}
                 </Text>
             ),
             headerLeft: () => (

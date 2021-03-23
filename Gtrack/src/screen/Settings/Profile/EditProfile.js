@@ -239,7 +239,6 @@ const EditProfile = ({ navigation, route, item }) => {
     function onSuccess(data) {
         AppManager.hideLoader()
         console.log("Success", data)
-        dispatch(ProfileActions.setEditProfileResponse(data))
         AppManager.showSimpleMessage('success', { message: 'Profile updated successfully', description: '', floating: true })
         navigation.navigate(SCREEN_CONSTANTS.PROFILE)
     }
@@ -304,7 +303,7 @@ const EditProfile = ({ navigation, route, item }) => {
                             style={styles.textNameStyle}
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.5) }}
-                            editable={false}
+                            //editable={false}
                         />
                     </TouchableOpacity>
 
