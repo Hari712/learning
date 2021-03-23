@@ -1,10 +1,9 @@
-import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Image, StyleSheet, Text, TouchableOpacity, Keyboard, Platform } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { EditText, FontSize } from '../../../../src/component'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FEEDBACK_VALIDATION_ERROR } from '../../../constants/AppConstants'
-import images from '../../../constants/images';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoginState } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
@@ -25,6 +24,24 @@ const Feedback = ({ navigation }) => {
     const MAX_CHARACTERS_LIMIT = 250
 
     const [feedback, setFeedback] = useState('')
+    const [keyboardHeight, setKeyboardHeight] = useState(0)
+
+    function onKeyboardDidShow(KeyboardEvent){
+        setKeyboardHeight(KeyboardEvent.endCoordinates.height)
+    }
+
+    function onKeyboardDidHide() {
+        setKeyboardHeight(0)
+    }
+
+    useEffect(() => {
+        Keyboard.addListener('keyboardDidShow',onKeyboardDidShow)
+        Keyboard.addListener('keyboardDidHide',onKeyboardDidHide)
+        return () => {
+            Keyboard.removeListener('keyboardDidShow',onKeyboardDidShow)
+            Keyboard.removeListener('keyboardDidHide',onKeyboardDidHide)
+        }   
+    },[])
 
     const dispatch = useDispatch()
 
@@ -87,7 +104,7 @@ const Feedback = ({ navigation }) => {
     }
 
     return (
-        <ScrollView keyboardShouldPersistTaps='handled' style={styles.container}>
+        <ScrollView keyboardShouldPersistTaps='handled' style={[styles.container,{marginBottom:Platform.OS == 'ios' ? keyboardHeight: 0}]}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>{translate("Feedback")}</Text>
             </View>
@@ -102,7 +119,7 @@ const Feedback = ({ navigation }) => {
                 multiline={true}
                 numberOfLines={4}
             />
-           
+
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => resetText()} style={[styles.cancelButton]}>
@@ -117,6 +134,7 @@ const Feedback = ({ navigation }) => {
             </TouchableOpacity>
 
         </ScrollView>
+        // </KeyboardAvoidingView>
     )
 }
 
@@ -184,7 +202,8 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'space-evenly', 
         backgroundColor: ColorConstant.BLUE, 
-        height: hp(5)
+        height: hp(5),
+        marginBottom:hp(3)
     },
     submitTextStyle: {
         color: ColorConstant.WHITE, 
