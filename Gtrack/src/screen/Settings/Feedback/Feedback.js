@@ -1,5 +1,5 @@
-import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, Keyboard } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Image, StyleSheet, Text, TouchableOpacity, Keyboard, Platform } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { EditText, FontSize } from '../../../../src/component'
 import { ColorConstant } from '../../../constants/ColorConstants';
@@ -13,7 +13,6 @@ import DeviceInfo from 'react-native-device-info';
 import { ScrollView } from 'react-native-gesture-handler';
 import { translate } from '../../../../App';
 import { BackIcon } from '../../../component/SvgComponent';
-import { useEffect } from 'react';
 
 const Feedback = ({ navigation }) => {
 
@@ -105,7 +104,7 @@ const Feedback = ({ navigation }) => {
     }
 
     return (
-        <ScrollView keyboardShouldPersistTaps='handled' style={[styles.container,{marginBottom:keyboardHeight}]}>
+        <ScrollView keyboardShouldPersistTaps='handled' style={[styles.container,{marginBottom:Platform.OS == 'ios' ? keyboardHeight: 0}]}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>{translate("Feedback")}</Text>
             </View>
@@ -120,7 +119,7 @@ const Feedback = ({ navigation }) => {
                 multiline={true}
                 numberOfLines={4}
             />
-           
+
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={() => resetText()} style={[styles.cancelButton]}>
