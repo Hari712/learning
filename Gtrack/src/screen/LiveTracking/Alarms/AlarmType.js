@@ -122,7 +122,7 @@ const AlarmType = ({navigation,route}) => {
 
       let arrSelectedId = [];
       selectUser ? 
-      subUserData.subUser.filter((item)=> {      
+      subUserData.filter((item)=> {      
         selectUser.filter((selectedItem)=>{        
           if(item.firstName+" "+item.lastName === selectedItem){  
             arrSelectedId.push(item.id)
