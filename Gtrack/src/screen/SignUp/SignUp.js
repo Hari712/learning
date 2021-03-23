@@ -167,7 +167,7 @@ const SignUp = () => {
                                 {/* <View style={[styles.countrySelection]}> */}
                                     <CountrySelection  action={(item) => setCountry(item) } selected={country}/>
                                     <Button  title={translate("Done")} onPress={()=>{ 
-                                        setCountryCode(country.callingCode)
+                                        setCountryCode(country && country.callingCode ? country.callingCode : '1')
                                         setModalVisible(false)
                                         }} />
                                 {/* </View>                         */}
