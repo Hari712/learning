@@ -85,12 +85,12 @@ const GeoFencePolyGon = ({navigation, route}) => {
             ),
             headerRight: () => (
               
-                <TouchableOpacity  style={{padding:hp(2)}} onPress={() => area && navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
-                    <Text style={{color:area?ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
+                <TouchableOpacity disabled={!(area && selectedCoordinates[0])}  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
+                    <Text style={{color:area && selectedCoordinates[0] ? ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
         });
-    }, [navigation,area]);
+    }, [navigation,area,selectedCoordinates]);
 
     useEffect(() => {
         const cords = Object.values(selectedCoordinates).map((item)=>{
@@ -267,8 +267,12 @@ const GeoFencePolyGon = ({navigation, route}) => {
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     onPress={() => {
-                        isEditing ? setCompleteEditing(true) : null;
-                        setIsEditing(prevState => !prevState)
+                        isEditing ? setCompleteEditing(true) && selectedCoordinates[0] : null;
+                        setIsEditing(prevState => {if(prevState == false) {
+                            return true
+                        }else{
+                            return selectedCoordinates[0]? false : true
+                        }})
                     }}
                     style={[styles.bubble, styles.button]}
                 >
