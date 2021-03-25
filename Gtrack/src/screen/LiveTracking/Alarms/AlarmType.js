@@ -17,7 +17,7 @@ import { isEmpty } from 'lodash';
 
 const AlarmType = ({navigation,route}) => {
     
-  const { alarmType, selectedDeviceList, notificationType} = route.params
+  const { alarmType, selectedDeviceList, notificationType, deviceOverSpeedValue} = route.params
   
   const dispatch = useDispatch()
 
@@ -36,6 +36,12 @@ const AlarmType = ({navigation,route}) => {
   const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
   const [isIgnition, setIsIgnition] = useState(false)
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
+  const [overSpeedInputVisible, setOverspeedInputVisible] = useState()
+  const [overSpeedInputValue, setOverspeedInputValue] = useState()
+  const [batteryLevelInputVisible, setBatteryLevelInputVisible] = useState()
+  const [batteryLevelInputValue, setBatteryLevelInputValue] = useState()
+  const [movementInputVisible, setMovementInputVisible] = useState()
+  const [movementInputValue, setMovementInputValue] = useState()
   
   useEffect(() => {  
     
@@ -51,6 +57,28 @@ const AlarmType = ({navigation,route}) => {
 
         if(editData.notification.notificators)
           setNotification(true)
+        
+        if(editData.notification.attributes.value && notificationType === 'Alarm'){
+          switch (alarmType) {
+            case 'Overspeed':
+              setOverspeedInputValue(editData.notification.attributes.value)
+              break;
+    
+            case 'Battery Level':
+              setBatteryLevelInputValue(editData.notification.attributes.value)
+              break;
+    
+            case 'Movement':
+              setMovementInputValue(editData.notification.attributes.value)
+              break;
+    
+            case 'Panic':
+              break;
+          
+            default:
+              break;
+          }
+        }
 
         var tempUser = [] ;
         editData.users ?
@@ -60,14 +88,31 @@ const AlarmType = ({navigation,route}) => {
     }
   },[])
 
-  useEffect(() => {    
-    if(alarmType === "ignitionOn" || alarmType === "ignitionOff")
-      setIsIgnition(true)
+  useEffect(() => { 
 
-    if(alarmType === "deviceFuelDrop")
-      setInputLabel("Fuel Level(%)")
+    if(notificationType === 'Alarm') {
+      switch (alarmType) {
 
-  }, [alarmType])
+        case 'Overspeed':
+          setOverspeedInputVisible(true)
+          break;
+
+        case 'Battery Level':
+          setBatteryLevelInputVisible(true)
+          break;
+
+        case 'Movement':
+          setMovementInputVisible(true)
+          break;
+
+        case 'Panic':
+          break;
+      
+        default:
+          break;
+      }
+    }
+  }, [alarmType, notificationType])
 
   React.useLayoutEffect(() => {
 
@@ -134,6 +179,11 @@ const AlarmType = ({navigation,route}) => {
 
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
+      var value = batteryLevelInputVisible ? batteryLevelInputValue :
+                  overSpeedInputVisible ? overSpeedInputValue :
+                  movementInputVisible ? movementInputValue :
+                  deviceOverSpeedValue ? parseInt(deviceOverSpeedValue) :
+                  null;
       if(route && route.params && route.params.editData) {
         // Editing/update body
         isUpdate = true;
@@ -142,15 +192,16 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : route.params.editData.notification.id,
-            "type" : alarmType,
+            "type" : notificationType,
             "always" : false,
             "notificators" : notification ? "mail,web" : null,
             "attributes" : {
-              "alarms": notificationType,
+              "alarms": alarmType,
               "name": alarmName,
               "everyday": everyday,              
               "weekdays": weekdays,
-              "weekends": weekends
+              "weekends": weekends,
+              "value" : value
             },
             "calendarId" : 0
           }
@@ -163,11 +214,12 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : 0,
-            "type" : alarmType,
+            "type" : notificationType,
             "always" : false,
             "notificators" : notification ? "mail,web" : null,
             "attributes" : {
-              "alarms": notificationType,
+              "alarms": alarmType,
+              "value" : value,
               "name": alarmName,
               "everyday": everyday,              
               "weekdays": weekdays,
@@ -258,16 +310,35 @@ return (
             deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
           /> 
 
-        {/* {isIgnition ? null : 
-          <View style={styles.inputTextStyle}>
-            <TextInput 
-              placeholder={inputLabel}
-              style={styles.speedText}
-              onChangeText={text => setSpeed(text) }                    
-              value={speed}                    
-            />
-          </View>
-        } */}
+        {overSpeedInputVisible &&
+          <TextField 
+            valueSet={setOverspeedInputValue} 
+            maxLength={30}
+            label='Speed Limit (mph)'
+            defaultValue={overSpeedInputValue}
+            outerStyle={[styles.outerStyle,{marginTop:hp(2)}]} 
+          />
+        }
+
+        {batteryLevelInputVisible &&
+          <TextField 
+            valueSet={setBatteryLevelInputValue} 
+            maxLength={30}
+            label='Battery Level (%)*'
+            defaultValue={batteryLevelInputValue}
+            outerStyle={[styles.outerStyle,{marginTop:hp(2)}]} 
+          />
+        }
+
+        {movementInputVisible &&
+          <TextField 
+            valueSet={setMovementInputValue} 
+            maxLength={30}
+            label='Battery Level (%)*'
+            defaultValue={movementInputValue}
+            outerStyle={[styles.outerStyle,{marginTop:hp(2)}]} 
+          />
+        }
 
         <View style={{marginVertical:hp(3)}}>
           <Text style={styles.textStyle}>{translate("Time")}</Text>
@@ -304,6 +375,9 @@ return (
 const time = ['Every day(All hours)', 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' ]
 
 const user = ["John Smith", "John Carter", "John abc"]
+
+const alarmTypes = ["Overspeed","Low speed","Battery Level","Movement","Panic"] 
+
 const styles = StyleSheet.create({
 
 container: {

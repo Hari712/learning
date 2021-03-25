@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
 import App, { translate } from '../../../../App'
-import { DropDown, MultiSelect, FontSize} from '../../../component';
+import { DropDown, MultiSelect, FontSize, TextField} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
 import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
@@ -18,12 +18,13 @@ const CreateNew = ({navigation,route}) => {
   const dispatch = useDispatch()
 
   const [selectedDevice, setSelectedDevice] = useState([]);
-  const [selectedAlarm, setSelectedAlarm] = useState();
+  const [selectedNotification, setSelectedNotification] = useState();
   const [editingValues, setEditingValues] = useState();
   const [arrDeviceList, setDeviceList] = useState([])
   const [arrDeviceNames, setDeviceNames] = useState([])
   const [selectedAlarmType, setSelectedAlarmType] = useState()
   const [selectAlarmDDy, setSelectAlarmDDy] = useState()
+  const [overSpeedInputValue, setOverspeedInputValue] = useState()
 
   const { isConnected, loginInfo, alertList } = useSelector(state => ({
     isConnected: state.network.isConnected,
@@ -40,9 +41,12 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
       if(editData){
         const devices = Object.values(editData.editData.devices).map((item)=>item.deviceName)
         setSelectedDevice(devices)
-        setSelectedAlarm(editData.editData.notification.type)
+        setSelectedNotification(editData.editData.notification.type)
         setEditingValues(editData.editData)
         setSelectedAlarmType(editData.editData.notification.attributes.alarms)
+        if( editData.editData.notification.type == 'DeviceOverspeed' && editData.editData.notification.attributes.value){
+          setOverspeedInputValue(editData.editData.notification.attributes.value)
+        }
     }
   }
   }, 
@@ -92,9 +96,10 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
       console.log(arrSelectedId)
   
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
-        alarmType:selectedAlarm, 
+        alarmType:selectedAlarmType, 
+        deviceOverSpeedValue:overSpeedInputValue,
         selectedDeviceList:selectedDevice,
-        notificationType:selectedAlarmType, 
+        notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 
         editData:editingValues})
       
@@ -145,22 +150,31 @@ return (
                 selectedItemRowStyle={styles.selectedItemRowStyle}
                 deleteHandle={(item)=>setSelectedDevice(selectedDevice.filter((item1) => item1 != item))}
                 />  
-        <View onLayout={({nativeEvent}) => setSelectAlarmDDy(nativeEvent.layout.y)} />    
-            
+        <View onLayout={({nativeEvent}) => setSelectAlarmDDy(nativeEvent.layout.y)} /> 
 
-        {selectedAlarm == 'Alarm' ?
+        {selectedNotification == 'DeviceOverspeed' &&
+            <TextField 
+              valueSet={setOverspeedInputValue} 
+              maxLength={30}
+              label='Speed Limit (mph)'
+              defaultValue={overSpeedInputValue}
+              outerStyle={[styles.outerStyle,{marginTop:hp(14)}]} 
+            />
+        } 
+        
+        {selectedNotification == 'Alarm' ?
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
             <DropDown label={translate("Alarm_Type")} defaultValue={selectedAlarmType} valueSet={setSelectedAlarmType} dataList={alarmTypes} />   
           </View>
         : null }
-
+        
         <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
-            <DropDown label={translate("Select Alarm")} defaultValue={selectedAlarm} valueSet={setSelectedAlarm} dataList={alarmTypeList} />   
+            <DropDown label='Notification Type*' defaultValue={selectedNotification} valueSet={setSelectedNotification} dataList={alarmTypeList} />   
         </View>
 
      </View>
 
-     {selectedDevice.length>=0 && selectedAlarm ?
+     {selectedDevice.length>=0 && selectedNotification ?
         <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS)} style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
