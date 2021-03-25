@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE
     },
     mainViewHeading: {
-        height: hp(80),
+        //height: hp(80),
         width: wp(77)
     },
     subHeadingView: {
