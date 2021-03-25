@@ -48,6 +48,7 @@ import GeoFencePolyGon from './LiveTracking/GeoFence/GeoFencePolygon'
 import TripHistory from './LiveTracking/TripHistory/TripHistory'
 import TripHistoryDetails from './LiveTracking/TripHistory/TripHistoryDetails'
 import DispatchRoute from './LiveTracking/TripHistory/DispatchRoute'
+import NoInternet from './NoInternet/NoInternet'
 
 export {
     Splash,
@@ -98,5 +99,6 @@ export {
     SettingsChangePassCode,
     TrackingDetails,
     GeoFenceCircle,
-    GeoFencePolyGon
+    GeoFencePolyGon,
+    NoInternet
 }

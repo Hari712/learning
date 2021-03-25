@@ -1,5 +1,5 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import { Splash } from '../screen';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { Splash, NoInternet } from '../screen';
 import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { navigationRef } from './NavigationService';
@@ -15,6 +15,16 @@ import { setToken, getToken } from '../api';
 import * as SettingsActions from '../screen/Settings/Settings.Action'
 import DeviceInfo from 'react-native-device-info'
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
+import { showOfflineStatusBar, hideOfflineStatusBar } from '../component/OfflineBar'
+
+
+const ConnectivityStack = createStackNavigator();
+
+export const ConnectivityStackNavigator = () => (
+  <ConnectivityStack.Navigator headerMode='none' mode='modal'>
+    <ConnectivityStack.Screen name="Connection" component={NoInternet} />
+  </ConnectivityStack.Navigator>
+)
 
 const Stack = createStackNavigator();
 
@@ -23,9 +33,9 @@ function AppNavigator() {
 
   const dispatch = useDispatch();
   const [isReady, setIsReady] = React.useState(false);
-  const { isLoggedIn } = useSelector(state => ({
+  const { login, isConnected, isLoggedIn } = useSelector(state => ({
     login: getLoginState(state),
-    network: state.network.isConnected,
+    isConnected: state.network.isConnected,
     isLoggedIn: isUserLoggedIn(state)
   }))
 
@@ -55,8 +65,16 @@ function AppNavigator() {
 
     return () => clearTimeout(timer);
   }, [])
-  
-  
+
+  useEffect(() => {
+    if (isConnected) {
+      hideOfflineStatusBar()
+    } else {
+      showOfflineStatusBar()
+    }
+  }, [isConnected])
+
+
   function onGetAllUserGroupsSuccess(data) {
     console.log('Group List Loaded Success')
   }
@@ -95,13 +113,19 @@ function AppNavigator() {
   } else {
     return (
       <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator headerMode="none" screenOptions={{ animationEnabled: false }}>
+        <Stack.Navigator headerMode="none" screenOptions={{
+          animationEnabled: false, headerShown: false,
+          gestureEnabled: true,
+          cardOverlayEnabled: true,
+          ...TransitionPresets.ScaleFromCenterAndroid
+        }}>
           {
             isLoggedIn ?
               <Stack.Screen name='LiveTracking' component={TabStackNavigator} />
               :
               <Stack.Screen name="Auth" component={AuthStackNavigator} />
           }
+          <Stack.Screen name="Connection" component={ConnectivityStackNavigator} />
         </Stack.Navigator>
       </NavigationContainer>
     )
