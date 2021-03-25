@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { FontSize, NotificationMessage } from '../../component'
+import { FontSize } from '../../component'
+import AppManager from '../../constants/AppManager'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { useDispatch } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -16,7 +17,7 @@ const NoInternet = () => {
     }
 
     useEffect(() => {
-        NotificationMessage.hideLoader()
+        AppManager.hideLoader()
     }, [])
 
     function dismiss() {
@@ -47,8 +48,7 @@ const styles = StyleSheet.create({
     text: {
         color: ColorConstant.darker,
         marginTop: hp(3),
-        fontSize: FontSize.FontSize.regular,
-        fontFamily: 'Montserrat-Medium'
+        fontSize: FontSize.FontSize.regular
     },
     button: {
         backgroundColor: ColorConstant.darker,
@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: FontSize.FontSize.tow,
         textTransform: 'capitalize',
-        fontFamily: 'Montserrat-Medium',
         textAlign: 'center',
         textAlignVertical: 'center',
         letterSpacing: 0.5

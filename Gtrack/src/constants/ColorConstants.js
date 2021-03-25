@@ -17,6 +17,7 @@ export const ColorConstant = {
     DARKGREEN: '#2AA98B',
     LIGHTRED: '#F9E5E6',
     DARKRED: '#CF1B1C',
+    darker: '#DEDEDE',
     LIGHTBROWN: '#FFA664',
     BROWN: '#FF7F21',
     DARKBROWN: '#C46E31',

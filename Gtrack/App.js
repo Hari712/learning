@@ -90,7 +90,7 @@ const MainApp = forwardRef((props, ref) => {
 
   return (
     <Provider store={store}>
-      <ReduxNetworkProvider>
+      <ReduxNetworkProvider pingInterval={40000}>
         <AppNavigator />
         <FlashMessage position="top" animated={true} />
         {isLoading ? <Loader /> : null}
