@@ -25,6 +25,7 @@ const AlarmType = ({navigation,route}) => {
   const [speed, setSpeed] = useState()
   const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
   const [notification, setNotification] = useState(false)
+  const [emailNotification, setEmailNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
   const { loginInfo, subUserData, isConnected } = useSelector(state => ({
@@ -49,9 +50,25 @@ const AlarmType = ({navigation,route}) => {
         editData.notification.attributes.weekdays ? setSelectedCheckbox(1) :
         setSelectedCheckbox(2) } 
 
-        if(editData.notification.notificators)
-          setNotification(true)
+        if(editData.notification.notificators){
+          switch (editData.notification.notificators) {
+            case "mail,web":
+              setNotification(true)
+              setEmailNotification(true)
+              break;
 
+            case "mail":
+              setEmailNotification(true)
+              break;
+
+            case "web":
+              setNotification(true)
+              break;
+          
+            default:
+              break;
+          }
+        }
         var tempUser = [] ;
         editData.users ?
           editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
@@ -134,6 +151,7 @@ const AlarmType = ({navigation,route}) => {
 
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
+      var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       if(route && route.params && route.params.editData) {
         // Editing/update body
         isUpdate = true;
@@ -144,7 +162,7 @@ const AlarmType = ({navigation,route}) => {
             "id" : route.params.editData.notification.id,
             "type" : alarmType,
             "always" : false,
-            "notificators" : notification ? "mail,web" : null,
+            "notificators" : notificator,
             "attributes" : {
               "alarms": notificationType,
               "name": alarmName,
@@ -165,7 +183,7 @@ const AlarmType = ({navigation,route}) => {
             "id" : 0,
             "type" : alarmType,
             "always" : false,
-            "notificators" : notification ? "mail,web" : null,
+            "notificators" : notificator,
             "attributes" : {
               "alarms": notificationType,
               "name": alarmName,
@@ -187,7 +205,6 @@ const AlarmType = ({navigation,route}) => {
 
   function onAddSuccess(data) {
     if (isConnected) {
-      console.log("data",data)
       AppManager.hideLoader()  
       let message  
       if(route && route.params && route.params.editData){
@@ -285,6 +302,11 @@ return (
       <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
           <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => setEmailNotification(!emailNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+          <Image style={{alignSelf:'flex-start'}} source={emailNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+          <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
       </TouchableOpacity>
 
       <View style={styles.buttonContainer}>

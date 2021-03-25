@@ -70,7 +70,6 @@ const EditDeviceAsset = ({ route, navigation }) => {
         }
         if (assetName) {
             let selectedAssetList = assetList.filter((item) => item.assetName == assetName)
-            console.log("khushim",assetList)
             if (!isEmpty(selectedAssetList)) {
                 let selectedAset = selectedAssetList[0]
                 setType(selectedAset.assetType)
