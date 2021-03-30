@@ -3,7 +3,6 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as LivetrackingActions from './Livetracking.Action'
-import { LINK_GEOFENCE_TO_UPDATED_DEVICES } from './../../constants/ActionTypes';
 
 function* requestGetAlarmsList(action) {
     const { userId, onSuccess, onError } = action
