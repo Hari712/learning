@@ -125,7 +125,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     function onUpdateSuccess(data) { 
         response.geofence = data.result
         if (isConnected) {
-            dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
             AppManager.hideLoader()
             AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
         } else {

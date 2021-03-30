@@ -3,6 +3,7 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as LivetrackingActions from './Livetracking.Action'
+import { LINK_GEOFENCE_TO_UPDATED_DEVICES } from './../../constants/ActionTypes';
 
 function* requestGetAlarmsList(action) {
     const { userId, onSuccess, onError } = action
@@ -114,6 +115,17 @@ function* requestLinkGeofenceToDevices(action) {
     }
 }
 
+function* requestLinkGeofenceToUpdatedDevices(action) {
+    const { userId, geofenceId, body, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.LINK_GEOFENCE_DEVICES_UPDATE(userId, geofenceId)
+        const response = yield call(API.put, url, body)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 function* requestUpdateGeofence(action) {
     const { userId, body, onSuccess, onError } = action
     try {
@@ -148,5 +160,6 @@ export function* watchLivetracking() {
     yield takeLatest(types.CREATE_NEW_GEOFENCE_REQUEST, requestAddGeofence),
     yield takeLatest(types.LINK_GEOFENCE_TO_DEVICES, requestLinkGeofenceToDevices),
     yield takeLatest(types.UPDATE_GEOFENCE_REQUEST, requestUpdateGeofence),
-    yield takeLatest(types.ENABLE_DISABLE_GEOFENCE_REQUEST, requestEnableDisableGeofence)
+    yield takeLatest(types.ENABLE_DISABLE_GEOFENCE_REQUEST, requestEnableDisableGeofence),
+    yield takeLatest(types.LINK_GEOFENCE_TO_UPDATED_DEVICES, requestLinkGeofenceToUpdatedDevices)
 }
