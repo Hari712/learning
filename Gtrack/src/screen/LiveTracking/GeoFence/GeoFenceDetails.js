@@ -136,7 +136,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     function onUpdateError(error) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
-        }
+    }  
 
     function onSuccess(data) { 
         console.log("createNewdata",data)
@@ -148,9 +148,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
-        console.log("createNewdatalink",data)
+        console.log("createNewdatalink",response)
         response.deviceList = devices
-        dispatch(LivetrackingActions.setAddGeofenceResponse(response))
+        if(editingData){
+            dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
+        }else{
+            dispatch(LivetrackingActions.setAddGeofenceResponse(response)) 
+        }
         AppManager.hideLoader()
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
