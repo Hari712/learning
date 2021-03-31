@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from 'react';
-import { View, StyleSheet,TouchableOpacity, TextInput, RefreshControl, FlatList, ScrollView} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, RefreshControl, FlatList, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { getLoginState, getSubuserState } from '../Selector'
@@ -11,19 +11,23 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { UserAddIcon, FilterIcon, FilterIconClicked } from '../../component/SvgComponent';
 import UsersList from './UsersList';
 import UsersFilterDialog from '../../component/UsersFilterDialog';
-import AdminUser from './AdminUser';
-
-let searchData;
+import isEmpty from 'lodash/isEmpty'
 
 const Users = ({navigation}) => {
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState("")
-  const [filterKeyword, setFilterKeyword] = useState([])
   const [visible, setVisible] = useState(false)
   const [status, setStatus] = useState(-1)
   const [IsRole, setIsRole] = useState(-1)
-  const [adminVisible, setAdminVisible] = useState(false)
+  const [roleKeyword, setRoleKeyword] = useState(["ROLE_REGULAR", "ROLE_OWNER"])
+  const [statusKey, setStatusKey] = useState(["Active", "InActive"])
+  const [isLoadMoreData, setIsLoadMoreData] = useState(false)
+  const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false)
+  const [pageIndex, setPageIndex] = useState(0)
+  const [pageCount, setPageCount] = useState(10)
+  const [totalCount, setTotalCount] = useState(0)
+  const [searchData, setSearchData] = useState([])
   
 
   const { loginData, subUserData, isConnected } = useSelector(state => ({
@@ -32,33 +36,86 @@ const Users = ({navigation}) => {
     isConnected: state.network.isConnected,
   }))
 
-  searchData = subUserData
   const user_id = loginData.id ? loginData.id : null
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (isRefreshing == true || isLoadMoreData == true ) {
+      fetchUserslist()
+    }
+    if (searchKeyword || roleKeyword || statusKey){
+      fetchUserslist()
+    }
+  }, [pageIndex, isRefreshing, isLoadMoreData, searchKeyword, roleKeyword, statusKey])
+
   useEffect(() => {    
-    AppManager.showLoader()
-    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))   
-  }, [])
+    AppManager.showLoader() 
+    fetchUserslist() 
+  },[])
+
+  useEffect(()=>{
+    if(isLoadMoreData){
+      setSearchData([...searchData,...subUserData])
+    } else {
+      setSearchData(subUserData)
+    }
+    // if(isRefreshing) {
+    //   setSearchData(subUserData)
+    // }
+  },[subUserData])
+
+  const fetchUserslist = () => {
+    if (isConnected) {
+    const requestBody =  {
+      "pageNumber" : pageIndex,
+      "pageSize" : pageCount,
+      "useMaxSearchAsLimit" : false,
+      "searchColumnsList" : [ 
+        {
+          "columnName" : "searchParam",
+          "searchStr" : searchKeyword
+        }, 
+        {
+          "columnName" : "role",
+          "searchStrList" : roleKeyword
+        }, 
+        {
+          "columnName" : "isDeactivated",
+          "searchStrList" : statusKey
+        } 
+      ],
+      "sortHeader" : "id",
+      "sortDirection" : "DESC"
+    }
+    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onSuccess, onError))
+  } else {
+    AppManager.showNoInternetConnectivityError()
+  }
+}
 
   function onSuccess(data) {    
-    console.log("Success",data) 
+    console.log("Success user",data) 
     AppManager.hideLoader()
     setIsRefreshing(false)
-    setAdminVisible(false)
+    const arrList = data.result.data ? data.result.data : []
+    const totalCount = data.result.totalCount ? data.result.totalCount : 0
+    if (isEmpty(arrList)) {
+      let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+      setPageIndex(pagenumber)
+    }
+    setTotalCount(totalCount)
+    setIsRefreshing(false)
+    setIsLoadMoreData(false)
   }
 
-  function onFilterSuccess(data) {    
-    console.log("Success",data) 
-    AppManager.hideLoader()
-    setVisible(false)
-  }
-  
   function onError(error) {
     AppManager.hideLoader()
     console.log("Error",error)  
     setIsRefreshing(false) 
     setVisible(false)
+    setIsLoadMoreData(false)
+    let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+    setPageIndex(pagenumber)
   }
 
   React.useLayoutEffect(() => {
@@ -78,81 +135,26 @@ const Users = ({navigation}) => {
 
   const resetHandle = () => {
     setVisible(false)
-    setAdminVisible(false)
     AppManager.showLoader()
     setIsRole(-1)
     setStatus(-1)
-    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))
-    // setTimeout(() => {
-    //   filterApiCall()
-    // }, 3000);
+    setPageIndex(0)
+    setRoleKeyword( ["ROLE_REGULAR", "ROLE_OWNER"])
+    setStatusKey(["Active", "InActive"])
   }
 
   const filterHandle = () => {
-    setVisible(false)
-    setAdminVisible(true)
     AppManager.showLoader()
-    filterApiCall()
+    setVisible(false)
+    setPageIndex(0)
+    setRoleKeyword(IsRole == 0 ? ["ROLE_OWNER"] : IsRole == 1 ? ["ROLE_REGULAR"] : ["ROLE_REGULAR", "ROLE_OWNER"])
+    setStatusKey(status == 0 ? ["Active"] : status == 1 ? ["InActive"] : ["Active", "InActive"])
   }
 
-  const filterApiCall = () => {
-    if (isConnected) {
-    const requestBody =  {
-      // "pageNumber" : 0,
-       "pageSize" : 16,
-      // "useMaxSearchAsLimit" : false,
-      "searchColumnsList" : [ 
-        {
-          "columnName" : "searchParam",
-          "searchStr" : searchKeyword
-        }, 
-        {
-          "columnName" : "role",
-          "searchStrList" : IsRole == 0 ?  ["ROLE_OWNER"] : IsRole == 1 ? ["ROLE_REGULAR"] : ["ROLE_REGULAR", "ROLE_OWNER"]
-        }, 
-        {
-          "columnName" : "isDeactivated",
-          "searchStrList" : status == 0 ? ["Active"] : status == 1 ? ["InActive"] : [ "Active", "InActive" ]
-        } 
-      ],
-      "sortHeader" : "id",
-      "sortDirection" : "DESC"
-    }
-    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
-  } else {
-    AppManager.showNoInternetConnectivityError()
-  }
-}
 
   const searchHandle = (keyword) => {
-    if (isConnected) {
-      setSearchKeyword(keyword)
-      // AppManager.showLoader()
-      const requestBody =  {
-          // "pageNumber" : 0,
-          // "pageSize" : 5,
-          // "useMaxSearchAsLimit" : false,
-          "searchColumnsList" : [ 
-            {
-              "columnName" : "searchParam",
-              "searchStr" : keyword
-            },
-            // {
-            //   "columnName" : "role",
-            //   "searchStrList" : [ "ROLE_REGULAR", "ROLE_OWNER" ]
-            // }, 
-            {
-              "columnName" : "isDeactivated",
-              "searchStrList" : filterKeyword
-            } 
-          ],
-          "sortHeader" : "id",
-          "sortDirection" : "DESC"
-        }
-      dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onFilterSuccess, onError))
-    } else {
-      AppManager.showNoInternetConnectivityError()
-    }
+    setPageIndex(0)
+    setSearchKeyword(keyword)
   }
   
   function filterDialog() {
@@ -194,14 +196,26 @@ const Users = ({navigation}) => {
     }
 
     const onRefresh = () => {
+      setPageIndex(0)
       setIsRefreshing(true)
       dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
     }
 
-    function AdminData() {
-      return(
-        <AdminUser />
-      )
+    const renderFooter = () => {
+      //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+      if (!isLoadMoreData || isRefreshing) return null;
+      return <View><ActivityIndicator size="large" color="#000000" /></View>;
+    }
+
+    const loadMoreUsers = () => {
+      if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
+        if (searchData.length < totalCount) {
+          setIsRefreshing(false)
+          setIsLoadMoreData(true)
+          setOnEndReachedCalledDuringMomentum(true)
+          setPageIndex(pageIndex + 1)
+        }
+      }
     }
 
 return ( 
@@ -210,25 +224,28 @@ return (
       <View style={styles.searchContainer}>
       {searchBar()} 
       </View>
-  
-    <ScrollView 
-      refreshControl={
-        <RefreshControl 
-          refreshing={isRefreshing}
-          onRefresh={onRefresh}     
-        />
-      }
-    >
 
-      { !adminVisible ? AdminData() : null }
-
+      {subUserData.length > 0 ?
         <FlatList
           data={searchData}
           renderItem={renderItem}
+          refreshControl={
+            <RefreshControl 
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}     
+            />
+          }
           keyExtractor={(item, index) => index.toString()}
-        /> 
-
-    </ScrollView>
+          showsVerticalScrollIndicator={false}
+          ListFooterComponent={renderFooter}
+          onEndReached={() => loadMoreUsers()}
+          onEndReachedThreshold={0.1}
+          onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
+        /> :
+        <View style={styles.noRecords}>
+          <Text style={styles.noRecordsText}>No records found</Text>
+        </View>
+      } 
 
       {filterDialog()} 
 
@@ -299,6 +316,18 @@ searchSubContainer: {
   flexDirection:'row',
   width:'100%',
   justifyContent:'space-between'
+},
+noRecords: {
+  marginVertical:hp(38),
+  alignItems:'center'
+},
+noRecordsText: {
+fontFamily:"Nunito-Regular",
+fontSize:hp(2)
+},
+activityIndicator: {
+  color: "#000",
+  marginTop: '2%'
 }
 });
 
