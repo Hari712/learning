@@ -2,6 +2,8 @@ const BASE_URL = 'https://gtrackapi-qa.vegitone.com/gtrackapi/' //'https://gtrac
 
 const SUFFIX_URL = 'public/'
 
+const TRACCAR_URL = 'https://traccar-dev.vegitone.com/'
+
 const AUTH = 'auth/'
 
 const USER = 'users/'
@@ -12,6 +14,7 @@ const ApiConstants = {
     BASE_URL: BASE_URL,
     LOGIN: SUFFIX_URL + AUTH + 'login',
     SIGNUP: SUFFIX_URL + 'signup',
+    TRACCAR_URL: TRACCAR_URL,
     REFRESH_TOKEN:(userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     FORGOT_PASSWORD: `${SUFFIX_URL}forgotPassword/getOTP`,
     VERIFY_OTP: `${SUFFIX_URL}forgotPassword/verifyOTP`,
@@ -58,7 +61,8 @@ const ApiConstants = {
     ADD_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     LINK_GEOFENCE_DEVICES:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices?link=true`,
     UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
-    ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`
+    ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
+    TRACCAR_SESSION: `api/session`
 }
 
 export default ApiConstants

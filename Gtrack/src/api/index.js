@@ -47,7 +47,12 @@ function baseAxios(options) {
 api.interceptors.request.use(req => {
     const urlString = req.url
     console.log(`${req.method} ${req.url}`);
-    
+    if (urlString === ApiConstants.TRACCAR_SESSION) {
+        req.baseURL = ApiConstants.TRACCAR_URL
+        req.url = ''
+        delete req.headers["Authorization"]
+        req.headers["traccar"] = 'true'
+    }
     // Important: request interceptors **must** return the request.
     return req;
   });

@@ -64,6 +64,19 @@ export const requestFetchUserTax = (userId, onSuccess, onError) => ({
     onError
 })
 
+export const requestTraccarSession = (email, password, onSuccess, onError) => ({
+    type: types.TRACCAR_SESSION_REQUEST,
+    email,
+    password,
+    onSuccess,
+    onError
+})
+
+export const setTraccarSessionData = (data) => ({
+    type: types.TRACCAR_SESSION_RESPONSE,
+    data
+})
+
 export const requestLogout = () => ({
     type: types.LOGOUT_REQUEST
 })

@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOp
 import images from '../../constants/images'
 import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS, TRACCAR_SESSION_DATA } from '../../constants/AppConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import NavigationService from '../../navigation/NavigationService'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
@@ -72,6 +72,16 @@ const Login = () => {
         dispatch(DeviceActions.requestGetAllAssetsType(data.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
         dispatch(DeviceActions.requestGetAllUserAssets(data.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
         dispatch(DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
+        dispatch(LoginActions.requestTraccarSession(email, password, onTraccarSessionSuccess, onTraccarSessionError))
+    }
+
+    function onTraccarSessionSuccess(data) {
+        console.log('Traccar Session Success', data)
+        storeItem(TRACCAR_SESSION_DATA, data)
+    }
+
+    function onTraccarSessionError(error) {
+        console.log('Traccar Session Error', error)
     }
 
     function onGetAllUserGroupsSuccess(data) {

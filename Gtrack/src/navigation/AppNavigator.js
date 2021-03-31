@@ -7,7 +7,7 @@ import { TabStackNavigator } from './TabStack';
 import { getLoginState, isUserLoggedIn } from '../screen/Selector'
 //import TrackingDetails from '../component/TrackingDetails';
 import { getItem } from '../utils/storage';
-import { USER_DATA } from '../constants/AppConstants'
+import { USER_DATA, TRACCAR_SESSION_DATA } from '../constants/AppConstants'
 import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../screen/Login/Login.Action'
 import AuthStackNavigator from './AuthNavigator';
@@ -45,6 +45,7 @@ function AppNavigator() {
       const response = await getItem(USER_DATA)
       console.log("Response", response)
       if (response) {
+        const traccarSessionData = await getItem(TRACCAR_SESSION_DATA)
         setToken(response.accessToken)
         dispatch(LoginActions.setLoginResponse(response))
         console.log("Access Token: ", getToken())
@@ -55,6 +56,7 @@ function AppNavigator() {
         dispatch(DeviceActions.requestGetAllAssetsType(response.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
         dispatch(DeviceActions.requestGetAllUserAssets(response.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
         dispatch(DeviceActions.requestGetAllUserGroups(response.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
+        dispatch(LoginActions.setTraccarSessionData(response))
       }
       setIsReady(true)
     }
