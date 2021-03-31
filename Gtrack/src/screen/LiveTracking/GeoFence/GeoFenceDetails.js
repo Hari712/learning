@@ -249,7 +249,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                             label={translate("Pick_Color")}
                             // value={color.toString()}
                             defaultValue={color.toString()}
-                            disabled={false}
+                            disabled={true}
                             onChangeText={(text) => {}}
                             style={styles.textNameStyle}
                             renderRightAccessory={renderRightAccessory}
