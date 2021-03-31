@@ -249,7 +249,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
                             label={translate("Pick_Color")}
                             // value={color.toString()}
                             defaultValue={color.toString()}
-                            disabled={true}
+                            //disabled={true}
+                            editable={false}
                             onChangeText={(text) => {}}
                             style={styles.textNameStyle}
                             renderRightAccessory={renderRightAccessory}
@@ -258,6 +259,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
                             contentInset={{ input: 12 }}
                         />
                     </View>
+
+                    {renderRightAccessory()}
 
                     {/* <View style={styles.dropDownMainView}>
                         <View style={styles.dropdownView}>
