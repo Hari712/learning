@@ -7,11 +7,13 @@ import { FontSize, TextField, DropDown }from '../../../component';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { BackIcon } from '../../../component/SvgComponent';
+import { AddIcon, BackIcon } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { getLoginInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
+import {  SlidersColorPicker  } from 'react-native-color';
+import tinycolor from 'tinycolor2'
 
 const GeoFenceDetails = ({ navigation, route }) => {
 
@@ -22,20 +24,25 @@ const GeoFenceDetails = ({ navigation, route }) => {
     
     const { selectedArea, type, devices, editingData } = route.params
 
+    let colorData = ['#247ba0', '#70c1b3', '#b2dbbf', '#f3ffbd', '#ff1654']
+
     const dispatch = useDispatch()
 
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
-    const [colorPicker, setColorPicker] = useState();
-    const [fontsize, setFontsize] = useState();
-    const [visibilityFrom, setVisibilityFrom] = useState();
-    const [visibilityTo, setVisibilityTo] = useState();
+    // const [colorPicker, setColorPicker] = useState();
+    const [color, setColor] = useState(tinycolor('#70c1b3').toHexString())
+    const [modalVisible, setModalVisible] = useState(false)
+    const [recents, setRecents] = useState(colorData)
+    // const [fontsize, setFontsize] = useState();
+    // const [visibilityFrom, setVisibilityFrom] = useState();
+    // const [visibilityTo, setVisibilityTo] = useState();
     const [cancel, setCancel] = useState(false)
-    const [uploadImage, setUploadImage] = useState('')
-    const [isClickOnSave, setIsClickOnSave] = useState(false);
-    const [saveButton, setSaveButton] = useState(false);
-    const fontsizeList = ['08', '06', '04'];
-    const [oldData, setOldData] = useState()
+    // const [uploadImage, setUploadImage] = useState('')
+    // const [isClickOnSave, setIsClickOnSave] = useState(false);
+    // const [saveButton, setSaveButton] = useState(false);
+    // const fontsizeList = ['08', '06', '04'];
+    // const [oldData, setOldData] = useState()
     let response = { 
         deviceList : [],
         geofence: {},
@@ -47,7 +54,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             console.log("details",editingData)
             setName(editingData.name)
             setDescrption(editingData.description) 
-            //setColorPicker(editingData.attributes.color)
+            setColor(editingData.color)
         }
      }, [editingData,navigation,route])
 
@@ -66,15 +73,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
         });
     }, [navigation]);
 
-    const upload = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-        }).then(image => {
-            setUploadImage(image.path)
-            console.log("images....", image);
-        });
+    const toggleModal = () => {
+        setModalVisible(!modalVisible)
     }
 
     function onTapSave() {
@@ -84,7 +84,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 const requestBody = {
                     area: selectedArea,
                     attributes: {
-                        color: "#E87575"
+                        color: color.toString()
                     },
                     calendarId: 0,
                     description: description,
@@ -97,7 +97,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             const requestBody = {
                 area: selectedArea,
                 attributes: {
-                    color: "#E87575"
+                    color: color.toString()
                 },
                 calendarId: 0,
                 description: description,
@@ -110,16 +110,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
     } else {
         AppManager.showNoInternetConnectivityError()
     }
-        
-        // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
-        // setIsClickOnSave(!isClickOnSave),
-        // setName(name),
-        // setDescrption(description),
-        // setColorPicker(colorPicker),
-        // setFontsize(fontsize),
-        // setVisibilityFrom(visibilityFrom),
-        // setVisibilityTo(visibilityTo),
-        // setUploadImage(uploadImage)
     }
 
     function onUpdateSuccess(data) { 
@@ -160,6 +150,28 @@ const GeoFenceDetails = ({ navigation, route }) => {
     AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
     }
 
+    const renderRightAccessory=()=>{
+        return(
+            <View style={{flexDirection:'row',justifyContent:'space-evenly', width:wp(50)}}>
+
+                {recents.map((colorItem)=>{
+                    return(
+                        <TouchableOpacity onPress={() => setColor(tinycolor(colorItem).toHexString())} 
+                        style={{backgroundColor:colorItem, height:wp(5), width:wp(5), borderRadius:3}} />
+                    )
+                })}
+
+                <TouchableOpacity onPress = {() =>toggleModal()} 
+                    style={{backgroundColor:ColorConstant.WHITE, 
+                        height:wp(5), width:wp(5), borderColor:ColorConstant.GREY, borderWidth:1,
+                        alignItems:'center',justifyContent:'center',
+                        borderRadius:3}}>
+                    <AddIcon />
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -196,13 +208,51 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         />
                     </View>
 
-                    <View style={styles.textInputField}>
+                    {/* <View style={styles.textInputField}>
                         <TextField
                             valueSet={setColorPicker}
                             label={translate("Pick_Color")}
                             defaultValue={colorPicker}
                             onChangeText={(text) => setColorPicker(text)}
                             style={styles.textNameStyle}
+                            labelFontSize={hp(1.4)}
+                            labelTextStyle={{ top: hp(0.5) }}
+                            contentInset={{ input: 12 }}
+                        />
+                    </View> */}
+
+                    
+
+                    <SlidersColorPicker
+                        visible={modalVisible}
+                        color={color}
+                        returnMode={'hex'}
+                        onCancel={() => setModalVisible(false)}
+                        onOk={colorHex => {
+                            setModalVisible(false)
+                            setColor(colorHex)
+                            setRecents([colorHex,...recents.filter(c => c !== colorHex).slice(0, 4)])
+                        }}
+                        swatches={recents}
+                        swatchesLabel={"RECENTS"}
+                        okLabel="Done"
+                        cancelLabel="Cancel"
+                    /> 
+
+                    {console.log("colorPicker",color.toString())}
+
+                    {/* {PickColor} */}
+
+                    <View style={styles.textInputField}>
+                        <TextField
+                            valueSet={setColor}
+                            label={translate("Pick_Color")}
+                            // value={color.toString()}
+                            defaultValue={color.toString()}
+                            disabled={false}
+                            onChangeText={(text) => {}}
+                            style={styles.textNameStyle}
+                            renderRightAccessory={renderRightAccessory}
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.5) }}
                             contentInset={{ input: 12 }}
