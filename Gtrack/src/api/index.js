@@ -49,9 +49,9 @@ api.interceptors.request.use(req => {
     console.log(`${req.method} ${req.url}`);
     if (urlString === ApiConstants.TRACCAR_SESSION) {
         req.baseURL = ApiConstants.TRACCAR_URL
-        req.url = ''
         delete req.headers["Authorization"]
         req.headers["traccar"] = 'true'
+        req.headers["Content-Type"] = 'application/x-www-form-urlencoded;charset=utf-8'
     }
     // Important: request interceptors **must** return the request.
     return req;

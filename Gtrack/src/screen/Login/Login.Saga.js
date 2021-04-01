@@ -22,8 +22,10 @@ function* login(action) {
 function* loginIntoTraccarSession(action) {
     const { email, password, onSuccess, onError } = action
     try {
-        const requestBody = { email: email, password: password }
-        const response = yield call(API.post, ApiConstants.TRACCAR_SESSION, requestBody)
+        const params = new URLSearchParams();
+        params.append('email', email);
+        params.append('password', password);
+        const response = yield call(API.post, ApiConstants.TRACCAR_SESSION, params)
         const result = response ? response : {}
         yield put(LoginActions.setTraccarSessionData(result))
         onSuccess(result)

@@ -15,6 +15,7 @@ const ApiConstants = {
     LOGIN: SUFFIX_URL + AUTH + 'login',
     SIGNUP: SUFFIX_URL + 'signup',
     TRACCAR_URL: TRACCAR_URL,
+    SOCKET_BASE_URL: TRACCAR_URL,
     REFRESH_TOKEN:(userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     FORGOT_PASSWORD: `${SUFFIX_URL}forgotPassword/getOTP`,
     VERIFY_OTP: `${SUFFIX_URL}forgotPassword/verifyOTP`,

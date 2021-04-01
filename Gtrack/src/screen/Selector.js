@@ -22,6 +22,16 @@ export const isRoleRegular = createSelector(
 )
 
 /**
+ * Get Traccar Session Information
+ */
+const getTraccarSession = (state) => state.login.traccarSession
+export const getTraccarSessionInfo = createSelector(
+    [getTraccarSession],
+    (info) => info
+)
+
+
+/**
  * Get SubUser Information
  */
 

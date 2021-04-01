@@ -30,8 +30,8 @@ const Login = () => {
         isConnected: state.network.isConnected,
     }))
 
-    const [email, setEmail] = useState('') //Jjapee4@ekzero.com
-    const [password, setPassword] = useState('') //Jini@123
+    const [email, setEmail] = useState('harsh@gmail.com') //Jjapee4@ekzero.com
+    const [password, setPassword] = useState('Jini@123') //Jini@123
     const [isSelected, setIsSelected] = useState(false)
     const [isClickInfo, setIsClickInfo] = useState(false)
 
@@ -68,11 +68,12 @@ const Login = () => {
         storeItem(USER_DATA, data)
         let deviceType = DeviceInfo.getSystemName();
         let version = DeviceInfo.getVersion();
+        const traccarPassword = `g-track${data.userDTO.userKey}`
         dispatch(SettingsActions.requestGetFeedBack(data.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError))
         dispatch(DeviceActions.requestGetAllAssetsType(data.userDTO.id, onAssetTypeLoadedSuccess, onAssetTypeLoadedErrror))
         dispatch(DeviceActions.requestGetAllUserAssets(data.userDTO.id, onUserAssetListLoadedSuccess, onUserAssetListLoadedError))
         dispatch(DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError))
-        dispatch(LoginActions.requestTraccarSession(email, password, onTraccarSessionSuccess, onTraccarSessionError))
+        dispatch(LoginActions.requestTraccarSession(email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError))
     }
 
     function onTraccarSessionSuccess(data) {
