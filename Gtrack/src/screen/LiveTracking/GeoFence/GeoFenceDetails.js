@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize, TextField, DropDown }from '../../../component';
+import { FontSize, TextField }from '../../../component';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
@@ -30,19 +29,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
-    // const [colorPicker, setColorPicker] = useState();
     const [color, setColor] = useState(tinycolor('#70c1b3').toHexString())
     const [modalVisible, setModalVisible] = useState(false)
     const [recents, setRecents] = useState(colorData)
-    // const [fontsize, setFontsize] = useState();
-    // const [visibilityFrom, setVisibilityFrom] = useState();
-    // const [visibilityTo, setVisibilityTo] = useState();
     const [cancel, setCancel] = useState(false)
-    // const [uploadImage, setUploadImage] = useState('')
-    // const [isClickOnSave, setIsClickOnSave] = useState(false);
-    // const [saveButton, setSaveButton] = useState(false);
-    // const fontsizeList = ['08', '06', '04'];
-    // const [oldData, setOldData] = useState()
+
     let response = { 
         deviceList : [],
         geofence: {},
@@ -51,7 +42,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     useEffect(() => { 
         if(editingData) {
-            console.log("details",editingData)
             setName(editingData.name)
             setDescrption(editingData.description) 
             setColor(editingData.color)
@@ -91,7 +81,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
                     id: editingData.id,
                     name: name
                 }
-                console.log("bodyedit",requestBody)
                 dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
             } else {
             const requestBody = {
@@ -104,7 +93,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 id: null,
                 name: name
             }
-            console.log("body",requestBody)
             dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
         }
     } else {
@@ -129,7 +117,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
         }
 
     function onSuccess(data) { 
-        console.log("createNewdata",data)
         response.geofence = data.result
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
         AppManager.hideLoader()
@@ -138,7 +125,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
-        console.log("createNewdatalink",data)
         response.deviceList = devices
         dispatch(LivetrackingActions.setAddGeofenceResponse(response))
         AppManager.hideLoader()
@@ -150,14 +136,14 @@ const GeoFenceDetails = ({ navigation, route }) => {
     AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
     }
 
-    const renderRightAccessory=()=>{
+    const renderColorAccessory = () => {
         return(
-            <View style={{flexDirection:'row',justifyContent:'space-evenly', width:wp(50)}}>
+            <View style={{flexDirection:'row', width:wp(100)}}>
 
                 {recents.map((colorItem)=>{
                     return(
-                        <TouchableOpacity onPress={() => setColor(tinycolor(colorItem).toHexString())} 
-                        style={{backgroundColor:colorItem, height:wp(5), width:wp(5), borderRadius:3}} />
+                        <TouchableOpacity onPress={() =>setColor(tinycolor(colorItem).toHexString())}
+                        style={{backgroundColor:colorItem, height:wp(5), width:wp(5), borderRadius:3,marginRight:hp(2), borderColor:ColorConstant.BLACK, borderWidth:color == colorItem ? 1 :0}} />
                     )
                 })}
 
@@ -168,7 +154,10 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         borderRadius:3}}>
                     <AddIcon />
                 </TouchableOpacity>
+
             </View>
+
+            
         )
     }
 
@@ -207,21 +196,12 @@ const GeoFenceDetails = ({ navigation, route }) => {
                             contentInset={{ input: 7 }}
                         />
                     </View>
-
-                    {/* <View style={styles.textInputField}>
-                        <TextField
-                            valueSet={setColorPicker}
-                            label={translate("Pick_Color")}
-                            defaultValue={colorPicker}
-                            onChangeText={(text) => setColorPicker(text)}
-                            style={styles.textNameStyle}
-                            labelFontSize={hp(1.4)}
-                            labelTextStyle={{ top: hp(0.5) }}
-                            contentInset={{ input: 12 }}
-                        />
-                    </View> */}
-
                     
+                    <View style={{marginBottom:hp(1)}}>
+                        <Text style={{color:ColorConstant.GREY}}>Pick Color</Text>
+                    </View>
+
+                    {renderColorAccessory()}
 
                     <SlidersColorPicker
                         visible={modalVisible}
@@ -237,67 +217,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         swatchesLabel={"RECENTS"}
                         okLabel="Done"
                         cancelLabel="Cancel"
-                    /> 
-
-                    {console.log("colorPicker",color.toString())}
-
-                    {/* {PickColor} */}
-
-                    <View style={styles.textInputField}>
-                        <TextField
-                            valueSet={setColor}
-                            label={translate("Pick_Color")}
-                            // value={color.toString()}
-                            defaultValue={color.toString()}
-                            //disabled={true}
-                            editable={false}
-                            onChangeText={(text) => {}}
-                            style={styles.textNameStyle}
-                            renderRightAccessory={renderRightAccessory}
-                            labelFontSize={hp(1.4)}
-                            labelTextStyle={{ top: hp(0.5) }}
-                            contentInset={{ input: 12 }}
-                        />
-                    </View>
-
-                    {renderRightAccessory()}
-
-                    {/* <View style={styles.dropDownMainView}>
-                        <View style={styles.dropdownView}>
-                            <DropDown
-                                defaultValue={fontsize}
-                                label={translate("FontSize")}
-                                valueSet={setFontsize}
-                                dataList={fontsizeList}
-                                outerStyle={{ marginBottom: hp(2) }}
-                            />
-
-                            <DropDown
-                                defaultValue={visibilityFrom}
-                                label={translate("Select_Visibility_From")}
-                                valueSet={setVisibilityFrom}
-                                dataList={fontsizeList}
-                                outerStyle={{ marginBottom: hp(2) }}
-                            />
-
-                            <DropDown
-                                defaultValue={visibilityTo}
-                                label={translate("Select_Visibility_To")}
-                                valueSet={setVisibilityTo}
-                                dataList={fontsizeList}
-                                outerStyle={{ marginBottom: hp(2) }}
-                            />
-                        </View> */}
-
-                        {/* {uploadImage ? */}
-                        {/* <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
-                            <Image source={images.geoFence.uploadGrey} resizeMode="contain" />
-                            <Text style={styles.uploadText}>{translate("Upload Image")}</Text>
-                        </TouchableOpacity> */}
-                        {/* :
-                            <Image source ={{uri:uploadImage}}/> */}
-                        {/* } */}
-                    {/* </View> */}
+                    />
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
