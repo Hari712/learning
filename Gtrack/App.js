@@ -12,6 +12,7 @@ import { MAP_BOX_TOKEN } from './src/constants/AppConstants'
 import * as RNLocalize from "react-native-localize";
 import i18n from "i18n-js";
 import memoize from "lodash.memoize"; // Use for caching/memoize for better performance
+import OfflineStatusBar from './src/component/OfflineBar'
 
 export const translationGetters = {
   // lazy requires (metro bundler does not support symlinks)
@@ -89,10 +90,11 @@ const MainApp = forwardRef((props, ref) => {
 
   return (
     <Provider store={store}>
-      <ReduxNetworkProvider>
+      <ReduxNetworkProvider pingInterval={40000}>
         <AppNavigator />
         <FlashMessage position="top" animated={true} />
         {isLoading ? <Loader /> : null}
+        <OfflineStatusBar />
       </ReduxNetworkProvider>
     </Provider>
   )

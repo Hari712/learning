@@ -69,12 +69,12 @@ const GeoFenceCircle = ({navigation,route}) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity  style={{marginRight:hp(2)}} onPress={() => area && navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
-                    <Text style={{color:area?ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
+                <TouchableOpacity disabled={!(area && selectedCoordinate[0])}  style={{marginRight:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
+                    <Text style={{color:area && selectedCoordinate[0]  ? ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
         });
-    }, [navigation,area,oldData]);
+    }, [navigation,area,oldData,selectedCoordinate]);
 
     useEffect(() => { 
         if(route.params && route.params.editingData) {
@@ -116,9 +116,6 @@ const GeoFenceCircle = ({navigation,route}) => {
             setArea(tempArea)
         } 
     }, [completeEditing,selectedCoordinate,radius, oldData])
-
-    console.log("Aread in circle ", area)
-
 
     useEffect(() => {
 
