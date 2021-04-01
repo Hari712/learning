@@ -12,6 +12,7 @@ import { UserAddIcon, FilterIcon, FilterIconClicked } from '../../component/SvgC
 import UsersList from './UsersList';
 import UsersFilterDialog from '../../component/UsersFilterDialog';
 import isEmpty from 'lodash/isEmpty'
+import { useIsFocused } from '@react-navigation/native';
 
 const Users = ({navigation}) => {
 
@@ -39,6 +40,14 @@ const Users = ({navigation}) => {
   const user_id = loginData.id ? loginData.id : null
   const dispatch = useDispatch()
 
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if(isFocused){
+      resetHandle()
+    }
+  },[isFocused]);
+
   useEffect(() => {
     if (isRefreshing == true || isLoadMoreData == true ) {
       fetchUserslist()
@@ -54,7 +63,8 @@ const Users = ({navigation}) => {
   },[])
 
   useEffect(()=>{
-    if(isLoadMoreData){
+    //console.log("Condition",isLoadMoreData,isRefreshing,onEndReachedCalledDuringMomentum,)
+    if(isLoadMoreData || !isRefreshing){
       setSearchData([...searchData,...subUserData])
     } else {
       setSearchData(subUserData)
@@ -141,6 +151,9 @@ const Users = ({navigation}) => {
     setPageIndex(0)
     setRoleKeyword( ["ROLE_REGULAR", "ROLE_OWNER"])
     setStatusKey(["Active", "InActive"])
+    setIsLoadMoreData(false)
+    setOnEndReachedCalledDuringMomentum(false)
+    setIsRefreshing(false)
   }
 
   const filterHandle = () => {
