@@ -71,8 +71,6 @@ const GeofenceEditDialog = (props) => {
         }            
     },[activeGeofence])
 
-    console.log("khushi",coordinate,coordinates,radius)
-
 
 return(
     <Dialog
@@ -142,7 +140,6 @@ return(
             polygonCoordinates={coordinates}
         /> : null }
 
-        {console.log("mukudarling",coordinates,coordinate,type,radius,area)}
 
         {/* <View style={styles.popUpCardContainer}>
             <View style={styles.titleViewStyle}>
