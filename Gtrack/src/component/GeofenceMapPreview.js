@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Platform, Dimensions, Text } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../constants/ColorConstants';
-import { useSelector } from 'react-redux'
-import { isUserLoggedIn } from '../screen/Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
@@ -90,7 +88,6 @@ const GeoFenceMapPreview = (props) => {
                 </>
             )
         }
-
 
         function renderApplePolyGon() {
             const arrCoordinates = polygonCoordinates.map((item, index) => item.coordinates)
@@ -224,68 +221,12 @@ const GeoFenceMapPreview = (props) => {
             </View>
         </View>
     )
-
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor:ColorConstant.GREY
-    },
-    sliderContainer: {
-        width: '100%',
-        position: 'absolute',
-        backgroundColor: ColorConstant.WHITE,
-        bottom: hp(1),
-        paddingHorizontal: hp(2)
-    },
-    sliderSubView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    radiusTextSize: {
-        color: '#B5B5B5',
-        fontSize: hp(1.4),
-        paddingTop: hp(1),
-        marginLeft: wp(3)
-    },
-    radiusMainView: {
-        flexDirection: 'row',
-        paddingTop: hp(1),
-        marginRight: wp(3)
-    },
-    textStyleInfo: {
-        fontSize: hp(1.4),
-        lineHeight: 20,
-        color: ColorConstant.ORANGE
-    },
-    otherTextStyle: {
-        fontSize: hp(1.4),
-        lineHeight: 15,
-        color: ColorConstant.ORANGE
-    },
-    sliderView: {
-        marginLeft: 10,
-        marginRight: 10,
-        alignItems: "stretch",
-        justifyContent: "center"
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        marginVertical: 20,
-        backgroundColor: 'transparent',
-    },
-    bubble: {
-        backgroundColor: 'rgba(255,255,255,0.7)',
-        paddingHorizontal: 18,
-        paddingVertical: 12,
-        borderRadius: 20,
-    },
-    button: {
-        width: 80,
-        paddingHorizontal: 12,
-        alignItems: 'center',
-        marginHorizontal: 10,
     },
     popUpCardContainer: {
         width: '100%',
