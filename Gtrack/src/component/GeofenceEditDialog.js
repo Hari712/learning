@@ -12,6 +12,7 @@ import { isCircle } from '../utils/helper';
 import { useSelector } from 'react-redux';
 import { isRoleRegular } from '../screen/Selector';
 import NavigationService from '../navigation/NavigationService';
+import GeoFenceMapPreview from './GeofenceMapPreview';
 
 const GeofenceEditDialog = (props) => {
 
@@ -69,6 +70,8 @@ const GeofenceEditDialog = (props) => {
                 POLYGON(activeGeofence.geofence.area)
         }            
     },[activeGeofence])
+
+    console.log("khushi",coordinate,coordinates,radius)
 
 
 return(
@@ -131,7 +134,17 @@ return(
             </View>
         </View>
 
-        <View style={styles.popUpCardContainer}>
+        {type ? <GeoFenceMapPreview 
+            currentLocation={coordinate} 
+            type={type}
+            circleCoordinate={coordinate}
+            radius={radius}
+            polygonCoordinates={coordinates}
+        /> : null }
+
+        {console.log("mukudarling",coordinates,coordinate,type,radius,area)}
+
+        {/* <View style={styles.popUpCardContainer}>
             <View style={styles.titleViewStyle}>
                 <Text style={styles.titleTextStyle}>{translate("Location")}</Text>
                 <PinIcon width={12.652} height={16.982} resizeMode='contain'/>
@@ -142,7 +155,7 @@ return(
             <View style={styles.mapViewMainView}>
                 <MapView currentLocation={coordinate} />
             </View>
-        </View>
+        </View> */}
 
         { !isRegular ?
         <View style={styles.buttonMainContainer}>
