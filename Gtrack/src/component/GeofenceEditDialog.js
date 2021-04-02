@@ -140,20 +140,6 @@ return(
             polygonCoordinates={coordinates}
         /> : null }
 
-
-        {/* <View style={styles.popUpCardContainer}>
-            <View style={styles.titleViewStyle}>
-                <Text style={styles.titleTextStyle}>{translate("Location")}</Text>
-                <PinIcon width={12.652} height={16.982} resizeMode='contain'/>
-            </View>
-
-            <View style={styles.lineStyle} />
-
-            <View style={styles.mapViewMainView}>
-                <MapView currentLocation={coordinate} />
-            </View>
-        </View> */}
-
         { !isRegular ?
         <View style={styles.buttonMainContainer}>
             <TouchableOpacity onPress={() => {

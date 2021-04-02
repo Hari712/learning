@@ -29,7 +29,7 @@ const GeoFenceMapPreview = (props) => {
 
     const [regionAndroid, setRegionAndroid] = useState()
 
-    const [isScrollEnabled, setIsScrollEnabled] = useState(false)
+    const isScrollEnabled = false
 
     useEffect(() => { 
         if(currentLocation) {
@@ -62,7 +62,6 @@ const GeoFenceMapPreview = (props) => {
             return (
                 <Map.default.Marker
                     coordinate={currentLocation}
-                    draggable
                 />
             )
         }
@@ -71,9 +70,9 @@ const GeoFenceMapPreview = (props) => {
             return (
                 <Map.default.Circle
                     center={circleCoordinate}
-                    radius={radius}
+                    radius={1000*radius}
                     fillColor="rgba(255, 0, 0, 0.4)"
-                    strokeColor="rgba(0,0,0,0.5)"
+                    strokeColor="rgba(255,0,0,0.6)"
                     strokeWidth={2}
                 />
             )
@@ -160,11 +159,10 @@ const GeoFenceMapPreview = (props) => {
                 <>
                     {polygonCoordinates.map((item, index) => {
                         return (
-                            <Map.default.MarkerView
-                                coordinate={item.coordinates}
-                            > 
-                            <View style={{backgroundColor:ColorConstant.RED,width:wp(3),height:wp(3),borderRadius:5}} />
+                            <Map.default.MarkerView coordinate={item.coordinates}> 
+                                <View style={{backgroundColor:ColorConstant.RED,width:wp(3),height:wp(3),borderRadius:5}} />
                             </Map.default.MarkerView>
+                            
                             // <Map.default.PointAnnotation
                             //     id={item.id.toString()}
                             //     coordinate={item.coordinates}
