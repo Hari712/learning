@@ -54,7 +54,7 @@ const UsersList = (props) => {
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
                     <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
                     <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
-                    <TouchableOpacity onPress={()=>{NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
+                    <TouchableOpacity onPress={()=>{item.id == loginData.id? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                         <UsersEditIcon/>
                     </TouchableOpacity>       
                 </View>
@@ -77,7 +77,7 @@ const UsersList = (props) => {
                         <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :"No Group Assigned"} </Text>  
                         <Tooltip
                         popover={
-                            <View>
+                            <View style={{flexWrap:'wrap',flex:1,width:wp(20)}}>
                             {item.groups && item.groups.map((element, index) => {
                                 if(index>0)
                                 return(
