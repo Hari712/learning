@@ -149,6 +149,7 @@ return(
                         type:type,
                         devices:selectedDevice,
                         name:activeGeofence.geofence.name,
+                        color:activeGeofence.geofence.attributes.color,
                         description:activeGeofence.geofence.description, 
                         coordinate:coordinate,
                         radius: radius,

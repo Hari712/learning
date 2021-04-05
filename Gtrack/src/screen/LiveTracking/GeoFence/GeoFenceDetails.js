@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize, TextField, DropDown }from '../../../component';
+import { FontSize, TextField }from '../../../component';
 import ImagePicker from 'react-native-image-crop-picker';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { BackIcon } from '../../../component/SvgComponent';
+import { AddIcon, BackIcon } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { getLoginInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
+import {  SlidersColorPicker  } from 'react-native-color';
+import tinycolor from 'tinycolor2'
 
 const GeoFenceDetails = ({ navigation, route }) => {
 
@@ -22,20 +23,17 @@ const GeoFenceDetails = ({ navigation, route }) => {
     
     const { selectedArea, type, devices, editingData } = route.params
 
+    let colorData = ['#247ba0', '#70c1b3', '#b2dbbf', '#f3ffbd', '#ff1654']
+
     const dispatch = useDispatch()
 
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
-    const [colorPicker, setColorPicker] = useState();
-    const [fontsize, setFontsize] = useState();
-    const [visibilityFrom, setVisibilityFrom] = useState();
-    const [visibilityTo, setVisibilityTo] = useState();
+    const [color, setColor] = useState(tinycolor('#70c1b3').toHexString())
+    const [modalVisible, setModalVisible] = useState(false)
+    const [recents, setRecents] = useState(colorData)
     const [cancel, setCancel] = useState(false)
-    const [uploadImage, setUploadImage] = useState('')
-    const [isClickOnSave, setIsClickOnSave] = useState(false);
-    const [saveButton, setSaveButton] = useState(false);
-    const fontsizeList = ['08', '06', '04'];
-    const [oldData, setOldData] = useState()
+
     let response = { 
         deviceList : [],
         geofence: {},
@@ -44,10 +42,9 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     useEffect(() => { 
         if(editingData) {
-            console.log("details",editingData)
             setName(editingData.name)
             setDescrption(editingData.description) 
-            //setColorPicker(editingData.attributes.color)
+            setColor(editingData.color)
         }
      }, [editingData,navigation,route])
 
@@ -66,15 +63,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
         });
     }, [navigation]);
 
-    const upload = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true
-        }).then(image => {
-            setUploadImage(image.path)
-            console.log("images....", image);
-        });
+    const toggleModal = () => {
+        setModalVisible(!modalVisible)
     }
 
     function onTapSave() {
@@ -84,42 +74,30 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 const requestBody = {
                     area: selectedArea,
                     attributes: {
-                        color: "#E87575"
+                        color: color.toString()
                     },
                     calendarId: 0,
                     description: description,
                     id: editingData.id,
                     name: name
                 }
-                console.log("bodyedit",requestBody)
                 dispatch(LivetrackingActions.requestUpdateGeofence(loginInfo.id, requestBody, onUpdateSuccess, onUpdateError))
             } else {
             const requestBody = {
                 area: selectedArea,
                 attributes: {
-                    color: "#E87575"
+                    color: color.toString()
                 },
                 calendarId: 0,
                 description: description,
                 id: null,
                 name: name
             }
-            console.log("body",requestBody)
             dispatch(LivetrackingActions.requestAddGeofence(loginInfo.id, requestBody, onSuccess, onError))
         }
     } else {
         AppManager.showNoInternetConnectivityError()
     }
-        
-        // navigation.navigate(SCREEN_CONSTANTS.GEOFENCE),
-        // setIsClickOnSave(!isClickOnSave),
-        // setName(name),
-        // setDescrption(description),
-        // setColorPicker(colorPicker),
-        // setFontsize(fontsize),
-        // setVisibilityFrom(visibilityFrom),
-        // setVisibilityTo(visibilityTo),
-        // setUploadImage(uploadImage)
     }
 
     function onUpdateSuccess(data) { 
@@ -139,7 +117,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }  
 
     function onSuccess(data) { 
-        console.log("createNewdata",data)
         response.geofence = data.result
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
         AppManager.hideLoader()
@@ -148,7 +125,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
-        console.log("createNewdatalink",response)
         response.deviceList = devices
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
@@ -162,6 +138,31 @@ const GeoFenceDetails = ({ navigation, route }) => {
     function onError(error) {
     AppManager.hideLoader()
     AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
+    }
+
+    const renderColorAccessory = () => {
+        return(
+            <View style={{flexDirection:'row', width:wp(100)}}>
+
+                {recents.map((colorItem)=>{
+                    return(
+                        <TouchableOpacity onPress={() =>setColor(tinycolor(colorItem).toHexString())}
+                        style={{backgroundColor:colorItem, height:wp(5), width:wp(5), borderRadius:3,marginRight:hp(2), borderColor:ColorConstant.BLACK, borderWidth:color == colorItem ? 1 :0}} />
+                    )
+                })}
+
+                <TouchableOpacity onPress = {() =>toggleModal()} 
+                    style={{backgroundColor:ColorConstant.WHITE, 
+                        height:wp(5), width:wp(5), borderColor:ColorConstant.GREY, borderWidth:1,
+                        alignItems:'center',justifyContent:'center',
+                        borderRadius:3}}>
+                    <AddIcon />
+                </TouchableOpacity>
+
+            </View>
+
+            
+        )
     }
 
     return (
@@ -199,56 +200,28 @@ const GeoFenceDetails = ({ navigation, route }) => {
                             contentInset={{ input: 7 }}
                         />
                     </View>
-
-                    <View style={styles.textInputField}>
-                        <TextField
-                            valueSet={setColorPicker}
-                            label={translate("Pick_Color")}
-                            defaultValue={colorPicker}
-                            onChangeText={(text) => setColorPicker(text)}
-                            style={styles.textNameStyle}
-                            labelFontSize={hp(1.4)}
-                            labelTextStyle={{ top: hp(0.5) }}
-                            contentInset={{ input: 12 }}
-                        />
+                    
+                    <View style={{marginBottom:hp(1)}}>
+                        <Text style={{color:ColorConstant.GREY}}>Pick Color</Text>
                     </View>
 
-                    {/* <View style={styles.dropDownMainView}>
-                        <View style={styles.dropdownView}>
-                            <DropDown
-                                defaultValue={fontsize}
-                                label={translate("FontSize")}
-                                valueSet={setFontsize}
-                                dataList={fontsizeList}
-                                outerStyle={{ marginBottom: hp(2) }}
-                            />
+                    {renderColorAccessory()}
 
-                            <DropDown
-                                defaultValue={visibilityFrom}
-                                label={translate("Select_Visibility_From")}
-                                valueSet={setVisibilityFrom}
-                                dataList={fontsizeList}
-                                outerStyle={{ marginBottom: hp(2) }}
-                            />
-
-                            <DropDown
-                                defaultValue={visibilityTo}
-                                label={translate("Select_Visibility_To")}
-                                valueSet={setVisibilityTo}
-                                dataList={fontsizeList}
-                                outerStyle={{ marginBottom: hp(2) }}
-                            />
-                        </View> */}
-
-                        {/* {uploadImage ? */}
-                        {/* <TouchableOpacity style={styles.uploadMainView} onPress={upload}>
-                            <Image source={images.geoFence.uploadGrey} resizeMode="contain" />
-                            <Text style={styles.uploadText}>{translate("Upload Image")}</Text>
-                        </TouchableOpacity> */}
-                        {/* :
-                            <Image source ={{uri:uploadImage}}/> */}
-                        {/* } */}
-                    {/* </View> */}
+                    <SlidersColorPicker
+                        visible={modalVisible}
+                        color={color}
+                        returnMode={'hex'}
+                        onCancel={() => setModalVisible(false)}
+                        onOk={colorHex => {
+                            setModalVisible(false)
+                            setColor(colorHex)
+                            setRecents([colorHex,...recents.filter(c => c !== colorHex).slice(0, 4)])
+                        }}
+                        swatches={recents}
+                        swatchesLabel={"RECENTS"}
+                        okLabel="Done"
+                        cancelLabel="Cancel"
+                    />
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
