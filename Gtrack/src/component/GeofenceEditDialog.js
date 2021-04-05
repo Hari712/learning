@@ -101,7 +101,7 @@ return(
 
                 <View style={styles.descriptionMainStyle}>
                     <Text style={styles.mainTextStyle}>{translate("Description")}</Text>
-                    <Text style={styles.textStyle}>{activeGeofence && activeGeofence.geofence.description}</Text>
+                    <Text style={styles.textStyle}>{activeGeofence && activeGeofence.geofence.description ? activeGeofence.geofence.description : '-'}</Text>
                 </View>
             </View>
 
