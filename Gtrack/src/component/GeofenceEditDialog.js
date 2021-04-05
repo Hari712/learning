@@ -12,6 +12,7 @@ import { isCircle } from '../utils/helper';
 import { useSelector } from 'react-redux';
 import { isRoleRegular } from '../screen/Selector';
 import NavigationService from '../navigation/NavigationService';
+import GeoFenceMapPreview from './GeofenceMapPreview';
 
 const GeofenceEditDialog = (props) => {
 
@@ -101,7 +102,7 @@ return(
 
                 <View style={styles.descriptionMainStyle}>
                     <Text style={styles.mainTextStyle}>{translate("Description")}</Text>
-                    <Text style={styles.textStyle}>{activeGeofence && activeGeofence.geofence.description}</Text>
+                    <Text style={styles.textStyle}>{activeGeofence && activeGeofence.geofence.description ? activeGeofence.geofence.description : '-'}</Text>
                 </View>
             </View>
 
@@ -131,18 +132,13 @@ return(
             </View>
         </View>
 
-        <View style={styles.popUpCardContainer}>
-            <View style={styles.titleViewStyle}>
-                <Text style={styles.titleTextStyle}>{translate("Location")}</Text>
-                <PinIcon width={12.652} height={16.982} resizeMode='contain'/>
-            </View>
-
-            <View style={styles.lineStyle} />
-
-            <View style={styles.mapViewMainView}>
-                <MapView currentLocation={coordinate} />
-            </View>
-        </View>
+        {type ? <GeoFenceMapPreview 
+            currentLocation={coordinate} 
+            type={type}
+            circleCoordinate={coordinate}
+            radius={radius}
+            polygonCoordinates={coordinates}
+        /> : null }
 
         { !isRegular ?
         <View style={styles.buttonMainContainer}>
@@ -179,7 +175,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE
     },
     mainViewHeading: {
-        height: hp(80),
+        //height: hp(80),
         width: wp(77)
     },
     subHeadingView: {

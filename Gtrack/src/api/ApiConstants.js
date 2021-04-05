@@ -1,4 +1,4 @@
-const BASE_URL = 'https://gtrackapi-qa.vegitone.com/gtrackapi/' //'https://gtrackapi-dev.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://gtrackapi-dev.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 
 const SUFFIX_URL = 'public/'
 
@@ -57,6 +57,7 @@ const ApiConstants = {
     DELETE_GEOFENCE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}`,
     ADD_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     LINK_GEOFENCE_DEVICES:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices?link=true`,
+    LINK_GEOFENCE_DEVICES_UPDATE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/updateGeofence`,
     UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`
 }

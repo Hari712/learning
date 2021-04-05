@@ -103,7 +103,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     function onUpdateSuccess(data) { 
         response.geofence = data.result
         if (isConnected) {
-            dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
             AppManager.hideLoader()
             AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
         } else {
@@ -114,7 +114,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     function onUpdateError(error) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('warning', { message: error, description: '', floating: true }) 
-        }
+    }  
 
     function onSuccess(data) { 
         response.geofence = data.result
@@ -126,7 +126,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onLinkSuccess(data) {
         response.deviceList = devices
-        dispatch(LivetrackingActions.setAddGeofenceResponse(response))
+        if(editingData){
+            dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
+        }else{
+            dispatch(LivetrackingActions.setAddGeofenceResponse(response)) 
+        }
         AppManager.hideLoader()
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
