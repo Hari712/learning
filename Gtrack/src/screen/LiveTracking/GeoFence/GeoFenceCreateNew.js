@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ColorConstant } from '../../../constants/ColorConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import { translate } from '../../../../App'
-import { DropDown, MultiSelectDropdown, FontSize }from '../../../component';
+import { DropDown, FontSize, MultiSelect }from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
@@ -111,7 +111,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
                 <Text style={styles.textViewStyle}>{translate("Create New")}</Text>
             </View>
             <View style={styles.multiselectMainView}>
-                <MultiSelectDropdown
+                <MultiSelect
                     label="Select Device*"
                     dataList={arrDeviceList} 
                     allText={translate("Select_all_string")}
