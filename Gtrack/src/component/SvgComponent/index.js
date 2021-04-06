@@ -24,6 +24,24 @@ import DashBoardIcon from './DashBoardIcon'
 import RadioButtonIcon from './RadioButtonIcon'
 import RadioButtonIconClicked from './RadioButtonIconClicked'
 import ToggleButtonIcon from './ToggleButtonIcon'
+import ToggleButtonIconClicked from './ToggleButtonIconClicked'
+import NextArrowIcon from './NextArrowIcon'
+import NextArrowIconClicked from './NextArrowIconClicked'
+import CircleIcon from './CircleIcon'
+import CircleIconSelected from './CircleIconSelected'
+import DeleteIcon from './DeleteIcon'
+import EditIcon from './EditIcon'
+import ListIcon from './ListIcon'
+import FullScreenIcon from './FullScreenIcon'
+import DeviceSetupIcon from './DeviceSetupIcon'
+import RefreshIcon from './RefreshIcon'
+import RightArrowIcon from './RightArrowIcon'
+import VanIcon from './VanIcon'
+import DeviceAssetEditIcon from './DeviceAssetEditIcon'
+import DeviceAssetEditIconClicked from './DeviceAssetEditIconClicked'
+import MachineryIcon from './MachineryIcon'
+import ShuttleVanIcon from './ShuttleVanIcon'
+import CarIcon from './CarIcon'
 
 export {
     BarCodeScanIcon,
@@ -50,5 +68,23 @@ export {
     DashBoardIcon,
     RadioButtonIcon,
     RadioButtonIconClicked,
-    ToggleButtonIcon
+    ToggleButtonIcon,
+    ToggleButtonIconClicked,
+    NextArrowIcon,
+    NextArrowIconClicked,
+    CircleIcon,
+    CircleIconSelected,
+    DeleteIcon,
+    EditIcon,
+    ListIcon,
+    FullScreenIcon,
+    DeviceSetupIcon,
+    RefreshIcon,
+    RightArrowIcon,
+    VanIcon,
+    DeviceAssetEditIcon,
+    DeviceAssetEditIconClicked,
+    MachineryIcon,
+    ShuttleVanIcon,
+    CarIcon
 }
