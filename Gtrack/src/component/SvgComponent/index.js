@@ -42,6 +42,32 @@ import DeviceAssetEditIconClicked from './DeviceAssetEditIconClicked'
 import MachineryIcon from './MachineryIcon'
 import ShuttleVanIcon from './ShuttleVanIcon'
 import CarIcon from './CarIcon'
+import KidsIcon from './KidsIcon'
+import PersonnelItemIcon from './PersonnelItemIcon'
+import FamilyVanIcon from './FamilyVanIcon'
+import BusIcon from './BusIcon';
+import TrailerIcon from './TrailerIcon'
+import TravelIcon from './TravelIcon'
+import TruckIcon from './TruckIcon'
+import CrossIcon from './CrossIcon'
+import AddIconClicked from './AddIconClicked'
+import AddIcon from './AddIcon'
+import TrashIcon from './TrashIcon'
+import TrashBlueIcon from './TrashBlueIcon'
+import DownArrowIcon from './DownArrowIcon'
+import UpArrowIcon from './UpArrowIcon'
+import DeviceAssetListIcon from './DeviceAssetListIcon'
+import PickupCarIcon from './PickupCarIcon'
+import PuzzleIcon from './PuzzleIcon'
+import UsbIcon from './UsbIcon'
+import DeviceAssetUserIcon from './DeviceAssetUserIcon'
+import GeoFenceListIcon from './GeoFenceListIcon'
+import LiveTrackingPinIcon from './LiveTrackingPinIcon'
+import PinIcon from './PinIcon'
+import GeoFenceTrashIcon from './GeoFenceTrashIcon'
+import CalenderIcon from './CalenderIcon'
+import LiveTrackingPlusIcon from './LiveTrackingPlusIcon'
+import BackIcon from './BackIcon'
 
 export {
     BarCodeScanIcon,
@@ -86,5 +112,31 @@ export {
     DeviceAssetEditIconClicked,
     MachineryIcon,
     ShuttleVanIcon,
-    CarIcon
+    CarIcon,
+    KidsIcon,
+    PersonnelItemIcon,
+    FamilyVanIcon,
+    BusIcon,
+    TrailerIcon,
+    TravelIcon,
+    TruckIcon,
+    CrossIcon,
+    AddIconClicked,
+    AddIcon,
+    TrashIcon,
+    TrashBlueIcon,
+    DownArrowIcon,
+    UpArrowIcon,
+    DeviceAssetListIcon,
+    PickupCarIcon,
+    PuzzleIcon,
+    UsbIcon,
+    DeviceAssetUserIcon,
+    GeoFenceListIcon,
+    LiveTrackingPinIcon,
+    PinIcon,
+    GeoFenceTrashIcon,
+    CalenderIcon,
+    LiveTrackingPlusIcon,
+    BackIcon
 }
