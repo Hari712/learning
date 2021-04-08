@@ -68,6 +68,52 @@ import GeoFenceTrashIcon from './GeoFenceTrashIcon'
 import CalenderIcon from './CalenderIcon'
 import LiveTrackingPlusIcon from './LiveTrackingPlusIcon'
 import BackIcon from './BackIcon'
+import NextIcon from './NextIcon'
+import UsersEditIcon from './UsersEditIcon'
+import EmailIcon from './EmailIcon'
+import UserAddIcon from './UserAddIcon'
+import OrangeCrossIcon from './OrangeCrossIcon'
+import UsersInfoIconClicked from './UsersInfoIconClicked'
+import UsersInfoIcon from './UsersInfoIcon'
+import FilterIconClicked from './FilterIconClicked'
+import FilterIcon from './FilterIcon'
+import PhoneIcon from './PhoneIcon'
+import GreyCrossIcon from  './GreyCrossIcon'
+import OverSpeedIcon from './OverSpeedIcon'
+import BatteryIcon from './BatteryIcon'
+import GeoFenceIcon from './GeoFenceIcon'
+import EngineIdleIcon from './EngineIdleIcon'
+import IgniteOnIcon from './IgniteOnIcon'
+import MovementIcon from './MovementIcon'
+import IgniteOffIcon from './IgniteOffIcon'
+import PanicIcon from './PanicIcon'
+import NextOrangeIcon from './NextOrangeIcon'
+import SensorIcon from './SensorIcon'
+import FeedbackIcon from './FeedbackIcon'
+import ProfileIcon from './ProfileIcon'
+import LogoutIcon from './LogoutIcon'
+import AboutIcon from './AboutIcon'
+import RateUsIcon from './RateUsIcon'
+import NextArrowOrangeIcon from './NextArrowOrangeIcon'
+import NotificationIcon from './NotificationIcon'
+import PermissionIcon from './PermissionIcon'
+import AdvanceSettingsIcon from './AdvanceSettingsIcon'
+import IgnitionOffIcon from './IgnitionOffIcon'
+import IgnitionOnIcon from './IgnitionOnIcon'
+import GtrackLogoIcon from './GtrackLogoIcon'
+import CrossIconBlue from './CrossIconBlue'
+import ExportIcon from './ExportIcon'
+import SettingsEyeIcon from './SettingsEyeIcon'
+import SettingsEyeIconClicked from './SettingsEyeIconClicked'
+import MenuIcon from './MenuIcon'
+import MenuIconClicked from './MenuIconClicked'
+import LoginIcon from './LoginIcon'
+import RateUsDialogIcon from './RateUsDialogIcon'
+import CalenderIconWhite from './CalenderIconWhite'
+import CalenderIconBlue from './CalenderIconBlue'
+import LocationIcon from './LocationIcon'
+import NoInternetConnectivityIcon from './NoInternetConnectivityIcon'
+import SvgNoConnection from './SvgNoConnection';
 
 export {
     BarCodeScanIcon,
@@ -138,5 +184,51 @@ export {
     GeoFenceTrashIcon,
     CalenderIcon,
     LiveTrackingPlusIcon,
-    BackIcon
+    BackIcon,
+    NextIcon,
+    UsersEditIcon,
+    EmailIcon,
+    UserAddIcon,
+    OrangeCrossIcon,
+    UsersInfoIconClicked,
+    UsersInfoIcon,
+    FilterIconClicked,
+    FilterIcon,
+    PhoneIcon,
+    GreyCrossIcon,
+    OverSpeedIcon,
+    BatteryIcon,
+    GeoFenceIcon,
+    EngineIdleIcon,
+    IgniteOnIcon,
+    MovementIcon,
+    IgniteOffIcon,
+    PanicIcon,
+    NextOrangeIcon,
+    SensorIcon,
+    FeedbackIcon,
+    ProfileIcon,
+    LogoutIcon,
+    AboutIcon,
+    RateUsIcon,
+    NextArrowOrangeIcon,
+    NotificationIcon,
+    PermissionIcon,
+    AdvanceSettingsIcon,
+    IgnitionOffIcon,
+    IgnitionOnIcon,
+    GtrackLogoIcon,
+    CrossIconBlue,
+    ExportIcon,
+    SettingsEyeIcon,
+    SettingsEyeIconClicked,
+    MenuIcon,
+    MenuIconClicked,
+    LoginIcon,
+    RateUsDialogIcon,
+    CalenderIconWhite,
+    CalenderIconBlue,
+    LocationIcon,
+    NoInternetConnectivityIcon,
+    SvgNoConnection
 }
