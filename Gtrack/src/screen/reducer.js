@@ -7,6 +7,7 @@ import { LOGOUT_REQUEST } from '../constants/ActionTypes'
 import { clearUserData } from '../utils/helper'
 import { dashboardReducer } from './Dashboard/Dashboad.Reducer';
 import { livetrackingReducer } from './LiveTracking/Livetracking.Reducer'
+import { tripHistoryReducer } from './LiveTracking/TripHistory/TripHistory.Reducer'
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     device: deviceReducer,
     dashBoard: dashboardReducer,
     livetracking: livetrackingReducer,
+    tripHistory: tripHistoryReducer,
     network
 })
 

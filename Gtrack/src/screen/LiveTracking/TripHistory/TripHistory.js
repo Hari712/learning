@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../../constants/images';
+import * as TripHistoryActions from './TripHistory.Action'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import  { FontSize }from '../../../component';
 import { FlatList } from 'react-native-gesture-handler';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon, NextOrangeIcon } from '../../../component/SvgComponent';
+import { useDispatch, useSelector } from 'react-redux';
+import { getGroupDevicesListInfo, getLoginState } from '../../Selector';
+import AppManager from '../../../constants/AppManager';
 
 const TripHistory = ({ navigation }) => {
+
+    const { loginData, groupDevices, isConnected } = useSelector(state => ({
+        loginData: getLoginState(state),
+        groupDevices: getGroupDevicesListInfo(state),
+        isConnected: state.network.isConnected
+    }))
+
+    console.log("khushi",groupDevices)
+
+    const dispatch = useDispatch()
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -31,11 +44,47 @@ const TripHistory = ({ navigation }) => {
         });
     }, [navigation]);
 
+    useEffect(()=>{
+        fetchGroupDevices()
+        //fetchTripHistory()
+    },[])
+
+    function fetchGroupDevices() {
+        AppManager.showLoader() 
+        dispatch(TripHistoryActions.getGroupDevicesRequset(loginData.id, onSuccess, onError))
+    }
+
+    function onSuccess(data) {    
+        console.log("Success",data) 
+        AppManager.hideLoader()
+    }
+    
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+    }
+
+    function fetchTripHistory() {
+        if (isConnected) {
+            const requestBody =  {
+                "pageNumber" : 0,
+                "pageSize" : 5,
+                "useMaxSearchAsLimit" : false,
+                "searchColumnsList" : null,
+                "sortHeader" : "id",
+                "sortDirection" : "DESC"
+            }
+            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, 12, '2021-03-02T10:00:00.000', '2021-03-02T12:00:00.000', onSuccess, onError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
+    }
+
     const SensorInfoItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.sensorInfoMainView} onPress={() => { navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS)} } >
+            <TouchableOpacity style={styles.sensorInfoMainView} onPress={() => { navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, {data: item})} } >
                 <View style={styles.deviceinfoView}>
-                    <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.BLACK }}>{item.title}</Text>
+                    <Text style={{ fontSize: FontSize.FontSize.small, color: ColorConstant.BLACK }}>{item.name}</Text>
                     <NextOrangeIcon style={{ width: wp(2), height: hp(3), marginTop: 2 }} resizeMode="contain"/>
                 </View>
                 <View style={styles.footerIconStyle} />
@@ -49,7 +98,7 @@ const TripHistory = ({ navigation }) => {
             <FlatList
                 style={{}}
                 contentContainerStyle={{}}
-                data={SENSORINFOITEMS}
+                data={groupDevices}
                 renderItem={SensorInfoItem}
                 keyExtractor={(item, index) => index.toString()}
             />

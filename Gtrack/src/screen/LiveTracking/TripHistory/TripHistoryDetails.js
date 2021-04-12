@@ -11,7 +11,11 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"
 import Moment from 'moment'
 import SummaryDetails from './SummaryDetails';
 
-const TripHistoryDetails = ({ navigation }) => {
+const TripHistoryDetails = ({ navigation, route }) => {
+
+    const { data } = route.params
+
+    console.log("mukund",data)
 
     const { loginData } = useSelector(state => ({
         loginData: getLoginState(state)
@@ -76,7 +80,7 @@ const TripHistoryDetails = ({ navigation }) => {
         <View style={styles.container}>
         
                 <View style={styles.addButton}>
-                    <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 16, color: ColorConstant.WHITE }}>Trackport 4G Vehicle GPS Tracker</Text>
+                    <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 16, color: ColorConstant.WHITE }}>{data.name}</Text>
                 </View>
                 
                 <View style={{flex:1}}>

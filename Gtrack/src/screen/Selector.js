@@ -201,3 +201,19 @@ export const getGeofenceDeviceListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Group Devices for TripHistory
+ */
+
+const getGroupDevicesList = (state) => getGroupDevicesInfo(state)
+function getGroupDevicesInfo(state) {
+    const arrGroupDevice = state.tripHistory && state.tripHistory.devicesGroup ? state.tripHistory.devicesGroup : {}
+    let deviceList = []
+    Object.values(arrGroupDevice).map((item)=>item.devices.map((item1)=>deviceList.push(item1)))
+    return deviceList
+}
+export const getGroupDevicesListInfo = createSelector(
+    [getGroupDevicesList],
+    (info) => info
+)
+
