@@ -9,13 +9,13 @@ import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue } from '../../../component/SvgComponent';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import Moment from 'moment'
-import SummaryDetails from './SummaryDetails';
+import RouteDetails from './RouteDetails';
 
 const TripHistoryDetails = ({ navigation, route }) => {
 
     const { data } = route.params
 
-    console.log("mukund",data)
+    console.log("data",data)
 
     const { loginData } = useSelector(state => ({
         loginData: getLoginState(state)
@@ -70,7 +70,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
     };
 
     const handleConfirm = (date) => {
-        console.log("A date has been picked: ", Moment(date).format("YYYY-MM-DD"));
+        console.log("A date has been picked: ",date, Moment(date).format("YYYY-MM-DD"));
         const dt = Moment(date).format("YYYY-MM-DD")
         isStartDateVisible ? setStartDate(dt) : setEndDate(dt)
         hideDatePicker();
@@ -105,7 +105,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
                         </View>
 
-                        <SummaryDetails />
+                        <RouteDetails />
 
                         <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  

@@ -9,7 +9,7 @@ import {  CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../c
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService';
 
-const SummaryDetails = ({ navigation }) => {
+const RouteDetails = ({ navigation }) => {
 
     const { loginData } = useSelector(state => ({
         loginData: getLoginState(state)
@@ -77,7 +77,7 @@ const SummaryDetails = ({ navigation }) => {
 
     return (
         <View>
-            <View style={styles.container}>
+            {/* <View style={styles.container}>
                 <View style={styles.summaryCardView}>
                     <View style={{flexDirection:'row',alignItems:"center",paddingVertical:hp(1),justifyContent:"space-between",borderBottomWidth:0.3,borderBottomColor:ColorConstant.GREY}}>
                         <Text style={{fontFamily:"Nunito-Regular",color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small}}>Summary</Text>
@@ -104,9 +104,9 @@ const SummaryDetails = ({ navigation }) => {
                         </View>
                     </View>
                 </View> 
-            </View>
+            </View> */}
 
-            <View style={{paddingTop:hp(4), paddingHorizontal:hp(3)}} >
+            <View style={{paddingHorizontal:hp(3)}} >
                 <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>Route Details</Text>
             </View>
 
@@ -257,4 +257,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default SummaryDetails;
+export default RouteDetails;
