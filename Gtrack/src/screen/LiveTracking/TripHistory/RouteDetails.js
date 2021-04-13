@@ -77,34 +77,6 @@ const RouteDetails = ({ navigation }) => {
 
     return (
         <View>
-            {/* <View style={styles.container}>
-                <View style={styles.summaryCardView}>
-                    <View style={{flexDirection:'row',alignItems:"center",paddingVertical:hp(1),justifyContent:"space-between",borderBottomWidth:0.3,borderBottomColor:ColorConstant.GREY}}>
-                        <Text style={{fontFamily:"Nunito-Regular",color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small}}>Summary</Text>
-                        <ListIcon />
-                    </View>
-                    <View style={{flexDirection:'row',marginVertical:hp(2)}}>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Total Distance</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>922.87 mi</Text>
-                        </View>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Drive Duration</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>7h 26m 21s</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection:'row',marginBottom:hp(2)}}>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Top Speed</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>80 mph</Text>
-                        </View>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Avg Speed</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>56 mph</Text>
-                        </View>
-                    </View>
-                </View> 
-            </View> */}
 
             <View style={{paddingHorizontal:hp(3)}} >
                 <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>Route Details</Text>

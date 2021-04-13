@@ -48,7 +48,6 @@ const TripHistory = ({ navigation }) => {
 
     useEffect(()=>{
         fetchGroupDevices()
-        //fetchTripHistory()
     },[])
 
     function fetchGroupDevices() {
@@ -64,22 +63,6 @@ const TripHistory = ({ navigation }) => {
     function onError(error) {
         AppManager.hideLoader()
         console.log("Error",error)  
-    }
-
-    function fetchTripHistory() {
-        if (isConnected) {
-            const requestBody =  {
-                "pageNumber" : 0,
-                "pageSize" : 5,
-                "useMaxSearchAsLimit" : false,
-                "searchColumnsList" : null,
-                "sortHeader" : "id",
-                "sortDirection" : "DESC"
-            }
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, 12, '2021-03-02T10:00:00.000', '2021-03-02T12:00:00.000', onSuccess, onError))
-        } else {
-            AppManager.showNoInternetConnectivityError()
-        }
     }
 
     function renderDevices(devices) {

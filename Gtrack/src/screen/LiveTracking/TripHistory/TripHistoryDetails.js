@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform, Button } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -9,17 +9,30 @@ import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue } from '../../../component/SvgComponent';
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import Moment from 'moment'
-import RouteDetails from './RouteDetails';
+import RouteDetails from './RouteDetails'
+import * as TripHistoryActions from './TripHistory.Action'
+import AppManager from '../../../constants/AppManager';
 
 const TripHistoryDetails = ({ navigation, route }) => {
 
     const { data } = route.params
 
-    console.log("data",data)
+    console.log("data",data.id)
 
-    const { loginData } = useSelector(state => ({
-        loginData: getLoginState(state)
+    const { loginData, isConnected } = useSelector(state => ({
+        loginData: getLoginState(state),
+        isConnected: state.network.isConnected
     }))
+
+    const dispatch = useDispatch()
+
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+    const [isStartDateVisible, setIsStartDateVisible] = useState(false);
+    const [isEndDateVisible, setIsEndDateVisible] = useState(false);
+    const [selectedDay, setSelectedDay] = useState()
+    const [dropdownPosY, setDropdownPosY] = useState()
+    // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -41,17 +54,38 @@ const TripHistoryDetails = ({ navigation, route }) => {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        if(startDate && endDate){
+            fetchTripHistory()
+        }
+    },[startDate, endDate])
 
+    const fetchTripHistory = () => {
+        AppManager.showLoader()
+        if (isConnected) {
+            const requestBody =  {
+                "pageNumber" : 0,
+                "pageSize" : 5,
+                "useMaxSearchAsLimit" : false,
+                "searchColumnsList" : null,
+                "sortHeader" : "id",
+                "sortDirection" : "DESC"
+            }
+            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, Moment(startDate).format("YYYY-MM-DDTHH:MM:SS.000"), Moment(endDate).format("YYYY-MM-DDTHH:MM:SS.000"), onSuccess, onError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
+    }
 
-    const dispatch = useDispatch()
-
-    const [startDate, setStartDate] = useState();
-    const [endDate, setEndDate] = useState();
-    const [isStartDateVisible, setIsStartDateVisible] = useState(false);
-    const [isEndDateVisible, setIsEndDateVisible] = useState(false);
-    const [selectedDay, setSelectedDay] = useState()
-    const [dropdownPosY, setDropdownPosY] = useState()
-    // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    function onSuccess(data) {    
+        console.log("Success",data) 
+        AppManager.hideLoader()
+    }
+    
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+    }
 
     const showDatePicker = (item) => {
         // setDatePickerVisibility(true);
@@ -70,9 +104,11 @@ const TripHistoryDetails = ({ navigation, route }) => {
     };
 
     const handleConfirm = (date) => {
-        console.log("A date has been picked: ",date, Moment(date).format("YYYY-MM-DD"));
+        console.log("A date has been picked: ", Moment(date).format("YYYY-MM-DDTHH:MM:SS"));
         const dt = Moment(date).format("YYYY-MM-DD")
-        isStartDateVisible ? setStartDate(dt) : setEndDate(dt)
+        isStartDateVisible && setStartDate(dt)
+        isEndDateVisible && setEndDate(dt)
+        //isStartDateVisible ? setStartDate(dt) : setEndDate(dt)
         hideDatePicker();
     };
 
