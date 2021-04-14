@@ -212,3 +212,13 @@ export const getGroupDevicesListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get TripHistory Details
+ */
+
+ const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.routeDetails ? state.tripHistory.routeDetails : {}
+
+ export const getTripHistoryListInfo = createSelector(
+     [getTripHistoryList],
+     (info) => info
+ )

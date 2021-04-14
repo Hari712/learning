@@ -22,6 +22,8 @@ function* getTripHistory(action) {
     try {
         const url = ApiConstants.GET_TRIP_HISTORY(userId, deviceId, from, to)
         const response = yield call(API.post, url, body)
+        const result = response.result ? response.result : []
+        yield put(TripHistoryActions.setTripHistoryResponse(result))
         onSuccess(response)
     } catch (error) {
         onError(error)

@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextI
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { DropDown, TextField, FontSize }from '../../../component';
-import { getLoginState } from '../../Selector'
+import { getLoginState, getTripHistoryListInfo } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue } from '../../../component/SvgComponent';
@@ -19,10 +19,14 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
     console.log("data",data.id)
 
-    const { loginData, isConnected } = useSelector(state => ({
+    const { loginData, isConnected, routeDetails } = useSelector(state => ({
         loginData: getLoginState(state),
-        isConnected: state.network.isConnected
+        isConnected: state.network.isConnected,
+        routeDetails: getTripHistoryListInfo(state)
     }))
+
+
+    console.log("khushi",routeDetails)
 
     const dispatch = useDispatch()
 
@@ -141,7 +145,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
                         </View>
 
-                        <RouteDetails />
+                        <RouteDetails routeDetails={routeDetails} />
 
                         <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
