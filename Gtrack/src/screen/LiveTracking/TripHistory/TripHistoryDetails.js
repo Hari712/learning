@@ -16,9 +16,7 @@ import AppManager from '../../../constants/AppManager';
 const TripHistoryDetails = ({ navigation, route }) => {
 
     const { data } = route.params
-
-    console.log("data",data.id)
-
+    
     const { loginData, isConnected, routeDetails } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
@@ -63,6 +61,50 @@ const TripHistoryDetails = ({ navigation, route }) => {
             fetchTripHistory()
         }
     },[startDate, endDate])
+    
+    useEffect(() => {
+
+        const todayDate = Moment().format('YYYY-MM-DD');
+        const yesterdayDate = Moment().subtract(1, "days").format('YYYY-MM-DD')
+        const lastWeekDate = Moment().subtract(1, "weeks").startOf('isoWeek').format('YYYY-MM-DD')
+        const lastMonthDate = Moment().date(1).subtract(1,'months').format('YYYY-MM-DD')
+        const tommorrowDate = Moment(todayDate).add(1, "days").format('YYYY-MM-DD')
+        const lastWeek = Moment(lastWeekDate).add(7, "days").format('YYYY-MM-DD')
+        const currentMonthDate = Moment().date(1).format('YYYY-MM-DD') 
+
+        if(selectedDay){
+
+            switch (selectedDay) {
+                case 'Today':
+                    setStartDate(todayDate)
+                    setEndDate(tommorrowDate)
+                    break;
+
+                case 'Yesterday':
+                    setStartDate(yesterdayDate)
+                    setEndDate(tommorrowDate)
+                    break;
+
+                case 'Last Week':
+                    setStartDate(lastWeekDate)
+                    setEndDate(lastWeek)
+                    break;
+
+                case 'Last Month':
+                    setStartDate(lastMonthDate)
+                    setEndDate(currentMonthDate)
+                    break;
+
+                case 'Custom':
+                    setIsStartDateVisible(true)
+                    setEndDate('')
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    },[selectedDay])
 
     const fetchTripHistory = () => {
         AppManager.showLoader()
@@ -75,8 +117,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "sortHeader" : "id",
                 "sortDirection" : "DESC"
             }
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, Moment(startDate).format("YYYY-MM-DDTHH:MM:SS.000"), Moment(endDate).format("YYYY-MM-DDTHH:MM:SS.000"), onSuccess, onError))
-        } else {
+            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000"), Moment(endDate).format("YYYY-MM-DDTHH:mm:SS.000"), onSuccess, onError))
+        } else {                                                                                             
             AppManager.showNoInternetConnectivityError()
         }
     }
@@ -145,11 +187,11 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
                         </View>
 
-                        <RouteDetails routeDetails={routeDetails} />
+                        { routeDetails.length > 0 && <RouteDetails routeDetails={routeDetails} /> }
 
-                        <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
+                        {/* <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
-                        </View>
+                        </View> */}
 
                         <DateTimePickerModal
                             isVisible={isStartDateVisible || isEndDateVisible}
@@ -157,7 +199,12 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
                         />
+                        
                     </ScrollView> 
+                    
+                        <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
+                            <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
+                        </View>
                 </View>
         </View>
 
