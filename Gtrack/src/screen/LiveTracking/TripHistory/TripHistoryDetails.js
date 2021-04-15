@@ -34,27 +34,16 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [isEndDateVisible, setIsEndDateVisible] = useState(false);
     const [selectedDay, setSelectedDay] = useState()
     const [dropdownPosY, setDropdownPosY] = useState()
+    const [routeData, setRouteData] = useState([])
     // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerTitle: () => (
-                <Text style={{
-                    color: ColorConstant.GREY,
-                    fontSize: FontSize.FontSize.medium,
-                    fontWeight: '500',
-                    textAlign: 'center'
-                }}>
-                    {translate("Trip History")}
-                </Text>
-            ),
-            headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
-                    <BackIcon />
-                </TouchableOpacity>
-            )
-        });
-    }, [navigation]);
+    useEffect(() => {
+        setRouteData(routeDetails)
+    },[routeDetails])
+
+    useEffect(() => {
+        setRouteData([])
+    },[])
 
     useEffect(() => {
         if(startDate && endDate){
@@ -64,13 +53,13 @@ const TripHistoryDetails = ({ navigation, route }) => {
     
     useEffect(() => {
 
-        const todayDate = Moment().format('YYYY-MM-DD');
-        const yesterdayDate = Moment().subtract(1, "days").format('YYYY-MM-DD')
-        const lastWeekDate = Moment().subtract(1, "weeks").startOf('isoWeek').format('YYYY-MM-DD')
-        const lastMonthDate = Moment().date(1).subtract(1,'months').format('YYYY-MM-DD')
-        const tommorrowDate = Moment(todayDate).add(1, "days").format('YYYY-MM-DD')
-        const lastWeek = Moment(lastWeekDate).add(7, "days").format('YYYY-MM-DD')
-        const currentMonthDate = Moment().date(1).format('YYYY-MM-DD') 
+        let todayDate = Moment().format('YYYY-MM-DD');
+        let yesterdayDate = Moment().subtract(1, "days").format('YYYY-MM-DD')
+        let lastWeekDate = Moment().subtract(1, "weeks").startOf('isoWeek').format('YYYY-MM-DD')
+        let lastMonthDate = Moment().date(1).subtract(1,'months').format('YYYY-MM-DD')
+        let tommorrowDate = Moment(todayDate).add(1, "days").format('YYYY-MM-DD')
+        let lastWeek = Moment(lastWeekDate).add(7, "days").format('YYYY-MM-DD')
+        let currentMonthDate = Moment().date(1).format('YYYY-MM-DD') 
 
         if(selectedDay){
 
@@ -123,6 +112,26 @@ const TripHistoryDetails = ({ navigation, route }) => {
         }
     }
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={{
+                    color: ColorConstant.GREY,
+                    fontSize: FontSize.FontSize.medium,
+                    fontWeight: '500',
+                    textAlign: 'center'
+                }}>
+                    {translate("Trip History")}
+                </Text>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                    <BackIcon />
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation]);
+
     function onSuccess(data) {    
         console.log("Success",data) 
         AppManager.hideLoader()
@@ -166,7 +175,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 </View>
                 
                 <View style={{flex:1}}>
-                    <ScrollView> 
+                    <ScrollView contentContainerStyle={{flexGrow:1}}> 
                         <View style={{padding:hp(3)}}>
                             <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-Regular"}}>Data Range</Text>  
                             <View style={{flexDirection:'row',justifyContent:"space-between",marginVertical:hp(2)}}>
@@ -187,11 +196,11 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
                         </View>
 
-                        { routeDetails.length > 0 && <RouteDetails routeDetails={routeDetails} /> }
+                        { routeData.length > 0 && <RouteDetails routeDetails={routeData} /> }
 
-                        {/* <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
+                        <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
-                        </View> */}
+                        </View>
 
                         <DateTimePickerModal
                             isVisible={isStartDateVisible || isEndDateVisible}
@@ -202,9 +211,9 @@ const TripHistoryDetails = ({ navigation, route }) => {
                         
                     </ScrollView> 
                     
-                        <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
+                        {/* <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
-                        </View>
+                        </View> */}
                 </View>
         </View>
 

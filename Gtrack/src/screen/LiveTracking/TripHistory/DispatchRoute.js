@@ -3,6 +3,8 @@ import { View, StyleSheet, TouchableOpacity,  Dimensions, Platform } from 'react
 import { lineString as makeLineString } from '@turf/helpers';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import isEmpty from 'lodash/isEmpty'
+import { ColorConstant } from './../../../constants/ColorConstants';
+import { LoginIcon } from '../../../component/SvgComponent';
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
@@ -17,72 +19,99 @@ const Map = Platform.select({
 })();
 
 const DispatchRoute = ({ navigation, route }) => {
-    const { coords } = route.params
-    const arrCords = coords && isEmpty(coords) ? [] : coords
-    const coord = arrCords[0]
-    const latitude = parseFloat(coord && coord.coords.Lat) || 0.0
-    const longitude = parseFloat(coord && coord.coords.Lon) || 0.0
-    const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+    const { item } = route.params
 
-    const arrInitialCoord = arrCords.map((item, index) => {
-        const latitude = parseFloat(item.coords.Lat) || 0.0
-        const longitude = parseFloat(item.coords.Lon) || 0.0
-        let arr = []
-        arr.push(longitude)
-        arr.push(latitude)
-        return arr
-    })
-    const [coordList, setCoordList] = useState([])
+    console.log("ItemRoute",item)
+    // const arrCords = coords && isEmpty(coords) ? [] : coords
+    // const coord = arrCords[0]
+    // const latitude = parseFloat(coord && coord.coords.Lat) || 0.0
+    // const longitude = parseFloat(coord && coord.coords.Lon) || 0.0
+    // const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+
+    // const [coordList, setCoordList] = useState([])
     const [lineString, setLineString] = useState(null)
 
     const mapRef = useRef()
 
-    // const dispatch = useDispatch()
-    // const backArrowprop = {
-    //     marginRight: hp(3), width: hp(3.5), height: hp(3.5)
-    // } 
-  
-
     useLayoutEffect(() => {
         navigation.setOptions({
-           header: () => null ,
+            header: () => null ,
         })
     }, [navigation])
 
-    function onSuccess(data) {
-        NotificationMessage.hideLoader()
-        processCoordinates(data)
-        console.log('Route Data', data)
-    }
-
-    function processCoordinates(data) {
-        const arr = Array.isArray(data) ? data : []
-
-        if (isAndroid) {
-            setCoordList(arr)
-            let line = makeLineString(arr);
-            setLineString(line)
-        } else {
-            const arrCoords = arr.map((item, index) => {
-                const routeArr = item
-                return {
-                    'latitude': routeArr[1],
-                    'longitude': routeArr[0]
-                }
-            })
-            setCoordList(arrCoords)
-            mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
-                edgePadding: DEFAULT_PADDING,
-                animated: true,
-            });
-        }
-    }
-
-    function onError(error) {
-        NotificationMessage.hideLoader()
-    }
+    
 
     function renderMapBox() {
+
+        let tripStartCord = [item.tripStartLongitude, item.tripStartLatitude]
+        let tripEndCord = [item.tripEndLongitude, item.tripEndLatitude]
+
+        useEffect(()=>{
+            if(isAndroid){
+                let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return([coorItem[1],coorItem[0]])} )
+                coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                setLineString({
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "properties": {},
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": coordinateArray
+                            }
+                        }
+                    ]
+                })
+            }
+        },[])
+
+        function renderStartPoint() {
+            return(
+                <Map.default.PointAnnotation
+                    id='startPoint' 
+                    coordinate={tripStartCord}
+                    anchor={{x: 0.5, y: 0.5}}
+                    title = {"Start"}
+                >  
+                    <View style={{width:20, height:20, backgroundColor:ColorConstant.ORANGE,borderRadius:10}} />
+                    <Map.default.Callout  title={'Start \n' + item.tripStartAddress} />
+                </Map.default.PointAnnotation>
+            )
+        }
+
+        function renderEndPoint() {
+            return(
+                <Map.default.PointAnnotation
+                    id='endPoint' 
+                    coordinate={tripEndCord}
+                    anchor={{x: 0.5, y: 0.5}}
+                >
+
+                    <View style={{width:20, height:20, backgroundColor:ColorConstant.ORANGE,borderRadius:10}} />
+                    <Map.default.Callout title={'End\n' + item.tripEndAddress} />
+                </Map.default.PointAnnotation>
+            )
+        }
+
+        function renderLine() {
+            return(
+                <Map.default.ShapeSource
+                    id='route'
+                    shape={lineString}>
+                    <Map.default.LineLayer
+                        id='lineroute'
+                        style={{
+                            lineCap: 'round',
+                            lineWidth: 5,
+                            lineOpacity: 0.8,
+                            lineColor: ColorConstant.ORANGE,
+                        }}
+                    />
+                </Map.default.ShapeSource>
+            )
+        }
+
         return (
             <Map.default.MapView style={{ flex: 1 }}>
                 <Map.default.UserLocation
@@ -91,46 +120,14 @@ const DispatchRoute = ({ navigation, route }) => {
                     showsUserHeadingIndicator={true}
                 />
                 <Map.default.Camera
-                    zoomLevel={3}
-                    // bounds={{
-                    //     ne: arrInitialCoord[0],
-                    //     sw: arrInitialCoord[arrInitialCoord.length - 1],
-                    // }}
+                    zoomLevel={14}
+                    centerCoordinate={tripStartCord}
                 />
-                {!isEmpty(lineString) ?
-                 <Map.default.ShapeSource
-                    id='route'
-                    shape={lineString}>
-                    <Map.default.LineLayer
-                        id='lineroute'
-                        style={{
-                            lineCap: 'round',
-                            lineWidth: 3,
-                            lineOpacity: 0.84,
-                            lineColor: "red",
-                        }}
-                    />
-                </Map.default.ShapeSource> : null}
+                {renderStartPoint()}
+                {renderEndPoint()}
+                {!isEmpty(lineString) ? renderLine(): null}
                 
-                {/* {arrCords.map((item, index) => {
-                    const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
-                    const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
-                    const latitude = parseFloat(item.coords.Lat) || 0.0
-                    const longitude = parseFloat(item.coords.Lon) || 0.0
-                    let coordinate = []
-                    coordinate.push(longitude)
-                    coordinate.push(latitude)
-                    return (
-                        <Map.default.PointAnnotation
-                            id={index.toString()}
-                            coordinate={coordinate}
-                            title={title}
-                        >
-                            <Map.default.Callout title={address} />
-                        </Map.default.PointAnnotation>
-                    )
-                })} */}
-
+                
             </Map.default.MapView>
         )
     }

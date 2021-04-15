@@ -43,7 +43,7 @@ const RouteDetails = (props) => {
         console.log("Duration",durationFormat)
 
         return (
-            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{coords:[]})} style={styles.cardContainer}>
+            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.cardContainer}>
     
                 {/* Blue top head */}
                 <View style={styles.blueConatiner}>
