@@ -8,7 +8,7 @@ import { EndPointIcon, MarkerIcon, StartPointIcon, LocationOrangeIcon } from '..
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.9;
+const LATITUDE_DELTA = 0.08;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
 const isAndroid = Platform.OS === 'android'
@@ -39,20 +39,25 @@ const DispatchRoute = ({ navigation, route }) => {
         })
     }, [navigation])
 
+
+    function renderPopUpText(title, address) {
+        return(
+            <View style={{width:wp(50),paddingHorizontal:hp(2)}}>
+                <View style={{flexDirection:'row'}}>
+                    { title == 'Start' ? <StartPointIcon/> : <EndPointIcon/> }
+                    <Text style={{paddingLeft:hp(2)}}>{title}</Text>
+                </View>
+                <Text style={{paddingLeft:hp(4)}}>{address}</Text>
+            </View>
+        )
+    }
+
     
-    function renderPopup(point, title, address) {
+    function renderPopup(title, address) {
         return(
             <Map.default.Callout 
                 contentStyle={{elevation:10,borderColor:ColorConstant.WHITE,borderWidth:1,borderRadius:10}}
-                title={
-                    <View style={{width:wp(50),paddingHorizontal:hp(2)}}>
-                        <View style={{flexDirection:'row'}}>
-                            { point == 'startPoint' ? <StartPointIcon/> : <EndPointIcon/> }
-                            <Text style={{paddingLeft:hp(2)}}>{title}</Text>
-                        </View>
-                        <Text style={{paddingLeft:hp(4)}}>{address}</Text>
-                    </View>
-                } 
+                title={renderPopUpText(title, address)} 
             />
         )
     }
@@ -92,7 +97,7 @@ const DispatchRoute = ({ navigation, route }) => {
                 >  
                     <MarkerIcon width={20} height={20} />
                     
-                    {renderPopup('startPoint','Start',item.tripStartAddress)}
+                    {renderPopup('Start',item.tripStartAddress)}
 
                 </Map.default.PointAnnotation>
             )
@@ -107,7 +112,7 @@ const DispatchRoute = ({ navigation, route }) => {
                 >
                     <LocationOrangeIcon width={30} height={30}/>
 
-                    {renderPopup('endPoint', 'End',item.tripEndAddress)}
+                    {renderPopup('End',item.tripEndAddress)}
 
                 </Map.default.PointAnnotation>
             )
@@ -143,7 +148,9 @@ const DispatchRoute = ({ navigation, route }) => {
                     centerCoordinate={tripStartCord}
                 />
                 {renderStartPoint()}
+
                 {renderEndPoint()}
+                
                 {!isEmpty(lineString) ? renderLine(): null}
                 
                 
@@ -175,23 +182,35 @@ const DispatchRoute = ({ navigation, route }) => {
             if(!isAndroid){
                 let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return({longitude:coorItem[1],latitude:coorItem[0]})} )
                 coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
-                console.log("khushi",coordinateArray)
                 setLineString(coordinateArray)
             }
         },[])
 
         return (
+
             <Map.default
                 style={styles.mapContainer}
                 ref={mapRef}
-                //region={region}
                 initialRegion={initialRegion}
                 showsUserLocation={true}
-            // onLayout={() => mapRef.fitToCoordinates(coordList, { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: false })}
             >
+                <Map.Marker coordinate={tripStartCord} >
+                    <MarkerIcon/>
+                    <Map.Callout>
+                        {renderPopUpText('Start',item.tripStartAddress)}
+                    </Map.Callout>
+                </Map.Marker>
+
+                <Map.Marker coordinate={tripEndCord}  >
+                    <LocationOrangeIcon/>
+                    <Map.Callout>
+                        {renderPopUpText('End',item.tripEndAddress)}
+                    </Map.Callout>
+                </Map.Marker>
+
                 <Map.Polyline
                     coordinates={lineString}
-                    strokeColor={"red"} // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
                     strokeWidth={3}
                 />
             </Map.default>
