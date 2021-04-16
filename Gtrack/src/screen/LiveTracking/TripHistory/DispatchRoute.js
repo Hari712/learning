@@ -152,33 +152,48 @@ const DispatchRoute = ({ navigation, route }) => {
     }
 
     function renderAppleMap() {
+
+        let initialRegion = 
+        {
+            latitude: item.tripStartLatitude,
+            longitude: item.tripStartLongitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+        }
+
+        let tripStartCord = {
+            latitude: item.tripStartLatitude,
+            longitude: item.tripStartLongitude,
+        }
+        let tripEndCord = {
+            latitude: item.tripEndLatitude,
+            longitude: item.tripEndLongitude
+        }
+
+        useEffect(()=>{
+
+            if(!isAndroid){
+                let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return({longitude:coorItem[1],latitude:coorItem[0]})} )
+                coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                console.log("khushi",coordinateArray)
+                setLineString(coordinateArray)
+            }
+        },[])
+
         return (
             <Map.default
                 style={styles.mapContainer}
                 ref={mapRef}
-                region={region}
+                //region={region}
+                initialRegion={initialRegion}
                 showsUserLocation={true}
             // onLayout={() => mapRef.fitToCoordinates(coordList, { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: false })}
             >
                 <Map.Polyline
-                    coordinates={coordList}
+                    coordinates={lineString}
                     strokeColor={"red"} // fallback for when `strokeColors` is not supported by the map-provider
                     strokeWidth={3}
                 />
-                {arrCords.map((item, index) => {
-                    const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
-                    const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
-                    const latitude = parseFloat(item.coords.Lat) || 0.0
-                    const longitude = parseFloat(item.coords.Lon) || 0.0
-                    const coordinate = { latitude: latitude, longitude: longitude }
-                    return (
-                        <Map.Marker
-                            coordinate={coordinate}
-                            title={title}
-                            description={address}
-                        />)
-                }
-                )}
             </Map.default>
         )
     }
