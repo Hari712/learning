@@ -4,6 +4,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import isEmpty from 'lodash/isEmpty'
 import { ColorConstant } from './../../../constants/ColorConstants';
 import { EndPointIcon, MarkerIcon, StartPointIcon, LocationOrangeIcon } from '../../../component/SvgComponent'
+import { FontSize } from '../../../component';
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
@@ -36,9 +37,9 @@ const DispatchRoute = ({ navigation, route }) => {
             <View style={{width:wp(50),paddingHorizontal:hp(2)}}>
                 <View style={{flexDirection:'row'}}>
                     { title == 'Start' ? <StartPointIcon/> : <EndPointIcon/> }
-                    <Text style={{paddingLeft:hp(2)}}>{title}</Text>
+                    <Text style={styles.title}>{title}</Text>
                 </View>
-                <Text style={{paddingLeft:hp(4)}}>{address}</Text>
+                <Text style={styles.address}>{address}</Text>
             </View>
         )
     }
@@ -223,6 +224,12 @@ const styles = StyleSheet.create({
     },
     mapContainer: {
         ...StyleSheet.absoluteFillObject,
+    },
+    title: {
+        paddingLeft:hp(2),color:ColorConstant.GREY,fontFamily:'Nunito-Regular',fontSize:FontSize.FontSize.medium
+    },
+    address: {
+        paddingLeft:hp(4),color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:FontSize.FontSize.small
     }
 })
 
