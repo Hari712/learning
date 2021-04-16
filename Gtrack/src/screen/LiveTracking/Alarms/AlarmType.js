@@ -25,6 +25,7 @@ const AlarmType = ({navigation,route}) => {
   const [speed, setSpeed] = useState()
   const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
   const [notification, setNotification] = useState(false)
+  const [emailNotification, setEmailNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
   const { loginInfo, subUserData, isConnected } = useSelector(state => ({
@@ -55,31 +56,25 @@ const AlarmType = ({navigation,route}) => {
         editData.notification.attributes.weekdays ? setSelectedCheckbox(1) :
         setSelectedCheckbox(2) } 
 
-        if(editData.notification.notificators)
-          setNotification(true)
-        
-        if(editData.notification.attributes.value && notificationType === 'Alarm'){
-          switch (alarmType) {
-            case 'Overspeed':
-              setOverspeedInputValue(editData.notification.attributes.value)
+        if(editData.notification.notificators){
+          switch (editData.notification.notificators) {
+            case "mail,web":
+              setNotification(true)
+              setEmailNotification(true)
               break;
-    
-            case 'Battery Level':
-              setBatteryLevelInputValue(editData.notification.attributes.value)
+
+            case "mail":
+              setEmailNotification(true)
               break;
-    
-            case 'Movement':
-              setMovementInputValue(editData.notification.attributes.value)
-              break;
-    
-            case 'Panic':
+
+            case "web":
+              setNotification(true)
               break;
           
             default:
               break;
           }
         }
-
         var tempUser = [] ;
         editData.users ?
           editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
@@ -179,6 +174,7 @@ const AlarmType = ({navigation,route}) => {
 
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
+      var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? batteryLevelInputValue :
                   overSpeedInputVisible ? overSpeedInputValue :
                   movementInputVisible ? movementInputValue :
@@ -194,7 +190,7 @@ const AlarmType = ({navigation,route}) => {
             "id" : route.params.editData.notification.id,
             "type" : notificationType,
             "always" : false,
-            "notificators" : notification ? "mail,web" : null,
+            "notificators" : notificator,
             "attributes" : {
               "alarms": alarmType,
               "name": alarmName,
@@ -216,7 +212,7 @@ const AlarmType = ({navigation,route}) => {
             "id" : 0,
             "type" : notificationType,
             "always" : false,
-            "notificators" : notification ? "mail,web" : null,
+            "notificators" : notificator,
             "attributes" : {
               "alarms": alarmType,
               "value" : value,
@@ -239,7 +235,6 @@ const AlarmType = ({navigation,route}) => {
 
   function onAddSuccess(data) {
     if (isConnected) {
-      console.log("data",data)
       AppManager.hideLoader()  
       let message  
       if(route && route.params && route.params.editData){
@@ -356,6 +351,11 @@ return (
       <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
           <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => setEmailNotification(!emailNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+          <Image style={{alignSelf:'flex-start'}} source={emailNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+          <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
       </TouchableOpacity>
 
       <View style={styles.buttonContainer}>

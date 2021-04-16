@@ -95,12 +95,26 @@ export const requestLinkGeofenceToDevices = (userId, geofenceId, body, onSuccess
     onError
 })
 
+export const requestLinkGeofenceToUpdatedDevices = (userId, geofenceId, body, onSuccess, onError) => ({
+    type: types.LINK_GEOFENCE_TO_UPDATED_DEVICES,
+    userId,
+    geofenceId,
+    body,
+    onSuccess,
+    onError
+})
+
 export const requestUpdateGeofence = (userId, body, onSuccess, onError) => ({
     type: types.UPDATE_GEOFENCE_REQUEST,
     userId,
     body,
     onSuccess,
     onError
+})
+
+export const setUpdatedGeofenceResponse = (data) => ({
+    type: types.UPDATED_GEOFENCE_RESPONSE,
+    data
 })
 
 export const enableDisableGeofence = (userId, geofenceId, enable, onSuccess, onError) => ({

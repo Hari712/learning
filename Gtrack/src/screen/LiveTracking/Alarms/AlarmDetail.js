@@ -1,11 +1,8 @@
-import React, { useState ,Component, useEffect} from 'react';
-import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, RefreshControl, FlatList} from 'react-native';
-import images from '../../../constants/images';
+import React, { useState , useEffect} from 'react';
+import { View, StyleSheet,Text,TouchableOpacity} from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize }from '../../../component';
-import { useDispatch, useSelector } from 'react-redux';
-import AppManager from '../../../constants/AppManager';
 import { translate } from '../../../../App'
 import { BackIcon, ListIcon } from '../../../component/SvgComponent';
 
@@ -13,6 +10,29 @@ import { BackIcon, ListIcon } from '../../../component/SvgComponent';
 const AlarmDetail = ({navigation,route}) => {
 
   const { data } = route.params
+
+  const [webNotification, setWebNotification] = useState(false)
+  const [emailNotification, setEmailNotification] = useState(false)
+
+  useEffect(() => {
+    switch (data.notification.notificators) {
+      case "mail,web":
+        setWebNotification(true)
+        setEmailNotification(true)
+        break;
+
+      case "mail":
+        setEmailNotification(true)
+        break;
+
+      case "web":
+        setWebNotification(true)
+        break;
+    
+      default:
+        break;
+    }
+  },[data.notification.notificators])
 
   React.useLayoutEffect(() => {
 
@@ -89,9 +109,14 @@ return (
 
             <View style={{flexDirection:'column',flex:1.5}}>
                 <Text style={styles.textStyle}>{translate("Web Notification")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.notificators ? "On" : "Off"}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{webNotification && emailNotification ? "On" : webNotification ? "On" : "Off"}</Text>
             </View>
         </View>
+
+            <View style={{marginTop:hp(1)}}>
+                <Text style={styles.textStyle}>{translate("Email Notification")}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{webNotification && emailNotification ? "On" : emailNotification ? "On" : "Off"}</Text>
+            </View>
 
       </View>
   </View>

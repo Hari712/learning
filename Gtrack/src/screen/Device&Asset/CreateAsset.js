@@ -91,7 +91,7 @@ function CreateAsset() {
 
     function onCreateAssetSuccess(data) {
         AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: 'Asset successfully linked with device', description: '', floating: true })
+        AppManager.showSimpleMessage('success', { message: 'Asset is successfully created', description: '', floating: true })
         NavigationService.goBack()
     }
 
