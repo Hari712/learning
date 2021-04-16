@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useLayoutEffect, useRef } from 'react'
-import { View, StyleSheet, TouchableOpacity,  Dimensions, Platform } from 'react-native'
+import { View, StyleSheet, TouchableOpacity,  Dimensions, Platform, Text } from 'react-native'
 import { lineString as makeLineString } from '@turf/helpers';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import isEmpty from 'lodash/isEmpty'
 import { ColorConstant } from './../../../constants/ColorConstants';
-import { LoginIcon } from '../../../component/SvgComponent';
+import { EndPointIcon, MarkerIcon, StartPointIcon, LocationOrangeIcon } from '../../../component/SvgComponent'
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
@@ -40,6 +40,22 @@ const DispatchRoute = ({ navigation, route }) => {
     }, [navigation])
 
     
+    function renderPopup(point, title, address) {
+        return(
+            <Map.default.Callout 
+                contentStyle={{elevation:10,borderColor:ColorConstant.WHITE,borderWidth:1,borderRadius:10}}
+                title={
+                    <View style={{width:wp(50),paddingHorizontal:hp(2)}}>
+                        <View style={{flexDirection:'row'}}>
+                            { point == 'startPoint' ? <StartPointIcon/> : <EndPointIcon/> }
+                            <Text style={{paddingLeft:hp(2)}}>{title}</Text>
+                        </View>
+                        <Text style={{paddingLeft:hp(4)}}>{address}</Text>
+                    </View>
+                } 
+            />
+        )
+    }
 
     function renderMapBox() {
 
@@ -74,8 +90,10 @@ const DispatchRoute = ({ navigation, route }) => {
                     anchor={{x: 0.5, y: 0.5}}
                     title = {"Start"}
                 >  
-                    <View style={{width:20, height:20, backgroundColor:ColorConstant.ORANGE,borderRadius:10}} />
-                    <Map.default.Callout  title={'Start \n' + item.tripStartAddress} />
+                    <MarkerIcon width={20} height={20} />
+                    
+                    {renderPopup('startPoint','Start',item.tripStartAddress)}
+
                 </Map.default.PointAnnotation>
             )
         }
@@ -87,9 +105,10 @@ const DispatchRoute = ({ navigation, route }) => {
                     coordinate={tripEndCord}
                     anchor={{x: 0.5, y: 0.5}}
                 >
+                    <LocationOrangeIcon width={30} height={30}/>
 
-                    <View style={{width:20, height:20, backgroundColor:ColorConstant.ORANGE,borderRadius:10}} />
-                    <Map.default.Callout title={'End\n' + item.tripEndAddress} />
+                    {renderPopup('endPoint', 'End',item.tripEndAddress)}
+
                 </Map.default.PointAnnotation>
             )
         }
