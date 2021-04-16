@@ -156,7 +156,6 @@ const TripHistoryDetails = ({ navigation, route }) => {
     };
 
     const handleConfirm = (date) => {
-        console.log("A date has been picked: ", Moment(date).format("YYYY-MM-DDTHH:MM:SS"));
         const dt = Moment(date).format("YYYY-MM-DD")
         isStartDateVisible && setStartDate(dt)
         isEndDateVisible && setEndDate(dt)

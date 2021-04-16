@@ -1,11 +1,11 @@
 import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform, Button, FlatList } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { FontSize }from '../../../component';
 import { getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
-import {  CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../component/SvgComponent';
+import {  CalenderIconWhite, LocationIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
@@ -18,8 +18,6 @@ const RouteDetails = (props) => {
     }))
 
     const { routeDetails } = props
-
-    console.log("routeDetails",routeDetails)
 
     const dispatch = useDispatch()
 
@@ -116,53 +114,6 @@ const RouteDetails = (props) => {
 }
 
 const daysList = ["Today", "Yesterday", "Last Week", "Last Month", "Custom"]
-
-const routeDetails = [
-    {
-        startDate: "2020-09-21",
-        endDate: "2020-09-22",
-        sTime: "06:53:02",
-        eTime: "08:53:02",
-        distance: "16.47 mi",
-        driveDuration: "2h 8m",
-        avgSpeed: "48 mph",
-        topSpeed: "66 mph"
-    },
-    {
-        startDate: "2020-09-25",
-        endDate: "2020-09-26",
-        sTime: "09:53:02",
-        eTime: "10:53:02",
-        distance: "16.47 mi",
-        driveDuration: "3h 8m",
-        avgSpeed: "46 mph",
-        topSpeed: "56 mph"
-    },
-    {
-        startDate: "2020-09-21",
-        endDate: "2020-09-22",
-        sTime: "06:53:02",
-        eTime: "08:53:02",
-        distance: "16.47 mi",
-        driveDuration: "2h 8m",
-        avgSpeed: "48 mph",
-        topSpeed: "66 mph"
-    },
-    {
-        startDate: "2020-09-25",
-        endDate: "2020-09-26",
-        sTime: "09:53:02",
-        eTime: "10:53:02",
-        distance: "16.47 mi",
-        driveDuration: "3h 8m",
-        avgSpeed: "46 mph",
-        topSpeed: "56 mph"
-    }
-
-]
-      
-
-
 
 const styles = StyleSheet.create({
 
