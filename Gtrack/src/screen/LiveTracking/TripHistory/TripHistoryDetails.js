@@ -23,9 +23,6 @@ const TripHistoryDetails = ({ navigation, route }) => {
         routeDetails: getTripHistoryListInfo(state)
     }))
 
-
-    console.log("khushi",routeDetails)
-
     const dispatch = useDispatch()
 
     const [startDate, setStartDate] = useState();

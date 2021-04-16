@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useLayoutEffect, useRef } from 'react'
-import { View, StyleSheet, TouchableOpacity,  Dimensions, Platform, Text } from 'react-native'
-import { lineString as makeLineString } from '@turf/helpers';
+import { View, StyleSheet, Dimensions, Platform, Text } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import isEmpty from 'lodash/isEmpty'
 import { ColorConstant } from './../../../constants/ColorConstants';
@@ -10,7 +9,6 @@ const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.08;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
 const isAndroid = Platform.OS === 'android'
 
 const Map = Platform.select({
@@ -19,16 +17,9 @@ const Map = Platform.select({
 })();
 
 const DispatchRoute = ({ navigation, route }) => {
+
     const { item } = route.params
 
-    console.log("ItemRoute",item)
-    // const arrCords = coords && isEmpty(coords) ? [] : coords
-    // const coord = arrCords[0]
-    // const latitude = parseFloat(coord && coord.coords.Lat) || 0.0
-    // const longitude = parseFloat(coord && coord.coords.Lon) || 0.0
-    // const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
-
-    // const [coordList, setCoordList] = useState([])
     const [lineString, setLineString] = useState(null)
 
     const mapRef = useRef()
@@ -56,7 +47,8 @@ const DispatchRoute = ({ navigation, route }) => {
     function renderPopup(title, address) {
         return(
             <Map.default.Callout 
-                contentStyle={{elevation:10,borderColor:ColorConstant.WHITE,borderWidth:1,borderRadius:10}}
+                contentStyle={{elevation:10,zIndex:10,borderColor:ColorConstant.WHITE,borderWidth:1,borderRadius:10}}
+                containerStyle={{zIndex:10}}
                 title={renderPopUpText(title, address)} 
             />
         )
@@ -137,7 +129,7 @@ const DispatchRoute = ({ navigation, route }) => {
         }
 
         return (
-            <Map.default.MapView style={{ flex: 1 }}>
+            <Map.default.MapView style={{ flex: 1}}>
                 <Map.default.UserLocation
                     renderMode='normal'
                     visible={true}
@@ -147,12 +139,12 @@ const DispatchRoute = ({ navigation, route }) => {
                     zoomLevel={14}
                     centerCoordinate={tripStartCord}
                 />
+
+                {!isEmpty(lineString) ? renderLine(): null}
+
                 {renderStartPoint()}
 
                 {renderEndPoint()}
-                
-                {!isEmpty(lineString) ? renderLine(): null}
-                
                 
             </Map.default.MapView>
         )
@@ -210,7 +202,7 @@ const DispatchRoute = ({ navigation, route }) => {
 
                 <Map.Polyline
                     coordinates={lineString}
-                    strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeColor={ColorConstant.ORANGE}
                     strokeWidth={3}
                 />
             </Map.default>
