@@ -236,7 +236,15 @@ const GeoFencePolyGon = ({navigation, route}) => {
                             coordinates: [arrCoordinates]
                         }
                     }}>
-                    <Map.default.FillLayer id="areaPolygon" style={{ fillOpacity: 0.5 }} />
+                    <Map.default.FillLayer id="areaPolygon" style={{ fillOpacity: 0.5,fillColor:ColorConstant.ORANGE }} />
+                    <Map.default.LineLayer 
+                        id='linelayer'
+                        sourceLayerID='areaPoly'
+                        style={{
+                            lineColor:ColorConstant.ORANGE,
+                            lineWidth:2
+                        }}
+                    />
                 </Map.default.ShapeSource>
             )
         }

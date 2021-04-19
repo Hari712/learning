@@ -159,10 +159,6 @@ const GeoFenceCircle = ({navigation,route}) => {
             )
         }
 
-        function onPanDragMap(e) {
-            console.log(e)
-        }
-
         return (
             <View style={StyleSheet.absoluteFillObject}>
                 <Map.default style={StyleSheet.absoluteFillObject} scrollEnabled={isScrollEnabled} showsUserLocation={true} initialRegion={region} scrollEnabled={isScrollEnabled} onPress={(mapInfo) => onPressAppleMap(mapInfo)}>
@@ -206,7 +202,16 @@ const GeoFenceCircle = ({navigation,route}) => {
                 >
                     <Map.default.FillLayer
                         id='areaCircle'
-                        style={{ fillOpacity: 0.5 }} />
+                        style={{ fillOpacity: 0.5, fillColor:ColorConstant.ORANGE}} />
+                    
+                    <Map.default.LineLayer 
+                        id='linelayer'
+                        sourceLayerID='areaCirle'
+                        style={{
+                            lineColor:ColorConstant.ORANGE,
+                            lineWidth:2
+                        }}
+                    />
                 </Map.default.ShapeSource>
             )
         }
