@@ -211,3 +211,30 @@ export const getGeofenceDeviceListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Live Tracking Device List
+ */
+
+const getLiveTrackingDeviceListInfo = (state) => state.livetracking && state.livetracking.liveTrackingLastKnownPositions ? state.livetracking.liveTrackingLastKnownPositions : []
+
+export const getLiveTrackingDeviceList = createSelector(
+    [getLiveTrackingDeviceListInfo],
+    (info) => info
+)
+
+/**
+ * Get All User Device
+ */
+
+const getAllUserDeviceListInfo = (state) => getAllUserDevices(state)
+
+function getAllUserDevices(state) {
+    const devicesInfo = state && state.device && state.device.userDevices ? state.device.userDevices : {}
+    const arrDeviceList = Object.values(devicesInfo)
+    return arrDeviceList
+}
+
+export const getAllUserDevicesList = createSelector(
+    [getAllUserDeviceListInfo],
+    (info) => info
+)

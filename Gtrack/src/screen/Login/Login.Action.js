@@ -80,3 +80,15 @@ export const setTraccarSessionData = (data) => ({
 export const requestLogout = () => ({
     type: types.LOGOUT_REQUEST
 })
+
+export const requestGetLastKnownDevicePosition = (userId, onSuccess, onError) => ({
+    type: types.GET_LAST_KNOWN_DEVICE_POSITIONS_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setLastKnownPositionData = (data) => ({
+    type: types.GET_LAST_KNOWN_DEVICE_POSITIONS_RESPONSE,
+    data
+})

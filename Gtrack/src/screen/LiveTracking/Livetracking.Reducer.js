@@ -6,7 +6,8 @@ const initialState = {
     alarmsList: [],
     devicesList: [],
     alertTypes: [],
-    geofenceList: []
+    geofenceList: [],
+    liveTrackingLastKnownPositions: []
 }
 
 
@@ -63,6 +64,12 @@ export const livetrackingReducer = createReducer(state = initialState, {
         return {
             ...state,
             geofenceList: arrSelectedGeofence
+        }
+    },
+    [types.SET_LIVE_TRACKING_DEVICE_LIST](state, action) {
+        return {
+            ...state,
+            liveTrackingLastKnownPositions: action.data
         }
     }
 })

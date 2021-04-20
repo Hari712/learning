@@ -5,7 +5,9 @@ import useAppState from '../utils/useAppState'
 import io from 'socket.io-client'
 import isNil from 'lodash/isNil'
 import { getLoginState, isUserLoggedIn, getTraccarSessionInfo } from '../screen/Selector'
+import * as LiveTrackingActions from '../screen/LiveTracking/Livetracking.Action'
 import ApiConstants from '../api/ApiConstants'
+import { useDispatch ,useSelector } from 'react-redux'
 
 let socketIOConnOpt = {
     reconnection: true,
@@ -28,6 +30,8 @@ const socketURL = ApiConstants.SOCKET_BASE_URL + 'api/socket'
 
 const SocketProvider = (props) => {
 
+    const dispatch = useDispatch()
+
     const [isSocketConnected, setIsSocketConnected, isSocketConnectedRef] = useStateRef(false)
 
     const { isConnected, isLoggedIn, loginInfo, traccarSessionInfo } = useSelector(state => ({
@@ -39,7 +43,9 @@ const SocketProvider = (props) => {
 
     const [loginInfoDetail, setLoginInfoDetail, loginInfoDetailRef] = useStateRef(loginInfo)
 
-    const [traccarSessionInfo, setTraccarSessionInfo, traccarSessionInfoRef] = useStateRef(traccarSessionInfo)
+    const [arrDeveicePositionList, setArrDevicePositionList, arrDevicePositionListRef] = useStateRef([])
+
+    const [traccarSessionInfoDetail, setTraccarSessionDetailInfo, traccarSessionInfoRef] = useStateRef(traccarSessionInfo)
 
     const currentAppState = useAppState()
 
@@ -47,64 +53,49 @@ const SocketProvider = (props) => {
 
     const isBackgroundState = currentAppState === 'background'
 
-    const dispatch = useDispatch()
-
     useEffect(() => {
-        setTraccarSessionInfo(traccarSessionInfo)
+        setTraccarSessionDetailInfo(traccarSessionInfo)
     },[traccarSessionInfo])
 
     useEffect(() => {
-        if (isConnected && isLoggedIn && socket == null && isConnecting == false && isEmpty(traccarSessionInfoRef.current)) {
-            connect()
+        if (isConnected && isLoggedIn && socket == null && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
+            connectWitWebsocket()
         }
-    },[isConnected, isLoggedIn, traccarSessionInfo])
+    },[traccarSessionInfo])
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            socket && socket.close()
+            socket = null
+        }
+    },[isLoggedIn])
 
     const value = {
 
     }
 
-    function connect() {
-        if (socket == null || !socket.connected) {
-            let requestBody = { ...socketIOConnOpt }
-            isConnecting = true
-            socket = io(socketURL, requestBody)
-            socket.on('connect', () => {
-                console.log("Socket connection success-----------")
-                isConnecting = false
-                setIsSocketConnected(true)
-                
-            });
-
-            socket.on('message', (reason) => {
-                console.log("message-----------")
-                console.log(reason)
-            });
-
-            socket.on('pong', function (ms) {
-                console.log('Socket Pong', ms);
-            });
-
-            socket.on('disconnect', (reason) => {
-                console.log("Socket disconnected-----------")
-                isConnecting = false
-                if (isSocketConnected == false) {
-                    reConnectWithSocket()
-                } else {
-                    setIsSocketConnected(false)
-                }
-
-                socket = null
-            });
+    function connectWitWebsocket() {
+        const url = `wss://${socketURL}`
+        socket = new WebSocket(url)
+        socket.onopen = (event) => {
+            console.log(event);
         }
-    }
-
-    function disconnect() {
-        isConnecting = false
-        if (socket != null) {
-            socket.close()
-            setIsSocketConnected(false)
-            socket = null
+        socket.onerror = (event) => {
+            console.log(event);
         }
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log(data)
+            if (Array.isArray(data)) {
+                setArrDevicePositionList(data)
+                dispatch(LiveTrackingActions.setLiveTrackingPositionData(data))
+            }
+        }
+        socket.onclose = function (event) {
+            if (!event['reason']) {
+              console.log(event);
+            }
+        };
     }
 
     return (
@@ -113,5 +104,8 @@ const SocketProvider = (props) => {
         </SocketContext.Provider>    
     )
 }
+
+
+export default SocketProvider
 
 
