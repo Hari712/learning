@@ -10,7 +10,7 @@ import { PinIcon } from './SvgComponent';
 import { translate } from '../../App';
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 30;
+const LATITUDE_DELTA = 0.02;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const isAndroid = Platform.OS === 'android'
 
@@ -68,7 +68,7 @@ const GeoFenceMapPreview = (props) => {
             return (
                 <Map.default.Circle
                     center={circleCoordinate}
-                    radius={1000*radius}
+                    radius={radius}
                     fillColor="rgba(255, 0, 0, 0.4)"
                     strokeColor="rgba(255,0,0,0.6)"
                     strokeWidth={2}
