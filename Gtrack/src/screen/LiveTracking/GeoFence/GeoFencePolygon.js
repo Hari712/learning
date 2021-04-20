@@ -164,8 +164,8 @@ const GeoFencePolyGon = ({navigation, route}) => {
                 <>
                     <Map.default.Polygon
                         coordinates={arrCoordinates}
-                        strokeColor="#F00"
-                        fillColor="rgba(255,0,0,0.5)"
+                        fillColor="rgba(255, 127, 33, 0.4)"
+                        strokeColor="rgba(255, 127, 33, 0.8)"
                         strokeWidth={1}
                     />
                 </>
