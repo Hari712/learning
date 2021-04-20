@@ -267,20 +267,35 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     function renderButton() {
         return (
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    onPress={() => {
-                        isEditing ? setCompleteEditing(true) : null;
-                        setIsEditing(prevState => !prevState)
-                    }}
-                    style={[styles.bubble, styles.button]} >
-
-                    <Text>
-                        {isEditing ? 'Finish Circle' : 'Draw Circle'}
-                    </Text>
-                    
-                </TouchableOpacity>
-            </View>
+            isAndroid ? 
+                <View style={{position:"absolute", marginVertical:20}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            isEditing ? setCompleteEditing(true) : null;
+                            setIsEditing(prevState => !prevState)
+                        }}
+                        style={[styles.bubble, styles.button]} >
+                        <Text>
+                            {isEditing ? 'Finish Circle' : 'Draw Circle'}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                </View>
+            :
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            isEditing ? setCompleteEditing(true) : null;
+                            setIsEditing(prevState => !prevState)
+                        }}
+                        style={[styles.bubble, styles.button]} >
+                        <Text>
+                            {isEditing ? 'Finish Circle' : 'Draw Circle'}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                </View>
+            
         )
     }
 
