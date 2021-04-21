@@ -1,29 +1,20 @@
-import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList, LayoutAnimation } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import images from '../../../constants/images';
-import { ColorConstant } from '../../../constants/ColorConstants';
+import React, { useState, useEffect } from 'react'
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList, LayoutAnimation } from 'react-native'
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+import images from '../../../constants/images'
+import { ColorConstant } from '../../../constants/ColorConstants'
 import { translate } from '../../../../App'
-import{ FontSize }from '../../../component';
-import { BackIcon } from '../../../component/SvgComponent';
+import{ FontSize }from '../../../component'
+import { BackIcon, ToggleButtonIcon } from '../../../component/SvgComponent'
+import AppManager from '../../../constants/AppManager'
+import { getLoginState, getSettigsNotificationListInfo } from '../../Selector'
+import { useDispatch, useSelector } from 'react-redux'
+import * as SettingNotificationActions from '../Settings.Action'
+import DownArrowIcon from './../../../component/SvgComponent/DownArrowIcon';
+import NextArrowIcon from './../../../component/SvgComponent/NextArrowIcon';
+import ToggleButtonIconClicked from './../../../component/SvgComponent/ToggleButtonIconClicked';
 
-const NOTIFICATIONS = [
-    {
-        title: 'Push Notification',
-        nextArrow: images.image.settings.nextArrow,
-        downArrow: images.image.settings.downArrowOrange,
-    },
-    {
-        title: 'Email Notification',
-        nextArrow: images.image.settings.nextArrow,
-        downArrow: images.image.settings.downArrowOrange
-    },
-    {
-        title: 'SMS Notification',
-        nextArrow: images.image.settings.nextArrow,
-        downArrow: images.image.settings.downArrowOrange
-    },
-]
+const NOTIFICATIONS = ['Push Notification','Email Notification','SMS Notification']
 
 const PUSHNOTIFICATION = [
     {
@@ -83,7 +74,66 @@ const PUSHNOTIFICATION = [
     }
 ]
 
+const PHONENOTIFICATION = [
+    {
+        heading: 'Ignition On',
+        description: 'Setting_Notification_string10',
+        onOffIcon: images.image.settings.onIcon 
+    }, 
+    {
+        heading: 'Ignition Off',
+        description: 'Setting_Notification_string11',
+        onOffIcon: images.image.settings.IconOff
+    }
+]
+
+
 const SettingNotification = ({ navigation }) => {
+
+    const { loginData, notificationData } = useSelector(state => ({
+        loginData: getLoginState(state),
+        isConnected: state.network.isConnected,
+        notificationData: getSettigsNotificationListInfo(state)
+    }))
+
+    const [webData, setWebData] = useState()
+    const [mailData, setMailData] = useState()
+    const [smsData, setSmsData] = useState()
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {  
+        // let temp = notificationData.map((item)=> item.notification)
+        // let notificatorsType = temp.map((item) => item.notificators) 
+        // notificatorsType == "mail" ? setMailData(temp) : 
+        // notificatorsType == "web" ? setWebData(temp) : 
+        // setMailData(temp)
+        // setWebData(temp)
+        // if(notificationData){
+        //     let temp = notificationData.filter((item)=>item)
+        //     let remaining = notificationData.filter((item)=> item.notification.notificators ? !item.notification.notificators.includes("mail").includes("web"): null)
+        //     let mail = notificationData.filter((item)=> item.notification.notificators ? item.notification.notificators.includes("mail"): null)
+        //     let web = notificationData.filter((item)=> item.notification.notificators ? item.notification.notificators.includes("web"): null)
+        //     console.log("note",temp,mail,web,remaining)
+        // }
+    },[notificationData])
+
+    useEffect(() => {    
+        AppManager.showLoader() 
+        dispatch(SettingNotificationActions.requestGetSettingsNotification(loginData.id, onSuccess, onError))
+        
+    },[])
+
+    function onSuccess(data) {    
+        console.log("Success user",data) 
+        AppManager.hideLoader()
+
+    }
+    
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -105,7 +155,14 @@ const SettingNotification = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const NotificationsItem = ({ data }) => {
+    function renderNotifications({item}) {
+        return(
+            <NotificationsItem item={item}/>
+        )
+    }
+
+    const NotificationsItem = ({ item }) => {
+
         const [isCollapsed, setIsCollapsed] = useState(false)
 
         const updateLayout = () => {
@@ -113,40 +170,59 @@ const SettingNotification = ({ navigation }) => {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         }
 
-        const ExpandableReportItem = ({ }) => {
+        const renderExpandItem = (filterKey) => {
+            console.log("data",notificationData)
             return (
-                PUSHNOTIFICATION.map((item, index) => {
+                notificationData.map((item) => {
+
+                    const {notification} = item
+                    const {attributes} = notification
+
+                    const toggler = item.notification.notificators ? item.notification.notificators.includes(filterKey) : false
+                    console.log("toggler",attributes)
                     return(
-                    <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
-                        <View style={styles.headingViewStyle}>
-                            <Text style = {styles.headingTextStyle}>{translate(item.heading)}</Text>
-                            <Image source={item.onOffIcon} resizeMode='contain'/>
+                        <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
+                            <View style={styles.headingViewStyle}>
+                                <Text style = {styles.headingTextStyle}>{notification.type}</Text>
+                                { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/>}
+                            </View>
+                            <View style = {{paddingHorizontal: wp(5)}}>
+                                <Text style = {styles.descriptionText}>{attributes.name && attributes.name}</Text>
+                            </View>
                         </View>
-                        <View style = {{paddingHorizontal: wp(5)}}>
-                            <Text style = {styles.descriptionText}>{translate(item.description)}</Text>
-                        </View>
-                    </View>
-                )})
+                    )
+                })
+            )
+        }
+
+
+        const ExpandableReportItem = () => {
+            return (
+                item =='Email Notification' ?
+                renderExpandItem('mail')
+            :
+                item =='Push Notification' ?
+                renderExpandItem('web')
+            :
+                renderExpandItem('sms')
             )
         }
 
         return (
+            
             <View>
                 <TouchableOpacity style={styles.bodySubContainer} onPress={updateLayout} activeOpacity={0.8}>
                     <View style={styles.mainViewStyle}>
-                        <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>{translate(data.title)}</Text>
-
+                        <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>
+                            {translate(item)}</Text>
                         <View style={{marginTop: hp(0.5)}}>
-                            <Image source={isCollapsed ? data.downArrow : data.nextArrow} style={{}} resizeMode='contain' />
+                            {isCollapsed ? <DownArrowIcon color={ColorConstant.ORANGE}/>:<NextArrowIcon/>}
                         </View>
                     </View>
-
                     <View style={styles.lineStyle} />
-
                 </TouchableOpacity>
 
                 <ExpandableReportItem />
-
             </View>
         )
     }
@@ -157,28 +233,13 @@ const SettingNotification = ({ navigation }) => {
                 <Text style={styles.textViewStyle}>{translate("Notifications")}</Text>
             </View>
 
-
-            <ScrollView style={{ }}
-                contentContainerStyle={{ paddingHorizontal: hp(1) }}
-                showsVerticalScrollIndicator={false}>
-                {
-                    NOTIFICATIONS.map((item, index) => {
-                        return (
-                            <NotificationsItem
-                                data={item}
-                            />
-                        )
-                    })}
-            </ScrollView>
-
-
-            {/* <FlatList
+            <FlatList
                 style={{}}
                 contentContainerStyle={{}}
                 data={NOTIFICATIONS}
-                renderItem={NotificationsItem}
+                renderItem={renderNotifications}
                 keyExtractor={(item, index) => index.toString()}
-            /> */}
+            />
         </View>
     )
 }
@@ -189,7 +250,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE,
     },
     mainView: {
-        width: '95%',
+        width: '100%',
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'space-evenly',

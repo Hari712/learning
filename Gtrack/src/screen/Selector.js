@@ -201,3 +201,14 @@ export const getGeofenceDeviceListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Notification List for Settigs
+ */
+
+const getSettigsNotificationList = (state) => state.settings && state.settings.notificationList ? state.settings.notificationList : {}
+
+export const getSettigsNotificationListInfo = createSelector(
+    [getSettigsNotificationList],
+    (info) => info
+)
+

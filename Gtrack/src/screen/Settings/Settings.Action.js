@@ -31,3 +31,15 @@ export const requestChangePasscode = (data, userId, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const requestGetSettingsNotification = (userId, onSuccess, onError) => ({
+    type: types.GET_SETTINGS_NOTIFICATION_REQUEST,    
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setSettingsNotification = (data) => ({
+    type: types.GET_SETTINGS_NOTIFICATION_RESPONSE,
+    data
+})

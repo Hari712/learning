@@ -1,5 +1,5 @@
 import * as React from "react"
-import Svg, { G, Circle } from "react-native-svg"
+import Svg, { G, Circle, Rect } from "react-native-svg"
 
 function ToggleButtonIcon(props) {
     return (
