@@ -43,3 +43,22 @@ export const setSettingsNotification = (data) => ({
     type: types.GET_SETTINGS_NOTIFICATION_RESPONSE,
     data
 })
+
+export const requestUpdateSettingsNotification = (body, userId, onSuccess, onError) => ({
+    type: types.UPDATE_NOTIFICATION_SETTINGS_REQUEST, 
+    body,   
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setUpdateSettingsNotification = (data) => ({
+    type: types.UPDATE_NOTIFICATION_SETTINGS_RESPONSE,
+    data
+})
+
+export const setLocalSettingsNotification = (item, notificator) => ({
+    type: types.LOCAL_SETTINGS_NOTIFICATION_UPDATE,
+    item,
+    notificator
+})

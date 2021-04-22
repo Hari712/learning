@@ -9,9 +9,12 @@ import { BackIcon, ToggleButtonIcon, DownArrowIcon, NextArrowIcon, ToggleButtonI
 import AppManager from '../../../constants/AppManager'
 import { getLoginState, getSettigsNotificationListInfo } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux'
+import * as SettingNotificationActions from '../Settings.Action'
 
 
-const NotificationItem = ({ item }) => {
+const NotificationItem = (props) => {
+
+    const { item, isSaveClick, setIsSaveClick} = props
 
     const { loginData, notificationData } = useSelector(state => ({
         loginData: getLoginState(state),
@@ -20,6 +23,25 @@ const NotificationItem = ({ item }) => {
     }))
 
     const [isCollapsed, setIsCollapsed] = useState(false)
+    const [notiValue, setNotiValue] = useState()
+    
+    const dispatch = useDispatch()
+
+    useEffect(() => {    
+        console.log("khushi",isSaveClick)
+        // AppManager.showLoader() 
+        // const requestBody = [ {
+        //     "id" : notifItem.notification.id,
+        //     "type" : notifItem.notification.type,
+        //     "always" : notifItem.notification.always,
+        //     "notificators" : notiValue,
+        //     "attributes" : {
+        //     "fence" : 1
+        //     },
+        //     "calendarId" : 0
+        // } ]
+        // dispatch(SettingNotificationActions.requestUpdateSettingsNotification(requestBody, loginData.id, onSuccess, onError))
+    },[isSaveClick, notiValue])
 
 
     const updateLayout = () => {
@@ -27,8 +49,54 @@ const NotificationItem = ({ item }) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     }
 
+    function onUpadateNotification(notifItem, notificator,toggle)  {
+
+        //let notiValue = notifItem.notification.notificators ? notifItem.notification.notificators.split(",") :[];
+        setNotiValue(notifItem.notification.notificators ? notifItem.notification.notificators.split(",") :[])
+    
+        if(notiValue.includes(notificator)){
+            //notiValue = notiValue.filter((item)=> item != notificator)
+            setNotiValue(notiValue.filter((item)=> item != notificator))
+        } else{
+            notiValue.push(notificator)
+
+        }
+        notiValue = notiValue.join();
+
+        // console.log("khushi",notificator,notifItem,toggle, notiValue)
+        // AppManager.showLoader() 
+        // const requestBody = [ {
+        //     "id" : notifItem.notification.id,
+        //     "type" : notifItem.notification.type,
+        //     "always" : notifItem.notification.always,
+        //     "notificators" : notiValue,
+        //     "attributes" : {
+        //     "fence" : 1
+        //     },
+        //     "calendarId" : 0
+        // } ]
+        dispatch(SettingNotificationActions.setLocalSettingsNotification(notifItem, notiValue))
+        // dispatch(SettingNotificationActions.requestUpdateSettingsNotification(requestBody, loginData.id, onSuccess, onError))
+    }
+
+    // function onTapSave() {
+    //     console.log("khushi")
+    //     AppManager.showLoader() 
+    //     const requestBody = [ {
+    //         "id" : notifItem.notification.id,
+    //         "type" : notifItem.notification.type,
+    //         "always" : notifItem.notification.always,
+    //         "notificators" : notiValue,
+    //         "attributes" : {
+    //         "fence" : 1
+    //         },
+    //         "calendarId" : 0
+    //     } ]
+    //     dispatch(SettingNotificationActions.requestUpdateSettingsNotification(requestBody, loginData.id, onSuccess, onError))
+    // }
+
     const renderExpandItem = (filterKey) => {
-        console.log("data",filterKey)
+
         return (
             notificationData.map((item) => {
 
@@ -36,12 +104,13 @@ const NotificationItem = ({ item }) => {
                 const { attributes } = notification
 
                 const toggler = item.notification.notificators ? item.notification.notificators.includes(filterKey) : false
+
                 return(
                     <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
                         <View style={styles.headingViewStyle}>
                             <Text style = {styles.headingTextStyle}>{notification.type}</Text>
-                                <TouchableOpacity onPress={() => !toggler } >
-                                    {toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/> }
+                                <TouchableOpacity onPress={() => onUpadateNotification(item,filterKey,!toggler) } >
+                                    { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/> }
                                 </TouchableOpacity>
                         </View>
                         <View style = {{paddingHorizontal: wp(5)}}>
@@ -52,7 +121,6 @@ const NotificationItem = ({ item }) => {
             })
         )
     }
-
 
     const ExpandableReportItem = () => {
         return (

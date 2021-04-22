@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, FlatList, LayoutAnimation } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, FlatList, LayoutAnimation } from 'react-native'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import images from '../../../constants/images'
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { translate } from '../../../../App'
 import{ FontSize }from '../../../component'
-import { BackIcon, ToggleButtonIcon } from '../../../component/SvgComponent'
+import { BackIcon } from '../../../component/SvgComponent'
 import AppManager from '../../../constants/AppManager'
 import { getLoginState, getSettigsNotificationListInfo } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,78 +12,6 @@ import * as SettingNotificationActions from '../Settings.Action'
 import NotificationItem from './NotificationItem';
 
 const NOTIFICATIONS = ['Push Notification','Email Notification','SMS Notification']
-
-const PUSHNOTIFICATION = [
-    {
-        heading: 'Ignition On',
-        description: 'Setting_Notification_string10',
-        onOffIcon: images.image.settings.onIcon 
-    }, 
-    {
-        heading: 'Ignition Off',
-        description: 'Setting_Notification_string11',
-        onOffIcon: images.image.settings.IconOff
-    },
-    {
-        heading: 'Overspeed',
-        description: 'Setting_Notification_string12',
-        onOffIcon: images.image.settings.onIcon
-    },
-    {
-        heading: 'Underspeed',
-        description: 'Setting_Notification_string13',
-        onOffIcon: images.image.settings.IconOff
-    },
-    {
-        heading: 'Movement',
-        description: 'Setting_Notification_string14',
-        onOffIcon: images.image.settings.onIcon
-    },
-    {
-        heading: 'Stationary',
-        description: 'Setting_Notification_string15',
-        onOffIcon: images.image.settings.IconOff
-    },
-    {
-        heading: 'Engine Idle',
-        description: 'Setting_Notification_string16',
-        onOffIcon: images.image.settings.onIcon
-    },
-    {
-        heading: 'Battery Level',
-        description: 'Setting_Notification_string17',
-        onOffIcon: images.image.settings.IconOff
-    },
-    {
-        heading: 'Fuel Level',
-        description: 'Setting_Notification_string18',
-        onOffIcon: images.image.settings.IconOff
-    },
-    {
-        heading: 'Panic',
-        description: 'Setting_Notification_string19',
-        onOffIcon: images.image.settings.onIcon
-    },
-    {
-        heading: 'Geofence',
-        description: 'Setting_Notification_string20',
-        onOffIcon: images.image.settings.IconOff
-    }
-]
-
-const PHONENOTIFICATION = [
-    {
-        heading: 'Ignition On',
-        description: 'Setting_Notification_string10',
-        onOffIcon: images.image.settings.onIcon 
-    }, 
-    {
-        heading: 'Ignition Off',
-        description: 'Setting_Notification_string11',
-        onOffIcon: images.image.settings.IconOff
-    }
-]
-
 
 const SettingNotification = ({ navigation }) => {
 
@@ -94,27 +21,9 @@ const SettingNotification = ({ navigation }) => {
         notificationData: getSettigsNotificationListInfo(state)
     }))
 
-    // const [webData, setWebData] = useState()
-    // const [mailData, setMailData] = useState()
-    // const [smsData, setSmsData] = useState()
+    const [isSaveClick, setIsSaveClick] = useState(false)
 
     const dispatch = useDispatch()
-
-    useEffect(() => {  
-        // let temp = notificationData.map((item)=> item.notification)
-        // let notificatorsType = temp.map((item) => item.notificators) 
-        // notificatorsType == "mail" ? setMailData(temp) : 
-        // notificatorsType == "web" ? setWebData(temp) : 
-        // setMailData(temp)
-        // setWebData(temp)
-        // if(notificationData){
-        //     let temp = notificationData.filter((item)=>item)
-        //     let remaining = notificationData.filter((item)=> item.notification.notificators ? !item.notification.notificators.includes("mail").includes("web"): null)
-        //     let mail = notificationData.filter((item)=> item.notification.notificators ? item.notification.notificators.includes("mail"): null)
-        //     let web = notificationData.filter((item)=> item.notification.notificators ? item.notification.notificators.includes("web"): null)
-        //     console.log("note",temp,mail,web,remaining)
-        // }
-    },[notificationData])
 
     useEffect(() => {    
         AppManager.showLoader() 
@@ -145,6 +54,11 @@ const SettingNotification = ({ navigation }) => {
                     {translate("Settings")}
                 </Text>
             ),
+            headerRight: () => (
+                <TouchableOpacity style={{paddingRight:hp(2)}} onPress={() => setIsSaveClick(true)}>
+                    <Text>Save</Text>
+                </TouchableOpacity>
+            ),
             headerLeft: () => (
                 <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
                     <BackIcon />
@@ -155,7 +69,11 @@ const SettingNotification = ({ navigation }) => {
 
     function renderNotifications({item}) {
         return(
-            <NotificationItem item={item}/>
+            <NotificationItem 
+                item={item}
+                isSaveClick={isSaveClick}
+                setIsSaveClick={setIsSaveClick}
+            />
         )
     }
     // const NotificationsItem = ({ item }) => {
