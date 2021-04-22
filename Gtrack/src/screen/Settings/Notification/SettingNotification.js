@@ -10,9 +10,7 @@ import AppManager from '../../../constants/AppManager'
 import { getLoginState, getSettigsNotificationListInfo } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux'
 import * as SettingNotificationActions from '../Settings.Action'
-import DownArrowIcon from './../../../component/SvgComponent/DownArrowIcon';
-import NextArrowIcon from './../../../component/SvgComponent/NextArrowIcon';
-import ToggleButtonIconClicked from './../../../component/SvgComponent/ToggleButtonIconClicked';
+import NotificationItem from './NotificationItem';
 
 const NOTIFICATIONS = ['Push Notification','Email Notification','SMS Notification']
 
@@ -96,9 +94,9 @@ const SettingNotification = ({ navigation }) => {
         notificationData: getSettigsNotificationListInfo(state)
     }))
 
-    const [webData, setWebData] = useState()
-    const [mailData, setMailData] = useState()
-    const [smsData, setSmsData] = useState()
+    // const [webData, setWebData] = useState()
+    // const [mailData, setMailData] = useState()
+    // const [smsData, setSmsData] = useState()
 
     const dispatch = useDispatch()
 
@@ -157,75 +155,74 @@ const SettingNotification = ({ navigation }) => {
 
     function renderNotifications({item}) {
         return(
-            <NotificationsItem item={item}/>
+            <NotificationItem item={item}/>
         )
     }
+    // const NotificationsItem = ({ item }) => {
 
-    const NotificationsItem = ({ item }) => {
+    //     const [isCollapsed, setIsCollapsed] = useState(false)
 
-        const [isCollapsed, setIsCollapsed] = useState(false)
+    //     const updateLayout = () => {
+    //         setIsCollapsed(!isCollapsed)
+    //         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    //     }
 
-        const updateLayout = () => {
-            setIsCollapsed(!isCollapsed)
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-        }
+    //     const renderExpandItem = (filterKey) => {
+    //         console.log("data",notificationData)
+    //         return (
+    //             notificationData.map((item) => {
 
-        const renderExpandItem = (filterKey) => {
-            console.log("data",notificationData)
-            return (
-                notificationData.map((item) => {
+    //                 const { notification } = item
+    //                 const { attributes } = notification
 
-                    const {notification} = item
-                    const {attributes} = notification
-
-                    const toggler = item.notification.notificators ? item.notification.notificators.includes(filterKey) : false
-                    console.log("toggler",attributes)
-                    return(
-                        <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
-                            <View style={styles.headingViewStyle}>
-                                <Text style = {styles.headingTextStyle}>{notification.type}</Text>
-                                { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/>}
-                            </View>
-                            <View style = {{paddingHorizontal: wp(5)}}>
-                                <Text style = {styles.descriptionText}>{attributes.name && attributes.name}</Text>
-                            </View>
-                        </View>
-                    )
-                })
-            )
-        }
+    //                 const toggler = item.notification.notificators ? item.notification.notificators.includes(filterKey) : false
+    //                 console.log("toggler",attributes)
+    //                 return(
+    //                     <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
+    //                         <View style={styles.headingViewStyle}>
+    //                             <Text style = {styles.headingTextStyle}>{notification.type}</Text>
+    //                             { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/>}
+    //                         </View>
+    //                         <View style = {{paddingHorizontal: wp(5)}}>
+    //                             <Text style = {styles.descriptionText}>{attributes.name && attributes.name}</Text>
+    //                         </View>
+    //                     </View>
+    //                 )
+    //             })
+    //         )
+    //     }
 
 
-        const ExpandableReportItem = () => {
-            return (
-                item =='Email Notification' ?
-                renderExpandItem('mail')
-            :
-                item =='Push Notification' ?
-                renderExpandItem('web')
-            :
-                renderExpandItem('sms')
-            )
-        }
+    //     const ExpandableReportItem = () => {
+    //         return (
+    //             item =='Email Notification' ?
+    //             renderExpandItem('mail')
+    //         :
+    //             item =='Push Notification' ?
+    //             renderExpandItem('web')
+    //         :
+    //             renderExpandItem('sms')
+    //         )
+    //     }
 
-        return (
+    //     return (
             
-            <View>
-                <TouchableOpacity style={styles.bodySubContainer} onPress={updateLayout} activeOpacity={0.8}>
-                    <View style={styles.mainViewStyle}>
-                        <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>
-                            {translate(item)}</Text>
-                        <View style={{marginTop: hp(0.5)}}>
-                            {isCollapsed ? <DownArrowIcon color={ColorConstant.ORANGE}/>:<NextArrowIcon/>}
-                        </View>
-                    </View>
-                    <View style={styles.lineStyle} />
-                </TouchableOpacity>
+    //         <View>
+    //             <TouchableOpacity style={styles.bodySubContainer} onPress={updateLayout} activeOpacity={0.8}>
+    //                 <View style={styles.mainViewStyle}>
+    //                     <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>
+    //                         {translate(item)}</Text>
+    //                     <View style={{marginTop: hp(0.5)}}>
+    //                         {isCollapsed ? <DownArrowIcon color={ColorConstant.ORANGE}/>:<NextArrowIcon/>}
+    //                     </View>
+    //                 </View>
+    //                 <View style={styles.lineStyle} />
+    //             </TouchableOpacity>
 
-                <ExpandableReportItem />
-            </View>
-        )
-    }
+    //             <ExpandableReportItem />
+    //         </View>
+    //     )
+    // }
 
     return (
         <View style={styles.container}>
