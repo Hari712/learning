@@ -52,8 +52,6 @@ function* requestUpdateSettingsNotification(action) {
     try {
         const url = ApiConstants.UPDATE_NOTIFICATION_SETTINGS(userId)
         const response = yield call(API.put, url, body)
-        const result = response.result ? response.result : []
-        yield put(SettingsAction.setUpdateSettingsNotification(result))
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -66,5 +64,5 @@ export function* watchSettings() {
     yield takeLatest(types.GET_FEEDBACK_REQUEST, requestGetFeedBack),
     yield takeLatest(types.CHANGE_PASSCODE_REQUEST,requestChangePasscode),
     yield takeLatest(types.GET_SETTINGS_NOTIFICATION_REQUEST,requestGetSettingsNotification),
-    yield takeLatest(types.UPDATE_NOTIFICATION_SETTINGS_RESPONSE,requestUpdateSettingsNotification)
+    yield takeLatest(types.UPDATE_NOTIFICATION_SETTINGS_REQUEST,requestUpdateSettingsNotification)
 }

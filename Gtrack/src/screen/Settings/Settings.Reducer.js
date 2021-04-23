@@ -26,10 +26,4 @@ export const settingsReducer = createReducer(state = initialState, {
             notificationList: newArrayList
         }
     }
-    // [types.UPDATE_NOTIFICATION_SETTINGS_RESPONSE](state, action) {
-    //     return {
-    //         ...state,
-    //         notificationList:action.data
-    //     }
-    // }
 })  
