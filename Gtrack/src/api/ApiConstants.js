@@ -59,7 +59,10 @@ const ApiConstants = {
     LINK_GEOFENCE_DEVICES:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices?link=true`,
     LINK_GEOFENCE_DEVICES_UPDATE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/updateGeofence`,
     UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
-    ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`
+    ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
+    GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`,
+    GET_ALL_LAST_KNOWN_POSITION:(userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
+    GET_ASSET_INFO_BY_TRACCAR_ID:(userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`
 }
 
 export default ApiConstants

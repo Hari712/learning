@@ -201,3 +201,26 @@ export const getGeofenceDeviceListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Group Devices for Asset Infromation
+ */
+
+const getGroupDevicesList = (state) => state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
+
+export const getGroupDevicesListInfo = createSelector(
+    [getGroupDevicesList],
+    (info) => info
+)
+
+/**
+ * Get Asset Info for Asset Infromation
+ */
+
+ const getAssetInfoList = (state) => state.livetracking && state.livetracking.assetInfo ? state.livetracking.assetInfo : {}
+
+ export const getAssetItemInfo = createSelector(
+     [getAssetInfoList],
+     (info) => info
+ )
+ 
+

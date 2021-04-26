@@ -46,7 +46,7 @@ const LiveTracking = ({navigation}) => {
 	},[location])
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
-		if(item === 'Sensor Information') {
+		if(item === 'Asset Information') {
 			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
@@ -108,7 +108,7 @@ const LiveTracking = ({navigation}) => {
 	);
 }
 
-const data = ['Geo Fence', 'Sensor Information', 'Alarms',"Trip History"]
+const data = ['Geo Fence', 'Asset Information', 'Alarms',"Trip History"]
 
 const styles = StyleSheet.create({
 	container: {
