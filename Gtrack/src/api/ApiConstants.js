@@ -65,8 +65,7 @@ const ApiConstants = {
     GET_ASSET_INFO_BY_TRACCAR_ID:(userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`,
     GET_SETTINGS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
     UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`,
-    GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
-    GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`
+    GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`
 }
 
 export default ApiConstants
