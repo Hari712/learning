@@ -211,16 +211,46 @@ export const getGroupDevicesListInfo = createSelector(
     [getGroupDevicesList],
     (info) => info
 )
+/**
+ * Get Notification List for Settigs
+ */
+
+const getSettigsNotificationList = (state) => state.settings && state.settings.notificationList ? state.settings.notificationList : {}
+
+export const getSettigsNotificationListInfo = createSelector(
+    [getSettigsNotificationList],
+    (info) => info
+)
+
+/**
+ * Get Group Devices for TripHistory
+ */
+
+const getTripHistoryGroupDevicesList = (state) => state.tripHistory && state.tripHistory.devicesGroup ? state.tripHistory.devicesGroup : {}
+
+export const getTripHistoryGroupDevicesListInfo = createSelector(
+    [getTripHistoryGroupDevicesList],
+    (info) => info
+)
 
 /**
  * Get Asset Info for Asset Infromation
  */
 
- const getAssetInfoList = (state) => state.livetracking && state.livetracking.assetInfo ? state.livetracking.assetInfo : {}
+const getAssetInfoList = (state) => state.livetracking && state.livetracking.assetInfo ? state.livetracking.assetInfo : {}
 
- export const getAssetItemInfo = createSelector(
-     [getAssetInfoList],
-     (info) => info
- )
- 
+export const getAssetItemInfo = createSelector(
+    [getAssetInfoList],
+    (info) => info
+)
 
+/**
+ * Get TripHistory Details
+ */
+
+const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.routeDetails ? state.tripHistory.routeDetails : {}
+
+export const getTripHistoryListInfo = createSelector(
+    [getTripHistoryList],
+    (info) => info
+)

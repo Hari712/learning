@@ -41,15 +41,19 @@ const GeofenceList = ( props ) => {
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
     }
 
+    const onTapItem = () => {
+        setActiveGeofence(item)
+        setSelectedDevice(item.deviceList)
+        setDialogVisible(!dialogVisible)
+    }
+
     return (
 
-        <TouchableOpacity style={styles.cardContainer} onPress={() => { 
-            setActiveGeofence(item)
-            setSelectedDevice(item.deviceList)
-            setDialogVisible(!dialogVisible)
-        }}>
+        <View style={styles.cardContainer} >
             <View style={styles.blueBox}>
-                <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
+                <TouchableOpacity onPress={onTapItem} style={{flex:1,marginRight:hp(1)}}>
+                    <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
+                </TouchableOpacity>
                 <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } textOn={item.isActive ? "Enable" :"Disable"} textOff=' ' textFont={"Nunito-Regular"} textSize={10} colorTextOn={ColorConstant.WHITE}  showText={true} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
                 { !isRegular ?
                 <TouchableOpacity style={{padding:hp(1),marginLeft:hp(2)}} onPress={() => { 
@@ -61,7 +65,7 @@ const GeofenceList = ( props ) => {
                 </TouchableOpacity> : null}
             </View>
 
-            <View style={styles.whiteContainer}>
+            <TouchableOpacity onPress={onTapItem} style={styles.whiteContainer}>
                 <View style={styles.GroupMainView}>
                     <Text style={styles.whiteContainerText}>Geofence Type</Text>
                     <Text style={styles.whiteContainerSubText}>{geoFenceType}</Text>
@@ -75,8 +79,8 @@ const GeofenceList = ( props ) => {
                         )
                     })}
                 </View>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
 
     )
 }
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         flex: 1,
         fontFamily: 'Nunito-Bold',
+        textAlignVertical:'center'
     },
     whiteContainer: {
         flexDirection: 'row',
