@@ -202,6 +202,17 @@ export const getGeofenceDeviceListInfo = createSelector(
 )
 
 /**
+ * Get Notification List for Settigs
+ */
+
+const getSettigsNotificationList = (state) => state.settings && state.settings.notificationList ? state.settings.notificationList : {}
+
+export const getSettigsNotificationListInfo = createSelector(
+    [getSettigsNotificationList],
+    (info) => info
+)
+
+/**
  * Get Group Devices for TripHistory
  */
 

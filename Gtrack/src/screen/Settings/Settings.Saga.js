@@ -35,9 +35,34 @@ function* requestChangePasscode(action) {
     }
 }
 
+function* requestGetSettingsNotification(action) {
+    const { userId, onSuccess, onError} = action
+    try {
+        const response = yield call(API.get, ApiConstants.GET_SETTINGS_NOTIFICATION(userId))
+        const result = response.result ? response.result : []
+        yield put(SettingsAction.setSettingsNotification(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestUpdateSettingsNotification(action) {
+    const { body, userId, onSuccess, onError} = action
+    try {
+        const url = ApiConstants.UPDATE_NOTIFICATION_SETTINGS(userId)
+        const response = yield call(API.put, url, body)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchSettings() {
     yield takeLatest(types.ADD_FEEDBACK_REQUEST, submitFeedback),
     yield takeLatest(types.GET_FEEDBACK_REQUEST, requestGetFeedBack),
-    yield takeLatest(types.CHANGE_PASSCODE_REQUEST,requestChangePasscode)
+    yield takeLatest(types.CHANGE_PASSCODE_REQUEST,requestChangePasscode),
+    yield takeLatest(types.GET_SETTINGS_NOTIFICATION_REQUEST,requestGetSettingsNotification),
+    yield takeLatest(types.UPDATE_NOTIFICATION_SETTINGS_REQUEST,requestUpdateSettingsNotification)
 }
