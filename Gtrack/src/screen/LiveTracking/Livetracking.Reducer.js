@@ -6,7 +6,9 @@ const initialState = {
     alarmsList: [],
     devicesList: [],
     alertTypes: [],
-    geofenceList: []
+    geofenceList: [],
+    groupDevices: [],
+    assetInfo: []
 }
 
 
@@ -64,5 +66,18 @@ export const livetrackingReducer = createReducer(state = initialState, {
             ...state,
             geofenceList: arrSelectedGeofence
         }
-    }
+    },
+    [types.GET_GROUP_DEVICES_RESPONSE](state, action) {
+        const { traccarDeviceGroupDTOS } = action.data
+        return {
+            ...state,
+            groupDevices: traccarDeviceGroupDTOS
+        }
+    },
+    [types.GET_ALL_LAST_KNOWN_POSITION_RESPONSE](state, action) {
+        return {
+            ...state,
+            assetInfo: action.data
+        }
+    },
 })

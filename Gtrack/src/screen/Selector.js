@@ -202,6 +202,16 @@ export const getGeofenceDeviceListInfo = createSelector(
 )
 
 /**
+ * Get Group Devices for Asset Infromation
+ */
+
+const getGroupDevicesList = (state) => state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
+
+export const getGroupDevicesListInfo = createSelector(
+    [getGroupDevicesList],
+    (info) => info
+)
+/**
  * Get Notification List for Settigs
  */
 
@@ -216,10 +226,21 @@ export const getSettigsNotificationListInfo = createSelector(
  * Get Group Devices for TripHistory
  */
 
-const getGroupDevicesList = (state) => state.tripHistory && state.tripHistory.devicesGroup ? state.tripHistory.devicesGroup : {}
+const getTripHistoryGroupDevicesList = (state) => state.tripHistory && state.tripHistory.devicesGroup ? state.tripHistory.devicesGroup : {}
 
-export const getGroupDevicesListInfo = createSelector(
-    [getGroupDevicesList],
+export const getTripHistoryGroupDevicesListInfo = createSelector(
+    [getTripHistoryGroupDevicesList],
+    (info) => info
+)
+
+/**
+ * Get Asset Info for Asset Infromation
+ */
+
+const getAssetInfoList = (state) => state.livetracking && state.livetracking.assetInfo ? state.livetracking.assetInfo : {}
+
+export const getAssetItemInfo = createSelector(
+    [getAssetInfoList],
     (info) => info
 )
 
@@ -227,9 +248,9 @@ export const getGroupDevicesListInfo = createSelector(
  * Get TripHistory Details
  */
 
- const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.routeDetails ? state.tripHistory.routeDetails : {}
+const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.routeDetails ? state.tripHistory.routeDetails : {}
 
- export const getTripHistoryListInfo = createSelector(
-     [getTripHistoryList],
-     (info) => info
- )
+export const getTripHistoryListInfo = createSelector(
+    [getTripHistoryList],
+    (info) => info
+)
