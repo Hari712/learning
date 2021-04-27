@@ -13,6 +13,7 @@ import AppManager from '../../../constants/AppManager'
 import UpArrowIcon from './../../../component/SvgComponent/UpArrowIcon'
 import isEmpty from 'lodash/isEmpty'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import * as LivetrackingActions from '../Livetracking.Action'
 
 const TripHistory = ({ navigation }) => {
 
@@ -52,7 +53,7 @@ const TripHistory = ({ navigation }) => {
 
     function fetchGroupDevices() {
         AppManager.showLoader() 
-        dispatch(TripHistoryActions.getGroupDevicesRequset(loginData.id, onSuccess, onError))
+        dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id, onSuccess, onError))
     }
 
     function onSuccess(data) {    

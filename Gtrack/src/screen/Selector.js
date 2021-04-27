@@ -202,7 +202,7 @@ export const getGeofenceDeviceListInfo = createSelector(
 )
 
 /**
- * Get Group Devices for Asset Infromation
+ * Get Group Devices for TripHistory and Asset Infromation
  */
 
 const getGroupDevicesList = (state) => state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
@@ -219,17 +219,6 @@ const getSettigsNotificationList = (state) => state.settings && state.settings.n
 
 export const getSettigsNotificationListInfo = createSelector(
     [getSettigsNotificationList],
-    (info) => info
-)
-
-/**
- * Get Group Devices for TripHistory
- */
-
-const getTripHistoryGroupDevicesList = (state) => state.tripHistory && state.tripHistory.devicesGroup ? state.tripHistory.devicesGroup : {}
-
-export const getTripHistoryGroupDevicesListInfo = createSelector(
-    [getTripHistoryGroupDevicesList],
     (info) => info
 )
 
