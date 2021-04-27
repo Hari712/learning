@@ -61,7 +61,9 @@ const ApiConstants = {
     UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
     GET_SETTINGS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
-    UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`
+    UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`,
+    GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
+    GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`
 }
 
 export default ApiConstants

@@ -8,6 +8,7 @@ import { clearUserData } from '../utils/helper'
 import { dashboardReducer } from './Dashboard/Dashboad.Reducer';
 import { livetrackingReducer } from './LiveTracking/Livetracking.Reducer'
 import {settingsReducer } from './Settings/Settings.Reducer'
+import { tripHistoryReducer } from './LiveTracking/TripHistory/TripHistory.Reducer'
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     dashBoard: dashboardReducer,
     livetracking: livetrackingReducer,
     settings: settingsReducer,
+    tripHistory: tripHistoryReducer,
     network
 })
 

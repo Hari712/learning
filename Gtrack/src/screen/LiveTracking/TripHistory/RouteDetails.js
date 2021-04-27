@@ -1,28 +1,47 @@
 import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform, Button, FlatList } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { FontSize }from '../../../component';
 import { getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
-import {  CalenderIconWhite, EditIcon, ListIcon, LocationIcon } from '../../../component/SvgComponent';
+import {  CalenderIconWhite, LocationIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import NavigationService from '../../../navigation/NavigationService';
+import NavigationService from '../../../navigation/NavigationService'
+import Moment from 'moment'
+import { round } from 'lodash';
 
-const SummaryDetails = ({ navigation }) => {
+const RouteDetails = (props) => {
 
     const { loginData } = useSelector(state => ({
         loginData: getLoginState(state)
     }))
+
+    const { routeDetails } = props
 
     const dispatch = useDispatch()
 
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item,index }) => {
+
+        console.log("item",item)
+        
+        let sDateArray = Moment(item.tripStartTime)
+        var sdateComponent = sDateArray.utc().format('YYYY-MM-DD');
+        var stimeComponent = sDateArray.utc().format('HH:mm:ss');
+        
+        let eDateArray = Moment(item.tripEndTime)
+        var edateComponent = eDateArray.utc().format('YYYY-MM-DD');
+        var etimeComponent = eDateArray.utc().format('HH:mm:ss');
+
+        let dformat = Moment(eDateArray-sDateArray).utc().format('H:m:s').split(':')
+        let durationFormat = (dformat[0] > 0 ? dformat[0]+"h ":"") + (dformat[1] > 0 ? dformat[1]+"m ":'') + (dformat[2] > 0 ? dformat[2]+"s ":'')
+        console.log("Duration",durationFormat)
+
         return (
-            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{coords:[]})} style={styles.cardContainer}>
+            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.cardContainer}>
     
                 {/* Blue top head */}
                 <View style={styles.blueConatiner}>
@@ -31,7 +50,7 @@ const SummaryDetails = ({ navigation }) => {
                     </View>
                     
                     <View style={styles.blueTopHead}>
-                        <Text style={styles.headerTitle}>{item.startDate}  to  {item.endDate}</Text>
+                        <Text style={styles.headerTitle}>{sdateComponent}  to  {edateComponent}</Text>
                     </View>
     
                     <TouchableOpacity style={styles.editButton}>
@@ -43,29 +62,29 @@ const SummaryDetails = ({ navigation }) => {
                 <View style={styles.whiteBodyContainer}>
                     <View style={styles.column} >
                         <Text style={styles.whiteBodyText}>Start</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.sTime}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{stimeComponent}</Text>
                         <View style={{height:hp(2)}} />
 
                         <Text style={styles.whiteBodyText}>Drive Duration</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.driveDuration}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{durationFormat}</Text>
                         <View style={{height:hp(2)}} />
                     </View>
                     <View style={[styles.column, { width: '40%' }]} >
                         <Text style={styles.whiteBodyText}>End</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.eTime}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{etimeComponent}</Text>
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Avg Speed</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.avgSpeed}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripAverageSpeed} mph</Text>
                         <View style={{height:hp(2)}} />
                     </View>
                     <View style={[styles.column, { width: '25%' }]}>
                         <Text style={styles.whiteBodyText}>Distance</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.distance}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{round(item.tripDistance,2)} mi</Text>
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Top Speed</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.topSpeed}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripMaxSpeed} mph</Text>
                         <View style={{height:hp(2)}} />
                     </View>          
                 </View>
@@ -77,36 +96,8 @@ const SummaryDetails = ({ navigation }) => {
 
     return (
         <View>
-            <View style={styles.container}>
-                <View style={styles.summaryCardView}>
-                    <View style={{flexDirection:'row',alignItems:"center",paddingVertical:hp(1),justifyContent:"space-between",borderBottomWidth:0.3,borderBottomColor:ColorConstant.GREY}}>
-                        <Text style={{fontFamily:"Nunito-Regular",color:ColorConstant.BLUE,fontSize:FontSize.FontSize.small}}>Summary</Text>
-                        <ListIcon />
-                    </View>
-                    <View style={{flexDirection:'row',marginVertical:hp(2)}}>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Total Distance</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>922.87 mi</Text>
-                        </View>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Drive Duration</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>7h 26m 21s</Text>
-                        </View>
-                    </View>
-                    <View style={{flexDirection:'row',marginBottom:hp(2)}}>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Top Speed</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>80 mph</Text>
-                        </View>
-                        <View style={{flex:1.5}}>
-                            <Text style={styles.summaryTextStyle}>Avg Speed</Text>
-                            <Text style={[styles.summaryTextStyle,{color:ColorConstant.BLACK}]}>56 mph</Text>
-                        </View>
-                    </View>
-                </View> 
-            </View>
 
-            <View style={{paddingTop:hp(4), paddingHorizontal:hp(3)}} >
+            <View style={{paddingHorizontal:hp(3)}} >
                 <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>Route Details</Text>
             </View>
 
@@ -114,7 +105,7 @@ const SummaryDetails = ({ navigation }) => {
                 nestedScrollEnabled={true}
                 keyboardShouldPersistTaps='handled'                
                 data={routeDetails}
-                renderItem={(data) => renderItem(data)}
+                renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
             />
         </View>
@@ -123,53 +114,6 @@ const SummaryDetails = ({ navigation }) => {
 }
 
 const daysList = ["Today", "Yesterday", "Last Week", "Last Month", "Custom"]
-
-const routeDetails = [
-    {
-        startDate: "2020-09-21",
-        endDate: "2020-09-22",
-        sTime: "06:53:02",
-        eTime: "08:53:02",
-        distance: "16.47 mi",
-        driveDuration: "2h 8m",
-        avgSpeed: "48 mph",
-        topSpeed: "66 mph"
-    },
-    {
-        startDate: "2020-09-25",
-        endDate: "2020-09-26",
-        sTime: "09:53:02",
-        eTime: "10:53:02",
-        distance: "16.47 mi",
-        driveDuration: "3h 8m",
-        avgSpeed: "46 mph",
-        topSpeed: "56 mph"
-    },
-    {
-        startDate: "2020-09-21",
-        endDate: "2020-09-22",
-        sTime: "06:53:02",
-        eTime: "08:53:02",
-        distance: "16.47 mi",
-        driveDuration: "2h 8m",
-        avgSpeed: "48 mph",
-        topSpeed: "66 mph"
-    },
-    {
-        startDate: "2020-09-25",
-        endDate: "2020-09-26",
-        sTime: "09:53:02",
-        eTime: "10:53:02",
-        distance: "16.47 mi",
-        driveDuration: "3h 8m",
-        avgSpeed: "46 mph",
-        topSpeed: "56 mph"
-    }
-
-]
-      
-
-
 
 const styles = StyleSheet.create({
 
@@ -257,4 +201,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default SummaryDetails;
+export default RouteDetails;

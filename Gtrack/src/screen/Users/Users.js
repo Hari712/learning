@@ -13,6 +13,7 @@ import UsersList from './UsersList';
 import UsersFilterDialog from '../../component/UsersFilterDialog';
 import isEmpty from 'lodash/isEmpty'
 import { useIsFocused } from '@react-navigation/native';
+import { uniqBy } from 'lodash';
 
 const Users = ({navigation}) => {
 
@@ -29,6 +30,7 @@ const Users = ({navigation}) => {
   const [pageCount, setPageCount] = useState(10)
   const [totalCount, setTotalCount] = useState(0)
   const [searchData, setSearchData] = useState([])
+  const [toMerge, setToMerge] = useState(false)
   
 
   const { loginData, subUserData, isConnected } = useSelector(state => ({
@@ -43,7 +45,7 @@ const Users = ({navigation}) => {
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
-    if(isFocused){
+    if(!isFocused){
       resetHandle()
     }
   },[isFocused]);
@@ -63,17 +65,27 @@ const Users = ({navigation}) => {
   },[])
 
   useEffect(()=>{
-    //console.log("Condition",isLoadMoreData,isRefreshing,onEndReachedCalledDuringMomentum,)
-    if(isLoadMoreData || !isRefreshing){
-      setSearchData([...searchData,...subUserData])
+    if(toMerge && pageIndex > 0){
+      setSearchData(uniqBy([...searchData,...subUserData],'id'))
     } else {
       setSearchData(subUserData)
     }
-    // if(isRefreshing) {
-    //   setSearchData(subUserData)
-    // }
-  },[subUserData])
 
+    if(pageIndex == 0 && (searchKeyword=="" && status==-1 && IsRole==-1)) {
+      let adminData = {
+        id: loginData.id,
+        email: loginData.email,
+        firstName: loginData.firstName,
+        groups: loginData.group,
+        isActive: true,
+        lastName: loginData.lastName,
+        roles: loginData.role
+      }
+      setSearchData((old)=>[adminData,...old])
+    }
+
+  },[subUserData])
+console.log("data",subUserData,loginData)
   const fetchUserslist = () => {
     if (isConnected) {
     const requestBody =  {
@@ -149,11 +161,13 @@ const Users = ({navigation}) => {
     setIsRole(-1)
     setStatus(-1)
     setPageIndex(0)
+    setSearchKeyword("")
     setRoleKeyword( ["ROLE_REGULAR", "ROLE_OWNER"])
     setStatusKey(["Active", "InActive"])
     setIsLoadMoreData(false)
     setOnEndReachedCalledDuringMomentum(false)
     setIsRefreshing(false)
+    setToMerge(false)
   }
 
   const filterHandle = () => {
@@ -194,7 +208,6 @@ const Users = ({navigation}) => {
                     style={styles.searchText}
                     onChangeText={text => searchHandle(text) }                    
                     value={searchKeyword}
-                    
                 />
                 <TouchableOpacity  onPress={()=> setVisible(!visible)} >
                   {visible? <FilterIconClicked/> : <FilterIcon/> }
@@ -225,6 +238,7 @@ const Users = ({navigation}) => {
         if (searchData.length < totalCount) {
           setIsRefreshing(false)
           setIsLoadMoreData(true)
+          setToMerge(true)
           setOnEndReachedCalledDuringMomentum(true)
           setPageIndex(pageIndex + 1)
         }
