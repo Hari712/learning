@@ -201,3 +201,24 @@ export const getGeofenceDeviceListInfo = createSelector(
     (info) => info
 )
 
+/**
+ * Get Group Devices for TripHistory
+ */
+
+const getGroupDevicesList = (state) => state.tripHistory && state.tripHistory.devicesGroup ? state.tripHistory.devicesGroup : {}
+
+export const getGroupDevicesListInfo = createSelector(
+    [getGroupDevicesList],
+    (info) => info
+)
+
+/**
+ * Get TripHistory Details
+ */
+
+ const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.routeDetails ? state.tripHistory.routeDetails : {}
+
+ export const getTripHistoryListInfo = createSelector(
+     [getTripHistoryList],
+     (info) => info
+ )
