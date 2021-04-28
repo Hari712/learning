@@ -53,9 +53,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
         let todayDate = Moment().format('YYYY-MM-DD');
         let yesterdayDate = Moment().subtract(1, "days").format('YYYY-MM-DD')
         let lastWeekDate = Moment().subtract(1, "weeks").startOf('isoWeek').format('YYYY-MM-DD')
+        let lastWeek = Moment(lastWeekDate).endOf('isoWeek').format('YYYY-MM-DD')
         let lastMonthDate = Moment().date(1).subtract(1,'months').format('YYYY-MM-DD')
-        let tommorrowDate = Moment(todayDate).add(1, "days").format('YYYY-MM-DD')
-        let lastWeek = Moment(lastWeekDate).add(7, "days").format('YYYY-MM-DD')
         let currentMonthDate = Moment().date(1).format('YYYY-MM-DD') 
 
         if(selectedDay){
@@ -63,12 +62,12 @@ const TripHistoryDetails = ({ navigation, route }) => {
             switch (selectedDay) {
                 case 'Today':
                     setStartDate(todayDate)
-                    setEndDate(tommorrowDate)
+                    setEndDate(todayDate)
                     break;
 
                 case 'Yesterday':
                     setStartDate(yesterdayDate)
-                    setEndDate(tommorrowDate)
+                    setEndDate(yesterdayDate)
                     break;
 
                 case 'Last Week':
@@ -95,6 +94,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const fetchTripHistory = () => {
         AppManager.showLoader()
         if (isConnected) {
+            const start = Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000");
+            const end = Moment(endDate).format("YYYY-MM-DDT23:59:59.000") 
             const requestBody =  {
                 "pageNumber" : 0,
                 "pageSize" : 5,
@@ -103,7 +104,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "sortHeader" : "id",
                 "sortDirection" : "DESC"
             }
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000"), Moment(endDate).format("YYYY-MM-DDTHH:mm:SS.000"), onSuccess, onError))
+            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
         } else {                                                                                             
             AppManager.showNoInternetConnectivityError()
         }
@@ -136,7 +137,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
     
     function onError(error) {
         AppManager.hideLoader()
-        console.log("Error",error)  
+        console.log("Error",error) 
+        showSimpleMessage('danger', { message: error, description: '', floating: true })
     }
 
     const showDatePicker = (item) => {
