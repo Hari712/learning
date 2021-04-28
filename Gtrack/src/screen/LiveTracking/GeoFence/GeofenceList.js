@@ -75,7 +75,7 @@ const GeofenceList = ( props ) => {
                     <Text style={styles.whiteContainerText}>Device Name</Text>
                     <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                         <Text style={styles.whiteContainerSubText}>{item.deviceList[0].deviceName}</Text>
-                        <Text style={styles.whiteContainerSubText}>{item.deviceList.length > 0 ? "+" + (item.deviceList.length - 1) : null}</Text>
+                        <Text style={styles.whiteContainerSubText}>{item.deviceList.length > 1 ? "+" + (item.deviceList.length - 1) : null}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
