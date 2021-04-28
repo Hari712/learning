@@ -4,7 +4,7 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useSelector } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -13,17 +13,25 @@ import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon } from '../../component/SvgComponent';
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
+import useStateRef from '../../utils/useStateRef'
+import isEmpty from 'lodash/isEmpty'
 
 const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, deviceList } = useSelector(state => ({
+
+	const { isLoggedIn, isRegular, deviceListInfo, devicePositions } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
-		deviceList: getAllUserDevicesList(state)
+		deviceListInfo: getAllUserDevicesList(state),
+		devicePositions: getLiveTrackingDeviceList(state)
 	}));
 
+	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceList)
+	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef()
+	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef()
+	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([])
 	const isFocused = useIsFocused();
 
 	React.useEffect(
@@ -44,6 +52,15 @@ const LiveTracking = ({ navigation }) => {
 		[navigation]
 	);
 
+	useEffect(() => {
+		setDeviceList(deviceListInfo)
+		if (!isEmpty(deviceListInfo)) {
+			const device = deviceListInfo[0]
+			setSelectedDevice(device.deviceDTO)
+			setSelectedDeviceIndex(0)
+		}
+	},[deviceListInfo])
+
 	useEffect(
 		() => {
 			if (location) {
@@ -57,6 +74,10 @@ const LiveTracking = ({ navigation }) => {
 		},
 		[location]
 	);
+
+	useEffect(() => {
+
+	},[selectedDeviceRef])
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if (item === 'Sensor Information') {
@@ -78,7 +99,31 @@ const LiveTracking = ({ navigation }) => {
 		NavigationService.push(SCREEN_CONSTANTS.ACTIVATE_DEVICE);
 	}
 
+	function onPressNext() {
+		let i = selectedDeviceIndexRef.current
+		const arr = deviceListRef.current ? deviceListRef.current : []
+		i = i + 1; // increase i by one
+    	i = i % arr.length; // if we've gone too high, start from `0` again
+		const device = arr[i]
+		setSelectedDevice(device.deviceDTO)
+		setSelectedDeviceIndex(i)
+	}
+
+	function onPressPrevious() {
+		let i = selectedDeviceIndexRef.current
+		const arr = deviceListRef.current ? deviceListRef.current : []
+		if (i === 0) { // i would become 0
+			i = arr.length; // so put it at the other end of the array
+		}
+		i = i - 1; // decrease by one
+		const device = arr[i]
+		setSelectedDevice(device.deviceDTO)
+		setSelectedDeviceIndex(i)
+	}
+
 	function renderDeviceSelectionView() {
+		const deviceInfo = selectedDeviceRef.current
+
 		return (
 			<View
 				style={{
@@ -100,7 +145,7 @@ const LiveTracking = ({ navigation }) => {
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity>
+					<TouchableOpacity onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
@@ -108,9 +153,9 @@ const LiveTracking = ({ navigation }) => {
 						/>
 					</TouchableOpacity>
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
-						{' '}TrackPort International{' '}
+						{` ${deviceInfo.deviceName} `}
 					</Text>
-					<TouchableOpacity>
+					<TouchableOpacity onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
 					</TouchableOpacity>
 				</View>
@@ -121,7 +166,7 @@ const LiveTracking = ({ navigation }) => {
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			<MapView currentLocation={currentPosition} />
-			{renderDeviceSelectionView()}
+			{selectedDeviceRef.current && renderDeviceSelectionView()}
 			<View style={styles.subContainer}>
 				<TouchableOpacity
 					onPress={() => {
