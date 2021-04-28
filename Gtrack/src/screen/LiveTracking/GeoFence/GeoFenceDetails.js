@@ -60,8 +60,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
         dispatch(UsersActions.requestGetSubuser(loginInfo.id, onUserSuccess, onUserError))  
     }, [])
 
-    console.log("khushi",subUserData)
-
     function onUserSuccess(data) {
         console.log("data",data)
         AppManager.hideLoader()     
