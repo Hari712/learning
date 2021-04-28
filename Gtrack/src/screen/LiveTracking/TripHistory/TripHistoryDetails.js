@@ -29,7 +29,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [endDate, setEndDate] = useState();
     const [isStartDateVisible, setIsStartDateVisible] = useState(false);
     const [isEndDateVisible, setIsEndDateVisible] = useState(false);
-    const [selectedDay, setSelectedDay] = useState()
+    const [selectedDay, setSelectedDay] = useState("Today")
     const [dropdownPosY, setDropdownPosY] = useState()
     const [routeData, setRouteData] = useState([])
     // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -194,7 +194,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
                         </View>
 
-                        { routeData.length > 0 && <RouteDetails routeDetails={routeData} /> }
+                        <RouteDetails routeDetails={routeData} />
 
                         <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
