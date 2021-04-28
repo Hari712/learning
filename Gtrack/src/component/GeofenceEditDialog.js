@@ -128,6 +128,27 @@ return(
                             })}
                         </View>
                     </View>
+                    <View style={[styles.secondRowMainView,{flexDirection:'column'}]}>
+                        <View style={{}}>
+                            <Text style={styles.mainTextStyle}>{translate("Selected Users")}</Text>
+                            <Text>Users</Text>
+                            {/* {activeGeofence && activeGeofence.deviceList.map((device) =>{
+                                return(
+                                    <Text style={styles.fontSizeStyle}>{device.deviceName}</Text>
+                                )
+                            })} */}
+                        </View>
+                        <View style={{marginTop:hp(2),flexDirection:'row'}}>
+                            <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                                <Image style={{alignSelf:'flex-start'}} source={images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+                            </View>
+                            <View style={{flexDirection:'row',alignItems:'center'}}>
+                                <Image style={{alignSelf:'flex-start'}} source={images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             </View>
         </View>
@@ -194,6 +215,11 @@ const styles = StyleSheet.create({
     crossImageStyle: {
         marginTop: hp(0.5),
         marginRight: wp(2)
+    },
+    notificationStyle: {
+        fontFamily:'Nunito-Regular',
+        fontSize:8,
+        color:ColorConstant.BLUE
     },
     popUpCardContainer: {
         width: '100%',

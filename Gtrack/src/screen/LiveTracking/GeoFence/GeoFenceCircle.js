@@ -312,10 +312,10 @@ const GeoFenceCircle = ({navigation,route}) => {
                     </View>
                     <View style={styles.sliderView}>
                         <Slider
-                            value={radius/1000}
+                            value={Platform.OS == 'android'? radius : radius/1000}
                             onValueChange={(value) => onChangeRadius(value)}
                             minimumValue={0.5}
-                            maximumValue={100}
+                            maximumValue={1000}
                             step={1}
                             minimumTrackTintColor={ColorConstant.BLUE}
                             maximumTrackTintColor={ColorConstant.BLUE}
