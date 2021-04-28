@@ -336,7 +336,7 @@ addButton : {
 searchText: {
   //fontSize:FontSize.FontSize.small,
   fontSize:14,
-  color:ColorConstant.LIGHTGREY,
+  color:ColorConstant.BLACK,
   fontFamily:'Nunito-LightItalic'
 },
 searchSubContainer: {
