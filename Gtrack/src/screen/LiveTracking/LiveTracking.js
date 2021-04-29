@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions }
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector } from 'react-redux';
 import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
@@ -59,8 +60,6 @@ const LiveTracking = ({ navigation }) => {
 		[isFocused]
 	);
 
-	const location = useSubscribeLocationUpdates(isLoggedIn);
-
 	React.useLayoutEffect(
 		() => {
 			navigation.setOptions({
@@ -82,19 +81,19 @@ const LiveTracking = ({ navigation }) => {
 		[deviceListInfo]
 	);
 
-	useEffect(
-		() => {
-			if (location) {
-				const { latitude, longitude, course, speed, accuracy, altitude } = location;
-				let centerCoord =
-					Platform.OS == 'ios'
-						? { coordinates: { latitude: latitude, longitude: longitude } }
-						: [longitude, latitude];
-				setCurrentPosition(centerCoord);
-			}
-		},
-		[location]
-	);
+	// useEffect(
+	// 	() => {
+	// 		if (location) {
+	// 			const { latitude, longitude, course, speed, accuracy, altitude } = location;
+	// 			let centerCoord =
+	// 				Platform.OS == 'ios'
+	// 					? { coordinates: { latitude: latitude, longitude: longitude } }
+	// 					: [longitude, latitude];
+	// 			setCurrentPosition(centerCoord);
+	// 		}
+	// 	},
+	// 	[location]
+	// );
 
 	useEffect(
 		() => {
@@ -114,6 +113,26 @@ const LiveTracking = ({ navigation }) => {
 		},
 		[devicePositions]
 	);
+
+	useEffect(() => {
+		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
+			if (isAndroid) {
+
+			} else {
+				const arrCoords = devicePositionArray.map((item) => {
+					return {
+						'latitude': item.latitude,
+						'longitude': item.longitude
+					}
+				})
+				setCoordList(arrCoords)
+				mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
+					edgePadding: DEFAULT_PADDING,
+					animated: true,
+				});
+			}
+		}
+	},[devicePositionArray])
 
 	useEffect(
 		() => {
@@ -229,6 +248,12 @@ const LiveTracking = ({ navigation }) => {
                             coordinate={coordinate}
                             description={address}
                         />}
+				{isPolyLine && <Map.Polyline
+                    coordinates={coordList}
+                    
+                    strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
+                    strokeWidth={3}
+                />}
 			</Map.default>			
 		)
 	}
