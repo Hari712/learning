@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Platform } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -13,26 +13,44 @@ import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon } from '../../component/SvgComponent';
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
-import useStateRef from '../../utils/useStateRef'
-import isEmpty from 'lodash/isEmpty'
+import useStateRef from '../../utils/useStateRef';
+import isEmpty from 'lodash/isEmpty';
+import mapKeys from 'lodash/mapKeys';
+const { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.9;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
+
+const Map = Platform.select({
+	ios: () => require('react-native-maps'),
+	android: () => require('@react-native-mapbox-gl/maps'),
+})();
+
+const isAndroid = Platform.OS === 'android';
 
 const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-
 	const { isLoggedIn, isRegular, deviceListInfo, devicePositions } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		deviceListInfo: getAllUserDevicesList(state),
-		devicePositions: getLiveTrackingDeviceList(state)
+		devicePositions: getLiveTrackingDeviceList(state),
 	}));
 
-	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceList)
-	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef()
-	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef()
-	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([])
+	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceList);
+	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
+	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef();
+	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
+	const [coordList, setCoordList] = useState([])
+    const [lineString, setLineString] = useState(null)
+	const [region, setRegion] = useStateRef()
 	const isFocused = useIsFocused();
+
+	const mapRef = useRef();
 
 	React.useEffect(
 		() => {
@@ -52,14 +70,17 @@ const LiveTracking = ({ navigation }) => {
 		[navigation]
 	);
 
-	useEffect(() => {
-		setDeviceList(deviceListInfo)
-		if (!isEmpty(deviceListInfo)) {
-			const device = deviceListInfo[0]
-			setSelectedDevice(device.deviceDTO)
-			setSelectedDeviceIndex(0)
-		}
-	},[deviceListInfo])
+	useEffect(
+		() => {
+			setDeviceList(deviceListInfo);
+			if (!isEmpty(deviceListInfo)) {
+				const device = deviceListInfo[0];
+				setSelectedDevice(device.deviceDTO);
+				setSelectedDeviceIndex(0);
+			}
+		},
+		[deviceListInfo]
+	);
 
 	useEffect(
 		() => {
@@ -75,9 +96,41 @@ const LiveTracking = ({ navigation }) => {
 		[location]
 	);
 
-	useEffect(() => {
+	useEffect(
+		() => {
+			if (!isEmpty(devicePositions) && selectedDeviceRef.current) {
+				const deviceInfo = selectedDeviceRef.current;
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+				if (!isEmpty(arr)) {
+					let arrList = devicePositions;
+					const devicePositionObject = mapKeys('id', arrList);
+					const device = arr[0];
+					const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
+					const arrLogs = Object.values(updatedDevicePositionObject);
+					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					setDevicePositionArray(arrLogs);
+				}
+			}
+		},
+		[devicePositions]
+	);
 
-	},[selectedDeviceRef])
+	useEffect(
+		() => {
+			if (selectedDeviceRef.current) {
+				const deviceInfo = selectedDeviceRef.current;
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+				if (!isEmpty(arr)) {
+					const device = arr[0];
+					let deviceRegion = { latitude: device.latitude, longitude: device.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+					setDevicePositionArray([device]);
+					setRegion(deviceRegion)
+				}
+				console.log(deviceInfo);
+			}
+		},
+		[selectedDevice]
+	);
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
 		if (item === 'Sensor Information') {
@@ -100,29 +153,30 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function onPressNext() {
-		let i = selectedDeviceIndexRef.current
-		const arr = deviceListRef.current ? deviceListRef.current : []
+		let i = selectedDeviceIndexRef.current;
+		const arr = deviceListRef.current ? deviceListRef.current : [];
 		i = i + 1; // increase i by one
-    	i = i % arr.length; // if we've gone too high, start from `0` again
-		const device = arr[i]
-		setSelectedDevice(device.deviceDTO)
-		setSelectedDeviceIndex(i)
+		i = i % arr.length; // if we've gone too high, start from `0` again
+		const device = arr[i];
+		setSelectedDevice(device.deviceDTO);
+		setSelectedDeviceIndex(i);
 	}
 
 	function onPressPrevious() {
-		let i = selectedDeviceIndexRef.current
-		const arr = deviceListRef.current ? deviceListRef.current : []
-		if (i === 0) { // i would become 0
+		let i = selectedDeviceIndexRef.current;
+		const arr = deviceListRef.current ? deviceListRef.current : [];
+		if (i === 0) {
+			// i would become 0
 			i = arr.length; // so put it at the other end of the array
 		}
 		i = i - 1; // decrease by one
-		const device = arr[i]
-		setSelectedDevice(device.deviceDTO)
-		setSelectedDeviceIndex(i)
+		const device = arr[i];
+		setSelectedDevice(device.deviceDTO);
+		setSelectedDeviceIndex(i);
 	}
 
 	function renderDeviceSelectionView() {
-		const deviceInfo = selectedDeviceRef.current
+		const deviceInfo = selectedDeviceRef.current;
 
 		return (
 			<View
@@ -163,9 +217,41 @@ const LiveTracking = ({ navigation }) => {
 		);
 	}
 
+	function renderAppleMap() {
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current)
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null
+		const address = isContainCoordinate ? startingDestination.address : ''
+		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
+		return (
+			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
+				{isContainCoordinate && <Map.Marker
+                            coordinate={coordinate}
+                            description={address}
+                        />}
+			</Map.default>			
+		)
+	}
+
+	function renderMapBox() {
+		return (
+			<View style={styles.container}>
+				<Map.default.MapView style={{ flex: 1 }}>
+					<Map.default.UserLocation
+						renderMode="normal"
+						visible={true}
+						showsUserHeadingIndicator={true}
+						animated={true}
+					/>
+				</Map.default.MapView>
+			</View>
+		);
+	}
+
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
-			<MapView currentLocation={currentPosition} />
+			{isAndroid ? renderMapBox() : renderAppleMap()}
+			{/* {renderAppleMap()} */}
 			{selectedDeviceRef.current && renderDeviceSelectionView()}
 			<View style={styles.subContainer}>
 				<TouchableOpacity
