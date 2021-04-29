@@ -24,20 +24,14 @@ const GeoFencePolyGon = ({navigation, route}) => {
     const { devices } = route.params
 
     const [region, setRegion] = useState()
-
     const [isEditing, setIsEditing] = useState(false)
-
     const [isScrollEnabled, setIsScrollEnabled] = useState(true)
-
     const [selectedCoordinates, setSelectedCoordinates] = useState([])
-
     const [completeEditing, setCompleteEditing] = useState(false)
-
     const [area, setArea] = useState('')
-
     const [oldData, setOldData] = useState()
-
     const [regionAndroid, setRegionAndroid] = useState()
+    const [color, setColor] = useState(ColorConstant.ORANGE)
 
 
     useEffect(() => {
@@ -49,6 +43,7 @@ const GeoFencePolyGon = ({navigation, route}) => {
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)
             setSelectedCoordinates(editingData.coordinates)
+            setColor(editingData.color)
             
         } else {
         GetLocation.getCurrentPosition({
@@ -165,8 +160,8 @@ const GeoFencePolyGon = ({navigation, route}) => {
                 <>
                     <Map.default.Polygon
                         coordinates={arrCoordinates}
-                        fillColor="rgba(255, 127, 33, 0.4)"
-                        strokeColor="rgba(255, 127, 33, 0.8)"
+                        fillColor={color}
+                        strokeColor={color}
                         strokeWidth={1}
                     />
                 </>
@@ -237,12 +232,12 @@ const GeoFencePolyGon = ({navigation, route}) => {
                             coordinates: [arrCoordinates]
                         }
                     }}>
-                    <Map.default.FillLayer id="areaPolygon" style={{ fillOpacity: 0.5,fillColor:ColorConstant.ORANGE }} />
+                    <Map.default.FillLayer id="areaPolygon" style={{ fillOpacity: 0.5,fillColor:color }} />
                     <Map.default.LineLayer 
                         id='linelayer'
                         sourceLayerID='areaPoly'
                         style={{
-                            lineColor:ColorConstant.ORANGE,
+                            lineColor:color,
                             lineWidth:2
                         }}
                     />
