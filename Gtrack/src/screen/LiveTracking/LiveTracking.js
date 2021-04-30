@@ -46,9 +46,9 @@ const LiveTracking = ({ navigation }) => {
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
 	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef();
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
-	const [coordList, setCoordList] = useState([])
-    const [lineString, setLineString] = useState(null)
-	const [region, setRegion] = useStateRef()
+	const [coordList, setCoordList] = useState([]);
+	const [lineString, setLineString] = useState(null);
+	const [region, setRegion] = useStateRef();
 	const isFocused = useIsFocused();
 
 	const mapRef = useRef();
@@ -104,7 +104,10 @@ const LiveTracking = ({ navigation }) => {
 					let arrList = devicePositions;
 					const devicePositionObject = mapKeys('id', arrList);
 					const device = arr[0];
-					const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
+					const updatedDevicePositionObject = {
+						...devicePositionObject,
+						...{ [device.traccarDeviceId]: device },
+					};
 					const arrLogs = Object.values(updatedDevicePositionObject);
 					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
 					setDevicePositionArray(arrLogs);
@@ -114,25 +117,37 @@ const LiveTracking = ({ navigation }) => {
 		[devicePositions]
 	);
 
-	useEffect(() => {
-		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
-			if (isAndroid) {
-
-			} else {
-				const arrCoords = devicePositionArray.map((item) => {
-					return {
-						'latitude': item.latitude,
-						'longitude': item.longitude
-					}
-				})
-				setCoordList(arrCoords)
-				mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
-					edgePadding: DEFAULT_PADDING,
-					animated: true,
-				});
+	useEffect(
+		() => {
+			if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
+				if (isAndroid) {
+					const arrCoords = devicePositionArray.map(item => {
+						let arr = [];
+						arr.push(item.longitude);
+						arr.push(item.latitude);
+						return arr;
+					});
+					let line = makeLineString(arr);
+					setLineString(line);
+				} else {
+					const arrCoords = devicePositionArray.map(item => {
+						return {
+							latitude: item.latitude,
+							longitude: item.longitude,
+						};
+					});
+					setCoordList(arrCoords);
+					mapRef &&
+						mapRef.current &&
+						mapRef.current.fitToCoordinates(arrCoords, {
+							edgePadding: DEFAULT_PADDING,
+							animated: true,
+						});
+				}
 			}
-		}
-	},[devicePositionArray])
+		},
+		[devicePositionArray]
+	);
 
 	useEffect(
 		() => {
@@ -141,9 +156,14 @@ const LiveTracking = ({ navigation }) => {
 				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
 				if (!isEmpty(arr)) {
 					const device = arr[0];
-					let deviceRegion = { latitude: device.latitude, longitude: device.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+					let deviceRegion = {
+						latitude: device.latitude,
+						longitude: device.longitude,
+						latitudeDelta: LATITUDE_DELTA,
+						longitudeDelta: LONGITUDE_DELTA,
+					};
 					setDevicePositionArray([device]);
-					setRegion(deviceRegion)
+					setRegion(deviceRegion);
 				}
 				console.log(deviceInfo);
 			}
@@ -237,28 +257,36 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function renderAppleMap() {
-		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current)
-		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1
-		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null
-		const address = isContainCoordinate ? startingDestination.address : ''
-		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		const address = isContainCoordinate ? startingDestination.address : '';
+		const coordinate = isContainCoordinate
+			? { latitude: startingDestination.latitude, longitude: startingDestination.longitude }
+			: null;
 		return (
 			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
-				{isContainCoordinate && <Map.Marker
-                            coordinate={coordinate}
-                            description={address}
-                        />}
-				{isPolyLine && <Map.Polyline
-                    coordinates={coordList}
-                    
-                    strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
-                    strokeWidth={3}
-                />}
-			</Map.default>			
-		)
+				{isContainCoordinate && <Map.Marker coordinate={coordinate} description={address} />}
+				{isPolyLine &&
+					<Map.Polyline
+						coordinates={coordList}
+						strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
+						strokeWidth={3}
+					/>}
+			</Map.default>
+		);
 	}
 
 	function renderMapBox() {
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		const address = isContainCoordinate ? startingDestination.address : '';
+		let coordinate = [];
+		if (isContainCoordinate) {
+			coordinate.push(startingDestination.longitude);
+			coordinate.push(startingDestination.latitude);
+		}
 		return (
 			<View style={styles.container}>
 				<Map.default.MapView style={{ flex: 1 }}>
@@ -268,6 +296,31 @@ const LiveTracking = ({ navigation }) => {
 						showsUserHeadingIndicator={true}
 						animated={true}
 					/>
+					{isContainCoordinate &&
+						<Map.default.Camera
+							zoomLevel={3}
+							bounds={{
+								ne: startingDestination.longitude,
+								sw: startingDestination.latitude,
+							}}
+						/>}
+					{!isEmpty(lineString)
+						? <Map.default.ShapeSource id="route" shape={lineString}>
+								<Map.default.LineLayer
+									id="lineroute"
+									style={{
+										lineCap: 'round',
+										lineWidth: 3,
+										lineOpacity: 0.84,
+										lineColor: ColorConstant.ORANGE,
+									}}
+								/>
+							</Map.default.ShapeSource>
+						: null}
+					{isContainCoordinate &&
+						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
+							<Map.default.Callout title={address} />
+						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>
 		);
