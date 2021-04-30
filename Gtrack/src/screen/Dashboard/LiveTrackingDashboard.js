@@ -69,7 +69,11 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 						let arrList = devicePositions;
 						const devicePositionObject = mapKeys('id', arrList);
 						const device = arr[0];
-						const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
+						// const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
+						const updatedDevicePositionObject = {
+													...devicePositionObject,
+													...{ [device.traccarDeviceId]: device },
+						};
 						const arrLogs = Object.values(updatedDevicePositionObject);
 						arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
 						setDevicePositionArray(arrLogs);
@@ -86,7 +90,13 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 					const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
 					if (!isEmpty(arr)) {
 						const device = arr[0];
-						let deviceRegion = { latitude: device.latitude, longitude: device.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+						// let deviceRegion = { latitude: device.latitude, longitude: device.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+						let deviceRegion = {
+							latitude: device.latitude,
+							longitude: device.longitude,
+							latitudeDelta: LATITUDE_DELTA,
+							longitudeDelta: LONGITUDE_DELTA,
+						};
 						setDevicePositionArray([device]);
 						setRegion(deviceRegion)
 					}
@@ -161,20 +171,54 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				setSelectedDeviceIndex(i);
 			}
 
-	function renderMapBox() {
-		return (
-			<View style={{flex:1}}>
-				<Map.default.MapView style={{ flex: 1 }}>
-					<Map.default.UserLocation
-						renderMode="normal"
-						visible={true}
-						showsUserHeadingIndicator={true}
-						animated={true}
-					/>
-				</Map.default.MapView>
-			</View>
-		);
-	}
+			function renderMapBox() {
+				const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
+				const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
+				const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+				const address = isContainCoordinate ? startingDestination.address : '';
+				let coordinate = [];
+				if (isContainCoordinate) {
+					coordinate.push(startingDestination.longitude);
+					coordinate.push(startingDestination.latitude);
+				}
+				return (
+					<View style={{ flex: 1 }}>
+						<Map.default.MapView style={{ flex: 1 }}>
+							<Map.default.UserLocation
+								renderMode="normal"
+								visible={true}
+								showsUserHeadingIndicator={true}
+								animated={true}
+							/>
+							{isContainCoordinate &&
+								<Map.default.Camera
+									zoomLevel={3}
+									bounds={{
+										ne: coordinate,
+										sw: coordinate,
+									}}
+								/>}
+							{!isEmpty(lineString)
+								? <Map.default.ShapeSource id="route" shape={lineString}>
+										<Map.default.LineLayer
+											id="lineroute"
+											style={{
+												lineCap: 'round',
+												lineWidth: 3,
+												lineOpacity: 0.84,
+												lineColor: ColorConstant.ORANGE,
+											}}
+										/>
+									</Map.default.ShapeSource>
+								: null}
+							{isContainCoordinate &&
+								<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
+									<Map.default.Callout title={address} />
+								</Map.default.PointAnnotation>}
+						</Map.default.MapView>
+					</View>
+				);
+			}
 
 	function renderRightPanel() {
 		return (
