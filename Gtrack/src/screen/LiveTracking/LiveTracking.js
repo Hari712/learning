@@ -178,9 +178,10 @@ const LiveTracking = ({ navigation }) => {
 		} else if (item == 'Alarms') {
 			setIsLineClick(false);
 			navigation.navigate(SCREEN_CONSTANTS.ALARMS);
-		} else {
+		} else if (item == 'Trip History'){
 			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY);
-		if(item === 'Asset Information') {
+		}	
+		else if (item === 'Asset Information') {
 			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
@@ -453,7 +454,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		backgroundColor: 'blue',
 		transform: [{ scale: 0.6 }],
-	},
+	}
 });
 
-export default LiveTracking;
+export default LiveTracking
