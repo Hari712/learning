@@ -15,7 +15,7 @@ import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import useSubscribeLocationUpdates from '../../../utils/useSubscribeLocationUpdates';
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 30;
+const LATITUDE_DELTA = 0.09;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const isAndroid = Platform.OS === 'android'
 
@@ -33,32 +33,37 @@ const GeoFenceCircle = ({navigation,route}) => {
     }))
 
     const [region, setRegion] = useState()
-
     const [regionAndroid, setRegionAndroid] = useState()
-
     const [isEditing, setIsEditing] = useState(false)
-
     const [completeEditing, setCompleteEditing] = useState(false)
-
     const [isScrollEnabled, setIsScrollEnabled] = useState(true)
-
     const [selectedCoordinate, setSelectedCoordinate] = useState(null)
-
     const [area, setArea] = useState('')
-
     const [radius, setRadius] = useState(500.001)
-
     const [value, setValue] = useState(0.3);
-
     const [oldData, setOldData] = useState()
-
     const location = useSubscribeLocationUpdates(isLoggedIn)
+
+    useEffect(()=>{
+        if(selectedCoordinate) {
+            if(!isAndroid) {
+                let delta = radius/10000
+                const region = { 
+                    latitude: selectedCoordinate.latitude, 
+                    longitude: selectedCoordinate.longitude, 
+                    latitudeDelta: delta, 
+                    longitudeDelta: delta*ASPECT_RATIO
+                } 
+                setRegion(region)
+            }
+        }
+    },[radius])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    Create Circle
+                    {route.params ? "Edit Circle" : "Create Circle"}
                 </Text>
             ),
             headerLeft: () => (
@@ -69,8 +74,8 @@ const GeoFenceCircle = ({navigation,route}) => {
                 </TouchableOpacity>
             ),
             headerRight: () => (
-                <TouchableOpacity disabled={!(area && selectedCoordinate[0])}  style={{marginRight:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
-                    <Text style={{color:area && selectedCoordinate[0]  ? ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
+                <TouchableOpacity disabled={!(area && (isAndroid ? selectedCoordinate[0]:selectedCoordinate))}  style={{marginRight:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Circle', devices: devices, editingData:oldData })}>
+                    <Text style={{color:area && (isAndroid? selectedCoordinate[0]:selectedCoordinate)  ? ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
         });
@@ -80,11 +85,18 @@ const GeoFenceCircle = ({navigation,route}) => {
         if(route.params && route.params.editingData) {
             const { editingData } = route.params
             setOldData(editingData)
-            setSelectedCoordinate(editingData.coordinate)
-            const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
-            setRegion(initialRegion)
-            setRegionAndroid(editingData.coordinate)
-            setRadius(editingData.radius)
+
+            if(isAndroid){
+                setRegionAndroid(editingData.coordinate)
+                setSelectedCoordinate(editingData.coordinate)
+                setRadius(editingData.radius)
+            } else {
+                const initialRegion = { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } 
+                setRegion(initialRegion)
+                const coordinate = {latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude}
+                setSelectedCoordinate(coordinate)
+                setRadius(parseFloat(editingData.radius))
+            }
             
         }else{
             GetLocation.getCurrentPosition({
@@ -107,11 +119,11 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     useEffect(() => {
         if(completeEditing && selectedCoordinate){
-            let tempArea = Platform.OS === 'ios' ?  "CIRCLE(" + selectedCoordinate.latitude + " " + selectedCoordinate.longitude + "," + radius + ")"
+            let tempArea = !isAndroid ?  "CIRCLE(" + selectedCoordinate.latitude + " " + selectedCoordinate.longitude + "," + radius + ")"
             : "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
             setArea(tempArea)
         } else if(oldData && selectedCoordinate){
-            let tempArea = Platform.OS === 'ios' ?  "CIRCLE(" + selectedCoordinate.latitude + " " + selectedCoordinate.longitude + "," + radius + ")"
+            let tempArea = !isAndroid ?  "CIRCLE(" + selectedCoordinate.latitude + " " + selectedCoordinate.longitude + "," + radius + ")"
             : "CIRCLE(" + selectedCoordinate[1] + " " + selectedCoordinate[0] + "," + radius + ")"
             setArea(tempArea)
         } 
@@ -131,7 +143,7 @@ const GeoFenceCircle = ({navigation,route}) => {
     function onPressAppleMap(e) {
         if (isEditing) {
             setSelectedCoordinate(e.nativeEvent.coordinate)
-            setRadius(50)
+            setRadius(radius)
         }
     }
 
@@ -152,22 +164,23 @@ const GeoFenceCircle = ({navigation,route}) => {
                 <Map.default.Circle
                     center={selectedCoordinate}
                     radius={radius}
-                    fillColor="rgba(255, 0, 0, 0.4)"
-                    strokeColor="rgba(0,0,0,0.5)"
+                    fillColor="rgba(255, 127, 33, 0.4)"
+                    strokeColor="rgba(255, 127, 33, 0.8)"
                     strokeWidth={2}
                 />
             )
-        }
-
-        function onPanDragMap(e) {
-            console.log(e)
-        }
+        }                                                          
 
         return (
             <View style={StyleSheet.absoluteFillObject}>
-                <Map.default style={StyleSheet.absoluteFillObject} scrollEnabled={isScrollEnabled} showsUserLocation={true} initialRegion={region} scrollEnabled={isScrollEnabled} onPress={(mapInfo) => onPressAppleMap(mapInfo)}>
-                    {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
-                    {!isEmpty(selectedCoordinate) ? renderAppleMapCircle() : null}
+                <Map.default style={StyleSheet.absoluteFillObject} scrollEnabled={isScrollEnabled} 
+                    showsUserLocation={true} 
+                    initialRegion={region} 
+                    region={region}
+                    scrollEnabled={isScrollEnabled} 
+                    onPress={(mapInfo) => onPressAppleMap(mapInfo)}>
+                        {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
+                        {!isEmpty(selectedCoordinate) ? renderAppleMapCircle() : null}
                 </Map.default>
             </View>
         )
@@ -183,12 +196,6 @@ const GeoFenceCircle = ({navigation,route}) => {
     }
 
     function renderMapBox() {
-
-        // let coordinate = []
-        // if (!isEmpty(selectedCoordinate)) {
-        //     coordinate.push(selectedCoordinate.longitude)
-        //     coordinate.push(selectedCoordinate.latitude)
-        // }
         
         let options = { steps: 50, units: 'kilometers', properties: { foo: 'bar' } };
 
@@ -206,7 +213,16 @@ const GeoFenceCircle = ({navigation,route}) => {
                 >
                     <Map.default.FillLayer
                         id='areaCircle'
-                        style={{ fillOpacity: 0.5 }} />
+                        style={{ fillOpacity: 0.5, fillColor:ColorConstant.ORANGE}} />
+                    
+                    <Map.default.LineLayer 
+                        id='linelayer'
+                        sourceLayerID='areaCirle'
+                        style={{
+                            lineColor:ColorConstant.ORANGE,
+                            lineWidth:2
+                        }}
+                    />
                 </Map.default.ShapeSource>
             )
         }
@@ -251,20 +267,35 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     function renderButton() {
         return (
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    onPress={() => {
-                        isEditing ? setCompleteEditing(true) : null;
-                        setIsEditing(prevState => !prevState)
-                    }}
-                    style={[styles.bubble, styles.button]} >
-
-                    <Text>
-                        {isEditing ? 'Finish Circle' : 'Draw Circle'}
-                    </Text>
-                    
-                </TouchableOpacity>
-            </View>
+            isAndroid ? 
+                <View style={{position:"absolute", marginVertical:20}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            isEditing ? setCompleteEditing(true) : null;
+                            setIsEditing(prevState => !prevState)
+                        }}
+                        style={[styles.bubble, styles.button]} >
+                        <Text>
+                            {isEditing ? 'Finish Circle' : 'Draw Circle'}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                </View>
+            :
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            isEditing ? setCompleteEditing(true) : null;
+                            setIsEditing(prevState => !prevState)
+                        }}
+                        style={[styles.bubble, styles.button]} >
+                        <Text>
+                            {isEditing ? 'Finish Circle' : 'Draw Circle'}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                </View>
+            
         )
     }
 
@@ -281,10 +312,10 @@ const GeoFenceCircle = ({navigation,route}) => {
                     </View>
                     <View style={styles.sliderView}>
                         <Slider
-                            value={value}
+                            value={radius/1000}
                             onValueChange={(value) => onChangeRadius(value)}
                             minimumValue={0.5}
-                            maximumValue={1000}
+                            maximumValue={100}
                             step={1}
                             minimumTrackTintColor={ColorConstant.BLUE}
                             maximumTrackTintColor={ColorConstant.BLUE}

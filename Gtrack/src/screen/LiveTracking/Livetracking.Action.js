@@ -136,5 +136,38 @@ export const setLiveTrackingPositionData = (data) => ({
     data
 })
 
+export const requestGetGroupDevices = (userId, onSuccess, onError) => ({
+    type: types.GET_GROUP_DEVICES_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setGroupDevicesResponse = (data) => ({
+    type: types.GET_GROUP_DEVICES_RESPONSE,
+    data
+})
+
+export const requestAllLastKnownPostion = (userId, positionId, onSuccess, onError) => ({
+    type: types.GET_ALL_LAST_KNOWN_POSITION_REQUEST,
+    userId,
+    positionId,
+    onSuccess,
+    onError
+})
+
+export const setAllLastKnownPostionResponse = (data) => ({
+    type: types.GET_ALL_LAST_KNOWN_POSITION_RESPONSE,
+    data
+})
+
+export const requestAssetInfo = (userId, traccarId, onSuccess, onError) => ({
+    type: types.GET_ASSET_INFO_REQUEST,
+    userId,
+    traccarId,
+    onSuccess,
+    onError
+})
+
 
 

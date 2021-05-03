@@ -148,6 +148,45 @@ function* requestEnableDisableGeofence(action) {
     }
 }
 
+function* requestGetGroupDevices(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_GROUP_DEVICES(userId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setGroupDevicesResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestAllLastKnownPostion(action) {
+    const { userId, positionId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_ALL_LAST_KNOWN_POSITION(userId, positionId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setAllLastKnownPostionResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestAssetInfo(action) {
+    const { userId, traccarId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_ASSET_INFO_BY_TRACCAR_ID(userId, traccarId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
@@ -160,5 +199,8 @@ export function* watchLivetracking() {
     yield takeLatest(types.LINK_GEOFENCE_TO_DEVICES, requestLinkGeofenceToDevices),
     yield takeLatest(types.UPDATE_GEOFENCE_REQUEST, requestUpdateGeofence),
     yield takeLatest(types.ENABLE_DISABLE_GEOFENCE_REQUEST, requestEnableDisableGeofence),
-    yield takeLatest(types.LINK_GEOFENCE_TO_UPDATED_DEVICES, requestLinkGeofenceToUpdatedDevices)
+    yield takeLatest(types.LINK_GEOFENCE_TO_UPDATED_DEVICES, requestLinkGeofenceToUpdatedDevices),
+    yield takeLatest(types.GET_GROUP_DEVICES_REQUEST, requestGetGroupDevices),
+    yield takeLatest(types.GET_ALL_LAST_KNOWN_POSITION_REQUEST, requestAllLastKnownPostion),
+    yield takeLatest(types.GET_ASSET_INFO_REQUEST, requestAssetInfo)
 }

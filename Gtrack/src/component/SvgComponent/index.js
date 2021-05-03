@@ -113,7 +113,11 @@ import CalenderIconWhite from './CalenderIconWhite'
 import CalenderIconBlue from './CalenderIconBlue'
 import LocationIcon from './LocationIcon'
 import NoInternetConnectivityIcon from './NoInternetConnectivityIcon'
-import SvgNoConnection from './SvgNoConnection';
+import SvgNoConnection from './SvgNoConnection'
+import EndPointIcon from './EndPointIcon'
+import StartPointIcon from './StartPointIcon'
+import MarkerIcon from './MarkerIcon'
+import LocationOrangeIcon from './LocationOrangeIcon'
 
 export {
     BarCodeScanIcon,
@@ -230,5 +234,9 @@ export {
     CalenderIconBlue,
     LocationIcon,
     NoInternetConnectivityIcon,
-    SvgNoConnection
+    SvgNoConnection,
+    EndPointIcon,
+    StartPointIcon,
+    MarkerIcon,
+    LocationOrangeIcon
 }

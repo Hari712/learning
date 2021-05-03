@@ -153,10 +153,10 @@ blueBoxTitle :{
 activeText : {
     //fontSize:FontSize.FontSize.small,
     color:ColorConstant.WHITE,
-    paddingHorizontal:hp(1),
-    flex:0.3,
+    paddingLeft:hp(0.5),
+    flex:0.35,
     fontSize:12,
-    fontFamily:'Nunito-Regular'
+    fontFamily:'Nunito-Regular',
 },
 whiteContainer : {
     flexDirection:'row',

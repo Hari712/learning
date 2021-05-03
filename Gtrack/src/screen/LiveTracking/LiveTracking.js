@@ -172,10 +172,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
-		if (item === 'Sensor Information') {
-			setIsLineClick(false);
-			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO);
-		} else if (item == 'Geo Fence') {
+ 		if (item == 'Geo Fence') {
 			setIsLineClick(false);
 			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE);
 		} else if (item == 'Alarms') {
@@ -183,6 +180,9 @@ const LiveTracking = ({ navigation }) => {
 			navigation.navigate(SCREEN_CONSTANTS.ALARMS);
 		} else {
 			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY);
+		if(item === 'Asset Information') {
+			setIsLineClick(false)
+			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
 	};
 
@@ -376,7 +376,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 };
 
-const data = ['Geo Fence', 'Sensor Information', 'Alarms', 'Trip History'];
+const data = ['Geo Fence', 'Asset Information', 'Alarms',"Trip History"]
 
 const styles = StyleSheet.create({
 	container: {
