@@ -300,8 +300,8 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							zoomLevel={3}
 							bounds={{
-								ne: startingDestination.longitude,
-								sw: startingDestination.latitude,
+								ne: coordinate,
+								sw: coordinate,
 							}}
 						/>}
 					{!isEmpty(lineString)
