@@ -5,6 +5,7 @@ import { setToken, clearToken } from '../../api'
 import { storeItem, getItem } from '../../utils/storage'
 import API from '../../api'
 import * as LoginActions from './Login.Action'
+import * as LiveTrackingActions from '../LiveTracking/Livetracking.Action'
 
 function* login(action) {
     const { data, onSuccess, onError } = action
@@ -13,6 +14,21 @@ function* login(action) {
         setToken(response.result.accessToken)
         const result = response.result ? response.result : {}
         yield put(LoginActions.setLoginResponse(result))
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* loginIntoTraccarSession(action) {
+    const { email, password, onSuccess, onError } = action
+    try {
+        const params = new URLSearchParams();
+        params.append('email', email);
+        params.append('password', password);
+        const response = yield call(API.post, ApiConstants.TRACCAR_SESSION, params)
+        const result = response ? response : {}
+        yield put(LoginActions.setTraccarSessionData(result))
         onSuccess(result)
     } catch (error) {
         onError(error)
@@ -83,6 +99,19 @@ function* requestFetchUserTax(action) {
     }
 }
 
+function* requestGetLastKnownDevicePositions(action) {
+    const { userId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_LAST_KNOWN_POSITIONS(userId)
+        const response = yield call(API.get, url)
+        const arrResult = response.result ? response.result : []
+        yield put(LiveTrackingActions.setLiveTrackingPositionData(arrResult))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 
 export function* watchLogin() {
@@ -92,5 +121,7 @@ export function* watchLogin() {
     yield takeLatest(types.GET_OTP_REQUEST, requestGetOTP),
     yield takeLatest(types.VERIFY_OTP_REQUEST, requestVerifyOTP),
     yield takeLatest(types.RESET_PASSCODE_REQUEST, resetPasscode),
-    yield takeLatest(types.FETCH_TAX_REQUEST, requestFetchUserTax)
+    yield takeLatest(types.FETCH_TAX_REQUEST, requestFetchUserTax),
+    yield takeLatest(types.TRACCAR_SESSION_REQUEST, loginIntoTraccarSession),
+    yield takeLatest(types.GET_LAST_KNOWN_DEVICE_POSITIONS_REQUEST, requestGetLastKnownDevicePositions)
 }

@@ -22,6 +22,16 @@ export const isRoleRegular = createSelector(
 )
 
 /**
+ * Get Traccar Session Information
+ */
+const getTraccarSession = (state) => state.login.traccarSession
+export const getTraccarSessionInfo = createSelector(
+    [getTraccarSession],
+    (info) => info
+)
+
+
+/**
  * Get SubUser Information
  */
 
@@ -202,6 +212,16 @@ export const getGeofenceDeviceListInfo = createSelector(
 )
 
 /**
+ * Get Live Tracking Device List
+ */
+
+const getLiveTrackingDeviceListInfo = (state) => state.livetracking && state.livetracking.liveTrackingLastKnownPositions ? state.livetracking.liveTrackingLastKnownPositions : []
+
+export const getLiveTrackingDeviceList = createSelector(
+    [getLiveTrackingDeviceListInfo],
+    (info) => info
+)
+/*    
  * Get Group Devices for TripHistory and Asset Infromation
  */
 
@@ -223,6 +243,22 @@ export const getSettigsNotificationListInfo = createSelector(
 )
 
 /**
+ * Get All User Device
+ */
+
+const getAllUserDeviceListInfo = (state) => getAllUserDevices(state)
+
+function getAllUserDevices(state) {
+    const devicesInfo = state && state.device && state.device.userDevices ? state.device.userDevices : {}
+    const arrDeviceList = Object.values(devicesInfo)
+    return arrDeviceList
+}
+
+export const getAllUserDevicesList = createSelector(
+    [getAllUserDeviceListInfo],
+    (info) => info
+)
+/*
  * Get Asset Info for Asset Infromation
  */
 

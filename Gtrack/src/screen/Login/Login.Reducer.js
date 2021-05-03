@@ -13,7 +13,8 @@ const initialState = {
     email: null,
     group:[],
     role:[],
-    feedback:[]
+    feedback:[],
+    traccarSession: null
 }
 
 export const loginReducer = createReducer(state = initialState, {
@@ -51,6 +52,12 @@ export const loginReducer = createReducer(state = initialState, {
         return {
             ...state,
             feedback: result
+        }
+    },
+    [types.TRACCAR_SESSION_RESPONSE](state, action) {
+        return {
+            ...state,
+            traccarSession: action.data
         }
     }
 })
