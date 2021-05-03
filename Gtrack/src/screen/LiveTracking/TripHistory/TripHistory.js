@@ -121,8 +121,7 @@ const TripHistory = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
             <FlatList
-                style={{}}
-                contentContainerStyle={{}}
+                style={{ flex: 1 }}
                 data={groupDevices}
                 renderItem={deviceGroupInfoItem}
                 keyExtractor={(item, index) => index.toString()}
