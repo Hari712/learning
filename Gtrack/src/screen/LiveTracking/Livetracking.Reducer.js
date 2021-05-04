@@ -7,7 +7,9 @@ const initialState = {
     devicesList: [],
     alertTypes: [],
     geofenceList: [],
-    liveTrackingLastKnownPositions: []
+    liveTrackingLastKnownPositions: [],
+    traccarDevices:[],
+    traccarPositions:[]
 }
 
 
@@ -70,6 +72,18 @@ export const livetrackingReducer = createReducer(state = initialState, {
         return {
             ...state,
             liveTrackingLastKnownPositions: action.data
+        }
+    },
+    [types.SET_LIVE_TRACKING_POSITIONS](state, action) {
+        return {
+            ...state,
+            traccarPositions: action.data
+        }
+    },
+    [types.SET_LIVE_TRACKING_DEVICES](state, action) {
+        return {
+            ...state,
+            traccarDevices: action.data
         }
     }
 })

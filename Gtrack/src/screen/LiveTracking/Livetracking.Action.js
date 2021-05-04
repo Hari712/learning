@@ -136,5 +136,14 @@ export const setLiveTrackingPositionData = (data) => ({
     data
 })
 
+export const setLiveTrackingTraccarDevices = (data) => ({
+    type: types.SET_LIVE_TRACKING_DEVICES,
+    data
+})
+
+export const setLiveTrackingTraccarPositions = (data) => ({
+    type: types.SET_LIVE_TRACKING_POSITIONS,
+    data
+})
 
 

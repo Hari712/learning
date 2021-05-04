@@ -45,6 +45,8 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
     const [lineString, setLineString] = useState(null)
 	const [region, setRegion] = useStateRef()
 
+	console.log("khushhi",devicePositions,selectedDeviceRef,selectedDevice)
+
 
 	const mapRef = useRef();
 
@@ -69,14 +71,13 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 						let arrList = devicePositions;
 						const devicePositionObject = mapKeys('id', arrList);
 						const device = arr[0];
-						// const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
 						const updatedDevicePositionObject = {
 													...devicePositionObject,
 													...{ [device.traccarDeviceId]: device },
 						};
 						const arrLogs = Object.values(updatedDevicePositionObject);
 						arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
-						setDevicePositionArray(arrLogs);
+						setDevicePositionArray(arrLogs)
 					}
 				}
 			},
@@ -90,7 +91,6 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 					const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
 					if (!isEmpty(arr)) {
 						const device = arr[0];
-						// let deviceRegion = { latitude: device.latitude, longitude: device.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
 						let deviceRegion = {
 							latitude: device.latitude,
 							longitude: device.longitude,
@@ -108,8 +108,17 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 
 		useEffect(() => {
 			if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
+				console.log("position",devicePositionArray)
 				if (isAndroid) {
-	
+					const arrCoords = devicePositionArray.map(item => {
+						let arr = [];
+							arr.push(item.longitude);
+							arr.push(item.latitude);
+							return arr;
+					});
+					let line = makeLineString(arrCoords);
+					setLineString(line);
+					console.log("line",line)
 				} else {
 					const arrCoords = devicePositionArray.map((item) => {
 						return {
@@ -125,6 +134,8 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				}
 			}
 		},[devicePositionArray])
+
+	
 
 		function renderAppleMap() {
 			const isContainCoordinate = !isEmpty(devicePositionArrayRef.current)
@@ -223,7 +234,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 	function renderRightPanel() {
 		return (
 			<View style={styles.rightMainViewStyle}>
-				<TouchableOpacity onPress={() => NavigationService.navigate('TrackingDetails')}>
+				<TouchableOpacity onPress={() => NavigationService.navigate('TrackingDetails',{selectedDevice:selectedDevice})}>
 					<FullScreenIcon style={styles.ViewallStyle} resizeMode="contain" />
 				</TouchableOpacity>
 

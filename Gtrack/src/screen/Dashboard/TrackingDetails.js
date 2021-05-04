@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, Dimensions, Platform } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
@@ -7,12 +7,104 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import FontSize from '../../component/FontSize';
 import MapView from '../../component/MapView';
 // import { LiveTracking } from '..';
+import { getLiveTrackingDeviceList, getAllUserDevicesList } from './../Selector';
+import { useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+import mapKeys from 'lodash/mapKeys';
+import Moment from 'moment'
+import { lineString as makeLineString } from '@turf/helpers';
+import useStateRef from '../../utils/useStateRef';
+import _ from 'lodash';
 
-const {height} = Dimensions.get('window')
+const Map = Platform.select({
+	ios: () => require('react-native-maps'),
+	android: () => require('@react-native-mapbox-gl/maps'),
+})();
 
-const TrackingDetails = () => {
+const { width, height } = Dimensions.get('window');
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.9;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
+
+const isAndroid = Platform.OS === 'android';
+
+// const {height} = Dimensions.get('window')
+
+const TrackingDetails = ({navigation, route}) => {
+
+	console.log("props",route.params)
+
+	const { selectedDevice }  = route.params
 
 	const sheetRef = useRef(null);
+
+	const { isConnected, devicePositions, deviceListInfo } = useSelector(state => ({
+		isConnected: state.network.isConnected,
+		devicePositions: getLiveTrackingDeviceList(state),
+		deviceListInfo: getAllUserDevicesList(state),
+	}));
+
+	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
+	const [lineString, setLineString] = useState(null)
+	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
+
+	// console.log("Testing khushi", arrDeveicePositionList)
+
+	useEffect(
+		() => {
+			if (!isEmpty(devicePositions) && selectedDevice) {
+				const deviceInfo = selectedDevice;
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+				if (!isEmpty(arr)) {
+					setSingleSelectedDevice(arr[0])
+					let arrList = devicePositionArray;
+					// const devicePositionObject = mapKeys(arrList,'id');
+					const device = arr[0];
+
+					const updatedDevicePositionObject = {
+						...devicePositionArray,
+						...{device}
+					};
+					
+					const arrLogs = Object.values(updatedDevicePositionObject);
+					console.log("Tracker",arrLogs)
+					// arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					setDevicePositionArray(arrLogs);
+				}
+			}
+		},
+		[devicePositions]
+	);
+
+	useEffect(() => {
+		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
+			if (isAndroid) {
+				const arrCoords = devicePositionArray.map(item => {
+						let arr = [];
+						arr.push(item.longitude);
+						arr.push(item.latitude);
+						return arr;
+					});
+					let line = makeLineString(arrCoords);
+					setLineString(line);
+			} else {
+				const arrCoords = devicePositionArray.map((item) => {
+					return {
+						'latitude': item.latitude,
+						'longitude': item.longitude
+					}
+				})
+				setCoordList(arrCoords)
+				mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
+					edgePadding: DEFAULT_PADDING,
+					animated: true,
+				});
+			}
+		}
+	},[devicePositionArray])
+
+	console.log("deviceSingle",singleSelectedDevice)
     
     React.useEffect(()=>{
 
@@ -28,15 +120,16 @@ const TrackingDetails = () => {
 				<Image style={styles.icon} source={images.dashBoard.pin}/>
 			</View> 
 			<View style={styles.address}>
-				<Text style={{fontSize:FontSize.FontSize.small}}>900 Dufferian Street,{'\n'}Toronto MG L40 1V6 {'\n'}Canada</Text>
+				{/* <Text style={{fontSize:FontSize.FontSize.small}}>900 Dufferian Street,{'\n'}Toronto MG L40 1V6 {'\n'}Canada</Text> */}
+				<Text style={{fontSize:FontSize.FontSize.small}}>{singleSelectedDevice ? singleSelectedDevice.address : '-'}</Text>
 			</View>
 			<View style={styles.subContainerView}>
 				<Text style={styles.title}>Date & Time</Text>
 				<Image style={styles.icon} source={images.dashBoard.calender}/>
 			</View> 
 			<View style={styles.otherDetails}>
-				<Text style={styles.date}>21/07/2020</Text>
-				<Text style={[styles.date,{flex:1}]}>02:00:04</Text>
+				<Text style={styles.date}>{singleSelectedDevice ? Moment(singleSelectedDevice.deviceTime).format("DD-MM-YYYY") : '-'}</Text>
+				<Text style={[styles.date,{flex:1}]}>{singleSelectedDevice ? Moment(singleSelectedDevice.deviceTime).format("h:mm:ss") : '-'}</Text>
 			</View> 
 			<View style={styles.subContainerView}>
 				<Text style={styles.title}>Other details</Text>
@@ -49,19 +142,106 @@ const TrackingDetails = () => {
 				</View>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Distance</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>16.47mi</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{singleSelectedDevice && singleSelectedDevice.attributes ? singleSelectedDevice.attributes.distance + 'mi' : '-'}</Text>
 				</View>
 				<View style={{flex:0.3}}>
 					<Text style={styles.otherDetailText}>Speed</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>66mph</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{singleSelectedDevice ? singleSelectedDevice.speed + 'mph' : '-'}</Text>
 				</View>    
 			</View>         
 		</View>
 	);
 
+	function renderAppleMap() {
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current)
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null
+		const address = isContainCoordinate ? startingDestination.address : ''
+		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
+		// const isContainCoordinate = !isEmpty(singleSelectedDevice);
+		// const isPolyLine = isEmpty(singleSelectedDevice) ? false : singleSelectedDevice.length > 1;
+		// const startingDestination = isContainCoordinate ? singleSelectedDevice : null;
+		// const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
+		return (
+			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
+				{isContainCoordinate && <Map.Marker
+							coordinate={coordinate}
+							description={address}
+						/>}
+				{isPolyLine && <Map.Polyline
+					coordinates={coordList}
+					
+					strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
+					strokeWidth={3}
+				/>}
+			</Map.default>			
+		)
+	}
+
+	function renderMapBox() {
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		console.log("tester",devicePositionArrayRef.current);
+		const address = isContainCoordinate ? startingDestination.address : '';
+		console.log("vilash",isContainCoordinate,startingDestination)
+		let coordinate = [];
+		if (isContainCoordinate) {
+			coordinate.push(startingDestination.longitude);
+			coordinate.push(startingDestination.latitude);
+		}
+		// const isContainCoordinate = !isEmpty(singleSelectedDevice);
+		// const isPolyLine = isEmpty(singleSelectedDevice) ? false : singleSelectedDevice.length > 1;
+		// const startingDestination = isContainCoordinate ? singleSelectedDevice : null;
+		// let coordinate = [];
+		// if (isContainCoordinate) {
+		// 	console.log("coord",startingDestination	)
+		// 	coordinate.push(startingDestination.longitude);
+		// 	coordinate.push(startingDestination.latitude);
+		// }
+		return (
+			<View style={{ flex: 1 }}>
+				<Map.default.MapView style={{ flex: 1 }}>
+					<Map.default.UserLocation
+						renderMode="normal"
+						visible={true}
+						showsUserHeadingIndicator={true}
+						animated={true}
+					/>
+					{isContainCoordinate &&
+						<Map.default.Camera
+							zoomLevel={12}
+							bounds={{
+								ne: coordinate,
+								sw: coordinate,
+							}}
+						/>}
+					{!isEmpty(lineString)
+						? <Map.default.ShapeSource id="route" shape={lineString}>
+								<Map.default.LineLayer
+									id="lineroute"
+									style={{
+										lineCap: 'round',
+										lineWidth: 3,
+										lineOpacity: 0.84,
+										lineColor: ColorConstant.ORANGE,
+									}}
+								/>
+							</Map.default.ShapeSource>
+						: null}
+					{isContainCoordinate &&
+						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
+							<Map.default.Callout title='abc' />
+						</Map.default.PointAnnotation>}
+				</Map.default.MapView>
+			</View>
+		);
+	}
+
 	return (
 		<View style={styles.container}>
-			<MapView/>
+			{isAndroid ? renderMapBox() : renderAppleMap()}
+			{/* <MapView/> */}
 			{/* <LiveTracking /> */}
 
 			<BottomSheet
