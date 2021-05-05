@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
@@ -42,14 +42,24 @@ const LiveTracking = ({ navigation }) => {
 		devicePositions: getLiveTrackingDeviceList(state),
 	}));
 
-	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceList);
+	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceListInfo);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
-	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef();
+	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
 	const [coordList, setCoordList] = useState([])
     const [lineString, setLineString] = useState(null)
 	const [region, setRegion] = useStateRef()
 	const isFocused = useIsFocused();
+
+	useEffect(()=>{
+		console.log("Iam runnign");
+		setDeviceList(deviceListInfo);
+		if (!isEmpty(deviceList)) {
+			const device = deviceList[selectedDeviceIndex];
+			setSelectedDevice(device.deviceDTO);
+			// setSelectedDeviceIndex(0);			
+		}
+	},[deviceListInfo])
 
 	const mapRef = useRef();
 
@@ -69,17 +79,8 @@ const LiveTracking = ({ navigation }) => {
 		[navigation]
 	);
 
-	useEffect(
-		() => {
-			setDeviceList(deviceListInfo);
-			if (!isEmpty(deviceListInfo)) {
-				const device = deviceListInfo[0];
-				setSelectedDevice(device.deviceDTO);
-				setSelectedDeviceIndex(0);
-			}
-		},
-		[deviceListInfo]
-	);
+	
+	
 
 	// useEffect(
 	// 	() => {
@@ -97,15 +98,30 @@ const LiveTracking = ({ navigation }) => {
 
 	useEffect(
 		() => {
-			if (!isEmpty(devicePositions) && selectedDeviceRef.current) {
-				const deviceInfo = selectedDeviceRef.current;
-				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+			if (!isEmpty(devicePositions) && selectedDeviceRef.current && selectedDevice) {
+				// const deviceInfo = selectedDeviceRef.current;
+				// console.log("pos",devicePositions)
+				// const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+				// if (!isEmpty(arr)) {
+				// 	let arrList = devicePositions;
+				// 	const devicePositionObject = mapKeys(arrList, 'id');
+				// 	const device = arr[0];
+				// 	const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
+				// 	const arrLogs = Object.values(updatedDevicePositionObject);
+				// 	arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+				// 	setDevicePositionArray(arrLogs);
+				// }
+				const deviceInfo = selectedDevice;
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId)
 				if (!isEmpty(arr)) {
-					let arrList = devicePositions;
-					const devicePositionObject = mapKeys('id', arrList);
+					let arrList = devicePositionArray;
+					const devicePositionObject = mapKeys(arrList,'id');
 					const device = arr[0];
-					const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
-					const arrLogs = Object.values(updatedDevicePositionObject);
+					const updatedDevicePositionObject = {
+						...devicePositionObject,
+						...{[device.id]: device}
+					};
+					const arrLogs = Object.values(updatedDevicePositionObject)
 					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
 					setDevicePositionArray(arrLogs);
 				}
@@ -117,7 +133,15 @@ const LiveTracking = ({ navigation }) => {
 	useEffect(() => {
 		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
 			if (isAndroid) {
-
+				const arrCoords = devicePositionArray.map(item => {
+					let arr = [];
+						arr.push(item.longitude);
+						arr.push(item.latitude);
+						return arr;
+				});
+				let line = makeLineString(arrCoords);
+				setLineString(line);
+				console.log("line",line)
 			} else {
 				const arrCoords = devicePositionArray.map((item) => {
 					return {
@@ -179,6 +203,7 @@ const LiveTracking = ({ navigation }) => {
 		const device = arr[i];
 		setSelectedDevice(device.deviceDTO);
 		setSelectedDeviceIndex(i);
+		setDevicePositionArray([]);
 	}
 
 	function onPressPrevious() {
@@ -192,6 +217,7 @@ const LiveTracking = ({ navigation }) => {
 		const device = arr[i];
 		setSelectedDevice(device.deviceDTO);
 		setSelectedDeviceIndex(i);
+		setDevicePositionArray([]);
 	}
 
 	function renderDeviceSelectionView() {
@@ -259,8 +285,17 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function renderMapBox() {
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		const address = isContainCoordinate ? startingDestination.address : '';
+		let coordinate = [];
+		if (isContainCoordinate) {
+			coordinate.push(startingDestination.longitude);
+			coordinate.push(startingDestination.latitude);
+		}
 		return (
-			<View style={styles.container}>
+			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }}>
 					<Map.default.UserLocation
 						renderMode="normal"
@@ -268,6 +303,31 @@ const LiveTracking = ({ navigation }) => {
 						showsUserHeadingIndicator={true}
 						animated={true}
 					/>
+					{isContainCoordinate &&
+						<Map.default.Camera
+							zoomLevel={13}
+							bounds={{
+								ne: coordinate,
+								sw: coordinate,
+							}}
+						/>}
+					{!isEmpty(lineString)
+						? <Map.default.ShapeSource id="route" shape={lineString}>
+								<Map.default.LineLayer
+									id="lineroute"
+									style={{
+										lineCap: 'round',
+										lineWidth: 3,
+										lineOpacity: 0.84,
+										lineColor: ColorConstant.ORANGE,
+									}}
+								/>
+							</Map.default.ShapeSource>
+						: null}
+					{isContainCoordinate &&
+						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
+							<Map.default.Callout title={address} />
+						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>
 		);

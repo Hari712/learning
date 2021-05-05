@@ -48,28 +48,23 @@ const TrackingDetails = ({navigation, route}) => {
 	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
 	const [lineString, setLineString] = useState(null)
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
-
-	// console.log("Testing khushi", arrDeveicePositionList)
-
+	
 	useEffect(
 		() => {
 			if (!isEmpty(devicePositions) && selectedDevice) {
 				const deviceInfo = selectedDevice;
-				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId)
 				if (!isEmpty(arr)) {
 					setSingleSelectedDevice(arr[0])
 					let arrList = devicePositionArray;
-					// const devicePositionObject = mapKeys(arrList,'id');
+					const devicePositionObject = mapKeys(arrList,'id');
 					const device = arr[0];
-
 					const updatedDevicePositionObject = {
-						...devicePositionArray,
-						...{device}
+						...devicePositionObject,
+						...{[device.id]: device}
 					};
-					
-					const arrLogs = Object.values(updatedDevicePositionObject);
-					console.log("Tracker",arrLogs)
-					// arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					const arrLogs = Object.values(updatedDevicePositionObject)
+					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
 					setDevicePositionArray(arrLogs);
 				}
 			}
@@ -181,10 +176,8 @@ const TrackingDetails = ({navigation, route}) => {
 	function renderMapBox() {
 		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
 		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
-		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
-		console.log("tester",devicePositionArrayRef.current);
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null
 		const address = isContainCoordinate ? startingDestination.address : '';
-		console.log("vilash",isContainCoordinate,startingDestination)
 		let coordinate = [];
 		if (isContainCoordinate) {
 			coordinate.push(startingDestination.longitude);

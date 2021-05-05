@@ -39,7 +39,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 
 	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceList);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
-	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef();
+	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
 	const [coordList, setCoordList] = useState([])
     const [lineString, setLineString] = useState(null)
@@ -54,35 +54,35 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				() => {
 					setDeviceList(deviceListInfo);
 					if (!isEmpty(deviceListInfo)) {
-						const device = deviceListInfo[0];
+						const device = deviceListInfo[selectedDeviceIndex];
 						setSelectedDevice(device.deviceDTO);
-						setSelectedDeviceIndex(0);
+						// setSelectedDeviceIndex(0);
 					}
 				},
 				[deviceListInfo]
 			);
 
-		useEffect(
-			() => {
-				if (!isEmpty(devicePositions) && selectedDeviceRef.current) {
-					const deviceInfo = selectedDeviceRef.current;
-					const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
-					if (!isEmpty(arr)) {
-						let arrList = devicePositions;
-						const devicePositionObject = mapKeys('id', arrList);
-						const device = arr[0];
-						const updatedDevicePositionObject = {
-													...devicePositionObject,
-													...{ [device.traccarDeviceId]: device },
-						};
-						const arrLogs = Object.values(updatedDevicePositionObject);
-						arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
-						setDevicePositionArray(arrLogs)
+			useEffect(
+				() => {
+					if (!isEmpty(devicePositions) && selectedDevice) {
+						const deviceInfo = selectedDevice;
+						const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId)
+						if (!isEmpty(arr)) {
+							let arrList = devicePositionArray;
+							const devicePositionObject = mapKeys(arrList,'id');
+							const device = arr[0];
+							const updatedDevicePositionObject = {
+								...devicePositionObject,
+								...{[device.id]: device}
+							};
+							const arrLogs = Object.values(updatedDevicePositionObject)
+							arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+							setDevicePositionArray(arrLogs);
+						}
 					}
-				}
-			},
-			[devicePositions]
-		);
+				},
+				[devicePositions]
+			);
 
 		useEffect(
 			() => {
@@ -160,17 +160,18 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 		}
 
 			function onPressNext() {
-				let i = selectedDeviceIndexRef.current;
+				let i = selectedDeviceIndex;
 				const arr = deviceListRef.current ? deviceListRef.current : [];
 				i = i + 1; // increase i by one
 				i = i % arr.length; // if we've gone too high, start from `0` again
 				const device = arr[i];
 				setSelectedDevice(device.deviceDTO);
 				setSelectedDeviceIndex(i);
+				setDevicePositionArray([]);
 			}
 		
 			function onPressPrevious() {
-				let i = selectedDeviceIndexRef.current;
+				let i = selectedDeviceIndex;
 				const arr = deviceListRef.current ? deviceListRef.current : [];
 				if (i === 0) {
 					// i would become 0
@@ -180,6 +181,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				const device = arr[i];
 				setSelectedDevice(device.deviceDTO);
 				setSelectedDeviceIndex(i);
+				setDevicePositionArray([]);
 			}
 
 			function renderMapBox() {
@@ -203,7 +205,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 							/>
 							{isContainCoordinate &&
 								<Map.default.Camera
-									zoomLevel={3}
+									zoomLevel={13}
 									bounds={{
 										ne: coordinate,
 										sw: coordinate,
@@ -246,7 +248,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 	}
 
 	function renderDeviceSelectionView() {
-		const deviceInfo = selectedDeviceRef.current;
+		const deviceInfo = selectedDevice;
 
 		return (
 			<View
