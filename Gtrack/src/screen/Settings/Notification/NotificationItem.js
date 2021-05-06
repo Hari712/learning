@@ -13,7 +13,7 @@ import * as SettingNotificationActions from '../Settings.Action'
 
 const NotificationItem = (props) => {
 
-    const { item, isDisable, setIsDisable, isCollapsed, setIsCollapsed} = props
+    const { item, isDisable, setIsDisable } = props
 
     const { loginData, notificationData } = useSelector(state => ({
         loginData: getLoginState(state),
@@ -21,7 +21,7 @@ const NotificationItem = (props) => {
         notificationData: getSettigsNotificationListInfo(state)
     }))
 
-    // const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(false)
     
     const dispatch = useDispatch()
 

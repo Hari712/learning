@@ -26,7 +26,6 @@ const SettingNotification = ({ navigation }) => {
     }))
 
     const [isDisable, setIsDisable] = useState(false)
-    const [isCollapsed, setIsCollapsed] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -81,7 +80,6 @@ const SettingNotification = ({ navigation }) => {
     }
 
     function onUpdateSuccess(data) { 
-        setIsCollapsed(false)   
         AppManager.showSimpleMessage('success', { message: 'Notification updated successfully', description: '', floating: true })
         AppManager.hideLoader()
     }
@@ -97,8 +95,6 @@ const SettingNotification = ({ navigation }) => {
                 item={item}
                 isDisable={isDisable}
                 setIsDisable={setIsDisable}
-                isCollapsed={isCollapsed}
-                setIsCollapsed={setIsCollapsed}
             />
         )
     }
