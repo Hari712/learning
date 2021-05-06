@@ -6,7 +6,8 @@ const initialState = {
     assetType: {},
     assets: {},
     groups: {},
-    devices: {}
+    devices: {},
+    userDevices: {}
 }
 
 
@@ -68,6 +69,14 @@ export const deviceReducer = createReducer(state = initialState, {
         return {
             ...state,
             devices: updatedDevices
+        }
+    },
+    [types.SET_ALL_DEVICE_USER_RESPONSE](state, action) {
+        const { data } = action
+        const arrDeviceInfo = mapKeys(data, 'deviceDTO.id')
+        return {
+            ...state,
+            userDevices: arrDeviceInfo
         }
     },
     [types.DELETE_ASSET_BY_ASSET_ID_RESPONSE](state, action) {

@@ -1,6 +1,8 @@
-const BASE_URL = 'https://gtrackapi-dev.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://gtrackapi-qa.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 
 const SUFFIX_URL = 'public/'
+
+const TRACCAR_URL = 'https://traccar-dev.vegitone.com/'
 
 const AUTH = 'auth/'
 
@@ -12,6 +14,8 @@ const ApiConstants = {
     BASE_URL: BASE_URL,
     LOGIN: SUFFIX_URL + AUTH + 'login',
     SIGNUP: SUFFIX_URL + 'signup',
+    TRACCAR_URL: TRACCAR_URL,
+    SOCKET_BASE_URL: 'traccar-dev.vegitone.com/',
     REFRESH_TOKEN:(userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     FORGOT_PASSWORD: `${SUFFIX_URL}forgotPassword/getOTP`,
     VERIFY_OTP: `${SUFFIX_URL}forgotPassword/verifyOTP`,
@@ -60,6 +64,8 @@ const ApiConstants = {
     LINK_GEOFENCE_DEVICES_UPDATE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/updateGeofence`,
     UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
+    TRACCAR_SESSION: `api/session`,
+    GET_LAST_KNOWN_POSITIONS: (userId) => `${USER}${userId}/trace/positions`,
     GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`,
     GET_ALL_LAST_KNOWN_POSITION:(userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
     GET_ASSET_INFO_BY_TRACCAR_ID:(userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`,

@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Dimensions, ScrollView, TextInput, Platform, Button } from 'react-native';
-import { ColorConstant } from '../../../constants/ColorConstants'
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import  { DropDown, TextField, FontSize }from '../../../component';
-import { getLoginState, getTripHistoryListInfo } from '../../Selector'
+import {
+	View,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	Dimensions,
+	ScrollView,
+	TextInput,
+	Platform,
+	Button,
+} from 'react-native';
+import { ColorConstant } from '../../../constants/ColorConstants';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { DropDown, TextField, FontSize } from '../../../component';
+import { getLoginState, getTripHistoryListInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue } from '../../../component/SvgComponent';
-import DateTimePickerModal from "react-native-modal-datetime-picker"
-import Moment from 'moment'
-import RouteDetails from './RouteDetails'
-import * as TripHistoryActions from './TripHistory.Action'
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Moment from 'moment';
+import RouteDetails from './RouteDetails';
+import * as TripHistoryActions from './TripHistory.Action';
 import AppManager from '../../../constants/AppManager';
 
 const TripHistoryDetails = ({ navigation, route }) => {
@@ -165,6 +175,14 @@ const TripHistoryDetails = ({ navigation, route }) => {
         hideDatePicker();
     };
 
+	function renderNoRecordsFoundLabel() {
+		return (
+			<View style={styles.noRecords}>
+				<Text style={styles.noRecordsText}>No records found</Text>
+			</View>
+		);
+	}
+
     return (
         <View style={styles.container}>
         
@@ -178,7 +196,9 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-Regular"}}>Data Range</Text>  
                             <View style={{flexDirection:'row',justifyContent:"space-between",marginVertical:hp(2)}}>
                                 <View style={styles.dateCardView}>
-                                    <Text>{startDate ? startDate : "From"}</Text>
+                                    <Text>
+										{startDate ? startDate : "From"}
+									</Text>
                                     <TouchableOpacity onPress={()=>showDatePicker("From")}>
                                         <CalenderIconBlue/>
                                     </TouchableOpacity>
@@ -191,13 +211,29 @@ const TripHistoryDetails = ({ navigation, route }) => {
                                 </View>
                             </View>
                             
-                            <View onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} style={{height:hp(7),marginVertical:hp(1)}} />
+                            <View 
+								onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} 
+								style={{height:hp(7),marginVertical:hp(1)}} 
+							/>
                         </View>
 
-                        <RouteDetails routeDetails={routeData} />
+                        {routeData.length > 0 ? <RouteDetails routeDetails={routeData} />  : renderNoRecordsFoundLabel()}
 
-                        <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
-                            <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
+                        <View 
+							style={{
+								top:dropdownPosY,
+								position:'absolute',
+								width:"100%",
+								alignSelf:'center',
+								paddingHorizontal:hp(3)
+							}}
+						>
+                            <DropDown  
+								label="Select Day" 
+								defaultValue={selectedDay} 
+								valueSet={setSelectedDay} 
+								dataList={daysList} 
+							/>  
                         </View>
 
                         <DateTimePickerModal
@@ -209,151 +245,159 @@ const TripHistoryDetails = ({ navigation, route }) => {
                         
                     </ScrollView> 
                     
-                        {/* <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}>
+                        {/* <View style={{top:dropdownPosY,position:'absolute',width:"100%",alignSelf:'center',paddingHorizontal:hp(3)}}> 
                             <DropDown  label="Select Day" defaultValue={selectedDay} valueSet={setSelectedDay} dataList={daysList} />  
                         </View> */}
-                </View>
-        </View>
+			</View>
+		</View>
+	);
+};
 
-    )
-}
-
-const daysList = ["Today", "Yesterday", "Last Week", "Last Month", "Custom"]
-
+const daysList = ['Today', 'Yesterday', 'Last Week', 'Last Month', 'Custom'];
 
 const styles = StyleSheet.create({
+	container: {
+		//alignItems: 'center',
+		backgroundColor: ColorConstant.WHITE,
+		flex: 1,
+	},
+	root: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	subContainer: {
+		width: '85%',
+		marginTop: hp(2),
+		marginBottom: hp(4),
+		alignSelf: 'center',
+	},
+	shadowContainer:
+		Platform.OS == 'ios'
+			? {
+					width: '100%',
+					shadowColor: ColorConstant.GREY,
+					shadowOffset: {
+						width: 0,
+						height: 3,
+					},
+					shadowOpacity: 0.3,
+					marginTop: hp(2),
+					shadowRadius: 3,
+				}
+			: {
+					width: '100%',
+					marginTop: hp(2),
+				},
 
-    container: {
-        //alignItems: 'center',
-        backgroundColor: ColorConstant.WHITE,
-        flex: 1
-    },
-    root: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    subContainer: {
-        width: '85%',
-        marginTop: hp(2),
-        marginBottom: hp(4),
-        alignSelf: 'center',
-    },
-    shadowContainer: Platform.OS=='ios'?
-    { 
-        width: '100%',
-        shadowColor: ColorConstant.GREY,
-        shadowOffset: {
-        width: 0,
-        height: 3
-        },
-        shadowOpacity: 0.3,
-        marginTop: hp(2),
-        shadowRadius: 3 
-    }: {
-        width: '100%',
-        marginTop: hp(2),
-    }, 
-
-    outerStyle: {
-        backgroundColor: ColorConstant.WHITE,
-        borderRadius: 4,
-        borderBottomWidth: Platform.OS=='android'? 1:0,
-        borderColor: ColorConstant.GREY,
-        elevation:2,
-    },
-    dropDown: {
-        flexDirection: 'row',
-        marginTop: hp(0.5)
-    },
-    dropdownStyle: {
-        position: 'relative',
-        top: hp(0.1),
-        width: '116%',
-        left: wp(5.5),
-        marginBottom: hp(3)
-    },
-    dataRowStyle: {
-        borderBottomWidth: 1, borderBottomColor: ColorConstant.GREY
-    },
-    infoContainer: {
-        backgroundColor: ColorConstant.PINK,
-        borderRadius: 10,
-        //marginVertical:hp(1),
-        marginBottom: hp(0.1),
-        padding: hp(2)
-    },
-    infoTitle: {
-        //fontSize:hp(1.3),
-        fontSize: 10,
-        fontFamily: 'Nunito-Regular',
-        textAlign: 'center',
-        color: ColorConstant.GREY
-    },
-    infoSubContainer: {
-        flexDirection: 'row',
-        padding: 6
-    },
-    infoButton: {
-        paddingHorizontal: hp(2),
-        paddingVertical: hp(4)
-    },
-    role: {
-        //fontSize:FontSize.FontSize.small,
-        fontSize: 12,
-        fontFamily: 'Nunito-Regular',
-        color: ColorConstant.BLACK,
-        flex: 0.7,
-        flexWrap: 'wrap'
-    },
-    roleSubText: {
-        //fontSize:hp(1.3),
-        color: ColorConstant.GREY,
-        flex: 1,
-        fontSize: 10,
-        fontFamily: 'Nunito-Regular',
-    },
-    saveText: {
-        textAlign: 'center',
-        color: ColorConstant.WHITE,
-        fontWeight: 'bold'
-    },
-    saveButtonConatiner: {
-        marginTop: hp(4),
-        height: hp(6),
-        width: '85%',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        borderRadius: 5
-    },
-    addButton: {
-        backgroundColor: ColorConstant.ORANGE,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: hp(5),
-    },
-    dateCardView: {
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:"space-between",
-        elevation:6,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 3,
-        },
-        shadowOpacity: 0.27,
-        shadowRadius: 4.65,
-        backgroundColor:ColorConstant.WHITE,
-        paddingHorizontal:hp(2),
-        width:"45%",
-        borderRadius:10,
-        height:hp(6),
-        borderWidth:1,
-        borderColor:ColorConstant.GREY
+	outerStyle: {
+		backgroundColor: ColorConstant.WHITE,
+		borderRadius: 4,
+		borderBottomWidth: Platform.OS == 'android' ? 1 : 0,
+		borderColor: ColorConstant.GREY,
+		elevation: 2,
+	},
+	dropDown: {
+		flexDirection: 'row',
+		marginTop: hp(0.5),
+	},
+	dropdownStyle: {
+		position: 'relative',
+		top: hp(0.1),
+		width: '116%',
+		left: wp(5.5),
+		marginBottom: hp(3),
+	},
+	dataRowStyle: {
+		borderBottomWidth: 1,
+		borderBottomColor: ColorConstant.GREY,
+	},
+	infoContainer: {
+		backgroundColor: ColorConstant.PINK,
+		borderRadius: 10,
+		//marginVertical:hp(1),
+		marginBottom: hp(0.1),
+		padding: hp(2),
+	},
+	infoTitle: {
+		//fontSize:hp(1.3),
+		fontSize: 10,
+		fontFamily: 'Nunito-Regular',
+		textAlign: 'center',
+		color: ColorConstant.GREY,
+	},
+	infoSubContainer: {
+		flexDirection: 'row',
+		padding: 6,
+	},
+	infoButton: {
+		paddingHorizontal: hp(2),
+		paddingVertical: hp(4),
+	},
+	role: {
+		//fontSize:FontSize.FontSize.small,
+		fontSize: 12,
+		fontFamily: 'Nunito-Regular',
+		color: ColorConstant.BLACK,
+		flex: 0.7,
+		flexWrap: 'wrap',
+	},
+	roleSubText: {
+		//fontSize:hp(1.3),
+		color: ColorConstant.GREY,
+		flex: 1,
+		fontSize: 10,
+		fontFamily: 'Nunito-Regular',
+	},
+	saveText: {
+		textAlign: 'center',
+		color: ColorConstant.WHITE,
+		fontWeight: 'bold',
+	},
+	saveButtonConatiner: {
+		marginTop: hp(4),
+		height: hp(6),
+		width: '85%',
+		justifyContent: 'center',
+		alignSelf: 'center',
+		borderRadius: 5,
+	},
+	addButton: {
+		backgroundColor: ColorConstant.ORANGE,
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '100%',
+		height: hp(5),
+	},
+	dateCardView: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'space-between',
+		elevation: 6,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 3,
+		},
+		shadowOpacity: 0.27,
+		shadowRadius: 4.65,
+		backgroundColor: ColorConstant.WHITE,
+		paddingHorizontal: hp(2),
+		width: '45%',
+		borderRadius: 10,
+		height: hp(6),
+		borderWidth: 1,
+		borderColor: ColorConstant.GREY,
+	},
+	noRecords: {
+        height: hp(40),
+        justifyContent:'center',
+		alignItems: 'center'
+	},
+    noRecordsText: {
+        fontFamily:"Nunito-Regular",
+        fontSize:hp(2)
     }
 });
-
 
 export default TripHistoryDetails;

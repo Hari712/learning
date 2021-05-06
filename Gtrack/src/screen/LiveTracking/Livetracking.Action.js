@@ -131,6 +131,11 @@ export const setenableDisableGeofenceResponse = (geofenceId) => ({
     geofenceId
 })
 
+export const setLiveTrackingPositionData = (data) => ({
+    type: types.SET_LIVE_TRACKING_DEVICE_LIST,
+    data
+})
+
 export const requestGetGroupDevices = (userId, onSuccess, onError) => ({
     type: types.GET_GROUP_DEVICES_REQUEST,
     userId,

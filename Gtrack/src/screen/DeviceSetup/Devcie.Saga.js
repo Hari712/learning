@@ -3,6 +3,7 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as DeviceActions from './Device.Action'
+import { isEmpty } from 'lodash'
 
 function* resetLoadAssetsType(action) {
     const { userId, onSuccess, onError } = action
@@ -126,13 +127,17 @@ function* requestLinkDeviceWithGroup(action) {
 
 function* requestGetAllUserDevices(action) {
     const { userId, data, onSuccess, onError } = action
-    const { pageNumber } = data
     try {
         const url = ApiConstants.GET_ALL_USER_DEVICES(userId)
         const response = yield call(API.post, url, data)
         const result = response.result ? response.result : {}
         const arrDeviceList = result.data ? result.data : []
-        yield put(DeviceActions.setGetAllUserDeviceResponse(arrDeviceList, pageNumber))
+        if (isEmpty(data)) {
+            yield put(DeviceActions.setAllUserDeviceResponse(arrDeviceList))
+        } else {
+            const { pageNumber } = data
+            yield put(DeviceActions.setGetAllUserDeviceResponse(arrDeviceList, pageNumber))
+        }
         onSuccess(result)
     } catch (error) {
         onError(error)

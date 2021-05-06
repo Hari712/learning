@@ -236,3 +236,8 @@ export const setsearchAssetResponse = (data) => ({
     type: types.SEARCH_ASSET_RESPONSE,
     data
 })
+
+export const setAllUserDeviceResponse = (data) => ({
+    type: types.SET_ALL_DEVICE_USER_RESPONSE,
+    data
+})

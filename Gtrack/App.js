@@ -13,6 +13,8 @@ import * as RNLocalize from "react-native-localize";
 import i18n from "i18n-js";
 import memoize from "lodash.memoize"; // Use for caching/memoize for better performance
 import OfflineStatusBar from './src/component/OfflineBar'
+import SocketProvider from './src/provider/SocketProvider'
+import withCodePush from './src/hoc/withCodePush'
 
 export const translationGetters = {
   // lazy requires (metro bundler does not support symlinks)
@@ -91,7 +93,9 @@ const MainApp = forwardRef((props, ref) => {
   return (
     <Provider store={store}>
       <ReduxNetworkProvider pingInterval={40000}>
-        <AppNavigator />
+        <SocketProvider>
+         <AppNavigator />
+        </SocketProvider>
         <FlashMessage position="top" animated={true} />
         {isLoading ? <Loader /> : null}
         <OfflineStatusBar />
@@ -114,5 +118,5 @@ const App = () => {
 
 
 
-export default App
+export default withCodePush(App)
 
