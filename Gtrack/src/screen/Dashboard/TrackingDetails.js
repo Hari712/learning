@@ -37,6 +37,8 @@ const TrackingDetails = ({navigation, route}) => {
 
 	const sheetRef = useRef(null);
 
+	const mapRef = useRef();
+
 	const { isConnected, devicePositions, groupDevices } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		devicePositions: getLiveTrackingDeviceList(state),
@@ -54,7 +56,7 @@ const TrackingDetails = ({navigation, route}) => {
 				const deviceInfo = selectedDevice;
 				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id);
 				if (!isEmpty(arr)) {
-					const device = arr;
+					const device = arr[0];
 					let deviceRegion = {
 						latitude: device.latitude,
 						longitude: device.longitude,

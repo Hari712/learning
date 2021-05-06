@@ -115,11 +115,12 @@ const LiveTracking = ({ navigation }) => {
 				setLineString(line);
 				console.log("line",line)
 			} else {
-				const arrCoords = devicePositionArray.map((item) => {
-					return {
+				let arrCoords = [];
+				devicePositionArray.map((item) => {
+					arrCoords.push({
 						'latitude': item.latitude,
 						'longitude': item.longitude
-					}
+					})
 				})
 				setCoordList(arrCoords)
 				mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
@@ -249,8 +250,16 @@ const LiveTracking = ({ navigation }) => {
 			? { latitude: startingDestination.latitude, longitude: startingDestination.longitude }
 			: null;
 		return (
-			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
-				{isContainCoordinate && <Map.Marker coordinate={coordinate} description={address} />}
+			<Map.default 
+				style={StyleSheet.absoluteFillObject} 
+				region={region} ref={mapRef} 
+				showsUserLocation={true}>
+
+				{isContainCoordinate && 
+					<Map.Marker 
+						coordinate={coordinate} 
+						description={address} />}
+
 				{isPolyLine &&
 					<Map.Polyline
 						coordinates={coordList}
