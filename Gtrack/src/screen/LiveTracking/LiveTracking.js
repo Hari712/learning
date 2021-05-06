@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -35,14 +35,14 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, deviceListInfo, devicePositions } = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
-		deviceListInfo: getAllUserDevicesList(state),
 		devicePositions: getLiveTrackingDeviceList(state),
+		groupDevices: getLivetrackingGroupDevicesListInfo(state)
 	}));
 
-	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceListInfo);
+	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
 	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
@@ -52,14 +52,12 @@ const LiveTracking = ({ navigation }) => {
 	const isFocused = useIsFocused();
 
 	useEffect(()=>{
-		console.log("Iam runnign");
-		setDeviceList(deviceListInfo);
+		setDeviceList(groupDevices);
 		if (!isEmpty(deviceList)) {
 			const device = deviceList[selectedDeviceIndex];
-			setSelectedDevice(device.deviceDTO);
-			// setSelectedDeviceIndex(0);			
+			setSelectedDevice(device);		
 		}
-	},[deviceListInfo])
+	},[groupDevices])
 
 	const mapRef = useRef();
 
@@ -79,40 +77,13 @@ const LiveTracking = ({ navigation }) => {
 		[navigation]
 	);
 
-	
-	
 
-	// useEffect(
-	// 	() => {
-	// 		if (location) {
-	// 			const { latitude, longitude, course, speed, accuracy, altitude } = location;
-	// 			let centerCoord =
-	// 				Platform.OS == 'ios'
-	// 					? { coordinates: { latitude: latitude, longitude: longitude } }
-	// 					: [longitude, latitude];
-	// 			setCurrentPosition(centerCoord);
-	// 		}
-	// 	},
-	// 	[location]
-	// );
 
 	useEffect(
 		() => {
 			if (!isEmpty(devicePositions) && selectedDeviceRef.current && selectedDevice) {
-				// const deviceInfo = selectedDeviceRef.current;
-				// console.log("pos",devicePositions)
-				// const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
-				// if (!isEmpty(arr)) {
-				// 	let arrList = devicePositions;
-				// 	const devicePositionObject = mapKeys(arrList, 'id');
-				// 	const device = arr[0];
-				// 	const updatedDevicePositionObject = { ...devicePositionObject, ...{ [device.traccarDeviceId]: device } };
-				// 	const arrLogs = Object.values(updatedDevicePositionObject);
-				// 	arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
-				// 	setDevicePositionArray(arrLogs);
-				// }
 				const deviceInfo = selectedDevice;
-				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId)
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id)
 				if (!isEmpty(arr)) {
 					let arrList = devicePositionArray;
 					const devicePositionObject = mapKeys(arrList,'id');
@@ -124,6 +95,7 @@ const LiveTracking = ({ navigation }) => {
 					const arrLogs = Object.values(updatedDevicePositionObject)
 					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
 					setDevicePositionArray(arrLogs);
+					console.log("arraylog",arrLogs)
 				}
 			}
 		},
@@ -162,7 +134,7 @@ const LiveTracking = ({ navigation }) => {
 		() => {
 			if (selectedDeviceRef.current) {
 				const deviceInfo = selectedDeviceRef.current;
-				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id);
 				if (!isEmpty(arr)) {
 					const device = arr[0];
 					let deviceRegion = {
@@ -207,7 +179,7 @@ const LiveTracking = ({ navigation }) => {
 		i = i + 1; // increase i by one
 		i = i % arr.length; // if we've gone too high, start from `0` again
 		const device = arr[i];
-		setSelectedDevice(device.deviceDTO);
+		setSelectedDevice(device);
 		setSelectedDeviceIndex(i);
 		setDevicePositionArray([]);
 	}
@@ -221,7 +193,7 @@ const LiveTracking = ({ navigation }) => {
 		}
 		i = i - 1; // decrease by one
 		const device = arr[i];
-		setSelectedDevice(device.deviceDTO);
+		setSelectedDevice(device);
 		setSelectedDeviceIndex(i);
 		setDevicePositionArray([]);
 	}
@@ -258,7 +230,7 @@ const LiveTracking = ({ navigation }) => {
 						/>
 					</TouchableOpacity>
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
-						{` ${deviceInfo.deviceName} `}
+						{` ${deviceInfo.name} `}
 					</Text>
 					<TouchableOpacity onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
@@ -310,7 +282,7 @@ const LiveTracking = ({ navigation }) => {
 					/>
 					{isContainCoordinate &&
 						<Map.default.Camera
-							zoomLevel={13}
+							zoomLevel={14}
 							bounds={{
 								ne: coordinate,
 								sw: coordinate,

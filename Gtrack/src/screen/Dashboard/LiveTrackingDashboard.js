@@ -8,7 +8,7 @@ import ShadowView from 'react-native-simple-shadow-view';
 import { MapView } from '../../component';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllUserDevicesList, getLiveTrackingDeviceList } from '../Selector';
+import { getLivetrackingGroupDevicesListInfo, getLiveTrackingDeviceList } from '../Selector';
 import mapKeys from 'lodash/mapKeys';
 import useStateRef from '../../utils/useStateRef';
 import isEmpty from 'lodash/isEmpty';
@@ -31,13 +31,13 @@ const Map = Platform.select({
 const LiveTrackinDashboard = ({ navigation, route }) => {
 	const dispatch = useDispatch();
 
-	const { isConnected, devicePositions, deviceListInfo } = useSelector(state => ({
+	const { isConnected, devicePositions, groupDevices } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		devicePositions: getLiveTrackingDeviceList(state),
-		deviceListInfo: getAllUserDevicesList(state),
+		groupDevices: getLivetrackingGroupDevicesListInfo(state)
 	}));
 
-	const [deviceList, setDeviceList, deviceListRef] = useStateRef(deviceList);
+	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
 	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
@@ -45,28 +45,24 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
     const [lineString, setLineString] = useState(null)
 	const [region, setRegion] = useStateRef()
 
-	console.log("khushhi",devicePositions,selectedDeviceRef,selectedDevice)
-
-
 	const mapRef = useRef();
 
 	useEffect(
 				() => {
-					setDeviceList(deviceListInfo);
-					if (!isEmpty(deviceListInfo)) {
-						const device = deviceListInfo[selectedDeviceIndex];
-						setSelectedDevice(device.deviceDTO);
-						// setSelectedDeviceIndex(0);
+					setDeviceList(groupDevices);
+					if (!isEmpty(deviceList)) {
+						const device = deviceList[selectedDeviceIndex];
+						setSelectedDevice(device);
 					}
 				},
-				[deviceListInfo]
+				[groupDevices]
 			);
 
 			useEffect(
 				() => {
 					if (!isEmpty(devicePositions) && selectedDevice) {
 						const deviceInfo = selectedDevice;
-						const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId)
+						const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id)
 						if (!isEmpty(arr)) {
 							let arrList = devicePositionArray;
 							const devicePositionObject = mapKeys(arrList,'id');
@@ -88,7 +84,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 			() => {
 				if (selectedDeviceRef.current) {
 					const deviceInfo = selectedDeviceRef.current;
-					const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
+					const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id);
 					if (!isEmpty(arr)) {
 						const device = arr[0];
 						let deviceRegion = {
@@ -165,7 +161,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				i = i + 1; // increase i by one
 				i = i % arr.length; // if we've gone too high, start from `0` again
 				const device = arr[i];
-				setSelectedDevice(device.deviceDTO);
+				setSelectedDevice(device);
 				setSelectedDeviceIndex(i);
 				setDevicePositionArray([]);
 			}
@@ -179,7 +175,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				}
 				i = i - 1; // decrease by one
 				const device = arr[i];
-				setSelectedDevice(device.deviceDTO);
+				setSelectedDevice(device);
 				setSelectedDeviceIndex(i);
 				setDevicePositionArray([]);
 			}
@@ -279,7 +275,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 						/>
 					</TouchableOpacity>
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
-						{` ${deviceInfo.deviceName} `}
+						{` ${deviceInfo.name} `}
 					</Text>
 					<TouchableOpacity onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
@@ -302,7 +298,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 			</View>
 
 			<View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2) }}>
-				{/* <MapView /> */}
+				
 				{isAndroid ? renderMapBox() : renderAppleMap()}
 
 				<View style={styles.subContainer}>

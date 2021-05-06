@@ -5,9 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import BottomSheet from 'reanimated-bottom-sheet';
 import FontSize from '../../component/FontSize';
-import MapView from '../../component/MapView';
-// import { LiveTracking } from '..';
-import { getLiveTrackingDeviceList, getAllUserDevicesList } from './../Selector';
+import { getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo } from './../Selector';
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
@@ -39,10 +37,10 @@ const TrackingDetails = ({navigation, route}) => {
 
 	const sheetRef = useRef(null);
 
-	const { isConnected, devicePositions, deviceListInfo } = useSelector(state => ({
+	const { isConnected, devicePositions, groupDevices } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		devicePositions: getLiveTrackingDeviceList(state),
-		deviceListInfo: getAllUserDevicesList(state),
+		groupDevices: getLivetrackingGroupDevicesListInfo(state)
 	}));
 
 	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
@@ -53,7 +51,7 @@ const TrackingDetails = ({navigation, route}) => {
 		() => {
 			if (!isEmpty(devicePositions) && selectedDevice) {
 				const deviceInfo = selectedDevice;
-				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId)
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id)
 				if (!isEmpty(arr)) {
 					setSingleSelectedDevice(arr[0])
 					let arrList = devicePositionArray;
@@ -133,7 +131,7 @@ const TrackingDetails = ({navigation, route}) => {
 			<View style={styles.otherDetails}>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Duration</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>12m 8s</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>Not availabel</Text>
 				</View>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Distance</Text>
@@ -141,7 +139,7 @@ const TrackingDetails = ({navigation, route}) => {
 				</View>
 				<View style={{flex:0.3}}>
 					<Text style={styles.otherDetailText}>Speed</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{singleSelectedDevice ? singleSelectedDevice.speed + 'mph' : '-'}</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{singleSelectedDevice ? (singleSelectedDevice.speed).toFixed(3) + ' mph' : '-'}</Text>
 				</View>    
 			</View>         
 		</View>
@@ -153,10 +151,6 @@ const TrackingDetails = ({navigation, route}) => {
 		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null
 		const address = isContainCoordinate ? startingDestination.address : ''
 		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
-		// const isContainCoordinate = !isEmpty(singleSelectedDevice);
-		// const isPolyLine = isEmpty(singleSelectedDevice) ? false : singleSelectedDevice.length > 1;
-		// const startingDestination = isContainCoordinate ? singleSelectedDevice : null;
-		// const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
 		return (
 			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
 				{isContainCoordinate && <Map.Marker
@@ -183,15 +177,6 @@ const TrackingDetails = ({navigation, route}) => {
 			coordinate.push(startingDestination.longitude);
 			coordinate.push(startingDestination.latitude);
 		}
-		// const isContainCoordinate = !isEmpty(singleSelectedDevice);
-		// const isPolyLine = isEmpty(singleSelectedDevice) ? false : singleSelectedDevice.length > 1;
-		// const startingDestination = isContainCoordinate ? singleSelectedDevice : null;
-		// let coordinate = [];
-		// if (isContainCoordinate) {
-		// 	console.log("coord",startingDestination	)
-		// 	coordinate.push(startingDestination.longitude);
-		// 	coordinate.push(startingDestination.latitude);
-		// }
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }}>
@@ -233,9 +218,8 @@ const TrackingDetails = ({navigation, route}) => {
 
 	return (
 		<View style={styles.container}>
+
 			{isAndroid ? renderMapBox() : renderAppleMap()}
-			{/* <MapView/> */}
-			{/* <LiveTracking /> */}
 
 			<BottomSheet
 				ref={sheetRef}
@@ -243,17 +227,6 @@ const TrackingDetails = ({navigation, route}) => {
 				borderRadius={30}
 				renderContent={renderContent}
      		/>
-
-			{/* <Mapbox.MapView
-				styleURL={Mapbox.StyleURL.Street}
-				zoomLevel={15}
-				onTouchStart={() => { setIsLineClick(false) }}
-				centerCoordinate={[11.256, 43.77]} 
-				style={styles.container}>
-				
-				{renderAnnotations()}
-
-			</Mapbox.MapView> */}
 
 		</View>
 	);

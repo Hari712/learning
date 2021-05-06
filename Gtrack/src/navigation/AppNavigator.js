@@ -15,6 +15,7 @@ import { setToken, getToken } from '../api';
 import * as SettingsActions from '../screen/Settings/Settings.Action';
 import DeviceInfo from 'react-native-device-info';
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action';
+import * as LivetrackingActions from '../screen/LiveTracking/Livetracking.Action'
 import { showOfflineStatusBar, hideOfflineStatusBar } from '../component/OfflineBar';
 
 const ConnectivityStack = createStackNavigator();
@@ -85,7 +86,8 @@ function AppNavigator() {
 						onGettingLastKnownPositionError
 					)
 				);
-        dispatch(DeviceActions.requestGetAllUserDevice(response.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
+				dispatch(LivetrackingActions.requestGetGroupDevices(response.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
+        		dispatch(DeviceActions.requestGetAllUserDevice(response.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 			}
 			setIsReady(true);
 		}
