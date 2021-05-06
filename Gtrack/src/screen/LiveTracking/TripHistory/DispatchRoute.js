@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useLayoutEffect, useRef } from 'react'
-import { View, StyleSheet, TouchableOpacity,  Dimensions, Platform } from 'react-native'
-import { lineString as makeLineString } from '@turf/helpers';
+import { View, StyleSheet, Dimensions, Platform, Text } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import isEmpty from 'lodash/isEmpty'
+import { ColorConstant } from './../../../constants/ColorConstants';
+import { EndPointIcon, MarkerIcon, StartPointIcon, LocationOrangeIcon } from '../../../component/SvgComponent'
+import { FontSize } from '../../../component';
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE_DELTA = 0.9;
+const LATITUDE_DELTA = 0.08;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
 const isAndroid = Platform.OS === 'android'
 
 const Map = Platform.select({
@@ -17,152 +18,194 @@ const Map = Platform.select({
 })();
 
 const DispatchRoute = ({ navigation, route }) => {
-    const { coords } = route.params
-    const arrCords = coords && isEmpty(coords) ? [] : coords
-    const coord = arrCords[0]
-    const latitude = parseFloat(coord && coord.coords.Lat) || 0.0
-    const longitude = parseFloat(coord && coord.coords.Lon) || 0.0
-    const region = { latitude: latitude, longitude: longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
 
-    const arrInitialCoord = arrCords.map((item, index) => {
-        const latitude = parseFloat(item.coords.Lat) || 0.0
-        const longitude = parseFloat(item.coords.Lon) || 0.0
-        let arr = []
-        arr.push(longitude)
-        arr.push(latitude)
-        return arr
-    })
-    const [coordList, setCoordList] = useState([])
+    const { item } = route.params
+
     const [lineString, setLineString] = useState(null)
 
     const mapRef = useRef()
 
-    // const dispatch = useDispatch()
-    // const backArrowprop = {
-    //     marginRight: hp(3), width: hp(3.5), height: hp(3.5)
-    // } 
-  
-
     useLayoutEffect(() => {
         navigation.setOptions({
-           header: () => null ,
+            header: () => null ,
         })
     }, [navigation])
 
-    function onSuccess(data) {
-        NotificationMessage.hideLoader()
-        processCoordinates(data)
-        console.log('Route Data', data)
+
+    function renderPopUpText(title, address) {
+        return(
+            <View style={{width:wp(50),paddingHorizontal:hp(2)}}>
+                <View style={{flexDirection:'row'}}>
+                    { title == 'Start' ? <StartPointIcon/> : <EndPointIcon/> }
+                    <Text style={styles.title}>{title}</Text>
+                </View>
+                <Text style={styles.address}>{address}</Text>
+            </View>
+        )
     }
 
-    function processCoordinates(data) {
-        const arr = Array.isArray(data) ? data : []
-
-        if (isAndroid) {
-            setCoordList(arr)
-            let line = makeLineString(arr);
-            setLineString(line)
-        } else {
-            const arrCoords = arr.map((item, index) => {
-                const routeArr = item
-                return {
-                    'latitude': routeArr[1],
-                    'longitude': routeArr[0]
-                }
-            })
-            setCoordList(arrCoords)
-            mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
-                edgePadding: DEFAULT_PADDING,
-                animated: true,
-            });
-        }
-    }
-
-    function onError(error) {
-        NotificationMessage.hideLoader()
+    
+    function renderPopup(title, address) {
+        return(
+            <Map.default.Callout 
+                contentStyle={{elevation:10,zIndex:10,borderColor:ColorConstant.WHITE,borderWidth:1,borderRadius:10}}
+                containerStyle={{zIndex:10}}
+                title={renderPopUpText(title, address)} 
+            />
+        )
     }
 
     function renderMapBox() {
-        return (
-            <Map.default.MapView style={{ flex: 1 }}>
-                <Map.default.UserLocation
-                    renderMode='normal'
-                    visible={true}
-                    showsUserHeadingIndicator={true}
-                />
-                <Map.default.Camera
-                    zoomLevel={3}
-                    // bounds={{
-                    //     ne: arrInitialCoord[0],
-                    //     sw: arrInitialCoord[arrInitialCoord.length - 1],
-                    // }}
-                />
-                {!isEmpty(lineString) ?
-                 <Map.default.ShapeSource
+
+        let tripStartCord = [item.tripStartLongitude, item.tripStartLatitude]
+        let tripEndCord = [item.tripEndLongitude, item.tripEndLatitude]
+
+        useEffect(()=>{
+            if(isAndroid){
+                let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return([coorItem[1],coorItem[0]])} )
+                coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                setLineString({
+                    "type": "FeatureCollection",
+                    "features": [
+                        {
+                            "type": "Feature",
+                            "properties": {},
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": coordinateArray
+                            }
+                        }
+                    ]
+                })
+            }
+        },[])
+
+        function renderStartPoint() {
+            return(
+                <Map.default.PointAnnotation
+                    id='startPoint' 
+                    coordinate={tripStartCord}
+                    anchor={{x: 0.5, y: 0.5}}
+                    title = {"Start"}
+                >  
+                    <MarkerIcon width={20} height={20} />
+                    
+                    {renderPopup('Start',item.tripStartAddress)}
+
+                </Map.default.PointAnnotation>
+            )
+        }
+
+        function renderEndPoint() {
+            return(
+                <Map.default.PointAnnotation
+                    id='endPoint' 
+                    coordinate={tripEndCord}
+                    anchor={{x: 0.5, y: 0.5}}
+                >
+                    <LocationOrangeIcon width={30} height={30}/>
+
+                    {renderPopup('End',item.tripEndAddress)}
+
+                </Map.default.PointAnnotation>
+            )
+        }
+
+        function renderLine() {
+            return(
+                <Map.default.ShapeSource
                     id='route'
                     shape={lineString}>
                     <Map.default.LineLayer
                         id='lineroute'
                         style={{
                             lineCap: 'round',
-                            lineWidth: 3,
-                            lineOpacity: 0.84,
-                            lineColor: "red",
+                            lineWidth: 5,
+                            lineOpacity: 0.8,
+                            lineColor: ColorConstant.ORANGE,
                         }}
                     />
-                </Map.default.ShapeSource> : null}
-                
-                {/* {arrCords.map((item, index) => {
-                    const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
-                    const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
-                    const latitude = parseFloat(item.coords.Lat) || 0.0
-                    const longitude = parseFloat(item.coords.Lon) || 0.0
-                    let coordinate = []
-                    coordinate.push(longitude)
-                    coordinate.push(latitude)
-                    return (
-                        <Map.default.PointAnnotation
-                            id={index.toString()}
-                            coordinate={coordinate}
-                            title={title}
-                        >
-                            <Map.default.Callout title={address} />
-                        </Map.default.PointAnnotation>
-                    )
-                })} */}
+                </Map.default.ShapeSource>
+            )
+        }
 
+        return (
+            <Map.default.MapView style={{ flex: 1}}>
+                <Map.default.UserLocation
+                    renderMode='normal'
+                    visible={true}
+                    showsUserHeadingIndicator={true}
+                />
+                <Map.default.Camera
+                    zoomLevel={14}
+                    centerCoordinate={tripStartCord}
+                />
+
+                {!isEmpty(lineString) ? renderLine(): null}
+
+                {renderStartPoint()}
+
+                {renderEndPoint()}
+                
             </Map.default.MapView>
         )
     }
 
     function renderAppleMap() {
+
+        let initialRegion = 
+        {
+            latitude: item.tripStartLatitude,
+            longitude: item.tripStartLongitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+        }
+
+        let tripStartCord = {
+            latitude: item.tripStartLatitude,
+            longitude: item.tripStartLongitude,
+        }
+        let tripEndCord = {
+            latitude: item.tripEndLatitude,
+            longitude: item.tripEndLongitude
+        }
+
+        useEffect(()=>{
+
+            if(!isAndroid){
+                let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return({longitude:coorItem[1],latitude:coorItem[0]})} )
+                coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                setLineString(coordinateArray)
+            }
+        },[])
+
         return (
+
             <Map.default
                 style={styles.mapContainer}
                 ref={mapRef}
-                region={region}
+                initialRegion={initialRegion}
                 showsUserLocation={true}
-            // onLayout={() => mapRef.fitToCoordinates(coordList, { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: false })}
             >
+                <Map.Marker coordinate={tripStartCord} >
+                    <MarkerIcon/>
+                    <Map.Callout>
+                        {renderPopUpText('Start',item.tripStartAddress)}
+                    </Map.Callout>
+                </Map.Marker>
+
+                <Map.Marker coordinate={tripEndCord}  >
+                    <LocationOrangeIcon/>
+                    <Map.Callout>
+                        {renderPopUpText('End',item.tripEndAddress)}
+                    </Map.Callout>
+                </Map.Marker>
+
                 <Map.Polyline
-                    coordinates={coordList}
-                    strokeColor={"red"} // fallback for when `strokeColors` is not supported by the map-provider
+                    coordinates={lineString}
+                    strokeColor={ColorConstant.ORANGE}
                     strokeWidth={3}
                 />
-                {arrCords.map((item, index) => {
-                    const title = item.isPickUp ? 'Pick Up' : 'Drop Off'
-                    const address = `${item.startAddressLineOne || ''}, ${item.startCity || ''}, ${item.startProvince || ''} ${item.startCountry || ''}`
-                    const latitude = parseFloat(item.coords.Lat) || 0.0
-                    const longitude = parseFloat(item.coords.Lon) || 0.0
-                    const coordinate = { latitude: latitude, longitude: longitude }
-                    return (
-                        <Map.Marker
-                            coordinate={coordinate}
-                            title={title}
-                            description={address}
-                        />)
-                }
-                )}
             </Map.default>
         )
     }
@@ -181,6 +224,12 @@ const styles = StyleSheet.create({
     },
     mapContainer: {
         ...StyleSheet.absoluteFillObject,
+    },
+    title: {
+        paddingLeft:hp(2),color:ColorConstant.GREY,fontFamily:'Nunito-Regular',fontSize:FontSize.FontSize.medium
+    },
+    address: {
+        paddingLeft:hp(4),color:ColorConstant.BLUE,fontFamily:'Nunito-Regular',fontSize:FontSize.FontSize.small
     }
 })
 

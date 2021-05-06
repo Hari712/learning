@@ -16,7 +16,9 @@ const NotificationInfo = ({ navigation }) => {
                     color: ColorConstant.GREY,
                     fontSize: FontSize.FontSize.medium,
                     fontWeight: '500',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    width:'100%',
+                    backgroundColor:'red'
                 }}>
                     {translate("Settings")}
                 </Text>

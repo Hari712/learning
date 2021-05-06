@@ -46,9 +46,9 @@ const LiveTracking = ({ navigation }) => {
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
 	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
-	const [coordList, setCoordList] = useState([])
-    const [lineString, setLineString] = useState(null)
-	const [region, setRegion] = useStateRef()
+	const [coordList, setCoordList] = useState([]);
+	const [lineString, setLineString] = useState(null);
+	const [region, setRegion] = useStateRef();
 	const isFocused = useIsFocused();
 
 	useEffect(()=>{
@@ -156,7 +156,7 @@ const LiveTracking = ({ navigation }) => {
 				});
 			}
 		}
-	},[devicePositionArray])
+	}, [devicePositionArray]);
 
 	useEffect(
 		() => {
@@ -165,9 +165,14 @@ const LiveTracking = ({ navigation }) => {
 				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.traccarDeviceId);
 				if (!isEmpty(arr)) {
 					const device = arr[0];
-					let deviceRegion = { latitude: device.latitude, longitude: device.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
+					let deviceRegion = {
+						latitude: device.latitude,
+						longitude: device.longitude,
+						latitudeDelta: LATITUDE_DELTA,
+						longitudeDelta: LONGITUDE_DELTA,
+					};
 					setDevicePositionArray([device]);
-					setRegion(deviceRegion)
+					setRegion(deviceRegion);
 				}
 				console.log(deviceInfo);
 			}
@@ -176,17 +181,18 @@ const LiveTracking = ({ navigation }) => {
 	);
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
-		if (item === 'Sensor Information') {
-			setIsLineClick(false);
-			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO);
-		} else if (item == 'Geo Fence') {
+ 		if (item == 'Geo Fence') {
 			setIsLineClick(false);
 			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE);
 		} else if (item == 'Alarms') {
 			setIsLineClick(false);
 			navigation.navigate(SCREEN_CONSTANTS.ALARMS);
-		} else {
+		} else if (item == 'Trip History'){
 			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY);
+		}	
+		else if (item === 'Asset Information') {
+			setIsLineClick(false)
+			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
 		}
 	};
 
@@ -263,25 +269,24 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function renderAppleMap() {
-		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current)
-		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1
-		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null
-		const address = isContainCoordinate ? startingDestination.address : ''
-		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
+		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
+		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		const address = isContainCoordinate ? startingDestination.address : '';
+		const coordinate = isContainCoordinate
+			? { latitude: startingDestination.latitude, longitude: startingDestination.longitude }
+			: null;
 		return (
 			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
-				{isContainCoordinate && <Map.Marker
-                            coordinate={coordinate}
-                            description={address}
-                        />}
-				{isPolyLine && <Map.Polyline
-                    coordinates={coordList}
-                    
-                    strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
-                    strokeWidth={3}
-                />}
-			</Map.default>			
-		)
+				{isContainCoordinate && <Map.Marker coordinate={coordinate} description={address} />}
+				{isPolyLine &&
+					<Map.Polyline
+						coordinates={coordList}
+						strokeColor={ColorConstant.ORANGE} // fallback for when `strokeColors` is not supported by the map-provider
+						strokeWidth={3}
+					/>}
+			</Map.default>
+		);
 	}
 
 	function renderMapBox() {
@@ -383,7 +388,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 };
 
-const data = ['Geo Fence', 'Sensor Information', 'Alarms', 'Trip History'];
+const data = ['Geo Fence', 'Asset Information', 'Alarms',"Trip History"]
 
 const styles = StyleSheet.create({
 	container: {
@@ -460,7 +465,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		backgroundColor: 'blue',
 		transform: [{ scale: 0.6 }],
-	},
+	}
 });
 
-export default LiveTracking;
+export default LiveTracking

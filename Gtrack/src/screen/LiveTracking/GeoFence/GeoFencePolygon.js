@@ -6,6 +6,7 @@ import { BackIcon, NextIcon } from '../../../component/SvgComponent';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { ColorConstant } from '../../../constants/ColorConstants';
+import { FontSize } from '../../../component';
 const { width, height } = Dimensions.get('window');
 
 const isAndroid = Platform.OS === 'android'
@@ -164,8 +165,8 @@ const GeoFencePolyGon = ({navigation, route}) => {
                 <>
                     <Map.default.Polygon
                         coordinates={arrCoordinates}
-                        strokeColor="#F00"
-                        fillColor="rgba(255,0,0,0.5)"
+                        fillColor="rgba(255, 127, 33, 0.4)"
+                        strokeColor="rgba(255, 127, 33, 0.8)"
                         strokeWidth={1}
                     />
                 </>
@@ -236,7 +237,15 @@ const GeoFencePolyGon = ({navigation, route}) => {
                             coordinates: [arrCoordinates]
                         }
                     }}>
-                    <Map.default.FillLayer id="areaPolygon" style={{ fillOpacity: 0.5 }} />
+                    <Map.default.FillLayer id="areaPolygon" style={{ fillOpacity: 0.5,fillColor:ColorConstant.ORANGE }} />
+                    <Map.default.LineLayer 
+                        id='linelayer'
+                        sourceLayerID='areaPoly'
+                        style={{
+                            lineColor:ColorConstant.ORANGE,
+                            lineWidth:2
+                        }}
+                    />
                 </Map.default.ShapeSource>
             )
         }
@@ -264,23 +273,42 @@ const GeoFencePolyGon = ({navigation, route}) => {
 
     function renderButton() {
         return (
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    onPress={() => {
-                        isEditing ? setCompleteEditing(true) && selectedCoordinates[0] : null;
-                        setIsEditing(prevState => {if(prevState == false) {
-                            return true
-                        }else{
-                            return selectedCoordinates[0]? false : true
-                        }})
-                    }}
-                    style={[styles.bubble, styles.button]}
-                >
-                    <Text>
-                        {isEditing ? 'Finish Polygon' : 'Draw Polygon'}
-                    </Text>
-                </TouchableOpacity>
-            </View>
+            isAndroid ? 
+                <View style={{position:"absolute", marginVertical:20}}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            isEditing ? setCompleteEditing(true) && selectedCoordinates[0] : null;
+                            setIsEditing(prevState => {if(prevState == false) {
+                                return true
+                            }else{
+                                return selectedCoordinates[0]? false : true
+                            }})
+                        }}
+                        style={[styles.bubble, styles.button]} >
+                        <Text style={{fontSize:FontSize.FontSize.small}}>
+                            {isEditing ? 'Finish\nPolygon' : 'Draw\nPolygon'}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                </View>
+            :
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            isEditing ? setCompleteEditing(true) && selectedCoordinates.latitute : null;
+                            setIsEditing(prevState => {if(prevState == false) {
+                                return true
+                            }else{
+                                return selectedCoordinates.latitute ? false : true
+                            }})
+                        }}
+                        style={[styles.bubble, styles.button]} >
+                        <Text>
+                            {isEditing ? 'Finish Polygon' : 'Draw Polygon'}
+                        </Text>
+                        
+                    </TouchableOpacity>
+                </View>
         )
     }
 
