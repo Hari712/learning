@@ -98,16 +98,19 @@ const RouteDetails = (props) => {
         <View>
 
             <View style={{paddingHorizontal:hp(3)}} >
-                <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>Route Details</Text>
+                <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>{routeDetails.length > 0 ? "Route Details": ''}</Text>
             </View>
-
+            {routeDetails.length > 0 ?
             <FlatList
                 nestedScrollEnabled={true}
                 keyboardShouldPersistTaps='handled'                
                 data={routeDetails}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-            />
+            />  :
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View> }
         </View>
 
     )
@@ -157,6 +160,14 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.27,
         shadowRadius: 4.65,
+    },
+    noRecords: {
+        marginVertical:hp(20),
+        alignItems:'center'
+    },
+    noRecordsText: {
+    fontFamily:"Nunito-Regular",
+    fontSize:hp(2)
     },
     blueConatiner: {
         backgroundColor: ColorConstant.BLUE,
