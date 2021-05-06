@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import  { FontSize }from '../../../component';
@@ -23,6 +23,7 @@ const SensorInfo = ({ navigation }) => {
 
     const [selectedKey, setSelectedKey] = useState(-1)
     const [subContainerHeight, setSubContainerHeight] = useState()
+    const [searchKeyword, setSearchKeyword] = useState("")
 
     const dispatch = useDispatch()
 
@@ -94,6 +95,11 @@ const SensorInfo = ({ navigation }) => {
                         {/* heading */}
                         <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
+                            {item.devices.length > 0 ?
+                                <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
+                                    <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
+                                </View> : null 
+                            }
                         </View>
 
                         {/* Expanded data View */}
@@ -109,8 +115,26 @@ const SensorInfo = ({ navigation }) => {
         )
     }
 
+    const searchHandle = (keyword) => {
+        setSearchKeyword(keyword) // search implementation is remaining
+    }
+
+    const searchBar = () => {
+        return (
+                <View style={styles.search}>
+                    <TextInput 
+                        placeholder={translate("Search_here")}
+                        style={styles.searchText}
+                        onChangeText={text => searchHandle(text) }                    
+                        value={searchKeyword}
+                    />
+                </View>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
+            {searchBar()}
             <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
             <FlatList
                 style={{}}
@@ -211,21 +235,29 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 12,
         borderBottomLeftRadius: 12
     },
+    searchText: {
+        //fontSize:FontSize.FontSize.small,
+        fontSize:14,
+        color:ColorConstant.LIGHTGREY,
+        fontFamily:'Nunito-LightItalic'
+    },
+    search: {
+        paddingHorizontal:hp(2),
+        height:hp(6),
+        marginHorizontal:hp(3),
+        borderRadius:12,
+        marginTop:hp(4),
+        marginBottom:hp(2),
+        elevation:4,
+        shadowColor: ColorConstant.BLACK,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowRadius: 3,
+        shadowOpacity: 1,
+        backgroundColor:ColorConstant.WHITE
+    },
 })
 
-export default SensorInfo;
-
-const SENSORINFOITEMS = [
-    {
-        title: 'Trackport 4G Vehicle GPS Tracker'
-    },
-    {
-        title: 'Trackport 4G Vehicle GPS Tracker'
-    },
-    {
-        title: 'Trackport International'
-    },
-    {
-        title: 'UK Van'
-    }
-]
+export default SensorInfo
