@@ -19,6 +19,7 @@ import * as SettingsActions from '../Settings/Settings.Action';
 import DeviceInfo from 'react-native-device-info';
 import { translate } from '../../../App';
 import * as DeviceActions from '../DeviceSetup/Device.Action';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { LoginInfoIcon, LoginWelcomeIcon, LoginInfoClickIcon } from '../../component/SvgComponent';
 
 const Login = () => {
@@ -92,6 +93,7 @@ const Login = () => {
 			)
 		);
 		dispatch(DeviceActions.requestGetAllUserDevice(data.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
+		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 	}
 
 	function onGetAllUserDeviceSuccess(data) {

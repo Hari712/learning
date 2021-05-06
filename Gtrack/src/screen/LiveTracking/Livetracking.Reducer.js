@@ -1,6 +1,7 @@
 import createReducer from '../../store/CreateReducer'
 import * as types from '../../constants/ActionTypes'
 import mapKeys from 'lodash/mapKeys'
+import isEmpty from 'lodash/isEmpty'
 
 const initialState = {
     alarmsList: [],
@@ -8,6 +9,8 @@ const initialState = {
     alertTypes: [],
     geofenceList: [],
     liveTrackingLastKnownPositions: [],
+    traccarDevices:[],
+    traccarPositions:[],
     groupDevices: [],
     assetInfo: []
 }
@@ -69,9 +72,20 @@ export const livetrackingReducer = createReducer(state = initialState, {
         }
     },
     [types.SET_LIVE_TRACKING_DEVICE_LIST](state, action) {
+        let arrList = state.liveTrackingLastKnownPositions ? state.liveTrackingLastKnownPositions : []
+        const devicePositionObject = mapKeys(arrList,'deviceId');
+        const newDevicePositionObject = mapKeys(action.data,'deviceId');
+        const updatedDevicePositionObject = { ...devicePositionObject, ...newDevicePositionObject };
+        return   {
+            ...state,
+            liveTrackingLastKnownPositions: Object.values(updatedDevicePositionObject)
+        }
+    },
+    [types.SET_LIVE_TRACKING_DEVICES](state, action) {
+        console.log("devices",action.data)
         return {
             ...state,
-            liveTrackingLastKnownPositions: action.data
+            traccarDevices: action.data
         }
     },
     [types.GET_GROUP_DEVICES_RESPONSE](state, action) {

@@ -221,6 +221,7 @@ export const getLiveTrackingDeviceList = createSelector(
     [getLiveTrackingDeviceListInfo],
     (info) => info
 )
+
 /*    
  * Get Group Devices for TripHistory and Asset Infromation
  */
@@ -231,6 +232,7 @@ export const getGroupDevicesListInfo = createSelector(
     [getGroupDevicesList],
     (info) => info
 )
+
 /**
  * Get Notification List for Settigs
  */
@@ -258,6 +260,7 @@ export const getAllUserDevicesList = createSelector(
     [getAllUserDeviceListInfo],
     (info) => info
 )
+
 /*
  * Get Asset Info for Asset Infromation
  */
@@ -277,5 +280,25 @@ const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.rou
 
 export const getTripHistoryListInfo = createSelector(
     [getTripHistoryList],
+    (info) => info
+)
+
+/*    
+ * Get Group Devices for Livetracking
+ */
+
+const getLivetrackingGroupDevicesList = (state) => getAllLivetrackingDevices(state)
+
+function getAllLivetrackingDevices(state) {
+    const groupInfo = state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
+    let deviceArr = []
+    groupInfo.map((item) => {
+        deviceArr = [...deviceArr, ...item.devices]
+    })
+    return deviceArr
+}
+
+export const getLivetrackingGroupDevicesListInfo = createSelector(
+    [getLivetrackingGroupDevicesList],
     (info) => info
 )

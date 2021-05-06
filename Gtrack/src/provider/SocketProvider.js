@@ -85,10 +85,13 @@ const SocketProvider = (props) => {
         }
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
-            console.log(data)
-            if (Array.isArray(data)) {
+            // data = [{},{},{},{}]
+            // data = {positions:[{},{}]}
+            // data = {devices:[{},{}]}
+            
+            if (data.positions && Array.isArray(data.positions)) {
                 setArrDevicePositionList(data)
-                dispatch(LiveTrackingActions.setLiveTrackingPositionData(data))
+                dispatch(LiveTrackingActions.setLiveTrackingPositionData(data.positions))
             }
         }
         socket.onclose = function (event) {
