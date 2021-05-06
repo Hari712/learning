@@ -46,6 +46,29 @@ const TrackingDetails = ({navigation, route}) => {
 	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
 	const [lineString, setLineString] = useState(null)
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
+	const [region, setRegion] = useStateRef();
+
+	useEffect(
+		() => {
+			if (selectedDevice) {
+				const deviceInfo = selectedDevice;
+				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id);
+				if (!isEmpty(arr)) {
+					const device = arr;
+					let deviceRegion = {
+						latitude: device.latitude,
+						longitude: device.longitude,
+						latitudeDelta: LATITUDE_DELTA,
+						longitudeDelta: LONGITUDE_DELTA,
+					};
+					setDevicePositionArray([device]);
+					setRegion(deviceRegion);
+					console.log("deviceRegion",deviceRegion);
+				}
+			}
+		},
+		[selectedDevice]
+	);
 	
 	useEffect(
 		() => {
