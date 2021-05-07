@@ -15,6 +15,7 @@ import {  SlidersColorPicker  } from 'react-native-color';
 import tinycolor from 'tinycolor2'
 import * as UsersActions from '../../Users/Users.Action'
 import { getSubuserState } from './../../Selector';
+import isEmpty from 'lodash/isEmpty';
 
 const GeoFenceDetails = ({ navigation, route }) => {
 
@@ -141,13 +142,28 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onSuccess(data) { 
         response.geofence = data.result
-        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+        console.log("Sucess data ", data)
+        
+        const requestBody = {
+            "userIds" : [ loginInfo.id ],
+            "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
+            "notification" : {
+                "id" : null,
+                "type" : "geofenceEnter",
+                "always" : false,
+                "notificators" : "mail,web",
+                "attributes" : null,
+                "calendarId" : 0
+            }
+        }
+        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
         
     }
 
     function onLinkSuccess(data) {
+        console.log("khushi suc",data)
         response.deviceList = devices
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
