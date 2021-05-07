@@ -118,6 +118,8 @@ import EndPointIcon from './EndPointIcon'
 import StartPointIcon from './StartPointIcon'
 import MarkerIcon from './MarkerIcon'
 import LocationOrangeIcon from './LocationOrangeIcon'
+import SettingNotiNextArrowIcon from './SettingNotiNextArrowIcon'
+import SettingNotiDownArrowOrangeIcon from './SettingNotiDownArrowOrangeIcon'
 
 export {
     BarCodeScanIcon,
@@ -238,5 +240,7 @@ export {
     EndPointIcon,
     StartPointIcon,
     MarkerIcon,
-    LocationOrangeIcon
+    LocationOrangeIcon,
+    SettingNotiNextArrowIcon,
+    SettingNotiDownArrowOrangeIcon
 }
