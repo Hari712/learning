@@ -21,6 +21,16 @@ export const isRoleRegular = createSelector(
     (info) => info && ( info.role[0].name == AppConstants.ROLE_REGULAR )
 )
 
+export const isRoleOwner = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER ) && (info.isCorporateUser)
+)
+
+export const isRoleAdmin = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER) && (info.isCorporateUser)
+)
+
 /**
  * Get Traccar Session Information
  */

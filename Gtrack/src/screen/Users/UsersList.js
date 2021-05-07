@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { getLoginState, getSubuserState } from '../Selector'
+import { getLoginState, isRoleOwner} from '../Selector'
 import Tooltip from 'rn-tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import * as UsersActions from './Users.Action'
@@ -17,9 +17,10 @@ const UsersList = (props) => {
 
     const { item } = props
 
-    const { loginData, isConnected } = useSelector(state => ({
+    const { loginData, isConnected, isOwner } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
+        isOwner: isRoleOwner(state)
     }))
 
     const user_id = loginData.id ? loginData.id : null
@@ -54,9 +55,11 @@ const UsersList = (props) => {
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
                     <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
                     <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
-                    <TouchableOpacity onPress={()=>{item.id == loginData.id? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
-                        <UsersEditIcon/>
-                    </TouchableOpacity>       
+                    {isOwner ?
+                        <TouchableOpacity onPress={()=>{item.id == loginData.id? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
+                            <UsersEditIcon/>
+                        </TouchableOpacity> : 
+                    null }
                 </View>
 
                 {/* White Body container */}
