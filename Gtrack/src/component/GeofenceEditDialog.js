@@ -162,15 +162,12 @@ return(
                         </View>
                     </View>
                     <View style={[styles.secondRowMainView,{flexDirection:'column'}]}>
-                        {/* <View style={{}}> */}
                             <Text style={styles.mainTextStyle}>{translate("Selected Users")}</Text>
-                            <Text style={[styles.fontSizeStyle]}>{selectedUser && selectedUser.length > 0 ? selectedUser : '-'}</Text>
-                            {/* {activeGeofence && activeGeofence.deviceList.map((device) =>{
-                                return(
-                                    <Text style={styles.fontSizeStyle}>{device.deviceName}</Text>
+                            {selectedUser && selectedUser.length > 0 ?
+                                selectedUser.map((item)=> 
+                                    <Text style={[styles.fontSizeStyle]}>{item}</Text>
                                 )
-                            })} */}
-                        {/* </View> */}
+                            : <Text style={[styles.fontSizeStyle]}>'-'</Text>}
                         <View style={{marginTop:hp(2),flexDirection:'row'}}>
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image style={{alignSelf:'flex-start'}} source={mailNotificator && webNotificator || webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>

@@ -47,6 +47,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
         deviceList : [],
         geofence: {},
         isActive: null,
+        notificator:"",
+        userDTOS: []
     }
 
     useEffect(() => { 
@@ -209,7 +211,21 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
+        var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+        var userdt = []
+        selectUser ? 
+            selectUser.filter((selectedItem)=> {  
+                subUserData.filter((item)=>{        
+                    if(item.firstName+" "+item.lastName === selectedItem){
+                        userdt.push(item)
+                    } 
+                }) 
+            }) 
+        :[];
+        console.log("linking",userdt)
         response.deviceList = devices
+        response.notificator = notificator
+        response.userDTOS = userdt
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
         }else{
