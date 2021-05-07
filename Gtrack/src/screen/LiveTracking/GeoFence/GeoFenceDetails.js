@@ -31,7 +31,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     const dispatch = useDispatch()
 
-    const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
+    const userdata = (subUserData).map((item)=> item.firstName+" "+item.lastName )
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
     const [color, setColor] = useState(tinycolor('#70c1b3').toHexString())
@@ -46,7 +46,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     let response = { 
         deviceList : [],
         geofence: {},
-        isActive: null
+        isActive: null,
     }
 
     useEffect(() => { 
@@ -54,6 +54,19 @@ const GeoFenceDetails = ({ navigation, route }) => {
             setName(editingData.name)
             setDescrption(editingData.description) 
             setColor(editingData.color)
+            if(editingData.webNotificator && editingData.mailNotificator){
+                setNotification(true)
+                setEmailNotification(true)
+            }
+            if(editingData.webNotificator){
+                setNotification(true)
+            }
+            if(editingData.mailNotificator){
+                setEmailNotification(true)
+            }
+            if(editingData.selectedUser){
+                setSelectedUser(editingData.selectedUser)
+            }
         }
     }, [editingData,navigation,route])
 
@@ -126,8 +139,31 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onUpdateSuccess(data) { 
         response.geofence = data.result
+        const arrSelectedId = [];
+        selectUser ? 
+        subUserData.filter((item)=> {      
+            selectUser.filter((selectedItem)=>{        
+            if(item.firstName+" "+item.lastName === selectedItem){  
+                arrSelectedId.push(item.id)
+            }
+            })  }) 
+        :null;
+        console.log("user",arrSelectedId)
+        var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+        const requestBody = {
+            "userIds" : arrSelectedId,
+            "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
+            "notification" : {
+                "id" : null,
+                "type" : "geofenceEnter",
+                "always" : false,
+                "notificators" : notificator,
+                "attributes" : null,
+                "calendarId" : 0
+            }
+        }
         if (isConnected) {
-            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
             AppManager.hideLoader()
             AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
         } else {
@@ -142,16 +178,26 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onSuccess(data) { 
         response.geofence = data.result
-        console.log("Sucess data ", data)
-        
+        let notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+
+        let arrSelectedId = [];
+        selectUser ? 
+        subUserData.filter((item)=> {      
+            selectUser.filter((selectedItem)=>{        
+            if(item.firstName+" "+item.lastName === selectedItem){  
+                arrSelectedId.push(item.id)
+            }
+            })  }) 
+        :null;
+    
         const requestBody = {
-            "userIds" : [ loginInfo.id ],
+            "userIds" : arrSelectedId,
             "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
             "notification" : {
                 "id" : null,
                 "type" : "geofenceEnter",
                 "always" : false,
-                "notificators" : "mail,web",
+                "notificators" : notificator,
                 "attributes" : null,
                 "calendarId" : 0
             }
@@ -163,7 +209,6 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
-        console.log("khushi suc",data)
         response.deviceList = devices
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
