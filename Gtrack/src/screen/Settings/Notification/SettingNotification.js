@@ -82,6 +82,7 @@ const SettingNotification = ({ navigation }) => {
     function onUpdateSuccess(data) { 
         AppManager.showSimpleMessage('success', { message: 'Notification updated successfully', description: '', floating: true })
         AppManager.hideLoader()
+        setIsDisable(false)
     }
     
     function onUpdateError(error) {
