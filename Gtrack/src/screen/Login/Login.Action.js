@@ -92,3 +92,11 @@ export const setLastKnownPositionData = (data) => ({
     type: types.GET_LAST_KNOWN_DEVICE_POSITIONS_RESPONSE,
     data
 })
+
+export const requestAddDeviceToken = (userId, token, onSuccess, onError) => ({
+    type: types.ADD_DEVICE_TOKEN_REQUEST,
+    userId,
+    token,
+    onSuccess,
+    onError
+})

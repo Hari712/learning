@@ -127,7 +127,7 @@ const LiveTracking = ({ navigation }) => {
 						arr.push(item.latitude);
 						return arr;
 					});
-					let line = makeLineString(arr);
+					let line = makeLineString(arrCoords);
 					setLineString(line);
 				} else {
 					const arrCoords = devicePositionArray.map(item => {

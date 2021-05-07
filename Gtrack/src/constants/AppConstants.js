@@ -14,6 +14,9 @@ export const PHONE_REGEX = new RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([
 export const NUMBER_REGEX = new RegExp(/\D/, 'g')
 export const CIRCLE_REGEX = /^CIRCLE\((\-?\d*\.?\d* \-?\d*\.?\d*)\,(\d*\.?\d*)\)$/
 
+export const TOKEN_EXPIRED = 'Token Expired'
+
+export const TOKEN_ERRORS = ['JWT claims string is empty', 'JWT claims string is empty', 'Invalid grant', 'TOKEN_INVALID']
 
 export const SCREEN_CONSTANTS = {
     SPLASH: 'Splash',
