@@ -100,3 +100,11 @@ export const requestAddDeviceToken = (userId, token, onSuccess, onError) => ({
     onSuccess,
     onError
 })
+
+export const requestRemoveDeviceToken = (userId, token, onSuccess, onError) => ({
+    type: types.REMOVE_DEVICE_TOKEN_REQUEST,
+    userId,
+    token,
+    onSuccess,
+    onError
+})
