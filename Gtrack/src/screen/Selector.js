@@ -112,7 +112,7 @@ export const getDeviceListInfo = createSelector(
 const getDeviceDetailInfo = (state, deviceId) => getDevice(state, deviceId)
 function getDevice(state, deviceId) {
     const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
-    const device = deviceInfo[deviceId].deviceDTO
+    const device = deviceInfo[deviceId] ? deviceInfo[deviceId].deviceDTO : {}
     return device
 }
 export const makeGetDeviceDetail = () => createSelector(

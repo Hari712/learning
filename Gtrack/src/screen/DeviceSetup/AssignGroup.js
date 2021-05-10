@@ -36,7 +36,7 @@ const AssignGroup = ({ navigation, route }) => {
 
     const user_id = loginInfo.id ? loginInfo.id : null
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
-    const defaultGroup = !isAdmin ? arrGroupnames.filter((item) => item == "GTrack Group" ? item : null ) : arrGroupnames.filter((item) => item ? item[0] : null )
+    const defaultGroup = !isAdmin ? arrGroupnames.filter((item) => item == "GTrack Group" ? item : null ) : arrGroupnames[0]
     const [group, setGroup] = useState(defaultGroup)
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
     const [dropdownPosy, setDropdownPosy] = useState()

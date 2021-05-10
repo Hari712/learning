@@ -7,7 +7,7 @@ import MultiSelect from './MultiSelect';
 import isEmpty from 'lodash/isEmpty'
 import { useDispatch, useSelector } from 'react-redux';
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
-import { getLoginInfo } from '../screen/Selector';
+import { getLoginInfo, isRoleAdmin } from '../screen/Selector';
 import AppManager from '../constants/AppManager';
 import CustomDialog from './Dialog';
 import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon } from './SvgComponent';
@@ -26,9 +26,10 @@ const GroupItem = props => {
 
     const dispatch = useDispatch()
 
-    const { isConnected, loginInfo } = useSelector(state => ({
+    const { isConnected, loginInfo, isAdmin } = useSelector(state => ({
         isConnected: state.network.isConnected,
         loginInfo: getLoginInfo(state),
+        isAdmin: isRoleAdmin(state),
     }))
 
     const [selectedKey, setSelectedKey] = useState(-1);
@@ -186,7 +187,7 @@ const GroupItem = props => {
                         <View key={itemKey} style={styles.subCategory}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
-                            {isDefault ? null : <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
+                            {isDefault || isAdmin ? null : <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
                                 <TrashBlueIcon width={16.567} height={18.547} style={styles.icon} />
                             </TouchableOpacity>}
 
@@ -208,9 +209,12 @@ const GroupItem = props => {
     function renderActionButton() {
         return (
             <>
-                <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
-                    <TrashIcon style={styles.icon} width={16.567} height={18.547} />
-                </TouchableOpacity>
+                { !isAdmin ?
+                    <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
+                        <TrashIcon style={styles.icon} width={16.567} height={18.547} />
+                    </TouchableOpacity>
+                : null}
+
                 <TouchableOpacity style={{ flex: 0.3 }} style={{ alignSelf: 'center' }}
                     onPress={() => {
                         (item.id == addClick) ?
