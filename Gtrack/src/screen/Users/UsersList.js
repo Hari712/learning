@@ -55,11 +55,9 @@ const UsersList = (props) => {
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
                     <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
                     <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
-                    {isOwner ?
                         <TouchableOpacity onPress={()=>{item.id == loginData.id? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                             <UsersEditIcon/>
-                        </TouchableOpacity> : 
-                    null }
+                        </TouchableOpacity>
                 </View>
 
                 {/* White Body container */}

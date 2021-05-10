@@ -9,7 +9,7 @@ import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { AddIcon, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
-import { getLoginInfo } from '../../Selector';
+import { getLoginInfo, isRoleAdmin } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import {  SlidersColorPicker  } from 'react-native-color';
 import tinycolor from 'tinycolor2'
@@ -18,10 +18,11 @@ import { getSubuserState } from './../../Selector';
 
 const GeoFenceDetails = ({ navigation, route }) => {
 
-    const { isConnected, loginInfo, subUserData } = useSelector(state => ({
+    const { isConnected, loginInfo, subUserData,isAdmin } = useSelector(state => ({
         isConnected: state.network.isConnected,
         loginInfo: getLoginInfo(state),
         subUserData: getSubuserState(state),
+        isAdmin: isRoleAdmin(state)
     }))
     
     const { selectedArea, type, devices, editingData } = route.params
@@ -245,7 +246,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         okLabel="Done"
                         cancelLabel="Cancel"
                     />
-
+                    { !isAdmin ? 
                     <MultiSelect 
                         label="Select User"
                         dataList={userdata} 
@@ -262,7 +263,9 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         selectedItemContainerStyle={styles.selectedItemContainerStyle} 
                         selectedItemRowStyle={styles.selectedItemRowStyle}
                         deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
-                    /> 
+                    /> : 
+                    null }
+
                     <View style={{marginTop:hp(2)}}>
                         <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                             <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
