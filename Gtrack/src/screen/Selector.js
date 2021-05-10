@@ -28,7 +28,7 @@ export const isRoleOwner = createSelector(
 
 export const isRoleAdmin = createSelector(
     [getLoginInfo],
-    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER) && (info.isCorporateUser)
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER) && (!info.isCorporateUser)
 )
 
 /**

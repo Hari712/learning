@@ -142,7 +142,7 @@ const AssignGroup = ({ navigation, route }) => {
                 />
                 <View style={{ width: '100%', paddingHorizontal: hp(2), marginTop: hp(2) }}>
                     <View style={[styles.buttonContainer, { paddingHorizontal: hp(2) }]}>
-                        <Text style={{ fontWeight: '400', fontSize: FontSize.FontSize.medium, marginBottom: hp(1) }}>GTrack Group</Text>
+                        <Text style={{ fontWeight: '400', fontSize: FontSize.FontSize.medium, marginBottom: hp(1) }}>{group}</Text>
                         <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
                             <Text style={styles.activateButtonTitle}>{translate("Add New Group")}</Text>
                         </TouchableOpacity>
@@ -155,7 +155,7 @@ const AssignGroup = ({ navigation, route }) => {
                         </TouchableOpacity>
                     </ShadowView>
                     <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                        <TouchableOpacity disabled={isAdmin && !group} style={[styles.nextButton,{color : disabled ? ColorConstant.BLUE : '#06418E50'}]} onPress={() => onTapNext()}>
+                        <TouchableOpacity disabled={isAdmin && !group} style={[styles.nextButton,{backgroundColor : (isAdmin && !group) ? '#06418E50' : ColorConstant.BLUE}]} onPress={() => onTapNext()}>
                             <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                         </TouchableOpacity>
                     </ShadowView>
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
         borderRadius: hp(1),
         height: hp(5),
         justifyContent: 'center',
-        backgroundColor: ColorConstant.BLUE,
+        //backgroundColor: ColorConstant.BLUE,
     },
     nextButtonText: {
         textAlign: 'center',
