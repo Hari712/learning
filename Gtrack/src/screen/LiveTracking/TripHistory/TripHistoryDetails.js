@@ -169,10 +169,18 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
     const handleConfirm = (date) => {
         const dt = Moment(date).format("YYYY-MM-DD")
-        isStartDateVisible && setStartDate(dt)
-        isEndDateVisible && setEndDate(dt)
+        // isStartDateVisible &&
+        // isEndDateVisible && setEndDate(dt)
+        if(isStartDateVisible){
+            setStartDate(dt)
+            setIsStartDateVisible(false)
+            setIsEndDateVisible(true)
+        } else if(isEndDateVisible){
+            setEndDate(dt)
+            hideDatePicker();
+        }
         //isStartDateVisible ? setStartDate(dt) : setEndDate(dt)
-        hideDatePicker();
+        // hideDatePicker();
     };
 
 	function renderNoRecordsFoundLabel() {
@@ -239,6 +247,9 @@ const TripHistoryDetails = ({ navigation, route }) => {
                         <DateTimePickerModal
                             isVisible={isStartDateVisible || isEndDateVisible}
                             mode="date"
+                            headerTextIOS={isStartDateVisible ? "Pick From date" : "Pick To date"}
+                            minimumDate={isEndDateVisible ? new Date(startDate) : null }
+                            maximumDate={new Date()}
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
                         />
