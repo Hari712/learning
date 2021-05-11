@@ -7,7 +7,7 @@ import MultiSelect from './MultiSelect';
 import isEmpty from 'lodash/isEmpty'
 import { useDispatch, useSelector } from 'react-redux';
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
-import { getLoginInfo, isRoleAdmin } from '../screen/Selector';
+import { getLoginInfo, isRoleAdmin, isRoleOwner } from '../screen/Selector';
 import AppManager from '../constants/AppManager';
 import CustomDialog from './Dialog';
 import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon } from './SvgComponent';
@@ -24,12 +24,15 @@ const GroupItem = props => {
 
     const isDefault = item.isDefault
 
+    console.log("khushi",item)
+
     const dispatch = useDispatch()
 
-    const { isConnected, loginInfo, isAdmin } = useSelector(state => ({
+    const { isConnected, loginInfo, isAdmin, isOwner } = useSelector(state => ({
         isConnected: state.network.isConnected,
         loginInfo: getLoginInfo(state),
         isAdmin: isRoleAdmin(state),
+        isOwner: isRoleOwner(state),
     }))
 
     const [selectedKey, setSelectedKey] = useState(-1);
@@ -242,7 +245,7 @@ const GroupItem = props => {
                     {/* heading */}
                     <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                         <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                        {isDefault ? renderDefaultContainer() : renderActionButton()}
+                        {isDefault && isOwner ? renderDefaultContainer() : renderActionButton()}
                     </View>
 
                     {/* Expanded data View */}
