@@ -117,7 +117,7 @@ const SensorInfo = ({ navigation }) => {
     }
 
     const searchHandle = (keyword) => {
-        setSearchKeyword(keyword) // search implementation is remaining
+        setSearchKeyword(keyword)
         dispatch(LivetrackingActions.requestSearchGroup(loginData.id, keyword, onSuccess, onError))
     }
 

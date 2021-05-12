@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import * as TripHistoryActions from './TripHistory.Action'
 import { ColorConstant } from '../../../constants/ColorConstants'
@@ -26,6 +26,7 @@ const TripHistory = ({ navigation }) => {
     const dispatch = useDispatch()
     const [selectedKey, setSelectedKey] = useState(-1)
     const [subContainerHeight, setSubContainerHeight] = useState()
+    const [searchKeyword, setSearchKeyword] = useState("")
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -117,8 +118,27 @@ const TripHistory = ({ navigation }) => {
         )
     }
 
+    const searchHandle = (keyword) => {
+        setSearchKeyword(keyword)
+        dispatch(LivetrackingActions.requestSearchGroup(loginData.id, keyword, onSuccess, onError))
+    }
+
+    const searchBar = () => {
+        return (
+                <View style={styles.search}>
+                    <TextInput 
+                        placeholder={translate("Search_here")}
+                        style={styles.searchText}
+                        onChangeText={text => searchHandle(text) }                    
+                        value={searchKeyword}
+                    />
+                </View>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
+            {searchBar()}
             <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
             <FlatList
                 style={{ flex: 1 }}
@@ -218,6 +238,29 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderTopLeftRadius: 12,
         borderBottomLeftRadius: 12
+    },
+    searchText: {
+        //fontSize:FontSize.FontSize.small,
+        fontSize:14,
+        color:ColorConstant.LIGHTGREY,
+        fontFamily:'Nunito-LightItalic'
+    },
+    search: {
+        paddingHorizontal:hp(2),
+        height:hp(6),
+        marginHorizontal:hp(3),
+        borderRadius:12,
+        marginTop:hp(4),
+        marginBottom:hp(2),
+        elevation:4,
+        shadowColor: ColorConstant.BLACK,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowRadius: 3,
+        shadowOpacity: 1,
+        backgroundColor:ColorConstant.WHITE
     },
 })
 
