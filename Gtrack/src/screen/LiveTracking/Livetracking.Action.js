@@ -169,5 +169,13 @@ export const requestAssetInfo = (userId, traccarId, onSuccess, onError) => ({
     onError
 })
 
+export const requestSearchGroup = (userId, groupName, onSuccess, onError) => ({
+    type: types.SEARCH_GROUP_REQUEST,
+    userId,
+    groupName,
+    onSuccess,
+    onError
+})
+
 
 

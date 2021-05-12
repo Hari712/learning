@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import * as LivetrackingActions from '../Livetracking.Action'
 import isEmpty from 'lodash/isEmpty'
 
+
 const SensorInfo = ({ navigation }) => {
 
     const { loginData, isConnected, groupDevices } = useSelector(state => ({
@@ -53,7 +54,7 @@ const SensorInfo = ({ navigation }) => {
     },[])
 
     function onSuccess(data) {
-        console.log("Sucess",data)
+        console.log("Sucess khushi",data)
         AppManager.hideLoader()
     }
 
@@ -117,6 +118,7 @@ const SensorInfo = ({ navigation }) => {
 
     const searchHandle = (keyword) => {
         setSearchKeyword(keyword) // search implementation is remaining
+        dispatch(LivetrackingActions.requestSearchGroup(loginData.id, keyword, onSuccess, onError))
     }
 
     const searchBar = () => {
