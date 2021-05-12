@@ -54,12 +54,12 @@ const SensorInfo = ({ navigation }) => {
     },[])
 
     function onSuccess(data) {
-        console.log("Sucess khushi",data)
+        console.log("Sucess",data)
         AppManager.hideLoader()
     }
 
     function onError(data) {
-        console.log("Sucess",data)
+        console.log("Error",data)
         AppManager.hideLoader()
     }
 

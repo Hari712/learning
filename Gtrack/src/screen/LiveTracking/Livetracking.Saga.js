@@ -192,7 +192,7 @@ function* requestSearchGroup(action) {
         const url = ApiConstants.SEARCH_GROUP(userId, groupName)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
-        // yield put(LivetrackingActions.setGeofenceResponse(result))
+        yield put(LivetrackingActions.setSearchGroupResponse(result))
         onSuccess(response)
     } catch (error) {
         onError(error)

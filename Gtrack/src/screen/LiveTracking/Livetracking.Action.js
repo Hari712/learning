@@ -177,5 +177,10 @@ export const requestSearchGroup = (userId, groupName, onSuccess, onError) => ({
     onError
 })
 
+export const setSearchGroupResponse = (data) => ({
+    type: types.SEARCH_GROUP_RESPONSE,
+    data
+})
+
 
 
