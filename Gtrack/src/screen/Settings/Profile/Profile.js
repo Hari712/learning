@@ -4,7 +4,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView, Dimensions
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { getLoginState } from '../../Selector';
+import { getLoginState, isRoleRegular, isRoleAdmin, isRoleOwner } from '../../Selector';
 import ShadowView from 'react-native-simple-shadow-view';
 import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
@@ -15,8 +15,11 @@ const Profile = ({ navigation }) => {
 
     const [dialogVisible,setDialogVisible] = useState(false)
 
-    const { loginData } = useSelector(state => ({
+    const { loginData, isRegular, isOwner, isAdmin } = useSelector(state => ({
         loginData: getLoginState(state),
+        isAdmin: isRoleAdmin(state),
+        isOwner: isRoleOwner(state),
+        isRegular: isRoleRegular(state)
     }))
 
     const userType = loginData.role.map((item) => item.name )
@@ -98,7 +101,7 @@ const Profile = ({ navigation }) => {
                         <View style = {{ }}>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone.replace(PHONE_REGEX, '$1-$2-$3') :'-'}</Text>
                             <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.email}</Text>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{userType == "ROLE_OWNER" ? "Owner" : "Regular"}</Text>
+                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{isOwner ? "Owner" : isAdmin ? "Admin" : "Regular"}</Text>
                         </View>
                         
                     </View>

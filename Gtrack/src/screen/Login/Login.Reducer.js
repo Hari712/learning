@@ -14,7 +14,8 @@ const initialState = {
     group:[],
     role:[],
     feedback:[],
-    traccarSession: null
+    traccarSession: null,
+    isCorporateUser: null
 }
 
 export const loginReducer = createReducer(state = initialState, {
@@ -32,7 +33,8 @@ export const loginReducer = createReducer(state = initialState, {
             phone: data.userDTO.phone,
             email: data.userDTO.email,
             group: data.userDTO.groups,
-            role: data.userDTO.roles
+            role: data.userDTO.roles,
+            isCorporateUser: data.userDTO.isCorporateUser
         }
     },
     [types.EDIT_PROFILE_RESPONSE](state, action) {
