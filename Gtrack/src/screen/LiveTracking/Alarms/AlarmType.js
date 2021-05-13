@@ -31,7 +31,7 @@ const AlarmType = ({navigation,route}) => {
   const { loginInfo, subUserData, isConnected } = useSelector(state => ({
     loginInfo: getLoginInfo(state),
     subUserData: getSubuserState(state),
-    isConnected: state.network.isConnected,
+    isConnected: state.network.isConnected
   }))
 
   const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
@@ -170,10 +170,9 @@ const AlarmType = ({navigation,route}) => {
         })  }) 
       :null;
 
-      console.log("User ids",arrSelectedId)
-
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
+      var notiType = notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
       var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? batteryLevelInputValue :
                   overSpeedInputVisible ? overSpeedInputValue :
@@ -188,7 +187,7 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : route.params.editData.notification.id,
-            "type" : notificationType,
+            "type" : notiType,
             "always" : false,
             "notificators" : notificator,
             "attributes" : {
@@ -210,7 +209,7 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : 0,
-            "type" : notificationType,
+            "type" : notiType,
             "always" : false,
             "notificators" : notificator,
             "attributes" : {
