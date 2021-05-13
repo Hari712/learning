@@ -108,4 +108,10 @@ export const livetrackingReducer = createReducer(state = initialState, {
             groupDevices: traccarDeviceGroupDTOS
         }
     },
+    [types.SEARCH_GEOFENCE_RESPONSE](state, action) {
+        return {
+            ...state,
+            geofenceList: action.data
+        }
+    },
 })

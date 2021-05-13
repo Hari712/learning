@@ -29,7 +29,7 @@ const GeoFence = ({ navigation }) => {
     const [isTypeClick, setIsTypeClick] = useState(false)
     const [dropDownPos, setDropDownPos] = useState();
     const [isMenuClick, setIsMenuClick] = useState(0)
-    const [selectedType, setSelectedType] = useState('all')
+    const [selectedType, setSelectedType] = useState('All')
 
     const dispatch = useDispatch()
 
@@ -58,6 +58,15 @@ const GeoFence = ({ navigation }) => {
         loadGeofenceList()
     }, [])
 
+    useEffect(() => {  
+        loadGeofenceSearchList(selectedType)
+    }, [selectedType])
+
+    function loadGeofenceSearchList(searchInput){
+        AppManager.showLoader() 
+        dispatch(LivetrackingActions.requestSearchGeofence(loginData.id, searchInput, onSuccess, onError))
+    }
+
     function loadGeofenceList() {
         AppManager.showLoader()  
         dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
@@ -66,6 +75,7 @@ const GeoFence = ({ navigation }) => {
     function onSuccess(data) { 
         console.log("geofence",data)   
         setIsRefreshing(false) 
+        setIsTypeClick(false)
         AppManager.hideLoader()
     }
     
@@ -136,21 +146,17 @@ const GeoFence = ({ navigation }) => {
 
     const searchHandle = (keyword) => {
         setSearchKeyword(keyword)
-        // dispatch(LivetrackingActions.requestSearchGroup(loginData.id, keyword, onSuccess, onError))
+        loadGeofenceSearchList(keyword)
     }
 
     const onTypeClick = (item,key) => {
         (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
-        if(item == 'All Users') {
-            setSelectedType('all')
-        }else if(item == 'Regular') {
-            setSelectedType('regular')
-        }else{
-            setSelectedType('owner')
-        }
+        if(item == 'All') {
+            setSelectedType('')
+        }else 
+            setSelectedType(item.toUpperCase())
+            
     }
-
-
     const searchBar = () => {
         return (
                 <View style={styles.search}>
@@ -198,8 +204,8 @@ const GeoFence = ({ navigation }) => {
                 <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
                     {geofenceType.map((item, key) =>
                         <TouchableOpacity  key={key} onPress={()=> onTypeClick(item,key)}>
-                        <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
-                        {key != geofenceType.length - 1 ? <View style={styles.horizontalLine} /> : null}
+                            <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
+                            {key != geofenceType.length - 1 ? <View style={styles.horizontalLine} /> : null}
                         </TouchableOpacity>
                     )
                     }
