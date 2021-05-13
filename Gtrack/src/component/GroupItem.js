@@ -84,12 +84,19 @@ const GroupItem = props => {
     const onSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Device added to the group successfully', description: '', floating: true })
         console.log("Success", data)
+        dispatch(DeviceActions.requestGetAllUserGroups(loginInfo.id, onGroupListLoadedSuccess, onGroupListLoadedError))
         setAddClick(-1)
         setSelectedDevices([])
         AppManager.hideLoader()
     }
 
+    function onGroupListLoadedSuccess(data) {
+        AppManager.hideLoader()
+    }
 
+    function onGroupListLoadedError(error) {
+        AppManager.hideLoader()
+    }
     const onRemoveDeviceSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Device removed successfully from the group', description: '', floating: true })
         console.log("Success", data)
