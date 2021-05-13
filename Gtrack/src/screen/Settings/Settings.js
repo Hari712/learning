@@ -113,7 +113,9 @@ const Settings = ({ navigation }) => {
         <View style={styles.mainViewStyle}>
 
           <View style={styles.leftMainViewStyle}>
-            <IconConstant style={styles.titleIconStyle} resizeMode='contain' />
+            <View style={{width:hp(3)}}>
+              <IconConstant style={styles.titleIconStyle} resizeMode='contain' />
+            </View>
             {/* <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' /> */}
             <Text style={styles.titleTextStyle}> {translate(item.title)}</Text>
           </View>
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
   bodySubContainer: {
     paddingHorizontal: wp(3),
     flexDirection: 'column',
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
 
   mainViewStyle: {
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
   titleTextStyle: {
     fontSize: FontSize.FontSize.medium,
     color: ColorConstant.BLUE,
-    paddingLeft: wp(3)
+    paddingLeft: wp(2)
   },
 
   rightTextStyle: {

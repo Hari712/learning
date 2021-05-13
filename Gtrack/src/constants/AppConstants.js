@@ -94,6 +94,7 @@ export const AppConstants = {
     EMPTY_OLD_PASSCODE: "Empty_Old_Passcode",
     EMPTY_NEW_PASSCODE: "Empty_New_Passcode",
     ROLE_REGULAR: 'ROLE_REGULAR',
+    ROLE_OWNER: 'ROLE_OWNER',
     EMPTY_ALARM_NAME: 'Empty_Alarm_Name'
     
 }

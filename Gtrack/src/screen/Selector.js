@@ -21,6 +21,16 @@ export const isRoleRegular = createSelector(
     (info) => info && ( info.role[0].name == AppConstants.ROLE_REGULAR )
 )
 
+export const isRoleOwner = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER ) && (info.isCorporateUser)
+)
+
+export const isRoleAdmin = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER) && (!info.isCorporateUser)
+)
+
 /**
  * Get Traccar Session Information
  */
@@ -102,7 +112,7 @@ export const getDeviceListInfo = createSelector(
 const getDeviceDetailInfo = (state, deviceId) => getDevice(state, deviceId)
 function getDevice(state, deviceId) {
     const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
-    const device = deviceInfo[deviceId].deviceDTO
+    const device = deviceInfo[deviceId] ? deviceInfo[deviceId].deviceDTO : {}
     return device
 }
 export const makeGetDeviceDetail = () => createSelector(

@@ -4,7 +4,7 @@ import { DropDown, AddNewGroupDialog } from '../../component'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGroupListInfo, makeGetDeviceDetail, getLoginInfo } from '../Selector'
+import { getGroupListInfo, makeGetDeviceDetail, getLoginInfo, isRoleAdmin } from '../Selector'
 import { ColorConstant } from '../../constants/ColorConstants'
 import FontSize from '../../component/FontSize'
 import AppManager from '../../constants/AppManager'
@@ -26,16 +26,17 @@ const AssignGroup = ({ navigation, route }) => {
 
     const getDeviceDetail = makeGetDeviceDetail()
 
-    const { loginInfo, groupList, isConnected, device } = useSelector(state => ({
+    const { loginInfo, groupList, isConnected, device, isAdmin } = useSelector(state => ({
         loginInfo: getLoginInfo(state),
         groupList: getGroupListInfo(state),
         isConnected: state.network.isConnected,
         device: getDeviceDetail(state, deviceInfo.id),
+        isAdmin: isRoleAdmin(state)
     }))
 
     const user_id = loginInfo.id ? loginInfo.id : null
     const arrGroupnames = isEmpty(groupList) ? [] : groupList.map((item) => item.groupName)
-    const defaultGroup = arrGroupnames.filter((item) => item == "GTrack Group" ? item : null )
+    const defaultGroup = !isAdmin ? arrGroupnames.filter((item) => item == "GTrack Group" ? item : null ) : arrGroupnames[0]
     const [group, setGroup] = useState(defaultGroup)
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
     const [dropdownPosy, setDropdownPosy] = useState()
@@ -141,7 +142,7 @@ const AssignGroup = ({ navigation, route }) => {
                 />
                 <View style={{ width: '100%', paddingHorizontal: hp(2), marginTop: hp(2) }}>
                     <View style={[styles.buttonContainer, { paddingHorizontal: hp(2) }]}>
-                        <Text style={{ fontWeight: '400', fontSize: FontSize.FontSize.medium, marginBottom: hp(1) }}>GTrack Group</Text>
+                        <Text style={{ fontWeight: '400', fontSize: FontSize.FontSize.medium, marginBottom: hp(1) }}>{group}</Text>
                         <TouchableOpacity style={styles.activateButton} onPress={() => onTapAddNewGroup()}>
                             <Text style={styles.activateButtonTitle}>{translate("Add New Group")}</Text>
                         </TouchableOpacity>
@@ -154,7 +155,7 @@ const AssignGroup = ({ navigation, route }) => {
                         </TouchableOpacity>
                     </ShadowView>
                     <ShadowView style={[styles.shadowContainer, { width: '40%' }]}>
-                        <TouchableOpacity style={styles.nextButton} onPress={() => onTapNext()}>
+                        <TouchableOpacity disabled={isAdmin && !group} style={[styles.nextButton,{backgroundColor : (isAdmin && !group) ? '#06418E50' : ColorConstant.BLUE}]} onPress={() => onTapNext()}>
                             <Text style={styles.nextButtonText}>{translate("Next")}</Text>
                         </TouchableOpacity>
                     </ShadowView>
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
         borderRadius: hp(1),
         height: hp(5),
         justifyContent: 'center',
-        backgroundColor: ColorConstant.BLUE,
+        //backgroundColor: ColorConstant.BLUE,
     },
     nextButtonText: {
         textAlign: 'center',

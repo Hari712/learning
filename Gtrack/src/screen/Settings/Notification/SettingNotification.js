@@ -57,7 +57,7 @@ const SettingNotification = ({ navigation }) => {
             ),
             headerRight: () => (
                 <TouchableOpacity disabled={!isDisable} style={{paddingRight:hp(2)}} onPress={() => onTapSave()}>
-                    <Text style={{color: isDisable ? ColorConstant.BLACK : ColorConstant.GREY }}>Save</Text>
+                    <Text style={{color: isDisable ? ColorConstant.BLUE : ColorConstant.GREY }}>Save</Text>
                 </TouchableOpacity>
             ),
             headerLeft: () => (
@@ -82,6 +82,7 @@ const SettingNotification = ({ navigation }) => {
     function onUpdateSuccess(data) { 
         AppManager.showSimpleMessage('success', { message: 'Notification updated successfully', description: '', floating: true })
         AppManager.hideLoader()
+        setIsDisable(false)
     }
     
     function onUpdateError(error) {
