@@ -171,10 +171,9 @@ const AlarmType = ({navigation,route}) => {
         })  }) 
       :null;
 
-      console.log("User ids",arrSelectedId)
-
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
+      var notiType = notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
       var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? batteryLevelInputValue :
                   overSpeedInputVisible ? overSpeedInputValue :
@@ -189,7 +188,7 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : route.params.editData.notification.id,
-            "type" : notificationType,
+            "type" : notiType,
             "always" : false,
             "notificators" : notificator,
             "attributes" : {
@@ -211,7 +210,7 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : 0,
-            "type" : notificationType,
+            "type" : notiType,
             "always" : false,
             "notificators" : notificator,
             "attributes" : {
