@@ -100,5 +100,12 @@ export const livetrackingReducer = createReducer(state = initialState, {
             ...state,
             assetInfo: action.data
         }
-    }
+    },
+    [types.SEARCH_GROUP_RESPONSE](state, action) {
+        const { traccarDeviceGroupDTOS } = action.data
+        return {
+            ...state,
+            groupDevices: traccarDeviceGroupDTOS
+        }
+    },
 })
