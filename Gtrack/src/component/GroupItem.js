@@ -196,11 +196,10 @@ const GroupItem = props => {
                     return (
                         <View key={itemKey} style={styles.subCategory}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
-                            <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
+                            <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem && subitem.deviceName}</Text>
                             {isDefault || isAdmin ? null : <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
                                 <TrashBlueIcon width={16.567} height={18.547} style={styles.icon} />
                             </TouchableOpacity>}
-
                         </View>
                     )
                 })}
