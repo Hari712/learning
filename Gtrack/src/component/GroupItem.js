@@ -14,7 +14,7 @@ import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIc
 
 const GroupItem = props => {
 
-    const { item, arrDeviceList, arrDeviceNames, addClick, setAddClick,loadNonGroupedDevice } = props;
+    const { item, arrDeviceList, arrDeviceNames, addClick, setAddClick, loadNonGroupedDevice, fetchGroupList } = props;
 
     const itemNumber = props.index;
 
@@ -103,8 +103,8 @@ const GroupItem = props => {
         console.log("Success", data)
         setAddClick(-1)
         setSelectedDevices([])
-        AppManager.hideLoader()
         loadNonGroupedDevice()
+        AppManager.hideLoader()
     }
 
     const onRemoveDeviceError = (error) => {
@@ -130,6 +130,8 @@ const GroupItem = props => {
     const onDeleteGroupSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Group deleted successfully', description: '', floating: true })
         console.log("Success", data)
+        loadNonGroupedDevice()
+        fetchGroupList()
         AppManager.hideLoader()
     }
 

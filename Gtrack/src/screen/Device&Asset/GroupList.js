@@ -96,6 +96,7 @@ const GroupList = () => {
                     addClick={addClick}
                     setAddClick={setAddClick}
                     loadNonGroupedDevice={loadNonGroupedDevice}
+                    fetchGroupList={fetchGroupList}
                 />
             </>
         )
