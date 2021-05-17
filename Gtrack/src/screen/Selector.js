@@ -203,8 +203,14 @@ export const getAlertTypetListInfo = createSelector(
  * Get Geofence List for Livetracking
  */
 
-const getGeofenceList = (state) => state.livetracking && state.livetracking.geofenceList ? state.livetracking.geofenceList : {}
+const getGeofenceList = (state) => getGeofenceInfo(state)
 
+function getGeofenceInfo(state) {
+    const geofenceArr = state.livetracking && state.livetracking.geofenceList ? state.livetracking.geofenceList : {}
+    const geofenceType = Object.values(geofenceArr)
+    geofenceType.sort((item1, item2) => item2.geofence.id - item1.geofence.id)
+    return geofenceType
+}
 export const getGeofenceListInfo = createSelector(
     [getGeofenceList],
     (info) => info
