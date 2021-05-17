@@ -49,7 +49,7 @@ const Login = () => {
 			} else {
 				AppManager.showLoader();
 				const requestBody = {
-					emailOrPhone: email.toLowerCase(),
+					emailOrPhone: email,
 					password: password,
 				};
 				dispatch(LoginActions.requestLogin(requestBody, onLoginSuccess, onLoginError));
@@ -186,7 +186,7 @@ const Login = () => {
 					<EditText
 						value={email}
 						onChangeText={value => {
-							setEmail(value);
+							setEmail(value.trim().toLowerCase());
 						}}
 						placeholder={translate('Login_string2')}
 						rightContainer={
