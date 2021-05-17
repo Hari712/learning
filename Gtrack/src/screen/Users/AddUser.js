@@ -102,7 +102,11 @@ const AddUser = ({ navigation, route }) => {
 
   function onSuccess(data) {
     console.log("Success", data)
-    AppManager.showSimpleMessage('success', { message: data.message, description: '' })
+    if (route && route.params){
+      AppManager.showSimpleMessage('success', { message: data.message, description: '' })
+    } else {
+      AppManager.showSimpleMessage('success', { message: 'A new user added successfully', description: '' })
+    }
     AppManager.hideLoader()
     navigation.pop()
   }
