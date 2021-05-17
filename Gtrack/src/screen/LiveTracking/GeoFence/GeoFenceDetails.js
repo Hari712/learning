@@ -47,7 +47,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     let response = { 
         deviceList : [],
         geofence: {},
-        isActive: null,
+        isActive: editingData ? editingData.status : true ,
         notificator:"",
         userDTOS: []
     }

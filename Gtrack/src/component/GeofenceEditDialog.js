@@ -208,7 +208,8 @@ return(
                         id:activeGeofence.geofence.id,
                         mailNotificator:mailNotificator,
                         webNotificator: webNotificator,
-                        selectedUser: selectedUser
+                        selectedUser: selectedUser,
+                        status: activeGeofence.isActive
                     }})
                     setDialogVisible(false)
                 }
