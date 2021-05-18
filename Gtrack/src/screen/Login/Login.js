@@ -66,6 +66,21 @@ const Login = () => {
 		let deviceType = DeviceInfo.getSystemName();
 		let version = DeviceInfo.getVersion();
 		const traccarPassword = `g-track${data.userDTO.userKey}`;
+		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
+		dispatch(
+			LoginActions.requestTraccarSession(email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
+		);
+		dispatch(
+			LoginActions.requestGetLastKnownDevicePosition(
+				data.userDTO.id,
+				onGettingLastKnownPositionSuccess,
+				onGettingLastKnownPositionError
+			)
+		);
+		dispatch(
+			DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError)
+		);
+		dispatch(DeviceActions.requestGetAllUserDevice(data.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
 		dispatch(
 			SettingsActions.requestGetFeedBack(data.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError)
 		);
@@ -79,21 +94,6 @@ const Login = () => {
 				onUserAssetListLoadedError
 			)
 		);
-		dispatch(
-			DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError)
-		);
-		dispatch(
-			LoginActions.requestTraccarSession(email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
-		);
-		dispatch(
-			LoginActions.requestGetLastKnownDevicePosition(
-				data.userDTO.id,
-				onGettingLastKnownPositionSuccess,
-				onGettingLastKnownPositionError
-			)
-		);
-		dispatch(DeviceActions.requestGetAllUserDevice(data.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
-		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 	}
 
 	function onGetAllUserDeviceSuccess(data) {
