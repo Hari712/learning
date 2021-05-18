@@ -78,6 +78,8 @@ const GroupList = () => {
         setDeviceNames(arrDeviceNames)
     }
 
+    console.log("data",arrDeviceList,arrDeviceNames)
+
     function onNonGroupedDeviceLoadedError(error) {
         console.log(error)
     }
@@ -93,6 +95,8 @@ const GroupList = () => {
                     arrDeviceList={arrDeviceList}
                     addClick={addClick}
                     setAddClick={setAddClick}
+                    loadNonGroupedDevice={loadNonGroupedDevice}
+                    fetchGroupList={fetchGroupList}
                 />
             </>
         )

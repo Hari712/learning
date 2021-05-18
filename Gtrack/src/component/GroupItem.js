@@ -10,11 +10,11 @@ import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
 import { getLoginInfo, isRoleAdmin, isRoleOwner } from '../screen/Selector';
 import AppManager from '../constants/AppManager';
 import CustomDialog from './Dialog';
-import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon } from './SvgComponent';
+import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon, RadioButtonIcon, RadioButtonIconClicked } from './SvgComponent';
 
 const GroupItem = props => {
 
-    const { item, arrDeviceList, arrDeviceNames, addClick, setAddClick } = props;
+    const { item, arrDeviceList, arrDeviceNames, addClick, setAddClick, loadNonGroupedDevice, fetchGroupList } = props;
 
     const itemNumber = props.index;
 
@@ -71,6 +71,28 @@ const GroupItem = props => {
         }
     }
 
+    const setDefaultGroup = () => {
+        if (isConnected) {
+            AppManager.showLoader()
+            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
+            const requestBody = {
+                "deviceDTO": null,
+                "assetDTO": null,
+                "groupDTO": {
+                    "id": id,
+                    "groupName": groupName,
+                    "devices": arrSelectedDevices,
+                    "isQuickAdd": false,
+                    "isDefault": true
+                },
+                "devicePlan": null
+            }
+            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
+    }
+
     const removeConfirm = () => {
         setDialogVisible(false)
         AppManager.showLoader()
@@ -85,6 +107,7 @@ const GroupItem = props => {
         AppManager.showSimpleMessage('success', { message: 'Device added to the group successfully', description: '', floating: true })
         console.log("Success", data)
         dispatch(DeviceActions.requestGetAllUserGroups(loginInfo.id, onGroupListLoadedSuccess, onGroupListLoadedError))
+        loadNonGroupedDevice()
         setAddClick(-1)
         setSelectedDevices([])
         AppManager.hideLoader()
@@ -102,6 +125,7 @@ const GroupItem = props => {
         console.log("Success", data)
         setAddClick(-1)
         setSelectedDevices([])
+        loadNonGroupedDevice()
         AppManager.hideLoader()
     }
 
@@ -128,6 +152,8 @@ const GroupItem = props => {
     const onDeleteGroupSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Group deleted successfully', description: '', floating: true })
         console.log("Success", data)
+        loadNonGroupedDevice()
+        fetchGroupList()
         AppManager.hideLoader()
     }
 
@@ -237,11 +263,16 @@ const GroupItem = props => {
         )
     }
 
-
     return (
-        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2) }}>
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2),flexDirection:'row' }}>
+            <View style={{paddingHorizontal:wp(3)}}>
+                {isDefault ? <RadioButtonIconClicked/> :
+                <TouchableOpacity onPress={()=> setDefaultGroup()}>
+                    <RadioButtonIcon/>
+                </TouchableOpacity>
+                }
+            </View>
             <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
-
                 {/* Arrow Left Side */}
                 <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
                     {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
@@ -322,7 +353,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         //alignContent:'center',
-        width: '85%',
+        width: '80%',
         minHeight: hp(6),
         //paddingHorizontal:hp(2),
         //marginVertical:hp(1),
