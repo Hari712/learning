@@ -205,14 +205,15 @@ const LiveTracking = ({ navigation }) => {
 		return (
 			<View
 				style={{
-					height: hp(3),
+					height: hp(5),
 					backgroundColor: ColorConstant.WHITE,
 					position: 'absolute',
-					marginTop: hp(7),
-					borderRadius: 13,
+					marginTop: hp(4),
+					borderRadius: 9,
 					alignSelf: 'center',
 					justifyContent: 'center',
 					marginHorizontal: hp(3),
+					width:wp(88)
 				}}
 			>
 				<View
@@ -223,18 +224,18 @@ const LiveTracking = ({ navigation }) => {
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity onPress={() => onPressPrevious()}>
+					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
-							style={{ width: wp(1.5), height: hp(1.5) }}
+							style={{ width: wp(2), height: hp(2) }}
 						/>
 					</TouchableOpacity>
-					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
+					<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
 						{` ${deviceInfo.name} `}
 					</Text>
-					<TouchableOpacity onPress={() => onPressNext()}>
-						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
+					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
+						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -324,7 +325,7 @@ const LiveTracking = ({ navigation }) => {
 			{isAndroid ? renderMapBox() : renderAppleMap()}
 			{/* {renderAppleMap()} */}
 			{selectedDeviceRef.current && renderDeviceSelectionView()}
-			<View style={styles.subContainer}>
+			<View style={[styles.subContainer,{marginTop:selectedDeviceRef.current ? hp(11) : hp(5)}]}>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false);
