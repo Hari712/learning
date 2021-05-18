@@ -167,7 +167,7 @@ return(
                                 selectedUser.map((item)=> 
                                     <Text style={[styles.fontSizeStyle]}>{item}</Text>
                                 )
-                            : <Text style={[styles.fontSizeStyle]}>'-'</Text>}
+                            : <Text style={[styles.fontSizeStyle]}>-</Text>}
                         <View style={{marginTop:hp(2),flexDirection:'row'}}>
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image style={{alignSelf:'flex-start'}} source={mailNotificator && webNotificator || webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
