@@ -24,8 +24,6 @@ const GroupItem = props => {
 
     const isDefault = item.isDefault
 
-    console.log("khushi",item)
-
     const dispatch = useDispatch()
 
     const { isConnected, loginInfo, isAdmin, isOwner } = useSelector(state => ({

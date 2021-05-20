@@ -21,11 +21,11 @@ const RecentAlarms = (props) => {
         loginInfo: getLoginInfo(state),
     }))
     
-    let deviceListArr = props.deviceList.deviceList ;
-    let deviceNameArr = Object.values(deviceListArr).map((item)=>item.deviceDTO.deviceName);
+    let deviceListArr = props.deviceList
+    let deviceNameArr = deviceListArr.map((item)=>item.deviceName);
     const [selectedDevice, setSelectedDevice] = useState(deviceNameArr[0]);
     const [alarmData, setAlarmData] = useState()
-
+    
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -41,8 +41,8 @@ const RecentAlarms = (props) => {
         AppManager.showLoader()
         let deviceId;
         Object.values(deviceListArr).filter((item)=> {
-            if(item.deviceDTO.deviceName === selectedDevice)
-                deviceId = item.deviceDTO.id
+            if(item.deviceName === selectedDevice)
+                deviceId = item.id
         } )
 
         console.log("user id",deviceId)
