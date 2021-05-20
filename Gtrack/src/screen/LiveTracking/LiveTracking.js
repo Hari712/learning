@@ -4,8 +4,8 @@ import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
-import { useSelector } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, hasPanicAlarm } from '../Selector';
+import { useSelector, useDispatch } from 'react-redux';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, hasPanicAlarm, getLoginState } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -19,6 +19,7 @@ import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
 const { width, height } = Dimensions.get('window');
+import * as LivetrackingActions from './Livetracking.Action'
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.9;
@@ -36,12 +37,13 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, hasPanic } = useSelector(state => ({
+	const { loginData, isRegular, devicePositions, groupDevices, hasPanic } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
-		hasPanic: hasPanicAlarm(state)
+		hasPanic: hasPanicAlarm(state),
+		loginData: getLoginState(state),
 	}));
 
 	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
@@ -63,6 +65,20 @@ const LiveTracking = ({ navigation }) => {
 			setSelectedDevice(device);		
 		}
 	},[groupDevices])
+
+	useEffect(()=>{
+		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+	},[])
+
+	const dispatch = useDispatch()
+
+	function onSuccess(data) {    
+		console.log("Success",data) 
+	}
+	
+	function onError(error) {
+		console.log("Error",error)  
+	}
 
 	const mapRef = useRef();
 
