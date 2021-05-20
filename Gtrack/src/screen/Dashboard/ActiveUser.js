@@ -33,34 +33,34 @@ const ActiveUser = () => {
 
     useEffect(()=>{
         fetchCounts()
-      },[selectedRole])
+    },[selectedRole])
     
-      function fetchCounts() {
+    function fetchCounts() {
         AppManager.showLoader()
         dispatch(DashboardActions.requestActiveInactiveCount(user_id, selectedRole, onSuccess, onError))
-      }
+    }
 
-      const onSuccess = (data) => {
+    const onSuccess = (data) => {
         AppManager.hideLoader()
         console.log("Success",data)
         setIsClickDownArrow(false)
-      }
+    }
     
-      const onError = (error) => {
+    const onError = (error) => {
         AppManager.hideLoader()
         console.log("Error",error)
-      }
+    }
 
-      const onRoleHandle = (item,key) => {
+    const onRoleHandle = (item,key) => {
         (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
         if(item == 'All Users') {
-          setSelectedRole('all')
+            setSelectedRole('all')
         }else if(item == 'Regular') {
-          setSelectedRole('regular')
+            setSelectedRole('regular')
         }else{
-          setSelectedRole('owner')
+            setSelectedRole('owner')
         }
-      }
+    }
 
     return (
         <View>
@@ -71,7 +71,7 @@ const ActiveUser = () => {
             </View>
 
             <View style={styles.rightMainViewStyle}>
-                <Text style={styles.allUsersTextStyle}>All Users</Text>
+                <Text style={styles.allUsersTextStyle}>{selectedRole === 'all' ? selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)  + ' users' : selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</Text>
                 <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
                 <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
                 </TouchableOpacity>
