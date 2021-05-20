@@ -91,36 +91,36 @@ const ActiveUser = () => {
 
             { 
             countsInfo && countsInfo.map((item, key)=>{
+                let percent = item.active+item.inactive == 0 ? 0 : round((100*item.active/(item.active+item.inactive)),2)
             return(
                 <ShadowView key={key} style={styles.cardContainer}>
-                <Text style={styles.activeUserTextStyle}>{item.role}</Text>
-                <View style={styles.activeUserView}>
-                    <ShadowView style={styles.shadowContainer}>
-
-                    <AnimatedCircularProgress
-                        size={hp(13)}
-                        backgroundWidth={hp(1)}
-                        width={9}
-                        fill={round((100*item.active/(item.active+item.inactive)),2)}
-                        rotation={200}
-                        lineCap="round"
-                        style={{ borderRadius: hp(6.5)}}
-                        tintTransparency={false}
-                        tintColor={ColorConstant.GREEN}
-                        onAnimationComplete={() => console.log('onAnimationComplete')}
-                        backgroundColor={ColorConstant.WHITE}
-                    >
-                        {
-                        (fill) => (
-                            <View style={{ alignItems: 'center'}} >
-                            <Text style={styles.percentage}> {round((100*item.active/(item.active+item.inactive)),2)}% </Text>
-                            <Text style={styles.textStyle}>Active</Text>
-                            </View>
-                        )
-                        }
-                    </AnimatedCircularProgress>
-                    </ShadowView>
-                </View>
+                    <Text style={styles.activeUserTextStyle}>{item.role}</Text>
+                    <View style={styles.activeUserView}>
+                        <ShadowView style={styles.shadowContainer}>
+                            <AnimatedCircularProgress
+                                size={hp(13)}
+                                backgroundWidth={hp(1)}
+                                width={9}
+                                fill={percent}
+                                rotation={200}
+                                lineCap="round"
+                                style={{ borderRadius: hp(6.5)}}
+                                tintTransparency={false}
+                                tintColor={ColorConstant.GREEN}
+                                onAnimationComplete={() => console.log('onAnimationComplete')}
+                                backgroundColor={ColorConstant.WHITE}
+                            >
+                                {
+                                    (fill) => (
+                                        <View style={{ alignItems: 'center'}} >
+                                            <Text style={styles.percentage}> {percent}% </Text>
+                                            <Text style={styles.textStyle}>Active</Text>
+                                        </View>
+                                    )
+                                }
+                            </AnimatedCircularProgress>
+                        </ShadowView>
+                    </View>
                 </ShadowView>
             )})
             }

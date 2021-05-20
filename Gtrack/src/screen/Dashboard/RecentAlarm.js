@@ -13,6 +13,7 @@ import { getDeviceDetailsListInfo, getLoginInfo } from '../Selector'
 import AppManager from '../../constants/AppManager'
 import { RefreshIcon } from '../../component/SvgComponent'
 
+let activityData = [];
 
 const RecentAlarms = (props) => {
 
@@ -47,20 +48,33 @@ const RecentAlarms = (props) => {
 
         console.log("user id",deviceId)
         dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(loginInfo.id, deviceId, onSuccess, onError))  
-        
     }
 
     const onSuccess = (data) => {
         AppManager.hideLoader()
         console.log("Success",data)
         setAlarmData(data.result)
-        
     }
     
     const onError = (error) => {
         AppManager.hideLoader()
         console.log("Error",error)
     } 
+
+    if(alarmData) {
+      let colorsArray = [ColorConstant.BROWN, ColorConstant.DARKBROWN, ColorConstant.LIGHTBROWN, ColorConstant.ORANGE, ColorConstant.LIGHTPINK]
+      console.log("Alarm", alarmData)
+      let totalCount = alarmData ? alarmData.totalAlarms : 0
+      let array = alarmData ? alarmData.alarmCountDTOS.map((item, key)=>{
+        return {
+          value: item? item.count/totalCount:0,
+          label: item? item.type : null,
+          color: colorsArray[key],
+          backgroundColor: ColorConstant.GREY
+        }
+      }) : []
+      activityData = array
+    }
 
     return (
         
@@ -69,11 +83,23 @@ const RecentAlarms = (props) => {
         <View style={{ alignItems: 'center', justifyContent: 'center', marginTop:hp(8)}}>
           <View style={{ justifyContent: 'center', flexDirection: 'row', position: 'absolute', zIndex:0, backgroundColor: ColorConstant.PINK, width: '100%', height: hp(4), alignItems: 'center' }}>
             <Image source={images.dashBoard.bell} style={{ height: hp(2), width: hp(2) }} resizeMode='contain' />
-            <Text style={[styles.alertText,{marginLeft: wp(1)}]}>{alarmData ? alarmData.totalAlarms : ''}</Text>
+            <Text style={[styles.alertText,{marginLeft: wp(1)}]}>{alarmData ? alarmData.totalAlarms : 0}</Text>
             <Text style={styles.alertText }>{translate("Alerts")}</Text>
           </View>
+          {/* Chart View */}
+          <ActivityRings theme={"light"} data={activityData} config={activityConfig} />
+        </View>
 
-          <ActivityRings data={activityData} config={activityConfig} />
+        {/* Legends View */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', padding: hp(2), flexWrap:'wrap' }}>
+          {activityData.map((item)=>{
+            return (
+              <View style={{ paddingHorizontal: hp(1), flexDirection: 'row', alignItems:'center' }}>
+                <View style={[styles.alarmStatusMainView, { backgroundColor: item.color }]}></View>
+                <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4), textAlignVertical:'center', paddingLeft:hp(1) }}>{item.label}</Text>
+              </View>
+            )
+          })}
         </View>
 
 
@@ -104,41 +130,13 @@ const RecentAlarms = (props) => {
             </View>
         </View>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', paddingVertical: hp(2) }}>
-            <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.LIGHTBROWN }]}></View>
-            <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Low Battery")}</Text>
-
-            <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.BROWN }]}></View>
-            <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Movement")}</Text>
-
-            <View style={[styles.alarmStatusMainView, { backgroundColor: ColorConstant.DARKBROWN }]}></View>
-            <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4) }}>{translate("Dashboard_string7")}</Text>
-        </View>
+        
 
       </ShadowView>
     )
   }
 
-  const activityData = [
-    {
-      value: 0.8,
-      color: ColorConstant.BROWN,
-      backgroundColor: ColorConstant.GREY,
-      label: "ACTIVITY",
-    },
-    {
-      value: 0.6,
-      color: ColorConstant.DARKBROWN,
-      backgroundColor: ColorConstant.GREY,
-      label: "ACTIVITY",
-    },
-    {
-      label: "RINGS",
-      value: 0.2,
-      color: ColorConstant.LIGHTBROWN,
-      backgroundColor: ColorConstant.GREY,
-    }
-  ];
+  
   
   const activityConfig = {
     width: 180,
