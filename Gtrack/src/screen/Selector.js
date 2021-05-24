@@ -318,3 +318,14 @@ export const getLivetrackingGroupDevicesListInfo = createSelector(
     [getLivetrackingGroupDevicesList],
     (info) => info
 )
+
+/**
+ * Get Advance Settings
+ */
+
+const getAdvanceSettings = (state) => state.settings && state.settings.settingsData ? state.settings.settingsData : {}
+
+export const getAdvanceSettingsInfo = createSelector(
+    [getAdvanceSettings],
+    (info) => info
+)

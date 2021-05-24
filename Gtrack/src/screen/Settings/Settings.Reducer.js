@@ -2,7 +2,8 @@ import createReducer from '../../store/CreateReducer'
 import * as types from '../../constants/ActionTypes';
 
 const initialState = {
-    notificationList:[]
+    notificationList:[],
+    settingsData:[]
 }
 
 export const settingsReducer = createReducer(state = initialState, {
@@ -25,5 +26,11 @@ export const settingsReducer = createReducer(state = initialState, {
             ...state,
             notificationList: newArrayList
         }
-    }
+    },
+    [types.ADVANCE_SETTINGS_RESPONSE](state, action) {
+        return {
+            ...state,
+            settingsData:action.data
+        }
+    },
 })  
