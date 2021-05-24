@@ -1,4 +1,7 @@
-const BASE_URL = 'https://gtrackapi-dev.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://qa-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+
+// https://qa-api.vegitone.com/gtrackapi/
+// https://dev-api.vegitone.com/gtrackapi/
 
 const SUFFIX_URL = 'public/'
 

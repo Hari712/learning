@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     searchText: {
         //fontSize:FontSize.FontSize.small,
         fontSize:14,
-        color:ColorConstant.LIGHTGREY,
+        color:ColorConstant.BLACK,
         fontFamily:'Nunito-LightItalic'
     },
     search: {
