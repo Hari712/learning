@@ -137,7 +137,7 @@ const SensorInfo = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {searchBar()}
-            <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
+            <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>{groupDevices.length > 0 ? "Select device" : null }</Text>
             <FlatList
                 style={{}}
                 contentContainerStyle={{}}
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         //fontSize:FontSize.FontSize.small,
         fontSize:14,
         color:ColorConstant.BLACK,
-        fontFamily:'Nunito-LightItalic'
+        //fontFamily:'Nunito-Italic'
     },
     search: {
         paddingHorizontal:hp(2),
