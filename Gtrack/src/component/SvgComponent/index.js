@@ -120,6 +120,8 @@ import MarkerIcon from './MarkerIcon'
 import LocationOrangeIcon from './LocationOrangeIcon'
 import SettingNotiNextArrowIcon from './SettingNotiNextArrowIcon'
 import SettingNotiDownArrowOrangeIcon from './SettingNotiDownArrowOrangeIcon'
+import PanicIconClick from './PanicIconClick'
+import PanicAlarmIcon from './PanicAlarmIcon'
 
 export {
     BarCodeScanIcon,
@@ -242,5 +244,7 @@ export {
     MarkerIcon,
     LocationOrangeIcon,
     SettingNotiNextArrowIcon,
-    SettingNotiDownArrowOrangeIcon
+    SettingNotiDownArrowOrangeIcon,
+    PanicIconClick,
+    PanicAlarmIcon
 }

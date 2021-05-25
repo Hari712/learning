@@ -1,24 +1,26 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions, Modal } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
-import { MapView, FontSize } from '../../component';
+import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import { translate } from '../../../App';
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon } from '../../component/SvgComponent';
+import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick } from '../../component/SvgComponent';
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import useStateRef from '../../utils/useStateRef';
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
+import Dialog from '../../component/Dialog'
 const { width, height } = Dimensions.get('window');
+import * as LivetrackingActions from './Livetracking.Action'
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.9;
@@ -36,11 +38,12 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData } = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
+		hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
 	}));
 
@@ -51,6 +54,10 @@ const LiveTracking = ({ navigation }) => {
 	const [coordList, setCoordList] 	= useState([]);
 	const [lineString, setLineString] 	= useState(null);
 	const [region, setRegion] 			= useState();
+	const [isPanicAlarmClick, setIsPanicAlarmClick] = useState(false);
+	const [isPanicTimerVisible, setIsPanicTimerVisible] = useState(false);
+	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
+
 	const isFocused = useIsFocused();
 	
 	useEffect(()=>{
@@ -63,6 +70,20 @@ const LiveTracking = ({ navigation }) => {
 			setSelectedDevice(device);		
 		}
 	},[deviceList])
+
+	useEffect(()=>{
+		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+	},[])
+
+	const dispatch = useDispatch()
+
+	function onSuccess(data) {    
+		console.log("Success",data) 
+	}
+	
+	function onError(error) {
+		console.log("Error",error)  
+	}
 
 	const mapRef = useRef();
 
@@ -325,6 +346,23 @@ const LiveTracking = ({ navigation }) => {
 		);
 	}
 
+	function onLongPress() {
+		setIsPanicAlarmClick(!isPanicAlarmClick)
+		//Verify if there is any panic alarm created
+		let alreadyPanicCreated = hasPanic 
+		if(alreadyPanicCreated) 
+			setIsPanicTimerVisible(true)
+		else
+			setIsPanicAlarmCreateDialog(true)
+	}
+
+	function onOkay() {
+		setIsPanicAlarmClick(false)
+		setIsPanicAlarmCreateDialog(false)
+		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW)
+	}
+	
+
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
@@ -338,7 +376,6 @@ const LiveTracking = ({ navigation }) => {
 					style={styles.bellIconStyle}
 				>
 					<BellIcon />
-					{/* <Image source={images.image.bluebell} /> */}
 				</TouchableOpacity>
 
 				<TouchableOpacity
@@ -370,6 +407,36 @@ const LiveTracking = ({ navigation }) => {
 							<LiveTrackingPlusIcon />
 						</TouchableOpacity>
 					: null}
+
+					<TouchableOpacity
+							style={[styles.lineIconStyle, { backgroundColor: ColorConstant.RED }]}
+							onLongPress={()=>onLongPress()}
+							delayLongPress={2000}
+					>
+							{isPanicAlarmClick ? <PanicIconClick height={55} width={55}/> : <PanicAlarmIcon />}
+					</TouchableOpacity>
+
+					<CustomDialog 
+						visible={isPanicAlarmCreateDialog}
+						titleStyle={styles.titleStyle}
+						heading={"There is no panic alarm created"}
+						message={"Do you want to create one ?"}
+						negativeHandle={()=> setIsPanicAlarmCreateDialog(false) && setIsPanicAlarmClick(!isPanicAlarmClick)}
+						positiveHandle={()=> onOkay()}
+						negativeButtonName={"No"}
+						positiveButtonName={"Yes"}
+					/>
+
+					{ isPanicTimerVisible && <PanicDialog 
+						visible={isPanicTimerVisible}
+						timeoutValue={10}
+						stopHandle={()=>{
+							setIsPanicTimerVisible(false) 
+							setIsPanicAlarmClick(!isPanicAlarmClick)}}
+						afterTimeoutHandle={()=>{
+							setIsPanicTimerVisible(false)
+							setIsPanicAlarmClick(false)}}
+					/> }
 			</View>
 		</View>
 	);
@@ -381,6 +448,12 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
+	titleStyle: {
+        color: ColorConstant.ORANGE,
+        textAlign: 'center',
+        fontSize: FontSize.FontSize.tow,
+        fontWeight: 'bold'
+    },
 	subContainer: {
 		position: 'absolute',
 		flex: 1,
