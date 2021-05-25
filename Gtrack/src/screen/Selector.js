@@ -334,3 +334,14 @@ export const getNotifiedDevicesInfo = createSelector(
     [getNotifiedDevices],
     (info) => info
 )
+
+/**
+ * Get Notification Events for Livetracking Notification
+ */
+
+const getLiveNotifications = (state) => state.livetracking && state.livetracking.notificationEvents ? state.livetracking.notificationEvents : {}
+
+export const getLiveNotificationsInfo = createSelector(
+    [getLiveNotifications],
+    (info) => info
+)

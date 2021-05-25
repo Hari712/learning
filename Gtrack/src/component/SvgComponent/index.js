@@ -122,6 +122,10 @@ import SettingNotiNextArrowIcon from './SettingNotiNextArrowIcon'
 import SettingNotiDownArrowOrangeIcon from './SettingNotiDownArrowOrangeIcon'
 import PanicIconClick from './PanicIconClick'
 import PanicAlarmIcon from './PanicAlarmIcon'
+import DeviceMovingIcon from './DeviceMovingIcon'
+import UnderSpeedIcon from './UnderSpeedIcon'
+import StationaryIcon from './StationaryIcon'
+import FluelLevelcon from './FluelLevelcon'
 
 export {
     BarCodeScanIcon,
@@ -246,5 +250,9 @@ export {
     SettingNotiNextArrowIcon,
     SettingNotiDownArrowOrangeIcon,
     PanicIconClick,
-    PanicAlarmIcon
+    PanicAlarmIcon,
+    DeviceMovingIcon,
+    UnderSpeedIcon,
+    StationaryIcon,
+    FluelLevelcon
 }
