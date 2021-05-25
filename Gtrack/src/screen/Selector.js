@@ -184,6 +184,11 @@ export const getAlarmsListInfo = createSelector(
     (info) => info
 )
 
+export const hasPanicAlarm = createSelector(
+    [getAlarmsList],
+    (info) => info && info.map((item)=> item.notification.attributes.alarms == "Panic").includes(true)
+)
+
 /**
  * Get Alert Types List for Livetracking
  */
@@ -316,5 +321,16 @@ function getAllLivetrackingDevices(state) {
 
 export const getLivetrackingGroupDevicesListInfo = createSelector(
     [getLivetrackingGroupDevicesList],
+    (info) => info
+)
+
+/**
+ * Get Notified devices for Dashboard
+ */
+
+const getNotifiedDevices = (state) => state.dashBoard.notifiedDevices
+
+export const getNotifiedDevicesInfo = createSelector(
+    [getNotifiedDevices],
     (info) => info
 )

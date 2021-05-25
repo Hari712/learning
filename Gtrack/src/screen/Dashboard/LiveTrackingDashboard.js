@@ -257,6 +257,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 					alignSelf: 'center',
 					justifyContent: 'center',
 					marginHorizontal: hp(3),
+					width:wp(50)
 				}}
 			>
 				<View
@@ -267,7 +268,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity onPress={() => onPressPrevious()}>
+					<TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
@@ -277,7 +278,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
 						{` ${deviceInfo.name} `}
 					</Text>
-					<TouchableOpacity onPress={() => onPressNext()}>
+					<TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
 					</TouchableOpacity>
 				</View>

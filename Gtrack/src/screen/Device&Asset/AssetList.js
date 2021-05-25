@@ -102,9 +102,9 @@ const AssetList = () => {
 
     return (
         <SafeAreaView style={{flex:1}}>
-        <KeyboardAvoidingView keyboardVerticalOffset={hp(10)} behavior='position'
-         style={{flexGrow:1 }}
-         >
+        <KeyboardAvoidingView keyboardVerticalOffset={hp(10)} behavior='height'
+            style={{flexGrow:1 }}
+        >
                 
         <View styles={styles.container}>
             {renderSearchBar()}

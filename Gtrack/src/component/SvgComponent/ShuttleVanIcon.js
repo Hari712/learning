@@ -2,6 +2,7 @@ import * as React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
 function ShuttleVanIcon(props) {
+    const {color} = props
     return (
         <Svg
             data-name="17-shuttle van"
@@ -10,7 +11,7 @@ function ShuttleVanIcon(props) {
             viewBox="0 0 24.411 13.174"
             {...props}
         >
-            <G fill="#fff">
+            <G fill={color?color:"#fff"}>
             <Path
                 data-name="Path 2330"
                 d="M5.512 396H4v1.744a.581.581 0 00.581.581h1.088A3.092 3.092 0 015.512 396z"

@@ -24,8 +24,6 @@ const GroupItem = props => {
 
     const isDefault = item.isDefault
 
-    console.log("khushi",item)
-
     const dispatch = useDispatch()
 
     const { isConnected, loginInfo, isAdmin, isOwner } = useSelector(state => ({
@@ -187,7 +185,7 @@ const GroupItem = props => {
                         {/* <Image source={images.manage.close} /> */}
                     </TouchableOpacity>
                 </View>
-                <View style={{ width: wp(85), alignSelf: 'center' }}>
+                <View style={{ width: wp(80), alignSelf: 'center' }}>
                     <MultiSelect
                         label='Select Device'
                         dataList={arrDeviceNames}
@@ -264,15 +262,16 @@ const GroupItem = props => {
     }
 
     return (
-        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2),flexDirection:'row' }}>
-            <View style={{paddingHorizontal:wp(3)}}>
-                {isDefault ? <RadioButtonIconClicked/> :
-                <TouchableOpacity onPress={()=> setDefaultGroup()}>
-                    <RadioButtonIcon/>
-                </TouchableOpacity>
-                }
-            </View>
-            <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2)}}>
+            <View style={{ flexDirection:'row', alignItems: 'center', }} >
+                <View style={{paddingRight:wp(3)}}>
+                    {isDefault ? <RadioButtonIconClicked/> :
+                    <TouchableOpacity onPress={()=> setDefaultGroup()}>
+                        <RadioButtonIcon/>
+                    </TouchableOpacity>
+                    }
+                </View>
+                <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
                 {/* Arrow Left Side */}
                 <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
                     {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
@@ -296,7 +295,7 @@ const GroupItem = props => {
 
                 </View>
             </View>
-
+            </View>
             {/* Popup View */}
             {(item.id == addClick) ? addDevicePopup() : null}
 
@@ -373,6 +372,8 @@ const styles = StyleSheet.create({
     popup: {
         borderRadius: 12,
         marginTop: hp(2),
+        // marginRight:wp(1),
+        // marginLeft:wp(11),
         //alignItems:'center',
         elevation: 3,
         shadowColor: ColorConstant.GREY,

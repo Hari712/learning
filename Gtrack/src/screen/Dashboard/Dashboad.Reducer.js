@@ -6,9 +6,8 @@ const initialState = {
     deviceCount:null,
     deviceList:[],
     data:[],
-    notificationCount:[]
-
-
+    notificationCount:[],
+    notifiedDevices:[]
 }
 
 
@@ -34,6 +33,12 @@ export const dashboardReducer = createReducer(state = initialState, {
         return {
             ...state,
             notificationCount: action.data
+        }
+    },
+    [types.GET_NOTIFIED_DEVICES_RESPONSE](state, action) {
+        return {
+            ...state,
+            notifiedDevices: action.data
         }
     },
 })

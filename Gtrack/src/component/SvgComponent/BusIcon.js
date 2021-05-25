@@ -2,9 +2,10 @@ import * as React from "react"
 import Svg, { G, Path, Ellipse } from "react-native-svg"
 
 function BusIcon(props) {
+    const {color} = props
     return (
         <Svg width={27.545} height={13.282} viewBox="0 0 27.545 13.282" {...props}>
-            <G transform="translate(0 .002)" fill="#fff">
+            <G transform="translate(0 .002)" fill={color?color:"#fff"}>
             <Path
                 data-name="Path 2336"
                 d="M418.34 156.451h-.984v-.984H414.9v-.984h2.951a.492.492 0 01.492.492v1.476z"

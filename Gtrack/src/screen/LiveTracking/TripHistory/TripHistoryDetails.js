@@ -9,6 +9,7 @@ import {
 	TextInput,
 	Platform,
 	Button,
+    ActivityIndicator,
 } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -22,6 +23,7 @@ import Moment from 'moment';
 import RouteDetails from './RouteDetails';
 import * as TripHistoryActions from './TripHistory.Action';
 import AppManager from '../../../constants/AppManager';
+import isEmpty from 'lodash/isEmpty'
 
 const TripHistoryDetails = ({ navigation, route }) => {
 
@@ -42,10 +44,19 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [selectedDay, setSelectedDay] = useState("Today")
     const [dropdownPosY, setDropdownPosY] = useState()
     const [routeData, setRouteData] = useState([])
-    // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [pageIndex, setPageIndex] = useState(0)
+    const [pageCount, setPageCount] = useState(5)
+    const [totalCount, setTotalCount] = useState(0)
+    const [isLoadMoreData, setIsLoadMoreData] = useState(false)
+    const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false)
+    const [isFirstSearch, setIsFirstSearch] = useState(false);
 
     useEffect(() => {
-        setRouteData(routeDetails)
+        if(isFirstSearch)
+            setRouteData(routeDetails)
+        else 
+            setRouteData([...routeData, ...routeDetails])   
+
     },[routeDetails])
 
     useEffect(() => {
@@ -54,9 +65,16 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         if(startDate && endDate){
-            fetchTripHistory()
+            fetchFirstTripHistory()
         }
     },[startDate, endDate])
+
+    useEffect(() => {
+        if ( isLoadMoreData) {
+            fetchTripHistory()
+        }
+    }, [pageIndex, isLoadMoreData])
+    
     
     useEffect(() => {
 
@@ -102,18 +120,42 @@ const TripHistoryDetails = ({ navigation, route }) => {
     },[selectedDay])
 
     const fetchTripHistory = () => {
-        AppManager.showLoader()
+        if(pageIndex===0)
+            AppManager.showLoader()
         if (isConnected) {
             const start = Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000");
             const end = Moment(endDate).format("YYYY-MM-DDT23:59:59.000") 
             const requestBody =  {
-                "pageNumber" : 0,
-                "pageSize" : 5,
+                "pageNumber" : pageIndex,
+                "pageSize" : pageCount,
                 "useMaxSearchAsLimit" : false,
                 "searchColumnsList" : null,
                 "sortHeader" : "id",
                 "sortDirection" : "DESC"
             }
+            setIsFirstSearch(false)
+            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+        } else {                                                                                             
+            AppManager.showNoInternetConnectivityError()
+        }
+    }
+
+    const fetchFirstTripHistory = () => {
+        AppManager.showLoader()
+        setTotalCount(0)
+        setPageIndex(0)
+        if (isConnected) {
+            const start = Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000");
+            const end = Moment(endDate).format("YYYY-MM-DDT23:59:59.000") 
+            const requestBody =  {
+                "pageNumber" : 0,
+                "pageSize" : pageCount,
+                "useMaxSearchAsLimit" : false,
+                "searchColumnsList" : null,
+                "sortHeader" : "id",
+                "sortDirection" : "DESC"
+            }
+            setIsFirstSearch(true)
             dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
         } else {                                                                                             
             AppManager.showNoInternetConnectivityError()
@@ -141,14 +183,28 @@ const TripHistoryDetails = ({ navigation, route }) => {
     }, [navigation]);
 
     function onSuccess(data) {    
-        console.log("Success",data) 
+        console.log("Success",data)
+
+        const arrList = data.result.data ? data.result.data : []
+        const totalCountLocal = data.result.totalCount ? data.result.totalCount : 0
+        if (isEmpty(arrList)) {
+            let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+            setPageIndex(pagenumber)
+        }
+        setTotalCount(totalCountLocal)
+        // setIsRefreshing(false)
+        setIsLoadMoreData(false) 
         AppManager.hideLoader()
     }
     
     function onError(error) {
         AppManager.hideLoader()
         console.log("Error",error) 
-        showSimpleMessage('danger', { message: error, description: '', floating: true })
+
+        setIsLoadMoreData(false)
+        let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+        setPageIndex(pagenumber)
+        AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
     }
 
     const showDatePicker = (item) => {
@@ -182,6 +238,26 @@ const TripHistoryDetails = ({ navigation, route }) => {
         //isStartDateVisible ? setStartDate(dt) : setEndDate(dt)
         // hideDatePicker();
     };
+
+    const renderFooter = () => {
+        //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+        if (isLoadMoreData) 
+            return <View><ActivityIndicator size="large" color="#000000" /></View>;
+        else    
+            return null;
+    }
+
+    const loadMoreData = () => {
+        if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
+            if (routeData.length < totalCount) {
+            // setIsRefreshing(false)
+            setIsLoadMoreData(true)
+            // setToMerge(true)
+            setOnEndReachedCalledDuringMomentum(true)
+            setPageIndex(pageIndex + 1)
+            }
+        }
+    }
 
 	function renderNoRecordsFoundLabel() {
 		return (
@@ -225,7 +301,15 @@ const TripHistoryDetails = ({ navigation, route }) => {
 							/>
                         </View>
 
-                        {routeData.length > 0 ? <RouteDetails routeDetails={routeData} />  : renderNoRecordsFoundLabel()}
+                        {routeData.length > 0 ? 
+                            <RouteDetails 
+                                routeDetails={routeData} 
+                                loadMoreData={loadMoreData} 
+                                setOnEndReachedCalledDuringMomentum={setOnEndReachedCalledDuringMomentum}
+                                onEndReachedCalledDuringMomentum={onEndReachedCalledDuringMomentum}
+                                renderFooter={renderFooter} 
+                                />  
+                        : renderNoRecordsFoundLabel()}
 
                         <View 
 							style={{
