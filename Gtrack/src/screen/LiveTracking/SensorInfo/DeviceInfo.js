@@ -6,21 +6,22 @@ import { translate } from '../../../../App'
 import { FontSize } from '../../../component'
 import { BackIcon, ListIcon, SensorIcon } from '../../../component/SvgComponent'
 import AppManager from '../../../constants/AppManager'
-import { getAssetItemInfo, getLoginState } from '../../Selector'
+import { getAdvanceSettingsInfo, getAssetItemInfo, getLoginState } from '../../Selector'
 import { useSelector, useDispatch } from 'react-redux'
 import * as LivetrackingActions from '../Livetracking.Action'
 import Moment from 'moment'
-import { convertTemp } from '../../../utils/helper'
+import { convertTemp, convertTime } from '../../../utils/helper'
 
 
 const DeviceInfo = ({ navigation, route }) => {
 
     const { data } = route.params
 
-    const { loginData, isConnected, assetData } = useSelector(state => ({
+    const { loginData, isConnected, assetData, advSettingsData } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
-        assetData: getAssetItemInfo(state)
+        assetData: getAssetItemInfo(state),
+        advSettingsData: getAdvanceSettingsInfo(state)
     }))
 
     const dispatch = useDispatch()
@@ -91,14 +92,14 @@ const DeviceInfo = ({ navigation, route }) => {
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Time(Position)")}</Text>
-                                <Text style={styles.textStyle}>{Moment(item.deviceTime).format("YYYY-MM-DD")}</Text>
-                                <Text style={styles.textStyle}>{Moment(item.deviceTime).format("HH:mm:SS")}</Text>
+                                <Text style={styles.textStyle}>{convertTime(item.deviceTime, advSettingsData).format("YYYY-MM-DD")}</Text>
+                                <Text style={styles.textStyle}>{convertTime(item.deviceTime, advSettingsData).format("HH:mm:SS")}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '25%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Time(Server)")}</Text>
-                                <Text style={styles.textStyle}>{Moment(item.serverTime).format("YYYY-MM-DD")}</Text>
-                                <Text style={styles.textStyle}>{Moment(item.serverTime).format("HH:mm:SS")}</Text>
+                                <Text style={styles.textStyle}>{convertTime(item.serverTime, advSettingsData).format("YYYY-MM-DD")}</Text>
+                                <Text style={styles.textStyle}>{convertTime(item.serverTime, advSettingsData).format("HH:mm:SS")}</Text>
                             </View>
                         </View>
 
@@ -178,7 +179,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Temperature")}</Text>
-                                <Text style={styles.textStyle}>{convertTemp(item.attributes.coolantTemp)}</Text>
+                                <Text style={styles.textStyle}>{convertTemp(item.attributes.coolantTemp, advSettingsData)}</Text>
                             </View>
                         </View>
 

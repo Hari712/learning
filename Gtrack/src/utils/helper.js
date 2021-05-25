@@ -148,10 +148,7 @@ export function isIphoneX() {
       return round(value / 1.15077945, 2)
   }
 
-  export function convertTemp(value) {
-    const { settingsData } = useSelector(state => ({
-      settingsData: getAdvanceSettingsInfo(state)
-    }))
+  export function convertTemp(value, settingsData) {
     const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
     if(value){
       if(unit=='°C')
@@ -164,16 +161,8 @@ export function isIphoneX() {
       return "-"
   }
 
-  // export function convertTime(value) {
-  //   const unit = settingsData.timeZone
-  //   IST = +0530
-  //   EST = -0500
-  //   if(value){
-  //     if(unit=='IST')
-  //       return 
-  //     else  
-  //       return 
-  //   } 
-  //   else 
-  //     return "-"
-  // }
+  export function convertTime(value, settingsData) {
+    var moment = require('moment-timezone');
+    var unit = settingsData.timeZone === "IST"  ? "Asia/Kolkata" : settingsData.timeZone === "EST"  ? "America/Toronto" : null
+    return unit ? moment(value).tz(unit) : moment(value)
+  }

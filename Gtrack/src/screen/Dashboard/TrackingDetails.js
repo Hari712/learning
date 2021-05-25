@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import BottomSheet from 'reanimated-bottom-sheet';
 import FontSize from '../../component/FontSize';
-import { dist, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo } from './../Selector';
+import { dist, getAdvanceSettingsInfo, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo } from './../Selector';
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
@@ -13,7 +13,7 @@ import Moment from 'moment'
 import { lineString as makeLineString } from '@turf/helpers';
 import useStateRef from '../../utils/useStateRef';
 import _ from 'lodash';
-import { convertDist, convertSpeed } from '../../utils/helper';
+import { convertDist, convertSpeed, convertTime } from '../../utils/helper';
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
@@ -40,11 +40,12 @@ const TrackingDetails = ({navigation, route}) => {
 
 	const mapRef = useRef();
 
-	const { isConnected, devicePositions, groupDevices, distUnit } = useSelector(state => ({
+	const { isConnected, devicePositions, groupDevices, distUnit, advSettingData } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
-		distUnit: dist(state)
+		distUnit: dist(state),
+		advSettingData: getAdvanceSettingsInfo(state)
 	}));
 
 	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
@@ -148,8 +149,8 @@ const TrackingDetails = ({navigation, route}) => {
 				<Image style={styles.icon} source={images.dashBoard.calender}/>
 			</View> 
 			<View style={styles.otherDetails}>
-				<Text style={styles.date}>{singleSelectedDevice ? Moment(singleSelectedDevice.deviceTime).format("DD-MM-YYYY") : '-'}</Text>
-				<Text style={[styles.date,{flex:1}]}>{singleSelectedDevice ? Moment(singleSelectedDevice.deviceTime).format("h:mm:ss") : '-'}</Text>
+				<Text style={styles.date}>{singleSelectedDevice ? convertTime(singleSelectedDevice.deviceTime, advSettingData).format("DD-MM-YYYY") : '-'}</Text>
+				<Text style={[styles.date,{flex:1}]}>{singleSelectedDevice ? convertTime(singleSelectedDevice.deviceTime, advSettingData).format("h:mm:ss") : '-'}</Text>
 			</View> 
 			<View style={styles.subContainerView}>
 				<Text style={styles.title}>Other details</Text>

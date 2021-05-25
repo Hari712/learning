@@ -36,8 +36,6 @@ const AdvanceSettings = ({navigation,route}) => {
     settingsData: getAdvanceSettingsInfo(state)
   }))
 
-  console.log("khushi",settingsData)
-
   const dispatch = useDispatch()
 
   useEffect(() => { 
@@ -51,6 +49,10 @@ const AdvanceSettings = ({navigation,route}) => {
     
   },[settingsData])
 
+  useEffect(() => {
+    timeZone ? setIsToggleClick(true) : setIsToggleClick(false)
+  },[timeZone])
+
   const onTapSave = () => { 
     if(isConnected) {
       const requestBody = {
@@ -58,7 +60,7 @@ const AdvanceSettings = ({navigation,route}) => {
         id: settingsID,
         language: language,
         temprature: temperature,
-        timeZone: timeZone,
+        timeZone: isToggleClick ? timeZone : null,
       }
       AppManager.showLoader() 
       dispatch(SettingsActions.requestAdvanceSettings(loginData.id, requestBody, onSuccess, onError))
@@ -91,20 +93,7 @@ const AdvanceSettings = ({navigation,route}) => {
     });
   },[navigation,onTapSave]);
 
-  function onGetSuccess(data) {    
-    console.log("Success",data) 
-    const {result} = data
-
-    setLanguage(result.language)
-    setTimeZone(result.timeZone)
-    setDistance(result.distance)
-    setSettingsID(result.id)
-    setTemperature(result.temprature)
-
-    AppManager.hideLoader()
-  }
-
-
+  
 
   function onSuccess(data) {    
     console.log("Success",data) 
@@ -132,7 +121,7 @@ return (
                     <Text style={styles.textStyle}>{translate("Select_language")}</Text>
                     <Text style={styles.subText}>{language}</Text>
                 </View>
-                <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
+                <TouchableOpacity style={{alignSelf:'center', padding:wp(4)}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
                   { 
                     isLanguageClick ?
                       <NextArrowIconClicked /> :
@@ -181,7 +170,7 @@ return (
                           return(
                             <TouchableOpacity key={key} onPress={()=>{setTimeZone(item)}} style={{flexDirection:'row',flex:0.6}}>
                               {item===timeZone ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
-                              <Text style={styles.unitText}>{item=="IST"?"India/Calcutta":"America/Toronto"}</Text>
+                              <Text style={styles.unitText}>{item=="IST"?"Asia/Kolkata" : "America/Toronto"}</Text>
                             </TouchableOpacity>                                  
                           )
                         })
@@ -191,7 +180,7 @@ return (
           
             <View style={styles.unitContainer}>
                 <Text style={styles.unit}>{translate("Units")}</Text>
-                <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)}>
+                <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)} style={{paddingHorizontal:wp(4), paddingVertical:wp(2)}} >
                   {
                     isUnitClick ? 
                       <NextArrowIconClicked />:
@@ -272,7 +261,9 @@ const styles = StyleSheet.create({
   unit: {
     fontSize:12,
     fontFamily:'Nunito-SemiBold',
-    color:ColorConstant.BLACK
+    color:ColorConstant.BLACK,
+    flex:1,
+    textAlignVertical:'center'
   },
   language: {
     fontSize:12,

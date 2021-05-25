@@ -3,22 +3,24 @@ import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 're
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { FontSize }from '../../../component';
-import { dist, getLoginState } from '../../Selector'
+import { dist, getAdvanceSettingsInfo, getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import {  CalenderIconWhite, LocationIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
-import { convertDist, convertSpeed } from '../../../utils/helper';
+import { convertDist, convertSpeed, convertTime } from '../../../utils/helper';
 
 const RouteDetails = (props) => {
 
-    const { loginData, distUnit } = useSelector(state => ({
+    const { loginData, distUnit, advSettingsData } = useSelector(state => ({
         loginData: getLoginState(state),
-        distUnit: dist(state)
+        distUnit: dist(state),
+        advSettingsData: getAdvanceSettingsInfo(state)
     }))
 
     const { routeDetails } = props
+    var moment = require('moment-timezone');
 
     const dispatch = useDispatch()
 
@@ -29,18 +31,17 @@ const RouteDetails = (props) => {
 
         console.log("item",item)
         
-        let sDateArray = Moment(item.tripStartTime)
-        var sdateComponent = sDateArray.utc().format('YYYY-MM-DD');
-        var stimeComponent = sDateArray.utc().format('HH:mm:ss');
+        let sDateArray = convertTime(item.tripStartTime, advSettingsData)
+        var sdateComponent = sDateArray.format('YYYY-MM-DD');
+        var stimeComponent = sDateArray.format('HH:mm');
         
-        let eDateArray = Moment(item.tripEndTime)
-        var edateComponent = eDateArray.utc().format('YYYY-MM-DD');
-        var etimeComponent = eDateArray.utc().format('HH:mm:ss');
+        let eDateArray = convertTime(item.tripEndTime, advSettingsData)
+        var edateComponent = eDateArray.format('YYYY-MM-DD');
+        var etimeComponent = eDateArray.format('HH:mm');
 
-        let dformat = Moment(eDateArray-sDateArray).utc().format('H:m:s').split(':')
+        let dformat = moment(eDateArray-sDateArray).format('H:m:s').split(':')
         let durationFormat = (dformat[0] > 0 ? dformat[0]+"h ":"") + (dformat[1] > 0 ? dformat[1]+"m ":'') + (dformat[2] > 0 ? dformat[2]+"s ":'')
-        console.log("Duration",durationFormat)
-
+        
         return (
             <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.cardContainer}>
     
