@@ -7,7 +7,7 @@ import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
 import { FontSize} from '../../component'
 import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardActions from './Dashboad.Action'
-import { getDeviceDetailsListInfo, getLoginInfo, getNotificationCountListInfo, isRoleAdmin, isRoleOwner, isRoleRegular } from '../Selector'
+import { getDeviceDetailsListInfo, getLoginInfo, getNotificationCountListInfo, getNotifiedDevicesInfo, isRoleAdmin, isRoleOwner, isRoleRegular } from '../Selector'
 import AppManager from '../../constants/AppManager'
 import RecentAlarms from './RecentAlarm'
 import DeviceSummary from './DeviceSummary'
@@ -20,16 +20,16 @@ const Dashboard = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
-    const { isConnected, deviceDetails, loginInfo, isRegular, isAdmin, isOwner} = useSelector(state => ({
+    const { isConnected, deviceDetails, loginInfo, isRegular, isAdmin, isOwner, notiDevices} = useSelector(state => ({
       isConnected: state.network.isConnected,
       loginInfo: getLoginInfo(state),
       deviceDetails: getDeviceDetailsListInfo(state),
       notificationCount: getNotificationCountListInfo(state),
       isRegular: isRoleRegular(state),
       isAdmin: isRoleAdmin(state),
-      isOwner: isRoleOwner(state)
+      isOwner: isRoleOwner(state),
+      notiDevices: getNotifiedDevicesInfo(state)
     }))
-
 
     const user_id = loginInfo.id ? loginInfo.id : null
 
@@ -41,6 +41,7 @@ const Dashboard = ({ navigation }) => {
 
     useEffect(() => {
       fetchDeviceDetails()
+      fetchNotifiedDevices()
     }, [])
 
     function fetchDeviceDetails() {
@@ -48,9 +49,14 @@ const Dashboard = ({ navigation }) => {
       dispatch(DashboardActions.requestDeviceDetails(user_id, onSuccess, onError))
     }
 
+    function fetchNotifiedDevices() {
+      AppManager.showLoader()
+      dispatch(DashboardActions.requestGetNotifiedDevices(user_id, onSuccess, onError))
+    }
+
     const onSuccess = (data) => {
       AppManager.hideLoader()
-      console.log("Success",data)
+      console.log("success",data)
       setIsClickDownArrow(false)
     }
 
@@ -71,7 +77,7 @@ const Dashboard = ({ navigation }) => {
               <>
                 <LiveTrackingDashboard /> 
                 <DeviceSummary deviceList={deviceDetails} />
-                <RecentAlarms deviceList={deviceDetails}/>
+                <RecentAlarms deviceList={notiDevices}/>
                 <ActiveUser />
               </> : null }
 
@@ -79,7 +85,7 @@ const Dashboard = ({ navigation }) => {
               <>
                 <LiveTrackingDashboard /> 
                 <DeviceSummary deviceList={deviceDetails} />
-                <RecentAlarms deviceList={deviceDetails}/>
+                <RecentAlarms deviceList={notiDevices}/>
               </> : null }
 
             {isRegular ?

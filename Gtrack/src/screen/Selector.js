@@ -323,3 +323,14 @@ export const getLivetrackingGroupDevicesListInfo = createSelector(
     [getLivetrackingGroupDevicesList],
     (info) => info
 )
+
+/**
+ * Get Notified devices for Dashboard
+ */
+
+const getNotifiedDevices = (state) => state.dashBoard.notifiedDevices
+
+export const getNotifiedDevicesInfo = createSelector(
+    [getNotifiedDevices],
+    (info) => info
+)
