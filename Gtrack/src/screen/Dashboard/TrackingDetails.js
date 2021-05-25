@@ -248,10 +248,10 @@ const TrackingDetails = ({navigation, route}) => {
 
 			<BottomSheet
 				ref={sheetRef}
-				snapPoints={[height/2, height/4, hp(7)]}
+				snapPoints={[height/2.3, height/4, hp(7)]}
 				borderRadius={30}
 				renderContent={renderContent}
-     		/>
+			/>
 
 		</View>
 	);
