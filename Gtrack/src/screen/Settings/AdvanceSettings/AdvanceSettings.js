@@ -36,6 +36,8 @@ const AdvanceSettings = ({navigation,route}) => {
     settingsData: getAdvanceSettingsInfo(state)
   }))
 
+  console.log("khushi",settingsData)
+
   const dispatch = useDispatch()
 
   useEffect(() => { 

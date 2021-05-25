@@ -10,6 +10,7 @@ import { getAssetItemInfo, getLoginState } from '../../Selector'
 import { useSelector, useDispatch } from 'react-redux'
 import * as LivetrackingActions from '../Livetracking.Action'
 import Moment from 'moment'
+import { convertTemp } from '../../../utils/helper'
 
 
 const DeviceInfo = ({ navigation, route }) => {
@@ -177,7 +178,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Temperature")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.coolantTemp ? item.attributes.coolantTemp + `\u02DA` : 'Not available' }</Text>
+                                <Text style={styles.textStyle}>{convertTemp(item.attributes.coolantTemp)}</Text>
                             </View>
                         </View>
 

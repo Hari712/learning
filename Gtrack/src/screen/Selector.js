@@ -329,3 +329,8 @@ export const getAdvanceSettingsInfo = createSelector(
     [getAdvanceSettings],
     (info) => info
 )
+
+export const dist = createSelector(
+    [getAdvanceSettings],
+    (info) => info && ( info.distance == AppConstants.KILOMETER ? "km" : "mi" ) 
+)

@@ -3,18 +3,19 @@ import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 're
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { FontSize }from '../../../component';
-import { getLoginState } from '../../Selector'
+import { dist, getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import {  CalenderIconWhite, LocationIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
-import { round } from 'lodash';
+import { convertDist, convertSpeed } from '../../../utils/helper';
 
 const RouteDetails = (props) => {
 
-    const { loginData } = useSelector(state => ({
-        loginData: getLoginState(state)
+    const { loginData, distUnit } = useSelector(state => ({
+        loginData: getLoginState(state),
+        distUnit: dist(state)
     }))
 
     const { routeDetails } = props
@@ -75,16 +76,16 @@ const RouteDetails = (props) => {
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Avg Speed</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripAverageSpeed} mph</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertSpeed(item.tripAverageSpeed, distUnit)}</Text>
                         <View style={{height:hp(2)}} />
                     </View>
                     <View style={[styles.column, { width: '25%' }]}>
                         <Text style={styles.whiteBodyText}>Distance</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{round(item.tripDistance,2)} mi</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{ convertDist(item.tripDistance, distUnit) }</Text>
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Top Speed</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripMaxSpeed} mph</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertSpeed(item.tripMaxSpeed, distUnit)}</Text>
                         <View style={{height:hp(2)}} />
                     </View>          
                 </View>

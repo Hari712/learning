@@ -1,4 +1,4 @@
-const BASE_URL = 'https://gtrackapi-dev.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://qa-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 
 const SUFFIX_URL = 'public/'
 
@@ -74,7 +74,8 @@ const ApiConstants = {
     UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`,
     GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
     SEARCH_GROUP:(userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
-    SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`
+    SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
+    ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`
 }
 
 export default ApiConstants

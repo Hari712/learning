@@ -9,8 +9,9 @@ import App, { translate } from '../../../../App'
 import { DropDown, MultiSelect, FontSize, TextField} from '../../../component';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
-import { getLoginInfo, getAlertTypetListInfo } from '../../Selector';
+import { getLoginInfo, getAlertTypetListInfo, dist } from '../../Selector';
 import isEmpty from 'lodash/isEmpty'
+import { convertSpeedtoKnot, convertSpeedVal } from './../../../utils/helper';
 
 
 const CreateNew = ({navigation,route}) => {
@@ -26,10 +27,11 @@ const CreateNew = ({navigation,route}) => {
   const [selectAlarmDDy, setSelectAlarmDDy] = useState()
   const [overSpeedInputValue, setOverspeedInputValue] = useState()
 
-  const { isConnected, loginInfo, alertList } = useSelector(state => ({
+  const { isConnected, loginInfo, alertList, distUnit } = useSelector(state => ({
     isConnected: state.network.isConnected,
     loginInfo: getLoginInfo(state),
-    alertList: getAlertTypetListInfo(state)
+    alertList: getAlertTypetListInfo(state),
+    distUnit: dist(state)
 }))
 
 const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase() + x.slice(1); })
@@ -44,8 +46,8 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
         setSelectedNotification(editData.editData.notification.type)
         setEditingValues(editData.editData)
         setSelectedAlarmType(editData.editData.notification.attributes.alarms)
-        if( editData.editData.notification.type == 'DeviceOverspeed' && editData.editData.notification.attributes.value){
-          setOverspeedInputValue(editData.editData.notification.attributes.value)
+        if( editData.editData.notification.type == 'deviceOverspeed' && editData.editData.notification.attributes.value){
+          setOverspeedInputValue(convertSpeedVal(editData.editData.notification.attributes.value,distUnit))
         }
     }
   }
@@ -97,7 +99,7 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
   
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
         alarmType:selectedAlarmType, 
-        deviceOverSpeedValue:overSpeedInputValue,
+        deviceOverSpeedValue:convertSpeedtoKnot(overSpeedInputValue, distUnit),
         selectedDeviceList:selectedDevice,
         notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 
@@ -152,17 +154,17 @@ return (
                 />  
         <View onLayout={({nativeEvent}) => setSelectAlarmDDy(nativeEvent.layout.y)} /> 
 
-        {selectedNotification == 'DeviceOverspeed' &&
+        {String(selectedNotification).toLowerCase() == 'DeviceOverspeed'.toLowerCase() &&
             <TextField 
               valueSet={setOverspeedInputValue} 
               maxLength={30}
-              label='Speed Limit (mph)'
+              label={'Speed Limit ('+ distUnit +'ph)'}
               defaultValue={overSpeedInputValue}
               outerStyle={[styles.outerStyle,{marginTop:hp(14)}]} 
             />
         } 
         
-        {selectedNotification == 'Alarm' ?
+        {String(selectedNotification).toLowerCase() == 'Alarm'.toLowerCase() ?
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
             <DropDown label={translate("Alarm_Type")} defaultValue={selectedAlarmType} valueSet={setSelectedAlarmType} dataList={alarmTypes} />   
           </View>
