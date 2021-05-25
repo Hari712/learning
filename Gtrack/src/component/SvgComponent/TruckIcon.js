@@ -2,9 +2,10 @@ import * as React from "react"
 import Svg, { G, Path } from "react-native-svg"
 
 function TruckIcon(props) {
+    const {color} = props
     return (
         <Svg width={20.958} height={14.834} viewBox="0 0 20.958 14.834" {...props}>
-            <G data-name="Group 8673" fill="#fff" fillRule="evenodd">
+            <G data-name="Group 8673" fill={color?color:"#fff"} fillRule="evenodd">
             <Path
                 data-name="Path 1944"
                 d="M-3514.371-641.148a9.155 9.155 0 00-.151-.922 1.96 1.96 0 00-1.753-1.529 3.642 3.642 0 00-1.561.091 1.951 1.951 0 00-1.449 1.674c-.037.217-.05.438-.08.706a5.233 5.233 0 01-.752-.09.587.587 0 01-.437-.548 2.157 2.157 0 01-.018-.231c0-3.352-.01-6.7 0-10.056a2.619 2.619 0 011.511-2.426 1.919 1.919 0 01.914-.2h9.69c.054 0 .108 0 .182.008v.191q.016 6.215.035 12.429a.791.791 0 01-.893.9h-5.243z"

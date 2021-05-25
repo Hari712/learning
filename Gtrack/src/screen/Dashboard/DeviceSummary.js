@@ -5,7 +5,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import ShadowView from 'react-native-simple-shadow-view'
 import { translate } from '../../../App'
 import { FontSize} from '../../component'
-import iconConstant from '../../constants/iconConstant'
+import IconConstant from '../../constants/iconConstant'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { DeviceSetupIcon, FullScreenIcon } from '../../component/SvgComponent'
 import NavigationService from '../../navigation/NavigationService'
@@ -41,7 +41,8 @@ const DeviceSummary = (props) => {
                 <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
                     <View style={{ flex: 0.25 }}>
                         <View style={styles.deviceSummaryDetailView}>
-                            <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' />
+                            {/* <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' /> */}
+                            {item.assetDTO && item.assetDTO.assetType ? <IconConstant color={ColorConstant.BLUE} type={item.assetDTO.assetType} /> : <IconConstant color={ColorConstant.BLUE} type={'default'} /> }
                         </View>
                     </View>
                     <View style={styles.titleText}>
@@ -51,11 +52,11 @@ const DeviceSummary = (props) => {
 
                 </View>
 
-                <View style={{ flex: 0.2, justifyContent: 'center', alignItems: 'flex-end', }}>
-                    <View style={[styles.stateViewStyle, { backgroundColor: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
-                        <Text style={[styles.stateTextStyle, { color: item.deviceDTO.deviceStatus === 'ACTIVE' ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>
-                            {item.deviceDTO.deviceStatus === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE'}
-                        </Text>
+                <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'flex-end', }}>
+                    <View style={[styles.stateViewStyle, { backgroundColor: item.devicePlan ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
+                        <Text style={[styles.stateTextStyle, { color: item.devicePlan ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>
+                            {item.devicePlan ? 'Active' :'No Subscription'}
+                        </Text> 
                     </View>
                 </View>
 
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     titleText: {
         paddingHorizontal: '3%', 
         marginTop: hp(1), 
-        flex: 0.75
+        flex: 0.74
     },
     title: {
         color: ColorConstant.BLACK, 

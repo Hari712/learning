@@ -8,6 +8,7 @@ import Tooltip from 'rn-tooltip'
 import { translate } from '../../App'
 import { SCREEN_CONSTANTS } from '../constants/AppConstants'
 import { TruckIcon, TravelIcon, ShuttleVanIcon, MachineryIcon, CarIcon, KidsIcon, PersonnelItemIcon, FamilyVanIcon, BusIcon, TrailerIcon, EditIcon } from './SvgComponent'
+import IconConstant from '../constants/iconConstant'
 
 const DeviceCell = (props) => {
 
@@ -21,44 +22,6 @@ const DeviceCell = (props) => {
     //const planStatus = devicePlan ? devicePlan.planName : 'None'
     //const expiryDate = devicePlan ? devicePlan.deActivationDate : 'None'
     const expiryDate = item && item.devicePlan && item.devicePlan.deActivationDate ? item.devicePlan.deActivationDate : 'None'
-
-
-    let IconConstantDeviceCell;
-
-    switch ( item.assetDTO && item.assetDTO.assetType) {
-        case 'Family Item': IconConstantDeviceCell = FamilyVanIcon            
-            break;
-
-        case 'Personnel Item': IconConstantDeviceCell = PersonnelItemIcon           
-            break;
-
-        case 'Bus': IconConstantDeviceCell = BusIcon            
-            break;
-
-        case 'Machinery': IconConstantDeviceCell = MachineryIcon            
-            break;
-
-        case 'Van': IconConstantDeviceCell = ShuttleVanIcon            
-            break;
-
-        case 'Truck': IconConstantDeviceCell = TruckIcon            
-            break;
-
-        case 'Car': IconConstantDeviceCell = CarIcon            
-            break;
-
-        case 'Travel': IconConstantDeviceCell = TravelIcon            
-            break;
-
-        case 'Kids': IconConstantDeviceCell = KidsIcon            
-            break;
-
-        case 'Trailer': IconConstantDeviceCell = TrailerIcon            
-            break;
-    
-        default: IconConstantDeviceCell = CarIcon ;
-            break;
-    }
 
     return (
         <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.deviceId, title: deviceDTO.deviceName, devicePrimaryId: deviceDTO.id }) }
@@ -78,7 +41,7 @@ const DeviceCell = (props) => {
                         pointerStyle={styles.pointerStyle}
                         containerStyle={styles.toolTipContainer}
                     >
-                        <IconConstantDeviceCell />
+                    <IconConstant type={item.assetDTO && item.assetDTO.assetType} color={ColorConstant.WHITE} />
                     </Tooltip>
                 </View>
 
