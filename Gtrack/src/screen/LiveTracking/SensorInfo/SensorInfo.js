@@ -12,6 +12,7 @@ import { getGroupDevicesListInfo, getLoginState } from '../../Selector';
 import { useSelector, useDispatch } from 'react-redux';
 import * as LivetrackingActions from '../Livetracking.Action'
 import isEmpty from 'lodash/isEmpty'
+import { useIsFocused } from '@react-navigation/native';
 
 
 const SensorInfo = ({ navigation }) => {
@@ -27,6 +28,13 @@ const SensorInfo = ({ navigation }) => {
     const [searchKeyword, setSearchKeyword] = useState("")
 
     const dispatch = useDispatch()
+
+    const isFocused = useIsFocused();
+
+    React.useEffect(() => {
+        isFocused ? null : setSearchKeyword("")
+    },[isFocused]);
+
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -134,17 +142,36 @@ const SensorInfo = ({ navigation }) => {
         )
     }
 
+    const renderItemData = () => {
+        return(
+            <View>
+                <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
+                <FlatList
+                    style={{}}
+                    contentContainerStyle={{}}
+                    data={groupDevices}
+                    renderItem={SensorInfoItem}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </View>
+        )
+    }
+
+    const noRecords = () => {
+        console.log("khushi")
+        return(
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             {searchBar()}
-            <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
-            <FlatList
-                style={{}}
-                contentContainerStyle={{}}
-                data={groupDevices}
-                renderItem={SensorInfoItem}
-                keyExtractor={(item, index) => index.toString()}
-            />
+            
+            {groupDevices.length > 0 ? renderItemData() : noRecords() }
+    
         </SafeAreaView>
     )
 }
@@ -241,7 +268,17 @@ const styles = StyleSheet.create({
         //fontSize:FontSize.FontSize.small,
         fontSize:14,
         color:ColorConstant.BLACK,
-        fontFamily:'Nunito-LightItalic'
+        //fontFamily:'Nunito-Italic'
+    },
+    noRecords: {
+        marginVertical:hp(35),
+        alignItems:'center',
+        flex:1
+    },
+    noRecordsText: {
+        fontFamily:"Nunito-Regular",
+        fontSize:hp(2),
+        color:ColorConstant.BLACK
     },
     search: {
         paddingHorizontal:hp(2),
