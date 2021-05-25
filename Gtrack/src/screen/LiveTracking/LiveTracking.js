@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, hasPanicAlarm, getLoginState } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -15,6 +15,7 @@ import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon, PanicAlar
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import useStateRef from '../../utils/useStateRef';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
@@ -37,7 +38,7 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { loginData, isRegular, devicePositions, groupDevices, hasPanic } = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
@@ -46,25 +47,29 @@ const LiveTracking = ({ navigation }) => {
 		loginData: getLoginState(state),
 	}));
 
-	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
-	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
-	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
-	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
-	const [coordList, setCoordList] = useState([]);
-	const [lineString, setLineString] = useState(null);
-	const [region, setRegion] = useStateRef();
+	const [deviceList, setDeviceList] = useState(groupDevices);
+	const [selectedDevice, setSelectedDevice] = useState();
+	const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
+	const [devicePositionArray, setDevicePositionArray] = useState([]);
+	const [coordList, setCoordList] 	= useState([]);
+	const [lineString, setLineString] 	= useState(null);
+	const [region, setRegion] 			= useState();
 	const [isPanicAlarmClick, setIsPanicAlarmClick] = useState(false);
 	const [isPanicTimerVisible, setIsPanicTimerVisible] = useState(false);
 	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
-	const isFocused = useIsFocused();
 
+	const isFocused = useIsFocused();
+	
 	useEffect(()=>{
 		setDeviceList(groupDevices);
+	},[groupDevices])
+
+	useEffect(()=>{
 		if (!isEmpty(deviceList)) {
 			const device = deviceList[selectedDeviceIndex];
 			setSelectedDevice(device);		
 		}
-	},[groupDevices])
+	},[deviceList])
 
 	useEffect(()=>{
 		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
@@ -102,7 +107,7 @@ const LiveTracking = ({ navigation }) => {
 
 	useEffect(
 		() => {
-			if (!isEmpty(devicePositions) && selectedDeviceRef.current && selectedDevice) {
+			if (!isEmpty(devicePositions) && selectedDevice) {
 				const deviceInfo = selectedDevice;
 				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id)
 				if (!isEmpty(arr)) {
@@ -154,8 +159,8 @@ const LiveTracking = ({ navigation }) => {
 
 	useEffect(
 		() => {
-			if (selectedDeviceRef.current) {
-				const deviceInfo = selectedDeviceRef.current;
+			if (selectedDevice) {
+				const deviceInfo = selectedDevice;
 				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id);
 				if (!isEmpty(arr)) {
 					const device = arr[0];
@@ -175,7 +180,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 
 	const onPressHandle = ({ navigation, item, color, setColor }) => {
- 		if (item == 'Geo Fence') {
+		if (item == 'Geo Fence') {
 			setIsLineClick(false);
 			navigation.navigate(SCREEN_CONSTANTS.GEOFENCE);
 		} else if (item == 'Alarms') {
@@ -196,8 +201,8 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function onPressNext() {
-		let i = selectedDeviceIndexRef.current;
-		const arr = deviceListRef.current ? deviceListRef.current : [];
+		let i = selectedDeviceIndex;
+		const arr = deviceList ? deviceList : [];
 		i = i + 1; // increase i by one
 		i = i % arr.length; // if we've gone too high, start from `0` again
 		const device = arr[i];
@@ -207,8 +212,8 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function onPressPrevious() {
-		let i = selectedDeviceIndexRef.current;
-		const arr = deviceListRef.current ? deviceListRef.current : [];
+		let i = selectedDeviceIndex;
+		const arr = deviceList ? deviceList : [];
 		if (i === 0) {
 			// i would become 0
 			i = arr.length; // so put it at the other end of the array
@@ -221,7 +226,7 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function renderDeviceSelectionView() {
-		const deviceInfo = selectedDeviceRef.current;
+		const deviceInfo = selectedDevice;
 
 		return (
 			<View
@@ -264,9 +269,9 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function renderAppleMap() {
-		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
-		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
-		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		const isContainCoordinate = !isEmpty(devicePositionArray);
+		const isPolyLine = isEmpty(devicePositionArray) ? false : devicePositionArray.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArray[0] : null;
 		const address = isContainCoordinate ? startingDestination.address : '';
 		const coordinate = isContainCoordinate
 			? { latitude: startingDestination.latitude, longitude: startingDestination.longitude }
@@ -293,9 +298,9 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	function renderMapBox() {
-		const isContainCoordinate = !isEmpty(devicePositionArrayRef.current);
-		const isPolyLine = isEmpty(devicePositionArrayRef.current) ? false : devicePositionArrayRef.current.length > 1;
-		const startingDestination = isContainCoordinate ? devicePositionArrayRef.current[0] : null;
+		const isContainCoordinate = !isEmpty(devicePositionArray);
+		const isPolyLine = isEmpty(devicePositionArray) ? false : devicePositionArray.length > 1;
+		const startingDestination = isContainCoordinate ? devicePositionArray[0] : null;
 		const address = isContainCoordinate ? startingDestination.address : '';
 		let coordinate = [];
 		if (isContainCoordinate) {
@@ -313,7 +318,7 @@ const LiveTracking = ({ navigation }) => {
 					/>
 					{isContainCoordinate &&
 						<Map.default.Camera
-							zoomLevel={14}
+							zoomLevel={17}
 							bounds={{
 								ne: coordinate,
 								sw: coordinate,
@@ -362,8 +367,8 @@ const LiveTracking = ({ navigation }) => {
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
 			{/* {renderAppleMap()} */}
-			{selectedDeviceRef.current && renderDeviceSelectionView()}
-			<View style={[styles.subContainer,{marginTop:selectedDeviceRef.current ? hp(11) : hp(5)}]}>
+			{selectedDevice && renderDeviceSelectionView()}
+			<View style={[styles.subContainer,{marginTop:selectedDevice ? hp(11) : hp(5)}]}>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false);
