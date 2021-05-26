@@ -78,6 +78,7 @@ const ApiConstants = {
     GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
     SEARCH_GROUP:(userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
     SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
+    ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
     GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`
 }
 

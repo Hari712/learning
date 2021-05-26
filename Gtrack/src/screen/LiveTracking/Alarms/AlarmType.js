@@ -9,10 +9,12 @@ import { translate } from '../../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { CircleIcon, CircleIconSelected, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import * as LivetrackingActions from '../Livetracking.Action'
-import { getLoginInfo, getSubuserState, isRoleAdmin } from '../../Selector';
+import { dist, getLoginInfo, getSubuserState, isRoleAdmin } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
 import * as UsersActions from '../../Users/Users.Action'
 import { isEmpty } from 'lodash';
+import { convertSpeedtoKnot } from '../../../utils/helper';
+import { convertSpeedVal } from './../../../utils/helper';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -28,11 +30,12 @@ const AlarmType = ({navigation,route}) => {
   const [emailNotification, setEmailNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
-  const { loginInfo, subUserData, isConnected, isAdmin } = useSelector(state => ({
+  const { loginInfo, subUserData, isConnected, isAdmin, distUnit } = useSelector(state => ({
     loginInfo: getLoginInfo(state),
     subUserData: getSubuserState(state),
     isConnected: state.network.isConnected,
-    isAdmin: isRoleAdmin(state)
+    isAdmin: isRoleAdmin(state),
+    distUnit: dist(state)
   }))
 
   const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
@@ -79,6 +82,28 @@ const AlarmType = ({navigation,route}) => {
         var tempUser = [] ;
         editData.users ?
           editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
+        console.log("EditUser", editData)
+        if(String(editData.notification.type).toLowerCase() === 'alarm') {
+          switch (String(editData.notification.attributes.alarms).toLowerCase()) {
+            case 'overspeed':
+              setOverspeedInputValue(convertSpeedVal(editData.notification.attributes.value,distUnit))
+              break;
+    
+            case 'battery level':
+              setBatteryLevelInputValue(editData.notification.attributes.value)
+              break;
+    
+            case 'movement':
+              setMovementInputValue(editData.notification.attributes.value)
+              break;
+    
+            case 'panic':
+              break;
+          
+            default:
+              break;
+          }
+        }
         setSelectedUser(tempUser)
       }
     }
@@ -86,22 +111,22 @@ const AlarmType = ({navigation,route}) => {
 
   useEffect(() => { 
 
-    if(notificationType === 'Alarm') {
-      switch (alarmType) {
+    if(String(notificationType).toLowerCase() === 'alarm') {
+      switch (String(alarmType).toLowerCase()) {
 
-        case 'Overspeed':
+        case 'overspeed':
           setOverspeedInputVisible(true)
           break;
 
-        case 'Battery Level':
+        case 'battery level':
           setBatteryLevelInputVisible(true)
           break;
 
-        case 'Movement':
+        case 'movement':
           setMovementInputVisible(true)
           break;
 
-        case 'Panic':
+        case 'panic':
           break;
       
         default:
@@ -176,7 +201,7 @@ const AlarmType = ({navigation,route}) => {
       var notiType = notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
       var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? batteryLevelInputValue :
-                  overSpeedInputVisible ? overSpeedInputValue :
+                  overSpeedInputVisible ? convertSpeedtoKnot(overSpeedInputValue, distUnit) :
                   movementInputVisible ? movementInputValue :
                   deviceOverSpeedValue ? parseInt(deviceOverSpeedValue) :
                   null;
@@ -311,7 +336,7 @@ return (
           <TextField 
             valueSet={setOverspeedInputValue} 
             maxLength={30}
-            label='Speed Limit (mph)'
+            label={'Speed Limit ('+ distUnit +'ph)'}
             defaultValue={overSpeedInputValue}
             outerStyle={[styles.outerStyle,{marginTop:hp(2)}]} 
           />
