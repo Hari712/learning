@@ -122,6 +122,8 @@ import SettingNotiNextArrowIcon from './SettingNotiNextArrowIcon'
 import SettingNotiDownArrowOrangeIcon from './SettingNotiDownArrowOrangeIcon'
 import PanicIconClick from './PanicIconClick'
 import PanicAlarmIcon from './PanicAlarmIcon'
+import LiveStartPointIcon from './LiveStartPointIcon'
+import LiveEndPointIcon from './LiveEndPointIcon'
 
 export {
     BarCodeScanIcon,
@@ -246,5 +248,7 @@ export {
     SettingNotiNextArrowIcon,
     SettingNotiDownArrowOrangeIcon,
     PanicIconClick,
-    PanicAlarmIcon
+    PanicAlarmIcon,
+    LiveStartPointIcon,
+    LiveEndPointIcon
 }

@@ -11,11 +11,11 @@ import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import { translate } from '../../../App';
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick } from '../../component/SvgComponent';
+import { BellIcon, BluelineIcon, LiveEndPointIcon, LiveStartPointIcon, LiveTrackingPlusIcon, LoginIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick } from '../../component/SvgComponent';
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import useStateRef from '../../utils/useStateRef';
-import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
+//import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
@@ -301,11 +301,18 @@ const LiveTracking = ({ navigation }) => {
 		const isContainCoordinate = !isEmpty(devicePositionArray);
 		const isPolyLine = isEmpty(devicePositionArray) ? false : devicePositionArray.length > 1;
 		const startingDestination = isContainCoordinate ? devicePositionArray[0] : null;
-		const address = isContainCoordinate ? startingDestination.address : '';
-		let coordinate = [];
+		const liveEndPoint = isContainCoordinate ? devicePositionArray[devicePositionArray.length-1] : null;
+		const startAddress = isContainCoordinate ? startingDestination.address : '';
+		const endAddress = isContainCoordinate ? liveEndPoint.address : '';
+		let startCoordinate = [];
 		if (isContainCoordinate) {
-			coordinate.push(startingDestination.longitude);
-			coordinate.push(startingDestination.latitude);
+			startCoordinate.push(startingDestination.longitude);
+			startCoordinate.push(startingDestination.latitude);
+		}
+		let endCoordinate = [];
+		if (isContainCoordinate) {
+			endCoordinate.push(liveEndPoint.longitude);
+			endCoordinate.push(liveEndPoint.latitude);
 		}
 		return (
 			<View style={{ flex: 1 }}>
@@ -320,8 +327,8 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							zoomLevel={17}
 							bounds={{
-								ne: coordinate,
-								sw: coordinate,
+								ne: startCoordinate,
+								sw: startCoordinate,
 							}}
 						/>}
 					{!isEmpty(lineString)
@@ -338,8 +345,15 @@ const LiveTracking = ({ navigation }) => {
 							</Map.default.ShapeSource>
 						: null}
 					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
-							<Map.default.Callout title={address} />
+						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
+							<LiveStartPointIcon />
+							<Map.default.Callout title={startAddress} />
+						</Map.default.PointAnnotation>}
+
+					{isContainCoordinate &&
+						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
+							<LiveEndPointIcon/>
+							<Map.default.Callout title={endAddress} />
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>
