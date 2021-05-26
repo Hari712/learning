@@ -88,15 +88,21 @@ const SocketProvider = (props) => {
             // data = [{},{},{},{}]
             // data = {positions:[{},{}]}
             // data = {devices:[{},{}]}
+            // data = {events:[{},{}]}
             
             if (data.positions && Array.isArray(data.positions)) {
                 setArrDevicePositionList(data)
                 dispatch(LiveTrackingActions.setLiveTrackingPositionData(data.positions))
             }
+
+            if (data.events && Array.isArray(data.events)) {
+                setArrDevicePositionList(data)
+                dispatch(LiveTrackingActions.setNotificationEventsResponse(data.events))
+            }
         }
         socket.onclose = function (event) {
             if (!event['reason']) {
-              console.log(event);
+                console.log(event);
             }
         };
     }

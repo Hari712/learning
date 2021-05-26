@@ -87,7 +87,7 @@ const AdvanceSettings = ({navigation,route}) => {
       ),
         headerLeft:() => (
           <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
-              <BackIcon />
+            <BackIcon />
           </TouchableOpacity>
         )  
     });
