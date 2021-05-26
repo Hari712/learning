@@ -199,7 +199,7 @@ const EditProfile = ({ navigation, route, item }) => {
         array.push(dataItems)
         setData(array)
     }
-
+    
     function editProfile() {
         if (isConnected) {
             let message = ''
@@ -259,8 +259,8 @@ const EditProfile = ({ navigation, route, item }) => {
         setModalVisible(true);
     }
 
-    const getPhone = (phone) => {
-        return phoneNumber.replace(NUMBER_REGEX, '')
+    function getPhone(phone) {
+        return phone.replace(NUMBER_REGEX, '')
     }
 
     function setCountryCodeData() {
