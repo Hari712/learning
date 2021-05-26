@@ -3,20 +3,23 @@ import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 're
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import  { FontSize }from '../../../component';
-import { getLoginState } from '../../Selector'
+import { dist, getAdvanceSettingsInfo, getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import {  CalenderIconWhite, LocationIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
-import { round } from 'lodash';
+import { convertDist, convertSpeed, convertTime } from '../../../utils/helper';
 
 const RouteDetails = (props) => {
 
-    const { loginData } = useSelector(state => ({
-        loginData: getLoginState(state)
+    const { loginData, distUnit, advSettingsData } = useSelector(state => ({
+        loginData: getLoginState(state),
+        distUnit: dist(state),
+        advSettingsData: getAdvanceSettingsInfo(state)
     }))
 
+    var moment = require('moment-timezone');
     const { routeDetails, loadMoreData, renderFooter, setOnEndReachedCalledDuringMomentum, onEndReachedCalledDuringMomentum } = props
 
     const dispatch = useDispatch()
@@ -26,17 +29,17 @@ const RouteDetails = (props) => {
 
     const renderItem = ({ item,index }) => {
         
-        let sDateArray = Moment(item.tripStartTime)
+        let sDateArray = convertTime(item.tripStartTime, advSettingsData)
         var sdateComponent = sDateArray.format('YYYY-MM-DD');
         var stimeComponent = sDateArray.format('HH:mm');
         
-        let eDateArray = Moment(item.tripEndTime)
+        let eDateArray = convertTime(item.tripEndTime, advSettingsData)
         var edateComponent = eDateArray.format('YYYY-MM-DD');
         var etimeComponent = eDateArray.format('HH:mm');
 
-        let dformat = Moment(eDateArray-sDateArray).format('H:m:s').split(':')
+        let dformat = moment(eDateArray-sDateArray).format('H:m:s').split(':')
         let durationFormat = (dformat[0] > 0 ? dformat[0]+"h ":"") + (dformat[1] > 0 ? dformat[1]+"m ":'') + (dformat[2] > 0 ? dformat[2]+"s ":'')
-
+        
         return (
             <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.cardContainer}>
     
@@ -72,16 +75,16 @@ const RouteDetails = (props) => {
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Avg Speed</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripAverageSpeed} mph</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertSpeed(item.tripAverageSpeed, distUnit)}</Text>
                         <View style={{height:hp(2)}} />
                     </View>
                     <View style={[styles.column, { width: '25%' }]}>
                         <Text style={styles.whiteBodyText}>Distance</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{round(item.tripDistance,2)} mi</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{ convertDist(item.tripDistance, distUnit) }</Text>
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Top Speed</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripMaxSpeed} mph</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertSpeed(item.tripMaxSpeed, distUnit)}</Text>
                         <View style={{height:hp(2)}} />
                     </View>          
                 </View>

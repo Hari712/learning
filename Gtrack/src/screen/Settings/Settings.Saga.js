@@ -58,11 +58,39 @@ function* requestUpdateSettingsNotification(action) {
     }
 }
 
+function* requestAdvanceSettings(action) {
+    const { userId, body, onSuccess, onError} = action
+    try {
+        const url = ApiConstants.ADVANCE_SETTINGS(userId)
+        const response = yield call(API.put, url, body)
+        const result = response.result ? response.result : []
+        yield put(SettingsAction.setAdvanceSettings(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestGetAdvanceSettings(action) {
+    const { userId, onSuccess, onError} = action
+    try {
+        const url = ApiConstants.ADVANCE_SETTINGS(userId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(SettingsAction.setAdvanceSettings(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchSettings() {
     yield takeLatest(types.ADD_FEEDBACK_REQUEST, submitFeedback),
     yield takeLatest(types.GET_FEEDBACK_REQUEST, requestGetFeedBack),
     yield takeLatest(types.CHANGE_PASSCODE_REQUEST,requestChangePasscode),
     yield takeLatest(types.GET_SETTINGS_NOTIFICATION_REQUEST,requestGetSettingsNotification),
-    yield takeLatest(types.UPDATE_NOTIFICATION_SETTINGS_REQUEST,requestUpdateSettingsNotification)
+    yield takeLatest(types.UPDATE_NOTIFICATION_SETTINGS_REQUEST,requestUpdateSettingsNotification),
+    yield takeLatest(types.ADVANCE_SETTINGS_REQUEST,requestAdvanceSettings),
+    yield takeLatest(types.GET_ADVANCE_SETTINGS_REQUEST,requestGetAdvanceSettings)
 }

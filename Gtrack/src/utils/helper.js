@@ -4,7 +4,9 @@ import { removeItem } from '../utils/storage';
 import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
-
+import { round } from 'lodash';
+import { useSelector } from 'react-redux';
+import { getAdvanceSettingsInfo } from '../screen/Selector';
 
 export const validateEmailorPhoneNumber = (input) => {
     const emailRE = EMAIL_VALIDATION_REGEX
@@ -102,4 +104,65 @@ export function isIphoneX() {
   
   export function getBottomSpace() {
     return isIphoneX() ? 34 : 0;
+  }
+
+  export function convertDist(value, unit) {
+    if(value){
+      if(unit=='km')
+        return round(value/1000,2) + " " + unit
+      else  
+        return round(value/1609.344,2) + " " + unit
+    } 
+    else 
+      return "-"
+  }
+
+  export function convertSpeed(value, unit) { 
+    if(value){
+      if(unit=='km')
+      // 1knot = 1.852 kmph
+        return round(value * 1.852, 2) + " " + 'kmph'
+      else  
+      // 1knot = 1.15077945 mph
+        return round(value * 1.15077945, 2) + " " + 'mph'
+    } 
+    else 
+      return "-"
+  }
+
+  export function convertSpeedVal(value, unit) { 
+    if(unit=='km')
+    // 1knot = 1.852 kmph
+      return round(value * 1.852, 2)
+    else  
+    // 1knot = 1.15077945 mph
+      return round(value * 1.15077945, 2) 
+  }
+
+  export function convertSpeedtoKnot(value, unit) { 
+    if(unit=='km')
+    // 1knot = 1.852 kmph
+      return round(value / 1.852, 2)
+    else  
+    // 1knot = 1.15077945 mph
+      return round(value / 1.15077945, 2)
+  }
+
+  export function convertTemp(value, settingsData) {
+    const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
+    if(value){
+      if(unit=='°C')
+      // 1C = 33.8 F || ° => `\u02DA`
+        return round(value,2) + " " + unit
+      else  
+        return round(value*33.8,2) + " " + unit
+    } 
+    else 
+      return "-"
+  }
+
+  export function convertTime(value, settingsData) {
+    var moment = require('moment-timezone');
+    var unit = settingsData.timeZone === "IST"  ? "Asia/Kolkata" : settingsData.timeZone === "EST"  ? "America/Toronto" : null
+    return unit ? moment(value).tz(unit) : moment(value)
   }

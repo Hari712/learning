@@ -143,7 +143,7 @@ const ActiveUser = () => {
     )
     }
 
-const User =["All Users","Regular","Owner"]
+const User =["All Users","Regular","Admin"]
 
 const styles = StyleSheet.create({
     mainViewStyle: {
