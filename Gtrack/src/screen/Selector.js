@@ -21,6 +21,16 @@ export const isRoleRegular = createSelector(
     (info) => info && ( info.role[0].name == AppConstants.ROLE_REGULAR )
 )
 
+export const isRoleOwner = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER ) && (info.isCorporateUser)
+)
+
+export const isRoleAdmin = createSelector(
+    [getLoginInfo],
+    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER) && (!info.isCorporateUser)
+)
+
 /**
  * Get Traccar Session Information
  */
@@ -102,7 +112,7 @@ export const getDeviceListInfo = createSelector(
 const getDeviceDetailInfo = (state, deviceId) => getDevice(state, deviceId)
 function getDevice(state, deviceId) {
     const deviceInfo = state.device && state.device.devices ? state.device.devices : {}
-    const device = deviceInfo[deviceId].deviceDTO
+    const device = deviceInfo[deviceId] ? deviceInfo[deviceId].deviceDTO : {}
     return device
 }
 export const makeGetDeviceDetail = () => createSelector(
@@ -174,6 +184,11 @@ export const getAlarmsListInfo = createSelector(
     (info) => info
 )
 
+export const hasPanicAlarm = createSelector(
+    [getAlarmsList],
+    (info) => info && info.map((item)=> item.notification.attributes.alarms == "Panic").includes(true)
+)
+
 /**
  * Get Alert Types List for Livetracking
  */
@@ -193,8 +208,14 @@ export const getAlertTypetListInfo = createSelector(
  * Get Geofence List for Livetracking
  */
 
-const getGeofenceList = (state) => state.livetracking && state.livetracking.geofenceList ? state.livetracking.geofenceList : {}
+const getGeofenceList = (state) => getGeofenceInfo(state)
 
+function getGeofenceInfo(state) {
+    const geofenceArr = state.livetracking && state.livetracking.geofenceList ? state.livetracking.geofenceList : {}
+    const geofenceType = Object.values(geofenceArr)
+    geofenceType.sort((item1, item2) => item2.geofence.id - item1.geofence.id)
+    return geofenceType
+}
 export const getGeofenceListInfo = createSelector(
     [getGeofenceList],
     (info) => info
@@ -221,6 +242,7 @@ export const getLiveTrackingDeviceList = createSelector(
     [getLiveTrackingDeviceListInfo],
     (info) => info
 )
+
 /*    
  * Get Group Devices for TripHistory and Asset Infromation
  */
@@ -231,6 +253,7 @@ export const getGroupDevicesListInfo = createSelector(
     [getGroupDevicesList],
     (info) => info
 )
+
 /**
  * Get Notification List for Settigs
  */
@@ -258,6 +281,7 @@ export const getAllUserDevicesList = createSelector(
     [getAllUserDeviceListInfo],
     (info) => info
 )
+
 /*
  * Get Asset Info for Asset Infromation
  */
@@ -277,5 +301,36 @@ const getTripHistoryList = (state) => state.tripHistory && state.tripHistory.rou
 
 export const getTripHistoryListInfo = createSelector(
     [getTripHistoryList],
+    (info) => info
+)
+
+/*    
+ * Get Group Devices for Livetracking
+ */
+
+const getLivetrackingGroupDevicesList = (state) => getAllLivetrackingDevices(state)
+
+function getAllLivetrackingDevices(state) {
+    const groupInfo = state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
+    let deviceArr = []
+    groupInfo.map((item) => {
+        deviceArr = [...deviceArr, ...item.devices]
+    })
+    return deviceArr
+}
+
+export const getLivetrackingGroupDevicesListInfo = createSelector(
+    [getLivetrackingGroupDevicesList],
+    (info) => info
+)
+
+/**
+ * Get Notified devices for Dashboard
+ */
+
+const getNotifiedDevices = (state) => state.dashBoard.notifiedDevices
+
+export const getNotifiedDevicesInfo = createSelector(
+    [getNotifiedDevices],
     (info) => info
 )

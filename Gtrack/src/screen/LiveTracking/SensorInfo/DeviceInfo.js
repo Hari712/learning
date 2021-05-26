@@ -70,7 +70,6 @@ const DeviceInfo = ({ navigation, route }) => {
                 <View style={styles.mainView}>
                     <Text style={styles.textViewStyle}>{data.name}</Text>
                 </View>
-                
                 {data.status != 'offline' ?
                 <View>
                     {assetData.map((item)=>
@@ -85,8 +84,8 @@ const DeviceInfo = ({ navigation, route }) => {
                         <View style={styles.infoDataMainView}>
                             <View style={{ flexDirection: 'column', width: '35%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("State")}</Text>
-                                <Text style={styles.textStyle}>Moving</Text>
-                                <Text style={styles.textStyle}>1h 45m 25s</Text>
+                                <Text style={styles.textStyle}>Idle</Text>
+                                <Text style={styles.textStyle}>Not available</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
@@ -104,25 +103,26 @@ const DeviceInfo = ({ navigation, route }) => {
 
                         <View style={styles.addressMainView}>
                             <Text style={styles.mainTextStyle}>{translate("Address")}</Text>
-                            <Text style={styles.textStyle}>{item.address}</Text>
+                            <Text style={styles.textStyle}>{item.address ? item.address :'Not available'}</Text>
                             {/* <Text style={styles.textStyle}>West Yorkshire, HD6 4JX, GB</Text> */}
                         </View>
 
                         <View style={styles.infoDataMainView}>
                             <View style={{ flexDirection: 'column', width: '35%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Angle")}</Text>
-                                <Text style={styles.textStyle}>54{`\u02DA`} </Text>
+                                <Text style={styles.textStyle}>Not available</Text>
+                                {/* <Text style={styles.textStyle}>{item.angle ? item.angle + `\u02DA` :'Not available' }</Text> */}
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Engin_State_Hours")}</Text>
-                                <Text style={styles.textStyle}>On</Text>
-                                <Text style={styles.textStyle}>546h</Text>
+                                <Text style={styles.textStyle}>Off</Text>
+                                <Text style={styles.textStyle}>Not available</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '25%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Altitude")}</Text>
-                                <Text style={styles.textStyle}>{item.altitude} ft</Text>
+                                <Text style={styles.textStyle}>{item.altitude ? item.altitude + 'ft' :'Not available'}</Text>
                             </View>
                         </View>
                     </View>
@@ -138,24 +138,24 @@ const DeviceInfo = ({ navigation, route }) => {
                         <View style={styles.infoDataMainView}>
                             <View style={{ flexDirection: 'column', width: '35%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Odometer")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.odometer} mi</Text>
+                                <Text style={styles.textStyle}>{item.attributes.odometer ? item.attributes.odometer + 'mi' : 'Not available' }</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Status")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.status}</Text>
+                                <Text style={styles.textStyle}>{item.attributes.status?item.attributes.status:'Not available'}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '25%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Vehicle Power")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.power} V</Text>
+                                <Text style={styles.textStyle}>{item.attributes.power ? item.attributes.power + 'V' :'Not available'}</Text>
                             </View>
                         </View>
 
                         <View style={styles.infoDataMainView}>
                             <View style={{ flexDirection: 'column', width: '35%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Battery")}</Text>
-                                <Text style={styles.textStyle}>0%</Text>
+                                <Text style={styles.textStyle}>{item.attributes.batteryLevel ? item.attributes.batteryLevel + "%" :'Not available'}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
@@ -172,12 +172,12 @@ const DeviceInfo = ({ navigation, route }) => {
                         <View style={styles.sensorMainView}>
                             <View style={{ flexDirection: 'column', width: '35%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Fuel Level")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.fuel}%</Text>
+                                <Text style={styles.textStyle}>{item.attributes.fuel ? item.attributes.fuel + '%':'Not available'}</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Temperature")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.coolantTemp}{`\u02DA`}</Text>
+                                <Text style={styles.textStyle}>{item.attributes.coolantTemp ? item.attributes.coolantTemp + `\u02DA` : 'Not available' }</Text>
                             </View>
                         </View>
 

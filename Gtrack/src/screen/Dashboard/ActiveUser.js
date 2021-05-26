@@ -33,34 +33,34 @@ const ActiveUser = () => {
 
     useEffect(()=>{
         fetchCounts()
-      },[selectedRole])
+    },[selectedRole])
     
-      function fetchCounts() {
+    function fetchCounts() {
         AppManager.showLoader()
         dispatch(DashboardActions.requestActiveInactiveCount(user_id, selectedRole, onSuccess, onError))
-      }
+    }
 
-      const onSuccess = (data) => {
+    const onSuccess = (data) => {
         AppManager.hideLoader()
         console.log("Success",data)
         setIsClickDownArrow(false)
-      }
+    }
     
-      const onError = (error) => {
+    const onError = (error) => {
         AppManager.hideLoader()
         console.log("Error",error)
-      }
+    }
 
-      const onRoleHandle = (item,key) => {
+    const onRoleHandle = (item,key) => {
         (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
         if(item == 'All Users') {
-          setSelectedRole('all')
+            setSelectedRole('all')
         }else if(item == 'Regular') {
-          setSelectedRole('regular')
+            setSelectedRole('regular')
         }else{
-          setSelectedRole('owner')
+            setSelectedRole('owner')
         }
-      }
+    }
 
     return (
         <View>
@@ -71,7 +71,7 @@ const ActiveUser = () => {
             </View>
 
             <View style={styles.rightMainViewStyle}>
-                <Text style={styles.allUsersTextStyle}>All Users</Text>
+                <Text style={styles.allUsersTextStyle}>{selectedRole === 'all' ? selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)  + ' users' : selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</Text>
                 <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
                 <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
                 </TouchableOpacity>
@@ -91,36 +91,36 @@ const ActiveUser = () => {
 
             { 
             countsInfo && countsInfo.map((item, key)=>{
+                let percent = item.active+item.inactive == 0 ? 0 : round((100*item.active/(item.active+item.inactive)),2)
             return(
                 <ShadowView key={key} style={styles.cardContainer}>
-                <Text style={styles.activeUserTextStyle}>{item.role}</Text>
-                <View style={styles.activeUserView}>
-                    <ShadowView style={styles.shadowContainer}>
-
-                    <AnimatedCircularProgress
-                        size={hp(13)}
-                        backgroundWidth={hp(1)}
-                        width={9}
-                        fill={round((100*item.active/(item.active+item.inactive)),2)}
-                        rotation={200}
-                        lineCap="round"
-                        style={{ borderRadius: hp(6.5)}}
-                        tintTransparency={false}
-                        tintColor={ColorConstant.GREEN}
-                        onAnimationComplete={() => console.log('onAnimationComplete')}
-                        backgroundColor={ColorConstant.WHITE}
-                    >
-                        {
-                        (fill) => (
-                            <View style={{ alignItems: 'center'}} >
-                            <Text style={styles.percentage}> {round((100*item.active/(item.active+item.inactive)),2)}% </Text>
-                            <Text style={styles.textStyle}>Active</Text>
-                            </View>
-                        )
-                        }
-                    </AnimatedCircularProgress>
-                    </ShadowView>
-                </View>
+                    <Text style={styles.activeUserTextStyle}>{item.role}</Text>
+                    <View style={styles.activeUserView}>
+                        <ShadowView style={styles.shadowContainer}>
+                            <AnimatedCircularProgress
+                                size={hp(13)}
+                                backgroundWidth={hp(1)}
+                                width={9}
+                                fill={percent}
+                                rotation={200}
+                                lineCap="round"
+                                style={{ borderRadius: hp(6.5)}}
+                                tintTransparency={false}
+                                tintColor={ColorConstant.GREEN}
+                                onAnimationComplete={() => console.log('onAnimationComplete')}
+                                backgroundColor={ColorConstant.WHITE}
+                            >
+                                {
+                                    (fill) => (
+                                        <View style={{ alignItems: 'center'}} >
+                                            <Text style={styles.percentage}> {percent}% </Text>
+                                            <Text style={styles.textStyle}>Active</Text>
+                                        </View>
+                                    )
+                                }
+                            </AnimatedCircularProgress>
+                        </ShadowView>
+                    </View>
                 </ShadowView>
             )})
             }

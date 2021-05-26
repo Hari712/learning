@@ -34,6 +34,8 @@ const AlarmDetail = ({navigation,route}) => {
     }
   },[data.notification.notificators])
 
+  const user = Object.values(data.users).map((name,key) =>name.firstName+ ' ' +name.lastName )
+
   React.useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -86,14 +88,16 @@ return (
             )}
             </View>
         </View>
-
+            
         <View style={{marginTop:hp(2)}}>
           <Text style={styles.textStyle}>{translate("Selected Users")}</Text>
-          <View style={{flexGrow:1, flexWrap:'wrap', flexDirection:'row'}}>      
-            {Object.values(data.users).map((name,key) =>
-              <View key={key} style={styles.user}>
-                <Text style={styles.deviceText}>{name.firstName} {name.lastName}</Text>
-              </View>)}
+          <View style={{flexGrow:1, flexWrap:'wrap', flexDirection:'row'}}>
+            {user.length > 0 ? user.map((name)=>     
+              <View style={styles.user}>
+                <Text style={styles.deviceText}>{name}</Text>
+              </View>) :
+                <Text style={styles.deviceText}>-</Text>
+            } 
           </View>
         </View>
 
@@ -103,7 +107,7 @@ return (
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>
                 {data.notification.attributes.everyday ? 
                     "Everyday (All hours)" : 
-                     data.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
+                      data.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
             </View> 
 
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
     fontSize:12,
     fontFamily:'Nunito-Regular',
     paddingHorizontal:hp(2),
-    paddingVertical: hp(0.1)
+    paddingVertical: hp(0.1),
   },
   detailText: {
     color:ColorConstant.GREY,

@@ -19,6 +19,7 @@ import * as SettingsActions from '../Settings/Settings.Action';
 import DeviceInfo from 'react-native-device-info';
 import { translate } from '../../../App';
 import * as DeviceActions from '../DeviceSetup/Device.Action';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { LoginInfoIcon, LoginWelcomeIcon, LoginInfoClickIcon } from '../../component/SvgComponent';
 
 const Login = () => {
@@ -28,8 +29,8 @@ const Login = () => {
 		isConnected: state.network.isConnected,
 	}));
 
-	const [email, setEmail] = useState('harsh@gmail.com'); //Jjapee4@ekzero.com
-	const [password, setPassword] = useState('Jini@123'); //Jini@123
+	const [email, setEmail] = useState('khushbu.solanki@gmail.com'); //Jjapee4@ekzero.com //harsh@gmail.com
+	const [password, setPassword] = useState('Khushi@123'); //Jini@123
 	const [isSelected, setIsSelected] = useState(false);
 	const [isClickInfo, setIsClickInfo] = useState(false);
 
@@ -48,7 +49,7 @@ const Login = () => {
 			} else {
 				AppManager.showLoader();
 				const requestBody = {
-					emailOrPhone: email.toLowerCase(),
+					emailOrPhone: email,
 					password: password,
 				};
 				dispatch(LoginActions.requestLogin(requestBody, onLoginSuccess, onLoginError));
@@ -65,6 +66,21 @@ const Login = () => {
 		let deviceType = DeviceInfo.getSystemName();
 		let version = DeviceInfo.getVersion();
 		const traccarPassword = `g-track${data.userDTO.userKey}`;
+		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
+		dispatch(
+			LoginActions.requestTraccarSession(email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
+		);
+		dispatch(
+			LoginActions.requestGetLastKnownDevicePosition(
+				data.userDTO.id,
+				onGettingLastKnownPositionSuccess,
+				onGettingLastKnownPositionError
+			)
+		);
+		dispatch(
+			DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError)
+		);
+		dispatch(DeviceActions.requestGetAllUserDevice(data.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
 		dispatch(
 			SettingsActions.requestGetFeedBack(data.userDTO.id, version, deviceType, onFeedbackSuccess, onFeedbackError)
 		);
@@ -78,20 +94,6 @@ const Login = () => {
 				onUserAssetListLoadedError
 			)
 		);
-		dispatch(
-			DeviceActions.requestGetAllUserGroups(data.userDTO.id, onGetAllUserGroupsSuccess, onGetAllUserGroupError)
-		);
-		dispatch(
-			LoginActions.requestTraccarSession(email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
-		);
-		dispatch(
-			LoginActions.requestGetLastKnownDevicePosition(
-				data.userDTO.id,
-				onGettingLastKnownPositionSuccess,
-				onGettingLastKnownPositionError
-			)
-		);
-		dispatch(DeviceActions.requestGetAllUserDevice(data.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
 	}
 
 	function onGetAllUserDeviceSuccess(data) {
@@ -184,7 +186,7 @@ const Login = () => {
 					<EditText
 						value={email}
 						onChangeText={value => {
-							setEmail(value);
+							setEmail(value.trim().toLowerCase());
 						}}
 						placeholder={translate('Login_string2')}
 						rightContainer={

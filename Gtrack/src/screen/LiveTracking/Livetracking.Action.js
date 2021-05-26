@@ -1,4 +1,5 @@
 import * as types from '../../constants/ActionTypes'
+import { SEARCH_GEOFENCE_REQUEST } from './../../constants/ActionTypes';
 
 export const requestGetAlarmsList = (userId ,onSuccess, onError) => ({
     type: types.GET_ALARMS_LIST_REQUEST,
@@ -167,6 +168,32 @@ export const requestAssetInfo = (userId, traccarId, onSuccess, onError) => ({
     traccarId,
     onSuccess,
     onError
+})
+
+export const requestSearchGroup = (userId, groupName, onSuccess, onError) => ({
+    type: types.SEARCH_GROUP_REQUEST,
+    userId,
+    groupName,
+    onSuccess,
+    onError
+})
+
+export const setSearchGroupResponse = (data) => ({
+    type: types.SEARCH_GROUP_RESPONSE,
+    data
+})
+
+export const requestSearchGeofence = (userId, keyword, onSuccess, onError) => ({
+    type: types.SEARCH_GEOFENCE_REQUEST,
+    userId,
+    keyword,
+    onSuccess,
+    onError
+})
+
+export const setSearchGeofenceResponse = (data) => ({
+    type: types.SEARCH_GEOFENCE_RESPONSE,
+    data
 })
 
 

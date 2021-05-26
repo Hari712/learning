@@ -71,18 +71,18 @@ const Users = ({navigation}) => {
       setSearchData(subUserData)
     }
 
-    if(pageIndex == 0 && (searchKeyword=="" && status==-1 && IsRole==-1)) {
-      let adminData = {
-        id: loginData.id,
-        email: loginData.email,
-        firstName: loginData.firstName,
-        groups: loginData.group,
-        isActive: true,
-        lastName: loginData.lastName,
-        roles: loginData.role
-      }
-      setSearchData((old)=>[adminData,...old])
-    }
+    // if(pageIndex == 0 && (searchKeyword=="" && status==-1 && IsRole==-1)) {
+    //   let adminData = {
+    //     id: loginData.id,
+    //     email: loginData.email,
+    //     firstName: loginData.firstName,
+    //     groups: loginData.group,
+    //     isActive: true,
+    //     lastName: loginData.lastName,
+    //     roles: loginData.role
+    //   }
+    //   setSearchData((old)=>[adminData,...old])
+    // }
 
   },[subUserData])
 console.log("data",subUserData,loginData)
@@ -336,7 +336,7 @@ addButton : {
 searchText: {
   //fontSize:FontSize.FontSize.small,
   fontSize:14,
-  color:ColorConstant.LIGHTGREY,
+  color:ColorConstant.BLACK,
   fontFamily:'Nunito-LightItalic'
 },
 searchSubContainer: {

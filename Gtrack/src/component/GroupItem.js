@@ -7,14 +7,14 @@ import MultiSelect from './MultiSelect';
 import isEmpty from 'lodash/isEmpty'
 import { useDispatch, useSelector } from 'react-redux';
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action'
-import { getLoginInfo } from '../screen/Selector';
+import { getLoginInfo, isRoleAdmin, isRoleOwner } from '../screen/Selector';
 import AppManager from '../constants/AppManager';
 import CustomDialog from './Dialog';
-import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon } from './SvgComponent';
+import { CrossIcon, DownArrowIcon, UpArrowIcon, TrashIcon, AddIconClicked, AddIcon, TrashBlueIcon, RadioButtonIcon, RadioButtonIconClicked } from './SvgComponent';
 
 const GroupItem = props => {
 
-    const { item, arrDeviceList, arrDeviceNames, addClick, setAddClick } = props;
+    const { item, arrDeviceList, arrDeviceNames, addClick, setAddClick, loadNonGroupedDevice, fetchGroupList } = props;
 
     const itemNumber = props.index;
 
@@ -26,9 +26,11 @@ const GroupItem = props => {
 
     const dispatch = useDispatch()
 
-    const { isConnected, loginInfo } = useSelector(state => ({
+    const { isConnected, loginInfo, isAdmin, isOwner } = useSelector(state => ({
         isConnected: state.network.isConnected,
         loginInfo: getLoginInfo(state),
+        isAdmin: isRoleAdmin(state),
+        isOwner: isRoleOwner(state),
     }))
 
     const [selectedKey, setSelectedKey] = useState(-1);
@@ -67,6 +69,28 @@ const GroupItem = props => {
         }
     }
 
+    const setDefaultGroup = () => {
+        if (isConnected) {
+            AppManager.showLoader()
+            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
+            const requestBody = {
+                "deviceDTO": null,
+                "assetDTO": null,
+                "groupDTO": {
+                    "id": id,
+                    "groupName": groupName,
+                    "devices": arrSelectedDevices,
+                    "isQuickAdd": false,
+                    "isDefault": true
+                },
+                "devicePlan": null
+            }
+            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
+        } else {
+            AppManager.showNoInternetConnectivityError()
+        }
+    }
+
     const removeConfirm = () => {
         setDialogVisible(false)
         AppManager.showLoader()
@@ -80,17 +104,26 @@ const GroupItem = props => {
     const onSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Device added to the group successfully', description: '', floating: true })
         console.log("Success", data)
+        dispatch(DeviceActions.requestGetAllUserGroups(loginInfo.id, onGroupListLoadedSuccess, onGroupListLoadedError))
+        loadNonGroupedDevice()
         setAddClick(-1)
         setSelectedDevices([])
         AppManager.hideLoader()
     }
 
+    function onGroupListLoadedSuccess(data) {
+        AppManager.hideLoader()
+    }
 
+    function onGroupListLoadedError(error) {
+        AppManager.hideLoader()
+    }
     const onRemoveDeviceSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Device removed successfully from the group', description: '', floating: true })
         console.log("Success", data)
         setAddClick(-1)
         setSelectedDevices([])
+        loadNonGroupedDevice()
         AppManager.hideLoader()
     }
 
@@ -117,6 +150,8 @@ const GroupItem = props => {
     const onDeleteGroupSuccess = (data) => {
         AppManager.showSimpleMessage('success', { message: 'Group deleted successfully', description: '', floating: true })
         console.log("Success", data)
+        loadNonGroupedDevice()
+        fetchGroupList()
         AppManager.hideLoader()
     }
 
@@ -150,7 +185,7 @@ const GroupItem = props => {
                         {/* <Image source={images.manage.close} /> */}
                     </TouchableOpacity>
                 </View>
-                <View style={{ width: wp(85), alignSelf: 'center' }}>
+                <View style={{ width: wp(80), alignSelf: 'center' }}>
                     <MultiSelect
                         label='Select Device'
                         dataList={arrDeviceNames}
@@ -185,11 +220,10 @@ const GroupItem = props => {
                     return (
                         <View key={itemKey} style={styles.subCategory}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
-                            <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.deviceName}</Text>
-                            {isDefault ? null : <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
+                            <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem && subitem.deviceName}</Text>
+                            {isDefault || isAdmin ? null : <TouchableOpacity onPress={() => onDeleteDevice(subitem.id, subkey)}>
                                 <TrashBlueIcon width={16.567} height={18.547} style={styles.icon} />
                             </TouchableOpacity>}
-
                         </View>
                     )
                 })}
@@ -208,9 +242,12 @@ const GroupItem = props => {
     function renderActionButton() {
         return (
             <>
-                <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
-                    <TrashIcon style={styles.icon} width={16.567} height={18.547} />
-                </TouchableOpacity>
+                { !isAdmin ?
+                    <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
+                        <TrashIcon style={styles.icon} width={16.567} height={18.547} />
+                    </TouchableOpacity>
+                : null}
+
                 <TouchableOpacity style={{ flex: 0.3 }} style={{ alignSelf: 'center' }}
                     onPress={() => {
                         (item.id == addClick) ?
@@ -224,11 +261,17 @@ const GroupItem = props => {
         )
     }
 
-
     return (
-        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2) }}>
-            <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
-
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2)}}>
+            <View style={{ flexDirection:'row', alignItems: 'center', }} >
+                <View style={{paddingRight:wp(3)}}>
+                    {isDefault ? <RadioButtonIconClicked/> :
+                    <TouchableOpacity onPress={()=> setDefaultGroup()}>
+                        <RadioButtonIcon/>
+                    </TouchableOpacity>
+                    }
+                </View>
+                <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
                 {/* Arrow Left Side */}
                 <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
                     {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
@@ -238,7 +281,7 @@ const GroupItem = props => {
                     {/* heading */}
                     <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                         <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                        {isDefault ? renderDefaultContainer() : renderActionButton()}
+                        {isDefault && isOwner ? renderDefaultContainer() : renderActionButton()}
                     </View>
 
                     {/* Expanded data View */}
@@ -252,7 +295,7 @@ const GroupItem = props => {
 
                 </View>
             </View>
-
+            </View>
             {/* Popup View */}
             {(item.id == addClick) ? addDevicePopup() : null}
 
@@ -309,7 +352,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         //alignContent:'center',
-        width: '85%',
+        width: '80%',
         minHeight: hp(6),
         //paddingHorizontal:hp(2),
         //marginVertical:hp(1),
@@ -329,6 +372,8 @@ const styles = StyleSheet.create({
     popup: {
         borderRadius: 12,
         marginTop: hp(2),
+        // marginRight:wp(1),
+        // marginLeft:wp(11),
         //alignItems:'center',
         elevation: 3,
         shadowColor: ColorConstant.GREY,

@@ -13,8 +13,8 @@ function* login(action) {
         const response = yield call(API.post, ApiConstants.LOGIN, data)
         setToken(response.result.accessToken)
         const result = response.result ? response.result : {}
-        yield put(LoginActions.setLoginResponse(result))
         onSuccess(result)
+        yield put(LoginActions.setLoginResponse(result))
     } catch (error) {
         onError(error)
     }

@@ -9,11 +9,13 @@ import AppManager from '../../../constants/AppManager'
 import { getLoginState, getSettigsNotificationListInfo } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux'
 import * as SettingNotificationActions from '../Settings.Action'
+import SettingNotiDownArrowOrangeIcon from './../../../component/SvgComponent/SettingNotiDownArrowOrangeIcon';
+import SettingNotiNextArrowIcon from './../../../component/SvgComponent/SettingNotiNextArrowIcon';
 
 
 const NotificationItem = (props) => {
 
-    const { item, isDisable, setIsDisable, isCollapsed, setIsCollapsed} = props
+    const { item, isDisable, setIsDisable } = props
 
     const { loginData, notificationData } = useSelector(state => ({
         loginData: getLoginState(state),
@@ -21,7 +23,7 @@ const NotificationItem = (props) => {
         notificationData: getSettigsNotificationListInfo(state)
     }))
 
-    // const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(false)
     
     const dispatch = useDispatch()
 
@@ -94,7 +96,7 @@ const NotificationItem = (props) => {
                     <Text style={[styles.titleTextStyle, {color: isCollapsed ? ColorConstant.ORANGE : ColorConstant.BLUE } ]}>
                         {translate(item)}</Text>
                     <View style={{marginTop: hp(0.5)}}>
-                        {isCollapsed ? <DownArrowIcon color={ColorConstant.ORANGE}/>:<NextArrowIcon/>}
+                        {isCollapsed ? <SettingNotiDownArrowOrangeIcon />:<SettingNotiNextArrowIcon />}
                     </View>
                 </View>
                 <View style={styles.lineStyle} />

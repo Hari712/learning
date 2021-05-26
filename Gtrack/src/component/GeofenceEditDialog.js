@@ -28,6 +28,39 @@ const GeofenceEditDialog = (props) => {
     // const [perimeter, setPerimeter] = useState(0)
     const [coordinate, setCoordinate] = useState()
     const [coordinates, setCoordinates] = useState()
+    const [webNotificator, setWebNotificator] = useState()
+    const [mailNotificator, setMailNotificator] = useState()
+    const [selectedUser, setSelectedUser] = useState()
+
+    useEffect(() => {
+        if(activeGeofence){
+            switch (activeGeofence.notificator) {
+                case "mail,web":
+                setWebNotificator(true)
+                setMailNotificator(true)
+                break;
+    
+                case "web,mail":
+                setWebNotificator(true)
+                setMailNotificator(true)
+                break;
+    
+                case "mail":
+                setMailNotificator(true)
+                break;
+    
+                case "web":
+                setWebNotificator(true)
+                break;
+            
+                default:
+                break;
+            }
+            let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.map((item) => item.firstName+" "+item.lastName) : null
+            setSelectedUser(user)
+        }
+    },[activeGeofence])
+
 
     const CIRCLE = (item) => {
         setType("Circle")
@@ -128,6 +161,24 @@ return(
                             })}
                         </View>
                     </View>
+                    <View style={[styles.secondRowMainView,{flexDirection:'column'}]}>
+                            <Text style={styles.mainTextStyle}>{translate("Selected Users")}</Text>
+                            {selectedUser && selectedUser.length > 0 ?
+                                selectedUser.map((item)=> 
+                                    <Text style={[styles.fontSizeStyle]}>{item}</Text>
+                                )
+                            : <Text style={[styles.fontSizeStyle]}>-</Text>}
+                        <View style={{marginTop:hp(2),flexDirection:'row'}}>
+                            <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                                <Image style={{alignSelf:'flex-start'}} source={mailNotificator && webNotificator || webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+                            </View>
+                            <View style={{flexDirection:'row',alignItems:'center'}}>
+                                <Image style={{alignSelf:'flex-start'}} source={mailNotificator && webNotificator || mailNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
             </View>
         </View>
@@ -154,7 +205,11 @@ return(
                         coordinate:coordinate,
                         radius: radius,
                         coordinates: coordinates,
-                        id:activeGeofence.geofence.id
+                        id:activeGeofence.geofence.id,
+                        mailNotificator:mailNotificator,
+                        webNotificator: webNotificator,
+                        selectedUser: selectedUser,
+                        status: activeGeofence.isActive
                     }})
                     setDialogVisible(false)
                 }
@@ -194,6 +249,11 @@ const styles = StyleSheet.create({
     crossImageStyle: {
         marginTop: hp(0.5),
         marginRight: wp(2)
+    },
+    notificationStyle: {
+        fontFamily:'Nunito-Regular',
+        fontSize:8,
+        color:ColorConstant.BLUE
     },
     popUpCardContainer: {
         width: '100%',

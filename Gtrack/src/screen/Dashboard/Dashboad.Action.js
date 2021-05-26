@@ -21,7 +21,7 @@ export const requestActiveInactiveCount = (userId, role, onSuccess, onError) => 
 })
 
 export const setActiveInactiveCountResponse = (data) => ({
-type: types.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID_RESPONSE,
+    type: types.GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID_RESPONSE,
     data
 })
 
@@ -34,7 +34,19 @@ export const requestUserDeviceEventsOrNotifiactionCount = (userId, deviceId, onS
 })
 
 export const setUserDeviceEventsOrNotifiactionCountResponse = (data) => ({
-type: types.GET_USER_DEVICE_EVENTS_OR_NOTIFICATION_COUNT_RESPONSE,
+    type: types.GET_USER_DEVICE_EVENTS_OR_NOTIFICATION_COUNT_RESPONSE,
+    data
+})
+
+export const requestGetNotifiedDevices = (userId, onSuccess, onError) => ({
+    type: types.GET_NOTIFIED_DEVICES_REQUEST,
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setNotifiedDevicesResponse = (data) => ({
+    type: types.GET_NOTIFIED_DEVICES_RESPONSE,
     data
 })
 

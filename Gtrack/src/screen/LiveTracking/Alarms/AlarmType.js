@@ -9,7 +9,7 @@ import { translate } from '../../../../App'
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { CircleIcon, CircleIconSelected, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import * as LivetrackingActions from '../Livetracking.Action'
-import { getLoginInfo, getSubuserState } from '../../Selector';
+import { getLoginInfo, getSubuserState, isRoleAdmin } from '../../Selector';
 import AppManager from '../../../constants/AppManager';
 import * as UsersActions from '../../Users/Users.Action'
 import { isEmpty } from 'lodash';
@@ -28,10 +28,11 @@ const AlarmType = ({navigation,route}) => {
   const [emailNotification, setEmailNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
-  const { loginInfo, subUserData, isConnected } = useSelector(state => ({
+  const { loginInfo, subUserData, isConnected, isAdmin } = useSelector(state => ({
     loginInfo: getLoginInfo(state),
     subUserData: getSubuserState(state),
     isConnected: state.network.isConnected,
+    isAdmin: isRoleAdmin(state)
   }))
 
   const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
@@ -170,10 +171,9 @@ const AlarmType = ({navigation,route}) => {
         })  }) 
       :null;
 
-      console.log("User ids",arrSelectedId)
-
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
+      var notiType = notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
       var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? batteryLevelInputValue :
                   overSpeedInputVisible ? overSpeedInputValue :
@@ -188,7 +188,7 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : route.params.editData.notification.id,
-            "type" : notificationType,
+            "type" : notiType,
             "always" : false,
             "notificators" : notificator,
             "attributes" : {
@@ -210,7 +210,7 @@ const AlarmType = ({navigation,route}) => {
           "deviceIds" : selectedDeviceID,
           "notification" : {
             "id" : 0,
-            "type" : notificationType,
+            "type" : notiType,
             "always" : false,
             "notificators" : notificator,
             "attributes" : {
@@ -287,7 +287,8 @@ return (
           outerStyle={styles.outerStyle} 
         />
 
-        <MultiSelect 
+        { !isAdmin ? 
+          <MultiSelect 
             label="Select User"
             dataList={userdata} 
             allText={translate("All_string")}
@@ -303,7 +304,8 @@ return (
             selectedItemContainerStyle={styles.selectedItemContainerStyle} 
             selectedItemRowStyle={styles.selectedItemRowStyle}
             deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
-          /> 
+          /> : 
+          null }
 
         {overSpeedInputVisible &&
           <TextField 
@@ -372,7 +374,9 @@ return (
       )
     }
 
-const time = ['Every day(All hours)', 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' ]
+const time = ['Every day(All hours)'
+  // 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' 
+]
 
 const user = ["John Smith", "John Carter", "John abc"]
 

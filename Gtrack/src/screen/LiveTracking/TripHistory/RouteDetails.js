@@ -17,7 +17,7 @@ const RouteDetails = (props) => {
         loginData: getLoginState(state)
     }))
 
-    const { routeDetails } = props
+    const { routeDetails, loadMoreData, renderFooter, setOnEndReachedCalledDuringMomentum, onEndReachedCalledDuringMomentum } = props
 
     const dispatch = useDispatch()
 
@@ -25,20 +25,17 @@ const RouteDetails = (props) => {
     const [endDate, setEndDate] = useState();
 
     const renderItem = ({ item,index }) => {
-
-        console.log("item",item)
         
         let sDateArray = Moment(item.tripStartTime)
-        var sdateComponent = sDateArray.utc().format('YYYY-MM-DD');
-        var stimeComponent = sDateArray.utc().format('HH:mm:ss');
+        var sdateComponent = sDateArray.format('YYYY-MM-DD');
+        var stimeComponent = sDateArray.format('HH:mm');
         
         let eDateArray = Moment(item.tripEndTime)
-        var edateComponent = eDateArray.utc().format('YYYY-MM-DD');
-        var etimeComponent = eDateArray.utc().format('HH:mm:ss');
+        var edateComponent = eDateArray.format('YYYY-MM-DD');
+        var etimeComponent = eDateArray.format('HH:mm');
 
-        let dformat = Moment(eDateArray-sDateArray).utc().format('H:m:s').split(':')
+        let dformat = Moment(eDateArray-sDateArray).format('H:m:s').split(':')
         let durationFormat = (dformat[0] > 0 ? dformat[0]+"h ":"") + (dformat[1] > 0 ? dformat[1]+"m ":'') + (dformat[2] > 0 ? dformat[2]+"s ":'')
-        console.log("Duration",durationFormat)
 
         return (
             <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.cardContainer}>
@@ -98,16 +95,25 @@ const RouteDetails = (props) => {
         <View>
 
             <View style={{paddingHorizontal:hp(3)}} >
-                <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>Route Details</Text>
+                <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>{routeDetails.length > 0 ? "Route Details": ''}</Text>
             </View>
-
+            {routeDetails.length > 0 ?
             <FlatList
+                style={{height:hp(100)}}
                 nestedScrollEnabled={true}
                 keyboardShouldPersistTaps='handled'                
                 data={routeDetails}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-            />
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={renderFooter}
+                onEndReached={() => loadMoreData()}
+                onEndReachedThreshold={0.1}
+                onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
+            />  :
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View> }
         </View>
 
     )
@@ -157,6 +163,14 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.27,
         shadowRadius: 4.65,
+    },
+    noRecords: {
+        marginVertical:hp(20),
+        alignItems:'center'
+    },
+    noRecordsText: {
+    fontFamily:"Nunito-Regular",
+    fontSize:hp(2)
     },
     blueConatiner: {
         backgroundColor: ColorConstant.BLUE,

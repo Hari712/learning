@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize, TextField }from '../../../component';
-import ImagePicker from 'react-native-image-crop-picker';
+import { FontSize, MultiSelect, TextField }from '../../../component';
+import images from '../../../constants/images'
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { AddIcon, BackIcon } from '../../../component/SvgComponent';
+import { AddIcon, BackIcon, CrossIconBlue } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
-import { getLoginInfo } from '../../Selector';
+import { getLoginInfo, isRoleAdmin } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import {  SlidersColorPicker  } from 'react-native-color';
 import tinycolor from 'tinycolor2'
+import * as UsersActions from '../../Users/Users.Action'
+import { getSubuserState } from './../../Selector';
+import isEmpty from 'lodash/isEmpty';
 
 const GeoFenceDetails = ({ navigation, route }) => {
 
-    const { isConnected, loginInfo } = useSelector(state => ({
+    const { isConnected, loginInfo, subUserData,isAdmin } = useSelector(state => ({
         isConnected: state.network.isConnected,
         loginInfo: getLoginInfo(state),
+        subUserData: getSubuserState(state),
+        isAdmin: isRoleAdmin(state)
     }))
     
     const { selectedArea, type, devices, editingData } = route.params
@@ -27,17 +32,24 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     const dispatch = useDispatch()
 
+    const userdata = (subUserData).map((item)=> item.firstName+" "+item.lastName )
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
     const [color, setColor] = useState(tinycolor('#70c1b3').toHexString())
     const [modalVisible, setModalVisible] = useState(false)
     const [recents, setRecents] = useState(colorData)
     const [cancel, setCancel] = useState(false)
+    const [selectUser, setSelectedUser] = useState([])
+    const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
+    const [notification, setNotification] = useState(false)
+    const [emailNotification, setEmailNotification] = useState(false)
 
     let response = { 
         deviceList : [],
         geofence: {},
-        isActive: null
+        isActive: editingData ? editingData.status : true ,
+        notificator:"",
+        userDTOS: []
     }
 
     useEffect(() => { 
@@ -45,8 +57,36 @@ const GeoFenceDetails = ({ navigation, route }) => {
             setName(editingData.name)
             setDescrption(editingData.description) 
             setColor(editingData.color)
+            if(editingData.webNotificator && editingData.mailNotificator){
+                setNotification(true)
+                setEmailNotification(true)
+            }
+            if(editingData.webNotificator){
+                setNotification(true)
+            }
+            if(editingData.mailNotificator){
+                setEmailNotification(true)
+            }
+            if(editingData.selectedUser){
+                setSelectedUser(editingData.selectedUser)
+            }
         }
-     }, [editingData,navigation,route])
+    }, [editingData,navigation,route])
+
+    useEffect(() => { 
+        dispatch(UsersActions.requestGetSubuser(loginInfo.id, onUserSuccess, onUserError))  
+    }, [])
+
+    function onUserSuccess(data) {
+        console.log("data",data)
+        AppManager.hideLoader()     
+    }
+    
+    function onUserError(error) {
+        console.log(error)
+        // AppManager.showSimpleMessage('danger', { message: error, description: '' })
+        AppManager.hideLoader()
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -102,8 +142,31 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onUpdateSuccess(data) { 
         response.geofence = data.result
+        const arrSelectedId = [];
+        selectUser ? 
+        subUserData.filter((item)=> {      
+            selectUser.filter((selectedItem)=>{        
+            if(item.firstName+" "+item.lastName === selectedItem){  
+                arrSelectedId.push(item.id)
+            }
+            })  }) 
+        :null;
+        console.log("user",arrSelectedId)
+        var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+        const requestBody = {
+            "userIds" : arrSelectedId,
+            "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
+            "notification" : {
+                "id" : null,
+                "type" : "geofenceEnter",
+                "always" : false,
+                "notificators" : notificator,
+                "attributes" : null,
+                "calendarId" : 0
+            }
+        }
         if (isConnected) {
-            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
             AppManager.hideLoader()
             AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
         } else {
@@ -118,14 +181,52 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onSuccess(data) { 
         response.geofence = data.result
-        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, devices, onLinkSuccess, onError)) 
+        let notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+
+        let arrSelectedId = [];
+        selectUser ? 
+        subUserData.filter((item)=> {      
+            selectUser.filter((selectedItem)=>{        
+            if(item.firstName+" "+item.lastName === selectedItem){  
+                arrSelectedId.push(item.id)
+            }
+            })  }) 
+        :null;
+    
+        const requestBody = {
+            "userIds" : arrSelectedId,
+            "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
+            "notification" : {
+                "id" : null,
+                "type" : "geofenceEnter",
+                "always" : false,
+                "notificators" : notificator,
+                "attributes" : null,
+                "calendarId" : 0
+            }
+        }
+        dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
         
     }
 
     function onLinkSuccess(data) {
+        var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+        var userdt = []
+        selectUser ? 
+            selectUser.filter((selectedItem)=> {  
+                subUserData.filter((item)=>{        
+                    if(item.firstName+" "+item.lastName === selectedItem){
+                        userdt.push(item)
+                    } 
+                }) 
+            }) 
+        :[];
+        console.log("linking",userdt)
         response.deviceList = devices
+        response.notificator = notificator
+        response.userDTOS = userdt
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
         }else{
@@ -166,7 +267,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView style={styles.container}>
             <View style={styles.mainView}>
                 <Text style={styles.textViewStyle}>Type : {type}</Text>
             </View>
@@ -222,6 +323,37 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         okLabel="Done"
                         cancelLabel="Cancel"
                     />
+                    { !isAdmin ? 
+                    <MultiSelect 
+                        label="Select User"
+                        dataList={userdata} 
+                        allText={translate("All_string")}
+                        hideSelectedDeviceLable={true}
+                        hideDeleteButton={true}
+                        rowStyle={styles.rowStyle}
+                        dropdownStyle={{height:hp(20)}}
+                        outerStyle={{marginTop:hp(3)}}
+                        textStyle={{color:ColorConstant.BLUE}}
+                        valueSet={setSelectedUser} 
+                        selectedData={selectUser}
+                        CloseIcon={<CrossIconBlue/>}
+                        selectedItemContainerStyle={styles.selectedItemContainerStyle} 
+                        selectedItemRowStyle={styles.selectedItemRowStyle}
+                        deleteHandle={(item)=>setSelectedUser(selectUser.filter((item1) => item1 != item))}
+                    /> : 
+                    null }
+
+                    <View style={{marginTop:hp(2)}}>
+                        <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                            <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                            <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => setEmailNotification(!emailNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                            <Image style={{alignSelf:'flex-start'}} source={emailNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                            <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
+                        </TouchableOpacity>
+                    </View>
 
                     <View style={styles.buttonMainContainer}>
                         <TouchableOpacity onPress={() => { cancel ? setCancel(false) : setCancel(true), navigation.goBack() }} style={[styles.cancelButton]}>
@@ -270,7 +402,7 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.medium
     },
     subContainer: {
-        height: Dimensions.get('window').height,
+        // height: Dimensions.get('window').height,
         alignItems: 'center',
         backgroundColor: ColorConstant.WHITE
     },
@@ -326,7 +458,7 @@ const styles = StyleSheet.create({
         width: wp(75),
         marginTop: hp(6),
         alignSelf: 'center',
-        paddingBottom: hp(6)
+        paddingBottom: hp(2)
     },
     cancelButton: {
         borderRadius: 6,
@@ -351,6 +483,42 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: ColorConstant.WHITE,
         fontWeight: 'bold'
+    },
+    rowStyle: {
+        borderBottomColor:ColorConstant.LIGHTGREY, 
+        borderBottomWidth:1
+    },
+    selectedItemContainerStyle:{
+        backgroundColor:"#F9FAFC",
+        flexDirection:'row',
+        flexWrap:'wrap',
+        //backgroundColor:ColorConstant.LIGHTRED,
+        borderRadius:8,
+        marginTop:hp(2),
+        elevation:0,
+        padding:hp(1)
+    },
+    selectedItemRowStyle: {
+        flexDirection:'row',  
+        elevation:4,
+        shadowColor: ColorConstant.GREY,
+        shadowOffset: {
+            width: 0,
+            height: 0
+        },
+        shadowRadius: 3,
+        shadowOpacity: 1,
+        backgroundColor:ColorConstant.LIGHTBLUE,
+        borderRadius:5,
+        alignItems:'center',
+        paddingHorizontal:hp(1),
+        margin:4,
+        height:hp(4),
+    },
+    notificationStyle: {
+        fontFamily:'Nunito-Regular',
+        fontSize:12,
+        color:ColorConstant.BLUE
     }
 })
 

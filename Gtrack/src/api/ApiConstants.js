@@ -1,4 +1,7 @@
-const BASE_URL = 'https://gtrackapi-qa.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://qa-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+
+// https://qa-api.vegitone.com/gtrackapi/
+// https://dev-api.vegitone.com/gtrackapi/
 
 const SUFFIX_URL = 'public/'
 
@@ -52,7 +55,8 @@ const ApiConstants = {
     GET_USER_DEVICE_OR_NOTIFICATION_COUNT:(userId, deviceId) => `${USER}${userId}/dashboard/alarms?deviceId=${deviceId}`,
     GET_ALARMS_LIST:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
     ADD_ALARMS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts`,
-    GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/consolidated?value=false`,
+    //GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/consolidated?value=false`,
+    GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/subscribedDevices`,
     GET_ALERT_TYPES:(userId) => `${USER}${userId}/trace/alerts/types`,
     DELETE_NOTIFICATION:(userId, deviceId) => `${USER}${userId}/trace/notifications/${deviceId}`,
     SEARCH_ASSET: (userId, name) => `${USER}${userId}/assets/search?name=${name}`,
@@ -73,7 +77,10 @@ const ApiConstants = {
     UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`,
     GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
     ADD_DEVICE_TOKEN:(userId) => `${USER}${userId}/trace/addDeviceToken`,
-    REMOVE_DEVICE_TOKEN_API:(userId) => `${USER}${userId}/trace/removeDeviceToken`
+    REMOVE_DEVICE_TOKEN_API:(userId) => `${USER}${userId}/trace/removeDeviceToken`,
+    SEARCH_GROUP:(userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
+    SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
+    GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`
 }
 
 export default ApiConstants

@@ -19,6 +19,7 @@ import CustomDialog from './Dialog'
 import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import LogoutConfirmationDialog from './LogoutConfirmationDialog'
 import RateUsDialog from './RateUsDialog'
+import PanicDialog from './PanicDialog';
 
 export { 
     EditText,
@@ -41,5 +42,6 @@ export {
     AssteItem,
     DeleteConfirmationDialog,
     LogoutConfirmationDialog,
-    RateUsDialog
+    RateUsDialog,
+    PanicDialog
 }

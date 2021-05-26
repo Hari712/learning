@@ -43,6 +43,7 @@ const GeoFenceCircle = ({navigation,route}) => {
     const [value, setValue] = useState(0.3);
     const [oldData, setOldData] = useState()
     const location = useSubscribeLocationUpdates(isLoggedIn)
+    const [color, setColor] = useState(ColorConstant.ORANGE)
 
     useEffect(()=>{
         if(selectedCoordinate) {
@@ -85,6 +86,7 @@ const GeoFenceCircle = ({navigation,route}) => {
         if(route.params && route.params.editingData) {
             const { editingData } = route.params
             setOldData(editingData)
+            setColor(editingData.color)
 
             if(isAndroid){
                 setRegionAndroid(editingData.coordinate)
@@ -164,8 +166,10 @@ const GeoFenceCircle = ({navigation,route}) => {
                 <Map.default.Circle
                     center={selectedCoordinate}
                     radius={radius}
-                    fillColor="rgba(255, 127, 33, 0.4)"
-                    strokeColor="rgba(255, 127, 33, 0.8)"
+                    fillColor={color}
+                    strokeColor={color}
+                    // fillColor="rgba(255, 127, 33, 0.4)"
+                    // strokeColor="rgba(255, 127, 33, 0.8)"
                     strokeWidth={2}
                 />
             )
@@ -213,13 +217,13 @@ const GeoFenceCircle = ({navigation,route}) => {
                 >
                     <Map.default.FillLayer
                         id='areaCircle'
-                        style={{ fillOpacity: 0.5, fillColor:ColorConstant.ORANGE}} />
+                        style={{ fillOpacity: 0.5, fillColor:color}} />
                     
                     <Map.default.LineLayer 
                         id='linelayer'
                         sourceLayerID='areaCirle'
                         style={{
-                            lineColor:ColorConstant.ORANGE,
+                            lineColor:color,
                             lineWidth:2
                         }}
                     />
@@ -312,10 +316,10 @@ const GeoFenceCircle = ({navigation,route}) => {
                     </View>
                     <View style={styles.sliderView}>
                         <Slider
-                            value={radius/1000}
+                            value={Platform.OS == 'android'? radius : radius/1000}
                             onValueChange={(value) => onChangeRadius(value)}
                             minimumValue={0.5}
-                            maximumValue={100}
+                            maximumValue={1000}
                             step={1}
                             minimumTrackTintColor={ColorConstant.BLUE}
                             maximumTrackTintColor={ColorConstant.BLUE}

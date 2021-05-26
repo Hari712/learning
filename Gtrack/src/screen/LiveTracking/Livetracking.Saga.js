@@ -3,6 +3,7 @@ import ApiConstants from '../../api/ApiConstants'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import API from '../../api'
 import * as LivetrackingActions from './Livetracking.Action'
+import { SEARCH_GEOFENCE_REQUEST } from './../../constants/ActionTypes';
 
 function* requestGetAlarmsList(action) {
     const { userId, onSuccess, onError } = action
@@ -186,6 +187,31 @@ function* requestAssetInfo(action) {
     }
 }
 
+function* requestSearchGroup(action) {
+    const { userId, groupName, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.SEARCH_GROUP(userId, groupName)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setSearchGroupResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestSearchGeofence(action) {
+    const { userId, keyword, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.SEARCH_GEOFENCE(userId, keyword)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setSearchGeofenceResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
 
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
@@ -202,5 +228,7 @@ export function* watchLivetracking() {
     yield takeLatest(types.LINK_GEOFENCE_TO_UPDATED_DEVICES, requestLinkGeofenceToUpdatedDevices),
     yield takeLatest(types.GET_GROUP_DEVICES_REQUEST, requestGetGroupDevices),
     yield takeLatest(types.GET_ALL_LAST_KNOWN_POSITION_REQUEST, requestAllLastKnownPostion),
-    yield takeLatest(types.GET_ASSET_INFO_REQUEST, requestAssetInfo)
+    yield takeLatest(types.GET_ASSET_INFO_REQUEST, requestAssetInfo),
+    yield takeLatest(types.SEARCH_GROUP_REQUEST, requestSearchGroup),
+    yield takeLatest(types.SEARCH_GEOFENCE_REQUEST, requestSearchGeofence)
 }
