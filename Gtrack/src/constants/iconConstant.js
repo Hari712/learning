@@ -1,4 +1,4 @@
-import {IgniteOffIcon, PanicIcon, BatteryIcon, DeviceMovingIcon, BusIcon, CarIcon, FamilyVanIcon, GeoFenceIcon, KidsIcon, MachineryIcon, IgniteOnIcon, OverSpeedIcon, PersonnelItemIcon, ShuttleVanIcon, TrailerIcon, TravelIcon, TruckIcon, XyzIcon, UnderSpeedIcon, FluelLevelcon, EngineIdleIcon, StationaryIcon } from "../component/SvgComponent"
+import {IgniteOffIcon, DeviceOfflineIcon, PanicIcon, BatteryIcon, DeviceMovingIcon, BusIcon, CarIcon, FamilyVanIcon, GeoFenceIcon, KidsIcon, MachineryIcon, IgniteOnIcon, OverSpeedIcon, PersonnelItemIcon, ShuttleVanIcon, TrailerIcon, TravelIcon, TruckIcon, XyzIcon, UnderSpeedIcon, FluelLevelcon, EngineIdleIcon, StationaryIcon, DeviceOnlineIcon, GeofenceExitIcon, GeofenceEntryIcon, DeviceStoppedIcon } from "../component/SvgComponent"
 import React from 'react'
 
 const IconConstant = (props) => {
@@ -17,17 +17,17 @@ const IconConstant = (props) => {
         case 'Kids': return <KidsIcon color={color} />  
         case 'Trailer': return <TrailerIcon color={color} />  
         
-        case 'deviceonline': return <IgniteOnIcon color={color} />  
+        case 'deviceonline': return <DeviceOnlineIcon color={color} />  
         case 'ignitionon': return <IgniteOnIcon color={color} /> 
         case 'ignitionoff': return <IgniteOffIcon color={color} />  
         case 'overspeed': return <OverSpeedIcon color={color} /> 
         case 'underspeed': return <UnderSpeedIcon color={color} /> 
         case 'lowspeed': return <UnderSpeedIcon color={color} /> 
-        case 'deviceoffline': return <CarIcon color={color} /> 
+        case 'deviceoffline': return <DeviceOfflineIcon color={color} /> 
         case 'devicemoving': return <DeviceMovingIcon color={color} />
-        case 'geofenceexit': return <GeoFenceIcon color={color} />  
-        case 'geofenceentry': return <TrailerIcon color={color} /> 
-        case 'devicestopped': return <TrailerIcon color={color} /> 
+        case 'geofenceexit': return <GeofenceExitIcon color={color} />  
+        case 'geofenceentry': return <GeofenceEntryIcon color={color} /> 
+        case 'devicestopped': return <DeviceStoppedIcon color={color} /> 
         case 'panic': return <PanicIcon color={color} /> 
         case 'batterylevel': return <BatteryIcon color={color} /> 
         case 'fuellevel': return <FluelLevelcon color={color} /> 

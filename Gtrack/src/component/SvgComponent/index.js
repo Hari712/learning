@@ -126,6 +126,10 @@ import DeviceMovingIcon from './DeviceMovingIcon'
 import UnderSpeedIcon from './UnderSpeedIcon'
 import StationaryIcon from './StationaryIcon'
 import FluelLevelcon from './FluelLevelcon'
+import GeofenceExitIcon from './GeofenceExitIcon'
+import GeofenceEntryIcon from './GeofenceEntryIcon'
+import DeviceStoppedIcon from './DeviceStoppedIcon'
+import DeviceOnlineIcon from './DeviceOnlineIcon'
 
 export {
     BarCodeScanIcon,
@@ -254,5 +258,9 @@ export {
     DeviceMovingIcon,
     UnderSpeedIcon,
     StationaryIcon,
-    FluelLevelcon
+    FluelLevelcon,
+    GeofenceExitIcon,
+    GeofenceEntryIcon,
+    DeviceStoppedIcon,
+    DeviceOnlineIcon
 }
