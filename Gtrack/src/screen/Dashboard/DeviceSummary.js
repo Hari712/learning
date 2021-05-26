@@ -9,6 +9,7 @@ import IconConstant from '../../constants/iconConstant'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { DeviceSetupIcon, FullScreenIcon } from '../../component/SvgComponent'
 import NavigationService from '../../navigation/NavigationService'
+import { SubscriptionStatus, SubscriptionStatusColor } from '../../utils/helper'
 
 const DeviceSummary = (props) => {
     return (
@@ -53,9 +54,9 @@ const DeviceSummary = (props) => {
                 </View>
 
                 <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'flex-end', }}>
-                    <View style={[styles.stateViewStyle, { backgroundColor: item.devicePlan ? ColorConstant.LIGHTGREEN : ColorConstant.LIGHTRED }]}>
-                        <Text style={[styles.stateTextStyle, { color: item.devicePlan ? ColorConstant.DARKGREEN : ColorConstant.DARKRED }]}>
-                            {item.devicePlan ? 'Active' :'No Subscription'}
+                    <View style={[styles.stateViewStyle, { backgroundColor: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).bg }]}>
+                        <Text style={[styles.stateTextStyle, { color: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).color }]}>
+                            {SubscriptionStatus(item.devicePlan && item.devicePlan.status)}
                         </Text> 
                     </View>
                 </View>

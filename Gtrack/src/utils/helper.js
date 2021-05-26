@@ -4,6 +4,7 @@ import { removeItem } from '../utils/storage';
 import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
+import { ColorConstant } from './../constants/ColorConstants';
 
 
 export const validateEmailorPhoneNumber = (input) => {
@@ -103,3 +104,25 @@ export function isIphoneX() {
   export function getBottomSpace() {
     return isIphoneX() ? 34 : 0;
   }
+
+  export function SubscriptionStatus(key) {
+    switch (key) {
+      case "CANCEL":          return "Cancelled"  
+      case "ACTIVE":          return "Active" 
+      case "PAYMENT_FAILED":  return "Payment failed" 
+      case "EXPIRED":         return "Expired" 
+      case "IN_ACTIVE":       return "In-Active" 
+      default:                return "No Subscription"
+    }
+  } 
+
+  export function SubscriptionStatusColor(key) {
+    switch (key) {
+      case "CANCEL":          return {bg: ColorConstant.LIGHTENGREEN, color: ColorConstant.DARKGREEN}  
+      case "ACTIVE":          return {bg: ColorConstant.LIGHTGREEN, color: ColorConstant.DARKGREEN}
+      case "PAYMENT_FAILED":  return {bg: ColorConstant.LIGHTGREY, color: ColorConstant.BLACK} 
+      case "EXPIRED":         return {bg: ColorConstant.LIGHTGREY, color: ColorConstant.BLACK}
+      case "IN_ACTIVE":       return {bg: ColorConstant.LIGHTRED, color: ColorConstant.DARKRED}
+      default:                return {bg: "#ffffdf", color: '#916c07'}
+    }
+  } 
