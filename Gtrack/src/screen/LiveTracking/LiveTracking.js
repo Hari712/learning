@@ -157,20 +157,6 @@ const LiveTracking = ({ navigation }) => {
 		}
 	}, [devicePositionArray]);
 
-	useEffect(() => {
-		let arrCoords = [];
-				devicePositionArray.map((item) => {
-					arrCoords.push({
-						'latitude': item.latitude,
-						'longitude': item.longitude
-					})
-				})
-		mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
-					edgePadding: DEFAULT_PADDING,
-					animated: true,
-				});
-	})
-
 	useEffect(
 		() => {
 			if (selectedDevice) {
