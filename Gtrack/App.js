@@ -15,6 +15,7 @@ import memoize from "lodash.memoize"; // Use for caching/memoize for better perf
 import OfflineStatusBar from './src/component/OfflineBar'
 import SocketProvider from './src/provider/SocketProvider'
 import withCodePush from './src/hoc/withCodePush'
+import AppProvider from './src/provider/AppProvider'
 
 export const translationGetters = {
   // lazy requires (metro bundler does not support symlinks)
@@ -93,12 +94,14 @@ const MainApp = forwardRef((props, ref) => {
   return (
     <Provider store={store}>
       <ReduxNetworkProvider pingInterval={40000}>
+        <AppProvider>
         <SocketProvider>
          <AppNavigator />
         </SocketProvider>
         <FlashMessage position="top" animated={true} />
         {isLoading ? <Loader /> : null}
         <OfflineStatusBar />
+        </AppProvider>
       </ReduxNetworkProvider>
     </Provider>
   )
