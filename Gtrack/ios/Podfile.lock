@@ -262,6 +262,8 @@ PODS:
     - React-Core
   - react-native-geolocation (2.0.2):
     - React
+  - react-native-in-app-review (3.1.1):
+    - React
   - react-native-location (2.5.0):
     - React
   - react-native-maps (0.27.1):
@@ -395,6 +397,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
+  - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
   - react-native-location (from `../node_modules/react-native-location`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -481,6 +484,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-in-app-review:
+    :path: "../node_modules/react-native-in-app-review"
   react-native-location:
     :path: "../node_modules/react-native-location"
   react-native-maps:
@@ -574,6 +579,7 @@ SPEC CHECKSUMS:
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-camera: 5c1fbfecf63b802b8ca4a71c60d30a71550fb348
   react-native-geolocation: cbd9d6bd06bac411eed2671810f454d4908484a8
+  react-native-in-app-review: 1519011cfb31817aa8bf7814e2290311fd26ed99
   react-native-location: 9c53c0957756f7d70e8fdc76b1c7ed85867c8d0b
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: e36c1bb6df27ab84aa933679b3f5bbf9d180b18f
