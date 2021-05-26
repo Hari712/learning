@@ -272,10 +272,16 @@ const LiveTracking = ({ navigation }) => {
 		const isContainCoordinate = !isEmpty(devicePositionArray);
 		const isPolyLine = isEmpty(devicePositionArray) ? false : devicePositionArray.length > 1;
 		const startingDestination = isContainCoordinate ? devicePositionArray[0] : null;
-		const address = isContainCoordinate ? startingDestination.address : '';
-		const coordinate = isContainCoordinate
+		const endDestination = isContainCoordinate ? devicePositionArray[devicePositionArray.length - 1] : null;
+		const startAddress = isContainCoordinate ? startingDestination.address : '';
+		const endAddress = isContainCoordinate ? endDestination.address : '';
+		const startCoordinate = isContainCoordinate
 			? { latitude: startingDestination.latitude, longitude: startingDestination.longitude }
 			: null;
+
+		const endCoordinate = isContainCoordinate
+		? { latitude: endDestination.latitude, longitude: endDestination.longitude }
+		: null;
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
@@ -284,8 +290,19 @@ const LiveTracking = ({ navigation }) => {
 
 				{isContainCoordinate && 
 					<Map.Marker 
-						coordinate={coordinate} 
-						description={address} />}
+						coordinate={startCoordinate} 
+						description={startAddress} >
+
+						<LiveStartPointIcon />
+					</Map.Marker>}
+
+				{isContainCoordinate && 
+					<Map.Marker 
+						coordinate={endCoordinate} 
+						description={endAddress} >
+						
+						<LiveEndPointIcon/>
+					</Map.Marker>}
 
 				{isPolyLine &&
 					<Map.Polyline
