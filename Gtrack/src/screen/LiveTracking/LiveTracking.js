@@ -149,13 +149,27 @@ const LiveTracking = ({ navigation }) => {
 					})
 				})
 				setCoordList(arrCoords)
-				mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
-					edgePadding: DEFAULT_PADDING,
-					animated: true,
-				});
+				// mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
+				// 	edgePadding: DEFAULT_PADDING,
+				// 	//animated: true,
+				// });
 			}
 		}
 	}, [devicePositionArray]);
+
+	useEffect(() => {
+		let arrCoords = [];
+				devicePositionArray.map((item) => {
+					arrCoords.push({
+						'latitude': item.latitude,
+						'longitude': item.longitude
+					})
+				})
+		mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
+					edgePadding: DEFAULT_PADDING,
+					animated: true,
+				});
+	})
 
 	useEffect(
 		() => {
@@ -234,7 +248,7 @@ const LiveTracking = ({ navigation }) => {
 					height: hp(5),
 					backgroundColor: ColorConstant.WHITE,
 					position: 'absolute',
-					marginTop: hp(4),
+					marginTop: Platform.OS === 'ios' ? hp(6) : hp(4),
 					borderRadius: 9,
 					alignSelf: 'center',
 					justifyContent: 'center',
@@ -399,7 +413,7 @@ const LiveTracking = ({ navigation }) => {
 			{isAndroid ? renderMapBox() : renderAppleMap()}
 			{/* {renderAppleMap()} */}
 			{selectedDevice && renderDeviceSelectionView()}
-			<View style={[styles.subContainer,{marginTop:selectedDevice ? hp(11) : hp(5)}]}>
+			<View style={[styles.subContainer,{marginTop:selectedDevice ? Platform.OS === 'ios' ? hp(13) : hp(11) : hp(5)}]}>
 				<TouchableOpacity
 					onPress={() => {
 						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false);
