@@ -54,6 +54,8 @@ const GeoFence = ({ navigation }) => {
         });
     }, [navigation]);
 
+    console.log("khushi",geofenceList)
+
     useEffect(() => {  
         loadGeofenceList()
     }, [])
@@ -185,7 +187,7 @@ const GeoFence = ({ navigation }) => {
             </View>
 
             <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} ></View>
-
+            {geofenceList.length > 0 ?
             <FlatList
                 style={{}}
                 contentContainerStyle={{}}
@@ -198,7 +200,11 @@ const GeoFence = ({ navigation }) => {
                         onRefresh={onRefresh}     
                     />
                 }
-            />
+            /> :
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View>
+            }  
 
             {isTypeClick ?
                 <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
@@ -268,10 +274,18 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#ffffff'
     },
+    noRecords: {
+        marginVertical:hp(35),
+        alignItems:'center'
+    },
+    noRecordsText: {
+        fontFamily:"Nunito-Regular",
+        fontSize:hp(2)
+    },
     searchText: {
         //fontSize:FontSize.FontSize.small,
         fontSize:14,
-        color:ColorConstant.LIGHTGREY,
+        color:ColorConstant.BLACK,
         fontFamily:'Nunito-LightItalic'
     },
     search: {

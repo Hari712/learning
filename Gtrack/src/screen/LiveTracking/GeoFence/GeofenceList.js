@@ -70,7 +70,7 @@ const GeofenceList = ( props ) => {
                     <Text style={styles.whiteContainerText}>Geofence Type</Text>
                     <Text style={styles.whiteContainerSubText}>{geoFenceType}</Text>
                 </View>
-                {/* {console.log("vilu",item.deviceList)} */}
+                
                 <View style={styles.deviceNameMainView}>
                     <Text style={styles.whiteContainerText}>Device Name</Text>
                     <View style={{flexDirection:'row',justifyContent:'space-between'}}>

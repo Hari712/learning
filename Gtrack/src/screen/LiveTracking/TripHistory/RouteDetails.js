@@ -19,8 +19,8 @@ const RouteDetails = (props) => {
         advSettingsData: getAdvanceSettingsInfo(state)
     }))
 
-    const { routeDetails } = props
     var moment = require('moment-timezone');
+    const { routeDetails, loadMoreData, renderFooter, setOnEndReachedCalledDuringMomentum, onEndReachedCalledDuringMomentum } = props
 
     const dispatch = useDispatch()
 
@@ -28,8 +28,6 @@ const RouteDetails = (props) => {
     const [endDate, setEndDate] = useState();
 
     const renderItem = ({ item,index }) => {
-
-        console.log("item",item)
         
         let sDateArray = convertTime(item.tripStartTime, advSettingsData)
         var sdateComponent = sDateArray.format('YYYY-MM-DD');
@@ -104,11 +102,17 @@ const RouteDetails = (props) => {
             </View>
             {routeDetails.length > 0 ?
             <FlatList
+                style={{height:hp(100)}}
                 nestedScrollEnabled={true}
                 keyboardShouldPersistTaps='handled'                
                 data={routeDetails}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
+                showsVerticalScrollIndicator={false}
+                ListFooterComponent={renderFooter}
+                onEndReached={() => loadMoreData()}
+                onEndReachedThreshold={0.1}
+                onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
             />  :
             <View style={styles.noRecords}>
                 <Text style={styles.noRecordsText}>No records found</Text>

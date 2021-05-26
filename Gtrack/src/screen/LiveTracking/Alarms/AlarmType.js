@@ -399,7 +399,9 @@ return (
       )
     }
 
-const time = ['Every day(All hours)', 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' ]
+const time = ['Every day(All hours)'
+  // 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' 
+]
 
 const user = ["John Smith", "John Carter", "John abc"]
 
