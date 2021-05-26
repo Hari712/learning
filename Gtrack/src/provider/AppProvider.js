@@ -7,7 +7,6 @@ import debounce from 'lodash/debounce'
 import isNil from 'lodash/isNil'
 import { NotificationMessage } from '../component'
 import store from '../store/Store'
-import AppManager from '../../constants/AppManager';
 
 const AppContext = createContext(null)
 
@@ -118,7 +117,7 @@ const AppProvider = (props) => {
         if (enabled) {
             getToken()
         } else {
-           // requestPermission()
+            requestPermission()
         }
     }
 

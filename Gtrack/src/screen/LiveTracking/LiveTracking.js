@@ -20,7 +20,6 @@ import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
 const { width, height } = Dimensions.get('window');
-import * as LivetrackingActions from './Livetracking.Action'
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.9;
