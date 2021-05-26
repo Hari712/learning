@@ -257,9 +257,11 @@ const LiveTracking = ({ navigation }) => {
 							style={{ width: wp(2), height: hp(2) }}
 						/>
 					</TouchableOpacity>
-					<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
-						{` ${deviceInfo.name} `}
-					</Text>
+					<TouchableOpacity onPress={() => NavigationService.navigate('TrackingDetails',{selectedDevice:selectedDevice, deviceName: deviceInfo.name})}>
+						<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
+							{` ${deviceInfo.name} `}
+						</Text>
+					</TouchableOpacity>
 					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
 					</TouchableOpacity>

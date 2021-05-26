@@ -73,6 +73,7 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CIRCLE} component={GeoFenceCircle}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_POLYGON} component={GeoFencePolyGon}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRACKING_DETAILS} component={TrackingDetails} />
     </LiveTrackingStack.Navigator>
     )
 }
