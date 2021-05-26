@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -15,7 +15,6 @@ import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon, PanicAlar
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import useStateRef from '../../utils/useStateRef';
-import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
@@ -37,13 +36,14 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic } = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
 		hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
+		notiEvents: getLiveNotificationsInfo(state)
 	}));
 
 	const [deviceList, setDeviceList] = useState(groupDevices);
@@ -375,6 +375,9 @@ const LiveTracking = ({ navigation }) => {
 					style={styles.bellIconStyle}
 				>
 					<BellIcon />
+					{notiEvents.length > 0 ?
+						<View style={{position:'absolute', backgroundColor:ColorConstant.ORANGE, borderRadius:5, width:10, height:10, elevation:4, top:16,right:16 }} />
+					:null }
 				</TouchableOpacity>
 
 				<TouchableOpacity

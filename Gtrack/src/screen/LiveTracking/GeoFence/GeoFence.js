@@ -29,7 +29,7 @@ const GeoFence = ({ navigation }) => {
     const [isTypeClick, setIsTypeClick] = useState(false)
     const [dropDownPos, setDropDownPos] = useState();
     const [isMenuClick, setIsMenuClick] = useState(0)
-    const [selectedType, setSelectedType] = useState('All')
+    const [selectedType, setSelectedType] = useState('')
 
     const dispatch = useDispatch()
 
@@ -54,11 +54,9 @@ const GeoFence = ({ navigation }) => {
         });
     }, [navigation]);
 
-    console.log("khushi",geofenceList)
-
-    useEffect(() => {  
-        loadGeofenceList()
-    }, [])
+    // useEffect(() => {  
+    //     loadGeofenceList()
+    // }, [])
 
     useEffect(() => {  
         loadGeofenceSearchList(selectedType)
@@ -69,10 +67,10 @@ const GeoFence = ({ navigation }) => {
         dispatch(LivetrackingActions.requestSearchGeofence(loginData.id, searchInput, onSuccess, onError))
     }
 
-    function loadGeofenceList() {
-        AppManager.showLoader()  
-        dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
-    }
+    // function loadGeofenceList() {
+    //     AppManager.showLoader()  
+    //     dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
+    // }
 
     function onSuccess(data) { 
         console.log("geofence",data)   

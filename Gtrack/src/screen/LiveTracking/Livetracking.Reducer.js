@@ -12,7 +12,8 @@ const initialState = {
     traccarDevices:[],
     traccarPositions:[],
     groupDevices: [],
-    assetInfo: []
+    assetInfo: [],
+    notificationEvents: []
 }
 
 
@@ -114,4 +115,18 @@ export const livetrackingReducer = createReducer(state = initialState, {
             geofenceList: action.data
         }
     },
+    [types.NOTIFICATION_EVENTS_RESPONSE](state, action) {
+        let array = {...state.notificationEvents, ...action.data}
+        return {
+            ...state,
+            notificationEvents: Object.values(array)
+        }
+    },
+    [types.NOTIFICATION_EVENT_REMOVE](state, action) {
+        let array = state.notificationEvents.filter((item) => item.id != action.id)
+        return {
+            ...state,
+            notificationEvents: array
+        }
+    }
 })

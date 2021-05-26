@@ -94,6 +94,7 @@ const Login = () => {
 				onUserAssetListLoadedError
 			)
 		);
+		dispatch(SettingsActions.requestGetAdvanceSettings(data.userDTO.id, onFeedbackSuccess, onFeedbackError))
 	}
 
 	function onGetAllUserDeviceSuccess(data) {

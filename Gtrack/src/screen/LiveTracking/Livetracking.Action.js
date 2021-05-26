@@ -196,5 +196,13 @@ export const setSearchGeofenceResponse = (data) => ({
     data
 })
 
+export const setNotificationEventsResponse = (data) => ({
+    type: types.NOTIFICATION_EVENTS_RESPONSE,
+    data
+})
 
+export const removeNotificationEventResponse = (id) => ({
+    type: types.NOTIFICATION_EVENT_REMOVE,
+    id
+})
 

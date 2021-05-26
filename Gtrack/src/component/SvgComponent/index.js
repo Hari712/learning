@@ -122,6 +122,14 @@ import SettingNotiNextArrowIcon from './SettingNotiNextArrowIcon'
 import SettingNotiDownArrowOrangeIcon from './SettingNotiDownArrowOrangeIcon'
 import PanicIconClick from './PanicIconClick'
 import PanicAlarmIcon from './PanicAlarmIcon'
+import DeviceMovingIcon from './DeviceMovingIcon'
+import UnderSpeedIcon from './UnderSpeedIcon'
+import StationaryIcon from './StationaryIcon'
+import FluelLevelcon from './FluelLevelcon'
+import GeofenceExitIcon from './GeofenceExitIcon'
+import GeofenceEntryIcon from './GeofenceEntryIcon'
+import DeviceStoppedIcon from './DeviceStoppedIcon'
+import DeviceOnlineIcon from './DeviceOnlineIcon'
 
 export {
     BarCodeScanIcon,
@@ -246,5 +254,13 @@ export {
     SettingNotiNextArrowIcon,
     SettingNotiDownArrowOrangeIcon,
     PanicIconClick,
-    PanicAlarmIcon
+    PanicAlarmIcon,
+    DeviceMovingIcon,
+    UnderSpeedIcon,
+    StationaryIcon,
+    FluelLevelcon,
+    GeofenceExitIcon,
+    GeofenceEntryIcon,
+    DeviceStoppedIcon,
+    DeviceOnlineIcon
 }

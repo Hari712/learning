@@ -112,6 +112,36 @@ function* requestGetLastKnownDevicePositions(action) {
     }
 }
 
+function* requestAddDeviceToken(action) {
+    const { userId, token, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_DEVICE_TOKEN(userId)
+        const requestBody = {
+            userId: userId,
+            token: token
+        }
+        const response = yield call(API.post, url, requestBody)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
+function* requestRemoveDeviceToken(action) {
+    const { userId, token, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.REMOVE_DEVICE_TOKEN_API(userId)
+        const requestBody = {
+            userId: userId,
+            token: token
+        }
+        const response = yield call(API.post, url, requestBody)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 
 export function* watchLogin() {
@@ -123,5 +153,7 @@ export function* watchLogin() {
     yield takeLatest(types.RESET_PASSCODE_REQUEST, resetPasscode),
     yield takeLatest(types.FETCH_TAX_REQUEST, requestFetchUserTax),
     yield takeLatest(types.TRACCAR_SESSION_REQUEST, loginIntoTraccarSession),
-    yield takeLatest(types.GET_LAST_KNOWN_DEVICE_POSITIONS_REQUEST, requestGetLastKnownDevicePositions)
+    yield takeLatest(types.GET_LAST_KNOWN_DEVICE_POSITIONS_REQUEST, requestGetLastKnownDevicePositions),
+    yield takeLatest(types.ADD_DEVICE_TOKEN_REQUEST, requestAddDeviceToken),
+    yield takeLatest(types.REMOVE_DEVICE_TOKEN_REQUEST, requestRemoveDeviceToken)
 }
