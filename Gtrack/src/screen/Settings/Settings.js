@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList, Linking } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -70,7 +70,7 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'Permission':
-          NavigationService.push((SCREEN_CONSTANTS.PERMISSION))
+          navigateToAppSettings()
           break;
 
         case 'About':
@@ -104,6 +104,16 @@ const Settings = ({ navigation }) => {
         default:
           break;
       }
+    }
+
+    function navigateToAppSettings() {
+      Linking.canOpenURL('app-settings:').then(supported => {
+        if (!supported) {
+          console.log('Can\'t handle settings url');
+        } else {
+          return Linking.openURL('app-settings:');
+        }
+      }).catch(err => console.error('An error occurred', err));
     }
 
     function invokeRateUsDialog() {
