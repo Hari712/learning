@@ -224,18 +224,22 @@ const LiveTrackingDetails = ({navigation, route}) => {
                     
 				{isContainCoordinate && 
 					<Map.Marker 
-						coordinate={startCoordinate} 
-						description={startAddress} >
-                        
-						<LiveStartPointIcon />
+                        onPress={()=>{
+                            setBottomToggle(!bottomToggle)
+                            setAddress(startAddress)
+                        }}
+						coordinate={startCoordinate} >                        
+						    <LiveStartPointIcon />
 					</Map.Marker>}
 
 				{isContainCoordinate && 
 					<Map.Marker 
-						coordinate={endCoordinate} 
-						description={endAddress} >
-						
-						<LiveEndPointIcon/>
+                        onPress={()=>{
+                            setBottomToggle(!bottomToggle)
+                            setAddress(endAddress)
+                        }}
+						coordinate={endCoordinate} >						
+						    <LiveEndPointIcon />
 					</Map.Marker>}
 
 				{isPolyLine &&
