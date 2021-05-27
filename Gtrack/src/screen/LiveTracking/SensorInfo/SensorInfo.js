@@ -158,7 +158,6 @@ const SensorInfo = ({ navigation }) => {
     }
 
     const noRecords = () => {
-        console.log("khushi")
         return(
             <View style={styles.noRecords}>
                 <Text style={styles.noRecordsText}>No records found</Text>
