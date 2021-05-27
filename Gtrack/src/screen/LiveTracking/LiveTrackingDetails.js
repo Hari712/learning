@@ -50,6 +50,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 	const [lineString, setLineString] = useState(null)
 	const [devicePositionArray, setDevicePositionArray] = useState([]);
 	const [region, setRegion] = useState();
+    const [bottomToggle, setBottomToggle] = useState(false)
     const [address, setAddress] = useState()
 
     React.useLayoutEffect(() => {
@@ -145,7 +146,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 		}
 	},[devicePositionArray])
 
-	console.log("deviceSingle",singleSelectedDevice)
+	console.log("deviceSingle",devicePositionArray)
     
     React.useEffect(()=>{
 
@@ -153,6 +154,13 @@ const LiveTrackingDetails = ({navigation, route}) => {
         // sheetRef.current.collapse()
     
     },[])
+
+    useEffect(()=>{
+        if(bottomToggle)
+            sheetRef.current.snapTo(2)
+        else
+            sheetRef.current.snapTo(0)
+    },[bottomToggle])
 
 	const renderContent = () => (
 		<View style={styles.subView}>
@@ -163,7 +171,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 			</View> 
 			<View style={styles.address}>
 				{/* <Text style={{fontSize:FontSize.FontSize.small}}>900 Dufferian Street,{'\n'}Toronto MG L40 1V6 {'\n'}Canada</Text> */}
-				<Text style={{fontSize:FontSize.FontSize.small}}>{singleSelectedDevice ? singleSelectedDevice.address : '-'}</Text>
+				<Text style={{fontSize:FontSize.FontSize.small}}>{address ? address : singleSelectedDevice ? singleSelectedDevice.address : '-'}</Text>
 			</View>
 			<View style={styles.subContainerView}>
 				<Text style={styles.title}>Date & Time</Text>
@@ -213,12 +221,12 @@ const LiveTrackingDetails = ({navigation, route}) => {
 				style={StyleSheet.absoluteFillObject} 
 				region={region} ref={mapRef} 
 				showsUserLocation={true}>
-
+                    
 				{isContainCoordinate && 
 					<Map.Marker 
 						coordinate={startCoordinate} 
 						description={startAddress} >
-
+                        
 						<LiveStartPointIcon />
 					</Map.Marker>}
 
@@ -259,7 +267,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 		}
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
+				<Map.default.MapView  style={{ flex: 1 }}>
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
@@ -288,15 +296,23 @@ const LiveTrackingDetails = ({navigation, route}) => {
 							</Map.default.ShapeSource>
 						: null}
 					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
-							<LiveStartPointIcon />
-							<Map.default.Callout title={startAddress}  />
+						<Map.default.PointAnnotation id={`1`} 
+                            onSelected={()=>{
+                                setBottomToggle(!bottomToggle)
+                                setAddress(startAddress)
+                            }}
+                            coordinate={startCoordinate} key={1} title={``}>
+							<LiveStartPointIcon />          
 						</Map.default.PointAnnotation>}
 
 					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
+						<Map.default.PointAnnotation id={`2`} 
+                            onSelected={()=>{
+                                setBottomToggle(!bottomToggle)
+                                setAddress(endAddress)
+                            }}
+                            coordinate={endCoordinate} key={2} title={``}>
 							<LiveEndPointIcon/>
-							<Map.default.Callout title={endAddress} />
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>
@@ -311,10 +327,9 @@ const LiveTrackingDetails = ({navigation, route}) => {
 
 			<BottomSheet
 				ref={sheetRef}
-				snapPoints={[0,height/2.3, height/4, hp(7)]}
+				snapPoints={[hp(7), height/4, height/2.3 ]}
 				borderRadius={30}
 				renderContent={renderContent}
-                initialSnap={0}
 			/>
 
 		</View>
