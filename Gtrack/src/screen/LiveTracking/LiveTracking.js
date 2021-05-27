@@ -257,7 +257,7 @@ const LiveTracking = ({ navigation }) => {
 							style={{ width: wp(2), height: hp(2) }}
 						/>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={() => NavigationService.navigate('TrackingDetails',{selectedDevice:selectedDevice, deviceName: deviceInfo.name})}>
+					<TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name})}>
 						<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
 							{` ${deviceInfo.name} `}
 						</Text>

@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails, DispatchRoute } from '../screen';
+import { LiveTracking, Users, DashBoard,DeviceAsset,EditDeviceAsset,CreateDeviceAsset,Details,Settings,Profile,Permission,About,RateUs,Feedback,Manage,AddUser,EditProfile,Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails,AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode,TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails, DispatchRoute, LiveTrackingDetails } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { AppConstants, SCREEN_CONSTANTS } from '../constants/AppConstants';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { LiveTrackingIcon, LiveTrackingIconClicked, 
+
     DashBoardIconClicked, DashBoardIcon,
     SettingsIcon, SettingsIconClicked,
     UserIcon, UserIconClicked, 
@@ -41,7 +42,16 @@ const ScreenOptions = {
 }
 
 
-const LiveTrackingStackNavigator = () => {
+const LiveTrackingStackNavigator = ({navigation, route}) => {
+
+    React.useLayoutEffect(() => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        if (routeName === SCREEN_CONSTANTS.LIVETRACKINGDETAILS){
+            navigation.setOptions({tabBarVisible: false});
+        }else {
+            navigation.setOptions({tabBarVisible: true});
+        }
+    }, [navigation, route]);
     
     return(
     <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen'  screenOptions={ScreenOptions}>
@@ -73,7 +83,7 @@ const LiveTrackingStackNavigator = () => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CIRCLE} component={GeoFenceCircle}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_POLYGON} component={GeoFencePolyGon}/>
-        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRACKING_DETAILS} component={TrackingDetails} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LIVETRACKINGDETAILS} component={LiveTrackingDetails} />
     </LiveTrackingStack.Navigator>
     )
 }
