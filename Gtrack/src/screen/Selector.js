@@ -361,3 +361,21 @@ export const getLiveNotificationsInfo = createSelector(
     [getLiveNotifications],
     (info) => info
 )
+
+/**
+ * Get App Logs
+ */
+
+const getAppLogsInfo = state => getAppLogsData(state)
+
+function getAppLogsData(state) {
+    const logs = state.appLogs && state.appLogs.appLogs ? state.appLogs.appLogs : {}
+    const arrLogs = Object.values(logs)
+    arrLogs.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+    return arrLogs
+}
+
+export const getAppLogs = createSelector(
+    getAppLogsInfo,
+    logs => logs
+)
