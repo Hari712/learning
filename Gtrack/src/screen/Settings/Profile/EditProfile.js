@@ -13,8 +13,12 @@ import { CountrySelection } from 'react-native-country-list'
 import { AppConstants, SCREEN_CONSTANTS, PHONE_REGEX, NUMBER_REGEX } from '../../../constants/AppConstants';
 import { BackIcon, DownArrowIcon } from '../../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
-import { validateEmailorPhoneNumber, validateName } from '../../../utils/helper';
+import { getTimeUUID, validateEmailorPhoneNumber, validateName } from '../../../utils/helper';
 import { getFormattedPhoneNumber } from '../../../utils/helper'
+import * as AppLogAction from '../../../applog/AppLog.Action'
+import moment from 'moment'
+import AppLogs from '../../../applog/AppLog';
+import NavigationService from '../../../navigation/NavigationService';
 
 const EditProfile = ({ navigation, route, item }) => {
     const dispatch = useDispatch()
@@ -199,7 +203,7 @@ const EditProfile = ({ navigation, route, item }) => {
         array.push(dataItems)
         setData(array)
     }
-    
+
     function editProfile() {
         if (isConnected) {
             let message = ''
@@ -229,6 +233,8 @@ const EditProfile = ({ navigation, route, item }) => {
                     "phonePrefix": phonePrefix
                 }
                 console.log("Data", requestBody);
+                let msgstr = "Logs: Request Body =" + JSON.stringify(requestBody)
+                dispatch(AppLogAction.addAppLogs({ id: getTimeUUID(moment().milliseconds()), module:'AppProvider', message:msgstr , time: moment().toISOString() }))
                 dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
             }
         } else {

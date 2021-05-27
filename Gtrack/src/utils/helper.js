@@ -187,3 +187,18 @@ export function isIphoneX() {
     var unit = settingsData.timeZone === "IST"  ? "Asia/Kolkata" : settingsData.timeZone === "EST"  ? "America/Toronto" : null
     return unit ? moment(value).tz(unit) : moment(value)
   }
+
+  export function getTimeUUID(time) {  //Here time must be in microseconds
+    const start = Date.UTC(2012, 12, 21, 12, 0, 0, 0) * 1000
+    const prefix = String(Math.floor(Math.random() * 10))
+    const postfix = Math.floor(Math.random() * 36).toString(36)
+    const abs = Math.abs
+    return prefix + abs(time - start).toString(36) + postfix
+  }
+
+  export function decimalTohhmm(time) {  //Here time must be in decimal ex. 10 or 7 or 1.29 etc
+    var minutes = time
+    var min = Math.floor(Math.abs(minutes))
+    var sec = Math.floor((Math.abs(minutes) * 60) % 60);
+    return (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+  }
