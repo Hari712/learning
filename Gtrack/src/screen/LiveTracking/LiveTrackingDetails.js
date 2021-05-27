@@ -229,7 +229,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
                             setAddress(startAddress)
                         }}
 						coordinate={startCoordinate} >                        
-						    <LiveStartPointIcon />
+                            <LiveStartPointIcon />
 					</Map.Marker>}
 
 				{isContainCoordinate && 
@@ -239,7 +239,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
                             setAddress(endAddress)
                         }}
 						coordinate={endCoordinate} >						
-						    <LiveEndPointIcon />
+                            <LiveEndPointIcon />
 					</Map.Marker>}
 
 				{isPolyLine &&
