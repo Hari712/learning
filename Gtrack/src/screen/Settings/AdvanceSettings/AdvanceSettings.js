@@ -14,7 +14,7 @@ import { getLoginState, getAdvanceSettingsInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 
-const LanguagesArr = ["ENGLISH", "FRENCH"]
+const LanguagesArr = ["English", "French"]
 const TempArr = ["CELSIUS","FAHRENHEIT"]
 const TimeZoneArr = ["IST","EST"]
 const DistanceArr = ["MILES","KILOMETER"]
@@ -58,7 +58,7 @@ const AdvanceSettings = ({navigation,route}) => {
       const requestBody = {
         distance: distance,
         id: settingsID,
-        language: language,
+        language: language.toUpperCase(),
         temprature: temperature,
         timeZone: isToggleClick ? timeZone : null,
       }
