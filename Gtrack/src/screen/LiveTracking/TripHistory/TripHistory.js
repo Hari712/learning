@@ -136,16 +136,35 @@ const TripHistory = ({ navigation }) => {
         )
     }
 
+    const renderItemData = () => {
+        return(
+            <View>
+                <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>
+                    Select device
+                </Text>
+                <FlatList
+                    style={{}}
+                    data={groupDevices}
+                    renderItem={deviceGroupInfoItem}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </View>
+        )
+    }
+
+    const noRecords = () => {
+        return(
+            <View style={styles.noRecords}>
+                <Text style={styles.noRecordsText}>No records found</Text>
+            </View>
+        )
+    }
+
+
     return (
         <SafeAreaView style={styles.container}>
             {searchBar()}
-            <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
-            <FlatList
-                style={{ flex: 1 }}
-                data={groupDevices}
-                renderItem={deviceGroupInfoItem}
-                keyExtractor={(item, index) => index.toString()}
-            />
+            {groupDevices.length > 0 ? renderItemData() : noRecords() }
         </SafeAreaView>
     )
 }
@@ -209,6 +228,16 @@ const styles = StyleSheet.create({
         shadowOpacity: 1,
         backgroundColor: ColorConstant.WHITE
     },
+    noRecords: {
+        marginVertical:hp(35),
+        alignItems:'center',
+        flex:1
+    },
+    noRecordsText: {
+        fontFamily:"Nunito-Regular",
+        fontSize:hp(2),
+        color:ColorConstant.BLACK
+    },
     subCategory: {
         flexDirection: 'row',
         width: '95%',
@@ -242,7 +271,7 @@ const styles = StyleSheet.create({
     searchText: {
         //fontSize:FontSize.FontSize.small,
         fontSize:14,
-        color:ColorConstant.LIGHTGREY,
+        color:ColorConstant.BLACK,
         fontFamily:'Nunito-LightItalic'
     },
     search: {
