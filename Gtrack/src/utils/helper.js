@@ -33,6 +33,10 @@ export const isCircle = (input) => {
     return cirlceRE.test(input)
 }
 
+export const toRegularCase = (input) => {
+  return String(input).charAt(0).toUpperCase() + String(input).slice(1).toLowerCase()
+}
+
 export const checkLocationPermission = async () => {
     const permission = await RNLocation.checkPermission({
         ios: 'whenInUse', // or 'always'
