@@ -98,13 +98,22 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
       console.log(arrSelectedId)
   
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
-        alarmType:selectedAlarmType, 
+        alarmType:setAlarmKeywords(selectedAlarmType), 
         deviceOverSpeedValue:convertSpeedtoKnot(overSpeedInputValue, distUnit),
         selectedDeviceList:selectedDevice,
         notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 
         editData:editingValues})
       
+    }
+  }
+
+  function setAlarmKeywords(str) {
+    switch (str) {
+      case "Low Speed": return "lowspeed"
+      case "Battery Level" : return "lowBattery"
+      case "Panic" : return "sos"
+      default : return str
     }
   }
 
@@ -191,7 +200,7 @@ return (
       )
     }
 
-const alarmTypes = ["Overspeed","Low speed","Battery Level","Movement","Panic"] ;
+const alarmTypes = ["Low Speed","Battery Level","Panic"] ;
 
 const styles = StyleSheet.create({
 

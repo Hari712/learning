@@ -13,7 +13,7 @@ import { dist, getLoginInfo, getSubuserState, isRoleAdmin } from '../../Selector
 import AppManager from '../../../constants/AppManager';
 import * as UsersActions from '../../Users/Users.Action'
 import { isEmpty } from 'lodash';
-import { convertSpeedtoKnot } from '../../../utils/helper';
+import { convertSpeedtoKnot, matchStrings, switchCaseString } from '../../../utils/helper';
 import { convertSpeedVal } from './../../../utils/helper';
 
 
@@ -28,6 +28,7 @@ const AlarmType = ({navigation,route}) => {
   const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
   const [notification, setNotification] = useState(false)
   const [emailNotification, setEmailNotification] = useState(false)
+  const [webNotification, setWebNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
   const { loginInfo, subUserData, isConnected, isAdmin, distUnit } = useSelector(state => ({
@@ -41,8 +42,8 @@ const AlarmType = ({navigation,route}) => {
   const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
   const [isIgnition, setIsIgnition] = useState(false)
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
-  const [overSpeedInputVisible, setOverspeedInputVisible] = useState()
-  const [overSpeedInputValue, setOverspeedInputValue] = useState()
+  const [speedInputVisible, setSpeedInputVisible] = useState()
+  const [speedInputValue, setSpeedInputValue] = useState()
   const [batteryLevelInputVisible, setBatteryLevelInputVisible] = useState()
   const [batteryLevelInputValue, setBatteryLevelInputValue] = useState()
   const [movementInputVisible, setMovementInputVisible] = useState()
@@ -83,21 +84,21 @@ const AlarmType = ({navigation,route}) => {
         editData.users ?
           editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
         console.log("EditUser", editData)
-        if(String(editData.notification.type).toLowerCase() === 'alarm') {
-          switch (String(editData.notification.attributes.alarms).toLowerCase()) {
-            case 'overspeed':
-              setOverspeedInputValue(convertSpeedVal(editData.notification.attributes.value,distUnit))
+        if(matchStrings(editData.notification.type,'alarm')) {
+          switch (switchCaseString(editData.notification.attributes.alarms)) {
+            case 'lowspeed':
+              setSpeedInputValue(convertSpeedVal(editData.notification.attributes.value,distUnit))
               break;
     
-            case 'battery level':
+            case 'lowbattery':
               setBatteryLevelInputValue(editData.notification.attributes.value)
               break;
     
-            case 'movement':
-              setMovementInputValue(editData.notification.attributes.value)
-              break;
+            // case 'movement':
+            //   setMovementInputValue(editData.notification.attributes.value)
+            //   break;
     
-            case 'panic':
+            case 'sos':
               break;
           
             default:
@@ -110,23 +111,28 @@ const AlarmType = ({navigation,route}) => {
   },[])
 
   useEffect(() => { 
+    console.log("alarm type", notificationType, matchStrings(notificationType,'alarm'), alarmType,switchCaseString(alarmType))
 
-    if(String(notificationType).toLowerCase() === 'alarm') {
-      switch (String(alarmType).toLowerCase()) {
+    if(matchStrings(notificationType,'alarm')) {
+      switch (switchCaseString(alarmType)) {
 
-        case 'overspeed':
-          setOverspeedInputVisible(true)
+        // case 'over speed':
+        //   setSpeedInputVisible(true)
+        //   break;
+
+        case 'lowspeed':
+          setSpeedInputVisible(true)
           break;
 
-        case 'battery level':
+        case 'lowbattery':
           setBatteryLevelInputVisible(true)
           break;
 
-        case 'movement':
-          setMovementInputVisible(true)
-          break;
+        // case 'movement':
+        //   setMovementInputVisible(true)
+        //   break;
 
-        case 'panic':
+        case 'sos':
           break;
       
         default:
@@ -200,9 +206,9 @@ const AlarmType = ({navigation,route}) => {
       var requestBody, isUpdate;
       var notiType = notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
       var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
-      var value = batteryLevelInputVisible ? batteryLevelInputValue :
-                  overSpeedInputVisible ? convertSpeedtoKnot(overSpeedInputValue, distUnit) :
-                  movementInputVisible ? movementInputValue :
+      var value = batteryLevelInputVisible ? parseInt(batteryLevelInputValue) :
+                  speedInputVisible ? convertSpeedtoKnot(speedInputValue, distUnit) :
+                  // movementInputVisible ? movementInputValue :
                   deviceOverSpeedValue ? parseInt(deviceOverSpeedValue) :
                   null;
       if(route && route.params && route.params.editData) {
@@ -219,9 +225,10 @@ const AlarmType = ({navigation,route}) => {
             "attributes" : {
               "alarms": alarmType,
               "name": alarmName,
-              "everyday": everyday,              
-              "weekdays": weekdays,
-              "weekends": weekends,
+              "everyday": everyday, 
+              "description": "static description" ,             
+              // "weekdays": weekdays,
+              // "weekends": weekends,
               "value" : value
             },
             "calendarId" : 0
@@ -242,9 +249,10 @@ const AlarmType = ({navigation,route}) => {
               "alarms": alarmType,
               "value" : value,
               "name": alarmName,
-              "everyday": everyday,              
-              "weekdays": weekdays,
-              "weekends": weekends
+              "everyday": everyday  ,
+              "description": "static description"         
+              // "weekdays": weekdays,
+              // "weekends": weekends
             },
             "calendarId" : 0
           }
@@ -252,10 +260,10 @@ const AlarmType = ({navigation,route}) => {
       } 
       console.log("requestbody",requestBody)
       dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
+    }
+  } else {
+    AppManager.showNoInternetConnectivityError()
   }
-} else {
-  AppManager.showNoInternetConnectivityError()
-}
 }
 
   function onAddSuccess(data) {
@@ -290,7 +298,7 @@ return (
   <View style={styles.container}>
     
     <View style={styles.header}>
-      <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{alarmType}</Text>
+      <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{alarmType ? alarmType : notificationType}</Text>
     </View>
 
     <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' style={{flex:1}}>
@@ -332,12 +340,12 @@ return (
           /> : 
           null }
 
-        {overSpeedInputVisible &&
+        {speedInputVisible &&
           <TextField 
-            valueSet={setOverspeedInputValue} 
+            valueSet={setSpeedInputValue} 
             maxLength={30}
             label={'Speed Limit ('+ distUnit +'ph)'}
-            defaultValue={overSpeedInputValue}
+            defaultValue={speedInputValue}
             outerStyle={[styles.outerStyle,{marginTop:hp(2)}]} 
           />
         }
@@ -385,6 +393,11 @@ return (
           <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
       </TouchableOpacity>
 
+      {/* <TouchableOpacity onPress={() => setWebNotification(!webNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+          <Image style={{alignSelf:'flex-start'}} source={webNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+          <Text style={styles.notificationStyle}> {"Web Notification"}</Text>
+      </TouchableOpacity> */}
+
       <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
@@ -402,10 +415,6 @@ return (
 const time = ['Every day(All hours)'
   // 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' 
 ]
-
-const user = ["John Smith", "John Carter", "John abc"]
-
-const alarmTypes = ["Overspeed","Low speed","Battery Level","Movement","Panic"] 
 
 const styles = StyleSheet.create({
 

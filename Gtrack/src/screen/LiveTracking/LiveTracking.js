@@ -19,7 +19,7 @@ import * as LivetrackingActions from './Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
-import * as LivetrackingActions from './Livetracking.Action'
+//import * as LivetrackingActions from './Livetracking.Action'
 
 const { width, height } = Dimensions.get('window');
 
