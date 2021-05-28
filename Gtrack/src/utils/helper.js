@@ -5,6 +5,7 @@ import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
+import round  from 'lodash';
 
 
 export const validateEmailorPhoneNumber = (input) => {

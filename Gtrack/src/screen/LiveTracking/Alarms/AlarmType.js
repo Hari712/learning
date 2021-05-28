@@ -198,7 +198,7 @@ const AlarmType = ({navigation,route}) => {
 
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
-      var notiType = notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
+      var notiType = (notificationType == 'DeviceOffline' || notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
       var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? batteryLevelInputValue :
                   overSpeedInputVisible ? convertSpeedtoKnot(overSpeedInputValue, distUnit) :
