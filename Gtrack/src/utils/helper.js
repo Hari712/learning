@@ -128,7 +128,7 @@ export function isIphoneX() {
 
   export function SubscriptionStatusColor(key) {
     switch (key) {
-      case "CANCEL":          return {bg: ColorConstant.LIGHTENGREEN, color: ColorConstant.DARKGREEN}  
+      case "CANCEL":          return {bg: ColorConstant.LIGHTRED, color: ColorConstant.RED}  
       case "ACTIVE":          return {bg: ColorConstant.LIGHTGREEN, color: ColorConstant.DARKGREEN}
       case "PAYMENT_FAILED":  return {bg: ColorConstant.LIGHTGREY, color: ColorConstant.BLACK} 
       case "EXPIRED":         return {bg: ColorConstant.LIGHTGREY, color: ColorConstant.BLACK}

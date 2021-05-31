@@ -35,7 +35,7 @@ const PanicDialog = (props) => {
             title={"PANIC ALERT"}
             titleStyle={styles.titleStyle}
             animationType='slide'
-            dialogStyle={{ borderRadius: hp(2), backgroundColor: ColorConstant.WHITE }}
+            dialogStyle={{ borderRadius: hp(2), backgroundColor: ColorConstant.WHITE, overflow:'hidden' }}
             {...otherProps}
         >
             <View>
