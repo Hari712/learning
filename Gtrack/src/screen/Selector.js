@@ -325,6 +325,22 @@ export const getLivetrackingGroupDevicesListInfo = createSelector(
 )
 
 /**
+ * Get Advance Settings
+ */
+
+const getAdvanceSettings = (state) => state.settings && state.settings.settingsData ? state.settings.settingsData : {}
+
+export const getAdvanceSettingsInfo = createSelector(
+    [getAdvanceSettings],
+    (info) => info
+)
+
+export const dist = createSelector(
+    [getAdvanceSettings],
+    (info) => info && ( info.distance == AppConstants.KILOMETER ? "km" : "mi" ) 
+)
+
+/**
  * Get Notified devices for Dashboard
  */
 
@@ -333,4 +349,33 @@ const getNotifiedDevices = (state) => state.dashBoard.notifiedDevices
 export const getNotifiedDevicesInfo = createSelector(
     [getNotifiedDevices],
     (info) => info
+)
+
+/**
+ * Get Notification Events for Livetracking Notification
+ */
+
+const getLiveNotifications = (state) => state.livetracking && state.livetracking.notificationEvents ? state.livetracking.notificationEvents : {}
+
+export const getLiveNotificationsInfo = createSelector(
+    [getLiveNotifications],
+    (info) => info
+)
+
+/**
+ * Get App Logs
+ */
+
+const getAppLogsInfo = state => getAppLogsData(state)
+
+function getAppLogsData(state) {
+    const logs = state.appLogs && state.appLogs.appLogs ? state.appLogs.appLogs : {}
+    const arrLogs = Object.values(logs)
+    arrLogs.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+    return arrLogs
+}
+
+export const getAppLogs = createSelector(
+    getAppLogsInfo,
+    logs => logs
 )

@@ -1,6 +1,6 @@
 import ApiConstants from './ApiConstants';
 import axios from 'axios'
-import { UNAUTHORIZED_ERROR_MESSAGE, USER_DATA, JWT_EXPIRED } from '../constants/AppConstants'
+import { UNAUTHORIZED_ERROR_MESSAGE, USER_DATA, JWT_EXPIRED, TOKEN_EXPIRED, TOKEN_ERRORS } from '../constants/AppConstants'
 import url from 'url'
 import { getItem, storeItem } from '../utils/storage'
 import store from '../store/Store'
@@ -78,7 +78,7 @@ async function refreshToken(error) {
         console.log('Status.....', status)
         console.log('Error....', data)
         const message = data && data.message ? data.message : ''
-        if ((status == 401 && message === UNAUTHORIZED_ERROR_MESSAGE)) {
+        if ((status == 401 && message === TOKEN_EXPIRED)) {
             clearToken()
             const userInfo = await getItem(USER_DATA)
            
@@ -95,6 +95,9 @@ async function refreshToken(error) {
                 originalRequest.headers['Authorization'] = 'Bearer ' + result.access_token;
                 return api(originalRequest);
             }
+        }
+        else if (status == 401 && TOKEN_ERRORS.includes(message)) {
+            setTimeout(() => store.dispatch(LoginActions.requestLogout()), 1000)
         }
         else if (status == 500 && message.includes(JWT_EXPIRED)) {
             setTimeout(() => store.dispatch(LoginActions.requestLogout()), 1000)

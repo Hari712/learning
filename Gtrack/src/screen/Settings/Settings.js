@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList, Linking } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -10,6 +10,8 @@ import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
+import InAppReview from 'react-native-in-app-review';
+
 
 const Settings = ({ navigation }) => {
 
@@ -68,7 +70,7 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'Permission':
-          NavigationService.push((SCREEN_CONSTANTS.PERMISSION))
+          navigateToAppSettings()
           break;
 
         case 'About':
@@ -80,7 +82,7 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'Rate Us':
-          setRateusVisible(true)
+          invokeRateUsDialog()
           break;
 
         case 'Feedback':
@@ -104,6 +106,58 @@ const Settings = ({ navigation }) => {
       }
     }
 
+    function navigateToAppSettings() {
+      Linking.canOpenURL('app-settings:').then(supported => {
+        if (!supported) {
+          console.log('Can\'t handle settings url');
+        } else {
+          return Linking.openURL('app-settings:');
+        }
+      }).catch(err => console.error('An error occurred', err));
+    }
+
+    function invokeRateUsDialog() {
+      if (InAppReview.isAvailable()) {
+        InAppReview.RequestInAppReview()
+          .then((hasFlowFinishedSuccessfully) => {
+            // when return true in android it means user finished or close review flow
+            console.log('InAppReview in android', hasFlowFinishedSuccessfully);
+
+            // when return true in ios it means review flow lanuched to user.
+            console.log(
+              'InAppReview in ios has lanuched successfully',
+              hasFlowFinishedSuccessfully,
+            );
+
+            // 1- you have option to do something ex: (navigate Home page) (in android).
+            // 2- you have option to do something,
+            // ex: (save date today to lanuch InAppReview after 15 days) (in android and ios).
+
+            // 3- another option:
+            if (hasFlowFinishedSuccessfully) {
+              // do something for ios
+              // do something for android
+            }
+
+            // for android:
+            // The flow has finished. The API does not indicate whether the user
+            // reviewed or not, or even whether the review dialog was shown. Thus, no
+            // matter the result, we continue our app flow.
+
+            // for ios
+            // the flow lanuched successfully, The API does not indicate whether the user
+            // reviewed or not, or he/she closed flow yet as android, Thus, no
+            // matter the result, we continue our app flow.
+          })
+          .catch((error) => {
+            //we continue our app flow.
+            // we have some error could happen while lanuching InAppReview,
+            // Check table for errors and code number that can return in catch.
+            console.log('Error',error);
+          });
+      }
+    }
+
     return (
       <TouchableOpacity
         style={styles.bodySubContainer}
@@ -113,7 +167,7 @@ const Settings = ({ navigation }) => {
         <View style={styles.mainViewStyle}>
 
           <View style={styles.leftMainViewStyle}>
-            <View style={{width:hp(3)}}>
+            <View style={{ width: hp(3) }}>
               <IconConstant style={styles.titleIconStyle} resizeMode='contain' />
             </View>
             {/* <Image source={item.icon} style={styles.titleIconStyle} resizeMode='contain' /> */}

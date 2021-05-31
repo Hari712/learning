@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "187673422741",
+    "project_id": "gtrack-3e924",
+    "storage_bucket": "gtrack-3e924.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187673422741:android:aa1f1dda483f206739249c",
+        "android_client_info": {
+          "package_name": "com.gtrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187673422741-0hla3t5o65r9fao4bqbqdfcbs5jae65s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUD6jC3CpqNngXfzPJEtT0Pgy1MtiKVqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "187673422741-0hla3t5o65r9fao4bqbqdfcbs5jae65s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

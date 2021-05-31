@@ -57,3 +57,23 @@ export const setLocalSettingsNotification = (item, notificator) => ({
     item,
     notificator
 })
+
+export const requestAdvanceSettings = (userId, body, onSuccess, onError) => ({
+    type: types.ADVANCE_SETTINGS_REQUEST, 
+    body,   
+    userId,
+    onSuccess,
+    onError
+})
+
+export const requestGetAdvanceSettings = (userId, onSuccess, onError) => ({
+    type: types.GET_ADVANCE_SETTINGS_REQUEST, 
+    userId,
+    onSuccess,
+    onError
+})
+
+export const setAdvanceSettings = (data) => ({
+    type: types.ADVANCE_SETTINGS_RESPONSE,
+    data
+})

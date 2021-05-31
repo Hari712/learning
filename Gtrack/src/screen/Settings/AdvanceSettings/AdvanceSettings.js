@@ -1,4 +1,4 @@
-import React, { useState ,Component} from 'react';
+import React, { useState ,Component, useEffect} from 'react';
 import { View, StyleSheet,Text, Image,TouchableOpacity, Dimensions, ScrollView, TextInput, I18nManager} from 'react-native';
 import images from '../../../constants/images';
 import { ColorConstant } from '../../../constants/ColorConstants'
@@ -8,13 +8,64 @@ import { FontSize } from '../../../component';
 import { RadioButtonIcon,  RadioButtonIconClicked,
     ToggleButtonIcon,  ToggleButtonIconClicked,
     NextArrowIcon,  NextArrowIconClicked, BackIcon } from '../../../component/SvgComponent';
+import AppManager from '../../../constants/AppManager';
+import * as SettingsActions from '../Settings.Action'
+import { getLoginState, getAdvanceSettingsInfo } from '../../Selector';
+import { useDispatch, useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+
+const LanguagesArr = ["ENGLISH", "FRENCH"]
+const TempArr = ["CELSIUS","FAHRENHEIT"]
+const TimeZoneArr = ["IST","EST"]
+const DistanceArr = ["MILES","KILOMETER"]
 
 const AdvanceSettings = ({navigation,route}) => {
 
   const [isToggleClick,setIsToggleClick] = useState(false)
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
+  const [language,setLanguage] = useState()
+  const [timeZone,setTimeZone] = useState()
+  const [distance,setDistance] = useState()
+  const [settingsID,setSettingsID] = useState()
+  const [temperature,setTemperature] = useState()
 
+  const { loginData, settingsData, isConnected } = useSelector(state => ({
+    loginData: getLoginState(state),
+    isConnected: state.network.isConnected,
+    settingsData: getAdvanceSettingsInfo(state)
+  }))
+
+  const dispatch = useDispatch()
+
+  useEffect(() => { 
+    if(!isEmpty(settingsData)){
+      setLanguage(settingsData.language)
+      setTimeZone(settingsData.timeZone)
+      setDistance(settingsData.distance)
+      setSettingsID(settingsData.id)
+      setTemperature(settingsData.temprature)
+    }
+    
+  },[settingsData])
+
+  useEffect(() => {
+    timeZone ? setIsToggleClick(true) : setIsToggleClick(false)
+  },[timeZone])
+
+  const onTapSave = () => { 
+    if(isConnected) {
+      const requestBody = {
+        distance: distance,
+        id: settingsID,
+        language: language,
+        temprature: temperature,
+        timeZone: isToggleClick ? timeZone : null,
+      }
+      AppManager.showLoader() 
+      dispatch(SettingsActions.requestAdvanceSettings(loginData.id, requestBody, onSuccess, onError))
+    } 
+  }
 
   React.useLayoutEffect(() => {
 
@@ -29,14 +80,32 @@ const AdvanceSettings = ({navigation,route}) => {
                 {translate("Settings")}
             </Text>          
         ),  
+        headerRight: () => (
+          <TouchableOpacity  style={{paddingRight:hp(2)}} onPress={() => onTapSave()}>
+              <Text style={{color: ColorConstant.ORANGE }}>Save</Text>
+          </TouchableOpacity>
+      ),
         headerLeft:() => (
           <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
-             <BackIcon />
+            <BackIcon />
           </TouchableOpacity>
         )  
     });
-  },[navigation]);
+  },[navigation,onTapSave]);
 
+  
+
+  function onSuccess(data) {    
+    console.log("Success",data) 
+    AppManager.showSimpleMessage('success', { message: 'Settings Updated Successfully', description: '' })
+    AppManager.hideLoader()
+  }
+
+  function onError(error) {
+      AppManager.hideLoader()
+      AppManager.showSimpleMessage('danger', { message: error, description: '' })
+      console.log("Error",error)  
+  }
 
 return ( 
     <View style={styles.container}>
@@ -50,9 +119,9 @@ return (
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{height:hp(6)}}>
                     <Text style={styles.textStyle}>{translate("Select_language")}</Text>
-                    <Text style={styles.subText}>English</Text>
+                    <Text style={styles.subText}>{language}</Text>
                 </View>
-                <TouchableOpacity style={{alignSelf:'center'}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
+                <TouchableOpacity style={{alignSelf:'center', padding:wp(4)}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
                   { 
                     isLanguageClick ?
                       <NextArrowIconClicked /> :
@@ -63,14 +132,16 @@ return (
 
             {isLanguageClick?
                 <View style={{flexDirection:'row'}}>
-                    <View style={{flexDirection:'row',flex:1}}>
-                        <RadioButtonIconClicked />
-                        <Text style={styles.language}> English</Text>
-                    </View>
-                    <View style={{flexDirection:'row',flex:2}}>
-                        <RadioButtonIcon />
-                        <Text style={styles.language}> French</Text>
-                    </View>
+
+                  {LanguagesArr.map((item,key)=>{
+                    return(
+                      <TouchableOpacity key={key} onPress={()=>{setLanguage(item)}} style={{flexDirection:'row',flex:1}}>
+                        {language == item?<RadioButtonIconClicked />:<RadioButtonIcon />}
+                        <Text style={styles.language}> {item}</Text>
+                      </TouchableOpacity>
+                    )
+                  })}
+
                 </View>
                 
                 :null}
@@ -92,12 +163,24 @@ return (
             {isToggleClick?
                 <View style={{justifyContent:'space-between',marginVertical:hp(2)}}>
                     <Text style={styles.textStyle}>{translate("Select_time_zone")}</Text>
-                    <Text style={styles.subText}>(GMT-07:00)Vancouver</Text>
+                    
+                    <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
+                      {
+                        TimeZoneArr.map((item,key)=>{
+                          return(
+                            <TouchableOpacity key={key} onPress={()=>{setTimeZone(item)}} style={{flexDirection:'row',flex:0.6}}>
+                              {item===timeZone ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
+                              <Text style={styles.unitText}>{item=="IST"?"Asia/Kolkata" : "America/Toronto"}</Text>
+                            </TouchableOpacity>                                  
+                          )
+                        })
+                      }
+                    </View>
                 </View>:null}
           
             <View style={styles.unitContainer}>
                 <Text style={styles.unit}>{translate("Units")}</Text>
-                <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)}>
+                <TouchableOpacity onPress={()=>setIsUnitClick(!isUnitClick)} style={{paddingHorizontal:wp(4), paddingVertical:wp(2)}} >
                   {
                     isUnitClick ? 
                       <NextArrowIconClicked />:
@@ -111,22 +194,36 @@ return (
                     <View>
                         <Text style={[styles.language,{color:ColorConstant.BLUE}]}>{translate("Distance")}</Text>
                         <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
-                            <RadioButtonIconClicked />
-                            <Text style={styles.unitText}>{translate("Miles")}</Text>
+
+                            {
+                              DistanceArr.map((item,key)=>{
+                                return(
+                                  <TouchableOpacity key={key} onPress={()=>{setDistance(item)}} style={{flexDirection:'row',flex:0.3}}>
+                                    {item===distance ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
+                                    <Text style={styles.unitText}>{item}</Text>
+                                  </TouchableOpacity>                                  
+                                )
+                              })
+                            }
                             
-                            <RadioButtonIcon />
-                            <Text style={[styles.unitText,{flex:2}]}>{translate("Kilometer")}</Text>
                         </View>  
                     </View>
 
                     <View style={{marginTop:hp(3)}}>
                         <Text style={[styles.language,{color:ColorConstant.BLUE}]}>{translate("Temperature")}</Text>
                         <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
-                            <RadioButtonIconClicked />
-                            <Text style={styles.unitText}>{translate("Celsius")} </Text>
 
-                            <RadioButtonIcon />
-                            <Text style={[styles.unitText,{flex:2}]}>{translate("Fahrenheit")}</Text>
+                          {
+                            TempArr.map((item)=>{
+                              return(
+                                <TouchableOpacity onPress={()=>{setTemperature(item)}} style={{flexDirection:'row',flex:0.3}}>
+                                  {item===temperature ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
+                                  <Text style={styles.unitText}>{item}</Text>
+                                </TouchableOpacity>                                  
+                              )
+                            })
+                          }
+                            
                         </View>  
                     </View>
                 </View>:null}
@@ -164,7 +261,9 @@ const styles = StyleSheet.create({
   unit: {
     fontSize:12,
     fontFamily:'Nunito-SemiBold',
-    color:ColorConstant.BLACK
+    color:ColorConstant.BLACK,
+    flex:1,
+    textAlignVertical:'center'
   },
   language: {
     fontSize:12,

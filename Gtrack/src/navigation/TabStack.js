@@ -18,6 +18,7 @@ import { LiveTrackingIcon, LiveTrackingIconClicked,
     SettingsIcon, SettingsIconClicked,
     UserIcon, UserIconClicked, 
     DeviceAndAssetsIcon, DeviceAndAssetsIconClicked } from '../component/SvgComponent';
+import AppLogs from '../applog/AppLog';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -143,6 +144,7 @@ const SettingsStackNavigator = () => {
             <SettingsStack.Screen name={SCREEN_CONSTANTS.ADVANCE_SETTINGS} component={AdvanceSettings} />
             <SettingsStack.Screen name={SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE} component={SettingsChangePassCode} />
             <SettingsStack.Screen name={SCREEN_CONSTANTS.SETTINGS_NOTIFICATION} component={SettingNotification} />
+            <SettingsStack.Screen name={'AppLog'} component={AppLogs} />
         </SettingsStack.Navigator>
     )
 }

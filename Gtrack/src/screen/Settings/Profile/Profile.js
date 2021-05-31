@@ -10,6 +10,7 @@ import { translate } from '../../../../App'
 import { Dialog, FontSize }from '../../../component';
 import { SCREEN_CONSTANTS, PHONE_REGEX } from '../../../constants/AppConstants';
 import { BackIcon, EditIcon } from '../../../component/SvgComponent';
+import NavigationService from '../../../navigation/NavigationService';
 
 const Profile = ({ navigation }) => {
 
@@ -109,6 +110,12 @@ const Profile = ({ navigation }) => {
 
             </View>
            
+                
+            <TouchableOpacity
+                onPress={() =>{NavigationService.navigate('AppLog')} }
+                style={[styles.LoginButton,{margin:hp(4)}]}>
+                <Text style={styles.LoginButtonText}>{"Logs"}</Text>
+            </TouchableOpacity>
 
         </View>
     )

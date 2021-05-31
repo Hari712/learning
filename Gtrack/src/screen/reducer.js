@@ -9,6 +9,7 @@ import { dashboardReducer } from './Dashboard/Dashboad.Reducer';
 import { livetrackingReducer } from './LiveTracking/Livetracking.Reducer'
 import {settingsReducer } from './Settings/Settings.Reducer'
 import { tripHistoryReducer } from './LiveTracking/TripHistory/TripHistory.Reducer'
+import { appLogReducer } from '../applog/AppLog.Reducer';
 
 const rootReducer = combineReducers({
     login: loginReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     livetracking: livetrackingReducer,
     settings: settingsReducer,
     tripHistory: tripHistoryReducer,
+    appLogs: appLogReducer,
     network
 })
 

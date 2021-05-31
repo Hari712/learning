@@ -8,6 +8,13 @@ import { FlatList } from 'react-native-gesture-handler';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App'
 import { BackIcon, GreyCrossIcon } from '../../component/SvgComponent'
+import { getLivetrackingGroupDevicesListInfo, getLoginState, isUserLoggedIn, getLiveNotificationsInfo } from '../Selector';
+import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
+import IconConstant from '../../constants/iconConstant';
+import NavigationService from '../../navigation/NavigationService';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import * as LiveTrackingAction from '../LiveTracking/Livetracking.Action'
 
 const Notification = ({ navigation }) => {
 
@@ -24,50 +31,71 @@ const Notification = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const NotificationItems = ({ item }) => {
+    const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents } = useSelector(state => ({
+		isLoggedIn: isUserLoggedIn(state),
+		//isRegular: isRoleRegular(state),
+		//devicePositions: getLiveTrackingDeviceList(state),
+		groupDevices: getLivetrackingGroupDevicesListInfo(state),
+		//hasPanic: hasPanicAlarm(state),
+		loginData: getLoginState(state),
+        notiEvents: getLiveNotificationsInfo(state)
+	}));
+
+    const dispatch = useDispatch()
+
+    const NotificationItems = ({ item }) => {        
+        const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )
+        const titleStr = String(item.type).charAt(0).toUpperCase() + String(item.type).replace(/([a-z])([A-Z])/g, `$1 $2`).slice(1)
+        
         return (
-            <View>
+            <TouchableOpacity onPress={()=>NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)} >
                 <View style={styles.notificationMainView}>
                     <View style={styles.notificationLeftMainView}>
                         <View style={styles.notificationLeftView}>
                             <View style={styles.notificationDetailView}>
-                                <Image source={item.titleIcon} style={styles.imageStyle} resizeMode='contain' />
+                                <IconConstant type={String(item.type).toLowerCase().trim()} color={ColorConstant.ORANGE} />
                             </View>
                         </View>
 
                         <View style={styles.notificationRightView}>
-                            <Text style={styles.titleStyle}>{translate(item.title)}</Text>
+                            <Text style={styles.titleStyle}>{titleStr}</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={styles.deviceStyle}>{item.device}</Text>
-                                <Tooltip popover={
-                                    <View>
-                                        <Text>UK Van</Text>
-                                    </View>
-
-                                }
+                                <Text style={styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
+                                <Tooltip popover={                                    
+                                            <View>
+                                                {deviceDetail.map((dextra,key)=>{
+                                                    if(key>0)
+                                                    return (
+                                                        <Text>{dextra}</Text>
+                                                    )
+                                                })}                                        
+                                            </View>
+                                        }
                                     backgroundColor={ColorConstant.WHITE}
                                     overlayColor={ColorConstant.TRANSPARENT}
                                     pointerStyle={{ elevation: 0.1, borderRightWidth: 4, borderLeftWidth: 4 }}
                                     containerStyle={{ borderColor: ColorConstant.ORANGE, borderWidth: 1, borderRadius: 6 }}
                                 >
-                                    <Text style={[styles.deviceStyle, { marginLeft: wp(4) }]}>+2</Text>
+                                    <Text style={[styles.deviceStyle, { marginLeft: wp(4) }]}>{deviceDetail.length > 2 ? deviceDetail.length-1 : null}</Text>
                                 </Tooltip>
                             </View>
-                            <Text style={styles.descriptionStyle}>{item.description}</Text>
-                            <Text style={styles.speedTextStyle}>{item.speed}</Text>
+                            {/* <Text style={styles.descriptionStyle}>{item.description}</Text> */}
+                            <Text style={styles.speedTextStyle}>{deviceDetail[0] && deviceDetail[0].assetType}</Text>
                         </View>
                     </View>
 
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
-                            <Text style={styles.timeTextStyle}>{item.time}</Text>
-                            <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
+                            <Text style={styles.timeTextStyle}>{moment(Date(item.serverTime)).fromNow()}</Text>
+                            <TouchableOpacity onPress={()=>dispatch(LiveTrackingAction.removeNotificationEventResponse(item.id))} >
+                                <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
 
                 <View style={styles.lineStyle} />
-            </View>
+            </TouchableOpacity>
         )
     }
 
@@ -76,7 +104,8 @@ const Notification = ({ navigation }) => {
             <FlatList
                 styles={{}}
                 contentContainerStyle={{}}
-                data={DATA}
+                data={notiEvents}
+                // data={DATA}
                 renderItem={NotificationItems}
                 keyExtractor={(item, index) => index.toString()}
             />
@@ -99,7 +128,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         paddingVertical: hp(1.5),
-        paddingHorizontal: wp(1.5)
+        paddingHorizontal: wp(7)
     },
     notificationLeftMainView: {
         flexDirection: 'row',
@@ -107,7 +136,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     notificationRightMainView: {
-        flex: 0.2,
+        flex: 0.3,
         justifyContent: 'center',
         alignItems: 'flex-end',
     },
@@ -135,7 +164,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     deviceStyle: {
-        color: ColorConstant.GREY,
+        color: ColorConstant.BLACK,
         fontSize: hp(1.4),
         marginTop: hp(1)
     },
@@ -161,7 +190,8 @@ const styles = StyleSheet.create({
     },
     timeTextStyle: {
         color: ColorConstant.GREY,
-        fontSize: hp(1.2)
+        fontSize: hp(1.2),
+        paddingRight:wp(2)
     },
     crossImageStyle: {
         height: hp(1.3),
@@ -177,76 +207,33 @@ export default Notification;
 
 const DATA = [
     {
-        titleIcon: images.notification.speed,
-        title: 'Over Speed',
-        device: 'TrackPort 4G Vehical GPS Tracker',
-        description: 'Speed Violation Limit 50mph',
-        speed: 'Speed 75Mph',
-        time: '3h ago',
-        crossIcon: images.notification.crossIcon
+        attributes: {}, // if any speed
+        deviceId: 1443, //match with device ID ande get device name
+        geofenceId: 0,
+        id: 173097,
+        maintenanceId: 0,
+        positionId: 0,
+        serverTime: "2021-05-25T11:35:58.150+0000", /// momnet 3hrs ago
+        type: "deviceOnline"  // title 
     },
     {
-        titleIcon: images.notification.battery,
-        title: 'Battery Level',
-        device: 'Spark Nano 7 GPS Tracker',
-        description: 'Low Battery 20%',
-        time: '10h ago',
-        crossIcon: images.notification.crossIcon
+        attributes: {}, // if any speed
+        deviceId: 1443, //match with device ID ande get device name
+        geofenceId: 0,
+        id: 173097,
+        maintenanceId: 0,
+        positionId: 0,
+        serverTime: "2021-05-25T11:35:58.150+0000", /// momnet 3hrs ago
+        type: "deviceOffline"  // title 
     },
     {
-        titleIcon: images.notification.geoFence,
-        title: 'Geofence',
-        device: 'TrackPort International',
-        description: 'Your device is out of bounds.',
-        time: '1d ago',
-        crossIcon: images.notification.crossIcon,
+        attributes: {}, // if any speed
+        deviceId: 413, //match with device ID ande get device name
+        geofenceId: 0,
+        id: 173097,
+        maintenanceId: 0,
+        positionId: 0,
+        serverTime: "2021-05-25T11:35:58.150+0000", /// momnet 3hrs ago
+        type: "ignitionOff"  // title 
     },
-    {
-        titleIcon: images.notification.engineStatus,
-        title: 'Engine Idle',
-        device: 'UK Van',
-        description: 'Your vehicle engine is die',
-        time: '1d ago',
-        crossIcon: images.notification.crossIcon,
-    },
-    {
-        titleIcon: images.notification.IgniteOn,
-        title: 'Ignition On',
-        device: 'Spark Nano 7 GPS Tracker',
-        description: 'Your vehicle is turned On.',
-        time: '3d ago',
-        crossIcon: images.notification.crossIcon,
-    },
-    {
-        titleIcon: images.notification.Movement,
-        title: 'Movement',
-        device: 'TrackPort International',
-        description: 'Your vehicle has started moving.',
-        time: '3d ago',
-        crossIcon: images.notification.crossIcon,
-    },
-    {
-        titleIcon: images.notification.IgniteOff,
-        title: 'Ignite Off',
-        device: 'UK Van',
-        description: 'Your vehicle is turned off',
-        time: '4d ago',
-        crossIcon: images.notification.crossIcon,
-    },
-    {
-        titleIcon: images.notification.panic,
-        title: 'Panic',
-        device: 'TrackPort 4G Vehicle GPS Tracker',
-        description: 'There is a panic alert',
-        time: '4d ago',
-        crossIcon: images.notification.crossIcon,
-    },
-    {
-        titleIcon: images.notification.panic,
-        title: 'Panic',
-        device: 'TrackPort International',
-        description: 'There is a panic alert',
-        time: '4d ago',
-        crossIcon: images.notification.crossIcon,
-    }
 ]

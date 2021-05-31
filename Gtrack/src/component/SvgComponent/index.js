@@ -124,6 +124,14 @@ import PanicIconClick from './PanicIconClick'
 import PanicAlarmIcon from './PanicAlarmIcon'
 import LiveStartPointIcon from './LiveStartPointIcon'
 import LiveEndPointIcon from './LiveEndPointIcon'
+import DeviceMovingIcon from './DeviceMovingIcon'
+import UnderSpeedIcon from './UnderSpeedIcon'
+import StationaryIcon from './StationaryIcon'
+import FluelLevelcon from './FluelLevelcon'
+import GeofenceExitIcon from './GeofenceExitIcon'
+import GeofenceEntryIcon from './GeofenceEntryIcon'
+import DeviceStoppedIcon from './DeviceStoppedIcon'
+import DeviceOnlineIcon from './DeviceOnlineIcon'
 
 export {
     BarCodeScanIcon,
@@ -250,5 +258,13 @@ export {
     PanicIconClick,
     PanicAlarmIcon,
     LiveStartPointIcon,
-    LiveEndPointIcon
+    LiveEndPointIcon,
+    DeviceMovingIcon,
+    UnderSpeedIcon,
+    StationaryIcon,
+    FluelLevelcon,
+    GeofenceExitIcon,
+    GeofenceEntryIcon,
+    DeviceStoppedIcon,
+    DeviceOnlineIcon
 }
