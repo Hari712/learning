@@ -59,8 +59,9 @@ const LiveTracking = ({ navigation }) => {
 	const [isPanicAlarmClick, setIsPanicAlarmClick] = useState(false);
 	const [isPanicTimerVisible, setIsPanicTimerVisible] = useState(false);
 	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
+	const [isVisible, setIsVisible] = useState(false)
 
-	const isFocused = useIsFocused();
+	const isFocused = useIsFocused()
 	
 	useEffect(()=>{
 		setDeviceList(groupDevices);
@@ -406,12 +407,12 @@ const LiveTracking = ({ navigation }) => {
 			<View style={[styles.subContainer,{marginTop:selectedDevice ? Platform.OS === 'ios' ? hp(13) : hp(11) : hp(5)}]}>
 				<TouchableOpacity
 					onPress={() => {
-						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false);
+						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false),setIsVisible(true);
 					}}
 					style={styles.bellIconStyle}
 				>
 					<BellIcon />
-					{notiEvents.length > 0 ?
+					{notiEvents.length > 0 && !isVisible ?
 						<View style={{position:'absolute', backgroundColor:ColorConstant.ORANGE, borderRadius:5, width:10, height:10, elevation:4, top:16,right:16 }} />
 					:null }
 				</TouchableOpacity>
