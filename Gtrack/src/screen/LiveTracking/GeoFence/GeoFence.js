@@ -141,7 +141,8 @@ const GeoFence = ({ navigation }) => {
 
     const onRefresh = () => {
         setIsRefreshing(true)
-        loadGeofenceList() 
+        loadGeofenceSearchList('')
+        // loadGeofenceList() 
     }
 
     const searchHandle = (keyword) => {
@@ -179,7 +180,7 @@ const GeoFence = ({ navigation }) => {
                     <Text style={styles.createNewText}>{translate("Create New")}</Text>
                 </TouchableOpacity> : null }
                 <TouchableOpacity style={styles.allType} onPress={()=> setIsTypeClick(!isTypeClick)}>
-                    <Text style={[styles.createNewText,{color:ColorConstant.GREY}]}>All type</Text>
+                    <Text style={[styles.createNewText,{color:ColorConstant.GREY}]}>{selectedType == '' ? 'All Type' : selectedType.charAt(0).toUpperCase() + selectedType.slice(1).toLowerCase()}</Text>
                     <NextIcon/>
                 </TouchableOpacity> 
             </View>

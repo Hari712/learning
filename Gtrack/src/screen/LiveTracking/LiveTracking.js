@@ -11,7 +11,7 @@ import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import { translate } from '../../../App';
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BellIcon, BluelineIcon, LiveTrackingPlusIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick } from '../../component/SvgComponent';
+import { BellIcon, BluelineIcon, LiveEndPointIcon, LiveStartPointIcon, LiveTrackingPlusIcon, LoginIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick } from '../../component/SvgComponent';
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import useStateRef from '../../utils/useStateRef';
@@ -59,8 +59,9 @@ const LiveTracking = ({ navigation }) => {
 	const [isPanicAlarmClick, setIsPanicAlarmClick] = useState(false);
 	const [isPanicTimerVisible, setIsPanicTimerVisible] = useState(false);
 	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
+	const [isVisible, setIsVisible] = useState(false)
 
-	const isFocused = useIsFocused();
+	const isFocused = useIsFocused()
 	
 	useEffect(()=>{
 		setDeviceList(groupDevices);
@@ -151,10 +152,10 @@ const LiveTracking = ({ navigation }) => {
 					})
 				})
 				setCoordList(arrCoords)
-				mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
-					edgePadding: DEFAULT_PADDING,
-					animated: true,
-				});
+				// mapRef && mapRef.current && mapRef.current.fitToCoordinates(arrCoords, {
+				// 	edgePadding: DEFAULT_PADDING,
+				// 	//animated: true,
+				// });
 			}
 		}
 	}, [devicePositionArray]);
@@ -236,7 +237,7 @@ const LiveTracking = ({ navigation }) => {
 					height: hp(5),
 					backgroundColor: ColorConstant.WHITE,
 					position: 'absolute',
-					marginTop: hp(4),
+					marginTop: Platform.OS === 'ios' ? hp(6) : hp(4),
 					borderRadius: 9,
 					alignSelf: 'center',
 					justifyContent: 'center',
@@ -259,9 +260,11 @@ const LiveTracking = ({ navigation }) => {
 							style={{ width: wp(2), height: hp(2) }}
 						/>
 					</TouchableOpacity>
-					<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
-						{` ${deviceInfo.name} `}
-					</Text>
+					<TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name})}>
+						<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
+							{` ${deviceInfo.name} `}
+						</Text>
+					</TouchableOpacity>
 					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
 					</TouchableOpacity>
@@ -274,10 +277,16 @@ const LiveTracking = ({ navigation }) => {
 		const isContainCoordinate = !isEmpty(devicePositionArray);
 		const isPolyLine = isEmpty(devicePositionArray) ? false : devicePositionArray.length > 1;
 		const startingDestination = isContainCoordinate ? devicePositionArray[0] : null;
-		const address = isContainCoordinate ? startingDestination.address : '';
-		const coordinate = isContainCoordinate
+		const endDestination = isContainCoordinate ? devicePositionArray[devicePositionArray.length - 1] : null;
+		const startAddress = isContainCoordinate ? startingDestination.address : '';
+		const endAddress = isContainCoordinate ? endDestination.address : '';
+		const startCoordinate = isContainCoordinate
 			? { latitude: startingDestination.latitude, longitude: startingDestination.longitude }
 			: null;
+
+		const endCoordinate = isContainCoordinate
+		? { latitude: endDestination.latitude, longitude: endDestination.longitude }
+		: null;
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
@@ -286,8 +295,19 @@ const LiveTracking = ({ navigation }) => {
 
 				{isContainCoordinate && 
 					<Map.Marker 
-						coordinate={coordinate} 
-						description={address} />}
+						coordinate={startCoordinate} 
+						description={startAddress} >
+
+						<LiveStartPointIcon />
+					</Map.Marker>}
+
+				{isContainCoordinate && 
+					<Map.Marker 
+						coordinate={endCoordinate} 
+						description={endAddress} >
+						
+						<LiveEndPointIcon/>
+					</Map.Marker>}
 
 				{isPolyLine &&
 					<Map.Polyline
@@ -303,11 +323,18 @@ const LiveTracking = ({ navigation }) => {
 		const isContainCoordinate = !isEmpty(devicePositionArray);
 		const isPolyLine = isEmpty(devicePositionArray) ? false : devicePositionArray.length > 1;
 		const startingDestination = isContainCoordinate ? devicePositionArray[0] : null;
-		const address = isContainCoordinate ? startingDestination.address : '';
-		let coordinate = [];
+		const liveEndPoint = isContainCoordinate ? devicePositionArray[devicePositionArray.length-1] : null;
+		const startAddress = isContainCoordinate ? startingDestination.address : '';
+		const endAddress = isContainCoordinate ? liveEndPoint.address : '';
+		let startCoordinate = [];
 		if (isContainCoordinate) {
-			coordinate.push(startingDestination.longitude);
-			coordinate.push(startingDestination.latitude);
+			startCoordinate.push(startingDestination.longitude);
+			startCoordinate.push(startingDestination.latitude);
+		}
+		let endCoordinate = [];
+		if (isContainCoordinate) {
+			endCoordinate.push(liveEndPoint.longitude);
+			endCoordinate.push(liveEndPoint.latitude);
 		}
 		return (
 			<View style={{ flex: 1 }}>
@@ -322,8 +349,8 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							zoomLevel={17}
 							bounds={{
-								ne: coordinate,
-								sw: coordinate,
+								ne: startCoordinate,
+								sw: startCoordinate,
 							}}
 						/>}
 					{!isEmpty(lineString)
@@ -340,8 +367,15 @@ const LiveTracking = ({ navigation }) => {
 							</Map.default.ShapeSource>
 						: null}
 					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
-							<Map.default.Callout title={address} />
+						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
+							<LiveStartPointIcon />
+							<Map.default.Callout title={startAddress} />
+						</Map.default.PointAnnotation>}
+
+					{isContainCoordinate &&
+						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
+							<LiveEndPointIcon/>
+							<Map.default.Callout title={endAddress} />
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>
@@ -370,15 +404,15 @@ const LiveTracking = ({ navigation }) => {
 			{isAndroid ? renderMapBox() : renderAppleMap()}
 			{/* {renderAppleMap()} */}
 			{selectedDevice && renderDeviceSelectionView()}
-			<View style={[styles.subContainer,{marginTop:selectedDevice ? hp(11) : hp(5)}]}>
+			<View style={[styles.subContainer,{marginTop:selectedDevice ? Platform.OS === 'ios' ? hp(13) : hp(11) : hp(5)}]}>
 				<TouchableOpacity
 					onPress={() => {
-						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false);
+						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false),setIsVisible(true);
 					}}
 					style={styles.bellIconStyle}
 				>
 					<BellIcon />
-					{notiEvents.length > 0 ?
+					{notiEvents.length > 0 && !isVisible ?
 						<View style={{position:'absolute', backgroundColor:ColorConstant.ORANGE, borderRadius:5, width:10, height:10, elevation:4, top:16,right:16 }} />
 					:null }
 				</TouchableOpacity>

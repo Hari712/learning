@@ -5,6 +5,7 @@ import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
+import round  from 'lodash';
 
 
 export const validateEmailorPhoneNumber = (input) => {
@@ -31,6 +32,10 @@ export const clearUserData = async () => {
 export const isCircle = (input) => {
     const cirlceRE = CIRCLE_REGEX
     return cirlceRE.test(input)
+}
+
+export const toRegularCase = (input) => {
+  return String(input).charAt(0).toUpperCase() + String(input).slice(1).toLowerCase()
 }
 
 export const checkLocationPermission = async () => {
@@ -118,7 +123,7 @@ export function isIphoneX() {
 
   export function SubscriptionStatusColor(key) {
     switch (key) {
-      case "CANCEL":          return {bg: ColorConstant.LIGHTENGREEN, color: ColorConstant.DARKGREEN}  
+      case "CANCEL":          return {bg: ColorConstant.LIGHTRED, color: ColorConstant.RED}  
       case "ACTIVE":          return {bg: ColorConstant.LIGHTGREEN, color: ColorConstant.DARKGREEN}
       case "PAYMENT_FAILED":  return {bg: ColorConstant.LIGHTGREY, color: ColorConstant.BLACK} 
       case "EXPIRED":         return {bg: ColorConstant.LIGHTGREY, color: ColorConstant.BLACK}

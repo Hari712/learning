@@ -122,6 +122,8 @@ import SettingNotiNextArrowIcon from './SettingNotiNextArrowIcon'
 import SettingNotiDownArrowOrangeIcon from './SettingNotiDownArrowOrangeIcon'
 import PanicIconClick from './PanicIconClick'
 import PanicAlarmIcon from './PanicAlarmIcon'
+import LiveStartPointIcon from './LiveStartPointIcon'
+import LiveEndPointIcon from './LiveEndPointIcon'
 import DeviceMovingIcon from './DeviceMovingIcon'
 import UnderSpeedIcon from './UnderSpeedIcon'
 import StationaryIcon from './StationaryIcon'
@@ -130,6 +132,7 @@ import GeofenceExitIcon from './GeofenceExitIcon'
 import GeofenceEntryIcon from './GeofenceEntryIcon'
 import DeviceStoppedIcon from './DeviceStoppedIcon'
 import DeviceOnlineIcon from './DeviceOnlineIcon'
+import DefaultAssetIcon from './DefaultAssetIcon'
 
 export {
     BarCodeScanIcon,
@@ -255,6 +258,8 @@ export {
     SettingNotiDownArrowOrangeIcon,
     PanicIconClick,
     PanicAlarmIcon,
+    LiveStartPointIcon,
+    LiveEndPointIcon,
     DeviceMovingIcon,
     UnderSpeedIcon,
     StationaryIcon,
@@ -262,5 +267,6 @@ export {
     GeofenceExitIcon,
     GeofenceEntryIcon,
     DeviceStoppedIcon,
-    DeviceOnlineIcon
+    DeviceOnlineIcon,
+    DefaultAssetIcon
 }

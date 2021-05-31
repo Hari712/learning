@@ -1,4 +1,4 @@
-import {IgniteOffIcon, DeviceOfflineIcon, PanicIcon, BatteryIcon, DeviceMovingIcon, BusIcon, CarIcon, FamilyVanIcon, GeoFenceIcon, KidsIcon, MachineryIcon, IgniteOnIcon, OverSpeedIcon, PersonnelItemIcon, ShuttleVanIcon, TrailerIcon, TravelIcon, TruckIcon, XyzIcon, UnderSpeedIcon, FluelLevelcon, EngineIdleIcon, StationaryIcon, DeviceOnlineIcon, GeofenceExitIcon, GeofenceEntryIcon, DeviceStoppedIcon } from "../component/SvgComponent"
+import {IgniteOffIcon, DeviceOfflineIcon, PanicIcon, BatteryIcon, DeviceMovingIcon, BusIcon, CarIcon, FamilyVanIcon, GeoFenceIcon, KidsIcon, MachineryIcon, IgniteOnIcon, OverSpeedIcon, PersonnelItemIcon, ShuttleVanIcon, TrailerIcon, TravelIcon, TruckIcon, XyzIcon, UnderSpeedIcon, FluelLevelcon, EngineIdleIcon, StationaryIcon, DeviceOnlineIcon, GeofenceExitIcon, GeofenceEntryIcon, DeviceStoppedIcon, DefaultAssetIcon } from "../component/SvgComponent"
 import React from 'react'
 
 const IconConstant = (props) => {
@@ -34,7 +34,7 @@ const IconConstant = (props) => {
         case 'engineidle': return <EngineIdleIcon color={color} /> 
         case 'stationary': return <StationaryIcon color={color} /> 
             
-        default: return <CarIcon color={color} />  
+        default: return <DefaultAssetIcon color={color} />  
     }
 }
 
