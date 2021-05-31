@@ -89,6 +89,7 @@ function AppNavigator() {
 				dispatch(LivetrackingActions.requestGetGroupDevices(response.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 				dispatch(DeviceActions.requestGetAllUserDevice(response.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 				dispatch(SettingsActions.requestGetAdvanceSettings(response.userDTO.id, onFeedbackSuccess, onFeedbackError))
+				dispatch(LivetrackingActions.requestGetDevicesByUserId(response.userDTO.id, onFeedbackSuccess, onFeedbackError))
 			}
 			setIsReady(true);
 		}

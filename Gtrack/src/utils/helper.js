@@ -43,6 +43,10 @@ export const switchCaseString = (str1) => {
   return String(str1).toLowerCase().replace(/\s+/g, '') 
 }
 
+export const toRegularCase = (input) => {
+  return String(input).charAt(0).toUpperCase() + String(input).slice(1).toLowerCase()
+}
+
 export const checkLocationPermission = async () => {
     const permission = await RNLocation.checkPermission({
         ios: 'whenInUse', // or 'always'

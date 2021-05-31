@@ -13,6 +13,7 @@ import circle from '@turf/circle'
 import { BackIcon, NextIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import useSubscribeLocationUpdates from '../../../utils/useSubscribeLocationUpdates';
+import round from 'lodash';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.09;
@@ -40,7 +41,7 @@ const GeoFenceCircle = ({navigation,route}) => {
     const [selectedCoordinate, setSelectedCoordinate] = useState(null)
     const [area, setArea] = useState('')
     const [radius, setRadius] = useState(500.001)
-    const [value, setValue] = useState(0.3);
+    const [value, setValue] = useState(0.5);
     const [oldData, setOldData] = useState()
     const location = useSubscribeLocationUpdates(isLoggedIn)
     const [color, setColor] = useState(ColorConstant.ORANGE)
@@ -91,13 +92,15 @@ const GeoFenceCircle = ({navigation,route}) => {
             if(isAndroid){
                 setRegionAndroid(editingData.coordinate)
                 setSelectedCoordinate(editingData.coordinate)
-                setRadius(editingData.radius)
+                setRadius(parseFloat(editingData.radius))
+                // setValue(editingData.radius ? parseFloat(editingData.radius) : 0.5)
             } else {
                 const initialRegion = { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } 
                 setRegion(initialRegion)
                 const coordinate = {latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude}
                 setSelectedCoordinate(coordinate)
                 setRadius(parseFloat(editingData.radius))
+                // setValue(editingData.radius ? parseFloat(editingData.radius) : 0.5)
             }
             
         }else{
@@ -264,9 +267,9 @@ const GeoFenceCircle = ({navigation,route}) => {
     }
 
     function onChangeRadius(val) {
-        let radius = isAndroid ? val  : val * 1000
-        console.log(radius)
-        setRadius(Math.round(radius))
+        let rad = isAndroid ? val  : val * 1000
+        console.log("Radius",rad)
+        setRadius(rad)
     }
 
     function renderButton() {

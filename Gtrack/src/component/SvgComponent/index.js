@@ -132,6 +132,7 @@ import GeofenceExitIcon from './GeofenceExitIcon'
 import GeofenceEntryIcon from './GeofenceEntryIcon'
 import DeviceStoppedIcon from './DeviceStoppedIcon'
 import DeviceOnlineIcon from './DeviceOnlineIcon'
+import DefaultAssetIcon from './DefaultAssetIcon'
 
 export {
     BarCodeScanIcon,
@@ -266,5 +267,6 @@ export {
     GeofenceExitIcon,
     GeofenceEntryIcon,
     DeviceStoppedIcon,
-    DeviceOnlineIcon
+    DeviceOnlineIcon,
+    DefaultAssetIcon
 }
