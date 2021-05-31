@@ -13,6 +13,7 @@ import * as SettingsActions from '../Settings.Action'
 import { getLoginState, getAdvanceSettingsInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import { toRegularCase } from '../../../utils/helper';
 
 const LanguagesArr = ["ENGLISH", "FRENCH"]
 const TempArr = ["CELSIUS","FAHRENHEIT"]
@@ -24,11 +25,11 @@ const AdvanceSettings = ({navigation,route}) => {
   const [isToggleClick,setIsToggleClick] = useState(false)
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
-  const [language,setLanguage] = useState()
+  const [language,setLanguage] = useState('ENGLISH')
   const [timeZone,setTimeZone] = useState()
-  const [distance,setDistance] = useState()
+  const [distance,setDistance] = useState('MILES')
   const [settingsID,setSettingsID] = useState()
-  const [temperature,setTemperature] = useState()
+  const [temperature,setTemperature] = useState('CELSIUS')
 
   const { loginData, settingsData, isConnected } = useSelector(state => ({
     loginData: getLoginState(state),
@@ -119,7 +120,7 @@ return (
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{height:hp(6)}}>
                     <Text style={styles.textStyle}>{translate("Select_language")}</Text>
-                    <Text style={styles.subText}>{language}</Text>
+                    <Text style={styles.subText}>{toRegularCase(language)}</Text>
                 </View>
                 <TouchableOpacity style={{alignSelf:'center', padding:wp(4)}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
                   { 
@@ -137,7 +138,7 @@ return (
                     return(
                       <TouchableOpacity key={key} onPress={()=>{setLanguage(item)}} style={{flexDirection:'row',flex:1}}>
                         {language == item?<RadioButtonIconClicked />:<RadioButtonIcon />}
-                        <Text style={styles.language}> {item}</Text>
+                        <Text style={styles.language}> {toRegularCase(item)}</Text>
                       </TouchableOpacity>
                     )
                   })}
@@ -200,7 +201,7 @@ return (
                                 return(
                                   <TouchableOpacity key={key} onPress={()=>{setDistance(item)}} style={{flexDirection:'row',flex:0.3}}>
                                     {item===distance ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
-                                    <Text style={styles.unitText}>{item}</Text>
+                                    <Text style={styles.unitText}>{toRegularCase(item)}</Text>
                                   </TouchableOpacity>                                  
                                 )
                               })
@@ -218,7 +219,7 @@ return (
                               return(
                                 <TouchableOpacity onPress={()=>{setTemperature(item)}} style={{flexDirection:'row',flex:0.3}}>
                                   {item===temperature ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
-                                  <Text style={styles.unitText}>{item}</Text>
+                                  <Text style={styles.unitText}>{toRegularCase(item)}</Text>
                                 </TouchableOpacity>                                  
                               )
                             })
