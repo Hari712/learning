@@ -26,7 +26,10 @@ const GeoFenceDetails = ({ navigation, route }) => {
         isAdmin: isRoleAdmin(state)
     }))
     
-    const { selectedArea, type, devices, editingData } = route.params
+    const { selectedArea, type, devices, editingData } = route.params    
+
+    const deviId = !isEmpty(devices) ? devices.map((item)=>item.id) : []
+    console.log("devics",devices, deviId)
 
     let colorData = ['#247ba0', '#70c1b3', '#b2dbbf', '#f3ffbd', '#ff1654']
 
@@ -151,11 +154,12 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
-        console.log("user",arrSelectedId)
+        
+        console.log("user",devices,deviId)
         var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
         const requestBody = {
             "userIds" : arrSelectedId,
-            "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
+            "deviceIds" : deviId,
             "notification" : {
                 "id" : null,
                 "type" : "geofenceEnter",
@@ -192,10 +196,12 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
+
+        const deviId = !isEmpty(devices) ? devices.map((item)=>item.id) : []
     
         const requestBody = {
             "userIds" : arrSelectedId,
-            "deviceIds" : isEmpty(devices) ? [] : devices.map((item)=>item.id),
+            "deviceIds" : deviId, 
             "notification" : {
                 "id" : null,
                 "type" : "geofenceEnter",
@@ -298,6 +304,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.5) }}
                             multiline={true}
+                            maxLength={100}
                             contentInset={{ input: 7 }}
                         />
                     </View>

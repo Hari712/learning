@@ -36,14 +36,27 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     const dispatch = useDispatch()
 
     useEffect(() => { 
-       if(route.params && route.params.editingData) {
+        if(route.params && route.params.editingData) {
             const { editingData } = route.params
             console.log("Type",editingData)
             setRole(editingData.type)
-            setSelectedDevice(editingData.devices.map((device) => device.deviceName))
             setOldData(editingData)
-          
-       }
+
+            let selDev = editingData.devices.map((device) => device.deviceName)
+            let list = [] 
+            let selDeviceName = []
+            Object.values(geofenceDeviceList).filter((item)=> {      
+                selDev.filter((selectedItem)=>{        
+                    if(item.deviceName === selectedItem){  
+                        list.push(item)
+                        selDeviceName.push(item.deviceName)
+                    }
+                })  
+            }) 
+            setSelectedDevice(selDeviceName)
+            setSelectedDeviceDetail(list)
+            
+        }
     }, [navigation,route])
 
 
@@ -68,20 +81,20 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
         loadDeviceList()
     }, [])
 
-      function loadDeviceList() {
-        AppManager.showLoader()  
-        dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onSuccess, onError))
-      }
-    
-      function onSuccess(data) {    
-        console.log("Success",data) 
-        AppManager.hideLoader()
-      }
-    
-      function onError(error) {
-        AppManager.hideLoader()
-        console.log("Error",error)  
-      }
+    function loadDeviceList() {
+    AppManager.showLoader()  
+    dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onSuccess, onError))
+    }
+
+    function onSuccess(data) {    
+    console.log("Success",data) 
+    AppManager.hideLoader()
+    }
+
+    function onError(error) {
+    AppManager.hideLoader()
+    console.log("Error",error)  
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
