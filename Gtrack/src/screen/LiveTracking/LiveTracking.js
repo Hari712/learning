@@ -397,6 +397,12 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicAlarmCreateDialog(false)
 		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW)
 	}
+
+	function onNo() {
+		setIsPanicAlarmCreateDialog(false)
+		setIsPanicAlarmClick(false)
+		setIsPanicAlarmClick(!isPanicAlarmClick)
+	}
 	
 
 	return (
@@ -460,7 +466,7 @@ const LiveTracking = ({ navigation }) => {
 						titleStyle={styles.titleStyle}
 						heading={"There is no panic alarm created"}
 						message={"Do you want to create one ?"}
-						negativeHandle={()=> setIsPanicAlarmCreateDialog(false) && setIsPanicAlarmClick(!isPanicAlarmClick)}
+						negativeHandle={()=> onNo()}
 						positiveHandle={()=> onOkay()}
 						negativeButtonName={"No"}
 						positiveButtonName={"Yes"}

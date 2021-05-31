@@ -216,3 +216,82 @@ export function isIphoneX() {
     var sec = Math.floor((Math.abs(minutes) * 60) % 60);
     return (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
   }
+
+  // ENUM for Notification type
+
+  export const NOTIFICATION_TYPE = [
+    {
+      label: "deviceUnknown",
+      value: "Device Offline"
+    },
+    {
+      label: "deviceOffline",
+      value: "Device Offline"
+    },    
+    {
+      label: "deviceOnline",
+      value: "Device Online"
+    },
+    {
+      label: "ignitionOff",
+      value: "Ignition Off"
+    },
+    {
+      label: "deviceMoving",
+      value: "Device Moving"
+    },
+    {
+      label: "deviceOverspeed",
+      value: "Device Overspeed"
+    },
+    {
+      label: "ignitionOn",
+      value: "Ignition On"
+    },
+    {
+      label: "deviceStopped",
+      value: "Device Stopped"
+    },
+    {
+      label: "alarm",
+      value: "Alarm"
+    },
+    {
+      label: "sos",
+      value: "Panic"
+    },
+    {
+      label: "lowBattery",
+      value: "Battery Level"
+    },
+    {
+      label: "lowspeed",
+      value: "Low Speed"
+    },
+    {
+      label: "geofenceEnter",
+      value: "Geofence Enter"
+    },
+    {
+      label: "geofenceExit",
+      value: "Geofence Exit"
+    },
+  ]
+
+  export function showNotificationName(item) {
+    var val  
+    NOTIFICATION_TYPE.filter((nitem)=>{
+      if(nitem.label === item)
+        val = nitem.value
+    })
+    return val
+  }
+
+  export function showNotificationLabel(item) {
+    var val  
+    NOTIFICATION_TYPE.filter((nitem)=>{
+      if(nitem.value === item)
+        val = nitem.label
+    })
+    return val
+  }
