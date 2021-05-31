@@ -63,6 +63,7 @@ const ActiveUser = () => {
     }
 
     return (
+
         <View>
             <View style={styles.mainViewStyle}>
 
@@ -71,7 +72,7 @@ const ActiveUser = () => {
             </View>
 
             <View style={styles.rightMainViewStyle}>
-                <Text style={styles.allUsersTextStyle}>{selectedRole === 'all' ? selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)  + ' users' : selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</Text>
+                <Text style={styles.allUsersTextStyle}>{selectedRole === 'all' ? selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)  + ' users' : selectedRole === 'owner' ? 'Admin' : selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</Text>
                 <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
                 <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
                 </TouchableOpacity>
@@ -92,9 +93,10 @@ const ActiveUser = () => {
             { 
             countsInfo && countsInfo.map((item, key)=>{
                 let percent = item.active+item.inactive == 0 ? 0 : round((100*item.active/(item.active+item.inactive)),2)
+                let role = item.role === 'Owner' ? 'Admin' : item.role
             return(
                 <ShadowView key={key} style={styles.cardContainer}>
-                    <Text style={styles.activeUserTextStyle}>{item.role}</Text>
+                    <Text style={styles.activeUserTextStyle}>{role}</Text>
                     <View style={styles.activeUserView}>
                         <ShadowView style={styles.shadowContainer}>
                             <AnimatedCircularProgress
