@@ -62,24 +62,52 @@ const AlarmType = ({navigation,route}) => {
         setSelectedCheckbox(2) } 
 
         if(editData.notification.notificators){
-          switch (editData.notification.notificators) {
-            case "mail,web":
-              setNotification(true)
-              setEmailNotification(true)
-              break;
-
-            case "mail":
-              setEmailNotification(true)
-              break;
-
-            case "web":
-              setNotification(true)
-              break;
-          
-            default:
-              break;
-          }
+          let notificator = editData.notification.notificators // "web,mail,firebase" 
+          setWebNotification(String(notificator).includes("web"))
+          setNotification(String(notificator).includes("firebase"))
+          setEmailNotification(String(notificator).includes("mail"))
         }
+
+
+        // if(editData.notification.notificators){
+        //   switch (editData.notification.notificators) {
+        //     case "web,mail,firebase":
+        //       setNotification(true)
+        //       setEmailNotification(true)
+        //       setWebNotification(true)
+        //       break;
+
+        //     case "web,mail":
+        //       setEmailNotification(true)
+        //       setWebNotification(true)
+        //       break;
+
+        //     case "web,firebase":
+        //       setNotification(true)
+        //       setWebNotification(true)
+        //       break;
+
+        //     case "mail,firebase":
+        //       setNotification(true)
+        //       setEmailNotification(true)
+        //       break;
+
+        //     case "mail":
+        //       setEmailNotification(true)
+        //       break;
+
+        //     case "web":
+        //       setWebNotification(true)
+        //       break;
+
+        //     case "firebase":
+        //       setNotification(true)
+        //       break;
+          
+        //     default:
+        //       break;
+        //   }
+        // }
         var tempUser = [] ;
         editData.users ?
           editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
@@ -201,11 +229,27 @@ const AlarmType = ({navigation,route}) => {
           }
         })  }) 
       :null;
+      
+      // var notificator = notification && emailNotification && webNotification ? "web,mail,firebase" : 
+      //                   webNotification && emailNotification ? "web,mail" : 
+      //                   notification && webNotification ? "web,firebase":
+      //                   notification && emailNotification ? "mail,firebase" :
+      //                   emailNotification ? "mail" : 
+      //                   webNotification ? "web" :
+      //                   notification ? "firebase" :
+      //                   ""
 
+      let notificator = []
+      notification && notificator.push('firebase')
+      emailNotification && notificator.push('mail')
+      webNotification && notificator.push('web')
+      
+      
+      console.log("li",notificator.join())
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
       var notiType = (notificationType == 'DeviceOffline' || notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType.charAt(0).toLowerCase() + notificationType.slice(1)
-      var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+      //var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? parseInt(batteryLevelInputValue) :
                   speedInputVisible ? convertSpeedtoKnot(speedInputValue, distUnit) :
                   // movementInputVisible ? movementInputValue :
@@ -221,7 +265,7 @@ const AlarmType = ({navigation,route}) => {
             "id" : route.params.editData.notification.id,
             "type" : notiType,
             "always" : false,
-            "notificators" : notificator,
+            "notificators" : notificator.join(),
             "attributes" : {
               "alarms": alarmType,
               "name": alarmName,
@@ -244,7 +288,7 @@ const AlarmType = ({navigation,route}) => {
             "id" : 0,
             "type" : notiType,
             "always" : false,
-            "notificators" : notificator,
+            "notificators" : notificator.join(),
             "attributes" : {
               "alarms": alarmType,
               "value" : value,
@@ -393,10 +437,10 @@ return (
           <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
       </TouchableOpacity>
 
-      {/* <TouchableOpacity onPress={() => setWebNotification(!webNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+      <TouchableOpacity onPress={() => setWebNotification(!webNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
           <Image style={{alignSelf:'flex-start'}} source={webNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {"Web Notification"}</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.cancelButton}>

@@ -21,6 +21,8 @@ const Alarms = ({navigation}) => {
     alarmListData: getAlarmsListInfo(state)
   }))
 
+  console.log("khushi",alarmListData)
+
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
