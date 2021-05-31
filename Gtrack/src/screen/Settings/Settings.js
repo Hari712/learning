@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList, Linking } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, SafeAreaView, FlatList, Linking, Platform } from 'react-native'
 import images from '../../constants/images'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -12,6 +12,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 import InAppReview from 'react-native-in-app-review';
 
+const isAndroid = Platform.OS === 'android'
 
 const Settings = ({ navigation }) => {
 
@@ -106,14 +107,29 @@ const Settings = ({ navigation }) => {
       }
     }
 
+
+    async function navigatToSettings() {
+      try {
+        await Linking.openSettings();
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     function navigateToAppSettings() {
-      Linking.canOpenURL('app-settings:').then(supported => {
-        if (!supported) {
-          console.log('Can\'t handle settings url');
-        } else {
-          return Linking.openURL('app-settings:');
-        }
-      }).catch(err => console.error('An error occurred', err));
+      if (isAndroid) {
+        navigatToSettings()
+      } else {
+        Linking.canOpenURL('app-settings:').then(supported => {
+          if (!supported) {
+            console.log('Can\'t handle settings url');
+            navigatToSettings()
+          } else {
+            return Linking.openURL('app-settings:');
+          }
+        }).catch(err => console.error('An error occurred', err));
+      }
+   
     }
 
     function invokeRateUsDialog() {
