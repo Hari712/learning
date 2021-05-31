@@ -15,6 +15,7 @@ import IconConstant from '../../constants/iconConstant';
 import NavigationService from '../../navigation/NavigationService';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as LiveTrackingAction from '../LiveTracking/Livetracking.Action'
+import { isReadEvent, notificationEvents, removeEvent, setReadNotificationEvents } from '../../utils/socketHelper';
 
 const Notification = ({ navigation }) => {
 
@@ -48,7 +49,10 @@ const Notification = ({ navigation }) => {
         const titleStr = String(item.type).charAt(0).toUpperCase() + String(item.type).replace(/([a-z])([A-Z])/g, `$1 $2`).slice(1)
         
         return (
-            <TouchableOpacity onPress={()=>NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)} >
+            <TouchableOpacity onPress={()=>{
+                NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)
+                setReadNotificationEvents(item)
+                }} >
                 <View style={styles.notificationMainView}>
                     <View style={styles.notificationLeftMainView}>
                         <View style={styles.notificationLeftView}>
@@ -58,9 +62,9 @@ const Notification = ({ navigation }) => {
                         </View>
 
                         <View style={styles.notificationRightView}>
-                            <Text style={styles.titleStyle}>{titleStr}</Text>
+                            <Text style={styles.titleStyle, {color: isReadEvent(item) ? ColorConstant.GREY : ColorConstant.BLAC}}>{titleStr}</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
+                                <Text style={isReadEvent(item) ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
                                 <Tooltip popover={                                    
                                             <View>
                                                 {deviceDetail.map((dextra,key)=>{
@@ -86,8 +90,8 @@ const Notification = ({ navigation }) => {
 
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
-                            <Text style={styles.timeTextStyle}>{moment(Date(item.serverTime)).fromNow()}</Text>
-                            <TouchableOpacity onPress={()=>dispatch(LiveTrackingAction.removeNotificationEventResponse(item.id))} >
+                            <Text style={styles.timeTextStyle}>{moment(item.serverTime).fromNow()}</Text>
+                            <TouchableOpacity onPress={()=>removeEvent(item)} >
                                 <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
                             </TouchableOpacity>
                         </View>
@@ -104,7 +108,7 @@ const Notification = ({ navigation }) => {
             <FlatList
                 styles={{}}
                 contentContainerStyle={{}}
-                data={notiEvents}
+                data={notificationEvents}
                 // data={DATA}
                 renderItem={NotificationItems}
                 keyExtractor={(item, index) => index.toString()}
@@ -165,6 +169,11 @@ const styles = StyleSheet.create({
     },
     deviceStyle: {
         color: ColorConstant.BLACK,
+        fontSize: hp(1.4),
+        marginTop: hp(1)
+    },
+    deviceReadStyle: {
+        color: ColorConstant.GREY,
         fontSize: hp(1.4),
         marginTop: hp(1)
     },

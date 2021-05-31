@@ -19,6 +19,7 @@ import * as LivetrackingActions from './Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
+import { isNewEvent, isNewNotification } from '../../utils/socketHelper';
 
 const { width, height } = Dimensions.get('window');
 
@@ -412,7 +413,7 @@ const LiveTracking = ({ navigation }) => {
 					style={styles.bellIconStyle}
 				>
 					<BellIcon />
-					{notiEvents.length > 0 && !isVisible ?
+					{isNewEvent ?
 						<View style={{position:'absolute', backgroundColor:ColorConstant.ORANGE, borderRadius:5, width:10, height:10, elevation:4, top:16,right:16 }} />
 					:null }
 				</TouchableOpacity>
