@@ -34,6 +34,15 @@ export const isCircle = (input) => {
     return cirlceRE.test(input)
 }
 
+export const matchStrings = (str1, str2) => {
+  return (String(str1).toLowerCase().replace(/\s+/g, '') === String(str2).toLowerCase().replace(/\s+/g, ''))
+}
+
+export const switchCaseString = (str1) => {
+  // Removes internal and both sides whitespaces and changes it to lowercase for switch
+  return String(str1).toLowerCase().replace(/\s+/g, '') 
+}
+
 export const toRegularCase = (input) => {
   return String(input).charAt(0).toUpperCase() + String(input).slice(1).toLowerCase()
 }
