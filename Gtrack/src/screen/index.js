@@ -49,6 +49,7 @@ import TripHistory from './LiveTracking/TripHistory/TripHistory'
 import TripHistoryDetails from './LiveTracking/TripHistory/TripHistoryDetails'
 import DispatchRoute from './LiveTracking/TripHistory/DispatchRoute'
 import NoInternet from './NoInternet/NoInternet'
+import LiveTrackingDetails from './LiveTracking/LiveTrackingDetails'
 
 export {
     Splash,
@@ -100,5 +101,6 @@ export {
     TrackingDetails,
     GeoFenceCircle,
     GeoFencePolyGon,
-    NoInternet
+    NoInternet,
+    LiveTrackingDetails
 }
