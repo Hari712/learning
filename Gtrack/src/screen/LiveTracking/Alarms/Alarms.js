@@ -138,14 +138,14 @@ const Alarms = ({navigation}) => {
           </View>
 
           {/* Duration*/}
-          <View style={styles.horizontalLine} />
+          {/* <View style={styles.horizontalLine} />
             <View style={styles.duration}>
                 <Text style={styles.durationText}>
                   { attributes && attributes.everyday ? 
                     "Everyday (All hours)" : 
                     attributes && attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
-          </View>
+          </View> */}
         </TouchableOpacity>
     </View>
     )   
