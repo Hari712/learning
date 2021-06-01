@@ -63,7 +63,21 @@ const RecentAlarms = (props) => {
     } 
 
     if(alarmData) {
-      let colorsArray = [ColorConstant.BROWN, ColorConstant.DARKBROWN, ColorConstant.LIGHTBROWN, ColorConstant.ORANGE, ColorConstant.LIGHTPINK]
+      let colorsArray = [        
+        '#9D0208',
+        '#D00000',        
+        '#E85D04',
+        '#FF7F21',
+        '#FAA307',
+        '#FFBA08',
+        '#FFA664',
+        '#fbba72',
+        '#faff81',
+        '#e4ff1a',
+        '#DC2F02',
+        '#370617',
+        '#6A040F'
+      ]
       console.log("Alarm", alarmData)
       let totalCount = alarmData ? alarmData.totalAlarms : 0
       let array = alarmData ? alarmData.alarmCountDTOS.map((item, key)=>{
@@ -130,8 +144,6 @@ const RecentAlarms = (props) => {
                 </TouchableOpacity>
             </View>
         </View>
-
-        
 
       </ShadowView>
     )
