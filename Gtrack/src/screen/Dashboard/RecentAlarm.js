@@ -12,6 +12,7 @@ import * as DashboardActions from './Dashboad.Action'
 import { getDeviceDetailsListInfo, getLoginInfo } from '../Selector'
 import AppManager from '../../constants/AppManager'
 import { RefreshIcon } from '../../component/SvgComponent'
+import { showNotificationName } from './../../utils/helper';
 
 let activityData = [];
 
@@ -91,12 +92,12 @@ const RecentAlarms = (props) => {
         </View>
 
         {/* Legends View */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', padding: hp(2), flexWrap:'wrap' }}>
+        <View style={{ flexDirection: 'row', justifyContent:'flex-start', padding: hp(2), flexWrap:'wrap' }}>
           {activityData.map((item)=>{
             return (
-              <View style={{ paddingHorizontal: hp(1), flexDirection: 'row', alignItems:'center' }}>
+              <View style={{flexDirection: 'row', alignItems:'center', width:'33.33%', padding:wp(0.5) }}>
                 <View style={[styles.alarmStatusMainView, { backgroundColor: item.color }]}></View>
-                <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4), textAlignVertical:'center', paddingLeft:hp(1) }}>{item.label}</Text>
+                <Text style={{ color: ColorConstant.BLUE, fontSize: FontSize.FontSize.extraSmall, textAlignVertical:'center', paddingLeft:hp(1) }}>{showNotificationName(item.label)}</Text>
               </View>
             )
           })}
