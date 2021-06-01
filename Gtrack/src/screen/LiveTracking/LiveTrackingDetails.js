@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import BottomSheet from 'reanimated-bottom-sheet';
 import FontSize from '../../component/FontSize';
-import { getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo } from './../Selector';
+import { dist, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo } from './../Selector';
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
@@ -14,6 +14,7 @@ import { lineString as makeLineString } from '@turf/helpers';
 import useStateRef from '../../utils/useStateRef';
 import _ from 'lodash';
 import { BackIcon, LiveEndPointIcon, LiveStartPointIcon } from '../../component/SvgComponent';
+import { convertDist, convertSpeed } from '../../utils/helper';
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
@@ -40,10 +41,11 @@ const LiveTrackingDetails = ({navigation, route}) => {
 
 	const mapRef = useRef();
 
-	const { isConnected, devicePositions, groupDevices } = useSelector(state => ({
+	const { isConnected, devicePositions, groupDevices, distUnit } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		devicePositions: getLiveTrackingDeviceList(state),
-		groupDevices: getLivetrackingGroupDevicesListInfo(state)
+		groupDevices: getLivetrackingGroupDevicesListInfo(state),
+		distUnit: dist(state)
 	}));
 
 	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
@@ -188,15 +190,15 @@ const LiveTrackingDetails = ({navigation, route}) => {
 			<View style={styles.otherDetails}>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Duration</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>Not availabel</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>Not available</Text>
 				</View>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Distance</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{singleSelectedDevice && singleSelectedDevice.attributes ? singleSelectedDevice.attributes.distance + 'mi' : '-'}</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{convertDist(singleSelectedDevice && singleSelectedDevice.attributes && singleSelectedDevice.attributes.distance, distUnit)}</Text>
 				</View>
 				<View style={{flex:0.3}}>
 					<Text style={styles.otherDetailText}>Speed</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{singleSelectedDevice ? (singleSelectedDevice.speed).toFixed(3) + ' mph' : '-'}</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>{convertSpeed(singleSelectedDevice && singleSelectedDevice.speed, distUnit)}</Text>
 				</View>    
 			</View>         
 		</View>
