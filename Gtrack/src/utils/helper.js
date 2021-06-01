@@ -5,7 +5,7 @@ import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
-import round  from 'lodash';
+import round  from 'lodash/round';
 
 
 export const validateEmailorPhoneNumber = (input) => {
@@ -156,7 +156,7 @@ export function isIphoneX() {
     if(value){
       if(unit=='km')
       // 1knot = 1.852 kmph
-        return round(value * 1.852, 2) + " " + 'kmph'
+        return round(value * 1.852, 2) + " " + 'kph'
       else  
       // 1knot = 1.15077945 mph
         return round(value * 1.15077945, 2) + " " + 'mph'
