@@ -46,6 +46,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
     const [notification, setNotification] = useState(false)
     const [emailNotification, setEmailNotification] = useState(false)
+    const [webNotification, setWebNotification] = useState(false)
 
     let response = { 
         deviceList : [],
@@ -60,16 +61,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
             setName(editingData.name)
             setDescrption(editingData.description) 
             setColor(editingData.color)
-            if(editingData.webNotificator && editingData.mailNotificator){
-                setNotification(true)
-                setEmailNotification(true)
-            }
-            if(editingData.webNotificator){
-                setNotification(true)
-            }
-            if(editingData.mailNotificator){
-                setEmailNotification(true)
-            }
+
+            setNotification(editingData.pushNotificator)
+            setEmailNotification(editingData.mailNotificator)
+            setWebNotification(editingData.webNotificator)            
+            
             if(editingData.selectedUser){
                 setSelectedUser(editingData.selectedUser)
             }
@@ -154,9 +150,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
+
+        var notificator = []
+        notification && notificator.push('firebase')
+        emailNotification && notificator.push('mail')
+        webNotification && notificator.push('web')
         
         console.log("user",devices,deviId)
-        var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
         const requestBody = {
             "userIds" : arrSelectedId,
             "deviceIds" : deviId,
@@ -164,7 +164,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 "id" : null,
                 "type" : "geofenceEnter",
                 "always" : false,
-                "notificators" : notificator,
+                "notificators" : notificator.join(),
                 "attributes" : null,
                 "calendarId" : 0
             }
@@ -185,7 +185,10 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     function onSuccess(data) { 
         response.geofence = data.result
-        let notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+        var notificator = []
+        notification && notificator.push('firebase')
+        emailNotification && notificator.push('mail')
+        webNotification && notificator.push('web')
 
         let arrSelectedId = [];
         selectUser ? 
@@ -206,7 +209,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
                 "id" : null,
                 "type" : "geofenceEnter",
                 "always" : false,
-                "notificators" : notificator,
+                "notificators" : notificator.join(),
                 "attributes" : null,
                 "calendarId" : 0
             }
@@ -218,7 +221,12 @@ const GeoFenceDetails = ({ navigation, route }) => {
     }
 
     function onLinkSuccess(data) {
-        var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
+
+        var notificator = []
+        notification && notificator.push('firebase')
+        emailNotification && notificator.push('mail')
+        webNotification && notificator.push('web')
+
         var userdt = []
         selectUser ? 
             selectUser.filter((selectedItem)=> {  
@@ -231,7 +239,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         :[];
         console.log("linking",userdt)
         response.deviceList = devices
-        response.notificator = notificator
+        response.notificator = notificator.join()
         response.userDTOS = userdt
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
@@ -359,6 +367,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         <TouchableOpacity onPress={() => setEmailNotification(!emailNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                             <Image style={{alignSelf:'flex-start'}} source={emailNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                             <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => setWebNotification(!webNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                            <Image style={{alignSelf:'flex-start'}} source={webNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                            <Text style={styles.notificationStyle}> Web Notification</Text>
                         </TouchableOpacity>
                     </View>
 
