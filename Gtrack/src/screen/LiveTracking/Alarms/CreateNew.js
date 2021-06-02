@@ -167,7 +167,7 @@ return (
             <TextField 
               valueSet={setOverspeedInputValue} 
               maxLength={30}
-              label={'Speed Limit ('+ distUnit +'ph)'}
+              label={ dist=='km' ? 'Speed Limit (kph)' : 'Speed Limit (mph)'}
               defaultValue={overSpeedInputValue}
               outerStyle={[styles.outerStyle,{marginTop:hp(14)}]} 
             />

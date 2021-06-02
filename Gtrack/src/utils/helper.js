@@ -5,7 +5,7 @@ import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
-import round  from 'lodash';
+import round  from 'lodash/round';
 
 
 export const validateEmailorPhoneNumber = (input) => {
@@ -144,9 +144,9 @@ export function isIphoneX() {
   export function convertDist(value, unit) {
     if(value){
       if(unit=='km')
-        return round(value/1000,2) + " " + unit
+        return round(value/1000,2).toFixed(2) + " " + unit
       else  
-        return round(value/1609.344,2) + " " + unit
+        return round(value/1609.344,2).toFixed(2) + " " + unit
     } 
     else 
       return "-"
@@ -156,10 +156,10 @@ export function isIphoneX() {
     if(value){
       if(unit=='km')
       // 1knot = 1.852 kmph
-        return round(value * 1.852, 2) + " " + 'kmph'
+        return round(value * 1.852, 2).toFixed(2) + " " + 'kph'
       else  
       // 1knot = 1.15077945 mph
-        return round(value * 1.15077945, 2) + " " + 'mph'
+        return round(value * 1.15077945, 2).toFixed(2) + " " + 'mph'
     } 
     else 
       return "-"
