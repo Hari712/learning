@@ -6,7 +6,8 @@ import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
 import round  from 'lodash';
-import { getMomentText, timeZoneEnum } from '../component/TimeZoneDialog';
+import { getMomentText } from '../component/TimeZoneDialog';
+import { timeZoneEnum } from '../constants/TimeZoneObj';
 
 
 export const validateEmailorPhoneNumber = (input) => {
@@ -200,7 +201,7 @@ export function isIphoneX() {
   export function convertTime(value, settingsData) {
     var moment = require('moment-timezone');
     var unit =  getMomentText(settingsData.timeZone)
-    // console.log("Timezone", unit, value, timeZoneEnum.map((item)=>moment(value).tz(item.momenttz).format('HH:mm')))
+    // console.log("Timezone", unit, value, timeZoneEnum.map((item)=>moment(value).tz(item.key).format('HH:mm')))
     return unit ? moment(value).tz(unit) : moment(value)
   }
 

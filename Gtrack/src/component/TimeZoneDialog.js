@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import images from '../constants/images';
 import { ColorConstant } from '../constants/ColorConstants';
@@ -7,40 +7,36 @@ import { FontSize } from '.';
 import { Dialog } from 'react-native-simple-dialogs';
 import { translate } from '../../App';
 import { RadioButtonIcon, RadioButtonIconClicked } from './SvgComponent';
-
-export const timeZoneEnum = [
-    {
-        name: "(GMT +05:30) Asia/Kolkata",
-        value: "IST",
-        momenttz: "Asia/Kolkata"
-    },
-    {
-        name: "(GMT -04:00) America/Toronto",
-        value: "America/Toronto",
-        momenttz: "America/Toronto"
-    },
-    {
-        name: "(GMT +00:00) UTC",
-        value: "utc",
-        momenttz: "utc"
-    }
-]
+import { timeZoneEnum } from '../constants/TimeZoneObj';
 
 export function showTimeText(input) {
-    const filter = timeZoneEnum.filter((item)=>item.value==input)
-    const name = filter ? filter[0].name : input;
-    return name
+    var moment = require('moment-timezone');
+    const filter = timeZoneEnum.filter((item)=>item.key==input)
+    const name = filter.length > 0 ? filter[0].key : input;
+    const tz = moment.tz(name).format('Z');
+    const str = '(GMT ' + tz + ') '+ ( String(name).split('/')[1] ? String(name).split('/')[1] : String(name).split('/')[0])
+    return str
 }
 
 export function getMomentText(input) {
-    const filter = timeZoneEnum.filter((item)=>item.value==input)
-    const tz = filter ? filter[0].momenttz : null;
+    const filter = timeZoneEnum.filter((item)=>item.key==input)
+    const tz = filter ? filter[0].key : null;
     return tz
 }
 
 const TimeZoneDialog = (props) => {
 
     const { visible, closeDialogBox, setTimeZone, timeZone  } = props
+
+    const renderItem = ({item, index}) => {
+        const selected = (item.key===timeZone)
+        return(
+            <TouchableOpacity key={item} onPress={()=>{setTimeZone(item.key)}} style={styles.container}>
+                {selected ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
+                <Text style={[styles.listTextStyle,selected && {color:ColorConstant.ORANGE}]}>{showTimeText(item.key)}</Text>
+            </TouchableOpacity>                                  
+        )
+    }
 
         return(
         <Dialog visible={visible} onTouchOutside={() => { closeDialogBox(false) }} dialogStyle={styles.dialogStyle}>
@@ -53,33 +49,27 @@ const TimeZoneDialog = (props) => {
                         <Image source={images.geoFence.CrossBlack} resizeMode="contain" style={styles.crossImageStyle} />
                     </TouchableOpacity>
                 </View>
-                {/* <View style={styles.textMainView}>
-                    <Text style={styles.textViewStyle}>Do you really want to delete {geofenceName} ? </Text>
-                </View> */}
-
-                {/* <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}> */}
+                
+                {/* <ScrollView>
                     {
                         timeZoneEnum.map((item,key)=>{
-                            const selected = (item.value===timeZone)
+                            const selected = (item.key===timeZone)
                         return(
-                            <TouchableOpacity key={key} onPress={()=>{setTimeZone(item.value)}} style={styles.container}>
+                            <TouchableOpacity key={key} onPress={()=>{setTimeZone(item.key)}} style={styles.container}>
                                 {selected ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
-                                <Text style={[styles.listTextStyle,selected && {color:ColorConstant.ORANGE}]}>{item.name}</Text>
+                                <Text style={[styles.listTextStyle,selected && {color:ColorConstant.ORANGE}]}>{item.key}</Text>
                             </TouchableOpacity>                                  
                         )
                         })
                     }
-                    {/* </View> */}
+                </ScrollView> */}
 
-                {/* <View style={styles.buttonContainer}>
-                    <TouchableOpacity onPress={() => setDeleteDialogBox(false)  } style={[styles.cancelButton]}>
-                        <Text style={styles.buttonTextColor}>{translate("Cancel")}</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => ondeleteGeofence()} style={styles.nextButton}>
-                        <Text style={styles.nextButtonText}>{translate("Delete_string")}</Text>
-                    </TouchableOpacity>
-                </View> */}
+                <FlatList
+                    renderItem = {renderItem}
+                    data = {timeZoneEnum}
+                    keyExtractor = {(item, index) => index.toString()}
+                />
+                
 
             </View>
         </Dialog>
@@ -104,7 +94,7 @@ const styles = StyleSheet.create({
         textAlignVertical:'center'
     },
     deleteDialogMainView: {
-        height: hp(23),
+        height: hp(70),
         width: wp(80)
     },
     subHeadingView: {
