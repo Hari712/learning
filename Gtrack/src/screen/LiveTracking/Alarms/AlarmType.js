@@ -133,13 +133,8 @@ const AlarmType = ({navigation,route}) => {
     });
   },[navigation]);
 
-  console.log("MK",getPanicDetail)
-
   function sendData() {
     if (isConnected) {
-      // if(alarmType == 'sos' && hasPanic && getPanicDetail[0].notification.id != route.params.editData.notification.id ) {
-      //   AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
-      // } else {
       if (isEmpty(alarmName)) {
         AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
       } else {
@@ -164,7 +159,6 @@ const AlarmType = ({navigation,route}) => {
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
       var notiType = (notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType
-      //var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? parseInt(batteryLevelInputValue) :
                   speedInputVisible ? convertSpeedtoKnot(speedInputValue, distUnit) :
                   // movementInputVisible ? movementInputValue :
@@ -172,6 +166,10 @@ const AlarmType = ({navigation,route}) => {
                   null;
       if(route && route.params && route.params.editData) {
         // Editing/update body
+        if(alarmType == 'sos' && hasPanic && getPanicDetail[0].notification.id != route.params.editData.notification.id ) {
+          AppManager.hideLoader()
+          AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
+      } else {
         isUpdate = true;
         requestBody = {
           "userIds" : arrSelectedId,
@@ -190,9 +188,16 @@ const AlarmType = ({navigation,route}) => {
             },
             "calendarId" : 0
           }
-        }      
+        } 
+        console.log("requestbody",requestBody)
+        dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError)) 
+      }    
       } else {
         // create body 
+        if(alarmType == 'sos' && hasPanic  ) {
+          AppManager.hideLoader()
+          AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
+      } else {
         isUpdate = false;
         requestBody = {
           "userIds" : arrSelectedId,
@@ -212,9 +217,10 @@ const AlarmType = ({navigation,route}) => {
             "calendarId" : 0
           }
         }
+        console.log("requestbody",requestBody)
+        dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
+      }
       } 
-      console.log("requestbody",requestBody)
-      dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
       }
     // }
   } else {

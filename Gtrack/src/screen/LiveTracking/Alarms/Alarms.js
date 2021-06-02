@@ -105,7 +105,7 @@ const Alarms = ({navigation}) => {
 
     const {attributes} = item.notification
     const editButVisible = String(item.notification.type).includes('geofenceEnter') || String(item.notification.type).includes('geofenceExit')
-    console.log("edibutt", editButVisible)
+    
     return(  
     <View style={styles.cardContainer} key={index}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
