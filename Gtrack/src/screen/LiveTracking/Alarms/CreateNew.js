@@ -11,7 +11,7 @@ import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon } from '../../../component/SvgComponent';
 import { getLoginInfo, getAlertTypetListInfo, dist } from '../../Selector';
 import isEmpty from 'lodash/isEmpty'
-import { convertSpeedtoKnot, convertSpeedVal } from './../../../utils/helper';
+import { convertSpeedtoKnot, convertSpeedVal, NOTIFICATION_TYPE, showNotificationName, showNotificationLabel } from './../../../utils/helper';
 
 
 const CreateNew = ({navigation,route}) => {
@@ -34,8 +34,6 @@ const CreateNew = ({navigation,route}) => {
     distUnit: dist(state)
 }))
 
-const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase() + x.slice(1); })
-
   useEffect(() => {    
     if(route){
       const editData = route.params;
@@ -49,8 +47,8 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
         if( editData.editData.notification.type == 'deviceOverspeed' && editData.editData.notification.attributes.value){
           setOverspeedInputValue(convertSpeedVal(editData.editData.notification.attributes.value,distUnit))
         }
+      }
     }
-  }
   }, 
   [])
 
@@ -94,26 +92,15 @@ const alarmTypeList = alertList.map(function(x){ return x.charAt(0).toUpperCase(
           }
         })  }) 
       :null;
-      
-      console.log(arrSelectedId)
-  
+        
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
-        alarmType:setAlarmKeywords(selectedAlarmType), 
+        alarmType:selectedAlarmType, 
         deviceOverSpeedValue:convertSpeedtoKnot(overSpeedInputValue, distUnit),
         selectedDeviceList:selectedDevice,
         notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 
         editData:editingValues})
       
-    }
-  }
-
-  function setAlarmKeywords(str) {
-    switch (str) {
-      case "Low Speed": return "lowspeed"
-      case "Battery Level" : return "lowBattery"
-      case "Panic" : return "sos"
-      default : return str
     }
   }
 
@@ -163,29 +150,36 @@ return (
                 />  
         <View onLayout={({nativeEvent}) => setSelectAlarmDDy(nativeEvent.layout.y)} /> 
 
-        {String(selectedNotification).toLowerCase() == 'DeviceOverspeed'.toLowerCase() &&
+        {selectedNotification == 'deviceOverspeed' &&
             <TextField 
               valueSet={setOverspeedInputValue} 
               maxLength={30}
-              label={'Speed Limit ('+ distUnit +'ph)'}
+              label={ dist=='km' ? 'Speed Limit (kph)' : 'Speed Limit (mph)'}
               defaultValue={overSpeedInputValue}
               outerStyle={[styles.outerStyle,{marginTop:hp(14)}]} 
             />
         } 
         
-        {String(selectedNotification).toLowerCase() == 'Alarm'.toLowerCase() ?
+        {selectedNotification == 'alarm' &&
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
-            <DropDown label={translate("Alarm_Type")} defaultValue={selectedAlarmType} valueSet={setSelectedAlarmType} dataList={alarmTypes} />   
+            <DropDown label={translate("Alarm_Type")} 
+              defaultValue={showNotificationName(selectedAlarmType)} 
+              valueSet={(item) => setSelectedAlarmType(showNotificationLabel(item))} 
+              dataList={alarmTypes.map((item) => showNotificationName(item) )} />   
           </View>
-        : null }
+        }
         
         <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
-            <DropDown label='Notification Type*' defaultValue={selectedNotification} valueSet={setSelectedNotification} dataList={alarmTypeList} />   
+            <DropDown label='Notification Type*' 
+              defaultValue={showNotificationName(selectedNotification)} 
+              valueSet={(item)=> setSelectedNotification(showNotificationLabel(item))} 
+              dataList={alertList.map((item)=>showNotificationName(item))} />   
         </View>
 
-     </View>
+    </View>
 
-     {selectedDevice.length>=0 && selectedNotification ?
+    {
+      selectedDevice.length>=0 && selectedNotification ?
         <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS)} style={styles.cancelButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.BLUE}}>{translate("Cancel")}</Text>
@@ -194,13 +188,16 @@ return (
             <TouchableOpacity onPress={() => onPressNext()} style={styles.nextButton}>
                 <Text style={{textAlign:'center',color:ColorConstant.WHITE}}>{translate("Next")}</Text>
             </TouchableOpacity>
-        </View> : null }
-  </ScrollView>
-  </>
-      )
+        </View> 
+      : null 
     }
 
-const alarmTypes = ["Low Speed","Battery Level","Panic"] ;
+  </ScrollView>
+  </>
+  )
+}
+
+const alarmTypes = ["lowspeed","lowBattery","sos"] ;
 
 const styles = StyleSheet.create({
 

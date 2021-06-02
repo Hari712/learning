@@ -13,24 +13,14 @@ const AlarmDetail = ({navigation,route}) => {
 
   const [webNotification, setWebNotification] = useState(false)
   const [emailNotification, setEmailNotification] = useState(false)
+  const [notification, setNotification] = useState(false)
 
   useEffect(() => {
-    switch (data.notification.notificators) {
-      case "mail,web":
-        setWebNotification(true)
-        setEmailNotification(true)
-        break;
-
-      case "mail":
-        setEmailNotification(true)
-        break;
-
-      case "web":
-        setWebNotification(true)
-        break;
-    
-      default:
-        break;
+    if(data.notification.notificators){
+      let notificator = data.notification.notificators // "web,mail,firebase" 
+      setWebNotification(String(notificator).includes("web"))
+      setNotification(String(notificator).includes("firebase"))
+      setEmailNotification(String(notificator).includes("mail"))
     }
   },[data.notification.notificators])
 
@@ -102,25 +92,32 @@ return (
         </View>
 
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
-            <View style={{flexDirection:'column',flex:2}}>
+            {/* <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Time")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>
                 {data.notification.attributes.everyday ? 
                     "Everyday (All hours)" : 
                       data.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
-            </View> 
+            </View>  */}
 
             <View style={{flexDirection:'column',flex:1.5}}>
                 <Text style={styles.textStyle}>{translate("Web Notification")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{webNotification && emailNotification ? "On" : webNotification ? "On" : "Off"}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{webNotification ? "On" : "Off"}</Text>
             </View>
         </View>
 
-            <View style={{marginTop:hp(1)}}>
+        <View style={{flexDirection:'row',marginVertical:hp(2)}}>
+            <View style={{marginTop:hp(1),flex:2}}>
                 <Text style={styles.textStyle}>{translate("Email Notification")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{webNotification && emailNotification ? "On" : emailNotification ? "On" : "Off"}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{emailNotification ? "On" : "Off"}</Text>
             </View>
+
+            <View style={{marginTop:hp(1),flex:1.5}}>
+                <Text style={styles.textStyle}>{translate("Push Notification")}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{notification  ? "On" : "Off"}</Text>
+            </View>
+        </View>
 
       </View>
   </View>

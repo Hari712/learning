@@ -28,36 +28,26 @@ const GeofenceEditDialog = (props) => {
     // const [perimeter, setPerimeter] = useState(0)
     const [coordinate, setCoordinate] = useState()
     const [coordinates, setCoordinates] = useState()
-    const [webNotificator, setWebNotificator] = useState()
-    const [mailNotificator, setMailNotificator] = useState()
+    const [webNotificator, setWebNotificator] = useState(false)
+    const [mailNotificator, setMailNotificator] = useState(false)
+    const [pushNotificator, setPushNotificator] = useState(false)
     const [selectedUser, setSelectedUser] = useState()
 
     useEffect(() => {
         if(activeGeofence){
-            switch (activeGeofence.notificator) {
-                case "mail,web":
-                setWebNotificator(true)
-                setMailNotificator(true)
-                break;
-    
-                case "web,mail":
-                setWebNotificator(true)
-                setMailNotificator(true)
-                break;
-    
-                case "mail":
-                setMailNotificator(true)
-                break;
-    
-                case "web":
-                setWebNotificator(true)
-                break;
-            
-                default:
-                break;
+            if(activeGeofence.notificator){
+                let notificator = activeGeofence.notificator 
+                setWebNotificator(String(notificator).includes("web"))
+                setPushNotificator(String(notificator).includes("firebase"))
+                setMailNotificator(String(notificator).includes("mail"))
+            } else {
+                setWebNotificator(false)
+                setPushNotificator(false)
+                setMailNotificator(false)
             }
-            let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.map((item) => item.firstName+" "+item.lastName) : null
-            setSelectedUser(user)
+        let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.map((item) => item.firstName+" "+item.lastName) : null
+        setSelectedUser(user)
+
         }
     },[activeGeofence])
 
@@ -170,14 +160,18 @@ return(
                             : <Text style={[styles.fontSizeStyle]}>-</Text>}
                         <View style={{marginTop:hp(2),flexDirection:'row'}}>
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
-                                <Image style={{alignSelf:'flex-start'}} source={mailNotificator && webNotificator || webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Image style={{alignSelf:'flex-start'}} source={pushNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
                             </View>
                             <View style={{flexDirection:'row',alignItems:'center'}}>
-                                <Image style={{alignSelf:'flex-start'}} source={mailNotificator && webNotificator || mailNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Image style={{alignSelf:'flex-start'}} source={mailNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
                             </View>
                         </View>
+                            <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                                <Image  source={webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> Web Notification</Text>
+                            </View>
                     </View>
                 </View>
             </View>
@@ -208,6 +202,7 @@ return(
                         id:activeGeofence.geofence.id,
                         mailNotificator:mailNotificator,
                         webNotificator: webNotificator,
+                        pushNotificator: pushNotificator,
                         selectedUser: selectedUser,
                         status: activeGeofence.isActive
                     }})
