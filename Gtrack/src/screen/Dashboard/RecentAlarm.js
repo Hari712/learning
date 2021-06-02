@@ -12,6 +12,7 @@ import * as DashboardActions from './Dashboad.Action'
 import { getDeviceDetailsListInfo, getLoginInfo } from '../Selector'
 import AppManager from '../../constants/AppManager'
 import { RefreshIcon } from '../../component/SvgComponent'
+import { showNotificationName } from './../../utils/helper';
 
 let activityData = [];
 
@@ -62,7 +63,21 @@ const RecentAlarms = (props) => {
     } 
 
     if(alarmData) {
-      let colorsArray = [ColorConstant.BROWN, ColorConstant.DARKBROWN, ColorConstant.LIGHTBROWN, ColorConstant.ORANGE, ColorConstant.LIGHTPINK]
+      let colorsArray = [        
+        '#9D0208',
+        '#D00000',        
+        '#E85D04',
+        '#FF7F21',
+        '#FAA307',
+        '#FFBA08',
+        '#FFA664',
+        '#fbba72',
+        '#faff81',
+        '#e4ff1a',
+        '#DC2F02',
+        '#370617',
+        '#6A040F'
+      ]
       console.log("Alarm", alarmData)
       let totalCount = alarmData ? alarmData.totalAlarms : 0
       let array = alarmData ? alarmData.alarmCountDTOS.map((item, key)=>{
@@ -91,12 +106,12 @@ const RecentAlarms = (props) => {
         </View>
 
         {/* Legends View */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', padding: hp(2), flexWrap:'wrap' }}>
+        <View style={{ flexDirection: 'row', justifyContent:'flex-start', padding: hp(2), flexWrap:'wrap' }}>
           {activityData.map((item)=>{
             return (
-              <View style={{ paddingHorizontal: hp(1), flexDirection: 'row', alignItems:'center' }}>
+              <View style={{flexDirection: 'row', alignItems:'center', width:'33.33%', padding:wp(0.5) }}>
                 <View style={[styles.alarmStatusMainView, { backgroundColor: item.color }]}></View>
-                <Text style={{ color: ColorConstant.BLUE, fontSize: hp(1.4), textAlignVertical:'center', paddingLeft:hp(1) }}>{item.label}</Text>
+                <Text style={{ color: ColorConstant.BLUE, fontSize: FontSize.FontSize.extraSmall, textAlignVertical:'center', paddingLeft:hp(1) }}>{showNotificationName(item.label)}</Text>
               </View>
             )
           })}
@@ -129,8 +144,6 @@ const RecentAlarms = (props) => {
                 </TouchableOpacity>
             </View>
         </View>
-
-        
 
       </ShadowView>
     )

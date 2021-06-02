@@ -10,6 +10,7 @@ import { getAlarmsListInfo, getLoginState, isRoleRegular } from '../../Selector'
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { BackIcon, DeleteIcon, EditIcon } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
+import { showNotificationName } from '../../../utils/helper';
 
 
 const Alarms = ({navigation}) => {
@@ -28,7 +29,6 @@ const Alarms = ({navigation}) => {
   const [alarmName, setAlarmName] = useState()
   const [notificationId, setNotificationId] = useState()
   const [deleteDialogVisible,setDeleteDialogVisible] = useState(false)
-  const [list, setList] = useState(DATA);
 
   useEffect(() => {  
     loadAlarmList()
@@ -102,8 +102,10 @@ const Alarms = ({navigation}) => {
   }
 
   const renderItem = ({item,index}) => {
-    
+
     const {attributes} = item.notification
+    const editButVisible = String(item.notification.type).includes('geofenceEnter') || String(item.notification.type).includes('geofenceExit')
+    console.log("edibutt", editButVisible)
     return(  
     <View style={styles.cardContainer} key={index}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
@@ -111,10 +113,10 @@ const Alarms = ({navigation}) => {
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
                 <Text style={styles.blueBoxTitle}>{attributes && attributes.name ? attributes.name : null}</Text>
-                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{item.notification.type}</Text>
+                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{showNotificationName(item.notification.type)}</Text>
               </View>
 
-              { !isRegular ?
+              { !isRegular ? !editButVisible  &&
               <TouchableOpacity style={{zIndex:5, padding: hp(1.5)}} onPress={()=>{navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW,{editData:item})}}>
                 <EditIcon  width={13.947}  height={13.947}/>
               </TouchableOpacity> : null }
@@ -184,23 +186,6 @@ return (
   </View>
       )
     }
-const DATA = [
-    {
-        id: 0,
-        title: 'Speed',
-        type: 'Overspeed Alarm',
-        asset: ['TrackPort International'],
-        duration: 'Weekdays(Monday-Friday, All hours)'
-    },
-    {
-        id: 1,
-        title: 'Emergency',
-        type: 'Panic Alarm',
-        asset: ['Spark Nano 7 GPS Tracker', 'TrackPort International', 'TrackPort 4G Vehicle GPS Tracker'],
-        duration: 'Everyday(All hours)'
-    },
-    
-];
 
 
 const styles = StyleSheet.create({
