@@ -8,6 +8,7 @@ import { getLoginState, isUserLoggedIn, getTraccarSessionInfo } from '../screen/
 import * as LiveTrackingActions from '../screen/LiveTracking/Livetracking.Action'
 import ApiConstants from '../api/ApiConstants'
 import { useDispatch ,useSelector } from 'react-redux'
+import { setNotificationEvents } from '../utils/socketHelper'
 
 let socketIOConnOpt = {
     reconnection: true,
@@ -89,6 +90,9 @@ const SocketProvider = (props) => {
             // data = {positions:[{},{}]}
             // data = {devices:[{},{}]}
             // data = {events:[{},{}]}
+            //readSocketData(data)
+
+            console.log("event",data)
             
             if (data.positions && Array.isArray(data.positions)) {
                 setArrDevicePositionList(data)
@@ -98,6 +102,7 @@ const SocketProvider = (props) => {
             if (data.events && Array.isArray(data.events)) {
                 setArrDevicePositionList(data)
                 dispatch(LiveTrackingActions.setNotificationEventsResponse(data.events))
+                setNotificationEvents(data.events)
             }
         }
         socket.onclose = function (event) {
