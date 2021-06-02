@@ -6,8 +6,8 @@ import { navigationRef } from './NavigationService';
 import { TabStackNavigator } from './TabStack';
 import { getLoginState, isUserLoggedIn } from '../screen/Selector';
 //import TrackingDetails from '../component/TrackingDetails';
-import { getItem } from '../utils/storage';
-import { USER_DATA, TRACCAR_SESSION_DATA } from '../constants/AppConstants';
+import { getItem, getValue } from '../utils/storage';
+import { USER_DATA, TRACCAR_SESSION_DATA, FCM_TOKEN } from '../constants/AppConstants';
 import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../screen/Login/Login.Action';
 import AuthStackNavigator from './AuthNavigator';
@@ -17,6 +17,7 @@ import DeviceInfo from 'react-native-device-info';
 import * as DeviceActions from '../screen/DeviceSetup/Device.Action';
 import * as LivetrackingActions from '../screen/LiveTracking/Livetracking.Action'
 import { showOfflineStatusBar, hideOfflineStatusBar } from '../component/OfflineBar';
+import isEmpty from 'lodash/isEmpty'
 
 const ConnectivityStack = createStackNavigator();
 
@@ -90,6 +91,7 @@ function AppNavigator() {
 				dispatch(DeviceActions.requestGetAllUserDevice(response.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 				dispatch(SettingsActions.requestGetAdvanceSettings(response.userDTO.id, onFeedbackSuccess, onFeedbackError))
 				dispatch(LivetrackingActions.requestGetDevicesByUserId(response.userDTO.id, onFeedbackSuccess, onFeedbackError))
+				onAddDeviceToken(response)
 			}
 			setIsReady(true);
 		}
@@ -100,6 +102,21 @@ function AppNavigator() {
 
 		return () => clearTimeout(timer);
 	}, []);
+
+	async function onAddDeviceToken(data) {
+		const fcmToken = await getValue(FCM_TOKEN)
+		if (!isEmpty(fcmToken)) {
+			dispatch(LoginActions.requestAddDeviceToken(data.userDTO.id, fcmToken, onAddDeviceTokenSuccess, onAddDeviceTokenError))
+		}
+	}
+
+	function onAddDeviceTokenSuccess(data) {
+		console.log('Add Token Success', data)
+	}
+
+	function onAddDeviceTokenError(error) {
+		console.log('Add Token Error', error)
+	}
 
 	useEffect(
 		() => {
