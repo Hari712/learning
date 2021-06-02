@@ -81,8 +81,7 @@ const ApiConstants = {
     SEARCH_GROUP:(userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
     SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
     ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
-    GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`,
-    GET_LOGFORM_BY_HOS_LOG_ID: 
+    GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`
 }
 
 export default ApiConstants
