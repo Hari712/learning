@@ -92,14 +92,14 @@ return (
         </View>
 
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
-            <View style={{flexDirection:'column',flex:2}}>
+            {/* <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Time")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>
                 {data.notification.attributes.everyday ? 
                     "Everyday (All hours)" : 
                       data.notification.attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
-            </View> 
+            </View>  */}
 
             <View style={{flexDirection:'column',flex:1.5}}>
                 <Text style={styles.textStyle}>{translate("Web Notification")}</Text>

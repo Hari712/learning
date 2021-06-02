@@ -15,6 +15,7 @@ import * as UsersActions from '../../Users/Users.Action'
 import { isEmpty } from 'lodash';
 import { convertSpeedtoKnot, matchStrings, showNotificationName, switchCaseString } from '../../../utils/helper';
 import { convertSpeedVal } from './../../../utils/helper';
+import { getPanicAlarm } from './../../Selector';
 
 
 const AlarmType = ({navigation,route}) => {
@@ -31,13 +32,14 @@ const AlarmType = ({navigation,route}) => {
   const [webNotification, setWebNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
-  const { loginInfo, subUserData, isConnected, isAdmin, distUnit, hasPanic } = useSelector(state => ({
+  const { loginInfo, subUserData, isConnected, isAdmin, distUnit, hasPanic, getPanicDetail } = useSelector(state => ({
     loginInfo: getLoginInfo(state),
     subUserData: getSubuserState(state),
     isConnected: state.network.isConnected,
     isAdmin: isRoleAdmin(state),
     distUnit: dist(state),
-    hasPanic: hasPanicAlarm(state)
+    hasPanic: hasPanicAlarm(state),
+    getPanicDetail: getPanicAlarm(state)
   }))
 
   const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
@@ -58,7 +60,7 @@ const AlarmType = ({navigation,route}) => {
       const { editData } = route.params;
       if(editData){  
         setAlarmName(editData.notification.attributes.name)      
-        { editData.notification.attributes.everyday? setSelectedCheckbox(0) : setSelectedCheckbox(-1) } 
+        // { editData.notification.attributes.everyday? setSelectedCheckbox(0) : setSelectedCheckbox(-1) } 
 
         if(editData.notification.notificators){
           let notificator = editData.notification.notificators // "web,mail,firebase" 
@@ -133,14 +135,11 @@ const AlarmType = ({navigation,route}) => {
 
   function sendData() {
     if (isConnected) {
-      if(hasPanic) {
-        AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
-      } else {
       if (isEmpty(alarmName)) {
         AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
       } else {
       AppManager.showLoader()
-      var everyday = (selectedCheckbox===0)
+      // var everyday = (selectedCheckbox===0)
 
       let arrSelectedId = [];
       selectUser && 
@@ -160,7 +159,6 @@ const AlarmType = ({navigation,route}) => {
       const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
       var notiType = (notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType
-      //var notificator = notification && emailNotification ? "mail,web" : notification ? "web" : emailNotification ? "mail" : null
       var value = batteryLevelInputVisible ? parseInt(batteryLevelInputValue) :
                   speedInputVisible ? convertSpeedtoKnot(speedInputValue, distUnit) :
                   // movementInputVisible ? movementInputValue :
@@ -168,6 +166,10 @@ const AlarmType = ({navigation,route}) => {
                   null;
       if(route && route.params && route.params.editData) {
         // Editing/update body
+        if(alarmType == 'sos' && hasPanic && getPanicDetail[0].notification.id != route.params.editData.notification.id ) {
+          AppManager.hideLoader()
+          AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
+      } else {
         isUpdate = true;
         requestBody = {
           "userIds" : arrSelectedId,
@@ -180,15 +182,22 @@ const AlarmType = ({navigation,route}) => {
             "attributes" : {
               "alarms": alarmType,
               "name": alarmName,
-              "everyday": everyday, 
+              //"everyday": everyday, 
               "description": "static description" ,  
               "value" : value
             },
             "calendarId" : 0
           }
-        }      
+        } 
+        console.log("requestbody",requestBody)
+        dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError)) 
+      }    
       } else {
         // create body 
+        if(alarmType == 'sos' && hasPanic  ) {
+          AppManager.hideLoader()
+          AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
+      } else {
         isUpdate = false;
         requestBody = {
           "userIds" : arrSelectedId,
@@ -202,17 +211,18 @@ const AlarmType = ({navigation,route}) => {
               "alarms": alarmType,
               "value" : value,
               "name": alarmName,
-              "everyday": everyday  ,
+              //"everyday": everyday  ,
               "description": "static description"   
             },
             "calendarId" : 0
           }
         }
-      } 
-      console.log("requestbody",requestBody)
-      dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
+        console.log("requestbody",requestBody)
+        dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError))
       }
-    }
+      } 
+      }
+    // }
   } else {
     AppManager.showNoInternetConnectivityError()
   }
@@ -322,7 +332,7 @@ return (
           />
         }
 
-        <View style={{marginVertical:hp(3)}}>
+        {/* <View style={{marginVertical:hp(3)}}>
           <Text style={styles.textStyle}>{translate("Time")}</Text>
           {time.map((item,key) =>
             <View key={key} style={{flexDirection:'row',alignItems:'center'}}>
@@ -331,11 +341,11 @@ return (
                 <Text style={[styles.textStyle,{color:ColorConstant.BLACK}]}> {item}</Text>
               </TouchableOpacity>
             </View> )}
-        </View>
+        </View> */}
           
       </View>
 
-      <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+      <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4),marginTop:hp(2)}}>
           <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
       </TouchableOpacity>
@@ -364,9 +374,9 @@ return (
       )
     }
 
-const time = ['Every day(All hours)'
-  // 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' 
-]
+// const time = ['Every day(All hours)'
+//   // 'Weekdays only(Monday-Friday,All hours)','Weekends only(Saturday-Sunday,All hours)' 
+// ]
 
 const styles = StyleSheet.create({
 

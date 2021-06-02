@@ -105,7 +105,7 @@ const Alarms = ({navigation}) => {
 
     const {attributes} = item.notification
     const editButVisible = String(item.notification.type).includes('geofenceEnter') || String(item.notification.type).includes('geofenceExit')
-    console.log("edibutt", editButVisible)
+    
     return(  
     <View style={styles.cardContainer} key={index}>
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL,{data:item})}>
@@ -138,14 +138,14 @@ const Alarms = ({navigation}) => {
           </View>
 
           {/* Duration*/}
-          <View style={styles.horizontalLine} />
+          {/* <View style={styles.horizontalLine} />
             <View style={styles.duration}>
                 <Text style={styles.durationText}>
                   { attributes && attributes.everyday ? 
                     "Everyday (All hours)" : 
                     attributes && attributes.weekdays ? "Weekdays(Monday-Friday, All hours)" : "Weekends(Saturday-Sunday, All hours)" }                
                 </Text>
-          </View>
+          </View> */}
         </TouchableOpacity>
     </View>
     )   
