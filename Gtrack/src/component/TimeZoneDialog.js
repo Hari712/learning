@@ -14,7 +14,8 @@ export function showTimeText(input) {
     const filter = timeZoneEnum.filter((item)=>item.key==input)
     const name = filter.length > 0 ? filter[0].key : input;
     const tz = moment.tz(name).format('Z');
-    const str = '(GMT ' + tz + ') '+ ( String(name).split('/')[1] ? String(name).split('/')[1] : String(name).split('/')[0])
+    // const str = ( String(name).split('/')[1] ? String(name).split('/')[1] : String(name).split('/')[0]) + ' (UTC' + tz + ')'
+    const str = String(name) + ' (UTC' + tz + ')'
     return str
 }
 
