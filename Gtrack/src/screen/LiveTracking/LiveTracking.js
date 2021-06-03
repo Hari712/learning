@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -20,6 +20,7 @@ import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
 import { isNewEvent, isNewNotification } from '../../utils/socketHelper';
+import { sendEvent } from '../../provider/SocketProvider';
 
 const { width, height } = Dimensions.get('window');
 
@@ -40,15 +41,18 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents } = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, getPanicDetail} = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
 		hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
-		notiEvents: getLiveNotificationsInfo(state)
+		notiEvents: getLiveNotificationsInfo(state),
+		getPanicDetail: getPanicAlarm(state)
 	}));
+
+	
 
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();
@@ -74,6 +78,7 @@ const LiveTracking = ({ navigation }) => {
 			setSelectedDevice(device);		
 		}
 	},[deviceList])
+	
 
 	useEffect(()=>{
 		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
@@ -97,6 +102,10 @@ const LiveTracking = ({ navigation }) => {
 		},
 		[isFocused]
 	);
+
+	function sendTraccarApi() {
+		dispatch(LivetrackingActions.requestSendPanicData(selectedDevice.uniqueId, onSuccess, onError))
+	}
 
 	React.useLayoutEffect(
 		() => {
@@ -475,11 +484,13 @@ const LiveTracking = ({ navigation }) => {
 
 					{ isPanicTimerVisible && <PanicDialog 
 						visible={isPanicTimerVisible}
-						timeoutValue={10}
+						timeoutValue={1}
 						stopHandle={()=>{
 							setIsPanicTimerVisible(false) 
 							setIsPanicAlarmClick(!isPanicAlarmClick)}}
 						afterTimeoutHandle={()=>{
+							// sendEvent("test")
+							sendTraccarApi()
 							setIsPanicTimerVisible(false)
 							setIsPanicAlarmClick(false)}}
 					/> }

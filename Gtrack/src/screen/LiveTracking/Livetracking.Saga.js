@@ -213,6 +213,19 @@ function* requestSearchGeofence(action) {
     }
 }
 
+function* requestSendPanicData(action) {
+    const {deviceId, onSuccess, onError } = action
+    try {
+        // https://traccar-dev.vegitone.com?id=GA12&alarm=sos
+        const url = ApiConstants.TRACCAR_URL + '?id=' + deviceId + '&alarm=sos'
+        const response = yield call(API.post, url)
+        console.log("Resposne", response, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchLivetracking() {
     yield takeLatest(types.GET_ALARMS_LIST_REQUEST, requestGetAlarmsList),
     yield takeLatest(types.ADD_ALARMS_NOTIFICATION_REQUEST, requestAddAlarmsNotification),
@@ -230,5 +243,6 @@ export function* watchLivetracking() {
     yield takeLatest(types.GET_ALL_LAST_KNOWN_POSITION_REQUEST, requestAllLastKnownPostion),
     yield takeLatest(types.GET_ASSET_INFO_REQUEST, requestAssetInfo),
     yield takeLatest(types.SEARCH_GROUP_REQUEST, requestSearchGroup),
-    yield takeLatest(types.SEARCH_GEOFENCE_REQUEST, requestSearchGeofence)
+    yield takeLatest(types.SEARCH_GEOFENCE_REQUEST, requestSearchGeofence),
+    yield takeLatest(types.SEND_PANIC_ALARM_DATA_REQUEST, requestSendPanicData)
 }
