@@ -158,20 +158,24 @@ return(
                                     <Text style={[styles.fontSizeStyle]}>{item}</Text>
                                 )
                             : <Text style={[styles.fontSizeStyle]}>-</Text>}
-                        <View style={{marginTop:hp(2),flexDirection:'row'}}>
+                        <View style={{marginTop:hp(2)}}>
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image style={{alignSelf:'flex-start'}} source={pushNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
                             </View>
-                            <View style={{flexDirection:'row',alignItems:'center'}}>
+                            <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image style={{alignSelf:'flex-start'}} source={mailNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
                             </View>
-                        </View>
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image  source={webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> Web Notification</Text>
                             </View>
+                        </View>
+                            {/* <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                                <Image  source={webNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> Web Notification</Text>
+                            </View> */}
                     </View>
                 </View>
             </View>
