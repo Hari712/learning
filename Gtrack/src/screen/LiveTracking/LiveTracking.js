@@ -19,6 +19,7 @@ import * as LivetrackingActions from './Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
+import { isNewEvent, isNewNotification } from '../../utils/socketHelper';
 
 const { width, height } = Dimensions.get('window');
 
@@ -397,6 +398,12 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicAlarmCreateDialog(false)
 		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW)
 	}
+
+	function onNo() {
+		setIsPanicAlarmCreateDialog(false)
+		setIsPanicAlarmClick(false)
+		setIsPanicAlarmClick(!isPanicAlarmClick)
+	}
 	
 
 	return (
@@ -412,7 +419,7 @@ const LiveTracking = ({ navigation }) => {
 					style={styles.bellIconStyle}
 				>
 					<BellIcon />
-					{notiEvents.length > 0 && !isVisible ?
+					{isNewEvent ?
 						<View style={{position:'absolute', backgroundColor:ColorConstant.ORANGE, borderRadius:5, width:10, height:10, elevation:4, top:16,right:16 }} />
 					:null }
 				</TouchableOpacity>
@@ -460,7 +467,7 @@ const LiveTracking = ({ navigation }) => {
 						titleStyle={styles.titleStyle}
 						heading={"There is no panic alarm created"}
 						message={"Do you want to create one ?"}
-						negativeHandle={()=> setIsPanicAlarmCreateDialog(false) && setIsPanicAlarmClick(!isPanicAlarmClick)}
+						negativeHandle={()=> onNo()}
 						positiveHandle={()=> onOkay()}
 						negativeButtonName={"No"}
 						positiveButtonName={"Yes"}

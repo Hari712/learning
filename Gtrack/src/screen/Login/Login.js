@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, ImageBackground, Dimensions, TouchableOp
 import images from '../../constants/images';
 import { useDispatch, useSelector } from 'react-redux';
 import { ColorConstant } from '../../constants/ColorConstants';
-import { AppConstants, SCREEN_CONSTANTS, TRACCAR_SESSION_DATA } from '../../constants/AppConstants';
+import { AppConstants, SCREEN_CONSTANTS, TRACCAR_SESSION_DATA, FCM_TOKEN } from '../../constants/AppConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import NavigationService from '../../navigation/NavigationService';
 import { validateEmailorPhoneNumber } from '../../utils/helper';
@@ -11,7 +11,7 @@ import AppManager from '../../constants/AppManager';
 import { EditText, CustomButton, FontSize } from '../../component';
 import CheckBox from 'react-native-check-box';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { storeItem } from '../../utils/storage';
+import { storeItem, getValue } from '../../utils/storage';
 import { USER_DATA } from '../../constants/AppConstants';
 import isEmpty from 'lodash/isEmpty';
 import * as LoginActions from './Login.Action';
@@ -95,6 +95,22 @@ const Login = () => {
 			)
 		);
 		dispatch(SettingsActions.requestGetAdvanceSettings(data.userDTO.id, onFeedbackSuccess, onFeedbackError))
+		onAddDeviceToken(data)
+	}
+
+	async function onAddDeviceToken(data) {
+		const fcmToken = await getValue(FCM_TOKEN)
+		if (!isEmpty(fcmToken)) {
+			dispatch(LoginActions.requestAddDeviceToken(data.userDTO.id, fcmToken, onAddDeviceTokenSuccess, onAddDeviceTokenError))
+		}
+	}
+
+	function onAddDeviceTokenSuccess(data) {
+		console.log('Add Token Success', data)
+	}
+
+	function onAddDeviceTokenError(error) {
+		console.log('Add Token Error', error)
 	}
 
 	function onGetAllUserDeviceSuccess(data) {
@@ -202,10 +218,10 @@ const Login = () => {
 					/>
 					{isClickInfo
 						? <View style={styles.infoPopup}>
-								<Text style={styles.infoText}>
-									{translate('Login_string6')}
-								</Text>
-							</View>
+							<Text style={styles.infoText}>
+								{translate('Login_string6')}
+							</Text>
+						</View>
 						: null}
 
 					<EditText

@@ -115,6 +115,7 @@ const AppProvider = (props) => {
             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL
         if (enabled) {
+            
             getToken()
         } else {
             requestPermission()

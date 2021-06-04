@@ -5,9 +5,8 @@ import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
-import round  from 'lodash';
 import { getMomentText } from '../component/TimeZoneDialog';
-import { timeZoneEnum } from '../constants/TimeZoneObj';
+import round  from 'lodash/round';
 
 
 export const validateEmailorPhoneNumber = (input) => {
@@ -146,9 +145,9 @@ export function isIphoneX() {
   export function convertDist(value, unit) {
     if(value){
       if(unit=='km')
-        return round(value/1000,2) + " " + unit
+        return round(value/1000,2).toFixed(2) + " " + unit
       else  
-        return round(value/1609.344,2) + " " + unit
+        return round(value/1609.344,2).toFixed(2) + " " + unit
     } 
     else 
       return "-"
@@ -158,10 +157,10 @@ export function isIphoneX() {
     if(value){
       if(unit=='km')
       // 1knot = 1.852 kmph
-        return round(value * 1.852, 2) + " " + 'kmph'
+        return round(value * 1.852, 2).toFixed(2) + " " + 'kph'
       else  
       // 1knot = 1.15077945 mph
-        return round(value * 1.15077945, 2) + " " + 'mph'
+        return round(value * 1.15077945, 2).toFixed(2) + " " + 'mph'
     } 
     else 
       return "-"
@@ -218,4 +217,83 @@ export function isIphoneX() {
     var min = Math.floor(Math.abs(minutes))
     var sec = Math.floor((Math.abs(minutes) * 60) % 60);
     return (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+  }
+
+  // ENUM for Notification type
+
+  export const NOTIFICATION_TYPE = [
+    {
+      label: "deviceUnknown",
+      value: "Device Offline"
+    },
+    {
+      label: "deviceOffline",
+      value: "Device Offline"
+    },    
+    {
+      label: "deviceOnline",
+      value: "Device Online"
+    },
+    {
+      label: "ignitionOff",
+      value: "Ignition Off"
+    },
+    {
+      label: "deviceMoving",
+      value: "Device Moving"
+    },
+    {
+      label: "deviceOverspeed",
+      value: "Device Overspeed"
+    },
+    {
+      label: "ignitionOn",
+      value: "Ignition On"
+    },
+    {
+      label: "deviceStopped",
+      value: "Device Stopped"
+    },
+    {
+      label: "alarm",
+      value: "Alarm"
+    },
+    {
+      label: "sos",
+      value: "Panic"
+    },
+    {
+      label: "lowBattery",
+      value: "Battery Level"
+    },
+    {
+      label: "lowspeed",
+      value: "Low Speed"
+    },
+    {
+      label: "geofenceEnter",
+      value: "Geofence Enter"
+    },
+    {
+      label: "geofenceExit",
+      value: "Geofence Exit"
+    },
+  ]
+
+  export function showNotificationName(item) {
+    var val  
+    NOTIFICATION_TYPE.filter((nitem)=>{
+      if(nitem.label === item)
+        val = nitem.value
+    })
+    return val
+  }
+
+  export function showNotificationLabel(item) {
+    var val  
+    NOTIFICATION_TYPE.filter((nitem)=>{
+      if(nitem.value === item)
+        val = nitem.label
+    })
+    return val
   }
