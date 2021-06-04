@@ -5,6 +5,8 @@ import { USER_DATA } from '../constants/AppConstants';
 import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
+import { getMomentText } from '../component/TimeZoneDialog';
+import { timeZoneEnum } from '../constants/TimeZoneObj';
 import round  from 'lodash/round';
 
 
@@ -198,7 +200,8 @@ export function isIphoneX() {
 
   export function convertTime(value, settingsData) {
     var moment = require('moment-timezone');
-    var unit = settingsData.timeZone === "IST"  ? "Asia/Kolkata" : settingsData.timeZone === "EST"  ? "America/Toronto" : null
+    var unit =  getMomentText(settingsData.timeZone)
+    // console.log("Timezone", unit, value, timeZoneEnum.map((item)=>moment(value).tz(item.key).format('HH:mm')))
     return unit ? moment(value).tz(unit) : moment(value)
   }
 
