@@ -8,6 +8,7 @@ import { Dialog } from 'react-native-simple-dialogs';
 import { translate } from '../../App';
 import { RadioButtonIcon, RadioButtonIconClicked } from './SvgComponent';
 import { timeZoneEnum } from '../constants/TimeZoneObj';
+import isEmpty from 'lodash/isEmpty'
 
 export function showTimeText(input) {
     var moment = require('moment-timezone');
@@ -21,7 +22,7 @@ export function showTimeText(input) {
 
 export function getMomentText(input) {
     const filter = timeZoneEnum.filter((item)=>item.key==input)
-    const tz = filter ? filter[0].key : null;
+    const tz = !isEmpty(filter) ? filter[0].key : null;
     return tz
 }
 
