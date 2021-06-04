@@ -16,6 +16,7 @@ import NavigationService from '../../navigation/NavigationService';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as LiveTrackingAction from '../LiveTracking/Livetracking.Action'
 import { isReadEvent, notificationEvents, removeEvent, setReadNotificationEvents } from '../../utils/socketHelper';
+import { showNotificationName } from './../../utils/helper';
 
 const Notification = ({ navigation }) => {
 
@@ -44,10 +45,10 @@ const Notification = ({ navigation }) => {
 
     const dispatch = useDispatch()
 
-    const NotificationItems = ({ item }) => {        
+    const NotificationItems = ({ item }) => { 
         const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )
-        const titleStr = String(item.type).charAt(0).toUpperCase() + String(item.type).replace(/([a-z])([A-Z])/g, `$1 $2`).slice(1)
-        
+        const titleStr = item.attributes.alarm ? showNotificationName(item.attributes.alarm) : showNotificationName(item.type)
+
         return (
             <TouchableOpacity onPress={()=>{
                 NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)
