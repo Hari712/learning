@@ -20,6 +20,7 @@ const PanicDialog = (props) => {
                 if (timer <= 1) {
                     clearInterval(interval)
                     afterTimeoutHandle()
+                    stopHandle()
                 } else {
                     return timer - 1
                 }

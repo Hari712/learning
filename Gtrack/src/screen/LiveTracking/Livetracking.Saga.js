@@ -219,7 +219,7 @@ function* requestSendPanicData(action) {
         // https://traccar-dev.vegitone.com?id=GA12&alarm=sos
         const url = ApiConstants.TRACCAR_URL + '?id=' + deviceId + '&alarm=sos'
         const response = yield call(API.post, url)
-        console.log("Resposne", response, url)
+        console.log("Panic Send", response, url)
         onSuccess(response)
     } catch (error) {
         onError(error)

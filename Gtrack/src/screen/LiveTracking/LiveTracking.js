@@ -413,7 +413,11 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicAlarmClick(false)
 		setIsPanicAlarmClick(!isPanicAlarmClick)
 	}
-	
+
+	function stopHandleforPanic() {
+		setIsPanicTimerVisible(false) 
+		setIsPanicAlarmClick(false)
+	}	
 
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
@@ -484,15 +488,9 @@ const LiveTracking = ({ navigation }) => {
 
 					{ isPanicTimerVisible && <PanicDialog 
 						visible={isPanicTimerVisible}
-						timeoutValue={1}
-						stopHandle={()=>{
-							setIsPanicTimerVisible(false) 
-							setIsPanicAlarmClick(!isPanicAlarmClick)}}
-						afterTimeoutHandle={()=>{
-							// sendEvent("test")
-							sendTraccarApi()
-							setIsPanicTimerVisible(false)
-							setIsPanicAlarmClick(false)}}
+						timeoutValue={5}
+						stopHandle={stopHandleforPanic}
+						afterTimeoutHandle={sendTraccarApi}
 					/> }
 			</View>
 		</View>
