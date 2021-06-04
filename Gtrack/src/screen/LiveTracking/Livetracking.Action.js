@@ -206,3 +206,10 @@ export const removeNotificationEventResponse = (id) => ({
     id
 })
 
+export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
+    type: types.SEND_PANIC_ALARM_DATA_REQUEST,
+    deviceId,
+    onSuccess,
+    onError
+})
+

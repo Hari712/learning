@@ -10,17 +10,6 @@ import ApiConstants from '../api/ApiConstants'
 import { useDispatch ,useSelector } from 'react-redux'
 import { setNotificationEvents } from '../utils/socketHelper'
 
-let socketIOConnOpt = {
-    reconnection: true,
-    reconnectionDelay: 10000,
-    reconnectionDelayMax: 60000,
-    reconnectionAttempts: 70,
-    timeout: 10000,
-    forceNew: true,
-    transports: ['websocket']
-};
-
-
 let socket = null
 let isConnecting = false
 

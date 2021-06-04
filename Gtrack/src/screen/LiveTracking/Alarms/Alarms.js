@@ -175,7 +175,7 @@ return (
           />
         }
       />
-       <CustomDialog
+        <CustomDialog
           heading="Are you sure ?"
           message={"Do you really want to delete "+ alarmName +" alarm ?" }
           visible={deleteDialogVisible}

@@ -14,10 +14,10 @@ import { getLoginState, getAdvanceSettingsInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { toRegularCase } from '../../../utils/helper';
+import TimeZoneDialog, { showTimeText } from '../../../component/TimeZoneDialog';
 
 const LanguagesArr = ["ENGLISH", "FRENCH"]
 const TempArr = ["CELSIUS","FAHRENHEIT"]
-const TimeZoneArr = ["IST","EST"]
 const DistanceArr = ["MILES","KILOMETER"]
 
 const AdvanceSettings = ({navigation,route}) => {
@@ -26,7 +26,7 @@ const AdvanceSettings = ({navigation,route}) => {
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
   const [language,setLanguage] = useState('ENGLISH')
-  const [timeZone,setTimeZone] = useState()
+  const [timeZone,setTimeZone] = useState('utc')
   const [distance,setDistance] = useState('MILES')
   const [settingsID,setSettingsID] = useState()
   const [temperature,setTemperature] = useState('CELSIUS')
@@ -50,10 +50,6 @@ const AdvanceSettings = ({navigation,route}) => {
     
   },[settingsData])
 
-  useEffect(() => {
-    timeZone ? setIsToggleClick(true) : setIsToggleClick(false)
-  },[timeZone])
-
   const onTapSave = () => { 
     if(isConnected) {
       const requestBody = {
@@ -61,7 +57,7 @@ const AdvanceSettings = ({navigation,route}) => {
         id: settingsID,
         language: language,
         temprature: temperature,
-        timeZone: isToggleClick ? timeZone : null,
+        timeZone: timeZone,
       }
       AppManager.showLoader() 
       dispatch(SettingsActions.requestAdvanceSettings(loginData.id, requestBody, onSuccess, onError))
@@ -148,36 +144,27 @@ return (
                 :null}
 
             <View style={[styles.unitContainer,{alignItems:'center'}]}>
-                <View style={{height:hp(6)}}>
-                    <Text style={styles.textStyle}>{translate("Automatic_time_zone")}</Text>
-                    <Text style={styles.subText}>Use network provided time</Text> 
-                </View>
-                <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{alignSelf:'center'}}>
+                <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{height:hp(6)}}>
+                    <Text style={styles.textStyle}>Select time zone</Text>
+                    <Text style={styles.subText}>{showTimeText(timeZone)}</Text> 
+                </TouchableOpacity>
+                {/* <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{alignSelf:'center'}}>
                   {
                     isToggleClick ?
                     <ToggleButtonIcon /> :
                     <ToggleButtonIconClicked />
                   }
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
-            {isToggleClick?
-                <View style={{justifyContent:'space-between',marginVertical:hp(2)}}>
-                    <Text style={styles.textStyle}>{translate("Select_time_zone")}</Text>
-                    
-                    <View style={{flexDirection:'row',marginTop:hp(1),alignItems:'center'}}>
-                      {
-                        TimeZoneArr.map((item,key)=>{
-                          return(
-                            <TouchableOpacity key={key} onPress={()=>{setTimeZone(item)}} style={{flexDirection:'row',flex:0.6}}>
-                              {item===timeZone ? <RadioButtonIconClicked /> : <RadioButtonIcon />}
-                              <Text style={styles.unitText}>{item=="IST"?"Asia/Kolkata" : "America/Toronto"}</Text>
-                            </TouchableOpacity>                                  
-                          )
-                        })
-                      }
-                    </View>
-                </View>:null}
+            {isToggleClick && <TimeZoneDialog 
+                visible={isToggleClick}
+                closeDialogBox={setIsToggleClick}
+                setTimeZone={setTimeZone}
+                timeZone={timeZone}
+            />}
+
+
           
             <View style={styles.unitContainer}>
                 <Text style={styles.unit}>{translate("Units")}</Text>
