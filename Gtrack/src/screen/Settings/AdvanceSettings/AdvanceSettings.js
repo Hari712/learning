@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { toRegularCase } from '../../../utils/helper';
 import TimeZoneDialog, { showTimeText } from '../../../component/TimeZoneDialog';
+import { useIsFocused } from '@react-navigation/native';
 
 const LanguagesArr = ["ENGLISH", "FRENCH"]
 const TempArr = ["CELSIUS","FAHRENHEIT"]
@@ -38,6 +39,20 @@ const AdvanceSettings = ({navigation,route}) => {
   }))
 
   const dispatch = useDispatch()
+
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    isFocused ? loadData() : null
+  },[isFocused]);
+
+  function loadData(){
+    dispatch(SettingsActions.requestGetAdvanceSettings(loginData.id, onGetSuccess, onError))
+  }
+
+  function onGetSuccess(data) {
+    console.log("Success get",data)
+  }
 
   useEffect(() => { 
     if(!isEmpty(settingsData)){
