@@ -6,6 +6,7 @@ import { clearToken } from "../api";
 import RNLocation from 'react-native-location';
 import { ColorConstant } from './../constants/ColorConstants';
 import { getMomentText } from '../component/TimeZoneDialog';
+import { timeZoneEnum } from '../constants/TimeZoneObj';
 import round  from 'lodash/round';
 
 
