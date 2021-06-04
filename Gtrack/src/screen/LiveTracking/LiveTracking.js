@@ -292,7 +292,7 @@ const LiveTracking = ({ navigation }) => {
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
 				region={region} ref={mapRef} 
-				showsUserLocation={true}>
+				showsUserLocation={false}>
 
 				{isContainCoordinate && 
 					<Map.Marker 
@@ -340,12 +340,13 @@ const LiveTracking = ({ navigation }) => {
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }}>
-					<Map.default.UserLocation
+					{/* <Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
-						showsUserHeadingIndicator={true}
+						showsUserHeadingIndicator={false}
 						animated={true}
-					/>
+						
+					/> */}
 					{isContainCoordinate &&
 						<Map.default.Camera
 							zoomLevel={17}
@@ -404,7 +405,7 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicAlarmClick(false)
 		setIsPanicAlarmClick(!isPanicAlarmClick)
 	}
-	
+
 
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>

@@ -222,7 +222,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
 				region={region} ref={mapRef} 
-				showsUserLocation={true}>
+				showsUserLocation={false}>
                     
 				{isContainCoordinate && 
 					<Map.Marker 
@@ -274,12 +274,12 @@ const LiveTrackingDetails = ({navigation, route}) => {
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView  style={{ flex: 1 }}>
-					<Map.default.UserLocation
+					{/* <Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
 						showsUserHeadingIndicator={true}
 						animated={true}
-					/>
+					/> */}
 					{isContainCoordinate &&
 						<Map.default.Camera
 							zoomLevel={17}

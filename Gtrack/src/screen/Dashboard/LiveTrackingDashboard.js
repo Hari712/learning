@@ -140,7 +140,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 			const address = isContainCoordinate ? startingDestination.address : ''
 			const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
 			return (
-				<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
+				<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={false}>
 					{isContainCoordinate && <Map.Marker
 								coordinate={coordinate}
 								description={address}
@@ -193,12 +193,12 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 				return (
 					<View style={{ flex: 1 }}>
 						<Map.default.MapView style={{ flex: 1 }}>
-							<Map.default.UserLocation
+							{/* <Map.default.UserLocation
 								renderMode="normal"
 								visible={true}
 								showsUserHeadingIndicator={true}
 								animated={true}
-							/>
+							/> */}
 							{isContainCoordinate &&
 								<Map.default.Camera
 									zoomLevel={13}
