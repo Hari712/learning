@@ -131,11 +131,11 @@ const DispatchRoute = ({ navigation, route }) => {
 
         return (
             <Map.default.MapView style={{ flex: 1}}>
-                <Map.default.UserLocation
+                {/* <Map.default.UserLocation
                     renderMode='normal'
                     visible={true}
                     showsUserHeadingIndicator={true}
-                />
+                /> */}
                 <Map.default.Camera
                     zoomLevel={14}
                     centerCoordinate={tripStartCord}
@@ -185,7 +185,7 @@ const DispatchRoute = ({ navigation, route }) => {
                 style={styles.mapContainer}
                 ref={mapRef}
                 initialRegion={initialRegion}
-                showsUserLocation={true}
+                showsUserLocation={false}
             >
                 <Map.Marker coordinate={tripStartCord} >
                     <MarkerIcon/>
