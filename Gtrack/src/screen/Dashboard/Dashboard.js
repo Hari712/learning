@@ -13,6 +13,7 @@ import RecentAlarms from './RecentAlarm'
 import DeviceSummary from './DeviceSummary'
 import ActiveUser from './ActiveUser'
 import DeviceView from './DeviceView';
+import { useIsFocused } from '@react-navigation/native';
 
 const Dashboard = ({ navigation }) => {
 
@@ -38,6 +39,15 @@ const Dashboard = ({ navigation }) => {
         headerLeft: () => (null),
       });
     },[navigation]);
+
+    const isFocused = useIsFocused();
+
+    React.useEffect(() => {
+      if(isFocused){
+        fetchDeviceDetails()
+        fetchNotifiedDevices()
+      }
+    },[isFocused]);
 
     useEffect(() => {
       fetchDeviceDetails()

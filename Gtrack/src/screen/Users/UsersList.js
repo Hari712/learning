@@ -36,15 +36,17 @@ const UsersList = (props) => {
     }
     
     function onChangeUserStatusSuccess(data) {
-    const { result } = data
-    AppManager.hideLoader()
-    AppManager.showSimpleMessage('success', { message: result, description: '' })
+        const { result } = data
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: result, description: '' })
     }
 
     function onChangeUserStatusError(error) {
-    AppManager.hideLoader()
-    AppManager.showSimpleMessage('danger', { message: error, description: '' })
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: error, description: '' })
     }
+
+    const isSuperOwner = (item.id == loginData.id)
 
     return( 
 
@@ -53,9 +55,9 @@ const UsersList = (props) => {
                 <View style={styles.blueBox}>
                     <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
-                    <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
-                    <Text style={styles.activeText}>{item.isActive?"Active":"Inactive"}</Text>
-                        <TouchableOpacity onPress={()=>{item.id == loginData.id? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
+                    {!isSuperOwner && <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>}
+                    <Text style={styles.activeText}>{isSuperOwner ? null : item.isActive?"Active":"Inactive"}</Text>
+                        <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                             <UsersEditIcon/>
                         </TouchableOpacity>
                 </View>
@@ -74,8 +76,12 @@ const UsersList = (props) => {
                 </View>
                 <View style={{flexDirection:'column'}}>
                     <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
-                    <View style={{justifyContent:'flex-start',flexDirection:'row'}}>              
-                        <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :"No Group Assigned"} </Text>  
+                    <View style={{justifyContent:'flex-start',flexDirection:'row'}}> 
+                        {isSuperOwner ? 
+                            <Text style={styles.whiteContainerSubText}>All Group Assigned</Text>  
+                        :            
+                            <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0]?item.groups[0].groupName :"No Group Assigned"} </Text>  
+                        }
                         <Tooltip
                         popover={
                             <View style={{flexWrap:'wrap',flex:1,width:wp(20)}}>

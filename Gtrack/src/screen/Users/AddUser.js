@@ -57,7 +57,8 @@ const AddUser = ({ navigation, route }) => {
   function addUser() {
     if (isConnected) {
       let message = ''
-      if (!validateEmailorPhoneNumber(email)) {    
+      let emailStr = String(email).trim().toLowerCase()
+      if (!validateEmailorPhoneNumber(emailStr)) {    
           message = translate(AppConstants.INVALID_EMAIL)
       } 
       if (!isEmpty(message)) {
@@ -69,18 +70,19 @@ const AddUser = ({ navigation, route }) => {
           "id": route.params.editData.id,
           "firstName": firstName,
           "lastName": lastName,
-          "email": email,
+          "email": emailStr,
           "roles": [{
             "id": role == "Admin" ? 1 : 2
           }],
           "groups": selectedGroup
         }
+        console.log("khushi",requestBody)
         dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
       } else {
         const requestBody = {
           "userDTOS": [{
             "id": null,
-            "email": email,
+            "email": emailStr,
             "firstName": firstName,
             "lastName": lastName,
             "markAsOwner": null,
@@ -90,6 +92,7 @@ const AddUser = ({ navigation, route }) => {
             "groups": selectedGroup
           }]
         }
+        console.log("khushi",requestBody)
         dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
       }
 

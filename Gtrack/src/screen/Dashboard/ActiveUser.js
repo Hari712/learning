@@ -14,6 +14,7 @@ import AppManager from '../../constants/AppManager'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
 import NavigationService from '../../navigation/NavigationService'
+import { useIsFocused } from '@react-navigation/native';
 
 const ActiveUser = () => { 
 
@@ -34,6 +35,14 @@ const ActiveUser = () => {
     useEffect(()=>{
         fetchCounts()
     },[selectedRole])
+
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if(isFocused){
+            fetchCounts()
+        }
+    },[isFocused]);
     
     function fetchCounts() {
         AppManager.showLoader()

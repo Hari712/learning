@@ -8,11 +8,13 @@ import ShadowView from 'react-native-simple-shadow-view';
 import { MapView } from '../../component';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import { useSelector, useDispatch } from 'react-redux';
-import { getLivetrackingGroupDevicesListInfo, getLiveTrackingDeviceList } from '../Selector';
+import { getLivetrackingGroupDevicesListInfo, getLiveTrackingDeviceList, getLoginState } from '../Selector';
 import mapKeys from 'lodash/mapKeys';
 import useStateRef from '../../utils/useStateRef';
 import isEmpty from 'lodash/isEmpty';
 import { lineString as makeLineString } from '@turf/helpers';
+import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
+import AppManager from '../../constants/AppManager';
 	
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -31,11 +33,31 @@ const Map = Platform.select({
 const LiveTrackinDashboard = ({ navigation, route }) => {
 	const dispatch = useDispatch();
 
-	const { isConnected, devicePositions, groupDevices } = useSelector(state => ({
+	const { isConnected, devicePositions, groupDevices, loginData } = useSelector(state => ({
 		isConnected: state.network.isConnected,
+		loginData: getLoginState(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state)
 	}));
+
+	useEffect(()=>{
+        fetchGroupDevices()
+    },[])
+
+    function fetchGroupDevices() {
+        AppManager.showLoader() 
+        dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id, onSuccess, onError))
+    }
+
+	function onSuccess(data) {    
+        console.log("Success",data) 
+        AppManager.hideLoader()
+    }
+    
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+    }
 
 	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
@@ -236,7 +258,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 					<FullScreenIcon style={styles.ViewallStyle} resizeMode="contain" />
 				</TouchableOpacity>
 
-				<TouchableOpacity>
+				<TouchableOpacity onPress={() => fetchGroupDevices()}>
 					<RefreshIcon style={styles.refreshImageStyle} resizeMode="contain" />
 				</TouchableOpacity>
 			</View>

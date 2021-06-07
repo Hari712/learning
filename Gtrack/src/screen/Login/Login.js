@@ -35,11 +35,13 @@ const Login = () => {
 	const [isClickInfo, setIsClickInfo] = useState(false);
 
 	function onTapLoginButton() {
+		let emailStr = String(email).trim().toLowerCase()
+		console.log("User Logged",emailStr, email)
 		if (isConnected) {
 			let message = '';
-			if (isEmpty(email)) {
+			if (isEmpty(emailStr)) {
 				message = translate(AppConstants.EMPTY_EMAIL_OR_PHONE);
-			} else if (!validateEmailorPhoneNumber(email)) {
+			} else if (!validateEmailorPhoneNumber(emailStr)) {
 				message = translate(AppConstants.INVALID_EMAIL_OR_PHONE);
 			} else if (isEmpty(password)) {
 				message = translate(AppConstants.EMPTY_PASSWORD);
@@ -49,7 +51,7 @@ const Login = () => {
 			} else {
 				AppManager.showLoader();
 				const requestBody = {
-					emailOrPhone: email,
+					emailOrPhone: emailStr,
 					password: password,
 				};
 				dispatch(LoginActions.requestLogin(requestBody, onLoginSuccess, onLoginError));
@@ -203,7 +205,7 @@ const Login = () => {
 					<EditText
 						value={email}
 						onChangeText={value => {
-							setEmail(value.trim().toLowerCase());
+							setEmail(value);
 						}}
 						placeholder={translate('Login_string2')}
 						rightContainer={
