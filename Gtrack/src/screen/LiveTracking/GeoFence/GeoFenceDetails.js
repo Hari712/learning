@@ -16,6 +16,7 @@ import tinycolor from 'tinycolor2'
 import * as UsersActions from '../../Users/Users.Action'
 import { getSubuserState } from './../../Selector';
 import isEmpty from 'lodash/isEmpty';
+import { OutlinedTextField } from 'react-native-material-textfield';
 
 const GeoFenceDetails = ({ navigation, route }) => {
 
@@ -31,14 +32,14 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const deviId = !isEmpty(devices) ? devices.map((item)=>item.id) : []
     console.log("devics",devices, deviId)
 
-    let colorData = ['#247ba0', '#70c1b3', '#b2dbbf', '#f3ffbd', '#ff1654']
+    let colorData = [ '#e87575', '#f5f293', '#709cf3', '#bdf897', '#f69157']
 
     const dispatch = useDispatch()
 
     const userdata = (subUserData).map((item)=> item.firstName+" "+item.lastName )
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
-    const [color, setColor] = useState(tinycolor('#70c1b3').toHexString())
+    const [color, setColor] = useState(tinycolor('#e87575').toHexString())
     const [modalVisible, setModalVisible] = useState(false)
     const [recents, setRecents] = useState(colorData)
     const [cancel, setCancel] = useState(false)
@@ -257,22 +258,25 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
     const renderColorAccessory = () => {
         return(
-            <View style={{flexDirection:'row', width:wp(100)}}>
+            <View style={{flexDirection:'row'}}>
 
                 {recents.map((colorItem)=>{
+                    let selection = (color == colorItem)
                     return(
                         <TouchableOpacity onPress={() =>setColor(tinycolor(colorItem).toHexString())}
-                        style={{backgroundColor:colorItem, height:wp(5), width:wp(5), borderRadius:3,marginRight:hp(2), borderColor:ColorConstant.BLACK, borderWidth:color == colorItem ? 1 :0}} />
+                        style={{backgroundColor:ColorConstant.WHITE, borderRadius:3,marginRight:hp(2), 
+                            borderColor:ColorConstant.ORANGE, padding:3,borderWidth:selection ? 1 :0}} >
+                                <View style={{backgroundColor:colorItem, height:wp(5), width:wp(5), borderRadius:3 }} />
+                        </TouchableOpacity>
                     )
                 })}
 
-                <TouchableOpacity onPress = {() =>toggleModal()} 
-                    style={{backgroundColor:ColorConstant.WHITE, 
-                        height:wp(5), width:wp(5), borderColor:ColorConstant.GREY, borderWidth:1,
-                        alignItems:'center',justifyContent:'center',
-                        borderRadius:3}}>
-                    <AddIcon />
-                </TouchableOpacity>
+                {/* <TouchableOpacity onPress = {() =>toggleModal()} style={{padding:3}}>
+                    <View style={{borderColor:ColorConstant.GREY,borderWidth:1, height:wp(5), width:wp(5),alignItems:'center',justifyContent:'center',
+                        borderRadius:3, }}>
+                        <AddIcon />
+                    </View>
+                </TouchableOpacity> */}
 
             </View>
 
@@ -317,12 +321,22 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         />
                     </View>
                     
-                    <View style={{marginBottom:hp(1)}}>
-                        <Text style={{color:ColorConstant.GREY}}>Pick Color</Text>
+                    <View style={{marginTop:hp(2),borderWidth:1,borderColor:ColorConstant.GREY,borderRadius:5, height:hp(6)}}>
+                        <Text style={{
+                            color:ColorConstant.GREY,
+                            fontSize:hp(1.4),
+                            position:'absolute',
+                            top:-10,
+                            left:7,
+                            backgroundColor:ColorConstant.WHITE,
+                            paddingHorizontal:4
+                        }}>Pick Color</Text>
+                        <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
+                            {renderColorAccessory()}
+                        </View>
                     </View>
 
-                    {renderColorAccessory()}
-
+                    
                     <SlidersColorPicker
                         visible={modalVisible}
                         color={color}
