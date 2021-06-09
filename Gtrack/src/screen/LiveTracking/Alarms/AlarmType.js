@@ -306,7 +306,7 @@ return (
           <TextField 
             valueSet={setSpeedInputValue} 
             maxLength={30}
-            label={ dist=='km' ? 'Speed Limit (kph)' : 'Speed Limit (mph)'}
+            label={ distUnit=='km' ? 'Speed Limit (kph)' : 'Speed Limit (mph)'}
             defaultValue={speedInputValue}
             outerStyle={[styles.outerStyle,{marginTop:hp(2)}]} 
           />

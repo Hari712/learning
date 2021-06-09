@@ -76,7 +76,6 @@ const AddUser = ({ navigation, route }) => {
           }],
           "groups": selectedGroup
         }
-        console.log("khushi",requestBody)
         dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
       } else {
         const requestBody = {
@@ -92,7 +91,6 @@ const AddUser = ({ navigation, route }) => {
             "groups": selectedGroup
           }]
         }
-        console.log("khushi",requestBody)
         dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
       }
 

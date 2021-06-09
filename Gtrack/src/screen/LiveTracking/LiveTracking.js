@@ -349,13 +349,12 @@ const LiveTracking = ({ navigation }) => {
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }}>
-					{/* <Map.default.UserLocation
+					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
 						showsUserHeadingIndicator={false}
 						animated={true}
-						
-					/> */}
+					><View/></Map.default.UserLocation>
 					{isContainCoordinate &&
 						<Map.default.Camera
 							zoomLevel={17}
