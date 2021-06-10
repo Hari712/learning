@@ -159,7 +159,7 @@ const TrackingDetails = ({navigation, route}) => {
 			<View style={styles.otherDetails}>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Duration</Text>
-					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>Not availabel</Text>
+					<Text style={[styles.otherDetailText,{color:ColorConstant.BLACK}]}>Not available</Text>
 				</View>
 				<View style={{flex:1}}>
 					<Text style={styles.otherDetailText}>Distance</Text>
