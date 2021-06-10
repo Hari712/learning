@@ -4,7 +4,7 @@ export let readEvents = []
 export let isNewEvent = false
 
 export const setNotificationEvents = (item) => {
-    notificationEvents = [...notificationEvents, ...item]
+    notificationEvents = [...item, ...notificationEvents]
     isNewEvent = true
 }
 

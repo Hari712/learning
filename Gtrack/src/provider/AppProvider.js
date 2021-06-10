@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useCallback, useState, useRef } from 'react'
 import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging'
-import { FCM_TOKEN } from '../constants/AppConstants'
+import { FCM_TOKEN, SCREEN_CONSTANTS } from '../constants/AppConstants'
 import AsyncStorage from '@react-native-community/async-storage'
 import debounce from 'lodash/debounce'
 import isNil from 'lodash/isNil'
@@ -58,7 +58,7 @@ const AppProvider = (props) => {
             // if (routeNameRef && routeNameRef.current && routeNameRef.current === 'ChatMessage' && module === 'CHAT') {
 
             // } else {
-            //   NavigationService.navigate('NotificationList')
+                NavigationService.navigate(SCREEN_CONSTANTS.NOTIFICATION)
             // }
             console.log(
                 'Notification caused app to open from background state:',
