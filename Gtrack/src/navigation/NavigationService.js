@@ -3,6 +3,8 @@ import { StackActions, NavigationActions } from '@react-navigation/native';
 
 export const navigationRef = React.createRef();
 
+export const routeNameRef = React.createRef()
+
 function navigate(name, params) {
     navigationRef.current && navigationRef.current.navigate(name, params);
 }
