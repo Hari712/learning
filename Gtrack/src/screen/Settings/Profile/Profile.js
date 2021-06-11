@@ -22,7 +22,7 @@ const Profile = ({ navigation }) => {
         isOwner: isRoleOwner(state),
         isRegular: isRoleRegular(state)
     }))
-
+    
     const userType = loginData.role.map((item) => item.name )
 
     React.useLayoutEffect(() => {
@@ -109,13 +109,12 @@ const Profile = ({ navigation }) => {
                 </View>
 
             </View>
-           
-                
-            <TouchableOpacity
+
+            {/* <TouchableOpacity
                 onPress={() =>{NavigationService.navigate('AppLog')} }
                 style={[styles.LoginButton,{margin:hp(4)}]}>
                 <Text style={styles.LoginButtonText}>{"Logs"}</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
         </View>
     )
