@@ -29,8 +29,7 @@ const EditProfile = ({ navigation, route, item }) => {
 
     const { loginData, userType } = route.params;
     const { id } = loginData;
-
-
+    
     //User data variables
     const [firstName, setFirstName] = useState(loginData.firstName);
     const [lastName, setLastName] = useState(loginData.lastName);
@@ -206,6 +205,7 @@ const EditProfile = ({ navigation, route, item }) => {
 
     function editProfile() {
         if (isConnected) {
+            let userAdd = loginData && loginData.userAddressDTO[0]
             let message = ''
             const phone = getPhone(phoneNumber)
             if (!validateName(firstName)) {
@@ -230,11 +230,13 @@ const EditProfile = ({ navigation, route, item }) => {
                     "lastName": lastName,
                     "email": loginData.email,
                     "phone": phone,
-                    "phonePrefix": phonePrefix
+                    "phonePrefix": phonePrefix,
+                    "roles": loginData.role,
+                    "userAddressDTO": [userAdd]
                 }
                 console.log("Data", requestBody);
-                let msgstr = "Logs: Request Body =" + JSON.stringify(requestBody)
-                dispatch(AppLogAction.addAppLogs({ id: getTimeUUID(moment().milliseconds()), module:'AppProvider', message:msgstr , time: moment().toISOString() }))
+                // let msgstr = "Logs: Request Body =" + JSON.stringify(requestBody)
+                // dispatch(AppLogAction.addAppLogs({ id: getTimeUUID(moment().milliseconds()), module:'AppProvider', message:msgstr , time: moment().toISOString() }))
                 dispatch(ProfileActions.requestEditProfile(requestBody, id, onSuccess, onError))
             }
         } else {
