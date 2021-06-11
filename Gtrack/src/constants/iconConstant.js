@@ -4,6 +4,8 @@ import React from 'react'
 const IconConstant = (props) => {
 
     const { type, height, width, color } = props
+
+    console.log("Image constant props", type, props)
     
     switch ( type ) {
         case 'Family Item': return <FamilyVanIcon color={color} />  
@@ -21,15 +23,19 @@ const IconConstant = (props) => {
         case 'ignitionon': return <IgniteOnIcon color={color} /> 
         case 'ignitionoff': return <IgniteOffIcon color={color} />  
         case 'overspeed': return <OverSpeedIcon color={color} /> 
+        case 'deviceoverspeed': return <OverSpeedIcon color={color} />
         case 'underspeed': return <UnderSpeedIcon color={color} /> 
         case 'lowspeed': return <UnderSpeedIcon color={color} /> 
         case 'deviceoffline': return <DeviceOfflineIcon color={color} /> 
+        case 'deviceunknown': return <DeviceOfflineIcon color={color} /> 
         case 'devicemoving': return <DeviceMovingIcon color={color} />
         case 'geofenceexit': return <GeofenceExitIcon color={color} />  
         case 'geofenceentry': return <GeofenceEntryIcon color={color} /> 
+        case 'geofenceenter': return <GeofenceEntryIcon color={color} />
         case 'devicestopped': return <DeviceStoppedIcon color={color} /> 
         case 'panic': return <PanicIcon color={color} /> 
-        case 'batterylevel': return <BatteryIcon color={color} /> 
+        case 'sos': return <PanicIcon color={color} /> 
+        case 'lowbattery': return <BatteryIcon color={color} /> 
         case 'fuellevel': return <FluelLevelcon color={color} /> 
         case 'engineidle': return <EngineIdleIcon color={color} /> 
         case 'stationary': return <StationaryIcon color={color} /> 

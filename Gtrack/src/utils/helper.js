@@ -221,64 +221,83 @@ export function isIphoneX() {
   }
 
   // ENUM for Notification type
-
+  
   export const NOTIFICATION_TYPE = [
     {
       label: "deviceUnknown",
-      value: "Device Offline"
+      value: "Device Offline",
+      desc: 'Device is offline'
     },
     {
       label: "deviceOffline",
-      value: "Device Offline"
+      value: "Device Offline",
+      desc: 'Device is offline'
     },    
     {
       label: "deviceOnline",
-      value: "Device Online"
+      value: "Device Online",
+      desc: 'Device is online'
+    },
+    {
+      label: "deviceInactive",
+      value: "Device Inactive",
+      desc: 'Device is inactive'
     },
     {
       label: "ignitionOff",
-      value: "Ignition Off"
+      value: "Ignition Off",
+      desc: 'Your vehicle is turned Off.'
     },
     {
       label: "deviceMoving",
-      value: "Device Moving"
+      value: "Device Moving",
+      desc: 'Device is Moving'
     },
     {
       label: "deviceOverspeed",
-      value: "Device Overspeed"
+      value: "Device Overspeed",
+      desc: 'Speed violation'
     },
     {
       label: "ignitionOn",
-      value: "Ignition On"
+      value: "Ignition On",
+      desc: 'Your vehicle is turned On.'
     },
     {
       label: "deviceStopped",
-      value: "Device Stopped"
+      value: "Device Stopped",
+      desc: 'Device is stopped'
     },
     {
       label: "alarm",
-      value: "Alarm"
+      value: "Alarm",
+      desc: "You have an Alarm"
     },
     {
       label: "sos",
-      value: "Panic"
+      value: "Panic",
+      desc: 'You have an emergency alert'
     },
     {
       label: "lowBattery",
-      value: "Battery Level"
+      value: "Battery Level",
+      desc: 'Low Battery'
     },
     {
       label: "lowspeed",
-      value: "Low Speed"
+      value: "Low Speed",
+      desc: "Low speed"
     },
     {
       label: "geofenceEnter",
-      value: "Geofence Enter"
+      value: "Geofence Enter",
+      desc: 'Your device has entered the geofence'
     },
     {
       label: "geofenceExit",
-      value: "Geofence Exit"
-    },
+      value: "Geofence Exit",
+      desc: 'Your device is out of bounds'
+    }
   ]
 
   export function showNotificationName(item) {
@@ -295,6 +314,15 @@ export function isIphoneX() {
     NOTIFICATION_TYPE.filter((nitem)=>{
       if(nitem.value === item)
         val = nitem.label
+    })
+    return val
+  }
+
+  export function showNotificationDesc(item) {
+    var val  
+    NOTIFICATION_TYPE.filter((nitem)=>{
+      if(nitem.label === item)
+        val = nitem.desc
     })
     return val
   }

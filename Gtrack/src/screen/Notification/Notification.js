@@ -16,7 +16,7 @@ import NavigationService from '../../navigation/NavigationService';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as LiveTrackingAction from '../LiveTracking/Livetracking.Action'
 import { isReadEvent, notificationEvents, removeEvent, setReadNotificationEvents } from '../../utils/socketHelper';
-import { showNotificationName } from './../../utils/helper';
+import { showNotificationName, showNotificationDesc } from './../../utils/helper';
 
 const Notification = ({ navigation }) => {
 
@@ -46,8 +46,12 @@ const Notification = ({ navigation }) => {
     const dispatch = useDispatch()
 
     const NotificationItems = ({ item }) => { 
-        const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )
-        const titleStr = item.attributes.alarm ? showNotificationName(item.attributes.alarm) : showNotificationName(item.type)
+        const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )        
+        const notiType = item.attributes.alarm ? item.attributes.alarm : item.type
+        const titleStr = showNotificationName(notiType)
+        const imgString = String(notiType).toLowerCase()
+        const descriptionStr = showNotificationDesc(notiType) + " at " + moment(item.serverTime).format("h:m a")
+        console.log("device", deviceDetail, groupDevices)
 
         return (
             <TouchableOpacity onPress={()=>{
@@ -58,7 +62,7 @@ const Notification = ({ navigation }) => {
                     <View style={styles.notificationLeftMainView}>
                         <View style={styles.notificationLeftView}>
                             <View style={styles.notificationDetailView}>
-                                <IconConstant type={String(item.type).toLowerCase().trim()} color={ColorConstant.ORANGE} />
+                                <IconConstant type={imgString} color={ColorConstant.ORANGE} />
                             </View>
                         </View>
 
@@ -84,7 +88,7 @@ const Notification = ({ navigation }) => {
                                     <Text style={[styles.deviceStyle, { marginLeft: wp(4) }]}>{deviceDetail.length > 2 ? deviceDetail.length-1 : null}</Text>
                                 </Tooltip>
                             </View>
-                            {/* <Text style={styles.descriptionStyle}>{item.description}</Text> */}
+                            <Text style={styles.descriptionStyle}>{descriptionStr}</Text>
                             <Text style={styles.speedTextStyle}>{deviceDetail[0] && deviceDetail[0].assetType}</Text>
                         </View>
                     </View>
@@ -92,7 +96,7 @@ const Notification = ({ navigation }) => {
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
                             <Text style={styles.timeTextStyle}>{moment(item.serverTime).fromNow()}</Text>
-                            <TouchableOpacity onPress={()=>removeEvent(item)} >
+                            <TouchableOpacity style={{padding:4,zIndex:5}} onPress={()=>removeEvent(item)} >
                                 <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
                             </TouchableOpacity>
                         </View>
