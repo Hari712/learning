@@ -35,13 +35,15 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
 
     const dispatch = useDispatch()
 
-    useEffect(() => { 
-        if(route.params && route.params.editingData) {
-            const { editingData } = route.params
-            console.log("Type",editingData)
-            setRole(editingData.type)
-            setOldData(editingData)
+    useEffect(() => {  
+        loadDeviceList()
+    }, [])
 
+    useEffect(() => {  
+        setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item.deviceName))
+
+        if(route.params) {
+            const { editingData } = route.params
             let selDev = editingData.devices.map((device) => device.deviceName)
             let list = [] 
             let selDeviceName = []
@@ -55,14 +57,18 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
             }) 
             setSelectedDevice(selDeviceName)
             setSelectedDeviceDetail(list)
-            
+        }
+
+    }, [geofenceDeviceList])
+
+    useEffect(() => { 
+        if(route.params && route.params.editingData) {
+            const { editingData } = route.params
+            console.log("Type",editingData, geofenceDeviceList)
+            setRole(editingData.type)
+            setOldData(editingData)   
         }
     }, [navigation,route])
-
-
-    useEffect(() => {  
-        setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item.deviceName))
-    }, [geofenceDeviceList])
 
     useEffect(() => { 
         let list = [] 
@@ -76,24 +82,19 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
         setSelectedDeviceDetail(list)
     }, [selectedDevice])
 
-
-    useEffect(() => {  
-        loadDeviceList()
-    }, [])
-
     function loadDeviceList() {
-    AppManager.showLoader()  
-    dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onSuccess, onError))
+        AppManager.showLoader()  
+        dispatch(LivetrackingActions.requestGetDevicesByUserId(loginInfo.id, onSuccess, onError))
     }
 
     function onSuccess(data) {    
-    console.log("Success",data) 
-    AppManager.hideLoader()
+        console.log("Success",data) 
+        AppManager.hideLoader()
     }
 
     function onError(error) {
-    AppManager.hideLoader()
-    console.log("Error",error)  
+        AppManager.hideLoader()
+        console.log("Error",error)  
     }
 
     React.useLayoutEffect(() => {

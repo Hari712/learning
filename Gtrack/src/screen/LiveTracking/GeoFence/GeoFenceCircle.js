@@ -214,7 +214,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                     shape={{
                         "type": "FeatureCollection",
                         "features": [
-                            circle(selectedCoordinate, radius)
+                            circle(selectedCoordinate, radius/1000)
                         ]
                     }}
                 >
@@ -267,7 +267,7 @@ const GeoFenceCircle = ({navigation,route}) => {
     }
 
     function onChangeRadius(val) {
-        let rad = isAndroid ? val  : val * 1000
+        let rad = val * 1000
         console.log("Radius",rad)
         setRadius(rad)
     }
@@ -319,7 +319,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                     </View>
                     <View style={styles.sliderView}>
                         <Slider
-                            value={Platform.OS == 'android'? radius : radius/1000}
+                            value={radius/1000}
                             onValueChange={(value) => onChangeRadius(value)}
                             minimumValue={0.5}
                             maximumValue={1000}
