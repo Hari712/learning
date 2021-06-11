@@ -31,12 +31,14 @@ const AddUser = ({ navigation, route }) => {
   const [infoClick, setInfoClick] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState([]);
   const [role, setRole] = useState();
+  const [isAddNew, setIsAddNew] = useState(true);
 
   React.useEffect(() => {
     dispatch(UsersActions.requestGetGroup(loginData.id, onGroupSuccess, onGroupError));
     if (route) {
       const editData = route.params;
       if (editData) {
+        setIsAddNew(false)
         setFirstName(editData.editData.firstName)
         setLastName(editData.editData.lastName)
         setEmail(editData.editData.email)
@@ -185,10 +187,11 @@ const AddUser = ({ navigation, route }) => {
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>
             <TextField
+              editable={isAddNew}
               label={translate("User_Email_Address")}
               valueSet={setEmail}
               defaultValue={email}
-              outerStyle={[styles.outerStyle]}
+              outerStyle={[styles.outerStyle, !isAddNew && {backgroundColor:ColorConstant.PINK}]}
             />
           </ShadowView>
           <View style={styles.dropDown}>
