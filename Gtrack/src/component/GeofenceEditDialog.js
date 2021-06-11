@@ -101,7 +101,7 @@ return(
         onTouchOutside={() =>  setDialogVisible(false) } 
         dialogStyle={styles.dialogStyle} >
 
-    <View style={styles.mainViewHeading}>
+    <ScrollView style={styles.mainViewHeading}>
         <View style={styles.subHeadingView}>
             <Text style={styles.headingText}>{translate("View")}</Text>
             <TouchableOpacity onPress={() => setDialogVisible(false) }>
@@ -217,7 +217,7 @@ return(
             </TouchableOpacity>
         </View>  : null } 
     </ScrollView>
-    </View>
+    </ScrollView>
 
     </Dialog>
     )
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE
     },
     mainViewHeading: {
-        //height: hp(80),
+        height: hp(80),
         width: wp(77)
     },
     subHeadingView: {
