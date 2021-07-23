@@ -311,6 +311,18 @@ function* requestSearchAsset(action) {
     }
 }
 
+function* requestDeviceReport(action) {
+    const { userId, deviceId, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_DEVICE_REPORT_DETAILS(userId, deviceId)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -333,5 +345,6 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.UPDATE_GROUP_DEVICE_REQUEST, requestUpdateGroupDevice),
         yield takeLatest(types.UPDATE_ASSET_REQUEST, requestUpdateAssetInfo),
         yield takeLatest(types.DELETE_ASSET_BY_ASSET_ID_REQUEST, requestDeleteAssetByAssetId),
-        yield takeLatest(types.SEARCH_ASSET_REQUEST, requestSearchAsset)
+        yield takeLatest(types.SEARCH_ASSET_REQUEST, requestSearchAsset),
+        yield takeLatest(types.GET_DEVICE_REPORT_BY_ID, requestDeviceReport)
 }
