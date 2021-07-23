@@ -37,7 +37,9 @@ const Details = ({ route, navigation }) => {
         loginInfo: getLoginInfo(state),
         isConnected: state.network.isConnected
     }))
-    
+
+    const user_id = loginInfo.id ? loginInfo.id : null
+
     useEffect(() => {
         loadDeviceDetail()
     }, [])
