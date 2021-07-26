@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import TextField from '../../component/TextField'
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { AppConstants, SCREEN_CONSTANTS, DEVICE_ID_VALIDATION_REGX } from '../../constants/AppConstants'
 import { BackIcon, BarCodeScanIcon } from '../../component/SvgComponent'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images'
@@ -56,6 +56,8 @@ const ActivateDevice = ({ navigation }) => {
                 message = translate(AppConstants.EMPTY_DEVICE_ID)
             } else if (isEmpty(deviceName)) {
                 message = translate(AppConstants.EMPTY_DEVICE_NAME)
+            } else if(!DEVICE_ID_VALIDATION_REGX.test(deviceId)) {
+                message = translate(AppConstants.INVALID_DEVICE_ID)
             }
             if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -127,6 +129,7 @@ const ActivateDevice = ({ navigation }) => {
                         contentInset={{ label: hp(-0.5) }}
                         ref={deviceIdRef}
                         inputContainerStyle={styles.inputContainer}
+                        maxLength={15}
                     />
 
                 </View>
