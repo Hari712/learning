@@ -13,7 +13,6 @@ import { SubscriptionStatus, SubscriptionStatusColor } from '../../utils/helper'
 
 const DeviceSummary = (props) => {
     const { deviceList: {deviceList} } = props;
-    const deviceData = Object.keys(deviceList).sort((a, b) => b - a);
     return (
         <ShadowView style={styles.deviceSummaryContainer}>
 
@@ -36,7 +35,7 @@ const DeviceSummary = (props) => {
             </View>
 
             </View>
-            {deviceData.map((item, key) =>
+            {deviceList.map((item, key) =>
 
             <ShadowView style={styles.summaryContainer} key={key}>
                 <View style={styles.subContainer}>
@@ -45,20 +44,20 @@ const DeviceSummary = (props) => {
                     <View style={{ flex: 0.25 }}>
                         <View style={styles.deviceSummaryDetailView}>
                             {/* <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' /> */}
-                            {deviceList[item].assetDTO && deviceList[item].assetDTO.assetType ? <IconConstant color={ColorConstant.BLUE} type={deviceList[item].assetDTO.assetType} /> : <IconConstant color={ColorConstant.BLUE} type={'default'} /> }
+                            {item.assetDTO && item.assetDTO.assetType ? <IconConstant color={ColorConstant.BLUE} type={item.assetDTO.assetType} /> : <IconConstant color={ColorConstant.BLUE} type={'default'} /> }
                         </View>
                     </View>
                     <View style={styles.titleText}>
-                        <Text style={styles.title}>{deviceList[item].deviceDTO.deviceName}</Text>
-                        <Text style={styles.subtitle }>{deviceList[item].groupDTO && deviceList[item].groupDTO.groupName ? deviceList[item].groupDTO.groupName : "Default"}</Text>
+                        <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
+                        <Text style={styles.subtitle }>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
                     </View>
 
                 </View>
 
                 <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'flex-end', }}>
-                    <View style={[styles.stateViewStyle, { backgroundColor: SubscriptionStatusColor(deviceList[item].devicePlan && deviceList[item].devicePlan.status).bg }]}>
-                        <Text style={[styles.stateTextStyle, { color: SubscriptionStatusColor(deviceList[item].devicePlan && deviceList[item].devicePlan.status).color }]}>
-                            {SubscriptionStatus(deviceList[item].devicePlan && deviceList[item].devicePlan.status)}
+                    <View style={[styles.stateViewStyle, { backgroundColor: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).bg }]}>
+                        <Text style={[styles.stateTextStyle, { color: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).color }]}>
+                            {SubscriptionStatus(item.devicePlan && item.devicePlan.status)}
                         </Text> 
                     </View>
                 </View>
