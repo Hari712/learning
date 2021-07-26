@@ -54,8 +54,8 @@ const GeofenceList = ( props ) => {
                 <TouchableOpacity onPress={onTapItem} style={{flex:1,marginRight:hp(1)}}>
                     <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
                 </TouchableOpacity>
-                <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } textOn={item.isActive ? "Enable" :"Disable"} textOff=' ' textFont={"Nunito-Regular"} textSize={10} colorTextOn={ColorConstant.WHITE}  showText={true} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>
-                { !isRegular ?
+                { !isRegular ? <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } textOn={item.isActive ? "Enable" :"Disable"} textOff=' ' textFont={"Nunito-Regular"} textSize={10} colorTextOn={ColorConstant.WHITE}  showText={true} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/> : null}
+                { !isRegular ?  
                 <TouchableOpacity style={{padding:hp(1),marginLeft:hp(2)}} onPress={() => { 
                     setGeofenceId(item.geofence.id)
                     setGeofenceName(item.geofence.name)
