@@ -27,7 +27,7 @@ const AdvanceSettings = ({navigation,route}) => {
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
   const [language,setLanguage] = useState('ENGLISH')
-  const [timeZone,setTimeZone] = useState('utc')
+  const [timeZone,setTimeZone] = useState('UTC')
   const [distance,setDistance] = useState('MILES')
   const [settingsID,setSettingsID] = useState()
   const [temperature,setTemperature] = useState('CELSIUS')
