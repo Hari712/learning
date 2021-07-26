@@ -12,6 +12,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { SubscriptionStatus, SubscriptionStatusColor } from '../../utils/helper'
 
 const DeviceSummary = (props) => {
+    const { deviceList: {deviceList} } = props;
     return (
         <ShadowView style={styles.deviceSummaryContainer}>
 
@@ -34,7 +35,7 @@ const DeviceSummary = (props) => {
             </View>
 
             </View>
-            {Object.values(props.deviceList.deviceList).map((item, key) =>
+            {deviceList.map((item, key) =>
 
             <ShadowView style={styles.summaryContainer} key={key}>
                 <View style={styles.subContainer}>
