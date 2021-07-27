@@ -14,11 +14,10 @@ const initialState = {
 export const dashboardReducer = createReducer(state = initialState, {
     [types.GET_DEVICE_DETAILS_BY_USER_ID_RESPONSE](state, action) {
         const { genericDTOS, deviceCount } = action.data
-        const arryDevices = mapKeys(genericDTOS,"deviceDTO.id")
         return {
             ...state,
             deviceCount: deviceCount,
-            deviceList: arryDevices
+            deviceList: genericDTOS
         }
     },
 

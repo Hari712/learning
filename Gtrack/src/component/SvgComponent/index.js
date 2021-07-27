@@ -134,6 +134,7 @@ import DeviceStoppedIcon from './DeviceStoppedIcon'
 import DeviceOnlineIcon from './DeviceOnlineIcon'
 import DefaultAssetIcon from './DefaultAssetIcon'
 import DeviceOfflineIcon from './DeviceOfflineIcon';
+import DownloadIcon from './DownloadIcon';
 
 export {
     BarCodeScanIcon,
@@ -270,5 +271,6 @@ export {
     DeviceStoppedIcon,
     DeviceOnlineIcon,
     DefaultAssetIcon,
-    DeviceOfflineIcon
+    DeviceOfflineIcon,
+    DownloadIcon
 }

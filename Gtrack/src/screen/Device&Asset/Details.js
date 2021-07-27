@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, PermissionsAndroid } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import { FontSize } from '../../component';
+import { FontSize, PdfViewerDialog } from '../../component';
 import { useDispatch, useSelector } from 'react-redux'
 import * as DeviceActions from '../DeviceSetup/Device.Action'
 import AppManager from '../../constants/AppManager'
@@ -12,6 +12,8 @@ import NavigationService from '../../navigation/NavigationService'
 import isEmpty from 'lodash/isEmpty'
 import { translate } from '../../../App';
 import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon, ExportIcon, BackIcon } from '../../component/SvgComponent';
+import RNFetchBlob from 'rn-fetch-blob';
+import moment from 'moment';
 
 const Details = ({ route, navigation }) => {
 
@@ -21,7 +23,15 @@ const Details = ({ route, navigation }) => {
 
     const [isLoading, setIsLoading] = useState(true)
 
+    const [pdfView, setPdfView] = useState(false);
+    
+    const [pdfBase64, setPdfBase64] = useState('');
+
+    const [pdfFileName, setPdfFileName] = useState('');
+    
     const dispatch = useDispatch()
+
+    const isAndroid = Platform.OS === 'android'
 
     const { loginInfo, isConnected } = useSelector((state) => ({
         loginInfo: getLoginInfo(state),
@@ -33,7 +43,7 @@ const Details = ({ route, navigation }) => {
     useEffect(() => {
         loadDeviceDetail()
     }, [])
-
+   
     function loadDeviceDetail() {
         AppManager.showLoader()
         dispatch(DeviceActions.requestGetDeviceDetailByIdAndUserId(user_id, devicePrimaryId, onDeviceDetailLoadedSuccess, onDeviceDetailLoadedError))
@@ -70,6 +80,7 @@ const Details = ({ route, navigation }) => {
                 "sendMail": false
             }
             dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
+            dispatch(DeviceActions.getDeviceReportBYID(user_id, devicePrimaryId, onDeviceReportSuccess, onDeviceReportFail))
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -77,12 +88,77 @@ const Details = ({ route, navigation }) => {
 
     function onDeviceDetailExportedSuccessfully(data) {
         AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: 'Device detail exported successfully. Please check your mail', description: '' })
+        AppManager.showSimpleMessage('success', { message: 'Device detail exported successfully. Please check your mail', description: '' });
     }
 
     function onDeviceDetailExportedFailure(error) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
+    }
+
+    function onDeviceReportSuccess(data) {
+        const { base64PDF, fileName } = data;
+        let pdf_data = base64PDF.split('data:application/pdf;base64, ');
+        pdf_data = pdf_data[1];
+        setPdfBase64(pdf_data);
+        setPdfFileName(fileName);
+        AppManager.hideLoader();
+        setPdfView(true);
+    }
+
+    function onDeviceReportFail(error) {
+         AppManager.hideLoader()
+         AppManager.showSimpleMessage('danger', { message: error, description: '' })
+    }
+
+    async function downloadFile() {
+        setPdfView(false);
+        try {
+            if(isAndroid) {
+                const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: "Storage Permission",
+                    message: "App needs access to memory to download the file "
+                }
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                        download();
+                }
+                else {
+                        Alert.alert(
+                        "Permission Denied!",
+                        "You need to give storage permission to download the file"
+                        );
+                        AppManager.showSimpleMessage('danger', { message: 'Permission Denied!', description:  'You need to give storage permission to download the file' })
+                }
+            }
+            else {
+                download();
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+
+    const download = () => {
+        AppManager.showLoader()
+        const fs = RNFetchBlob.fs
+        const dirs = RNFetchBlob.fs.dirs      
+        const file_path = dirs.DownloadDir + `/${pdfFileName}_${moment.utc().valueOf()}.pdf`
+        fs.writeFile(file_path, pdfBase64, 'base64')
+        .then(() =>  downloadSuccess(file_path))
+        .catch(() => downloadFailed()) 
+    };
+
+    function downloadSuccess(file_path) {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('success', { message: 'File Downloaded to Your Phone.', description: `Location: ${file_path}`, autohide: false })
+    }
+
+    function downloadFailed() {
+        AppManager.hideLoader()
+        AppManager.showSimpleMessage('danger', { message: 'Something Wrong!', description: 'File cannot Download to Your Phone.' })
     }
 
     useLayoutEffect(() => {
@@ -235,6 +311,17 @@ const Details = ({ route, navigation }) => {
         )
     }
 
+    function renderViewDialog() {
+        return(
+            <PdfViewerDialog 
+                pdfData={pdfBase64}
+                isVisible={pdfView}
+                onTapClose={() => setPdfView(false)}
+                onDownload={() => downloadFile()}
+            />
+        )
+    }
+
     function renderDeviceDetail() {
         const assetDTO = deviceData && deviceData.assetDTO ? deviceData.assetDTO : null
         const deviceDTO = deviceData && deviceData.deviceDTO ? deviceData.deviceDTO : null
@@ -288,6 +375,7 @@ const Details = ({ route, navigation }) => {
     return (
         <>
             {isLoading ? null : renderDeviceDetail()}
+            {renderViewDialog()} 
         </>
     )
 }

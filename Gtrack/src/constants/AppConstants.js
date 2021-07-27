@@ -15,6 +15,7 @@ export const NUMBER_REGEX = new RegExp(/\D/, 'g')
 export const CIRCLE_REGEX = /^CIRCLE\((\-?\d*\.?\d* \-?\d*\.?\d*)\,(\d*\.?\d*)\)$/
 export const FCM_TOKEN = 'fcmToken'
 export const TOKEN_EXPIRED = 'Token Expired'
+export const DEVICE_ID_VALIDATION_REGX = /^[a-zA-Z0-9]*$/
 
 export const TOKEN_ERRORS = ['JWT claims string is empty', 'JWT claims string is empty', 'Invalid grant', 'TOKEN_INVALID']
 
@@ -100,6 +101,6 @@ export const AppConstants = {
     ROLE_REGULAR: 'ROLE_REGULAR',
     ROLE_OWNER: 'ROLE_OWNER',
     EMPTY_ALARM_NAME: 'Empty_Alarm_Name',
-    KILOMETER: 'KILOMETER'
-    
+    KILOMETER: 'KILOMETER',
+    INVALID_DEVICE_ID: 'Invalid_Device_Id'
 }
