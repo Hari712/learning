@@ -20,6 +20,7 @@ import DeleteConfirmationDialog from './DeleteConfirmationDialog'
 import LogoutConfirmationDialog from './LogoutConfirmationDialog'
 import RateUsDialog from './RateUsDialog'
 import PanicDialog from './PanicDialog';
+import PdfViewerDialog from './PdfViewer';
 
 export { 
     EditText,
@@ -43,5 +44,6 @@ export {
     DeleteConfirmationDialog,
     LogoutConfirmationDialog,
     RateUsDialog,
-    PanicDialog
+    PanicDialog,
+    PdfViewerDialog
 }

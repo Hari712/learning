@@ -11,6 +11,7 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 import InAppReview from 'react-native-in-app-review';
+import { isRoleRegular } from '../Selector';
 
 const isAndroid = Platform.OS === 'android'
 
@@ -21,6 +22,10 @@ const Settings = ({ navigation }) => {
 
   const [isLogoutConfirmationDialogVisible, setIsLogoutConfirmationDialogVisible] = useState(false)
 
+  const { isRegular } = useSelector(state => ({
+    isRegular: isRoleRegular(state)
+  }))
+  
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (null),
@@ -29,6 +34,9 @@ const Settings = ({ navigation }) => {
 
   const SettingsItems = ({ item }) => {
     // const [listData, setListData] = useState(SETTINGS_MENU)    
+    if(item.title === 'Notifications') {
+      if(isRegular) return; 
+    }
 
     let IconConstant;
 
