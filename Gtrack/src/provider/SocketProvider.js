@@ -61,7 +61,7 @@ const SocketProvider = (props) => {
     },[isLoggedIn])
 
     function connectWitWebsocket() {
-        const url = `wss://traccar-dev.vegitone.com/api/socket`
+        const url = `wss://${socketURL}`
         socket = new WebSocket(url)
         value = {
             socket: socket
