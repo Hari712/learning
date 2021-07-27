@@ -12,7 +12,7 @@ import { setNotificationEvents } from '../utils/socketHelper'
 
 let socket = null
 let isConnecting = false
-
+let value;
 
 const SocketContext = createContext(null)
 
@@ -60,13 +60,12 @@ const SocketProvider = (props) => {
         }
     },[isLoggedIn])
 
-    const value = {
-
-    }
-
     function connectWitWebsocket() {
         const url = `wss://${socketURL}`
         socket = new WebSocket(url)
+        value = {
+            socket: socket
+        }
         socket.onopen = (event) => {
             console.log(event);
         }
@@ -100,7 +99,7 @@ const SocketProvider = (props) => {
             }
         };
     }
-
+    
     return (
         <SocketContext.Provider value={value}>
             {props.children}
