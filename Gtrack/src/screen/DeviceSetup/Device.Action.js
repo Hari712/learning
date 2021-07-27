@@ -241,3 +241,11 @@ export const setAllUserDeviceResponse = (data) => ({
     type: types.SET_ALL_DEVICE_USER_RESPONSE,
     data
 })
+
+export const getDeviceReportBYID = (userId, deviceId, onSuccess, onError) => ({
+    type: types.GET_DEVICE_REPORT_BY_ID,
+    userId,
+    deviceId,
+    onSuccess,
+    onError
+})
