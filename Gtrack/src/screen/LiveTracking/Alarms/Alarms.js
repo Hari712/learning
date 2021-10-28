@@ -25,7 +25,7 @@ const Alarms = ({navigation}) => {
   const dispatch = useDispatch()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
-
+  const [searchKeyword, setSearchKeyword] = useState("")
   const [alarmName, setAlarmName] = useState()
   const [notificationId, setNotificationId] = useState()
   const [deleteDialogVisible,setDeleteDialogVisible] = useState(false)
@@ -100,6 +100,25 @@ const Alarms = ({navigation}) => {
     console.log("Error",data)  
     AppManager.showSimpleMessage('success', { message: data.message, description: '' })  
   }
+  const searchHandle = (keyword) => {
+    setSearchKeyword(keyword)
+    loadAlarmsSearchList(keyword)
+  }
+  function loadAlarmsSearchList(searchInput){
+    AppManager.showLoader() 
+    dispatch(LivetrackingActions.requestSearchAlarm(loginData.id, searchInput, onSuccess, onError))
+  }
+  function onSuccess(data) { 
+    console.log("geofence",data)   
+    setIsRefreshing(false)
+    AppManager.hideLoader()
+}
+
+function onError(error) {
+    AppManager.hideLoader()
+    setIsRefreshing(false) 
+}
+
 
   const renderItem = ({item,index}) => {
 
@@ -155,10 +174,22 @@ const Alarms = ({navigation}) => {
       setIsRefreshing(true) 
       loadAlarmList()
   }
-
+  const searchBar = () => {
+    return (
+            <View style={styles.search}>
+                <TextInput 
+                    placeholder={translate("Search_here")}
+                    style={styles.searchText}
+                    onChangeText={text => searchHandle(text) }                    
+                    value={searchKeyword}
+                />
+            </View>
+    )
+}
 
 return ( 
   <View style={styles.container}>
+    {searchBar()}
     { !isRegular ?
       <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.header}>
         <Text style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{translate("Create New")}</Text>
@@ -271,6 +302,29 @@ durationText: {
   fontSize:10,
   fontFamily:'Nunito-Regular',
   color:ColorConstant.GREY
+},
+searchText: {
+  //fontSize:FontSize.FontSize.small,
+  fontSize:14,
+  color:ColorConstant.BLACK,
+  fontFamily:'Nunito-LightItalic'
+},
+search: {
+  paddingHorizontal:hp(2),
+  height:hp(5),
+  marginHorizontal:hp(2.5),
+  borderRadius:12,
+  marginTop:hp(4),
+  // marginBottom:hp(2),
+  elevation:4,
+  shadowColor: ColorConstant.BLACK,
+  shadowOffset: {
+      width: 0,
+      height: 0
+  },
+  shadowRadius: 3,
+  shadowOpacity: 1,
+  backgroundColor:ColorConstant.WHITE
 },
 });
 

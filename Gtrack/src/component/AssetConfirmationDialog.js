@@ -35,8 +35,8 @@ const AssetConfirmationDialog = (props) => {
                     </View>
                 </View>
                 <View style={styles.bodyContainer}>
-                    <Text style={styles.bodyText}>Do you really want to attach asset ?</Text>
-                    <Text style={[styles.bodyText, { marginTop: hp(1) }]}>{props.deviceText ? "It will get detach from the current device" + "(" + props.deviceText + ")" : "It will get detach from the current device."}</Text>
+                    <Text style={styles.bodyText}>Do You Really want to attach asset?</Text>
+                    <Text style={[styles.bodyText, { marginTop: hp(1) }]}>{props.deviceText ? "It will get detach from the current device" + "(" + props.deviceText + ")" : null}</Text>
                 </View>
                 <View style={styles.bottomContainer}>
                     <TouchableOpacity style={styles.button} onPress={() => hideDialog()}>

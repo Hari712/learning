@@ -19,6 +19,7 @@ function* addSubuser(action) {
     const { data, userId, onSuccess, onError } = action
     try {
         const response = yield call(API.post, ApiConstants.ADD_SUBUSER(userId), data)
+        console.log('response', response)
         yield put(UserActions.setAddSubuserResponse(response))
         onSuccess(response)
     } catch (error) {

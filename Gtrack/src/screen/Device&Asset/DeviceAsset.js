@@ -48,7 +48,7 @@ const DeviceAsset = ({ navigation }) => {
     navigation.setOptions({
       headerLeft: () => (null),
       headerRight: () => (
-        <TouchableOpacity  activeOpacity={1} onPress={() => setMenuClickEvent()}>
+        <TouchableOpacity style={{width: wp(12), height: '100%', justifyContent: 'center',  alignItems: 'center'}} activeOpacity={1} onPress={() => setMenuClickEvent()}>
           {menuClick ? <MenuIconClicked style={styles.headerRight}/> :  <MenuIcon style={styles.headerRight}/> }
         </TouchableOpacity>
       )
@@ -227,7 +227,7 @@ const Menu = ['Create', 'Manage']
 
 const styles = StyleSheet.create({
   headerRight: {
-    marginRight: wp(5),
+    // marginRight: wp(5),
     height: hp(2.2),
     width: wp(3),
     resizeMode: 'contain'

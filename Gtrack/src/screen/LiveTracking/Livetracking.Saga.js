@@ -212,6 +212,18 @@ function* requestSearchGeofence(action) {
         onError(error)
     }
 }
+function* requestSearchAlarms(action) {
+    const { userId, keyword, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.SEARCH_ALARMS(userId, keyword)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+        yield put(LivetrackingActions.setSearchAlarmResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
 
 function* requestSendPanicData(action) {
     const {deviceId, onSuccess, onError } = action
@@ -244,5 +256,6 @@ export function* watchLivetracking() {
     yield takeLatest(types.GET_ASSET_INFO_REQUEST, requestAssetInfo),
     yield takeLatest(types.SEARCH_GROUP_REQUEST, requestSearchGroup),
     yield takeLatest(types.SEARCH_GEOFENCE_REQUEST, requestSearchGeofence),
+    yield takeLatest(types.SEARCH_ALARMS_REQUEST, requestSearchAlarms),
     yield takeLatest(types.SEND_PANIC_ALARM_DATA_REQUEST, requestSendPanicData)
 }

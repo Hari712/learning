@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ScrollView, TextInput, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { AppConstants } from '../../constants/AppConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -101,8 +101,10 @@ function CreateAsset() {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.scene}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+             <TouchableWithoutFeedback style={{flex: 1}} onPress={Keyboard.dismiss}>
+            <ScrollView contentContainerStyle={{paddingBottom: hp(20)}}  showsVerticalScrollIndicator={false} keyboardVerticalOffset={40}>
+                <View style={styles.scene}>
                 <TextField
                     valueSet={setAssetName}
                     defaultValue={assetName}
@@ -161,28 +163,29 @@ function CreateAsset() {
                     outerStyle={{ position:'absolute', width:'100%',top:devicePositionY, marginTop: hp(2) }}
                 />
 
-
-            </View>
-        </View>
+                </View>
+            </ScrollView>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        height: Dimensions.get('window').height,
+        flex: 1,
         alignItems: 'center',
         backgroundColor: ColorConstant.WHITE
     },
     scene: {
-        width: '85%',
-        marginHorizontal: hp(5),
+        width: '100%',
+        alignSelf: 'center',
         marginTop: hp(5)
     },
     buttonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginTop: hp(3),
-        alignItems: 'center'
+        alignItems: 'center',
     },
     buttonStyle: {
         borderRadius: 6,

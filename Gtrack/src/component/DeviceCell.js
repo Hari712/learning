@@ -117,6 +117,9 @@ const styles = StyleSheet.create({
     },
     editButton: {
         flexDirection: 'row',
+        width: wp(10),
+        alignItems: 'center',
+        justifyContent: 'center',
         zIndex: 10,
         padding: hp(1.5),
         marginLeft: 'auto'

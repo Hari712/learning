@@ -51,7 +51,7 @@ const SocketProvider = (props) => {
         if (isConnected && isLoggedIn && socket == null && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
             connectWitWebsocket()
         }
-    },[traccarSessionInfo])
+    },[traccarSessionInfoDetail])
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -59,21 +59,22 @@ const SocketProvider = (props) => {
             socket = null
         }
     },[isLoggedIn])
-
+    console.log(traccarSessionInfoDetail, 'traccarSessionInfoDetail')
     function connectWitWebsocket() {
         const url = `wss://${socketURL}`
         socket = new WebSocket(url)
         value = {
             socket: socket
         }
+        console.log('socket', url, socket)
         socket.onopen = (event) => {
-            console.log(event);
+            console.log('socket open' ,event);
         }
         socket.onerror = (event) => {
-            console.log(event);
+            console.log('socket error',event);
         }
         socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+            const data = JSON.parse(event.data);    
             // data = [{},{},{},{}]
             // data = {positions:[{},{}]}
             // data = {devices:[{},{}]}
@@ -95,7 +96,7 @@ const SocketProvider = (props) => {
         }
         socket.onclose = function (event) {
             if (!event['reason']) {
-                console.log(event);
+                console.log('socket onclose',event);
             }
         };
     }

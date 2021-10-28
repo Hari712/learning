@@ -1,8 +1,9 @@
 import createReducer from '../../store/CreateReducer'
 import * as types from '../../constants/ActionTypes';
+import { isEmpty } from 'lodash';
 
 const initialState = {
-    subUser:[],
+    subUser: [],
     group:[]
 }
 
@@ -30,9 +31,10 @@ export const usersReducer = createReducer(state = initialState, {
     },
     [types.ADD_SUBUSER_RESPONSE](state, action) {
         const { result } = action.data
+        const userlist = !isEmpty(state.subUser) ? [ ...result, ...state.subUser] : [ ...result]
         return {
             ...state,
-            subUser:[...result, ...state.subUser]
+            subUser: userlist
         }
     },    
     [types.UPDATE_SUBUSER_RESPONSE](state, action) {

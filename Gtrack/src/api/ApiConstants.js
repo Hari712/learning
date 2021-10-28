@@ -1,11 +1,11 @@
-const BASE_URL = 'https://qa-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://qa-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 
 // https://qa-api.vegitone.com/gtrackapi/
 // https://dev-api.vegitone.com/gtrackapi/
 
 const SUFFIX_URL = 'public/'
 
-const TRACCAR_URL = 'https://traccar-dev.vegitone.com/'
+const TRACCAR_URL =  'https://traccar-devqa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
 
 const AUTH = 'auth/'
 
@@ -18,7 +18,7 @@ const ApiConstants = {
     LOGIN: SUFFIX_URL + AUTH + 'login',
     SIGNUP: SUFFIX_URL + 'signup',
     TRACCAR_URL: TRACCAR_URL,
-    SOCKET_BASE_URL: 'traccar-dev.vegitone.com/',
+    SOCKET_BASE_URL: 'traccar-devqa.gtrackindia.com/',
     REFRESH_TOKEN:(userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     FORGOT_PASSWORD: `${SUFFIX_URL}forgotPassword/getOTP`,
     VERIFY_OTP: `${SUFFIX_URL}forgotPassword/verifyOTP`,
@@ -80,6 +80,7 @@ const ApiConstants = {
     REMOVE_DEVICE_TOKEN_API:(userId) => `${USER}${userId}/trace/removeDeviceToken`,
     SEARCH_GROUP:(userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
     SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
+    SEARCH_ALARMS:(userId, keyword) => `${USER}${userId}/trace/alerts?typeOrName=${keyword}`,
     ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
     GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`,
     GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`

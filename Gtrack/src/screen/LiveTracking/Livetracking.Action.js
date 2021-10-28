@@ -196,6 +196,19 @@ export const setSearchGeofenceResponse = (data) => ({
     data
 })
 
+export const requestSearchAlarm = (userId, keyword, onSuccess, onError) => ({
+    type: types.SEARCH_ALARMS_REQUEST,
+    userId,
+    keyword,
+    onSuccess,
+    onError
+})
+
+export const setSearchAlarmResponse = (data) => ({
+    type: types.SEARCH_ALARMS_RESPONSE,
+    data
+})
+
 export const setNotificationEventsResponse = (data) => ({
     type: types.NOTIFICATION_EVENTS_RESPONSE,
     data

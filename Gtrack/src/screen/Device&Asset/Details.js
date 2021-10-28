@@ -79,7 +79,7 @@ const Details = ({ route, navigation }) => {
                 "type": null,
                 "sendMail": false
             }
-            dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
+            // dispatch(DeviceActions.requestExportDeviceByDeviceID(user_id, requestBody, onDeviceDetailExportedSuccessfully, onDeviceDetailExportedFailure))
             dispatch(DeviceActions.getDeviceReportBYID(user_id, devicePrimaryId, onDeviceReportSuccess, onDeviceReportFail))
         } else {
             AppManager.showNoInternetConnectivityError()
@@ -187,6 +187,7 @@ const Details = ({ route, navigation }) => {
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
         const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.monthlyFee : devicePlan.yearlyFee
+        console.log(devicePlan, planPrice)
         // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
         // const actualTax = (planPrice * tax) / 100
         // const payableAmount = planPrice + actualTax
@@ -199,7 +200,7 @@ const Details = ({ route, navigation }) => {
                     </View>
                     <View style={[styles.detailsSubView, { flex: 0.9 }]} >
                         <Text style={styles.textStyle}>{translate("Price")}</Text>
-                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>$ {planPrice}</Text>
+                        <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>₹ {planPrice}</Text>
                     </View>
                     <View style={[styles.detailsSubView, { flex: 1.2 }]}>
                         <Text style={styles.textStyle}>{translate("Start Date")}</Text>

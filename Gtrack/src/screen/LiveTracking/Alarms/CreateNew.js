@@ -95,7 +95,8 @@ const CreateNew = ({navigation,route}) => {
         
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
         alarmType:selectedAlarmType, 
-        deviceOverSpeedValue:convertSpeedtoKnot(overSpeedInputValue, distUnit),
+        deviceOverSpeedValue:overSpeedInputValue,
+        // deviceOverSpeedValue:convertSpeedtoKnot(overSpeedInputValue, distUnit),
         selectedDeviceList:selectedDevice,
         notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 

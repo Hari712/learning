@@ -81,8 +81,9 @@ const ActiveUser = () => {
             </View>
 
             <View style={styles.rightMainViewStyle}>
-                <Text style={styles.allUsersTextStyle}>{selectedRole === 'all' ? selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)  + ' users' : selectedRole === 'owner' ? 'Admin' : selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}</Text>
-                <TouchableOpacity onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
+                 <TouchableOpacity style={{flexDirection: 'row'}} onPress={()=>setIsClickDownArrow(!isClickDownArrow)}>
+                <Text style={styles.allUsersTextStyle}>{selectedRole === 'all' ? selectedRole  + ' users' : selectedRole === 'owner' ? 'Admin' : selectedRole}</Text>
+               
                 <Image source={images.dashBoard.next} style={styles.nextImageStyle} resizeMode='contain' />
                 </TouchableOpacity>
 
@@ -182,6 +183,7 @@ const styles = StyleSheet.create({
     rightMainViewStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingRight: wp(6),
         paddingLeft: wp(3),
         // paddingBottom: hp(0)
@@ -190,7 +192,8 @@ const styles = StyleSheet.create({
         marginRight: wp(3),
         color: ColorConstant.BLUE,
         fontSize: FontSize.FontSize.small,
-        fontWeight: '500'
+        fontWeight: '500',
+        textTransform: 'capitalize'
     },
     nextImageStyle: {
         height: hp(1.2),

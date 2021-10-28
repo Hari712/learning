@@ -28,7 +28,7 @@ const CompleteSetup = ({ navigation }) => {
     }, [navigation]);
 
     function onTapLink() {
-        Linking.openURL("https://gtrack.vegitone.com/")
+        Linking.openURL("https://www.gtrackindia.com/")
     }
 
 return (
@@ -42,7 +42,7 @@ return (
             <CompleteSetupImage style={{marginVertical:hp(6)}} />
             <Text style={styles.subscriptionText}>{translate("Device_setup_string1")}</Text>
             <TouchableOpacity onPress={() => onTapLink()}>
-                <Text style={styles.webLink}>www.gtrack.com</Text>
+                <Text style={styles.webLink}>www.gtrackindia.com</Text>
             </TouchableOpacity>
         </View>
     </View>

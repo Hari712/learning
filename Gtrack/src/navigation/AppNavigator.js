@@ -49,6 +49,11 @@ function AppNavigator() {
 
 				let deviceType = DeviceInfo.getSystemName();
 				let version = DeviceInfo.getVersion();
+				const traccarPassword = `g-track${response.userDTO.userKey}`;
+				console.log("traccar", response, traccarSessionData)
+				dispatch(
+					LoginActions.requestTraccarSession(response.userDTO.email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
+				);
 				dispatch(
 					SettingsActions.requestGetFeedBack(
 						response.userDTO.id,
@@ -79,7 +84,6 @@ function AppNavigator() {
 						onGetAllUserGroupError
 					)
 				);
-				dispatch(LoginActions.setTraccarSessionData(response));
 				dispatch(
 					LoginActions.requestGetLastKnownDevicePosition(
 						response.userDTO.id,
@@ -102,7 +106,14 @@ function AppNavigator() {
 
 		return () => clearTimeout(timer);
 	}, []);
+	function onTraccarSessionSuccess(data) {
+		console.log('Traccar Session Success', data);
+		storeItem(TRACCAR_SESSION_DATA, data);
+	}
 
+	function onTraccarSessionError(error) {
+		console.log('Traccar Session Error', error);
+	}
 	async function onAddDeviceToken(data) {
 		const fcmToken = await getValue(FCM_TOKEN)
 		if (!isEmpty(fcmToken)) {

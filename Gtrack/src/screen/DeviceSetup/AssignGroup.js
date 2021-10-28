@@ -41,7 +41,7 @@ const AssignGroup = ({ navigation, route }) => {
     const [isAddNewGroupDialogVisible, setIsAddNewGroupDialogVisibility] = useState(false)
     const [dropdownPosy, setDropdownPosy] = useState()
 
-
+console.log('default group',group, arrGroupnames)
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (

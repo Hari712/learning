@@ -25,12 +25,12 @@ const DeviceSummary = (props) => {
             <View style={styles.rightMainViewStyle}>
                 <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")} {props.deviceList.deviceCount}</Text>
 
-                <TouchableOpacity onPress={() => { NavigationService.navigate('Device & Asset') }} >
-                    <FullScreenIcon style={styles.ViewallStyle} resizeMode='contain'/>
+                <TouchableOpacity style={styles.ViewallStyle} onPress={() => { NavigationService.navigate('Device & Asset') }} >
+                    <FullScreenIcon  resizeMode='contain'/>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
-                    <DeviceSetupIcon style={styles.refreshImageStyle} resizeMode='contain'/>
+                <TouchableOpacity style={styles.refreshImageStyle} onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
+                    <DeviceSetupIcon width={17} height={17}  resizeMode='cover'/>
                 </TouchableOpacity>
             </View>
 
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     rightMainViewStyle: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         paddingRight: wp(6),
         paddingLeft: wp(3),
         // paddingBottom: hp(0)
@@ -96,12 +97,10 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     },
     ViewallStyle: {
-        height: hp(2),
         width: hp(2),
         marginRight: wp(3)
     },
     refreshImageStyle: {
-        height: hp(2),
         width: hp(2)
     },
     activeUserView: {

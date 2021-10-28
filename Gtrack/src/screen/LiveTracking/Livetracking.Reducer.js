@@ -115,6 +115,12 @@ export const livetrackingReducer = createReducer(state = initialState, {
             geofenceList: action.data
         }
     },
+    [types.SEARCH_ALARMS_RESPONSE](state, action) {
+        return {
+            ...state,
+            alarmsList: action.data
+        }
+    },
     [types.NOTIFICATION_EVENTS_RESPONSE](state, action) {
         let array = {...state.notificationEvents, ...action.data}
         return {

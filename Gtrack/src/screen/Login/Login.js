@@ -70,7 +70,7 @@ const Login = () => {
 		const traccarPassword = `g-track${data.userDTO.userKey}`;
 		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
 		dispatch(
-			LoginActions.requestTraccarSession(email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
+			LoginActions.requestTraccarSession(email.toLowerCase(), traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
 		);
 		dispatch(
 			LoginActions.requestGetLastKnownDevicePosition(

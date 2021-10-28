@@ -72,14 +72,12 @@ const TripHistory = ({ navigation }) => {
             <>
                 {devices.map((subitem, subkey) => {
                     return (
-                        <View key={subkey} style={styles.subCategory}>
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, {data:subitem})} >
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, {data:subitem})} >
+                            
                                 <NextOrangeIcon  style={styles.icon} />
-                            </TouchableOpacity>
-
-                        </View>
+                        </TouchableOpacity>
                     )
                 })}
             </>
@@ -96,12 +94,12 @@ const TripHistory = ({ navigation }) => {
                         {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
                     </TouchableOpacity>
 
-                    <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
+                    <View style={{ flex: 1, padding: 10 }}  onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }} >
                         {/* heading */}
-                        <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
                             {/* {isDefault ? renderDefaultContainer() : renderActionButton()} */}
-                        </View>
+                        </TouchableOpacity>
 
                         {/* Expanded data View */}
 
