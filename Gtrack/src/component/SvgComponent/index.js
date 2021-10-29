@@ -101,6 +101,7 @@ import AdvanceSettingsIcon from './AdvanceSettingsIcon'
 import IgnitionOffIcon from './IgnitionOffIcon'
 import IgnitionOnIcon from './IgnitionOnIcon'
 import GtrackLogoIcon from './GtrackLogoIcon'
+import GtrackIndiaLogo from './GtrackIndiaLogo'
 import CrossIconBlue from './CrossIconBlue'
 import ExportIcon from './ExportIcon'
 import SettingsEyeIcon from './SettingsEyeIcon'
@@ -239,6 +240,7 @@ export {
     IgnitionOffIcon,
     IgnitionOnIcon,
     GtrackLogoIcon,
+    GtrackIndiaLogo,
     CrossIconBlue,
     ExportIcon,
     SettingsEyeIcon,
