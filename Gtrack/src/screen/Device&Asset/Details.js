@@ -186,8 +186,8 @@ const Details = ({ route, navigation }) => {
         const activationDate = devicePlan && devicePlan.activationDate ? devicePlan.activationDate : ''
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
-        const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.monthlyFee : devicePlan.yearlyFee
-        console.log(devicePlan, planPrice)
+        const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.subscriptionPlanCurrency.monthlyFee : devicePlan.subscriptionPlanCurrency.annualFee
+        console.log('devicePlan', devicePlan, planPrice)
         // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
         // const actualTax = (planPrice * tax) / 100
         // const payableAmount = planPrice + actualTax
