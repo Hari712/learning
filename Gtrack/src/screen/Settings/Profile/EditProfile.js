@@ -355,12 +355,12 @@ const EditProfile = ({ navigation, route, item }) => {
 
 
                     <View style={{ flexDirection: 'row' }}>
-                        <View style={{ marginLeft: wp(1) }}>
+                        <View style={{ marginLeft: wp(1),  marginVertical: hp(2) }}>
                             <Text style={styles.EmailTextStyle}>{translate("Email Address")}</Text>
                             <Text style={styles.textNameStyle}>{loginData.email}</Text>
                         </View>
 
-                        <View style={{ marginLeft: wp(15) }}>
+                        <View style={{ marginLeft: wp(15),  marginVertical: hp(2) }}>
                             <Text style={styles.EmailTextStyle}>{translate("User Type")}</Text>
                             <Text style={styles.textNameStyle}>{userType == "ROLE_OWNER" ? "Owner" : "Regular"}</Text>
                         </View>
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: wp(75),
-        marginTop: hp(10),
+        marginTop: hp(5),
         alignSelf: 'center',
         paddingBottom: hp(6)
     },

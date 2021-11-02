@@ -55,7 +55,7 @@ const UsersList = (props) => {
                 <View style={styles.blueBox}>
                     <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
-                    {!isSuperOwner && <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/>}
+                    {!isSuperOwner && <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}   onChange={() => onChangeSwitch(item)}/>}
                     <Text style={styles.activeText}>{isSuperOwner ? null : item.isActive?"Active":"Inactive"}</Text>
                         <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                             <UsersEditIcon/>

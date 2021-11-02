@@ -136,7 +136,7 @@ const TripHistory = ({ navigation }) => {
 
     const renderItemData = () => {
         return(
-            <View>
+            <View style={{flex: 1}}>
                 <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>
                     Select device
                 </Text>

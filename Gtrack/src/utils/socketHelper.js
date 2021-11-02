@@ -1,20 +1,5 @@
 import mapKeys from 'lodash/mapKeys';
-export let notificationEvents = [{ attributes: {alarm: "lowBattery"},
-alarm: "lowBattery",
-deviceId: 125,
-geofenceId: 0,
-id: 1339,
-maintenanceId: 0,
-positionId: 5856,
-serverTime: "2021-10-27T04:55:23.498+0000",
-type: "alarm"}, {attributes: {},
-deviceId: 170,
-geofenceId: 0,
-id: 2628,
-maintenanceId: 0,
-positionId: 0,
-serverTime: "2021-10-27T12:35:35.116+0000",
-type: "deviceOnline"}]
+export let notificationEvents = []
 export let readEvents = []
 export let isNewEvent = false
 

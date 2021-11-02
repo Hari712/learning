@@ -7,6 +7,7 @@ import API from '../../api'
 import * as LoginActions from './Login.Action'
 import * as LiveTrackingActions from '../LiveTracking/Livetracking.Action'
 
+
 function* login(action) {
     const { data, onSuccess, onError } = action
     try {
@@ -21,13 +22,14 @@ function* login(action) {
 }
 
 function* loginIntoTraccarSession(action) {
-    const { email, password, onSuccess, onError } = action
+    const { userId, onSuccess, onError } = action
     try {
-        const params = new URLSearchParams();
-        params.append('email', email);
-        params.append('password', password);
-        const response = yield call(API.post, ApiConstants.TRACCAR_SESSION, params)
-        const result = response ? response : {}
+    
+        const url = ApiConstants.TRACCAR_SESSION(userId)
+        const response = yield call(API.get, url)
+       
+        console.log('res test', response)
+        const result = response ? response.result : {}
         yield put(LoginActions.setTraccarSessionData(result))
         onSuccess(result)
     } catch (error) {

@@ -50,10 +50,17 @@ function AppNavigator() {
 				let deviceType = DeviceInfo.getSystemName();
 				let version = DeviceInfo.getVersion();
 				const traccarPassword = `g-track${response.userDTO.userKey}`;
-				console.log("traccar", response, traccarSessionData)
-				dispatch(
-					LoginActions.requestTraccarSession(response.userDTO.email, traccarPassword, onTraccarSessionSuccess, onTraccarSessionError)
-				);
+				
+				// if (traccarSessionData) {
+				// 	console.log("traccar", response, traccarSessionData)
+				// 	LoginActions.setTraccarSessionData(traccarSessionData)
+				// }
+				// else {
+					dispatch(
+						LoginActions.requestTraccarSession(response.userDTO.id, onTraccarSessionSuccess, onTraccarSessionError)
+					);
+				// }
+			
 				dispatch(
 					SettingsActions.requestGetFeedBack(
 						response.userDTO.id,

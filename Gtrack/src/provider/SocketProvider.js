@@ -62,7 +62,9 @@ const SocketProvider = (props) => {
     console.log(traccarSessionInfoDetail, 'traccarSessionInfoDetail')
     function connectWitWebsocket() {
         const url = `wss://${socketURL}`
-        socket = new WebSocket(url)
+        const headers = {};
+        headers["cookie"] = `JSESSIONID=${traccarSessionInfoDetail.jsessionID}`;
+        socket = new WebSocket(url, null, { headers })
         value = {
             socket: socket
         }

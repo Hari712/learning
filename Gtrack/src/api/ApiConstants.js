@@ -68,7 +68,7 @@ const ApiConstants = {
     LINK_GEOFENCE_DEVICES_UPDATE:(userId, geofenceId) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/updateGeofence`,
     UPDATE_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences`,
     ENABLE_DISABLE_GEOFENCE:(userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
-    TRACCAR_SESSION: `api/session`,
+    TRACCAR_SESSION: (userId) => `${USER}${userId}/session`,
     GET_LAST_KNOWN_POSITIONS: (userId) => `${USER}${userId}/trace/positions`,
     GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`,
     GET_ALL_LAST_KNOWN_POSITION:(userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
