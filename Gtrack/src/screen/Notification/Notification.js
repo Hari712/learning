@@ -44,13 +44,13 @@ const Notification = ({ navigation }) => {
 	}));
 
     const dispatch = useDispatch()
-
+    console.log('notificationEvents', notificationEvents)
     const NotificationItems = ({ item }) => { 
         const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )        
         const notiType = item.attributes.alarm ? item.attributes.alarm : item.type
         const titleStr = showNotificationName(notiType)
         const imgString = String(notiType).toLowerCase()
-        const descriptionStr = showNotificationDesc(notiType) + " at " + moment(item.serverTime).format("h:m a")
+        const descriptionStr = showNotificationDesc(notiType) + " at " + moment(item.serverTime).format("hh:mm a")
         console.log("device", deviceDetail, groupDevices)
 
         return (
@@ -89,7 +89,7 @@ const Notification = ({ navigation }) => {
                                 </Tooltip>
                             </View>
                             <Text style={styles.descriptionStyle}>{descriptionStr}</Text>
-                            <Text style={styles.speedTextStyle}>{deviceDetail[0] && deviceDetail[0].assetType}</Text>
+                            {deviceDetail[0] && deviceDetail[0].assetType && <Text style={styles.speedTextStyle}>{deviceDetail[0] && deviceDetail[0].assetType}</Text> }
                         </View>
                     </View>
 
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     },
     notificationRightView: {
         paddingHorizontal: '3%',
-        marginTop: hp(1),
+        marginVertical: hp(1),
         flex: 0.75
     },
     titleStyle: {
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     },
     lineStyle: {
         borderBottomColor: ColorConstant.GREY,
-        borderBottomWidth: 0.5
+        borderBottomWidth: 0.5,
     },
 })
 

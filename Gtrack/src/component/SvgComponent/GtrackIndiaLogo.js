@@ -62,7 +62,7 @@ function GtrackIndiaLogo(props) {
             data-name="I n d i a"
             transform="translate(1990.746 -508.155) translate(334.083 283.05)"
             fontSize={14}
-            fontFamily="JosefinSans-Regular, Josefin Sans"
+            fontFamily="Nunito-Regular"
             letterSpacing="-0.043em"
           >
             <TSpan x={0} y={0}>
