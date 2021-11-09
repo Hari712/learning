@@ -20,8 +20,13 @@ function* addSubuser(action) {
     try {
         const response = yield call(API.post, ApiConstants.ADD_SUBUSER(userId), data)
         console.log('response', response)
-        yield put(UserActions.setAddSubuserResponse(response))
-        onSuccess(response)
+        if(response.code === 200) {
+            const user_response = yield call(API.get, ApiConstants.GET_SUBUSER(userId))
+            yield put(UserActions.setSubuserResponse(user_response))
+            onSuccess(user_response)
+        }
+        // yield put(UserActions.setAddSubuserResponse(response))
+        // onSuccess(response)
     } catch (error) {
         onError(error)
     }
@@ -41,8 +46,12 @@ function* getGroup(action) {
 function* updateSubuserDetails(action) {
     const {body, userId, onSuccess, onError } = action
     try {
-        const response = yield call(API.put, ApiConstants.UPDATE_SUBUSER_DETAILS(userId), body)            
-        yield put(UserActions.setUpdateSubuserResponse(response))
+        const response = yield call(API.put, ApiConstants.UPDATE_SUBUSER_DETAILS(userId), body)
+        if(response.code === 200) {
+            const user_response = yield call(API.get, ApiConstants.GET_SUBUSER(userId))
+            yield put(UserActions.setSubuserResponse(user_response))
+        }        
+        // yield put(UserActions.setUpdateSubuserResponse(response))
         onSuccess(response)
     } catch (error) {
         onError(error)

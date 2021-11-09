@@ -15,14 +15,16 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { FullScreenIcon, RefreshIcon } from '../../component/SvgComponent'
 import NavigationService from '../../navigation/NavigationService'
 import { useIsFocused } from '@react-navigation/native';
+import { isEmpty } from 'lodash'
 
 const ActiveUser = () => { 
 
     const [isClickDownArrow, setIsClickDownArrow] = useState(false)  
     const [selectedRole, setSelectedRole] = useState('all')
     const [dropDownPos, setDropDownPos] = useState();
-    const [isMenuClick, setIsMenuClick] = useState(0)
-
+    const [isMenuClick, setIsMenuClick] = useState(0);
+    const [countsData, setCountsData] = useState([])
+ 
     const { loginInfo, countsInfo } = useSelector(state => ({
         countsInfo: getActiveInactiveCountListInfo(state),
         loginInfo: getLoginInfo(state),
@@ -32,6 +34,11 @@ const ActiveUser = () => {
 
     const user_id = loginInfo.id ? loginInfo.id : null
 
+    useEffect(() => {
+        if(!isEmpty(countsInfo)) {
+            setCountsData(countsInfo)
+        }
+    }, [countsInfo])
     useEffect(()=>{
         fetchCounts()
     },[selectedRole])
@@ -101,9 +108,10 @@ const ActiveUser = () => {
             <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} >        
 
             { 
-            countsInfo && countsInfo.map((item, key)=>{
+            countsData && countsData.map((item, key)=>{
                 let percent = item.active+item.inactive == 0 ? 0 : round((100*item.active/(item.active+item.inactive)),2)
                 let role = item.role === 'Owner' ? 'Admin' : item.role
+                console.log('countsData', countsData, percent, item)
             return(
                 <ShadowView key={key} style={styles.cardContainer}>
                     <Text style={styles.activeUserTextStyle}>{role}</Text>
