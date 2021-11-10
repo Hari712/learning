@@ -5,27 +5,35 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { FontSize }from '../../../component';
 import { translate } from '../../../../App'
 import { BackIcon, ListIcon } from '../../../component/SvgComponent';
-
+import { isEmpty } from 'lodash';
+import { useSelector } from 'react-redux';
+import { getLoginState } from '../../Selector';
+import { showNotificationName } from '../../../utils/helper';
 
 const AlarmDetail = ({navigation,route}) => {
 
   const { data } = route.params
-
+  const { loginData } = useSelector(state => ({
+    loginData: getLoginState(state),
+  }))
   const [webNotification, setWebNotification] = useState(false)
   const [emailNotification, setEmailNotification] = useState(false)
   const [notification, setNotification] = useState(false)
+ 
 
   useEffect(() => {
-    if(data.notification.notificators){
-      let notificator = data.notification.notificators // "web,mail,firebase" 
+    if(!isEmpty(data.users)){
+      const currentUSer = data.users.filter(i => i.id == loginData.id)[0]
+  
+      let notificator = currentUSer.notification.notificators // "web,mail,firebase" 
       setWebNotification(String(notificator).includes("web"))
       setNotification(String(notificator).includes("firebase"))
       setEmailNotification(String(notificator).includes("mail"))
     }
-  },[data.notification.notificators])
+  },[data.users])
 
-  const user = Object.values(data.users).map((name,key) =>name.firstName+ ' ' +name.lastName )
-
+  const user =  data.users.filter((name,key) =>(name.id !== loginData.id)).map((i) => i.firstName + ' ' +i.lastName) 
+  
   React.useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -59,12 +67,12 @@ return (
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
             <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Name")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.attributes.name}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notificationName}</Text>
             </View> 
 
             <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Type")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notification.type}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{showNotificationName(data.notificationType)}</Text>
             </View>
         </View>
 

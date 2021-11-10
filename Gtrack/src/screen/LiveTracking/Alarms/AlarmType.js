@@ -20,7 +20,7 @@ import { getPanicAlarm } from './../../Selector';
 
 const AlarmType = ({navigation,route}) => {
     
-  const { alarmType, selectedDeviceList, notificationType, deviceOverSpeedValue} = route.params
+  const { alarmType, selectedDeviceList, notificationType, deviceOverSpeedValue, selectedDeviceID, editData} = route.params
   
   const dispatch = useDispatch()
 
@@ -51,19 +51,19 @@ const AlarmType = ({navigation,route}) => {
   const [batteryLevelInputValue, setBatteryLevelInputValue] = useState()
   const [movementInputVisible, setMovementInputVisible] = useState()
   const [movementInputValue, setMovementInputValue] = useState()
-  
+  console.log('edit', route.params)
   useEffect(() => {  
     
     dispatch(UsersActions.requestGetSubuser(loginInfo.id, onSuccess, onError))   
     
     if(route){
-      const { editData } = route.params;
+      console.log(editData, 'editData')
       if(editData){  
-        setAlarmName(editData.notification.attributes.name)      
+        setAlarmName(editData.attributes.name)      
         // { editData.notification.attributes.everyday? setSelectedCheckbox(0) : setSelectedCheckbox(-1) } 
-
-        if(editData.notification.notificators){
-          let notificator = editData.notification.notificators // "web,mail,firebase" 
+        const currentUSer = editData.users.filter(i => i.id == loginInfo.id)[0]
+        if(currentUSer.notification.notificators){
+          let notificator = currentUSer.notification.notificators // "web,mail,firebase" 
           setWebNotification(String(notificator).includes("web"))
           setNotification(String(notificator).includes("firebase"))
           setEmailNotification(String(notificator).includes("mail"))
@@ -71,16 +71,16 @@ const AlarmType = ({navigation,route}) => {
 
         var tempUser = [] ;
         editData.users ?
-          editData.users.filter((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
+        editData.users.filter((name,key) =>(name.id !== loginInfo.id)).map((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
         console.log("EditUser", editData)
-        if(matchStrings(editData.notification.type,'alarm')) {
-          switch (switchCaseString(editData.notification.attributes.alarms)) {
+        if(matchStrings(editData.notificationType,'alarm')) {
+          switch (switchCaseString(editData.attributes.alarms)) {
             case 'lowspeed':
-              setSpeedInputValue(convertSpeedVal(editData.notification.attributes.value,distUnit))
+              setSpeedInputValue(convertSpeedVal(editData.attributes.value,distUnit))
               break;
     
             case 'lowbattery':
-              setBatteryLevelInputValue(editData.notification.attributes.value)
+              setBatteryLevelInputValue(editData.attributes.value)
               break;
           
             default:
@@ -132,13 +132,13 @@ const AlarmType = ({navigation,route}) => {
         )  
     });
   },[navigation]);
-
+ 
   function sendData() {
     if (isConnected) {
       if (isEmpty(alarmName)) {
         AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
       } else {
-      AppManager.showLoader()
+      // AppManager.showLoader()
       // var everyday = (selectedCheckbox===0)
 
       let arrSelectedId = [];
@@ -146,7 +146,7 @@ const AlarmType = ({navigation,route}) => {
         subUserData.filter((item)=> {      
           selectUser.filter((selectedItem)=>{        
             if(item.firstName+" "+item.lastName === selectedItem){  
-              arrSelectedId.push(item.id)
+             editData ? arrSelectedId.push(item) : arrSelectedId.push(item.id)
             }
           })  
         })   
@@ -156,7 +156,6 @@ const AlarmType = ({navigation,route}) => {
       emailNotification && notificator.push('mail')
       webNotification && notificator.push('web')
       
-      const {selectedDeviceID} = route.params;
       var requestBody, isUpdate;
       var notiType = (notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType
       var value = batteryLevelInputVisible ? parseInt(batteryLevelInputValue) :
@@ -166,30 +165,28 @@ const AlarmType = ({navigation,route}) => {
                   null;
       if(route && route.params && route.params.editData) {
         // Editing/update body
-        if(alarmType == 'sos' && hasPanic && getPanicDetail[0].notification.id != route.params.editData.notification.id ) {
+        if(alarmType == 'sos' && hasPanic && getPanicDetail[0].notificationKey != route.params.editData.notificationKey ) {
           AppManager.hideLoader()
           AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
       } else {
         isUpdate = true;
+        const newUser = arrSelectedId.filter(({ id: id1 }) => !editData.users.some(({ id: id2 }) => id2 === id1))
+        const currentUser = editData.users.filter(i => i.id == loginInfo.id)[0]
+        const existingUser = editData.users.filter(i => i.id !== loginInfo.id)
+        const currentUserNotificator = { ...currentUser, "notification": { ...currentUser.notification, "notificators": notificator.join()} }
+        const newUserData = newUser.map(item => { return  { "firstName": item.firstName, "id": item.id, "isCorporateUser": item.isCorporateUser, "lastName": item.lastName, "notification" : { ...currentUserNotificator.notification, "id":  null } } })
         requestBody = {
-          "userIds" : arrSelectedId,
-          "deviceIds" : selectedDeviceID,
-          "notification" : {
-            "id" : route.params.editData.notification.id,
-            "type" : notiType,
-            "always" : false,
-            "notificators" : notificator.join(),
-            "attributes" : {
-              "alarms": alarmType,
-              "name": alarmName,
-              //"everyday": everyday, 
-              "description": "static description" ,  
-              "value" : value
-            },
-            "calendarId" : 0
-          }
-        } 
-        console.log("requestbody",requestBody)
+          "notificationKey" : editData.notificationKey,
+          "notificationName" : alarmName,
+          "notificationType" : editData.notificationType,
+          "attributes" : {
+            ...editData.attributes,
+            "name" : alarmName,
+            "value": value,
+          },
+          "devices" : selectedDeviceID,
+          "users" : [ currentUserNotificator, ...newUserData, ...existingUser ]
+        }
         dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError)) 
       }    
       } else {
@@ -203,7 +200,7 @@ const AlarmType = ({navigation,route}) => {
           "userIds" : arrSelectedId,
           "deviceIds" : selectedDeviceID,
           "notification" : {
-            "id" : 0,
+            "id" : null,
             "type" : notiType,
             "always" : false,
             "notificators" : notificator.join(),

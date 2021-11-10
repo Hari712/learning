@@ -200,7 +200,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
-
+        arrSelectedId.push(loginInfo.id)
         const deviId = !isEmpty(devices) ? devices.map((item)=>item.id) : []
     
         const requestBody = {
@@ -262,6 +262,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
                 {recents.map((colorItem)=>{
                     let selection = (color == colorItem)
+                    console.log('color', tinycolor(color).toHexString(), colorItem)
                     return(
                         <TouchableOpacity onPress={() =>setColor(tinycolor(colorItem).toHexString())}
                         style={{backgroundColor:ColorConstant.WHITE, borderRadius:3,marginRight:hp(2), 

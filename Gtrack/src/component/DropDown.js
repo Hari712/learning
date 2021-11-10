@@ -30,7 +30,7 @@ class DropDown extends React.Component {
     render() {
 
         //isRelative will set the dropdown view absolute or relative ie over other components or expanding other component
-        const { label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, accessoryStyle, emptyDataText, ...otherProps } = this.props;
+        const { label, dataList, innerRef, outerStyle, dropdownStyle, isRelative, accessoryStyle, emptyDataText, edit, ...otherProps } = this.props;
 
         const data = ['Car', 'Truck', 'Tempo'];
 
@@ -42,6 +42,10 @@ class DropDown extends React.Component {
         }
 
         const show = () => {
+            if(edit === false)
+            {
+                return false; 
+            }
             this.setState({ isSelected: !this.state.isSelected })
         }
 

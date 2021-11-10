@@ -14,6 +14,7 @@ import { translate } from '../../../App';
 import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon, ExportIcon, BackIcon } from '../../component/SvgComponent';
 import RNFetchBlob from 'rn-fetch-blob';
 import moment from 'moment';
+import { upperCase } from 'lodash';
 
 const Details = ({ route, navigation }) => {
 
@@ -187,7 +188,7 @@ const Details = ({ route, navigation }) => {
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
         const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.subscriptionPlanCurrency.monthlyFee : devicePlan.subscriptionPlanCurrency.annualFee
-        console.log('devicePlan', devicePlan, planPrice)
+        const planDetail = planData && planData[upperCase(devicePlanName)]
         // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
         // const actualTax = (planPrice * tax) / 100
         // const payableAmount = planPrice + actualTax
@@ -213,10 +214,8 @@ const Details = ({ route, navigation }) => {
                 </View>
                 <View style={styles.features}>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{translate("Features")}</Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    6 month Data Retention</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Phone,Text,Chat and Email Support</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Optional Protection Plan(2.99/mo)</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    5% off future BHS Hardware purchase</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail.lineOne}</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail.lineTwo}</Text></Text>
                 </View>
             </>
         )
@@ -291,7 +290,7 @@ const Details = ({ route, navigation }) => {
                         <View style={[styles.detailsSubView, { flex: 2 }]} >
                             <Text style={styles.textStyle}>{translate("Role")}</Text>
                             {item.roles.map((role) =>
-                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text>)}
+                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{role.name == "ROLE_REGULAR" ? "Regular" : "Admin"}</Text>)}
                         </View>
                     </View>
                 )}
@@ -391,6 +390,24 @@ const Data = [
         role: 'Regular'
     }
 ]
+const planData = {
+    "PROFESSIONAL" : {
+      lineOne: "Update frequency - 30 sec",
+      lineTwo: "Data retention - 2 year",
+    },
+    "BASIC" : {
+      lineOne: "Update frequency - 180 sec",
+      lineTwo: "Data retention - 3 month",
+    },
+    "STANDARD": {
+      lineOne: "Update frequency - 90 sec",
+      lineTwo: "Data retention - 1 year",
+    },
+    "PREMIUM": {
+      lineOne: "Update frequency - 60 sec",
+      lineTwo: "Data retention - 1.5 year",
+    },
+    };
 
 const styles = StyleSheet.create({
 

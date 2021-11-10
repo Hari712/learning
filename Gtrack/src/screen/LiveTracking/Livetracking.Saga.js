@@ -21,7 +21,7 @@ function* requestGetAlarmsList(action) {
 function* requestAddAlarmsNotification(action) {
     const { isUpdate, userId, data, onSuccess, onError } = action
     try {
-        const url = ApiConstants.ADD_ALARMS_NOTIFICATION(userId)
+        const url = isUpdate ? ApiConstants.UPDATE_ALARMS_NOTIFICATION(userId) : ApiConstants.ADD_ALARMS_NOTIFICATION(userId)
         console.log("URL",url, isUpdate)
         const response = isUpdate ? yield call(API.put, url, data) : yield call(API.post, url, data)
         console.log("Resposne", response)

@@ -186,12 +186,12 @@ export const getAlarmsListInfo = createSelector(
 
 export const hasPanicAlarm = createSelector(
     [getAlarmsList],
-    (info) => info && info.map((item)=> item.notification.attributes.alarms == "sos").includes(true)
+    (info) => info && info.map((item)=> item.attributes && item.attributes.alarms == "sos").includes(true)
 )
 
 export const getPanicAlarm = createSelector(
     [getAlarmsList],
-    (info) => info && info.filter((item)=> item.notification.attributes.alarms == "sos")
+    (info) => info && info.filter((item)=> item.attributes && item.attributes.alarms == "sos")
 )
 
 /**

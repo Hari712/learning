@@ -41,11 +41,11 @@ const CreateNew = ({navigation,route}) => {
       if(editData){
         const devices = Object.values(editData.editData.devices).map((item)=>item.deviceName)
         setSelectedDevice(devices)
-        setSelectedNotification(editData.editData.notification.type)
+        setSelectedNotification(editData.editData.notificationType)
         setEditingValues(editData.editData)
-        setSelectedAlarmType(editData.editData.notification.attributes.alarms)
-        if( editData.editData.notification.type == 'deviceOverspeed' && editData.editData.notification.attributes.value){
-          setOverspeedInputValue(convertSpeedVal(editData.editData.notification.attributes.value,distUnit))
+        setSelectedAlarmType(editData.editData.attributes.alarms)
+        if( editData.editData.notificationType == 'deviceOverspeed' && editData.editData.attributes.value){
+          setOverspeedInputValue(editData.editData.attributes.value,distUnit)
         }
       }
     }
@@ -88,11 +88,11 @@ const CreateNew = ({navigation,route}) => {
         selectedDevice.filter((selectedItem)=>{        
           if(item.deviceName === selectedItem){ 
             console.log("loop",item.id,selectedItem)   
-            arrSelectedId.push(item.id)
+            route.params ? arrSelectedId.push(item) : arrSelectedId.push(item.id)
           }
         })  }) 
       :null;
-        
+      console.log('arrSelectedId', arrSelectedId)
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
         alarmType:selectedAlarmType, 
         deviceOverSpeedValue:overSpeedInputValue,
@@ -165,6 +165,7 @@ return (
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
             <DropDown label={translate("Alarm_Type")} 
               defaultValue={showNotificationName(selectedAlarmType)} 
+              edit={route.params ? false : true}
               valueSet={(item) => setSelectedAlarmType(showNotificationLabel(item))} 
               dataList={alarmTypes.map((item) => showNotificationName(item) )} />   
           </View>
@@ -172,6 +173,7 @@ return (
         
         <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
             <DropDown label='Notification Type*' 
+              edit={route.params ? false : true}
               defaultValue={showNotificationName(selectedNotification)} 
               valueSet={(item)=> setSelectedNotification(showNotificationLabel(item))} 
               dataList={alertList.map((item)=>showNotificationName(item))} />   
