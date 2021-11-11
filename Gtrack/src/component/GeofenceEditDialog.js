@@ -10,7 +10,7 @@ import { CIRCLE_REGEX, SCREEN_CONSTANTS } from '../constants/AppConstants';
 import { GeoFenceListIcon, PinIcon } from '../component/SvgComponent';
 import { isCircle } from '../utils/helper';
 import { useSelector } from 'react-redux';
-import { isRoleRegular } from '../screen/Selector';
+import { isRoleRegular, getLoginInfo } from '../screen/Selector';
 import NavigationService from '../navigation/NavigationService';
 import GeoFenceMapPreview from './GeofenceMapPreview';
 
@@ -18,8 +18,9 @@ const GeofenceEditDialog = (props) => {
 
     const { dialogVisible, setDialogVisible, activeGeofence, selectedDevice } = props
 
-    const { isRegular } = useSelector(state => ({
-        isRegular: isRoleRegular(state)
+    const { isRegular, loginInfo } = useSelector(state => ({
+        isRegular: isRoleRegular(state),
+        loginInfo: getLoginInfo(state),
     }))
 
     const [type, setType] = useState('')
@@ -45,7 +46,8 @@ const GeofenceEditDialog = (props) => {
                 setPushNotificator(false)
                 setMailNotificator(false)
             }
-        let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.map((item) => item.firstName+" "+item.lastName) : null
+            
+        let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.filter((name,key) =>(name.id !== loginInfo.id)).map((item)=> item.firstName+" "+item.lastName) : null
         setSelectedUser(user)
 
         }

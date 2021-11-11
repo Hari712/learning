@@ -221,14 +221,18 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 								showsUserHeadingIndicator={true}
 								animated={true}
 							/> */}
-							{isContainCoordinate &&
+							{isContainCoordinate ?
 								<Map.default.Camera
 									zoomLevel={13}
 									bounds={{
 										ne: coordinate,
 										sw: coordinate,
 									}}
-								/>}
+								/> : 
+								<Map.default.Camera 
+									zoomLevel={4}
+									centerCoordinate={[79.570507, 22.385092]}
+								/> }
 							{!isEmpty(lineString)
 								? <Map.default.ShapeSource id="route" shape={lineString}>
 										<Map.default.LineLayer

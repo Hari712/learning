@@ -13,7 +13,8 @@ const initialState = {
     traccarPositions:[],
     groupDevices: [],
     assetInfo: [],
-    notificationEvents: []
+    notificationEvents: [],
+    isNewEvent: false
 }
 
 
@@ -125,14 +126,16 @@ export const livetrackingReducer = createReducer(state = initialState, {
         let array = {...state.notificationEvents, ...action.data}
         return {
             ...state,
-            notificationEvents: Object.values(array)
+            notificationEvents: Object.values(array),
+            isNewEvent: true
         }
     },
     [types.NOTIFICATION_EVENT_REMOVE](state, action) {
         let array = state.notificationEvents.filter((item) => item.id != action.id)
         return {
             ...state,
-            notificationEvents: array
+            notificationEvents: array,
+            isNewEvent: array.length > 0 ? true : false
         }
     }
 })

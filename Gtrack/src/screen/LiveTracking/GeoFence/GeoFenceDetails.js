@@ -151,7 +151,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
-
+        arrSelectedId.push(loginInfo.id)
         var notificator = []
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')

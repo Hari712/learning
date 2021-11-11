@@ -45,6 +45,10 @@ const Notification = ({ navigation }) => {
 
     const dispatch = useDispatch()
     console.log('notificationEvents', notificationEvents)
+    const removeNotification = (item) => {
+        removeEvent(item)
+        dispatch(LiveTrackingAction.removeNotificationEventResponse(item.id))
+    }
     const NotificationItems = ({ item }) => { 
         const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )        
         const notiType = item.attributes.alarm ? item.attributes.alarm : item.type
@@ -96,7 +100,7 @@ const Notification = ({ navigation }) => {
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
                             <Text style={styles.timeTextStyle}>{moment(item.serverTime).fromNow()}</Text>
-                            <TouchableOpacity style={{padding:4,zIndex:5}} onPress={()=>removeEvent(item)} >
+                            <TouchableOpacity style={{padding:4,zIndex:5}} onPress={()=> removeNotification(item)} >
                                 <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
                             </TouchableOpacity>
                         </View>
@@ -113,7 +117,7 @@ const Notification = ({ navigation }) => {
             <FlatList
                 styles={{}}
                 contentContainerStyle={{}}
-                data={notificationEvents}
+                data={notiEvents}
                 // data={DATA}
                 renderItem={NotificationItems}
                 keyExtractor={(item, index) => index.toString()}

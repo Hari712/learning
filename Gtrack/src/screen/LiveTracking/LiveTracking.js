@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm, getLiveNotificationCountsInfo } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -19,7 +19,7 @@ import * as LivetrackingActions from './Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import Dialog from '../../component/Dialog'
-import { isNewEvent, isNewNotification } from '../../utils/socketHelper';
+import { isNewNotification } from '../../utils/socketHelper';
 import { sendEvent } from '../../provider/SocketProvider';
 
 const { width, height } = Dimensions.get('window');
@@ -41,7 +41,7 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, getPanicDetail} = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, getPanicDetail, isNewEvent} = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
@@ -49,7 +49,8 @@ const LiveTracking = ({ navigation }) => {
 		hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
 		notiEvents: getLiveNotificationsInfo(state),
-		getPanicDetail: getPanicAlarm(state)
+		getPanicDetail: getPanicAlarm(state),
+		isNewEvent: getLiveNotificationCountsInfo(state)
 	}));
 
 	
@@ -345,23 +346,28 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
+		console.log('startCoordinate', startCoordinate, devicePositionArray)
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
+				<Map.default.MapView style={{ flex: 1 }} >
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
 						showsUserHeadingIndicator={false}
 						animated={true}
 					><View/></Map.default.UserLocation>
-					{isContainCoordinate &&
+					{isContainCoordinate ?
 						<Map.default.Camera
 							zoomLevel={17}
 							bounds={{
 								ne: startCoordinate,
 								sw: startCoordinate,
 							}}
-						/>}
+						/> : 
+						<Map.default.Camera 
+							zoomLevel={4}
+							centerCoordinate={[79.570507, 22.385092]}
+						/> }
 					{!isEmpty(lineString)
 						? <Map.default.ShapeSource id="route" shape={lineString}>
 								<Map.default.LineLayer
@@ -417,7 +423,7 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicTimerVisible(false) 
 		setIsPanicAlarmClick(false)
 	}	
-
+	console.log('isNewEvent', isNewEvent)
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
