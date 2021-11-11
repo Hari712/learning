@@ -186,7 +186,6 @@ const LiveTracking = ({ navigation }) => {
 					setDevicePositionArray([device]);
 					setRegion(deviceRegion);
 				}
-				console.log(deviceInfo);
 			}
 		},
 		[selectedDevice]

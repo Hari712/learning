@@ -25,6 +25,11 @@ export const removeEvent = (item) => {
     notificationEvents = notificationEvents.filter((nitem) => nitem.id != item.id)
 }
 
+export const logoutReset = () => {
+    notificationEvents = []
+    isNewEvent = false
+    readEvents = []
+}
 // export const readSocketData = (item) => {
 
 // }

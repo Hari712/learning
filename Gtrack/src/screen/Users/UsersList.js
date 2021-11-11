@@ -67,7 +67,7 @@ const UsersList = (props) => {
                 <View style={styles.whiteSubView} >
                     <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
                     {item.roles.map((role,key) =>
-                    <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text> )}       
+                    <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Admin"}</Text> )}       
                 </View>
                 <View style={{flexDirection:'column',flex:1}} >
                     <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>

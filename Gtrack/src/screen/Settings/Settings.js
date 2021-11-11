@@ -12,6 +12,7 @@ import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 import InAppReview from 'react-native-in-app-review';
 import { isRoleRegular } from '../Selector';
+import { logoutReset } from '../../utils/socketHelper';
 
 const isAndroid = Platform.OS === 'android'
 
@@ -217,6 +218,7 @@ const Settings = ({ navigation }) => {
 
   function onTapConfirm() {
     onHideLogoutConfirmationDialog()
+    logoutReset()
     dispatch(LoginActions.requestLogout())
   }
 

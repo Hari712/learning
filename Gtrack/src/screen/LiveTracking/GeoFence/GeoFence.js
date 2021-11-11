@@ -16,6 +16,7 @@ import GeofenceList from './GeofenceList';
 import GeofenceEditDialog from '../../../component/GeofenceEditDialog';
 import GeofenceDeleteDialog from '../../../component/GeofenceDeleteDialog';
 import { isEmpty } from 'lodash';
+import { useIsFocused } from '@react-navigation/native';
 
 const GeoFence = ({ navigation }) => {
     
@@ -32,7 +33,7 @@ const GeoFence = ({ navigation }) => {
     const [isMenuClick, setIsMenuClick] = useState(0)
     const [selectedType, setSelectedType] = useState('')
     const [geofenceListData, setGeofenceData] = useState([])
-
+    const isFocused = useIsFocused();
     const dispatch = useDispatch()
 
     const { loginData, geofenceList, isRegular } = useSelector(state => ({
@@ -40,6 +41,13 @@ const GeoFence = ({ navigation }) => {
         geofenceList: getGeofenceListInfo(state),
         isRegular: isRoleRegular(state)
     }))
+  
+
+    React.useEffect(() => {
+      if(isFocused){
+        loadGeofenceSearchList('')
+      }
+    },[isFocused]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

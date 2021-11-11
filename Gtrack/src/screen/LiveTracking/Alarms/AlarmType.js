@@ -54,7 +54,7 @@ const AlarmType = ({navigation,route}) => {
   console.log('edit', route.params)
   useEffect(() => {  
     
-    dispatch(UsersActions.requestGetSubuser(loginInfo.id, onSuccess, onError))   
+    !isAdmin && dispatch(UsersActions.requestGetSubuser(loginInfo.id, onSuccess, onError))   
     
     if(route){
       console.log(editData, 'editData')
@@ -173,6 +173,13 @@ const AlarmType = ({navigation,route}) => {
         const newUser = arrSelectedId.filter(({ id: id1 }) => !editData.users.some(({ id: id2 }) => id2 === id1))
         const currentUser = editData.users.filter(i => i.id == loginInfo.id)[0]
         const existingUser = editData.users.filter(i => i.id !== loginInfo.id)
+        const existingUserData = existingUser.filter(item => {
+          const filter = arrSelectedId.some(({ id: id2 }) => id2 == item.id)
+          console.log('existingUserData filter', arrSelectedId, filter, item )
+              if(filter) {
+                return item
+              } 
+         })
         const currentUserNotificator = { ...currentUser, "notification": { ...currentUser.notification, "notificators": notificator.join()} }
         const newUserData = newUser.map(item => { return  { "firstName": item.firstName, "id": item.id, "isCorporateUser": item.isCorporateUser, "lastName": item.lastName, "notification" : { ...currentUserNotificator.notification, "id":  null } } })
         requestBody = {
@@ -185,8 +192,9 @@ const AlarmType = ({navigation,route}) => {
             "value": value,
           },
           "devices" : selectedDeviceID,
-          "users" : [ currentUserNotificator, ...newUserData, ...existingUser ]
+          "users" : [ ...existingUserData, currentUserNotificator, ...newUserData ]
         }
+        console.log('existingUserData', existingUserData)
         dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError)) 
       }    
       } else {
@@ -196,6 +204,7 @@ const AlarmType = ({navigation,route}) => {
           AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
       } else {
         isUpdate = false;
+        arrSelectedId.push(loginInfo.id)
         requestBody = {
           "userIds" : arrSelectedId,
           "deviceIds" : selectedDeviceID,
