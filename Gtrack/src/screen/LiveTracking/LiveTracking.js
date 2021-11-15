@@ -99,7 +99,14 @@ const LiveTracking = ({ navigation }) => {
 
 	React.useEffect(
 		() => {
-			isFocused ? null : setIsLineClick(false);
+			if(isFocused) {
+				console.log('devicePositionArray', devicePositionArray, devicePositionArray[devicePositionArray.length - 1])
+			setLineString(null)
+			setCoordList([])
+			!isEmpty(devicePositionArray) && setDevicePositionArray([devicePositionArray[devicePositionArray.length - 1]])
+			} else { 
+				setIsLineClick(false);
+			}
 		},
 		[isFocused]
 	);
@@ -346,7 +353,7 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
-		console.log('startCoordinate', startCoordinate, devicePositionArray)
+		console.log('startCoordinate',devicePositionArray, lineString)
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }} >
@@ -410,7 +417,7 @@ const LiveTracking = ({ navigation }) => {
 	function onOkay() {
 		setIsPanicAlarmClick(false)
 		setIsPanicAlarmCreateDialog(false)
-		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW)
+		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW, {isPanic: true})
 	}
 
 	function onNo() {
@@ -472,14 +479,14 @@ const LiveTracking = ({ navigation }) => {
 						</TouchableOpacity>
 					: null}
 
-					<TouchableOpacity
+					{!isRegular	&& <TouchableOpacity
 							style={[styles.lineIconStyle, { backgroundColor: ColorConstant.RED }]}
 							onLongPress={()=>onLongPress()}
 							delayLongPress={2000}
 					>
 							{isPanicAlarmClick ? <PanicIconClick height={55} width={55}/> : <PanicAlarmIcon />}
 					</TouchableOpacity>
-
+					}
 					<CustomDialog 
 						visible={isPanicAlarmCreateDialog}
 						titleStyle={styles.titleStyle}

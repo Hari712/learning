@@ -76,7 +76,7 @@ const AlarmType = ({navigation,route}) => {
         if(matchStrings(editData.notificationType,'alarm')) {
           switch (switchCaseString(editData.attributes.alarms)) {
             case 'lowspeed':
-              setSpeedInputValue(convertSpeedVal(editData.attributes.value,distUnit))
+              setSpeedInputValue(editData.attributes.value,distUnit)
               break;
     
             case 'lowbattery':
@@ -138,7 +138,7 @@ const AlarmType = ({navigation,route}) => {
       if (isEmpty(alarmName)) {
         AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
       } else {
-      // AppManager.showLoader()
+      AppManager.showLoader()
       // var everyday = (selectedCheckbox===0)
 
       let arrSelectedId = [];

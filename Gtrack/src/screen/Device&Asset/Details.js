@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, PermissionsAndroid } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, PermissionsAndroid, Linking } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -15,6 +15,7 @@ import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon, Expor
 import RNFetchBlob from 'rn-fetch-blob';
 import moment from 'moment';
 import { upperCase } from 'lodash';
+import FileViewer from 'react-native-file-viewer';
 
 const Details = ({ route, navigation }) => {
 
@@ -144,17 +145,51 @@ const Details = ({ route, navigation }) => {
 
     const download = () => {
         AppManager.showLoader()
-        const fs = RNFetchBlob.fs
-        const dirs = RNFetchBlob.fs.dirs      
-        const file_path = dirs.DownloadDir + `/${pdfFileName}_${moment.utc().valueOf()}.pdf`
-        fs.writeFile(file_path, pdfBase64, 'base64')
-        .then(() =>  downloadSuccess(file_path))
-        .catch(() => downloadFailed()) 
+        const { fs } = RNFetchBlob;
+        const downloads = isAndroid ? fs.dirs.DownloadDir : fs.dirs.DocumentDir;
+        const directory = downloads + "/Gtrack"
+        const file_path = directory + `/${pdfFileName}_${moment.utc().valueOf()}.pdf`
+        RNFetchBlob.config({
+            fileCache: true,
+            appendExt: 'pdf',
+            addAndroidDownloads : {
+                useDownloadManager : true, // <-- this is the only thing required
+                // Optional, override notification setting (default to true)
+                notification : true,
+ 
+                // Title of download notification
+                 title : 'Great ! Download Success ! :O ',
+                 // Make the file scannable  by media scanner
+                 mediaScannable : true,
+                // Optional, but recommended since android DownloadManager will fail when
+                // the url does not contains a file extension, by default the mime type will be text/plain
+                mime : 'application/pdf',
+                description : 'File downloaded by download manager.'
+            },
+        })
+        fs.exists(directory)
+        .then((exists) => {
+            if (!exists) {
+                return fs.mkdir(directory);
+            }
+        })
+        .then(() => {
+            console.log('directory', directory)
+            fs.writeFile(file_path, pdfBase64, 'base64')
+            .then(() =>  downloadSuccess(file_path))
+            .catch(() => downloadFailed()) 
+        }) .catch((err) => console.log('directory err' , err))
     };
 
     function downloadSuccess(file_path) {
         AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: 'File Downloaded to Your Phone.', description: `Location: ${file_path}`, autohide: false })
+        AppManager.showSimpleMessage('success', { message: 'File Downloaded to Your Phone.', description: '' })
+        FileViewer.open(file_path)
+        // if (isAndroid) {
+        //     RNFetchBlob.android.actionViewIntent(file_path, 'application/pdf');
+        //   } else {
+        //     RNFetchBlob.ios.openDocument(file_path);
+        //   }
     }
 
     function downloadFailed() {
@@ -162,7 +197,7 @@ const Details = ({ route, navigation }) => {
         AppManager.showSimpleMessage('danger', { message: 'Something Wrong!', description: 'File cannot Download to Your Phone.' })
     }
 
-    useLayoutEffect(() => {
+    useLayoutEffect(() => { 
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={{

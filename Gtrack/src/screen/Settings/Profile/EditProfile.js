@@ -206,6 +206,7 @@ const EditProfile = ({ navigation, route, item }) => {
     function editProfile() {
         if (isConnected) {
             let userAdd = loginData && loginData.userAddressDTO[0]
+            console.log('loginData', loginData)
             let message = ''
             const phone = getPhone(phoneNumber)
             if (!validateName(firstName)) {
@@ -232,7 +233,8 @@ const EditProfile = ({ navigation, route, item }) => {
                     "phone": phone,
                     "phonePrefix": phonePrefix,
                     "roles": loginData.role,
-                    "userAddressDTO": [userAdd]
+                    "groups": loginData.group,
+                    "userAddressDTO": []
                 }
                 console.log("Data", requestBody);
                 // let msgstr = "Logs: Request Body =" + JSON.stringify(requestBody)

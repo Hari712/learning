@@ -264,13 +264,14 @@ const GroupItem = props => {
     return (
         <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2)}}>
             <View style={{ flexDirection:'row', alignItems: 'center', }} >
-                <View style={{paddingRight:wp(3)}}>
+               {!isAdmin && <View style={{paddingRight:wp(3)}}>
                     {isDefault ? <RadioButtonIconClicked/> :
                     <TouchableOpacity onPress={()=> setDefaultGroup()}>
                         <RadioButtonIcon/>
                     </TouchableOpacity>
                     }
                 </View>
+                }
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
                 {/* Arrow Left Side */}
                 <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>

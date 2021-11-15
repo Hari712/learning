@@ -171,18 +171,20 @@ const AddUser = ({ navigation, route }) => {
         <View style={styles.subContainer}>
           <ShadowView style={styles.shadowContainer}>
             <TextField
+              editable={isAddNew}
               label={translate("User_First_Name")}
               valueSet={setFirstName}
               defaultValue={firstName}
-              outerStyle={[styles.outerStyle]}
+              outerStyle={[styles.outerStyle, !isAddNew && {backgroundColor:ColorConstant.PINK}]}
             />
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>
             <TextField
+              editable={isAddNew}
               label={translate("User_Last_Name")}
               valueSet={setLastName}
               defaultValue={lastName}
-              outerStyle={[styles.outerStyle]}
+              outerStyle={[styles.outerStyle, !isAddNew && {backgroundColor:ColorConstant.PINK}]}
             />
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>

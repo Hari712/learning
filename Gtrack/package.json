@@ -41,6 +41,7 @@
     "react-native-color": "0.0.10",
     "react-native-country-list": "^1.0.10",
     "react-native-device-info": "^7.0.2",
+    "react-native-file-viewer": "^2.1.4",
     "react-native-flash-message": "^0.1.16",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-get-location": "^2.0.0",

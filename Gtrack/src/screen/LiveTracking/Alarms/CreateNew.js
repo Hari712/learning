@@ -33,9 +33,9 @@ const CreateNew = ({navigation,route}) => {
     alertList: getAlertTypetListInfo(state),
     distUnit: dist(state)
 }))
-
+  console.log('route', route)
   useEffect(() => {    
-    if(route){
+    if(route && route.params && !route.params.isPanic){
       const editData = route.params;
       console.log("Edit data",editData)
       if(editData){
@@ -48,6 +48,11 @@ const CreateNew = ({navigation,route}) => {
           setOverspeedInputValue(editData.editData.attributes.value,distUnit)
         }
       }
+    }
+    if(route && route.params && route.params.isPanic) {
+      console.log('alertList', alertList)
+      setSelectedNotification("alarm")
+      setSelectedAlarmType("sos")
     }
   }, 
   [])
@@ -88,7 +93,7 @@ const CreateNew = ({navigation,route}) => {
         selectedDevice.filter((selectedItem)=>{        
           if(item.deviceName === selectedItem){ 
             console.log("loop",item.id,selectedItem)   
-            route.params ? arrSelectedId.push(item) : arrSelectedId.push(item.id)
+            route.params && !route.params.isPanic ? arrSelectedId.push(item) : arrSelectedId.push(item.id)
           }
         })  }) 
       :null;
@@ -131,7 +136,7 @@ return (
   <ScrollView contentContainerStyle={styles.container}>
     
       <TouchableOpacity style={styles.header}>
-        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit': 'Create New'}</Text>
+        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params  && !route.params.isPanic ?'Edit': 'Create New'}</Text>
       </TouchableOpacity>
       <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5, flex:1}}>
         <MultiSelect 
@@ -165,7 +170,7 @@ return (
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
             <DropDown label={translate("Alarm_Type")} 
               defaultValue={showNotificationName(selectedAlarmType)} 
-              edit={route.params ? false : true}
+              edit={route.params  && !route.params.isPanic ? false : true}
               valueSet={(item) => setSelectedAlarmType(showNotificationLabel(item))} 
               dataList={alarmTypes.map((item) => showNotificationName(item) )} />   
           </View>
@@ -173,7 +178,7 @@ return (
         
         <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
             <DropDown label='Notification Type*' 
-              edit={route.params ? false : true}
+              edit={route.params  && !route.params.isPanic ? false : true}
               defaultValue={showNotificationName(selectedNotification)} 
               valueSet={(item)=> setSelectedNotification(showNotificationLabel(item))} 
               dataList={alertList.map((item)=>showNotificationName(item))} />   
