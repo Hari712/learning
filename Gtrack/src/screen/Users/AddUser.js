@@ -106,7 +106,7 @@ const AddUser = ({ navigation, route }) => {
   function onSuccess(data) {
     console.log("Success", data)
     if (route && route.params){
-      AppManager.showSimpleMessage('success', { message: data.message, description: '' })
+      AppManager.showSimpleMessage('success', { message: 'Successfully updated the user details', description: '' })
     } else {
       AppManager.showSimpleMessage('success', { message: 'A new user added successfully', description: '' })
     }
