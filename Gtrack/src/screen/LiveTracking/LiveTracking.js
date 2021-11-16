@@ -479,7 +479,7 @@ const LiveTracking = ({ navigation }) => {
 						</TouchableOpacity>
 					: null}
 
-					{!isRegular	&& <TouchableOpacity
+					{!isRegular || !isEmpty(getPanicDetail) && <TouchableOpacity
 							style={[styles.lineIconStyle, { backgroundColor: ColorConstant.RED }]}
 							onLongPress={()=>onLongPress()}
 							delayLongPress={2000}

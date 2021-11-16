@@ -122,7 +122,7 @@ const GeoFenceMapPreview = (props) => {
                     shape={{
                         "type": "FeatureCollection",
                         "features": [
-                            circle(circleCoordinate, radius)
+                            circle(circleCoordinate, radius/100)
                         ]
                     }}
                 >
@@ -185,7 +185,7 @@ const GeoFenceMapPreview = (props) => {
 
         return (
             <>
-                <Map.default.MapView style={{ flex: 1 }} scrollEnabled={false}>
+                <Map.default.MapView style={{ flex: 1, overflow: 'hidden' }} scrollEnabled={false}>
                     <Map.default.UserLocation
                         renderMode='normal'
                         visible={true}
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         height: hp(20),
         width: '100%',
         paddingHorizontal: wp(5),
-        padding: hp(2)
+        padding: hp(2),
     },
 })
 
