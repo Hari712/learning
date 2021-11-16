@@ -172,7 +172,7 @@ return (
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
             <DropDown label={translate("Alarm_Type")} 
               defaultValue={showNotificationName(selectedAlarmType)} 
-              edit={route.params  && !route.params.isPanic ? false : true}
+              edit={route.params  ? false : true}
               valueSet={(item) => setSelectedAlarmType(showNotificationLabel(item))} 
               dataList={alarmTypes.map((item) => showNotificationName(item) )} />   
           </View>
@@ -180,7 +180,7 @@ return (
         
         <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
             <DropDown label='Notification Type*' 
-              edit={route.params  && !route.params.isPanic ? false : true}
+              edit={route.params ? false : true}
               defaultValue={showNotificationName(selectedNotification)} 
               valueSet={(item)=> setSelectedNotification(showNotificationLabel(item))} 
               dataList={alertList.map((item)=>showNotificationName(item))} />   
