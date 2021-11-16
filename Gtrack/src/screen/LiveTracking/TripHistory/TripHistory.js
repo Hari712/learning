@@ -134,6 +134,7 @@ const TripHistory = ({ navigation }) => {
                         style={styles.searchText}
                         onChangeText={text => searchHandle(text) }                    
                         value={searchKeyword}
+                        placeholderTextColor={ColorConstant.GREY}
                     />
                 </View>
         )
@@ -279,19 +280,20 @@ const styles = StyleSheet.create({
     },
     search: {
         paddingHorizontal:hp(2),
-        height:hp(6),
-        marginHorizontal:hp(3),
+        height:hp(5),
+        marginHorizontal:hp(2.5),
         borderRadius:12,
         marginTop:hp(4),
-        marginBottom:hp(2),
+        // marginBottom:hp(2),
         elevation:4,
         shadowColor: ColorConstant.BLACK,
         shadowOffset: {
             width: 0,
             height: 0
         },
+        justifyContent  : 'center',
         shadowRadius: 3,
-        shadowOpacity: 1,
+        shadowOpacity: 0.2,
         backgroundColor:ColorConstant.WHITE
     },
 })

@@ -159,7 +159,7 @@ const AlarmType = ({navigation,route}) => {
       var requestBody, isUpdate;
       var notiType = (notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType
       var value = batteryLevelInputVisible ? parseInt(batteryLevelInputValue) :
-                  speedInputVisible ? convertSpeedtoKnot(speedInputValue, distUnit) :
+                  speedInputVisible ? parseInt(speedInputValue) :
                   // movementInputVisible ? movementInputValue :
                   deviceOverSpeedValue ? parseInt(deviceOverSpeedValue) :
                   null;
@@ -243,7 +243,7 @@ const AlarmType = ({navigation,route}) => {
       }else {
         message = 'Alarm created successfully'
       }
-      navigation.navigate(SCREEN_CONSTANTS.ALARMS)  
+      route.params.isPanic ? navigation.navigate(SCREEN_CONSTANTS.LIVE_TRACKING) : navigation.navigate(SCREEN_CONSTANTS.ALARMS)  
       AppManager.showSimpleMessage('success', { message: message, description: '' })
       dispatch(LivetrackingActions.requestGetAlarmsList(loginInfo.id, onSuccess, onError)) 
     } else {

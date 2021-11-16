@@ -182,6 +182,7 @@ function onError(error) {
                     style={styles.searchText}
                     onChangeText={text => searchHandle(text) }                    
                     value={searchKeyword}
+                    placeholderTextColor={ColorConstant.GREY}
                 />
             </View>
     )
@@ -322,8 +323,9 @@ search: {
       width: 0,
       height: 0
   },
+  justifyContent  : 'center',
   shadowRadius: 3,
-  shadowOpacity: 1,
+  shadowOpacity: 0.2,
   backgroundColor:ColorConstant.WHITE
 },
 });

@@ -208,6 +208,7 @@ console.log("data",subUserData,loginData)
                     style={styles.searchText}
                     onChangeText={text => searchHandle(text) }                    
                     value={searchKeyword}
+                    placeholderTextColor={ColorConstant.GREY}
                 />
                 <TouchableOpacity  onPress={()=> setVisible(!visible)} >
                   {visible? <FilterIconClicked/> : <FilterIcon/> }
@@ -308,7 +309,7 @@ search: {
     height: 0
   },
   shadowRadius: 3,
-  shadowOpacity: 1,
+  shadowOpacity: 0.5,
   backgroundColor:ColorConstant.WHITE
 },
 addButton : {
@@ -329,7 +330,7 @@ addButton : {
       height: 0
     },
     shadowRadius: 3,
-    shadowOpacity: 1,
+    shadowOpacity: 0.5,
     backgroundColor:ColorConstant.WHITE
   
 },

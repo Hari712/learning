@@ -188,6 +188,7 @@ const GeoFence = ({ navigation }) => {
                         style={styles.searchText}
                         onChangeText={text => searchHandle(text) }                    
                         value={searchKeyword}
+                        placeholderTextColor={ColorConstant.GREY}
                     />
                 </View>
         )
@@ -315,6 +316,7 @@ const styles = StyleSheet.create({
         marginHorizontal:hp(1.5),
         borderRadius:12,
         marginTop:hp(4),
+        justifyContent  : 'center',
         // marginBottom:hp(2),
         elevation:4,
         shadowColor: ColorConstant.BLACK,
@@ -323,7 +325,7 @@ const styles = StyleSheet.create({
             height: 0
         },
         shadowRadius: 3,
-        shadowOpacity: 1,
+        shadowOpacity: 0.2,
         backgroundColor:ColorConstant.WHITE
     },
     horizontalLine: {

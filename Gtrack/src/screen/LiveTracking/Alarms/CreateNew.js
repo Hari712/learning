@@ -105,7 +105,9 @@ const CreateNew = ({navigation,route}) => {
         selectedDeviceList:selectedDevice,
         notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 
-        editData:editingValues})
+        editData:editingValues,
+        isPanic: route.params && route.params.isPanic ? route.params.isPanic : false
+      })
       
     }
   }
