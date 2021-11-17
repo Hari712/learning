@@ -192,7 +192,7 @@ const AlarmType = ({navigation,route}) => {
             "value": value,
           },
           "devices" : selectedDeviceID,
-          "users" : [ ...existingUserData, currentUserNotificator, ...newUserData ]
+          "users" : isAdmin ? [ ...existingUser, currentUserNotificator ] : [ ...existingUserData, currentUserNotificator, ...newUserData ]
         }
         console.log('existingUserData', existingUserData)
         dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError)) 
