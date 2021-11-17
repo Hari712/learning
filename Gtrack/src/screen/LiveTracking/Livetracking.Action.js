@@ -218,6 +218,10 @@ export const removeNotificationEventResponse = (id) => ({
     type: types.NOTIFICATION_EVENT_REMOVE,
     id
 })
+export const setReadNotificationEvents = (id) => ({
+    type: types.NOTIFICATION_EVENT_READ,
+    id
+})
 
 export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
     type: types.SEND_PANIC_ALARM_DATA_REQUEST,

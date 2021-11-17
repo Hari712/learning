@@ -8,7 +8,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App'
 import { BackIcon, GreyCrossIcon } from '../../component/SvgComponent'
-import { getLivetrackingGroupDevicesListInfo, getLoginState, isUserLoggedIn, getLiveNotificationsInfo } from '../Selector';
+import { getLivetrackingGroupDevicesListInfo, getLoginState, isUserLoggedIn, getLiveNotificationsInfo, getReadEventsInfo } from '../Selector';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import IconConstant from '../../constants/iconConstant';
@@ -17,6 +17,7 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as LiveTrackingAction from '../LiveTracking/Livetracking.Action'
 import { isReadEvent, notificationEvents, removeEvent, setReadNotificationEvents } from '../../utils/socketHelper';
 import { showNotificationName, showNotificationDesc } from './../../utils/helper';
+import { isEmpty } from 'lodash';
 
 const Notification = ({ navigation }) => {
 
@@ -33,14 +34,15 @@ const Notification = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents } = useSelector(state => ({
+    const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, readEvents } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		//isRegular: isRoleRegular(state),
 		//devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
 		//hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
-        notiEvents: getLiveNotificationsInfo(state)
+        notiEvents: getLiveNotificationsInfo(state),
+        readEvents: getReadEventsInfo(state)
 	}));
 
     const dispatch = useDispatch()
@@ -59,6 +61,7 @@ const Notification = ({ navigation }) => {
 
         return (
             <TouchableOpacity onPress={()=>{
+                dispatch(LiveTrackingAction.setReadNotificationEvents(item.id))
                 NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)
                 setReadNotificationEvents(item)
                 }} >
@@ -71,9 +74,9 @@ const Notification = ({ navigation }) => {
                         </View>
 
                         <View style={styles.notificationRightView}>
-                            <Text style={styles.titleStyle, {color: isReadEvent(item) ? ColorConstant.GREY : ColorConstant.BLAC}}>{titleStr}</Text>
+                            <Text style={styles.titleStyle, {color: !isEmpty(readEvents) && readEvents.includes(item.id) ? ColorConstant.GREY : ColorConstant.BLAC}}>{titleStr}</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={isReadEvent(item) ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
+                                <Text style={!isEmpty(readEvents) && readEvents.includes(item.id) ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
                                 <Tooltip popover={                                    
                                             <View>
                                                 {deviceDetail.map((dextra,key)=>{

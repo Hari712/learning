@@ -372,6 +372,13 @@ export const getLiveNotificationCountsInfo = createSelector(
     [getLiveNotificationCounts],
     (info) => info
 )
+const getReadNotifications = (state) => state.livetracking && state.livetracking.readEvents ? state.livetracking.readEvents : []
+
+export const getReadEventsInfo = createSelector(
+    [getReadNotifications],
+    (info) => info
+)
+
 /**
  * Get App Logs
  */

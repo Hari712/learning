@@ -14,6 +14,7 @@ const initialState = {
     groupDevices: [],
     assetInfo: [],
     notificationEvents: [],
+    readEvents: [],
     isNewEvent: false
 }
 
@@ -132,10 +133,22 @@ export const livetrackingReducer = createReducer(state = initialState, {
     },
     [types.NOTIFICATION_EVENT_REMOVE](state, action) {
         let array = state.notificationEvents.filter((item) => item.id != action.id)
+        let read = state.readEvents.filter(item => item != action.id)
         return {
             ...state,
             notificationEvents: array,
-            isNewEvent: array.length > 0 ? true : false
+            isNewEvent: array.length > 0 ? true : false,
+            readEvents: read
+        }
+    },
+    [types.NOTIFICATION_EVENT_READ](state, action) {
+        const { readEvents } = state
+        let array = state.notificationEvents.filter((item) => item.id != action.id)
+        const read = !isEmpty(readEvents) ? [...readEvents, action.id] : [action.id]
+        return {
+            ...state,
+            isNewEvent: array.length > 0 ? true : false,
+            readEvents: read
         }
     }
 })

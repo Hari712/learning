@@ -102,7 +102,7 @@ const RouteDetails = (props) => {
             </View>
             {routeDetails.length > 0 ?
             <FlatList
-                style={{height:hp(100)}}
+                style={{paddingBottom: hp(2)}}
                 nestedScrollEnabled={true}
                 keyboardShouldPersistTaps='handled'                
                 data={routeDetails}
