@@ -184,7 +184,9 @@ const Details = ({ route, navigation }) => {
     function downloadSuccess(file_path) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: 'File Downloaded to Your Phone.', description: '' })
-        FileViewer.open(file_path)
+
+        setTimeout(() =>  FileViewer.open(file_path), 3000)
+       
         // if (isAndroid) {
         //     RNFetchBlob.android.actionViewIntent(file_path, 'application/pdf');
         //   } else {

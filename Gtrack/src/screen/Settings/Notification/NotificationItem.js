@@ -62,7 +62,7 @@ const NotificationItem = (props) => {
                 return(
                     <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
                         <View style={styles.headingViewStyle}>
-                            <Text style = {styles.headingTextStyle}>{notification.type}</Text>
+                            <Text style = {styles.headingTextStyle}>{notification.type} </Text>
                                 <TouchableOpacity onPress={() => onUpdateNotification(item,filterKey) } >
                                     { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/> }
                                 </TouchableOpacity>
@@ -82,7 +82,7 @@ const NotificationItem = (props) => {
             renderExpandItem('mail')
         :
             item =='Push Notification' ?
-            renderExpandItem('web')
+            renderExpandItem('firebase')
         :
             renderExpandItem('sms')
         )

@@ -7,14 +7,15 @@ import { translate } from '../../../../App'
 import { BackIcon, ListIcon } from '../../../component/SvgComponent';
 import { isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
-import { getLoginState } from '../../Selector';
+import { getLoginState, isRoleOwner } from '../../Selector';
 import { showNotificationName } from '../../../utils/helper';
 
 const AlarmDetail = ({navigation,route}) => {
 
   const { data } = route.params
-  const { loginData } = useSelector(state => ({
+  const { loginData, isOwner } = useSelector(state => ({
     loginData: getLoginState(state),
+    isOwner: isRoleOwner(state),
   }))
   const [webNotification, setWebNotification] = useState(false)
   const [emailNotification, setEmailNotification] = useState(false)
@@ -87,7 +88,7 @@ return (
             </View>
         </View>
             
-        <View style={{marginTop:hp(2)}}>
+        {isOwner && <View style={{marginTop:hp(2)}}>
           <Text style={styles.textStyle}>{translate("Selected Users")}</Text>
           <View style={{flexGrow:1, flexWrap:'wrap', flexDirection:'row'}}>
             {user.length > 0 ? user.map((name)=>     
@@ -97,7 +98,7 @@ return (
                 <Text style={styles.deviceText}>-</Text>
             } 
           </View>
-        </View>
+        </View> }
 
         <View style={{flexDirection:'row',marginVertical:hp(2)}}>
             {/* <View style={{flexDirection:'column',flex:2}}>
