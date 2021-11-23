@@ -259,11 +259,16 @@ const GeoFencePolyGon = ({navigation, route}) => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
-                    <Map.default.Camera
-						centerCoordinate={regionAndroid}
-						// followUserLocation={true}
-						zoomLevel={3.5}
-					/>
+                   {regionAndroid ?
+						  <Map.default.Camera
+                          centerCoordinate={regionAndroid}
+                          // followUserLocation={true}
+                          zoomLevel={3.5}
+                      /> : 
+						<Map.default.Camera 
+							zoomLevel={3.5}
+							centerCoordinate={[79.570507, 22.385092]}
+						/> }
                     {!isEmpty(selectedCoordinates) ? renderCoordinates() : null}
                     {!isEmpty(selectedCoordinates) && selectedCoordinates.length > 2 ? renderPolygon() : null}
                 </Map.default.MapView>

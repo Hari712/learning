@@ -70,7 +70,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
     },[startDate, endDate])
 
     useEffect(() => {
-        if ( isLoadMoreData) {
+        if (isLoadMoreData) {
             fetchTripHistory()
         }
     }, [pageIndex, isLoadMoreData])
@@ -84,7 +84,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
         let lastWeek = Moment(lastWeekDate).endOf('isoWeek').format('YYYY-MM-DD')
         let lastMonthDate = Moment().date(1).subtract(1,'months').format('YYYY-MM-DD')
         let currentMonthDate = Moment().date(1).format('YYYY-MM-DD') 
-
+        setOnEndReachedCalledDuringMomentum(false)
         if(selectedDay){
 
             switch (selectedDay) {
@@ -248,13 +248,17 @@ const TripHistoryDetails = ({ navigation, route }) => {
     }
 
     const loadMoreData = () => {
+        console.log('isLoadMoreData', isLoadMoreData, onEndReachedCalledDuringMomentum, routeData, totalCount)
         if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
             if (routeData.length < totalCount) {
             // setIsRefreshing(false)
             setIsLoadMoreData(true)
             // setToMerge(true)
-            setOnEndReachedCalledDuringMomentum(true)
             setPageIndex(pageIndex + 1)
+            }
+            else {
+                setIsLoadMoreData(false)
+                setOnEndReachedCalledDuringMomentum(true)
             }
         }
     }
@@ -266,7 +270,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
 			</View>
 		);
 	}
-
+    console.log('setSelectedDay', selectedDay)
     return (
         <View style={styles.container}>
         
@@ -277,28 +281,28 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 <View style={{flex:1}}>
                     <ScrollView contentContainerStyle={{flexGrow:1}}> 
                         <View style={{padding:hp(3)}}>
-                            <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-Regular"}}>Data Range</Text>  
-                            <View style={{flexDirection:'row',justifyContent:"space-between",marginVertical:hp(2)}}>
-                                <View style={styles.dateCardView}>
-                                    <Text>
-										{startDate ? startDate : "From"}
-									</Text>
-                                    <TouchableOpacity onPress={()=>showDatePicker("From")}>
-                                        <CalenderIconBlue/>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={styles.dateCardView} >
-                                    <Text>{endDate ? endDate : "To"}</Text>
-                                    <TouchableOpacity onPress={()=>showDatePicker("To")}>
-                                        <CalenderIconBlue/>
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            
+                            <Text style={{color:ColorConstant.BLUE,fontFamily:"Nunito-Regular", marginBottom: hp(2)}}>Data Range</Text>  
                             <View 
 								onLayout={({nativeEvent}) => setDropdownPosY(nativeEvent.layout.y)} 
 								style={{height:hp(7),marginVertical:hp(1)}} 
 							/>
+                            <View style={{flexDirection:'row',justifyContent:"space-between",marginVertical:hp(2)}}>
+                                <TouchableOpacity style={[styles.dateCardView, (selectedDay != 'Custom') && {backgroundColor: ColorConstant.LIGHTGREY} ]} onPress={()=> (selectedDay === 'Custom') && showDatePicker("From")}>
+                                    <Text>
+										{startDate ? startDate : "From"}
+									</Text>
+                                    
+                                        <CalenderIconBlue/>
+                                    
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.dateCardView, (selectedDay != 'Custom') && {backgroundColor: ColorConstant.LIGHTGREY}]} onPress={()=> (selectedDay === 'Custom') && showDatePicker("To")}>
+                                    <Text>{endDate ? endDate : "To"}</Text>
+                                        <CalenderIconBlue/>
+                                    
+                                </TouchableOpacity>
+                            </View>
+                            
+                          
                         </View>
 
                         {routeData.length > 0 ? 

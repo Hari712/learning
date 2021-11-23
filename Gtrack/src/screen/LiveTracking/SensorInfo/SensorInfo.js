@@ -102,14 +102,14 @@ const SensorInfo = ({ navigation }) => {
 
                     <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
                         {/* heading */}
-                        <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
                             {item.devices.length > 0 ?
                                 <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
                                     <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
                                 </View> : null 
                             }
-                        </View>
+                        </TouchableOpacity>
 
                         {/* Expanded data View */}
 

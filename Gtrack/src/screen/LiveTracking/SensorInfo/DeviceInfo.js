@@ -10,7 +10,7 @@ import { getAdvanceSettingsInfo, getAssetItemInfo, getLoginState } from '../../S
 import { useSelector, useDispatch } from 'react-redux'
 import * as LivetrackingActions from '../Livetracking.Action'
 import Moment from 'moment'
-import { convertTemp, convertTime } from '../../../utils/helper'
+import { convertTemp, convertTime, convertAltitudeRound } from '../../../utils/helper'
 
 
 const DeviceInfo = ({ navigation, route }) => {
@@ -87,7 +87,6 @@ const DeviceInfo = ({ navigation, route }) => {
                             <View style={{ flexDirection: 'column', width: '35%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("State")}</Text>
                                 <Text style={styles.textStyle}>Idle</Text>
-                                <Text style={styles.textStyle}>Not available</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
@@ -119,12 +118,11 @@ const DeviceInfo = ({ navigation, route }) => {
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Engin_State_Hours")}</Text>
                                 <Text style={styles.textStyle}>Off</Text>
-                                <Text style={styles.textStyle}>Not available</Text>
                             </View>
 
                             <View style={{ flexDirection: 'column', width: '25%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Altitude")}</Text>
-                                <Text style={styles.textStyle}>{item.altitude ? item.altitude + 'ft' :'Not available'}</Text>
+                                <Text style={styles.textStyle}>{item.altitude ? convertAltitudeRound(item.altitude) + ' ft' :'Not available'}</Text>
                             </View>
                         </View>
                     </View>

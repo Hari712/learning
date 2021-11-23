@@ -10,6 +10,7 @@ import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
 import { convertDist, convertSpeed, convertTime } from '../../../utils/helper';
+import { ClockIcon } from '../../../component/SvgComponent';
 
 const RouteDetails = (props) => {
 
@@ -53,25 +54,36 @@ const RouteDetails = (props) => {
                         <Text style={styles.headerTitle}>{sdateComponent}  to  {edateComponent}</Text>
                     </View>
     
-                    <TouchableOpacity style={styles.editButton}>
+                    <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.editButton}>
                         <LocationIcon/>
                     </TouchableOpacity>
                 </View>
-    
                 {/* White Body container */}
                 <View style={styles.whiteBodyContainer}>
                     <View style={styles.column} >
-                        <Text style={styles.whiteBodyText}>Start</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{stimeComponent}</Text>
+                        <View style={{height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8)}}>
+                            <Text style={styles.whiteBodyText}>Start</Text>
+                            <Text numberOfLines={2} style={[styles.whiteBodyText, { color: ColorConstant.BLACK, width: '90%', height: (item.tripStartAddress || item.tripEndAddress) ? hp(5) : hp(3) }]}>{item.tripStartAddress ? item.tripStartAddress : '-'}</Text>
+                            <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                                <ClockIcon  width={20} height={20} />
+                                <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK, marginLeft: hp(0.5) }]}>{stimeComponent}</Text>
+                            </View>
+                        </View> 
                         <View style={{height:hp(2)}} />
 
                         <Text style={styles.whiteBodyText}>Drive Duration</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{durationFormat}</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK  }]}>{durationFormat}</Text>
                         <View style={{height:hp(2)}} />
                     </View>
                     <View style={[styles.column, { width: '40%' }]} >
+                        <View style={{height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8)}}>
                         <Text style={styles.whiteBodyText}>End</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{etimeComponent}</Text>
+                        <Text numberOfLines={2} style={[styles.whiteBodyText, { color: ColorConstant.BLACK, width: '90%', height: (item.tripStartAddress || item.tripEndAddress) ? hp(5) : hp(3) }]}>{item.tripEndAddress ? item.tripEndAddress : '-'}</Text>
+                        <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                                <ClockIcon  width={20} height={20} />
+                                <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK, marginLeft: hp(0.5) }]}>{etimeComponent}</Text>
+                        </View>
+                        </View>
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Avg Speed</Text>
@@ -79,8 +91,10 @@ const RouteDetails = (props) => {
                         <View style={{height:hp(2)}} />
                     </View>
                     <View style={[styles.column, { width: '25%' }]}>
+                        <View style={{height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8)}}>
                         <Text style={styles.whiteBodyText}>Distance</Text>
                         <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{ convertDist(item.tripDistance, distUnit) }</Text>
+                        </View>
                         <View style={{height:hp(2)}} />
                         
                         <Text style={styles.whiteBodyText}>Top Speed</Text>

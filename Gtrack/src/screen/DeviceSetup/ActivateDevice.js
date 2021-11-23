@@ -102,7 +102,7 @@ const ActivateDevice = ({ navigation }) => {
     }
 
     function navigateToBarcodeScanner() {
-        NavigationService.push(SCREEN_CONSTANTS.BARCODE_SCANNER)
+         NavigationService.push(SCREEN_CONSTANTS.BARCODE_SCANNER, {setDeviceID: (id) => deviceIdRef.current.onChangeText(id)})
     }
 
     function navigateToAssignAsset() {

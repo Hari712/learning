@@ -171,9 +171,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
         }
         if (isConnected) {
-            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
-            AppManager.hideLoader()
-            AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
+            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError))             
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -216,8 +214,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
         }
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
-        AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
+       
         
     }
 
@@ -244,10 +241,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
         response.userDTOS = userdt
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
+            AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
         }else{
             dispatch(LivetrackingActions.setAddGeofenceResponse(response)) 
+            AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
         }
         AppManager.hideLoader()
+       
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
 

@@ -185,6 +185,10 @@ export function isIphoneX() {
       return round(value / 1.15077945, 2)
   }
 
+  export function convertAltitudeRound(value) {
+      return round(value * 100) / 100
+  }
+
   export function convertTemp(value, settingsData) {
     const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
     if(value){
@@ -195,7 +199,7 @@ export function isIphoneX() {
         return round(value*33.8,2) + " " + unit
     } 
     else 
-      return "-"
+      return "Not Available"
   }
 
   export function convertTime(value, settingsData) {
