@@ -76,14 +76,14 @@ const SensorInfo = ({ navigation }) => {
             <View>
                 {devices.map((subitem, subkey) => {
                     return (
-                        <View key={subkey} style={styles.subCategory}>
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, {data:subitem})}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
                             <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, {data:subitem})} >
                                 <NextArrowOrangeIcon  style={styles.icon} />
                             </TouchableOpacity>
 
-                        </View>
+                        </TouchableOpacity>
                     )
                 })}
             </View>
@@ -104,7 +104,7 @@ const SensorInfo = ({ navigation }) => {
                         {/* heading */}
                         <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
-                            {item.devices.length > 0 ?
+                            {(index !== selectedKey) && item.devices.length > 0 ?
                                 <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
                                     <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
                                 </View> : null 
