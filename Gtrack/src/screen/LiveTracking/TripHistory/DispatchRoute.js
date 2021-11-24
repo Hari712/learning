@@ -57,13 +57,13 @@ const DispatchRoute = ({ navigation, route }) => {
 
     function renderMapBox() {
 
-        let tripStartCord = [item.tripStartLongitude, item.tripStartLatitude]
-        let tripEndCord = [item.tripEndLongitude, item.tripEndLatitude]
+        let tripStartCord = [item.tripTravelledPositions[0][1], item.tripTravelledPositions[0][0]]
+        let tripEndCord = [item.tripTravelledPositions[item.tripTravelledPositions.length - 1][1], item.tripTravelledPositions[item.tripTravelledPositions.length - 1][0]]
 
         useEffect(()=>{
             if(isAndroid){
                 let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return([coorItem[1],coorItem[0]])} )
-                coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                // coordinateArray = [...coordinateArray]
                 setLineString({
                     "type": "FeatureCollection",
                     "features": [
@@ -130,7 +130,7 @@ const DispatchRoute = ({ navigation, route }) => {
         }
 
         return (
-            <Map.default.MapView style={{ flex: 1}}>
+            <Map.default.MapView style={{ flex: 1}} >
                 {/* <Map.default.UserLocation
                     renderMode='normal'
                     visible={true}
@@ -155,26 +155,26 @@ const DispatchRoute = ({ navigation, route }) => {
 
         let initialRegion = 
         {
-            latitude: item.tripStartLatitude,
-            longitude: item.tripStartLongitude,
+            latitude: item.tripTravelledPositions[0][0],
+            longitude: item.tripTravelledPositions[0][1],
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
         }
 
         let tripStartCord = {
-            latitude: item.tripStartLatitude,
-            longitude: item.tripStartLongitude,
+            latitude: item.tripTravelledPositions[0][0],
+            longitude: item.tripTravelledPositions[0][1],
         }
         let tripEndCord = {
-            latitude: item.tripEndLatitude,
-            longitude: item.tripEndLongitude
+            latitude: item.tripTravelledPositions[item.tripTravelledPositions.length - 1][0],
+            longitude: item.tripTravelledPositions[item.tripTravelledPositions.length - 1][1]
         }
 
         useEffect(()=>{
 
             if(!isAndroid){
                 let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return({longitude:coorItem[1],latitude:coorItem[0]})} )
-                coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                // coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
                 setLineString(coordinateArray)
             }
         },[])
