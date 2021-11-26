@@ -9,7 +9,7 @@ function LiveStartPointIcon(props) {
             cx={3.5}
             cy={3.5}
             r={3.5}
-            fill="#ff7f21"
+            fill={props.color ? props.color : "#ff7f21"}
         />
         </Svg>
     )

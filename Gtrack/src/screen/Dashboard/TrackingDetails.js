@@ -180,7 +180,7 @@ const TrackingDetails = ({navigation, route}) => {
 		const address = isContainCoordinate ? startingDestination.address : ''
 		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
 		return (
-			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
+			<Map.default style={StyleSheet.absoluteFillObject} initialRegion={region} ref={mapRef} showsUserLocation={true}>
 				{isContainCoordinate && <Map.Marker
 							coordinate={coordinate}
 							description={address}

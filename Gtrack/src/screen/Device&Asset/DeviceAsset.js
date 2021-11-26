@@ -80,9 +80,9 @@ const DeviceAsset = ({ navigation }) => {
 
   function menuHandle(item) {
     if (item == 'Create') {
-      NavigationService.push(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
+      NavigationService.navigate(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
     } else if (item == 'Manage') {
-      NavigationService.push(SCREEN_CONSTANTS.MANAGE)
+      NavigationService.navigate(SCREEN_CONSTANTS.MANAGE)
     }
     // else if (item == 'Export All Devices') {
     //   exportAllDevices()

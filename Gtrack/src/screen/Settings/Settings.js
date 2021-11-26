@@ -76,7 +76,7 @@ const Settings = ({ navigation }) => {
     const onPressHandle = ({ navigation, item }) => {
       switch (item.title) {
         case 'Profile':
-          NavigationService.push((SCREEN_CONSTANTS.PROFILE))
+          NavigationService.navigate((SCREEN_CONSTANTS.PROFILE))
           break;
 
         case 'Permission':
@@ -84,11 +84,11 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'About':
-          NavigationService.push((SCREEN_CONSTANTS.ABOUT))
+          NavigationService.navigate((SCREEN_CONSTANTS.ABOUT))
           break;
 
         case 'Notifications':
-          NavigationService.push((SCREEN_CONSTANTS.SETTINGS_NOTIFICATION))
+          NavigationService.navigate((SCREEN_CONSTANTS.SETTINGS_NOTIFICATION))
           break;
 
         case 'Rate Us':
@@ -96,15 +96,15 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'Feedback':
-          NavigationService.push((SCREEN_CONSTANTS.FEEDBACK))
+          NavigationService.navigate((SCREEN_CONSTANTS.FEEDBACK))
           break;
 
         case 'Advance Settings':
-          NavigationService.push(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
+          NavigationService.navigate(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
           break;
 
         case 'Change Passcode':
-          NavigationService.push(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
+          NavigationService.navigate(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
           break;
 
         case 'Logout':

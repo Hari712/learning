@@ -92,7 +92,7 @@ const AssignAsset = ({ navigation, route }) => {
     }
 
     function onTapNotNow() {
-        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_GROUP, { device: deviceInfo })
+        NavigationService.navigate(SCREEN_CONSTANTS.ASSIGN_GROUP, { device: deviceInfo })
     }
 
     function onSubmit(item) {
@@ -109,7 +109,7 @@ const AssignAsset = ({ navigation, route }) => {
 
     function onAssignAssetSuccess(data) {
         AppManager.hideLoader()
-        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_GROUP, { device: deviceInfo })
+        NavigationService.navigate(SCREEN_CONSTANTS.ASSIGN_GROUP, { device: deviceInfo })
     }
 
     function onAssignAssetError(error) {

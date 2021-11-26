@@ -24,7 +24,7 @@ const AdminUser = () => {
             <View style={styles.blueBox}>
                 <Text style={styles.blueBoxTitle}>{loginData.firstName} {loginData.lastName}</Text>
                 <TouchableOpacity style={{marginLeft:hp(2)}}>
-                    <UsersEditIcon onPress={()=>NavigationService.push(SCREEN_CONSTANTS.PROFILE)} />
+                    <UsersEditIcon onPress={()=>NavigationService.navigate(SCREEN_CONSTANTS.PROFILE)} />
                 </TouchableOpacity>       
             </View>
         

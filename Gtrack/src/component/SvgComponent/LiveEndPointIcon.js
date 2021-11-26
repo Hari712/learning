@@ -17,7 +17,7 @@ function LiveEndPointIcon(props) {
                 cy={18}
                 r={18}
                 transform="translate(8 8)"
-                fill="#ff8b3e"
+                fill={props.color ? props.color : "#ff8b3e"}
                 opacity={0.38}
             />
             </G>
@@ -31,7 +31,7 @@ function LiveEndPointIcon(props) {
                 cy={5.5}
                 r={5.5}
                 transform="translate(20 20)"
-                fill="#ff7f21"
+                fill={props.color ? props.color :  "#ff7f21"}
             />
             </G>
         </G>

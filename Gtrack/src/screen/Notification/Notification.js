@@ -46,7 +46,7 @@ const Notification = ({ navigation }) => {
 	}));
 
     const dispatch = useDispatch()
-    console.log('notificationEvents', notificationEvents)
+    console.log('notificationEvents', notificationEvents, notiEvents)
     const removeNotification = (item) => {
         removeEvent(item)
         dispatch(LiveTrackingAction.removeNotificationEventResponse(item.id))

@@ -83,7 +83,7 @@ const ActivateDevice = ({ navigation }) => {
         const deviceDTO = data.deviceDTO ? data.deviceDTO : {  }
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: 'Device created successfully', description: '', floating: true })
-        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_ASSET, { device: deviceDTO })
+        NavigationService.navigate(SCREEN_CONSTANTS.ASSIGN_ASSET, { device: deviceDTO })
     }
 
     function onError(error) {
@@ -102,11 +102,11 @@ const ActivateDevice = ({ navigation }) => {
     }
 
     function navigateToBarcodeScanner() {
-         NavigationService.push(SCREEN_CONSTANTS.BARCODE_SCANNER, {setDeviceID: (id) => deviceIdRef.current.onChangeText(id)})
+         NavigationService.navigate(SCREEN_CONSTANTS.BARCODE_SCANNER, {setDeviceID: (id) => deviceIdRef.current.onChangeText(id)})
     }
 
     function navigateToAssignAsset() {
-        NavigationService.push(SCREEN_CONSTANTS.ASSIGN_ASSET)
+        NavigationService.navigate(SCREEN_CONSTANTS.ASSIGN_ASSET)
     }
 
     return (

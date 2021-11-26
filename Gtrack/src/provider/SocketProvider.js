@@ -9,6 +9,8 @@ import * as LiveTrackingActions from '../screen/LiveTracking/Livetracking.Action
 import ApiConstants from '../api/ApiConstants'
 import { useDispatch ,useSelector } from 'react-redux'
 import { setNotificationEvents } from '../utils/socketHelper'
+import * as LoginActions from '../screen/Login/Login.Action'
+
 
 let socket = null
 let isConnecting = false
@@ -30,7 +32,7 @@ const SocketProvider = (props) => {
         loginInfo: getLoginState(state),
         traccarSessionInfo: getTraccarSessionInfo(state)
     }))
-
+    
     const [loginInfoDetail, setLoginInfoDetail, loginInfoDetailRef] = useStateRef(loginInfo)
 
     const [arrDeveicePositionList, setArrDevicePositionList, arrDevicePositionListRef] = useStateRef([])
@@ -60,6 +62,15 @@ const SocketProvider = (props) => {
         }
     },[isLoggedIn])
     console.log(traccarSessionInfoDetail, 'traccarSessionInfoDetail')
+
+    function onTraccarSessionSuccess(data) {
+		console.log('Traccar Session Success', data);
+	}
+
+	function onTraccarSessionError(error) {
+		console.log('Traccar Session Error', error);
+	}
+
     function connectWitWebsocket() {
         const url = `wss://${socketURL}`
         const headers = {};
@@ -74,6 +85,13 @@ const SocketProvider = (props) => {
         }
         socket.onerror = (event) => {
             console.log('socket error',event);
+            if(isConnected) {
+                if(!isEmpty(loginInfo)) {
+                    dispatch(
+                        LoginActions.requestTraccarSession(loginInfo.id, onTraccarSessionSuccess, onTraccarSessionError)
+                    );
+                }
+            }
         }
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);    

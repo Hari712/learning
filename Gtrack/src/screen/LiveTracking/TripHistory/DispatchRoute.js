@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useLayoutEffect, useRef } from 'react'
-import { View, StyleSheet, Dimensions, Platform, Text } from 'react-native'
+import { View, StyleSheet, Dimensions, Platform, Text, TouchableOpacity } from 'react-native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import isEmpty from 'lodash/isEmpty'
 import { ColorConstant } from './../../../constants/ColorConstants';
-import { EndPointIcon, MarkerIcon, StartPointIcon, LocationOrangeIcon } from '../../../component/SvgComponent'
+import { EndPointIcon, MarkerIcon, StartPointIcon, LocationOrangeIcon, BackIcon } from '../../../component/SvgComponent'
 import { FontSize } from '../../../component';
 const { width, height } = Dimensions.get('window');
 
@@ -25,12 +25,32 @@ const DispatchRoute = ({ navigation, route }) => {
 
     const mapRef = useRef()
 
+    // useLayoutEffect(() => {
+    //     navigation.setOptions({
+    //         header: () => null ,
+    //     })
+    // }, [navigation])
+    console.log('DispatchRoute', item)
     useLayoutEffect(() => {
-        navigation.setOptions({
-            header: () => null ,
-        })
-    }, [navigation])
 
+        navigation.setOptions({
+            headerTitle: () => (
+                <Text style={{
+                    color: ColorConstant.GREY,
+                    fontSize: FontSize.FontSize.medium,
+                    fontWeight: '500',
+                    //letterSpacing: 0,
+                    textAlign:'center' }}>
+                    {item.deviceName}
+                </Text>          
+            ),
+            headerLeft: () => (
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                    <BackIcon />
+                </TouchableOpacity>
+            )
+        });
+    }, [navigation]);
 
     function renderPopUpText(title, address) {
         return(

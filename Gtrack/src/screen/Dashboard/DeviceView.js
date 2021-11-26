@@ -80,7 +80,7 @@ function renderDeviceCell({ item, index }) {
             { item.devices.map((dvItem)=>{
                 return (
                     <TouchableOpacity 
-                        onPress={() => { NavigationService.push(SCREEN_CONSTANTS.TRACKING_DETAILS, {selectedDevice:dvItem}) }} 
+                        onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.TRACKING_DETAILS, {selectedDevice:dvItem}) }} 
                         style={styles.cardContainer}>
 
                         {/* Blue top head */}

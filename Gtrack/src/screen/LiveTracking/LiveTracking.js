@@ -18,6 +18,7 @@ import useStateRef from '../../utils/useStateRef';
 import * as LivetrackingActions from './Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
+import KeepAwake from 'react-native-keep-awake';
 import Dialog from '../../component/Dialog'
 import { isNewNotification } from '../../utils/socketHelper';
 import { sendEvent } from '../../provider/SocketProvider';
@@ -104,9 +105,12 @@ const LiveTracking = ({ navigation }) => {
 			setLineString(null)
 			setCoordList([])
 			!isEmpty(devicePositionArray) && setDevicePositionArray([devicePositionArray[devicePositionArray.length - 1]])
+			KeepAwake.activate()
 			} else { 
 				setIsLineClick(false);
+				KeepAwake.deactivate();
 			}
+			return () => {console.log('deactivate'); KeepAwake.deactivate();}
 		},
 		[isFocused]
 	);
@@ -159,6 +163,7 @@ const LiveTracking = ({ navigation }) => {
 						return arr;
 				});
 				let line = makeLineString(arrCoords);
+				console.log('devicePositionArray 123', devicePositionArray)
 				setLineString(line);
 				console.log("line",line)
 			} else {
@@ -217,7 +222,7 @@ const LiveTracking = ({ navigation }) => {
 
 	function navigateToDeviceSetup() {
 		setIsLineClick(false);
-		NavigationService.push(SCREEN_CONSTANTS.ACTIVATE_DEVICE);
+		NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE);
 	}
 
 	function onPressNext() {
@@ -229,6 +234,7 @@ const LiveTracking = ({ navigation }) => {
 		setSelectedDevice(device);
 		setSelectedDeviceIndex(i);
 		setDevicePositionArray([]);
+		setLineString(null)
 	}
 
 	function onPressPrevious() {
@@ -243,6 +249,7 @@ const LiveTracking = ({ navigation }) => {
 		setSelectedDevice(device);
 		setSelectedDeviceIndex(i);
 		setDevicePositionArray([]);
+		setLineString(null)
 	}
 
 	function renderDeviceSelectionView() {
@@ -307,14 +314,13 @@ const LiveTracking = ({ navigation }) => {
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
-				region={region} ref={mapRef} 
+				initialRegion={region} ref={mapRef} 
 				showsUserLocation={false}>
 
 				{isContainCoordinate && 
 					<Map.Marker 
 						coordinate={startCoordinate} 
 						description={startAddress} >
-
 						<LiveStartPointIcon />
 					</Map.Marker>}
 
@@ -356,7 +362,7 @@ const LiveTracking = ({ navigation }) => {
 		console.log('startCoordinate',devicePositionArray, lineString)
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} >
+				<Map.default.MapView style={{ flex: 1 }} styleURL={Map.default.StyleURL.Street}>
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
@@ -367,8 +373,8 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							zoomLevel={17}
 							bounds={{
-								ne: startCoordinate,
-								sw: startCoordinate,
+								ne: endCoordinate,
+								sw: endCoordinate,
 							}}
 						/> : 
 						<Map.default.Camera 
@@ -378,7 +384,7 @@ const LiveTracking = ({ navigation }) => {
 					{!isEmpty(lineString)
 						? <Map.default.ShapeSource id="route" shape={lineString}>
 								<Map.default.LineLayer
-									id="lineroute"
+									id="routeFill"
 									style={{
 										lineCap: 'round',
 										lineWidth: 3,
@@ -430,7 +436,7 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicTimerVisible(false) 
 		setIsPanicAlarmClick(false)
 	}	
-	console.log('isNewEvent', isNewEvent)
+	console.log('isNewEvent', isNewEvent, selectedDevice)
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}

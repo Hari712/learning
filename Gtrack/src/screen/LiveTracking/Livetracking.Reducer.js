@@ -125,6 +125,7 @@ export const livetrackingReducer = createReducer(state = initialState, {
     },
     [types.NOTIFICATION_EVENTS_RESPONSE](state, action) {
         let array = {...state.notificationEvents, ...action.data}
+        console.log(array, 'notificationEvents 123')
         return {
             ...state,
             notificationEvents: Object.values(array),

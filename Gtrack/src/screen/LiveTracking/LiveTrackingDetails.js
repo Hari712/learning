@@ -53,6 +53,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 	const [lineString, setLineString] = useState(null)
 	const [devicePositionArray, setDevicePositionArray] = useState([]);
 	const [region, setRegion] = useState();
+	const [coordList, setCoordList] 	= useState([]);
     const [bottomToggle, setBottomToggle] = useState(false)
     const [address, setAddress] = useState()
 
@@ -222,7 +223,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
-				region={region} ref={mapRef} 
+				initialRegion={region} ref={mapRef} 
 				showsUserLocation={false}>
                     
 				{isContainCoordinate && 
@@ -285,8 +286,8 @@ const LiveTrackingDetails = ({navigation, route}) => {
 						<Map.default.Camera
 							zoomLevel={17}
 							bounds={{
-								ne: startCoordinate,
-								sw: startCoordinate,
+								ne: endCoordinate,
+								sw: endCoordinate,
 							}}
 						/>}
 					{!isEmpty(lineString)
