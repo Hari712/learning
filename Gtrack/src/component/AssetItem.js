@@ -28,9 +28,11 @@ const AssteItem = (props) => {
     const arrAssetTypeList = isEmpty(assetTypeList) ? [] : assetTypeList.map((item) => item.assetType)
     // const [editClick, setEditClick] = useState()
     const [assetLtype, setAssetLType] = useState(assetType);
-    const [assetLName, setAssetLName] = useState(assetName);
+    const [assetLName, setAssetLName] = useState();
     const [assetLdescription, setAssetLDescription] = useState(description)
 
+    useEffect(() => setAssetLName(assetName), [assetName]) 
+    console.log('asset item', item, assetLName)
     const popUp = () => {
         return (
             <View style={{ backgroundColor: ColorConstant.PINK, paddingVertical: 10, width: '100%', marginTop: hp(2) }}>

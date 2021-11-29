@@ -98,6 +98,7 @@ const AssetList = () => {
 
     const onRefresh = () => {
         setIsRefreshing(true)
+        setEditClick(-1)
     }
 
     return (

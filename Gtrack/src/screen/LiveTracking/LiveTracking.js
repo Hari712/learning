@@ -384,7 +384,7 @@ const LiveTracking = ({ navigation }) => {
 					{!isEmpty(lineString)
 						? <Map.default.ShapeSource id="route" shape={lineString}>
 								<Map.default.LineLayer
-									id="routeFill"
+									id="lineroute"
 									style={{
 										lineCap: 'round',
 										lineWidth: 3,
