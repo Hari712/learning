@@ -103,6 +103,11 @@ const SocketProvider = (props) => {
 
             console.log("event",data)
             
+            if(data.devices && Array.isArray(data.devices)) {
+                console.log('devices info', data.devices)
+                dispatch(LiveTrackingActions.setDeviceStatusData(data.devices))
+            }
+            
             if (data.positions && Array.isArray(data.positions)) {
                 setArrDevicePositionList(data)
                 dispatch(LiveTrackingActions.setLiveTrackingPositionData(data.positions))

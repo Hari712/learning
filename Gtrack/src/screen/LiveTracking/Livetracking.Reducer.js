@@ -12,6 +12,7 @@ const initialState = {
     traccarDevices:[],
     traccarPositions:[],
     groupDevices: [],
+    groupDeviceList: {},
     assetInfo: [],
     notificationEvents: [],
     readEvents: [],
@@ -84,6 +85,18 @@ export const livetrackingReducer = createReducer(state = initialState, {
             liveTrackingLastKnownPositions: Object.values(updatedDevicePositionObject)
         }
     },
+    [types.SET_DEVICE_STATUS_INFO](state, action) {
+        const { data } = action
+        const { groupDeviceList } = state
+        const deviceListCopy = [ ... groupDeviceList ]
+        const updatedDevice = !isEmpty(data) && data[0]
+        const existingList = deviceListCopy.filter(i => i.id !== updatedDevice.id);
+        const newData = [ ...existingList, updatedDevice ].sort(function(a, b){return a.id - b.id})
+        return {
+            ...state,
+            groupDeviceList: newData
+        }
+    },
     [types.SET_LIVE_TRACKING_DEVICES](state, action) {
         console.log("devices",action.data)
         return {
@@ -93,9 +106,15 @@ export const livetrackingReducer = createReducer(state = initialState, {
     },
     [types.GET_GROUP_DEVICES_RESPONSE](state, action) {
         const { traccarDeviceGroupDTOS } = action.data
+        let deviceArr = []
+        traccarDeviceGroupDTOS.map((item) => {
+            deviceArr = [...deviceArr, ...item.devices]
+        })
+        deviceArr.sort(function(a, b){return a.id - b.id})
         return {
             ...state,
-            groupDevices: traccarDeviceGroupDTOS
+            groupDevices: traccarDeviceGroupDTOS,
+            groupDeviceList: deviceArr
         }
     },
     [types.GET_ALL_LAST_KNOWN_POSITION_RESPONSE](state, action) {
@@ -106,9 +125,15 @@ export const livetrackingReducer = createReducer(state = initialState, {
     },
     [types.SEARCH_GROUP_RESPONSE](state, action) {
         const { traccarDeviceGroupDTOS } = action.data
+        let deviceArr = []
+        traccarDeviceGroupDTOS.map((item) => {
+            deviceArr = [...deviceArr, ...item.devices]
+        })
+        deviceArr.sort(function(a, b){return a.id - b.id})
         return {
             ...state,
-            groupDevices: traccarDeviceGroupDTOS
+            groupDevices: traccarDeviceGroupDTOS,
+            groupDeviceList: deviceArr
         }
     },
     [types.SEARCH_GEOFENCE_RESPONSE](state, action) {

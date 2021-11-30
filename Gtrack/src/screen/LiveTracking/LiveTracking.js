@@ -311,9 +311,16 @@ const LiveTracking = ({ navigation }) => {
 		const endCoordinate = isContainCoordinate
 		? { latitude: endDestination.latitude, longitude: endDestination.longitude }
 		: null;
+		const regionpoint = isContainCoordinate ? {
+			latitude: endDestination.latitude,
+			longitude: endDestination.longitude,
+			// latitudeDelta: LATITUDE_DELTA,
+			// longitudeDelta: LONGITUDE_DELTA,
+		} : null;
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
+				region={regionpoint}
 				initialRegion={region} ref={mapRef} 
 				showsUserLocation={false}>
 
@@ -349,6 +356,7 @@ const LiveTracking = ({ navigation }) => {
 		const liveEndPoint = isContainCoordinate ? devicePositionArray[devicePositionArray.length-1] : null;
 		const startAddress = isContainCoordinate ? startingDestination.address : '';
 		const endAddress = isContainCoordinate ? liveEndPoint.address : '';
+		const isOnline = selectedDevice && selectedDevice.status == 'online' ? true : false;
 		let startCoordinate = [];
 		if (isContainCoordinate) {
 			startCoordinate.push(startingDestination.longitude);
@@ -360,6 +368,7 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.latitude);
 		}
 		console.log('startCoordinate',devicePositionArray, lineString)
+		console.log('selectedDevice.status', isOnline)
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }} styleURL={Map.default.StyleURL.Street}>
@@ -396,13 +405,15 @@ const LiveTracking = ({ navigation }) => {
 						: null}
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
+							{/* <LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} />  */}
 							<LiveStartPointIcon />
 							<Map.default.Callout title={startAddress} />
 						</Map.default.PointAnnotation>}
 
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
-							<LiveEndPointIcon/>
+							 	<LiveEndPointIcon/> 
+							  {/* <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  /> */}
 							<Map.default.Callout title={endAddress} />
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>

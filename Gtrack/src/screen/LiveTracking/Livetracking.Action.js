@@ -137,6 +137,11 @@ export const setLiveTrackingPositionData = (data) => ({
     data
 })
 
+export const setDeviceStatusData = (data) => ({
+    type: types.SET_DEVICE_STATUS_INFO,
+    data
+})
+
 export const requestGetGroupDevices = (userId, onSuccess, onError) => ({
     type: types.GET_GROUP_DEVICES_REQUEST,
     userId,
