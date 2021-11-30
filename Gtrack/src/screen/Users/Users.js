@@ -336,6 +336,7 @@ addButton : {
 },
 searchText: {
   //fontSize:FontSize.FontSize.small,
+  flex: 0.9,
   fontSize:14,
   color:ColorConstant.BLACK,
   fontFamily:'Nunito-LightItalic'

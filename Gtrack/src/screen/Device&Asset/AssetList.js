@@ -75,6 +75,7 @@ const AssetList = () => {
                 <View style={styles.search}>
                     <TextInput
                         placeholder='Search Here'
+                        style={{flex: 1}}
                         onChangeText={text => searchFilter(text) }                    
                         value={search}
                     />
