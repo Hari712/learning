@@ -85,10 +85,19 @@ const GroupItem = props => {
                 },
                 "devicePlan": null
             }
-            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
+            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSetDefaultSuccess, onRemoveDeviceError))
         } else {
             AppManager.showNoInternetConnectivityError()
         }
+    }
+    const onSetDefaultSuccess = (data) => {
+        AppManager.showSimpleMessage('success', { message: 'Default Group changed successfully', description: '', floating: true })
+        console.log("Success", data)
+        dispatch(DeviceActions.requestGetAllUserGroups(loginInfo.id, onGroupListLoadedSuccess, onGroupListLoadedError))
+        loadNonGroupedDevice()
+        setAddClick(-1)
+        setSelectedDevices([])
+        AppManager.hideLoader()
     }
 
     const removeConfirm = () => {
