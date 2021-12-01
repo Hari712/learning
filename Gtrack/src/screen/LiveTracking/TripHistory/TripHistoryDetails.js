@@ -83,6 +83,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
         let lastWeekDate = Moment().subtract(1, "weeks").startOf('isoWeek').format('YYYY-MM-DD')
         let lastWeek = Moment(lastWeekDate).endOf('isoWeek').format('YYYY-MM-DD')
         let lastMonthDate = Moment().date(1).subtract(1,'months').format('YYYY-MM-DD')
+        let lastMonthLastDate = Moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD')
         let currentMonthDate = Moment().date(1).format('YYYY-MM-DD') 
         setOnEndReachedCalledDuringMomentum(false)
         if(selectedDay){
@@ -105,7 +106,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
                 case 'Last Month':
                     setStartDate(lastMonthDate)
-                    setEndDate(currentMonthDate)
+                    setEndDate(lastMonthLastDate)
                     break;
 
                 case 'Custom':

@@ -209,7 +209,7 @@ const GeoFence = ({ navigation }) => {
             </View>
 
             <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} ></View>
-            {geofenceList.length > 0 ?
+            {geofenceListData.length > 0 ?
             <FlatList
                 style={{}}
                 contentContainerStyle={{}}
@@ -229,7 +229,7 @@ const GeoFence = ({ navigation }) => {
             }  
 
             {isTypeClick ?
-                <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
+                <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}, isRegular && { left: wp(6), top:dropDownPos + hp(1) }]}>
                     {geofenceType.map((item, key) =>
                         <TouchableOpacity  key={key} onPress={()=> onTypeClick(item,key)}>
                             <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>

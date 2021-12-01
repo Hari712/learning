@@ -103,7 +103,7 @@ const Notification = ({ navigation }) => {
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
                             <Text style={styles.timeTextStyle}>{moment(item.serverTime).fromNow()}</Text>
-                            <TouchableOpacity style={{padding:4,zIndex:5}} onPress={()=> removeNotification(item)} >
+                            <TouchableOpacity style={{padding:10,zIndex:5}} onPress={()=> removeNotification(item)} >
                                 <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
                             </TouchableOpacity>
                         </View>

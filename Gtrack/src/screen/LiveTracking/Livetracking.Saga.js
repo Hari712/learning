@@ -8,7 +8,7 @@ import { SEARCH_GEOFENCE_REQUEST } from './../../constants/ActionTypes';
 function* requestGetAlarmsList(action) {
     const { userId, onSuccess, onError } = action
     try {
-        const url = ApiConstants.GET_ALARMS_LIST(userId)
+        const url = ApiConstants.GET_ALARMS_LIST(userId, '')
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(LivetrackingActions.setAlarmsListResponse(result))
@@ -215,7 +215,7 @@ function* requestSearchGeofence(action) {
 function* requestSearchAlarms(action) {
     const { userId, keyword, onSuccess, onError } = action
     try {
-        const url = ApiConstants.SEARCH_ALARMS(userId, keyword)
+        const url = ApiConstants.GET_ALARMS_LIST(userId, keyword)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(LivetrackingActions.setSearchAlarmResponse(result))

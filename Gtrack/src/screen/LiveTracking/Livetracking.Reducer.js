@@ -149,11 +149,12 @@ export const livetrackingReducer = createReducer(state = initialState, {
         }
     },
     [types.NOTIFICATION_EVENTS_RESPONSE](state, action) {
-        let array = {...state.notificationEvents, ...action.data}
-        console.log(array, 'notificationEvents 123')
+        // const filter = state.notificationEvents.filter(i => ((i.deviceId !== action.data[0].deviceId) && (i.type !== action.data[0].type)))
+        let array = [ ...action.data, ...state.notificationEvents ]
+        // console.log(array, filter, 'notificationEvents 123')
         return {
             ...state,
-            notificationEvents: Object.values(array),
+            notificationEvents: array,
             isNewEvent: true
         }
     },
