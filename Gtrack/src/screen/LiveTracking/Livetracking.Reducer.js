@@ -2,6 +2,7 @@ import createReducer from '../../store/CreateReducer'
 import * as types from '../../constants/ActionTypes'
 import mapKeys from 'lodash/mapKeys'
 import isEmpty from 'lodash/isEmpty'
+import { convertArrayToPositionObject } from '../../utils/helper'
 
 const initialState = {
     alarmsList: [],
@@ -9,6 +10,7 @@ const initialState = {
     alertTypes: [],
     geofenceList: [],
     liveTrackingLastKnownPositions: [],
+    liveTrakingPositions: {},
     traccarDevices:[],
     traccarPositions:[],
     groupDevices: [],
@@ -77,12 +79,33 @@ export const livetrackingReducer = createReducer(state = initialState, {
     },
     [types.SET_LIVE_TRACKING_DEVICE_LIST](state, action) {
         let arrList = state.liveTrackingLastKnownPositions ? state.liveTrackingLastKnownPositions : []
+        // const { liveTrakingPositions } = state
+        // const { data } = action
+        // if(liveTrakingPositions !== {}) {
+        //     console.log('liveTrakingPositions', data, liveTrakingPositions[data[0].deviceId], Object.keys(liveTrakingPositions), String(data[0].deviceId), Object.keys(liveTrakingPositions).includes(String(data[0].deviceId)))
+        //     // positionPolyLine =  Object.keys(liveTrakingPositions).include(data.deviceId) ? { ...liveTrakingPositions[data.deviceId] } : convertArrayToPositionObject(data ,'deviceId');
+        //     if(Object.keys(liveTrakingPositions).includes(String(data[0].deviceId))) {
+        //         const val = [ ...Object.values(liveTrakingPositions[data[0].deviceId]), { 'latitude': data[0].latitude, 'longitude': data[0].longitude }]
+        //         liveTrakingPositions[data[0].deviceId] = val
+        //         console.log('reducer', val)
+        //         positionPolyLine = liveTrakingPositions[data[0].deviceId]
+        //     }
+        //     else {
+        //     positionPolyLine = convertArrayToPositionObject(data ,'deviceId');
+        //     }
+        // }
+        // else {
+        //     positionPolyLine = convertArrayToPositionObject(data ,'deviceId');
+        // }
         const devicePositionObject = mapKeys(arrList,'deviceId');
         const newDevicePositionObject = mapKeys(action.data,'deviceId');
         const updatedDevicePositionObject = { ...devicePositionObject, ...newDevicePositionObject };
+        // const updatedDevicePosition = { ...liveTrakingPositions, ...positionPolyLine}
+        // console.log('arrlist reducer', arrList, action.data, positionPolyLine, devicePositionObject, updatedDevicePositionObject, newDevicePositionObject)
         return   {
             ...state,
-            liveTrackingLastKnownPositions: Object.values(updatedDevicePositionObject)
+            liveTrackingLastKnownPositions: Object.values(updatedDevicePositionObject),
+            // liveTrakingPositions: updatedDevicePosition
         }
     },
     [types.SET_DEVICE_STATUS_INFO](state, action) {

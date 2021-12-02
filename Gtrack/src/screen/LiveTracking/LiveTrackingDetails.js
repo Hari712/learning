@@ -115,7 +115,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 						...{[device.id]: device}
 					};
 					const arrLogs = Object.values(updatedDevicePositionObject)
-					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					arrLogs.sort((a, b) => a.id - b.id);
 					setDevicePositionArray(arrLogs);
 				}
 			}

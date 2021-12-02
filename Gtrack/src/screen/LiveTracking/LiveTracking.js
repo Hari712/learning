@@ -51,7 +51,7 @@ const LiveTracking = ({ navigation }) => {
 		loginData: getLoginState(state),
 		notiEvents: getLiveNotificationsInfo(state),
 		getPanicDetail: getPanicAlarm(state),
-		isNewEvent: getLiveNotificationCountsInfo(state)
+		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
 
 	
@@ -144,7 +144,8 @@ const LiveTracking = ({ navigation }) => {
 						...{[device.id]: device}
 					};
 					const arrLogs = Object.values(updatedDevicePositionObject)
-					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					console.log('arraylog updatedDevicePositionObject', arrLogs, updatedDevicePositionObject)
+					arrLogs.sort((a, b) => a.id - b.id);
 					setDevicePositionArray(arrLogs);
 					console.log("arraylog",arrLogs)
 				}

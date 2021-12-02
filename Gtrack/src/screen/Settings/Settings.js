@@ -7,12 +7,14 @@ import { FontSize, LogoutConfirmationDialog, RateUsDialog } from '../../componen
 import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { FCM_TOKEN, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 import InAppReview from 'react-native-in-app-review';
-import { isRoleRegular } from '../Selector';
+import { isRoleRegular, getLoginState } from '../Selector';
 import { logoutReset } from '../../utils/socketHelper';
+import { getValue } from '../../utils/storage';
+import { isEmpty } from 'lodash';
 
 const isAndroid = Platform.OS === 'android'
 
@@ -23,8 +25,9 @@ const Settings = ({ navigation }) => {
 
   const [isLogoutConfirmationDialogVisible, setIsLogoutConfirmationDialogVisible] = useState(false)
 
-  const { isRegular } = useSelector(state => ({
-    isRegular: isRoleRegular(state)
+  const { isRegular, loginData } = useSelector(state => ({
+    isRegular: isRoleRegular(state),
+    loginData: getLoginState(state),
   }))
   
   React.useLayoutEffect(() => {
@@ -218,9 +221,28 @@ const Settings = ({ navigation }) => {
 
   function onTapConfirm() {
     onHideLogoutConfirmationDialog()
-    logoutReset()
-    dispatch(LoginActions.requestLogout())
+    onRemoveDeviceToken()
   }
+  console.log('loginData account', loginData)
+  async function onRemoveDeviceToken() {
+		const fcmToken = await getValue(FCM_TOKEN)
+		if (!isEmpty(fcmToken)) {
+			dispatch(LoginActions.requestRemoveDeviceToken(loginData.id, fcmToken, onRemoveDeviceTokenSuccess, onremoveDeviceTokenError))
+		}
+	}
+
+	function onRemoveDeviceTokenSuccess(data) {
+    if(data) {
+      logoutReset()
+      dispatch(LoginActions.requestLogout())
+    }
+		console.log('Add Token Success', data)
+	}
+
+	function onremoveDeviceTokenError(error) {
+		console.log('Add Token Error', error)
+	}
+
 
   function renderLogoutConfirmationDialog() {
     return (
