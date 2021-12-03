@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm, getLiveNotificationCountsInfo } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm, getLiveNotificationCountsInfo, getLivetrackingDevicesListInfo } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -42,11 +42,12 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, getPanicDetail, isNewEvent} = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, liveTrakingDeviceList, loginData, hasPanic, notiEvents, getPanicDetail, isNewEvent} = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
+		liveTrakingDeviceList: getLivetrackingDevicesListInfo(state),
 		hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
 		notiEvents: getLiveNotificationsInfo(state),
@@ -357,7 +358,7 @@ const LiveTracking = ({ navigation }) => {
 		const liveEndPoint = isContainCoordinate ? devicePositionArray[devicePositionArray.length-1] : null;
 		const startAddress = isContainCoordinate ? startingDestination.address : '';
 		const endAddress = isContainCoordinate ? liveEndPoint.address : '';
-		const isOnline = selectedDevice && selectedDevice.status == 'online' ? true : false;
+		const isOnline = !isEmpty(liveTrakingDeviceList) && liveTrakingDeviceList[selectedDeviceIndex].status == "online" ? true : false;
 		let startCoordinate = [];
 		if (isContainCoordinate) {
 			startCoordinate.push(startingDestination.longitude);
@@ -369,7 +370,7 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.latitude);
 		}
 		console.log('startCoordinate',devicePositionArray, lineString)
-		console.log('selectedDevice.status', isOnline)
+		console.log('selectedDevice.status', liveTrakingDeviceList[selectedDeviceIndex])
 		return (
 			<View style={{ flex: 1 }}>
 				<Map.default.MapView style={{ flex: 1 }} styleURL={Map.default.StyleURL.Street}>
@@ -406,16 +407,16 @@ const LiveTracking = ({ navigation }) => {
 						: null}
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
-							{/* <LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} />  */}
-							<LiveStartPointIcon />
+							<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} /> 
+							{/* <LiveStartPointIcon /> */}
 							<Map.default.Callout title={startAddress} />
 						</Map.default.PointAnnotation>}
 
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
 							 	<LiveEndPointIcon/> 
-							  {/* <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  /> */}
-							<Map.default.Callout title={endAddress} />
+							  <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
+							{/* <Map.default.Callout title={endAddress} /> */}
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>

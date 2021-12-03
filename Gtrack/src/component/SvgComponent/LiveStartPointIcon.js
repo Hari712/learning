@@ -11,8 +11,8 @@ function LiveStartPointIcon(props) {
             cx={3.5}
             cy={3.5}
             r={3.5}
-            // fill={isDeviceOnline ? "#1bbe15" : "#ff2121"}
-            fill={"#ff7f21"}
+            fill={isDeviceOnline ? "#1bbe15" : "#ff2121"}
+            // fill={"#ff7f21"}
         />
         </Svg>
     )

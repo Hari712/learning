@@ -182,19 +182,22 @@ export const livetrackingReducer = createReducer(state = initialState, {
         }
     },
     [types.NOTIFICATION_EVENT_REMOVE](state, action) {
-        let array = state.notificationEvents.filter((item) => item.id != action.id)
-        let read = state.readEvents.filter(item => item != action.id)
+        const { notificationEvents, readEvents } = state
+        let array = notificationEvents.filter((item) => item.id != action.id)
+        let read = readEvents.filter(item => item != action.id)
+        let isReaded = array.filter(i => !readEvents.includes(i.id))
         return {
             ...state,
             notificationEvents: array,
-            isNewEvent: array.length > 0 ? true : false,
+            isNewEvent: isReaded.length > 0 ? true : false,
             readEvents: read
         }
     },
     [types.NOTIFICATION_EVENT_READ](state, action) {
         const { readEvents } = state
-        let array = state.notificationEvents.filter((item) => item.id != action.id)
+        let array = state.notificationEvents.filter((item) => item.id != action.id && !readEvents.includes(item.id))
         const read = !isEmpty(readEvents) ? [...readEvents, action.id] : [action.id]
+        console.log('array notification Read', array)
         return {
             ...state,
             isNewEvent: array.length > 0 ? true : false,

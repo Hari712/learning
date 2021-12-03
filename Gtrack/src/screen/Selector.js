@@ -313,19 +313,35 @@ export const getTripHistoryListInfo = createSelector(
  * Get Group Devices for Livetracking
  */
 
-const getLivetrackingGroupDevicesList = (state) => getAllLivetrackingDevices(state)
+const getLivetrackingGroupDevicesList = (state) => getAllLivetrackingGroupDevices(state)
 
-function getAllLivetrackingDevices(state) {
+function getAllLivetrackingGroupDevices(state) {
     const groupInfo = state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
     let deviceArr = []
      groupInfo.map((item) => {
          deviceArr = [...deviceArr, ...item.devices]
      })
+     deviceArr.sort(function(a, b){return a.id - b.id})
      return deviceArr
 }
 
 export const getLivetrackingGroupDevicesListInfo = createSelector(
     [getLivetrackingGroupDevicesList],
+    (info) => info
+)
+/*    
+ * Get Devices for Livetracking
+ */
+
+const getLivetrackingDevicesList = (state) => getAllLivetrackingDevices(state)
+
+function getAllLivetrackingDevices(state) {
+    const groupInfo = state.livetracking && state.livetracking.groupDeviceList ? state.livetracking.groupDeviceList : {}
+    return groupInfo
+}
+
+export const getLivetrackingDevicesListInfo = createSelector(
+    [getLivetrackingDevicesList],
     (info) => info
 )
 
