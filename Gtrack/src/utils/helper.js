@@ -28,7 +28,7 @@ export const validateName = (input) => {
 
 export const clearUserData = async () => {
     await removeItem(USER_DATA)
-    await removeItem(FCM_TOKEN)
+    // await removeItem(FCM_TOKEN)
     clearToken();
 };
 

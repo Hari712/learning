@@ -286,7 +286,7 @@ const LiveTracking = ({ navigation }) => {
 							style={{ width: wp(2), height: hp(2) }}
 						/>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name})}>
+					<TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name, selectedDeviceIndex: selectedDeviceIndex})}>
 						<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
 							{` ${deviceInfo.name} `}
 						</Text>
@@ -313,16 +313,17 @@ const LiveTracking = ({ navigation }) => {
 		const endCoordinate = isContainCoordinate
 		? { latitude: endDestination.latitude, longitude: endDestination.longitude }
 		: null;
-		const regionpoint = isContainCoordinate ? {
-			latitude: endDestination.latitude,
-			longitude: endDestination.longitude,
-			// latitudeDelta: LATITUDE_DELTA,
-			// longitudeDelta: LONGITUDE_DELTA,
-		} : null;
+		// const regionpoint = isContainCoordinate ? {
+		// 	latitude: endDestination.latitude,
+		// 	longitude: endDestination.longitude,
+		// 	// latitudeDelta: LATITUDE_DELTA,
+		// 	// longitudeDelta: LONGITUDE_DELTA,
+		// } : null;
+		const isOnline = !isEmpty(liveTrakingDeviceList) && liveTrakingDeviceList[selectedDeviceIndex].status == "online" ? true : false;
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
-				region={regionpoint}
+				// region={regionpoint}
 				initialRegion={region} ref={mapRef} 
 				showsUserLocation={false}>
 
@@ -330,15 +331,16 @@ const LiveTracking = ({ navigation }) => {
 					<Map.Marker 
 						coordinate={startCoordinate} 
 						description={startAddress} >
-						<LiveStartPointIcon />
+						{/* <LiveStartPointIcon /> */}
+						<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} /> 
 					</Map.Marker>}
 
 				{isContainCoordinate && 
 					<Map.Marker 
 						coordinate={endCoordinate} 
 						description={endAddress} >
-						
-						<LiveEndPointIcon/>
+						 <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
+						{/* <LiveEndPointIcon/> */}
 					</Map.Marker>}
 
 				{isPolyLine &&
@@ -414,7 +416,7 @@ const LiveTracking = ({ navigation }) => {
 
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
-							 	<LiveEndPointIcon/> 
+							 	{/* <LiveEndPointIcon/>  */}
 							  <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
 							{/* <Map.default.Callout title={endAddress} /> */}
 						</Map.default.PointAnnotation>}

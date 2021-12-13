@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import BottomSheet from 'reanimated-bottom-sheet';
 import FontSize from '../../component/FontSize';
-import { getAdvanceSettingsInfo, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, dist } from './../Selector';
+import { getAdvanceSettingsInfo, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, dist, getLivetrackingDevicesListInfo } from './../Selector';
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
@@ -35,16 +35,17 @@ const LiveTrackingDetails = ({navigation, route}) => {
 
 	console.log("props",route.params)
 
-	const { selectedDevice, deviceName }  = route.params
+	const { selectedDevice, deviceName, selectedDeviceIndex }  = route.params
 
 	const sheetRef = useRef(null);
 
 	const mapRef = useRef();
 
-	const { isConnected, devicePositions, groupDevices, advSettings, distUnit } = useSelector(state => ({
+	const { isConnected, devicePositions, groupDevices, liveTrakingDeviceList, advSettings, distUnit } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
+		liveTrakingDeviceList: getLivetrackingDevicesListInfo(state),
 		advSettings: getAdvanceSettingsInfo(state),
 		distUnit: dist(state)
 	}));
@@ -220,6 +221,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 		const endCoordinate = isContainCoordinate
 		? { latitude: endDestination.latitude, longitude: endDestination.longitude }
 		: null;
+		const isOnline = !isEmpty(liveTrakingDeviceList) && liveTrakingDeviceList[selectedDeviceIndex].status == "online" ? true : false;
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
@@ -233,7 +235,8 @@ const LiveTrackingDetails = ({navigation, route}) => {
                             setAddress(startAddress)
                         }}
 						coordinate={startCoordinate} >                        
-                            <LiveStartPointIcon />
+                            {/* <LiveStartPointIcon /> */}
+							<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} /> 
 					</Map.Marker>}
 
 				{isContainCoordinate && 
@@ -243,7 +246,8 @@ const LiveTrackingDetails = ({navigation, route}) => {
                             setAddress(endAddress)
                         }}
 						coordinate={endCoordinate} >						
-                            <LiveEndPointIcon />
+                            {/* <LiveEndPointIcon /> */}
+							<LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
 					</Map.Marker>}
 
 				{isPolyLine &&
@@ -263,6 +267,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 		const liveEndPoint = isContainCoordinate ? devicePositionArray[devicePositionArray.length-1] : null;
 		const startAddress = isContainCoordinate ? startingDestination.address : '';
 		const endAddress = isContainCoordinate ? liveEndPoint.address : '';
+		const isOnline = !isEmpty(liveTrakingDeviceList) && liveTrakingDeviceList[selectedDeviceIndex].status == "online" ? true : false;
 		let startCoordinate = [];
 		if (isContainCoordinate) {
 			startCoordinate.push(startingDestination.longitude);
@@ -310,7 +315,8 @@ const LiveTrackingDetails = ({navigation, route}) => {
                                 setAddress(startAddress)
                             }}
                             coordinate={startCoordinate} key={1} title={``}>
-							<LiveStartPointIcon />          
+								<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} /> 
+							{/* <LiveStartPointIcon />  */}
 						</Map.default.PointAnnotation>}
 
 					{isContainCoordinate &&
@@ -320,7 +326,8 @@ const LiveTrackingDetails = ({navigation, route}) => {
                                 setAddress(endAddress)
                             }}
                             coordinate={endCoordinate} key={2} title={``}>
-							<LiveEndPointIcon/>
+								 <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
+							{/* <LiveEndPointIcon/> */}
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>

@@ -101,9 +101,17 @@ const Login = () => {
 	}
 
 	async function onAddDeviceToken(data) {
-		const fcmToken = await getValue(FCM_TOKEN)
+		let fcmToken = await getValue(FCM_TOKEN)
 		if (!isEmpty(fcmToken)) {
 			dispatch(LoginActions.requestAddDeviceToken(data.userDTO.id, fcmToken, onAddDeviceTokenSuccess, onAddDeviceTokenError))
+		}
+		else {
+			fcmToken = await firebase.messaging().getToken();
+            if (fcmToken) {
+                console.log('fcmToken:', fcmToken);
+                await AsyncStorage.setItem(FCM_TOKEN, fcmToken);
+				dispatch(LoginActions.requestAddDeviceToken(data.userDTO.id, fcmToken, onAddDeviceTokenSuccess, onAddDeviceTokenError))
+            }
 		}
 	}
 
