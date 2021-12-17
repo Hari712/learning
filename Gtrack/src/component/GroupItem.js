@@ -291,7 +291,7 @@ const GroupItem = props => {
                     {/* heading */}
                     <View onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
                         <TouchableOpacity style={{flex: 1}} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} >
-                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
+                             <Text style={{  color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
                              {/* {(index !== selectedKey) && item.devices.length > 0 ?
                                 <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center', marginRight: wp(5)}}>
                                     <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>

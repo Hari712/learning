@@ -8,6 +8,7 @@ import NavigationService from '../../navigation/NavigationService'
 import images from '../../constants/images'
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
+import { env } from '../../api/ApiConstants'
 
 
 const CompleteSetup = ({ navigation }) => {
@@ -28,7 +29,12 @@ const CompleteSetup = ({ navigation }) => {
     }, [navigation]);
 
     function onTapLink() {
-        Linking.openURL("https://www.gtrackindia.com/")
+        if(env === 'qa') {
+             Linking.openURL("https://qa-app.gtrackindia.com/")
+        }
+        else if(env === 'prod') {
+                // paste Link
+        }
     }
 
 return (

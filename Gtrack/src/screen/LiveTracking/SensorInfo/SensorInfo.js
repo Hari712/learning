@@ -104,7 +104,7 @@ const SensorInfo = ({ navigation }) => {
                         {/* heading */}
                         <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
-                            {(index !== selectedKey) && item.devices.length > 0 ?
+                            {(index !== selectedKey) ?
                                 <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
                                     <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
                                 </View> : null 

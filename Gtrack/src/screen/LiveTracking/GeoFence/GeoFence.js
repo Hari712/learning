@@ -75,6 +75,9 @@ const GeoFence = ({ navigation }) => {
              setGeofenceData(filteredList)
             console.log('geofenceList', geofenceList, filteredList, loginData.id)
         }
+        else {
+            setGeofenceData([])
+        }
     }, [geofenceList])
     // useEffect(() => {  
     //     loadGeofenceList()

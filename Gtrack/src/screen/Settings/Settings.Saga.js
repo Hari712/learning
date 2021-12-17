@@ -39,7 +39,7 @@ function* requestChangePasscode(action) {
 function* requestGetSettingsNotification(action) {
     const { userId, onSuccess, onError} = action
     try {
-        const response = yield call(API.get, ApiConstants.GET_ALARMS_LIST(userId))
+        const response = yield call(API.get, ApiConstants.GET_ALARMS_LIST(userId, ''))
         const result = response.result ? response.result : []
         const userNotificator = []
         const check = !isEmpty(result) && result.map(i => i.users.map(user => user.id === userId && userNotificator.push(user.notification)))
