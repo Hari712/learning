@@ -38,9 +38,9 @@ const Settings = ({ navigation }) => {
 
   const SettingsItems = ({ item }) => {
     // const [listData, setListData] = useState(SETTINGS_MENU)    
-    if(item.title === 'Notifications') {
-      if(isRegular) return; 
-    }
+    // if(item.title === 'Notifications') {
+    //   if(isRegular) return; 
+    // }
 
     let IconConstant;
 
