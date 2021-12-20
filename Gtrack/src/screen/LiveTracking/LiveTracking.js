@@ -256,7 +256,7 @@ const LiveTracking = ({ navigation }) => {
 
 	function renderDeviceSelectionView() {
 		const deviceInfo = selectedDevice;
-
+		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
 			<View
 				style={{
@@ -273,27 +273,27 @@ const LiveTracking = ({ navigation }) => {
 			>
 				<View
 					style={{
-						justifyContent: 'space-between',
+						justifyContent: VisibleArrow ? 'space-between' : 'center',
 						flexDirection: 'row',
 						alignItems: 'center',
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressPrevious()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
 							style={{ width: wp(2), height: hp(2) }}
 						/>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name, selectedDeviceIndex: selectedDeviceIndex})}>
+					</TouchableOpacity> }
+					<TouchableOpacity style={{alignItems: 'center'}} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name, selectedDeviceIndex: selectedDeviceIndex})}>
 						<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
 							{` ${deviceInfo.name} `}
 						</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
-					</TouchableOpacity>
+					</TouchableOpacity> }
 				</View>
 			</View>
 		);

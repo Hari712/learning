@@ -212,6 +212,7 @@ export const TabStackNavigator = ({ }) => {
                         </View>
                     )
                 },
+                unmountOnBlur: true
             })}
             tabBarOptions={{
                 keyboardHidesTabBar: true,

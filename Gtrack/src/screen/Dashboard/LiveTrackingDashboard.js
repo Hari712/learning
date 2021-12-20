@@ -271,7 +271,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 
 	function renderDeviceSelectionView() {
 		const deviceInfo = selectedDevice;
-
+		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
 			<View
 				style={{
@@ -288,25 +288,25 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 			>
 				<View
 					style={{
-						justifyContent: 'space-between',
+						justifyContent: VisibleArrow ? 'space-between' : 'center',
 						flexDirection: 'row',
 						alignItems: 'center',
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressPrevious()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
 							style={{ width: wp(1.5), height: hp(1.5) }}
 						/>
-					</TouchableOpacity>
+					</TouchableOpacity>}
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
 						{` ${deviceInfo.name} `}
 					</Text>
-					<TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
-					</TouchableOpacity>
+					</TouchableOpacity> }
 				</View>
 			</View>
 		);
