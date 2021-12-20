@@ -257,6 +257,6 @@
     "Trip History": "Trip History",
     "Alarm_Type":"Alarm Type",
     "Country_Code": "Country Code",
-    "Invalid_Device_Id": "Please enter Valid device id"
-
+    "Invalid_Device_Id": "Please enter Valid device id",
+    "SMS_Notification": "Sms Notification"
 }

@@ -30,6 +30,7 @@ const AlarmType = ({navigation,route}) => {
   const [notification, setNotification] = useState(false)
   const [emailNotification, setEmailNotification] = useState(false)
   const [webNotification, setWebNotification] = useState(false)
+  const [smsNotification, setSmsNotification] = useState(false)
   const [selectUser, setSelectedUser] = useState([])
 
   const { loginInfo, subUserData, isConnected, isAdmin, distUnit, hasPanic, getPanicDetail } = useSelector(state => ({
@@ -67,6 +68,7 @@ const AlarmType = ({navigation,route}) => {
           setWebNotification(String(notificator).includes("web"))
           setNotification(String(notificator).includes("firebase"))
           setEmailNotification(String(notificator).includes("mail"))
+          setSmsNotification(String(notificator).includes("sms"))
         }
 
         var tempUser = [] ;
@@ -155,6 +157,7 @@ const AlarmType = ({navigation,route}) => {
       notification && notificator.push('firebase')
       emailNotification && notificator.push('mail')
       webNotification && notificator.push('web')
+      smsNotification && notificator.push('sms')
       
       var requestBody, isUpdate;
       var notiType = (notificationType == 'deviceOffline') ? 'deviceUnknown' :  notificationType
@@ -364,6 +367,11 @@ return (
       <TouchableOpacity onPress={() => setWebNotification(!webNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
           <Image style={{alignSelf:'flex-start'}} source={webNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
           <Text style={styles.notificationStyle}> {"Web Notification"}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => setSmsNotification(!smsNotification)} style={{flexDirection:'row',alignItems:'center',paddingHorizontal:hp(4)}}>
+          <Image style={{alignSelf:'flex-start'}} source={smsNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+          <Text style={styles.notificationStyle}> {"Sms Notification"}</Text>
       </TouchableOpacity>
 
       <View style={styles.buttonContainer}>

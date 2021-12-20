@@ -19,6 +19,7 @@ const AlarmDetail = ({navigation,route}) => {
   }))
   const [webNotification, setWebNotification] = useState(false)
   const [emailNotification, setEmailNotification] = useState(false)
+  const [smsNotification, setSmsNotification] = useState(false)
   const [notification, setNotification] = useState(false)
  
 
@@ -30,6 +31,7 @@ const AlarmDetail = ({navigation,route}) => {
       setWebNotification(String(notificator).includes("web"))
       setNotification(String(notificator).includes("firebase"))
       setEmailNotification(String(notificator).includes("mail"))
+      setSmsNotification(String(notificator).includes("sms"))
     }
   },[data.users])
 
@@ -110,9 +112,14 @@ return (
                 </Text>
             </View>  */}
 
-            <View style={{flexDirection:'column',flex:1.5}}>
+            <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Web Notification")}</Text>
                 <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{webNotification ? "On" : "Off"}</Text>
+            </View>
+
+            <View style={{flexDirection:'column',flex:1.5}}>
+                <Text style={styles.textStyle}>{translate("SMS_Notification")}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{smsNotification ? "On" : "Off"}</Text>
             </View>
         </View>
 

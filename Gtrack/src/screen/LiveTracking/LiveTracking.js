@@ -156,6 +156,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 
 	useEffect(() => {
+		console.log('devicePositionArray', devicePositionArray)
 		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
 			if (isAndroid) {
 				const arrCoords = devicePositionArray.map(item => {
