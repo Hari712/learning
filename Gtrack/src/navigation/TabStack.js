@@ -186,7 +186,7 @@ export const TabStackNavigator = ({ }) => {
                             color=ColorConstant.GREY
                         }
                     }
-                    else if (route.name === 'Device & Asset') {
+                    else if (route.name === 'DeviceAsset') {
                         if (focused) {
                             IconComponent=DeviceAndAssetsIconClicked
                             color=ColorConstant.ORANGE
@@ -226,7 +226,7 @@ export const TabStackNavigator = ({ }) => {
             <Tab.Screen name="Live Tracking" component={LiveTrackingStackNavigator} />
             { isOwner ? <Tab.Screen name="Users" component={UsersStackNavigator} /> : null }
             <Tab.Screen name="DashBoard" component={DashBoardStackNavigator} />
-            { !isRegular ? <Tab.Screen name="Device & Asset" component={DeviceAssetStackNavigator} /> : null }
+            { !isRegular ? <Tab.Screen name="DeviceAsset" component={DeviceAssetStackNavigator} /> : null }
             <Tab.Screen name="Settings" component={SettingsStackNavigator} />
 
         </Tab.Navigator>
