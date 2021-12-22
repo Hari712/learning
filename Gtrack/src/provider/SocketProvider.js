@@ -37,7 +37,7 @@ const SocketProvider = (props) => {
 
     const [arrDeveicePositionList, setArrDevicePositionList, arrDevicePositionListRef] = useStateRef([])
 
-    const [traccarSessionInfoDetail, setTraccarSessionDetailInfo, traccarSessionInfoRef] = useStateRef(traccarSessionInfo)
+    const [traccarSessionInfoDetail, setTraccarSessionDetailInfo, traccarSessionInfoRef] = useStateRef()
 
     const currentAppState = useAppState()
 
@@ -50,7 +50,7 @@ const SocketProvider = (props) => {
     },[traccarSessionInfo])
 
     useEffect(() => {
-        if (isConnected && isLoggedIn && socket == null && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
+        if (isConnected && isLoggedIn && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
             connectWitWebsocket()
         }
     },[traccarSessionInfoDetail])
@@ -85,13 +85,6 @@ const SocketProvider = (props) => {
         }
         socket.onerror = (event) => {
             console.log('socket error',event);
-            if(isConnected) {
-                if(!isEmpty(loginInfo)) {
-                    dispatch(
-                        LoginActions.requestTraccarSession(loginInfo.id, onTraccarSessionSuccess, onTraccarSessionError)
-                    );
-                }
-            }
         }
         socket.onmessage = (event) => {
             const data = JSON.parse(event.data);    
@@ -122,6 +115,13 @@ const SocketProvider = (props) => {
         socket.onclose = function (event) {
             if (!event['reason']) {
                 console.log('socket onclose',event);
+            }
+            if(isConnected) {
+                if(!isEmpty(loginInfo)) {
+                    dispatch(
+                        LoginActions.requestTraccarSession(loginInfo.id, onTraccarSessionSuccess, onTraccarSessionError)
+                    );
+                }
             }
         };
     }
