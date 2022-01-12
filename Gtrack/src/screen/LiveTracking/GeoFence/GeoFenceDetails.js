@@ -46,6 +46,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const [selectUser, setSelectedUser] = useState([])
     const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
     const [notification, setNotification] = useState(false)
+    const [smsNotification, setSmsNotification] = useState(false)
     const [emailNotification, setEmailNotification] = useState(false)
     const [webNotification, setWebNotification] = useState(false)
 
@@ -65,7 +66,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
             setNotification(editingData.pushNotificator)
             setEmailNotification(editingData.mailNotificator)
-            setWebNotification(editingData.webNotificator)            
+            setWebNotification(editingData.webNotificator)  
+            setSmsNotification(editingData.smsNotificator)          
             
             if(editingData.selectedUser){
                 setSelectedUser(editingData.selectedUser)
@@ -156,6 +158,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')
         webNotification && notificator.push('web')
+        smsNotification && notificator.push('sms')
+
         
         console.log("user",devices,deviId)
         const requestBody = {
@@ -188,6 +192,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')
         webNotification && notificator.push('web')
+        smsNotification && notificator.push('sms')
 
         let arrSelectedId = [];
         selectUser ? 
@@ -377,6 +382,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                             <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                             <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => setSmsNotification(!smsNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                            <Image style={{alignSelf:'flex-start'}} source={smsNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                            <Text style={styles.notificationStyle}> {"Sms Notification"}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => setEmailNotification(!emailNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>

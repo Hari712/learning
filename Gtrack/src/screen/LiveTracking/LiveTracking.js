@@ -22,6 +22,7 @@ import KeepAwake from 'react-native-keep-awake';
 import Dialog from '../../component/Dialog'
 import { isNewNotification } from '../../utils/socketHelper';
 import { sendEvent } from '../../provider/SocketProvider';
+import url from 'socket.io-client/lib/url';
 
 const { width, height } = Dimensions.get('window');
 
@@ -385,6 +386,8 @@ const LiveTracking = ({ navigation }) => {
 					><View/></Map.default.UserLocation>
 					{isContainCoordinate ?
 						<Map.default.Camera
+							animationMode='flyTo'
+							animationDuration={10000}
 							zoomLevel={17}
 							bounds={{
 								ne: endCoordinate,

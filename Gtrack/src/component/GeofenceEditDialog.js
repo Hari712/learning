@@ -32,6 +32,7 @@ const GeofenceEditDialog = (props) => {
     const [webNotificator, setWebNotificator] = useState(false)
     const [mailNotificator, setMailNotificator] = useState(false)
     const [pushNotificator, setPushNotificator] = useState(false)
+    const [smsNotificator, setSmsNotification] = useState(false)
     const [selectedUser, setSelectedUser] = useState()
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const GeofenceEditDialog = (props) => {
                 setWebNotificator(String(notificator).includes("web"))
                 setPushNotificator(String(notificator).includes("firebase"))
                 setMailNotificator(String(notificator).includes("mail"))
+                setSmsNotification(String(notificator).includes("sms"))
             } else {
                 setWebNotificator(false)
                 setPushNotificator(false)
@@ -165,6 +167,12 @@ return(
                                 <Image style={{alignSelf:'flex-start'}} source={pushNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
                             </View>
+
+                            <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                                <Image  source={smsNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> Sms Notification</Text>
+                            </View>
+
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image style={{alignSelf:'flex-start'}} source={mailNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
@@ -209,6 +217,7 @@ return(
                         mailNotificator:mailNotificator,
                         webNotificator: webNotificator,
                         pushNotificator: pushNotificator,
+                        smsNotificator: smsNotificator,
                         selectedUser: selectedUser,
                         status: activeGeofence.isActive
                     }})
