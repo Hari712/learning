@@ -229,6 +229,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')
         webNotification && notificator.push('web')
+        smsNotification && notificator.push('sms')
 
         var userdt = []
         selectUser ? 
