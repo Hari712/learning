@@ -223,9 +223,8 @@ export const removeNotificationEventResponse = (id) => ({
     type: types.NOTIFICATION_EVENT_REMOVE,
     id
 })
-export const setReadNotificationEvents = (id) => ({
-    type: types.NOTIFICATION_EVENT_READ,
-    id
+export const setReadNotificationEvents = () => ({
+    type: types.NOTIFICATION_EVENT_READ
 })
 
 export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
@@ -235,3 +234,25 @@ export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
     onError
 })
 
+export const requestGetNotificationList = (userId, requestBody, isMerge, onSuccess, onError) => ({
+    type: types.GET_NOTIFICATION_LIST_REQUEST,
+    userId,
+    requestBody,
+    isMerge,
+    onSuccess,
+    onError
+})
+
+export const setNotificationListResponse = (data, isMerge) => ({
+    type: types.SET_NOTIFICATION_LIST_RESPONSE,
+    data,
+    isMerge
+})
+
+export const updateNotificationEvents = (userId, requestBody, onSuccess, onError) => ({
+    type: types.UPDATE_NOTIFICATION_READ_EVENT,
+    userId,
+    requestBody,
+    onSuccess,
+    onError
+})

@@ -108,8 +108,24 @@ const SocketProvider = (props) => {
 
             if (data.events && Array.isArray(data.events)) {
                 setArrDevicePositionList(data)
+                const requestBody = {
+                    "pageNumber" : 0,
+                    "pageSize" : 10,
+                    "useMaxSearchAsLimit" : false,
+                    "searchColumnsList" : [],
+                    "sortHeader" : "id",
+                    "sortDirection" : "DESC"
+                  }
+                dispatch(LiveTrackingActions.requestGetNotificationList(loginInfo.id, requestBody, false, onSuccess, onError))
                 dispatch(LiveTrackingActions.setNotificationEventsResponse(data.events))
                 setNotificationEvents(data.events)
+                function onSuccess(data) {    
+                    console.log("Success",data) 
+                }
+                
+                function onError(error) {
+                    console.log("Error",error)  
+                }
             }
         }
         socket.onclose = function (event) {

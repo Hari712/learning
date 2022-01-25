@@ -86,7 +86,9 @@ const ApiConstants = {
     SEARCH_ALARMS:(userId, keyword) => `${USER}${userId}/trace/alerts?typeOrName=${keyword}`,
     ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
     GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`,
-    GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`
+    GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`,
+    GET_NOTIFICATION_LIST: (userId) => `${USER}${userId}/notification/list?type=FIREBASE`,
+    UPDATE_NOTIFICATION_READ: (userId) => `${USER}${userId}/notification/markAsRead`
 }
 
 export default ApiConstants

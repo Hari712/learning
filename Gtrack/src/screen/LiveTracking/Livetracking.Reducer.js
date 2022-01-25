@@ -18,6 +18,8 @@ const initialState = {
     assetInfo: [],
     notificationEvents: [],
     readEvents: [],
+    notificationTotalPages: 0,
+    notificationTotalCounts: 0,                                                                                                                                                                                                                          
     isNewEvent: false
 }
 
@@ -171,13 +173,27 @@ export const livetrackingReducer = createReducer(state = initialState, {
             alarmsList: action.data
         }
     },
-    [types.NOTIFICATION_EVENTS_RESPONSE](state, action) {
-        // const filter = state.notificationEvents.filter(i => ((i.deviceId !== action.data[0].deviceId) && (i.type !== action.data[0].type)))
-        let array = [ ...action.data, ...state.notificationEvents ]
-        // console.log(array, filter, 'notificationEvents 123')
+    [types.GET_NOTIFICATION_LIST_REQUEST](state, action) {
+        const { isMerge } = action
         return {
             ...state,
-            notificationEvents: array,
+            notificationEvents: isMerge ? state.notificationEvents : []
+        }
+    },
+    [types.SET_NOTIFICATION_LIST_RESPONSE](state, action) {
+        const { data, totalPages, totalCount } = action.data
+        const isMerge = action.isMerge
+        const notificationData = isMerge ? [...state.notificationEvents, ...data ] : data
+        return {
+            ...state,
+            notificationEvents:  notificationData,
+            notificationTotalPages: totalPages,
+            notificationTotalCounts: totalCount,
+        }
+    },
+    [types.NOTIFICATION_EVENTS_RESPONSE](state, action) {
+        return {
+            ...state,
             isNewEvent: true
         }
     },
@@ -193,15 +209,10 @@ export const livetrackingReducer = createReducer(state = initialState, {
             readEvents: read
         }
     },
-    [types.NOTIFICATION_EVENT_READ](state, action) {
-        const { readEvents } = state
-        let array = state.notificationEvents.filter((item) => item.id != action.id && !readEvents.includes(item.id))
-        const read = !isEmpty(readEvents) ? [...readEvents, action.id] : [action.id]
-        console.log('array notification Read', array)
+    [types.NOTIFICATION_EVENT_READ](state) {
         return {
             ...state,
-            isNewEvent: array.length > 0 ? true : false,
-            readEvents: read
+            isNewEvent: false
         }
     }
 })
