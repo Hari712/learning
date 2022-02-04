@@ -174,19 +174,16 @@ export const livetrackingReducer = createReducer(state = initialState, {
         }
     },
     [types.GET_NOTIFICATION_LIST_REQUEST](state, action) {
-        const { isMerge } = action
         return {
             ...state,
-            notificationEvents: isMerge ? state.notificationEvents : []
+            notificationEvents: []
         }
     },
     [types.SET_NOTIFICATION_LIST_RESPONSE](state, action) {
         const { data, totalPages, totalCount } = action.data
-        const isMerge = action.isMerge
-        const notificationData = isMerge ? [...state.notificationEvents, ...data ] : data
         return {
             ...state,
-            notificationEvents:  notificationData,
+            notificationEvents:  data,
             notificationTotalPages: totalPages,
             notificationTotalCounts: totalCount,
         }

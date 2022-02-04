@@ -238,13 +238,13 @@ function* requestSendPanicData(action) {
     }
 }
 function* requestNotificationListData(action) {
-    const { userId, requestBody, isMerge, onSuccess, onError } = action
+    const { userId, requestBody, onSuccess, onError } = action
     try {
         const url = ApiConstants.GET_NOTIFICATION_LIST(userId)
         const response = yield call(API.post, url, requestBody)
         const result = response.result ? response.result : []
         console.log('requestNotificationListData response', response.result, result)
-        yield put(LivetrackingActions.setNotificationListResponse(result, isMerge))
+        yield put(LivetrackingActions.setNotificationListResponse(result))
         onSuccess(response)
     } catch (error) {
         onError(error)

@@ -234,19 +234,25 @@ export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
     onError
 })
 
-export const requestGetNotificationList = (userId, requestBody, isMerge, onSuccess, onError) => ({
+export const requestGetNotificationList = (userId, requestBody,  onSuccess, onError) => ({
     type: types.GET_NOTIFICATION_LIST_REQUEST,
     userId,
     requestBody,
-    isMerge,
     onSuccess,
     onError
 })
 
-export const setNotificationListResponse = (data, isMerge) => ({
+export const requestGetLoadMoreNotificationList = (userId, requestBody,  onSuccess, onError) => ({
+    type: types.GET_LOAD_MORE_NOTIFICATION_LIST_REQUEST,
+    userId,
+    requestBody,
+    onSuccess,
+    onError
+})
+
+export const setNotificationListResponse = (data) => ({
     type: types.SET_NOTIFICATION_LIST_RESPONSE,
     data,
-    isMerge
 })
 
 export const updateNotificationEvents = (userId, requestBody, onSuccess, onError) => ({

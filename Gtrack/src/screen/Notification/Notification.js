@@ -75,13 +75,30 @@ const Notification = ({ navigation }) => {
     }, [isNewEvent])
 
     useEffect(() => {
-        if(isRefreshing || isLoadMoreData) {
+        if(isRefreshing) {
             requestNotificationList()
         }
-    }, [isLoadMoreData, isRefreshing])
+    }, [isRefreshing])
+
+    // useEffect(() => {
+    //     if(isLoadMoreData) {
+    //         requestNotificationList()
+    //     }
+    // }, [isLoadMoreData])
 
     function requestNotificationList() {
-        (!isRefreshing &&  !isLoadMoreData) && AppManager.showLoader() 
+        (!isRefreshing) && AppManager.showLoader() 
+        const requestBody = {
+            "pageNumber" : pageIndex,
+            "pageSize" : 10,
+            "useMaxSearchAsLimit" : false,
+            "searchColumnsList" : [],
+            "sortHeader" : "id",
+            "sortDirection" : "DESC"
+          }
+        dispatch(LiveTrackingAction.requestGetNotificationList(loginData.id, requestBody,  onSuccess, onError))
+    }
+    function loadMoreNotificationList() {
         const requestBody = {
             "pageNumber" : pageIndex,
             "pageSize" : 10,
@@ -149,9 +166,9 @@ const Notification = ({ navigation }) => {
                         </View>
 
                         <View style={styles.notificationRightView}>
-                            <Text style={styles.titleStyle, {color: !isEmpty(readEvents) && item.isRead ? ColorConstant.GREY : ColorConstant.BLACK}}>{titleStr}</Text>
+                            <Text style={styles.titleStyle, {color: item.isRead ? ColorConstant.GREY : ColorConstant.BLACK}}>{titleStr}</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={!isEmpty(readEvents) && item.isRead ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
+                                <Text style={ item.isRead ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
                                 <Tooltip popover={                                    
                                             <View>
                                                 {deviceDetail.map((dextra,key)=>{
