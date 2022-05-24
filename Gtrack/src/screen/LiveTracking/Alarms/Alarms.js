@@ -73,8 +73,8 @@ const Alarms = ({navigation}) => {
   },[navigation]);
 
   function handleRemove(item) {
-    setAlarmName(item.notification.attributes.name)
-    setNotificationId(item.notification.id)
+    setAlarmName(item.attributes.name)
+    setNotificationId(item.notificationKey)
     setDeleteDialogVisible(true)
   }
 
@@ -122,8 +122,8 @@ function onError(error) {
 
   const renderItem = ({item,index}) => {
 
-    const {attributes} = item.notification
-    const editButVisible = String(item.notification.type).includes('geofenceEnter') || String(item.notification.type).includes('geofenceExit')
+    const {attributes} = item
+    const editButVisible = String(item.notificationType).includes('geofenceEnter') || String(item.notificationType).includes('geofenceExit')
     
     return(  
     <View style={styles.cardContainer} key={index}>
@@ -132,7 +132,7 @@ function onError(error) {
           <View style={styles.blueBox}>
               <View style={{flex:1}}>
                 <Text style={styles.blueBoxTitle}>{attributes && attributes.name ? attributes.name : null}</Text>
-                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{showNotificationName(item.notification.type)}</Text>
+                <Text style={[styles.blueBoxTitle,{fontFamily:'Nunito-Regular'}]}>{showNotificationName(item.notificationType)}</Text>
               </View>
 
               { !isRegular ? !editButVisible  &&
@@ -182,6 +182,7 @@ function onError(error) {
                     style={styles.searchText}
                     onChangeText={text => searchHandle(text) }                    
                     value={searchKeyword}
+                    placeholderTextColor={ColorConstant.GREY}
                 />
             </View>
     )
@@ -322,8 +323,9 @@ search: {
       width: 0,
       height: 0
   },
+  justifyContent  : 'center',
   shadowRadius: 3,
-  shadowOpacity: 1,
+  shadowOpacity: 0.2,
   backgroundColor:ColorConstant.WHITE
 },
 });

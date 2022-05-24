@@ -137,6 +137,11 @@ export const setLiveTrackingPositionData = (data) => ({
     data
 })
 
+export const setDeviceStatusData = (data) => ({
+    type: types.SET_DEVICE_STATUS_INFO,
+    data
+})
+
 export const requestGetGroupDevices = (userId, onSuccess, onError) => ({
     type: types.GET_GROUP_DEVICES_REQUEST,
     userId,
@@ -218,6 +223,9 @@ export const removeNotificationEventResponse = (id) => ({
     type: types.NOTIFICATION_EVENT_REMOVE,
     id
 })
+export const setReadNotificationEvents = () => ({
+    type: types.NOTIFICATION_EVENT_READ
+})
 
 export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
     type: types.SEND_PANIC_ALARM_DATA_REQUEST,
@@ -226,3 +234,31 @@ export const requestSendPanicData = (deviceId, onSuccess, onError) => ({
     onError
 })
 
+export const requestGetNotificationList = (userId, requestBody,  onSuccess, onError) => ({
+    type: types.GET_NOTIFICATION_LIST_REQUEST,
+    userId,
+    requestBody,
+    onSuccess,
+    onError
+})
+
+export const requestGetLoadMoreNotificationList = (userId, requestBody,  onSuccess, onError) => ({
+    type: types.GET_LOAD_MORE_NOTIFICATION_LIST_REQUEST,
+    userId,
+    requestBody,
+    onSuccess,
+    onError
+})
+
+export const setNotificationListResponse = (data) => ({
+    type: types.SET_NOTIFICATION_LIST_RESPONSE,
+    data,
+})
+
+export const updateNotificationEvents = (userId, requestBody, onSuccess, onError) => ({
+    type: types.UPDATE_NOTIFICATION_READ_EVENT,
+    userId,
+    requestBody,
+    onSuccess,
+    onError
+})

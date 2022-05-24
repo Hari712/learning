@@ -46,6 +46,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const [selectUser, setSelectedUser] = useState([])
     const [selectedCheckbox, setSelectedCheckbox] = useState(0) 
     const [notification, setNotification] = useState(false)
+    const [smsNotification, setSmsNotification] = useState(false)
     const [emailNotification, setEmailNotification] = useState(false)
     const [webNotification, setWebNotification] = useState(false)
 
@@ -65,7 +66,8 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
             setNotification(editingData.pushNotificator)
             setEmailNotification(editingData.mailNotificator)
-            setWebNotification(editingData.webNotificator)            
+            setWebNotification(editingData.webNotificator)  
+            setSmsNotification(editingData.smsNotificator)          
             
             if(editingData.selectedUser){
                 setSelectedUser(editingData.selectedUser)
@@ -151,11 +153,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
-
+        arrSelectedId.push(loginInfo.id)
         var notificator = []
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')
         webNotification && notificator.push('web')
+        smsNotification && notificator.push('sms')
+
         
         console.log("user",devices,deviId)
         const requestBody = {
@@ -171,9 +175,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
         }
         if (isConnected) {
-            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
-            AppManager.hideLoader()
-            AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
+            dispatch(LivetrackingActions.requestLinkGeofenceToUpdatedDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError))             
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -190,6 +192,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')
         webNotification && notificator.push('web')
+        smsNotification && notificator.push('sms')
 
         let arrSelectedId = [];
         selectUser ? 
@@ -200,7 +203,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
             })  }) 
         :null;
-
+        arrSelectedId.push(loginInfo.id)
         const deviId = !isEmpty(devices) ? devices.map((item)=>item.id) : []
     
         const requestBody = {
@@ -216,8 +219,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
             }
         }
         dispatch(LivetrackingActions.requestLinkGeofenceToDevices(loginInfo.id, data.result.id, requestBody, onLinkSuccess, onError)) 
-        AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
+       
         
     }
 
@@ -227,6 +229,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
         notification && notificator.push('firebase')
         emailNotification && notificator.push('mail')
         webNotification && notificator.push('web')
+        smsNotification && notificator.push('sms')
 
         var userdt = []
         selectUser ? 
@@ -244,10 +247,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
         response.userDTOS = userdt
         if(editingData){
             dispatch(LivetrackingActions.setUpdatedGeofenceResponse(response))
+            AppManager.showSimpleMessage('success', { message: "Geofence Updated successfully", description: '', floating: true })
         }else{
             dispatch(LivetrackingActions.setAddGeofenceResponse(response)) 
+            AppManager.showSimpleMessage('success', { message: "Geofence created successfully", description: '', floating: true })
         }
         AppManager.hideLoader()
+       
         navigation.navigate(SCREEN_CONSTANTS.GEOFENCE)
     }
 
@@ -262,6 +268,7 @@ const GeoFenceDetails = ({ navigation, route }) => {
 
                 {recents.map((colorItem)=>{
                     let selection = (color == colorItem)
+                    console.log('color', tinycolor(color).toHexString(), colorItem)
                     return(
                         <TouchableOpacity onPress={() =>setColor(tinycolor(colorItem).toHexString())}
                         style={{backgroundColor:ColorConstant.WHITE, borderRadius:3,marginRight:hp(2), 
@@ -376,6 +383,11 @@ const GeoFenceDetails = ({ navigation, route }) => {
                         <TouchableOpacity onPress={() => setNotification(!notification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                             <Image style={{alignSelf:'flex-start'}} source={notification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                             <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => setSmsNotification(!smsNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                            <Image style={{alignSelf:'flex-start'}} source={smsNotification? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                            <Text style={styles.notificationStyle}> {"Sms Notification"}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => setEmailNotification(!emailNotification)} style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>

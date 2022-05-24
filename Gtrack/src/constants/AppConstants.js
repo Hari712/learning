@@ -17,7 +17,7 @@ export const FCM_TOKEN = 'fcmToken'
 export const TOKEN_EXPIRED = 'Token Expired'
 export const DEVICE_ID_VALIDATION_REGX = /^[a-zA-Z0-9]*$/
 
-export const TOKEN_ERRORS = ['JWT claims string is empty', 'JWT claims string is empty', 'Invalid grant', 'TOKEN_INVALID']
+export const TOKEN_ERRORS = ['JWT claims string is empty', 'JWT claims string is empty', 'Invalid grant', 'TOKEN_INVALID', 'Token Invalid']
 
 export const SCREEN_CONSTANTS = {
     SPLASH: 'Splash',

@@ -3,6 +3,7 @@ import ApiConstants from '../../api/ApiConstants'
 import API from '../../api'
 import { put, takeLatest, call } from 'redux-saga/effects'
 import * as SettingsAction from './Settings.Action'
+import { isEmpty } from 'lodash'
 
 function* submitFeedback(action) {
     const { data, userId, onSuccess, onError } = action  
@@ -38,9 +39,12 @@ function* requestChangePasscode(action) {
 function* requestGetSettingsNotification(action) {
     const { userId, onSuccess, onError} = action
     try {
-        const response = yield call(API.get, ApiConstants.GET_SETTINGS_NOTIFICATION(userId))
+        const response = yield call(API.get, ApiConstants.GET_ALARMS_LIST(userId, ''))
         const result = response.result ? response.result : []
-        yield put(SettingsAction.setSettingsNotification(result))
+        const userNotificator = []
+        const check = !isEmpty(result) && result.map(i => i.users.map(user => user.id === userId && userNotificator.push(user.notification)))
+        console.log('setting notification', result, userId, userNotificator)
+        yield put(SettingsAction.setSettingsNotification(userNotificator))
         onSuccess(response)
     } catch (error) {
         onError(error)

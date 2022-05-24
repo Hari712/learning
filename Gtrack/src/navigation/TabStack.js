@@ -76,7 +76,6 @@ const LiveTrackingStackNavigator = ({navigation, route}) => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_GROUP} component={AssignGroup} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.BARCODE_SCANNER} component={BarcodeScanner}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.COMPLETE_SETUP} component={CompleteSetup}/>
-        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DEVICE_ASSET} component={DeviceAsset} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DETAILS} component={Details}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.EDIT_DEVICE_ASSET} component={EditDeviceAsset}/>
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_DEVICE_ASSET} component={CreateDeviceAsset}/>
@@ -122,7 +121,7 @@ const DashBoardStackNavigator = ({navigation, route}) => {
 const DeviceAssetStackNavigator = () => {
     return(
         <DeviceAssetStack.Navigator initialRouteName="DeviceAsset" headerMode="screen" screenOptions={ScreenOptions} >
-            <DeviceAssetStack.Screen name="Device & Asset" component={DeviceAsset} />
+            <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.DEVICE_ASSET} component={DeviceAsset} />
             <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.DETAILS} component={Details}/>
             <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.EDIT_DEVICE_ASSET} component={EditDeviceAsset}/>
             <DeviceAssetStack.Screen name={SCREEN_CONSTANTS.CREATE_DEVICE_ASSET} component={CreateDeviceAsset}/>
@@ -187,7 +186,7 @@ export const TabStackNavigator = ({ }) => {
                             color=ColorConstant.GREY
                         }
                     }
-                    else if (route.name === 'Device & Asset') {
+                    else if (route.name === 'DeviceAsset') {
                         if (focused) {
                             IconComponent=DeviceAndAssetsIconClicked
                             color=ColorConstant.ORANGE
@@ -213,6 +212,7 @@ export const TabStackNavigator = ({ }) => {
                         </View>
                     )
                 },
+                unmountOnBlur: true
             })}
             tabBarOptions={{
                 keyboardHidesTabBar: true,
@@ -226,7 +226,7 @@ export const TabStackNavigator = ({ }) => {
             <Tab.Screen name="Live Tracking" component={LiveTrackingStackNavigator} />
             { isOwner ? <Tab.Screen name="Users" component={UsersStackNavigator} /> : null }
             <Tab.Screen name="DashBoard" component={DashBoardStackNavigator} />
-            { !isRegular ? <Tab.Screen name="Device & Asset" component={DeviceAssetStackNavigator} /> : null }
+            { !isRegular ? <Tab.Screen name="DeviceAsset" component={DeviceAssetStackNavigator} /> : null }
             <Tab.Screen name="Settings" component={SettingsStackNavigator} />
 
         </Tab.Navigator>

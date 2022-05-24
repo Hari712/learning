@@ -14,6 +14,7 @@ import { AppConstants, SCREEN_CONSTANTS, PHONE_REGEX, NUMBER_REGEX } from '../..
 import { BackIcon, DownArrowIcon } from '../../../component/SvgComponent';
 import isEmpty from 'lodash/isEmpty'
 import { getTimeUUID, validateEmailorPhoneNumber, validateName } from '../../../utils/helper';
+import { isRoleOwner } from '../../Selector';
 import { getFormattedPhoneNumber } from '../../../utils/helper'
 import * as AppLogAction from '../../../applog/AppLog.Action'
 import moment from 'moment'
@@ -23,8 +24,9 @@ import NavigationService from '../../../navigation/NavigationService';
 const EditProfile = ({ navigation, route, item }) => {
     const dispatch = useDispatch()
 
-    const { isConnected } = useSelector(state => ({
-        isConnected: state.network.isConnected
+    const { isConnected, isOwner } = useSelector(state => ({
+        isConnected: state.network.isConnected,
+        isOwner: isRoleOwner(state),
     }))
 
     const { loginData, userType } = route.params;
@@ -205,7 +207,8 @@ const EditProfile = ({ navigation, route, item }) => {
 
     function editProfile() {
         if (isConnected) {
-            let userAdd = loginData && loginData.userAddressDTO[0]
+            let userAdd = loginData && loginData.userAddressDTO
+            console.log('loginData', loginData)
             let message = ''
             const phone = getPhone(phoneNumber)
             if (!validateName(firstName)) {
@@ -232,7 +235,8 @@ const EditProfile = ({ navigation, route, item }) => {
                     "phone": phone,
                     "phonePrefix": phonePrefix,
                     "roles": loginData.role,
-                    "userAddressDTO": [userAdd]
+                    "groups": loginData.group,
+                    "userAddressDTO": isOwner ? userAdd : []
                 }
                 console.log("Data", requestBody);
                 // let msgstr = "Logs: Request Body =" + JSON.stringify(requestBody)

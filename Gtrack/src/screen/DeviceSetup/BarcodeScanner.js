@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
 import { RNCamera } from 'react-native-camera';
 import BarcodeMask from 'react-native-barcode-mask'
@@ -10,9 +10,9 @@ import FontSize from '../../component/FontSize'
 import { translate } from '../../../App'
 import { BackIcon } from '../../component/SvgComponent';
 
-const BarcodeScanner = ({ navigation }) => {
-
-
+const BarcodeScanner = ({ navigation, route }) => {
+    const { setDeviceID } = route.params
+    const [deviceId, setDevice] = useState()
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -27,9 +27,16 @@ const BarcodeScanner = ({ navigation }) => {
             )
         });
     }, [navigation]);
+    useEffect(() => {
+        if(deviceId) {
+            setDeviceID(deviceId) 
+            NavigationService.goBack()
+        }
+    }, [deviceId])
 
     function onBarCodeRead(scanResult) {
         // scanResult.data will contain your scanned data
+        setDevice(scanResult.data.toString())
     }
 
     return (

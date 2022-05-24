@@ -34,7 +34,7 @@ const NotificationItem = (props) => {
 
     function onUpdateNotification(notifItem, notificator)  {
         setIsDisable(true)
-        let notiValue = notifItem.notification.notificators ? notifItem.notification.notificators.split(",") : []
+        let notiValue = notifItem.notificators ? notifItem.notificators.split(",") : []
         
         if(notiValue.includes(notificator)){
             notiValue = notiValue.filter((item)=> item != notificator)
@@ -54,21 +54,21 @@ const NotificationItem = (props) => {
         return (
             notificationData.map((item) => {
 
-                const { notification } = item
-                const { attributes } = notification
+                const { attributes, type, notificators } = item
+                const { name } = attributes
 
-                const toggler = item.notification.notificators ? item.notification.notificators.includes(filterKey) : false
+                const toggler = notificators ? notificators.includes(filterKey) : false
 
                 return(
                     <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
                         <View style={styles.headingViewStyle}>
-                            <Text style = {styles.headingTextStyle}>{notification.type}</Text>
+                            <Text style = {styles.headingTextStyle}>{type} </Text>
                                 <TouchableOpacity onPress={() => onUpdateNotification(item,filterKey) } >
                                     { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/> }
                                 </TouchableOpacity>
                         </View>
                         <View style = {{paddingHorizontal: wp(5)}}>
-                            <Text style = {styles.descriptionText}>{attributes.name && attributes.name}</Text>
+                            <Text style = {styles.descriptionText}>{name}</Text>
                         </View>
                     </View>
                 )
@@ -82,7 +82,7 @@ const NotificationItem = (props) => {
             renderExpandItem('mail')
         :
             item =='Push Notification' ?
-            renderExpandItem('web')
+            renderExpandItem('firebase')
         :
             renderExpandItem('sms')
         )

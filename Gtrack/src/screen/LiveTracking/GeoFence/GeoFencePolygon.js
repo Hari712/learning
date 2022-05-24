@@ -21,7 +21,7 @@ const Map = Platform.select({
 
 const GeoFencePolyGon = ({navigation, route}) => {
 
-    const { devices } = route.params
+    const { devices, editedType } = route.params
 
     const [region, setRegion] = useState()
     const [isEditing, setIsEditing] = useState(false)
@@ -35,16 +35,21 @@ const GeoFencePolyGon = ({navigation, route}) => {
 
 
     useEffect(() => {
-        if(route.params && route.params.editingData) {
+        if(route.params && route.params.editingData && editedType) {
             const { editingData } = route.params
             setOldData(editingData)
+            setColor(editingData.color)
+        }
+        if(route.params && route.params.editingData && !editedType) {
+            const { editingData } = route.params
+            setOldData(editingData)
+           
             console.log("OldCoorniate",editingData.coordinates, editingData.coordinate)
             const initialRegion = Platform.OS == 'ios' ?  { latitude: editingData.coordinate.latitude, longitude: editingData.coordinate.longitude, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA } : null
             setRegion(initialRegion)
             setRegionAndroid(editingData.coordinate)
             setSelectedCoordinates(editingData.coordinates)
             setColor(editingData.color)
-            
         } else {
         GetLocation.getCurrentPosition({
             enableHighAccuracy: false,
@@ -254,11 +259,16 @@ const GeoFencePolyGon = ({navigation, route}) => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
-                    <Map.default.Camera
-						centerCoordinate={regionAndroid}
-						// followUserLocation={true}
-						zoomLevel={3.5}
-					/>
+                   {regionAndroid ?
+						  <Map.default.Camera
+                          centerCoordinate={regionAndroid}
+                          // followUserLocation={true}
+                          zoomLevel={3.5}
+                      /> : 
+						<Map.default.Camera 
+							zoomLevel={3.5}
+							centerCoordinate={[79.570507, 22.385092]}
+						/> }
                     {!isEmpty(selectedCoordinates) ? renderCoordinates() : null}
                     {!isEmpty(selectedCoordinates) && selectedCoordinates.length > 2 ? renderPolygon() : null}
                 </Map.default.MapView>

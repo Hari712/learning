@@ -27,7 +27,7 @@ const Map = Platform.select({
 
 const GeoFenceCircle = ({navigation,route}) => {
 
-    const { devices } = route.params
+    const { devices, editedType } = route.params
 
     const { isLoggedIn } = useSelector(state => ({
         isLoggedIn: isUserLoggedIn(state)
@@ -65,7 +65,7 @@ const GeoFenceCircle = ({navigation,route}) => {
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={styles.headerTitle}>
-                    {route.params ? "Edit Circle" : "Create Circle"}
+                    {route.params.editingData ? "Edit Circle" : "Create Circle"}
                 </Text>
             ),
             headerLeft: () => (
@@ -84,7 +84,12 @@ const GeoFenceCircle = ({navigation,route}) => {
     }, [navigation,area,oldData,selectedCoordinate]);
 
     useEffect(() => { 
-        if(route.params && route.params.editingData) {
+        if(route.params && route.params.editingData && editedType) {
+            const { editingData } = route.params
+            setOldData(editingData)
+            setColor(editingData.color)
+        }
+        if(route.params && route.params.editingData && !editedType) {
             const { editingData } = route.params
             setOldData(editingData)
             setColor(editingData.color)
@@ -254,11 +259,17 @@ const GeoFenceCircle = ({navigation,route}) => {
                         showsUserHeadingIndicator={true}
                         animated={true}
                     />
-                    <Map.default.Camera
-						centerCoordinate={regionAndroid}
-						// followUserLocation={true}
-						zoomLevel={3.5}
-					/>
+                  
+                    {regionAndroid ?
+						  <Map.default.Camera
+                          centerCoordinate={regionAndroid}
+                          // followUserLocation={true}
+                          zoomLevel={3.5}
+                      /> : 
+						<Map.default.Camera 
+							zoomLevel={3.5}
+							centerCoordinate={[79.570507, 22.385092]}
+						/> }
                     {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
                     {!isEmpty(selectedCoordinate) ? renderMapBoxCircle() : null}
                 </Map.default.MapView>

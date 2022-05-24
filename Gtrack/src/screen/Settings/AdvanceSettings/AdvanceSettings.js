@@ -17,7 +17,7 @@ import { toRegularCase } from '../../../utils/helper';
 import TimeZoneDialog, { showTimeText } from '../../../component/TimeZoneDialog';
 import { useIsFocused } from '@react-navigation/native';
 
-const LanguagesArr = ["ENGLISH", "FRENCH"]
+const LanguagesArr = ["ENGLISH"] //["ENGLISH", "FRENCH"]
 const TempArr = ["CELSIUS","FAHRENHEIT"]
 const DistanceArr = ["MILES","KILOMETER"]
 
@@ -27,8 +27,8 @@ const AdvanceSettings = ({navigation,route}) => {
   const [isLanguageClick,setIsLanguageClick] = useState(false)
   const [isUnitClick,setIsUnitClick] = useState(false)
   const [language,setLanguage] = useState('ENGLISH')
-  const [timeZone,setTimeZone] = useState('UTC')
-  const [distance,setDistance] = useState('MILES')
+  const [timeZone,setTimeZone] = useState('Asia/Kolkata')
+  const [distance,setDistance] = useState('KILOMETER')
   const [settingsID,setSettingsID] = useState()
   const [temperature,setTemperature] = useState('CELSIUS')
 
@@ -115,7 +115,7 @@ const AdvanceSettings = ({navigation,route}) => {
 
   function onError(error) {
       AppManager.hideLoader()
-      AppManager.showSimpleMessage('danger', { message: error, description: '' })
+      // AppManager.showSimpleMessage('danger', { message: error, description: '' })
       console.log("Error",error)  
   }
 

@@ -7,11 +7,14 @@ import { FontSize, LogoutConfirmationDialog, RateUsDialog } from '../../componen
 import { useDispatch, useSelector } from 'react-redux';
 import * as LoginActions from '../Login/Login.Action'
 import { translate } from '../../../App';
-import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { FCM_TOKEN, SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import NavigationService from '../../navigation/NavigationService'
 import { AboutIcon, AdvanceSettingsIcon, PermissionIcon, FeedbackIcon, NextArrowIcon, LogoutIcon, NotificationIcon, ProfileIcon, RateUsIcon } from '../../component/SvgComponent';
 import InAppReview from 'react-native-in-app-review';
-import { isRoleRegular } from '../Selector';
+import { isRoleRegular, getLoginState } from '../Selector';
+import { logoutReset } from '../../utils/socketHelper';
+import { getValue } from '../../utils/storage';
+import { isEmpty } from 'lodash';
 
 const isAndroid = Platform.OS === 'android'
 
@@ -22,8 +25,9 @@ const Settings = ({ navigation }) => {
 
   const [isLogoutConfirmationDialogVisible, setIsLogoutConfirmationDialogVisible] = useState(false)
 
-  const { isRegular } = useSelector(state => ({
-    isRegular: isRoleRegular(state)
+  const { isRegular, loginData } = useSelector(state => ({
+    isRegular: isRoleRegular(state),
+    loginData: getLoginState(state),
   }))
   
   React.useLayoutEffect(() => {
@@ -34,9 +38,9 @@ const Settings = ({ navigation }) => {
 
   const SettingsItems = ({ item }) => {
     // const [listData, setListData] = useState(SETTINGS_MENU)    
-    if(item.title === 'Notifications') {
-      if(isRegular) return; 
-    }
+    // if(item.title === 'Notifications') {
+    //   if(isRegular) return; 
+    // }
 
     let IconConstant;
 
@@ -75,7 +79,7 @@ const Settings = ({ navigation }) => {
     const onPressHandle = ({ navigation, item }) => {
       switch (item.title) {
         case 'Profile':
-          NavigationService.push((SCREEN_CONSTANTS.PROFILE))
+          NavigationService.navigate((SCREEN_CONSTANTS.PROFILE))
           break;
 
         case 'Permission':
@@ -83,11 +87,11 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'About':
-          NavigationService.push((SCREEN_CONSTANTS.ABOUT))
+          NavigationService.navigate((SCREEN_CONSTANTS.ABOUT))
           break;
 
         case 'Notifications':
-          NavigationService.push((SCREEN_CONSTANTS.SETTINGS_NOTIFICATION))
+          NavigationService.navigate((SCREEN_CONSTANTS.SETTINGS_NOTIFICATION))
           break;
 
         case 'Rate Us':
@@ -95,15 +99,15 @@ const Settings = ({ navigation }) => {
           break;
 
         case 'Feedback':
-          NavigationService.push((SCREEN_CONSTANTS.FEEDBACK))
+          NavigationService.navigate((SCREEN_CONSTANTS.FEEDBACK))
           break;
 
         case 'Advance Settings':
-          NavigationService.push(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
+          NavigationService.navigate(SCREEN_CONSTANTS.ADVANCE_SETTINGS)
           break;
 
         case 'Change Passcode':
-          NavigationService.push(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
+          NavigationService.navigate(SCREEN_CONSTANTS.SETTINGS_CHANGE_PASSCODE)
           break;
 
         case 'Logout':
@@ -217,8 +221,28 @@ const Settings = ({ navigation }) => {
 
   function onTapConfirm() {
     onHideLogoutConfirmationDialog()
-    dispatch(LoginActions.requestLogout())
+    onRemoveDeviceToken()
   }
+  console.log('loginData account', loginData)
+  async function onRemoveDeviceToken() {
+		const fcmToken = await getValue(FCM_TOKEN)
+		if (!isEmpty(fcmToken)) {
+			dispatch(LoginActions.requestRemoveDeviceToken(loginData.id, fcmToken, onRemoveDeviceTokenSuccess, onremoveDeviceTokenError))
+		}
+	}
+
+	function onRemoveDeviceTokenSuccess(data) {
+    if(data) {
+      logoutReset()
+      dispatch(LoginActions.requestLogout())
+    }
+		console.log('Add Token Success', data)
+	}
+
+	function onremoveDeviceTokenError(error) {
+		console.log('Add Token Error', error)
+	}
+
 
   function renderLogoutConfirmationDialog() {
     return (

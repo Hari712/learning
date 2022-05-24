@@ -5,7 +5,7 @@ import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { lineString as makeLineString } from '@turf/helpers';
 import { useSelector, useDispatch } from 'react-redux';
-import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm } from '../Selector';
+import { isRoleRegular, isUserLoggedIn, getAllUserDevicesList, getLiveTrackingDeviceList, getLivetrackingGroupDevicesListInfo, getLoginState,hasPanicAlarm, getLiveNotificationsInfo, getPanicAlarm, getLiveNotificationCountsInfo, getLivetrackingDevicesListInfo } from '../Selector';
 import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates';
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
@@ -18,9 +18,11 @@ import useStateRef from '../../utils/useStateRef';
 import * as LivetrackingActions from './Livetracking.Action'
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
+import KeepAwake from 'react-native-keep-awake';
 import Dialog from '../../component/Dialog'
-import { isNewEvent, isNewNotification } from '../../utils/socketHelper';
+import { isNewNotification } from '../../utils/socketHelper';
 import { sendEvent } from '../../provider/SocketProvider';
+import url from 'socket.io-client/lib/url';
 
 const { width, height } = Dimensions.get('window');
 
@@ -41,15 +43,17 @@ const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
 
-	const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, getPanicDetail} = useSelector(state => ({
+	const { isLoggedIn, isRegular, devicePositions, groupDevices, liveTrakingDeviceList, loginData, hasPanic, notiEvents, getPanicDetail, isNewEvent} = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
+		liveTrakingDeviceList: getLivetrackingDevicesListInfo(state),
 		hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
 		notiEvents: getLiveNotificationsInfo(state),
-		getPanicDetail: getPanicAlarm(state)
+		getPanicDetail: getPanicAlarm(state),
+		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
 
 	
@@ -98,7 +102,17 @@ const LiveTracking = ({ navigation }) => {
 
 	React.useEffect(
 		() => {
-			isFocused ? null : setIsLineClick(false);
+			if(isFocused) {
+				console.log('devicePositionArray', devicePositionArray, devicePositionArray[devicePositionArray.length - 1])
+			setLineString(null)
+			setCoordList([])
+			!isEmpty(devicePositionArray) && setDevicePositionArray([devicePositionArray[devicePositionArray.length - 1]])
+			KeepAwake.activate()
+			} else { 
+				setIsLineClick(false);
+				KeepAwake.deactivate();
+			}
+			return () => {console.log('deactivate'); KeepAwake.deactivate();}
 		},
 		[isFocused]
 	);
@@ -132,7 +146,8 @@ const LiveTracking = ({ navigation }) => {
 						...{[device.id]: device}
 					};
 					const arrLogs = Object.values(updatedDevicePositionObject)
-					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					console.log('arraylog updatedDevicePositionObject', arrLogs, updatedDevicePositionObject)
+					arrLogs.sort((a, b) => a.id - b.id);
 					setDevicePositionArray(arrLogs);
 					console.log("arraylog",arrLogs)
 				}
@@ -142,6 +157,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 
 	useEffect(() => {
+		console.log('devicePositionArray', devicePositionArray)
 		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
 			if (isAndroid) {
 				const arrCoords = devicePositionArray.map(item => {
@@ -151,6 +167,7 @@ const LiveTracking = ({ navigation }) => {
 						return arr;
 				});
 				let line = makeLineString(arrCoords);
+				console.log('devicePositionArray 123', devicePositionArray)
 				setLineString(line);
 				console.log("line",line)
 			} else {
@@ -186,7 +203,6 @@ const LiveTracking = ({ navigation }) => {
 					setDevicePositionArray([device]);
 					setRegion(deviceRegion);
 				}
-				console.log(deviceInfo);
 			}
 		},
 		[selectedDevice]
@@ -210,7 +226,7 @@ const LiveTracking = ({ navigation }) => {
 
 	function navigateToDeviceSetup() {
 		setIsLineClick(false);
-		NavigationService.push(SCREEN_CONSTANTS.ACTIVATE_DEVICE);
+		NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE);
 	}
 
 	function onPressNext() {
@@ -222,6 +238,7 @@ const LiveTracking = ({ navigation }) => {
 		setSelectedDevice(device);
 		setSelectedDeviceIndex(i);
 		setDevicePositionArray([]);
+		setLineString(null)
 	}
 
 	function onPressPrevious() {
@@ -236,11 +253,12 @@ const LiveTracking = ({ navigation }) => {
 		setSelectedDevice(device);
 		setSelectedDeviceIndex(i);
 		setDevicePositionArray([]);
+		setLineString(null)
 	}
 
 	function renderDeviceSelectionView() {
 		const deviceInfo = selectedDevice;
-
+		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
 			<View
 				style={{
@@ -257,27 +275,27 @@ const LiveTracking = ({ navigation }) => {
 			>
 				<View
 					style={{
-						justifyContent: 'space-between',
+						justifyContent: VisibleArrow ? 'space-between' : 'center',
 						flexDirection: 'row',
 						alignItems: 'center',
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressPrevious()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
 							style={{ width: wp(2), height: hp(2) }}
 						/>
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name})}>
+					</TouchableOpacity> }
+					<TouchableOpacity style={{alignItems: 'center'}} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LIVETRACKINGDETAILS,{selectedDevice:selectedDevice, deviceName: deviceInfo.name, selectedDeviceIndex: selectedDeviceIndex})}>
 						<Text style={{ color: ColorConstant.BROWN, fontSize: FontSize.FontSize.tow, marginHorizontal: hp(1), fontFamily:"Nunito-Bold" }}>
 							{` ${deviceInfo.name} `}
 						</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(1)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
-					</TouchableOpacity>
+					</TouchableOpacity> }
 				</View>
 			</View>
 		);
@@ -297,26 +315,34 @@ const LiveTracking = ({ navigation }) => {
 		const endCoordinate = isContainCoordinate
 		? { latitude: endDestination.latitude, longitude: endDestination.longitude }
 		: null;
+		// const regionpoint = isContainCoordinate ? {
+		// 	latitude: endDestination.latitude,
+		// 	longitude: endDestination.longitude,
+		// 	// latitudeDelta: LATITUDE_DELTA,
+		// 	// longitudeDelta: LONGITUDE_DELTA,
+		// } : null;
+		const isOnline = !isEmpty(liveTrakingDeviceList) && liveTrakingDeviceList[selectedDeviceIndex].status == "online" ? true : false;
 		return (
 			<Map.default 
 				style={StyleSheet.absoluteFillObject} 
-				region={region} ref={mapRef} 
+				// region={regionpoint}
+				initialRegion={region} ref={mapRef} 
 				showsUserLocation={false}>
 
 				{isContainCoordinate && 
 					<Map.Marker 
 						coordinate={startCoordinate} 
 						description={startAddress} >
-
-						<LiveStartPointIcon />
+						{/* <LiveStartPointIcon /> */}
+						<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} /> 
 					</Map.Marker>}
 
 				{isContainCoordinate && 
 					<Map.Marker 
 						coordinate={endCoordinate} 
 						description={endAddress} >
-						
-						<LiveEndPointIcon/>
+						 <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
+						{/* <LiveEndPointIcon/> */}
 					</Map.Marker>}
 
 				{isPolyLine &&
@@ -336,6 +362,7 @@ const LiveTracking = ({ navigation }) => {
 		const liveEndPoint = isContainCoordinate ? devicePositionArray[devicePositionArray.length-1] : null;
 		const startAddress = isContainCoordinate ? startingDestination.address : '';
 		const endAddress = isContainCoordinate ? liveEndPoint.address : '';
+		const isOnline = !isEmpty(liveTrakingDeviceList) && liveTrakingDeviceList[selectedDeviceIndex].status == "online" ? true : false;
 		let startCoordinate = [];
 		if (isContainCoordinate) {
 			startCoordinate.push(startingDestination.longitude);
@@ -346,23 +373,31 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
+		console.log('startCoordinate',devicePositionArray, lineString)
+		console.log('selectedDevice.status', liveTrakingDeviceList[selectedDeviceIndex])
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
+				<Map.default.MapView style={{ flex: 1 }} styleURL={Map.default.StyleURL.Street}>
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
 						showsUserHeadingIndicator={false}
 						animated={true}
 					><View/></Map.default.UserLocation>
-					{isContainCoordinate &&
+					{isContainCoordinate ?
 						<Map.default.Camera
+							animationMode='flyTo'
+							animationDuration={10000}
 							zoomLevel={17}
 							bounds={{
-								ne: startCoordinate,
-								sw: startCoordinate,
+								ne: endCoordinate,
+								sw: endCoordinate,
 							}}
-						/>}
+						/> : 
+						<Map.default.Camera 
+							zoomLevel={4}
+							centerCoordinate={[79.570507, 22.385092]}
+						/> }
 					{!isEmpty(lineString)
 						? <Map.default.ShapeSource id="route" shape={lineString}>
 								<Map.default.LineLayer
@@ -378,14 +413,16 @@ const LiveTracking = ({ navigation }) => {
 						: null}
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
-							<LiveStartPointIcon />
+							<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} /> 
+							{/* <LiveStartPointIcon /> */}
 							<Map.default.Callout title={startAddress} />
 						</Map.default.PointAnnotation>}
 
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
-							<LiveEndPointIcon/>
-							<Map.default.Callout title={endAddress} />
+							 	{/* <LiveEndPointIcon/>  */}
+							  <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
+							{/* <Map.default.Callout title={endAddress} /> */}
 						</Map.default.PointAnnotation>}
 				</Map.default.MapView>
 			</View>
@@ -405,7 +442,7 @@ const LiveTracking = ({ navigation }) => {
 	function onOkay() {
 		setIsPanicAlarmClick(false)
 		setIsPanicAlarmCreateDialog(false)
-		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW)
+		NavigationService.navigate(SCREEN_CONSTANTS.CREATE_NEW, {isPanic: true})
 	}
 
 	function onNo() {
@@ -418,7 +455,7 @@ const LiveTracking = ({ navigation }) => {
 		setIsPanicTimerVisible(false) 
 		setIsPanicAlarmClick(false)
 	}	
-
+	console.log('isNewEvent', isNewEvent, selectedDevice)
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
@@ -467,14 +504,14 @@ const LiveTracking = ({ navigation }) => {
 						</TouchableOpacity>
 					: null}
 
-					<TouchableOpacity
+					{(!isRegular || !isEmpty(getPanicDetail)) && <TouchableOpacity
 							style={[styles.lineIconStyle, { backgroundColor: ColorConstant.RED }]}
 							onLongPress={()=>onLongPress()}
 							delayLongPress={2000}
 					>
 							{isPanicAlarmClick ? <PanicIconClick height={55} width={55}/> : <PanicAlarmIcon />}
 					</TouchableOpacity>
-
+					}
 					<CustomDialog 
 						visible={isPanicAlarmCreateDialog}
 						titleStyle={styles.titleStyle}

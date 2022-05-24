@@ -94,7 +94,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 								...{[device.id]: device}
 							};
 							const arrLogs = Object.values(updatedDevicePositionObject)
-							arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+							arrLogs.sort((a, b) => a.id - b.id);
 							setDevicePositionArray(arrLogs);
 						}
 					}
@@ -221,14 +221,18 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 								showsUserHeadingIndicator={true}
 								animated={true}
 							/> */}
-							{isContainCoordinate &&
+							{isContainCoordinate ?
 								<Map.default.Camera
 									zoomLevel={13}
 									bounds={{
 										ne: coordinate,
 										sw: coordinate,
 									}}
-								/>}
+								/> : 
+								<Map.default.Camera 
+									zoomLevel={4}
+									centerCoordinate={[79.570507, 22.385092]}
+								/> }
 							{!isEmpty(lineString)
 								? <Map.default.ShapeSource id="route" shape={lineString}>
 										<Map.default.LineLayer
@@ -267,7 +271,7 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 
 	function renderDeviceSelectionView() {
 		const deviceInfo = selectedDevice;
-
+		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
 			<View
 				style={{
@@ -284,25 +288,25 @@ const LiveTrackinDashboard = ({ navigation, route }) => {
 			>
 				<View
 					style={{
-						justifyContent: 'space-between',
+						justifyContent: VisibleArrow ? 'space-between' : 'center',
 						flexDirection: 'row',
 						alignItems: 'center',
 						paddingHorizontal: wp(3),
 					}}
 				>
-					<TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressPrevious()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressPrevious()}>
 						<Image
 							source={images.dashBoard.leftIcon}
 							resizeMode="contain"
 							style={{ width: wp(1.5), height: hp(1.5) }}
 						/>
-					</TouchableOpacity>
+					</TouchableOpacity>}
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
 						{` ${deviceInfo.name} `}
 					</Text>
-					<TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
+					{VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
-					</TouchableOpacity>
+					</TouchableOpacity> }
 				</View>
 			</View>
 		);

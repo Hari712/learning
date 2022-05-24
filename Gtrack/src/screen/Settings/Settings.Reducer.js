@@ -17,8 +17,8 @@ export const settingsReducer = createReducer(state = initialState, {
         const {item, notificator} = action
         const arrNoti = state.notificationList ? state.notificationList : []
         const newArrayList = arrNoti.map((item1) => {
-            if(item1.notification.id == item.notification.id){
-                item1.notification.notificators = notificator
+            if(item1.id == item.id){
+                item1.notificators = notificator
             }
             return item1
         } )

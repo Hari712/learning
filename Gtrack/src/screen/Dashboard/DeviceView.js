@@ -74,12 +74,13 @@ const loadMoreDevices = () => {
 
 function renderDeviceCell({ item, index }) {
     const grpName = item.groupName
+    console.log('groupDevices', item)
     return (
         <>
             { item.devices.map((dvItem)=>{
                 return (
                     <TouchableOpacity 
-                        onPress={() => { NavigationService.push(SCREEN_CONSTANTS.TRACKING_DETAILS, {selectedDevice:dvItem}) }} 
+                        onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.TRACKING_DETAILS, {selectedDevice:dvItem}) }} 
                         style={styles.cardContainer}>
 
                         {/* Blue top head */}
@@ -98,7 +99,7 @@ function renderDeviceCell({ item, index }) {
                             
                             <View style={styles.column} >
                                 <Text style={styles.whiteBodyText}>Device Id</Text>
-                                <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{dvItem.id}</Text>
+                                <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{dvItem.uniqueId}</Text>
                             </View>
                             <View style={styles.column} >
                                 <Text style={styles.whiteBodyText}>{translate("Group")}</Text>
@@ -291,7 +292,7 @@ whiteBodyText: {
     fontSize: FontSize.FontSize.small
 },
 column: {
-    flexDirection: 'column', width: '35%'
+    flexDirection: 'column', width: '50%'
 }
 })
 

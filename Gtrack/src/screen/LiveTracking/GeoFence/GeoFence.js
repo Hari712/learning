@@ -15,6 +15,8 @@ import AppManager from '../../../constants/AppManager';
 import GeofenceList from './GeofenceList';
 import GeofenceEditDialog from '../../../component/GeofenceEditDialog';
 import GeofenceDeleteDialog from '../../../component/GeofenceDeleteDialog';
+import { isEmpty } from 'lodash';
+import { useIsFocused } from '@react-navigation/native';
 
 const GeoFence = ({ navigation }) => {
     
@@ -30,7 +32,8 @@ const GeoFence = ({ navigation }) => {
     const [dropDownPos, setDropDownPos] = useState();
     const [isMenuClick, setIsMenuClick] = useState(0)
     const [selectedType, setSelectedType] = useState('')
-
+    const [geofenceListData, setGeofenceData] = useState([])
+    const isFocused = useIsFocused();
     const dispatch = useDispatch()
 
     const { loginData, geofenceList, isRegular } = useSelector(state => ({
@@ -38,6 +41,13 @@ const GeoFence = ({ navigation }) => {
         geofenceList: getGeofenceListInfo(state),
         isRegular: isRoleRegular(state)
     }))
+  
+
+    React.useEffect(() => {
+      if(isFocused){
+        loadGeofenceSearchList('')
+      }
+    },[isFocused]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -54,6 +64,21 @@ const GeoFence = ({ navigation }) => {
         });
     }, [navigation]);
 
+    useEffect(() => {
+        if(!isEmpty(geofenceList)) {
+            const filteredList = geofenceList.filter(i => {
+                const included = i.userDTOS.filter(user => user.id === loginData.id)
+                if(!isEmpty(included)) {
+                    return i;
+                }
+             })
+             setGeofenceData(filteredList)
+            console.log('geofenceList', geofenceList, filteredList, loginData.id)
+        }
+        else {
+            setGeofenceData([])
+        }
+    }, [geofenceList])
     // useEffect(() => {  
     //     loadGeofenceList()
     // }, [])
@@ -166,6 +191,7 @@ const GeoFence = ({ navigation }) => {
                         style={styles.searchText}
                         onChangeText={text => searchHandle(text) }                    
                         value={searchKeyword}
+                        placeholderTextColor={ColorConstant.GREY}
                     />
                 </View>
         )
@@ -186,11 +212,11 @@ const GeoFence = ({ navigation }) => {
             </View>
 
             <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} ></View>
-            {geofenceList.length > 0 ?
+            {geofenceListData.length > 0 ?
             <FlatList
                 style={{}}
                 contentContainerStyle={{}}
-                data={geofenceList}
+                data={geofenceListData}
                 renderItem={GeoFenceInfoItem}
                 keyExtractor={(item, index) => index.toString()}
                 refreshControl={
@@ -206,7 +232,7 @@ const GeoFence = ({ navigation }) => {
             }  
 
             {isTypeClick ?
-                <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}]}>
+                <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}, isRegular && { left: wp(6), top:dropDownPos + hp(1) }]}>
                     {geofenceType.map((item, key) =>
                         <TouchableOpacity  key={key} onPress={()=> onTypeClick(item,key)}>
                             <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
@@ -293,6 +319,7 @@ const styles = StyleSheet.create({
         marginHorizontal:hp(1.5),
         borderRadius:12,
         marginTop:hp(4),
+        justifyContent  : 'center',
         // marginBottom:hp(2),
         elevation:4,
         shadowColor: ColorConstant.BLACK,
@@ -301,7 +328,7 @@ const styles = StyleSheet.create({
             height: 0
         },
         shadowRadius: 3,
-        shadowOpacity: 1,
+        shadowOpacity: 0.2,
         backgroundColor:ColorConstant.WHITE
     },
     horizontalLine: {

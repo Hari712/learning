@@ -1,5 +1,5 @@
-import React, { useState, Component } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState, Component, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, StyleSheet, SafeAreaView, RefreshControl, ActivityIndicator } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
@@ -8,7 +8,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import Tooltip from 'rn-tooltip';
 import { translate } from '../../../App'
 import { BackIcon, GreyCrossIcon } from '../../component/SvgComponent'
-import { getLivetrackingGroupDevicesListInfo, getLoginState, isUserLoggedIn, getLiveNotificationsInfo } from '../Selector';
+import { getLivetrackingGroupDevicesListInfo, getLoginState, isUserLoggedIn, getLiveNotificationsInfo, getReadEventsInfo, getLiveNotificationsTotalPagesInfo, getLiveNotificationCountsInfo, getLiveNotificationsTotalCountsInfo } from '../Selector';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import IconConstant from '../../constants/iconConstant';
@@ -17,8 +17,16 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import * as LiveTrackingAction from '../LiveTracking/Livetracking.Action'
 import { isReadEvent, notificationEvents, removeEvent, setReadNotificationEvents } from '../../utils/socketHelper';
 import { showNotificationName, showNotificationDesc } from './../../utils/helper';
+import { isEmpty } from 'lodash';
+import AppManager from '../../constants/AppManager';
+import { useIsFocused } from '@react-navigation/native';
 
 const Notification = ({ navigation }) => {
+    const [pageIndex, setPageIndex] = useState(0);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isLoadMoreData, setIsLoadMoreData] = useState(false);
+    const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false);
+    const isFocused = useIsFocused()
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -33,30 +41,121 @@ const Notification = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents } = useSelector(state => ({
+    const { isLoggedIn, isRegular, devicePositions, groupDevices, loginData, hasPanic, notiEvents, readEvents, totalPages, totalCounts, isNewEvent } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		//isRegular: isRoleRegular(state),
 		//devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state),
 		//hasPanic: hasPanicAlarm(state),
 		loginData: getLoginState(state),
-        notiEvents: getLiveNotificationsInfo(state)
+        notiEvents: getLiveNotificationsInfo(state),
+        readEvents: getReadEventsInfo(state),
+        totalPages: getLiveNotificationsTotalPagesInfo(state),
+        totalCounts: getLiveNotificationsTotalCountsInfo(state),
+        isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
 
+    useEffect(() => {
+         if(isFocused) {
+            setIsLoadMoreData(false)
+            setIsRefreshing(false)
+              setPageIndex(0)
+              requestNotificationList()
+         }
+    }, [isFocused])
+
+    useEffect(() => {
+        console.log('isNewEvent 1234', isNewEvent)
+        if(isNewEvent) {
+            setPageIndex(0)
+            setIsLoadMoreData(false)
+            setIsRefreshing(false)
+            requestNotificationList()
+        }
+    }, [isNewEvent])
+
+    useEffect(() => {
+        if(isRefreshing) {
+            requestNotificationList()
+        }
+    }, [isRefreshing])
+
+    // useEffect(() => {
+    //     if(isLoadMoreData) {
+    //         requestNotificationList()
+    //     }
+    // }, [isLoadMoreData])
+
+    function requestNotificationList() {
+        (!isRefreshing) && AppManager.showLoader() 
+        const requestBody = {
+            "pageNumber" : pageIndex,
+            "pageSize" : 10,
+            "useMaxSearchAsLimit" : false,
+            "searchColumnsList" : [],
+            "sortHeader" : "id",
+            "sortDirection" : "DESC"
+          }
+        dispatch(LiveTrackingAction.requestGetNotificationList(loginData.id, requestBody,  onSuccess, onError))
+    }
+    function loadMoreNotificationList() {
+        const requestBody = {
+            "pageNumber" : pageIndex,
+            "pageSize" : 10,
+            "useMaxSearchAsLimit" : false,
+            "searchColumnsList" : [],
+            "sortHeader" : "id",
+            "sortDirection" : "DESC"
+          }
+          const isMerge = pageIndex > 0
+        dispatch(LiveTrackingAction.requestGetNotificationList(loginData.id, requestBody, isMerge,  onSuccess, onError))
+    }
+
+    function onSuccess(data) {    
+        console.log("Success",data) 
+        dispatch(LiveTrackingAction.setReadNotificationEvents())
+        setIsLoadMoreData(false)
+        setIsRefreshing(false)
+        AppManager.hideLoader()
+    }
+    
+    function onError(error) {
+        AppManager.hideLoader()
+        console.log("Error",error)  
+    }
     const dispatch = useDispatch()
-    console.log('notificationEvents', notificationEvents)
+    console.log('notificationEvents', notificationEvents, notiEvents)
+    const removeNotification = (item) => {
+        removeEvent(item)
+        dispatch(LiveTrackingAction.removeNotificationEventResponse(item.id))
+    }
+
+    const onNotificationPress = (item) => {
+        const requestBody = {
+            "notificationIds" : [ item.id ]
+          }
+          dispatch(LiveTrackingAction.updateNotificationEvents(loginData.id, requestBody, onSuccess, onError))
+
+        function onSuccess(data) {
+            NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)
+            setReadNotificationEvents(item)
+        }
+        function onError(error) {
+            console.log(error)
+        }
+    }
+
     const NotificationItems = ({ item }) => { 
-        const deviceDetail = groupDevices.filter((gitem) => gitem.id === item.deviceId )        
-        const notiType = item.attributes.alarm ? item.attributes.alarm : item.type
+        const deviceDetail = groupDevices.filter((gitem) => gitem.uniqueId === item.deviceIdentifier )        
+        const notiType = item.notificationType
         const titleStr = showNotificationName(notiType)
         const imgString = String(notiType).toLowerCase()
-        const descriptionStr = showNotificationDesc(notiType) + " at " + moment(item.serverTime).format("hh:mm a")
-        console.log("device", deviceDetail, groupDevices)
+        const descriptionStr = showNotificationDesc(notiType) + " at " + moment(item.notificationTime).format("hh:mm a")
+        console.log("device 1234", notiEvents, deviceDetail, groupDevices)
 
         return (
             <TouchableOpacity onPress={()=>{
-                NavigationService.navigate(SCREEN_CONSTANTS.ALARMS)
-                setReadNotificationEvents(item)
+                onNotificationPress(item)
                 }} >
                 <View style={styles.notificationMainView}>
                     <View style={styles.notificationLeftMainView}>
@@ -67,9 +166,9 @@ const Notification = ({ navigation }) => {
                         </View>
 
                         <View style={styles.notificationRightView}>
-                            <Text style={styles.titleStyle, {color: isReadEvent(item) ? ColorConstant.GREY : ColorConstant.BLAC}}>{titleStr}</Text>
+                            <Text style={styles.titleStyle, {color: item.isRead ? ColorConstant.GREY : ColorConstant.BLACK}}>{titleStr}</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={isReadEvent(item) ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
+                                <Text style={ item.isRead ? styles.deviceReadStyle : styles.deviceStyle}>{deviceDetail[0] && deviceDetail[0].name}</Text>
                                 <Tooltip popover={                                    
                                             <View>
                                                 {deviceDetail.map((dextra,key)=>{
@@ -96,9 +195,9 @@ const Notification = ({ navigation }) => {
                     <View style={styles.notificationRightMainView}>
                         <View style={styles.stateViewStyle}>
                             <Text style={styles.timeTextStyle}>{moment(item.serverTime).fromNow()}</Text>
-                            <TouchableOpacity style={{padding:4,zIndex:5}} onPress={()=>removeEvent(item)} >
+                            {/* <TouchableOpacity style={{padding:10,zIndex:5}} onPress={()=> removeNotification(item)} >
                                 <GreyCrossIcon style={styles.crossImageStyle} resizeMode='contain'/>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                         </View>
                     </View>
                 </View>
@@ -107,13 +206,40 @@ const Notification = ({ navigation }) => {
             </TouchableOpacity>
         )
     }
-
+    const renderFooter = () => {
+        //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+        if (isLoadMoreData) return <View><ActivityIndicator size="large" color="#000000" /></View>;
+        else return null
+      }
+    const loadMoreUsers = () => {
+            if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
+              if (notiEvents.length < totalCounts) {
+                setIsRefreshing(false)
+                setIsLoadMoreData(true)
+                setOnEndReachedCalledDuringMomentum(true)
+                setPageIndex(pageIndex + 1)
+              }
+            }
+    }
+    const onRefresh = () => {
+        setIsRefreshing(true)
+        setPageIndex(0)
+      }
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                styles={{}}
-                contentContainerStyle={{}}
-                data={notificationEvents}
+               
+                data={notiEvents}
+                refreshControl={
+                    <RefreshControl 
+                      refreshing={isRefreshing}
+                      onRefresh={onRefresh}     
+                    />
+                  }
+                ListFooterComponent={renderFooter}
+                onEndReached={() => loadMoreUsers()}
+                onEndReachedThreshold={0.1}
+                onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
                 // data={DATA}
                 renderItem={NotificationItems}
                 keyExtractor={(item, index) => index.toString()}

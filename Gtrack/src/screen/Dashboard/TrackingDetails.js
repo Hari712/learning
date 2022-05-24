@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, Dimensions, Platform } from 'react-native';
+import { View, StyleSheet, Text, Image, Dimensions, Platform, TouchableOpacity } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -9,6 +9,7 @@ import { dist, getAdvanceSettingsInfo, getLiveTrackingDeviceList, getLivetrackin
 import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
+import { BackIcon } from '../../component/SvgComponent';
 import Moment from 'moment'
 import { lineString as makeLineString } from '@turf/helpers';
 import useStateRef from '../../utils/useStateRef';
@@ -50,6 +51,7 @@ const TrackingDetails = ({navigation, route}) => {
 
 	const [singleSelectedDevice, setSingleSelectedDevice] = useState()
 	const [lineString, setLineString] = useState(null)
+	const [coordList, setCoordList] = useState([]);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
 	const [region, setRegion] = useStateRef();
 
@@ -74,7 +76,27 @@ const TrackingDetails = ({navigation, route}) => {
 		},
 		[selectedDevice]
 	);
-	
+	React.useLayoutEffect(() => {
+
+		navigation.setOptions({
+			headerTitle: () => (
+				<Text style={{
+					color:ColorConstant.GREY,
+					fontSize: FontSize.FontSize.medium,
+					fontWeight: '500',
+					//letterSpacing: 0,
+					textAlign:'center' }}>
+					Tracking Details
+				</Text>          
+			),  
+			headerLeft:() => (
+			  <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+				<BackIcon />
+			  </TouchableOpacity>
+			)  
+		});
+	  },[navigation]);
+
 	useEffect(
 		() => {
 			if (!isEmpty(devicePositions) && selectedDevice) {
@@ -90,7 +112,7 @@ const TrackingDetails = ({navigation, route}) => {
 						...{[device.id]: device}
 					};
 					const arrLogs = Object.values(updatedDevicePositionObject)
-					arrLogs.sort((a, b) => new Date(a.deviceTime).getTime() - new Date(b.deviceTime).getTime());
+					arrLogs.sort((a, b) => a.id - b.id);
 					setDevicePositionArray(arrLogs);
 				}
 			}
@@ -180,7 +202,7 @@ const TrackingDetails = ({navigation, route}) => {
 		const address = isContainCoordinate ? startingDestination.address : ''
 		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
 		return (
-			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={true}>
+			<Map.default style={StyleSheet.absoluteFillObject} initialRegion={region} ref={mapRef} showsUserLocation={true}>
 				{isContainCoordinate && <Map.Marker
 							coordinate={coordinate}
 							description={address}

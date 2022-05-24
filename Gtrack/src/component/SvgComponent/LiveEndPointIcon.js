@@ -3,6 +3,8 @@ import Svg, { Defs, G, Circle } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
 
 function LiveEndPointIcon(props) {
+    const { isDeviceOnline } = props
+
     return (
         <Svg width={54} height={54} viewBox="0 0 54 54" {...props}>
         <Defs></Defs>
@@ -17,7 +19,8 @@ function LiveEndPointIcon(props) {
                 cy={18}
                 r={18}
                 transform="translate(8 8)"
-                fill="#ff8b3e"
+                fill={isDeviceOnline ? "#1bbe15" : "#ff2121"}
+                // fill={"#ff8b3e"}
                 opacity={0.38}
             />
             </G>
@@ -31,7 +34,8 @@ function LiveEndPointIcon(props) {
                 cy={5.5}
                 r={5.5}
                 transform="translate(20 20)"
-                fill="#ff7f21"
+                fill={isDeviceOnline ? "#1bbe15" : "#ff2121"}
+                // fill={"#ff8b3e"}
             />
             </G>
         </G>

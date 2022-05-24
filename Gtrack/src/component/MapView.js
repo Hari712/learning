@@ -179,7 +179,7 @@ const MapView = (props) => {
 		return (
             <View style={styles.container}>
                 <View style={StyleSheet.absoluteFillObject}>
-                    <Map.default region={initialRegion} style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
+                    <Map.default initialRegion={initialRegion} style={StyleSheet.absoluteFillObject} showsUserLocation={true}>
                         {props.currentLocation &&
 						<Map.Marker
                             coordinate={props.currentLocation} />}

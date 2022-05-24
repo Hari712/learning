@@ -9,6 +9,8 @@ import * as LiveTrackingActions from '../screen/LiveTracking/Livetracking.Action
 import ApiConstants from '../api/ApiConstants'
 import { useDispatch ,useSelector } from 'react-redux'
 import { setNotificationEvents } from '../utils/socketHelper'
+import * as LoginActions from '../screen/Login/Login.Action'
+
 
 let socket = null
 let isConnecting = false
@@ -30,12 +32,12 @@ const SocketProvider = (props) => {
         loginInfo: getLoginState(state),
         traccarSessionInfo: getTraccarSessionInfo(state)
     }))
-
+    
     const [loginInfoDetail, setLoginInfoDetail, loginInfoDetailRef] = useStateRef(loginInfo)
 
     const [arrDeveicePositionList, setArrDevicePositionList, arrDevicePositionListRef] = useStateRef([])
 
-    const [traccarSessionInfoDetail, setTraccarSessionDetailInfo, traccarSessionInfoRef] = useStateRef(traccarSessionInfo)
+    const [traccarSessionInfoDetail, setTraccarSessionDetailInfo, traccarSessionInfoRef] = useStateRef()
 
     const currentAppState = useAppState()
 
@@ -48,7 +50,7 @@ const SocketProvider = (props) => {
     },[traccarSessionInfo])
 
     useEffect(() => {
-        if (isConnected && isLoggedIn && socket == null && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
+        if (isConnected && isLoggedIn && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
             connectWitWebsocket()
         }
     },[traccarSessionInfoDetail])
@@ -60,6 +62,15 @@ const SocketProvider = (props) => {
         }
     },[isLoggedIn])
     console.log(traccarSessionInfoDetail, 'traccarSessionInfoDetail')
+
+    function onTraccarSessionSuccess(data) {
+		console.log('Traccar Session Success', data);
+	}
+
+	function onTraccarSessionError(error) {
+		console.log('Traccar Session Error', error);
+	}
+
     function connectWitWebsocket() {
         const url = `wss://${socketURL}`
         const headers = {};
@@ -85,6 +96,11 @@ const SocketProvider = (props) => {
 
             console.log("event",data)
             
+            if(data.devices && Array.isArray(data.devices)) {
+                console.log('devices info', data.devices)
+                dispatch(LiveTrackingActions.setDeviceStatusData(data.devices))
+            }
+            
             if (data.positions && Array.isArray(data.positions)) {
                 setArrDevicePositionList(data)
                 dispatch(LiveTrackingActions.setLiveTrackingPositionData(data.positions))
@@ -92,13 +108,36 @@ const SocketProvider = (props) => {
 
             if (data.events && Array.isArray(data.events)) {
                 setArrDevicePositionList(data)
+                const requestBody = {
+                    "pageNumber" : 0,
+                    "pageSize" : 10,
+                    "useMaxSearchAsLimit" : false,
+                    "searchColumnsList" : [],
+                    "sortHeader" : "id",
+                    "sortDirection" : "DESC"
+                  }
+                dispatch(LiveTrackingActions.requestGetNotificationList(loginInfo.id, requestBody, false, onSuccess, onError))
                 dispatch(LiveTrackingActions.setNotificationEventsResponse(data.events))
                 setNotificationEvents(data.events)
+                function onSuccess(data) {    
+                    console.log("Success",data) 
+                }
+                
+                function onError(error) {
+                    console.log("Error",error)  
+                }
             }
         }
         socket.onclose = function (event) {
             if (!event['reason']) {
                 console.log('socket onclose',event);
+            }
+            if(isConnected) {
+                if(!isEmpty(loginInfo)) {
+                    dispatch(
+                        LoginActions.requestTraccarSession(loginInfo.id, onTraccarSessionSuccess, onTraccarSessionError)
+                    );
+                }
             }
         };
     }

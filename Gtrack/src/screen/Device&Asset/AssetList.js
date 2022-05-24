@@ -75,6 +75,7 @@ const AssetList = () => {
                 <View style={styles.search}>
                     <TextInput
                         placeholder='Search Here'
+                        style={{flex: 1}}
                         onChangeText={text => searchFilter(text) }                    
                         value={search}
                     />
@@ -98,6 +99,7 @@ const AssetList = () => {
 
     const onRefresh = () => {
         setIsRefreshing(true)
+        setEditClick(-1)
     }
 
     return (

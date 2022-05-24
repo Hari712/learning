@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, PermissionsAndroid } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, PermissionsAndroid, Linking } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -14,6 +14,8 @@ import { translate } from '../../../App';
 import { DeviceAssetListIcon, PickupCarIcon, DeviceAssetUserIcon, UsbIcon, ExportIcon, BackIcon } from '../../component/SvgComponent';
 import RNFetchBlob from 'rn-fetch-blob';
 import moment from 'moment';
+import { upperCase } from 'lodash';
+import FileViewer from 'react-native-file-viewer';
 
 const Details = ({ route, navigation }) => {
 
@@ -143,17 +145,53 @@ const Details = ({ route, navigation }) => {
 
     const download = () => {
         AppManager.showLoader()
-        const fs = RNFetchBlob.fs
-        const dirs = RNFetchBlob.fs.dirs      
-        const file_path = dirs.DownloadDir + `/${pdfFileName}_${moment.utc().valueOf()}.pdf`
-        fs.writeFile(file_path, pdfBase64, 'base64')
-        .then(() =>  downloadSuccess(file_path))
-        .catch(() => downloadFailed()) 
+        const { fs } = RNFetchBlob;
+        const downloads = isAndroid ? fs.dirs.DownloadDir : fs.dirs.DocumentDir;
+        const directory = downloads + "/Gtrack"
+        const file_path = directory + `/${pdfFileName}_${moment.utc().valueOf()}.pdf`
+        RNFetchBlob.config({
+            fileCache: true,
+            appendExt: 'pdf',
+            addAndroidDownloads : {
+                useDownloadManager : true, // <-- this is the only thing required
+                // Optional, override notification setting (default to true)
+                notification : true,
+ 
+                // Title of download notification
+                 title : 'Great ! Download Success ! :O ',
+                 // Make the file scannable  by media scanner
+                 mediaScannable : true,
+                // Optional, but recommended since android DownloadManager will fail when
+                // the url does not contains a file extension, by default the mime type will be text/plain
+                mime : 'application/pdf',
+                description : 'File downloaded by download manager.'
+            },
+        })
+        fs.exists(directory)
+        .then((exists) => {
+            if (!exists) {
+                return fs.mkdir(directory);
+            }
+        })
+        .then(() => {
+            console.log('directory', directory)
+            fs.writeFile(file_path, pdfBase64, 'base64')
+            .then(() =>  downloadSuccess(file_path))
+            .catch(() => downloadFailed()) 
+        }) .catch((err) => console.log('directory err' , err))
     };
 
     function downloadSuccess(file_path) {
         AppManager.hideLoader()
-        AppManager.showSimpleMessage('success', { message: 'File Downloaded to Your Phone.', description: `Location: ${file_path}`, autohide: false })
+        AppManager.showSimpleMessage('success', { message: 'File Downloaded to Your Phone.', description: '' })
+
+        setTimeout(() =>  FileViewer.open(file_path), 3000)
+       
+        // if (isAndroid) {
+        //     RNFetchBlob.android.actionViewIntent(file_path, 'application/pdf');
+        //   } else {
+        //     RNFetchBlob.ios.openDocument(file_path);
+        //   }
     }
 
     function downloadFailed() {
@@ -161,7 +199,7 @@ const Details = ({ route, navigation }) => {
         AppManager.showSimpleMessage('danger', { message: 'Something Wrong!', description: 'File cannot Download to Your Phone.' })
     }
 
-    useLayoutEffect(() => {
+    useLayoutEffect(() => { 
         navigation.setOptions({
             headerTitle: () => (
                 <Text style={{
@@ -187,7 +225,7 @@ const Details = ({ route, navigation }) => {
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
         const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.subscriptionPlanCurrency.monthlyFee : devicePlan.subscriptionPlanCurrency.annualFee
-        console.log('devicePlan', devicePlan, planPrice)
+        const planDetail = planData && planData[upperCase(devicePlanName)]
         // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
         // const actualTax = (planPrice * tax) / 100
         // const payableAmount = planPrice + actualTax
@@ -213,10 +251,8 @@ const Details = ({ route, navigation }) => {
                 </View>
                 <View style={styles.features}>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{translate("Features")}</Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    6 month Data Retention</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Phone,Text,Chat and Email Support</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    Optional Protection Plan(2.99/mo)</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    5% off future BHS Hardware purchase</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail.lineOne}</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail.lineTwo}</Text></Text>
                 </View>
             </>
         )
@@ -291,7 +327,7 @@ const Details = ({ route, navigation }) => {
                         <View style={[styles.detailsSubView, { flex: 2 }]} >
                             <Text style={styles.textStyle}>{translate("Role")}</Text>
                             {item.roles.map((role) =>
-                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text>)}
+                            <Text style={[styles.textStyle, { color: ColorConstant.BLACK, marginTop: hp(1) }]}>{role.name == "ROLE_REGULAR" ? "Regular" : "Admin"}</Text>)}
                         </View>
                     </View>
                 )}
@@ -391,6 +427,24 @@ const Data = [
         role: 'Regular'
     }
 ]
+const planData = {
+    "PROFESSIONAL" : {
+      lineOne: "Update frequency - 30 sec",
+      lineTwo: "Data retention - 2 year",
+    },
+    "BASIC" : {
+      lineOne: "Update frequency - 180 sec",
+      lineTwo: "Data retention - 3 month",
+    },
+    "STANDARD": {
+      lineOne: "Update frequency - 90 sec",
+      lineTwo: "Data retention - 1 year",
+    },
+    "PREMIUM": {
+      lineOne: "Update frequency - 60 sec",
+      lineTwo: "Data retention - 1.5 year",
+    },
+    };
 
 const styles = StyleSheet.create({
 

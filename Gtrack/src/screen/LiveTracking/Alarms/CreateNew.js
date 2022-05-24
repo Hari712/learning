@@ -33,21 +33,26 @@ const CreateNew = ({navigation,route}) => {
     alertList: getAlertTypetListInfo(state),
     distUnit: dist(state)
 }))
-
+  console.log('route', route)
   useEffect(() => {    
-    if(route){
+    if(route && route.params && !route.params.isPanic){
       const editData = route.params;
       console.log("Edit data",editData)
       if(editData){
         const devices = Object.values(editData.editData.devices).map((item)=>item.deviceName)
         setSelectedDevice(devices)
-        setSelectedNotification(editData.editData.notification.type)
+        setSelectedNotification(editData.editData.notificationType)
         setEditingValues(editData.editData)
-        setSelectedAlarmType(editData.editData.notification.attributes.alarms)
-        if( editData.editData.notification.type == 'deviceOverspeed' && editData.editData.notification.attributes.value){
-          setOverspeedInputValue(convertSpeedVal(editData.editData.notification.attributes.value,distUnit))
+        setSelectedAlarmType(editData.editData.attributes.alarms)
+        if( editData.editData.notificationType == 'deviceOverspeed' && editData.editData.attributes.value){
+          setOverspeedInputValue(editData.editData.attributes.value,distUnit)
         }
       }
+    }
+    if(route && route.params && route.params.isPanic) {
+      console.log('alertList', alertList)
+      setSelectedNotification("alarm")
+      setSelectedAlarmType("sos")
     }
   }, 
   [])
@@ -88,11 +93,11 @@ const CreateNew = ({navigation,route}) => {
         selectedDevice.filter((selectedItem)=>{        
           if(item.deviceName === selectedItem){ 
             console.log("loop",item.id,selectedItem)   
-            arrSelectedId.push(item.id)
+            route.params && !route.params.isPanic ? arrSelectedId.push(item) : arrSelectedId.push(item.id)
           }
         })  }) 
       :null;
-        
+      console.log('arrSelectedId', arrSelectedId)
       navigation.navigate(SCREEN_CONSTANTS.ALARMS_TYPE,{
         alarmType:selectedAlarmType, 
         deviceOverSpeedValue:overSpeedInputValue,
@@ -100,7 +105,9 @@ const CreateNew = ({navigation,route}) => {
         selectedDeviceList:selectedDevice,
         notificationType:selectedNotification, 
         selectedDeviceID: arrSelectedId, 
-        editData:editingValues})
+        editData:editingValues,
+        isPanic: route.params && route.params.isPanic ? route.params.isPanic : false
+      })
       
     }
   }
@@ -131,7 +138,7 @@ return (
   <ScrollView contentContainerStyle={styles.container}>
     
       <TouchableOpacity style={styles.header}>
-        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params?'Edit': 'Create New'}</Text>
+        <Text  style={{fontFamily:'Nunito-Bold',fontSize:16,color:ColorConstant.WHITE}}>{route.params  && !route.params.isPanic ?'Edit': 'Create New'}</Text>
       </TouchableOpacity>
       <View style={{paddingHorizontal:hp(4),marginTop:hp(3),zIndex:5, flex:1}}>
         <MultiSelect 
@@ -165,6 +172,7 @@ return (
           <View style={{marginTop:hp(14),marginBottom:hp(12)}}> 
             <DropDown label={translate("Alarm_Type")} 
               defaultValue={showNotificationName(selectedAlarmType)} 
+              edit={route.params  ? false : true}
               valueSet={(item) => setSelectedAlarmType(showNotificationLabel(item))} 
               dataList={alarmTypes.map((item) => showNotificationName(item) )} />   
           </View>
@@ -172,6 +180,7 @@ return (
         
         <View style={{marginTop:hp(3),top:selectAlarmDDy,position:'absolute',paddingHorizontal:hp(4),width:wp(100),flex:1}}>       
             <DropDown label='Notification Type*' 
+              edit={route.params ? false : true}
               defaultValue={showNotificationName(selectedNotification)} 
               valueSet={(item)=> setSelectedNotification(showNotificationLabel(item))} 
               dataList={alertList.map((item)=>showNotificationName(item))} />   

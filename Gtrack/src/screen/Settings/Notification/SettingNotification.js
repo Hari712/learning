@@ -14,7 +14,7 @@ import NotificationItem from './NotificationItem';
 const NOTIFICATIONS = [
     'Push Notification',
     'Email Notification',
-    // 'SMS Notification'
+    'SMS Notification'
 ]
 
 const SettingNotification = ({ navigation }) => {
@@ -70,9 +70,9 @@ const SettingNotification = ({ navigation }) => {
 
     const onTapSave = () => { 
         if(isConnected) {
-            let data = notificationData.map((item)=>item.notification)
+            // let data = notificationData.map((item)=>item.notification)
             AppManager.showLoader() 
-            const requestBody = data
+            const requestBody = notificationData
             dispatch(SettingNotificationActions.requestUpdateSettingsNotification(requestBody, loginData.id, onUpdateSuccess, onUpdateError))
         } else {
             AppManager.showNoInternetConnectivityError()
@@ -99,7 +99,7 @@ const SettingNotification = ({ navigation }) => {
             />
         )
     }
-    
+    console.log('NOTIFICATIONS', NOTIFICATIONS)
     return (
         <View style={styles.container}>
             <View style={styles.mainView}>

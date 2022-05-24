@@ -24,7 +24,7 @@ const DeviceCell = (props) => {
     const expiryDate = item && item.devicePlan && item.devicePlan.deActivationDate ? item.devicePlan.deActivationDate : 'None'
 
     return (
-        <TouchableOpacity onPress={() => { NavigationService.push(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.deviceId, title: deviceDTO.deviceName, devicePrimaryId: deviceDTO.id }) }
+        <TouchableOpacity onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.DETAILS, { deviceId: deviceDTO.deviceId, title: deviceDTO.deviceName, devicePrimaryId: deviceDTO.id }) }
         } style={styles.cardContainer}>
 
             {/* Blue top head */}
@@ -45,7 +45,7 @@ const DeviceCell = (props) => {
                     </Tooltip>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.push(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
+                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
                     <EditIcon width={11.947} height={11.947}/>
                 </TouchableOpacity>
             </View>

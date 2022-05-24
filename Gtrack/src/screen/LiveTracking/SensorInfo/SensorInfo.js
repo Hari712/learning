@@ -76,14 +76,14 @@ const SensorInfo = ({ navigation }) => {
             <View>
                 {devices.map((subitem, subkey) => {
                     return (
-                        <View key={subkey} style={styles.subCategory}>
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, {data:subitem})}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
                             <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, {data:subitem})} >
                                 <NextArrowOrangeIcon  style={styles.icon} />
                             </TouchableOpacity>
 
-                        </View>
+                        </TouchableOpacity>
                     )
                 })}
             </View>
@@ -102,14 +102,14 @@ const SensorInfo = ({ navigation }) => {
 
                     <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
                         {/* heading */}
-                        <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
-                            {item.devices.length > 0 ?
+                            {(index !== selectedKey) ?
                                 <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
                                     <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
                                 </View> : null 
                             }
-                        </View>
+                        </TouchableOpacity>
 
                         {/* Expanded data View */}
 
@@ -137,6 +137,7 @@ const SensorInfo = ({ navigation }) => {
                         style={styles.searchText}
                         onChangeText={text => searchHandle(text) }                    
                         value={searchKeyword}
+                        placeholderTextColor={ColorConstant.GREY}
                     />
                 </View>
         )
@@ -275,25 +276,26 @@ const styles = StyleSheet.create({
         flex:1
     },
     noRecordsText: {
-        fontFamily:"Nunito-Regular",
+        fontFamily:"Nunito-LightItalic",
         fontSize:hp(2),
         color:ColorConstant.BLACK
     },
     search: {
         paddingHorizontal:hp(2),
-        height:hp(6),
-        marginHorizontal:hp(3),
+        height:hp(5),
+        marginHorizontal:hp(2.5),
         borderRadius:12,
         marginTop:hp(4),
-        marginBottom:hp(2),
+        // marginBottom:hp(2),
         elevation:4,
         shadowColor: ColorConstant.BLACK,
         shadowOffset: {
             width: 0,
             height: 0
         },
+        justifyContent  : 'center',
         shadowRadius: 3,
-        shadowOpacity: 1,
+        shadowOpacity: 0.2,
         backgroundColor:ColorConstant.WHITE
     },
 })

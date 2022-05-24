@@ -1,5 +1,7 @@
 const BASE_URL = 'https://qa-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 
+export const env = 'qa' //'prod' //'dev' 
+
 // https://qa-api.vegitone.com/gtrackapi/
 // https://dev-api.vegitone.com/gtrackapi/
 
@@ -53,12 +55,13 @@ const ApiConstants = {
     GET_DEVICE_DETAILS_BY_ID:(userId) => `${USER}${userId}/dashboard/device`,
     GET_USER_ACTIVE_INACTIVE_COUNT_BY_ID:(userId, role) => `${USER}${userId}/dashboard/user/count?role=${role}`,
     GET_USER_DEVICE_OR_NOTIFICATION_COUNT:(userId, deviceId) => `${USER}${userId}/dashboard/alarms?deviceId=${deviceId}`,
-    GET_ALARMS_LIST:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
+    GET_ALARMS_LIST:(userId, keyword) => `${USER}${userId}/trace/alerts/list?typeOrName=${keyword}`, 
     ADD_ALARMS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts`,
+    UPDATE_ALARMS_NOTIFICATION: (userId) => `${USER}${userId}/trace/alerts/update`,
     //GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/consolidated?value=false`,
     GET_DEVICES_BY_USER_ID:(userId) => `${USER}${userId}/devices/subscribedDevices`,
     GET_ALERT_TYPES:(userId) => `${USER}${userId}/trace/alerts/types`,
-    DELETE_NOTIFICATION:(userId, deviceId) => `${USER}${userId}/trace/notifications/${deviceId}`,
+    DELETE_NOTIFICATION:(userId, notificationId) => `${USER}${userId}/trace/alerts/${notificationId}`,
     SEARCH_ASSET: (userId, name) => `${USER}${userId}/assets/search?name=${name}`,
     FETCH_TAX_BY_PROVINCE: (userId) => `${USER}${userId}/tax`,
     GET_GEOFENCE:(userId) => `${USER}${userId}/trace/geofences?typeOrName=`,
@@ -83,7 +86,9 @@ const ApiConstants = {
     SEARCH_ALARMS:(userId, keyword) => `${USER}${userId}/trace/alerts?typeOrName=${keyword}`,
     ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
     GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`,
-    GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`
+    GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`,
+    GET_NOTIFICATION_LIST: (userId) => `${USER}${userId}/notification/list?type=FIREBASE`,
+    UPDATE_NOTIFICATION_READ: (userId) => `${USER}${userId}/notification/markAsRead`
 }
 
 export default ApiConstants

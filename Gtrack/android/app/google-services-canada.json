@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "580746676141",
-    "project_id": "gtrackindia-df645",
-    "storage_bucket": "gtrackindia-df645.appspot.com"
+    "project_number": "187673422741",
+    "project_id": "gtrack-3e924",
+    "storage_bucket": "gtrack-3e924.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:580746676141:android:320260a11e403b29330324",
+        "mobilesdk_app_id": "1:187673422741:android:aa1f1dda483f206739249c",
         "android_client_info": {
           "package_name": "com.gtrack"
         }
       },
       "oauth_client": [
         {
-          "client_id": "580746676141-vnck407bn9kdkrc20m4vf7qc3rh7ht52.apps.googleusercontent.com",
+          "client_id": "187673422741-0hla3t5o65r9fao4bqbqdfcbs5jae65s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyADy_okkIO_irQO4n-wlxUlBuL3P4D7VOk"
+          "current_key": "AIzaSyAUD6jC3CpqNngXfzPJEtT0Pgy1MtiKVqo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "580746676141-vnck407bn9kdkrc20m4vf7qc3rh7ht52.apps.googleusercontent.com",
+              "client_id": "187673422741-0hla3t5o65r9fao4bqbqdfcbs5jae65s.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

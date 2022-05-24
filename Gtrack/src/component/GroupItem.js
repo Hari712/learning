@@ -85,10 +85,19 @@ const GroupItem = props => {
                 },
                 "devicePlan": null
             }
-            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSuccess, onRemoveDeviceError))
+            dispatch(DeviceActions.requestUpdateGroupDevice(loginInfo.id, requestBody, onSetDefaultSuccess, onRemoveDeviceError))
         } else {
             AppManager.showNoInternetConnectivityError()
         }
+    }
+    const onSetDefaultSuccess = (data) => {
+        AppManager.showSimpleMessage('success', { message: 'Default Group changed successfully', description: '', floating: true })
+        console.log("Success", data)
+        dispatch(DeviceActions.requestGetAllUserGroups(loginInfo.id, onGroupListLoadedSuccess, onGroupListLoadedError))
+        loadNonGroupedDevice()
+        setAddClick(-1)
+        setSelectedDevices([])
+        AppManager.hideLoader()
     }
 
     const removeConfirm = () => {
@@ -264,13 +273,14 @@ const GroupItem = props => {
     return (
         <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2)}}>
             <View style={{ flexDirection:'row', alignItems: 'center', }} >
-                <View style={{paddingRight:wp(3)}}>
+               {!isAdmin && <View style={{paddingRight:wp(3)}}>
                     {isDefault ? <RadioButtonIconClicked/> :
                     <TouchableOpacity onPress={()=> setDefaultGroup()}>
                         <RadioButtonIcon/>
                     </TouchableOpacity>
                     }
                 </View>
+                }
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
                 {/* Arrow Left Side */}
                 <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
@@ -279,8 +289,15 @@ const GroupItem = props => {
 
                 <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
                     {/* heading */}
-                    <View style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
-                        <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
+                    <View onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                        <TouchableOpacity style={{flex: 1}} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} >
+                             <Text style={{  color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
+                             {/* {(index !== selectedKey) && item.devices.length > 0 ?
+                                <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center', marginRight: wp(5)}}>
+                                    <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
+                                </View> : null 
+                            } */}
+                        </TouchableOpacity>
                         {isDefault && isOwner ? renderDefaultContainer() : renderActionButton()}
                     </View>
 

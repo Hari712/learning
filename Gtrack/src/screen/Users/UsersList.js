@@ -57,7 +57,7 @@ const UsersList = (props) => {
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
                     {!isSuperOwner && <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}   onChange={() => onChangeSwitch(item)}/>}
                     <Text style={styles.activeText}>{isSuperOwner ? null : item.isActive?"Active":"Inactive"}</Text>
-                        <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.push(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
+                        <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.navigate(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
                             <UsersEditIcon/>
                         </TouchableOpacity>
                 </View>
@@ -67,7 +67,7 @@ const UsersList = (props) => {
                 <View style={styles.whiteSubView} >
                     <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
                     {item.roles.map((role,key) =>
-                    <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Owner"}</Text> )}       
+                    <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Admin"}</Text> )}       
                 </View>
                 <View style={{flexDirection:'column',flex:1}} >
                     <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>

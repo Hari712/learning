@@ -8,7 +8,7 @@ import { SEARCH_GEOFENCE_REQUEST } from './../../constants/ActionTypes';
 function* requestGetAlarmsList(action) {
     const { userId, onSuccess, onError } = action
     try {
-        const url = ApiConstants.GET_ALARMS_LIST(userId)
+        const url = ApiConstants.GET_ALARMS_LIST(userId, '')
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(LivetrackingActions.setAlarmsListResponse(result))
@@ -21,7 +21,7 @@ function* requestGetAlarmsList(action) {
 function* requestAddAlarmsNotification(action) {
     const { isUpdate, userId, data, onSuccess, onError } = action
     try {
-        const url = ApiConstants.ADD_ALARMS_NOTIFICATION(userId)
+        const url = isUpdate ? ApiConstants.UPDATE_ALARMS_NOTIFICATION(userId) : ApiConstants.ADD_ALARMS_NOTIFICATION(userId)
         console.log("URL",url, isUpdate)
         const response = isUpdate ? yield call(API.put, url, data) : yield call(API.post, url, data)
         console.log("Resposne", response)
@@ -215,7 +215,7 @@ function* requestSearchGeofence(action) {
 function* requestSearchAlarms(action) {
     const { userId, keyword, onSuccess, onError } = action
     try {
-        const url = ApiConstants.SEARCH_ALARMS(userId, keyword)
+        const url = ApiConstants.GET_ALARMS_LIST(userId, keyword)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(LivetrackingActions.setSearchAlarmResponse(result))
@@ -232,6 +232,30 @@ function* requestSendPanicData(action) {
         const url = ApiConstants.TRACCAR_URL + '?id=' + deviceId + '&alarm=sos'
         const response = yield call(API.post, url)
         console.log("Panic Send", response, url)
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+function* requestNotificationListData(action) {
+    const { userId, requestBody, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_NOTIFICATION_LIST(userId)
+        const response = yield call(API.post, url, requestBody)
+        const result = response.result ? response.result : []
+        console.log('requestNotificationListData response', response.result, result)
+        yield put(LivetrackingActions.setNotificationListResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+function* requestUpdateNotificationRead(action) {
+    const { userId, requestBody, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.UPDATE_NOTIFICATION_READ(userId)
+        const response = yield call(API.put, url, requestBody)
+        console.log('requestBody response', response)
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -257,5 +281,7 @@ export function* watchLivetracking() {
     yield takeLatest(types.SEARCH_GROUP_REQUEST, requestSearchGroup),
     yield takeLatest(types.SEARCH_GEOFENCE_REQUEST, requestSearchGeofence),
     yield takeLatest(types.SEARCH_ALARMS_REQUEST, requestSearchAlarms),
-    yield takeLatest(types.SEND_PANIC_ALARM_DATA_REQUEST, requestSendPanicData)
+    yield takeLatest(types.SEND_PANIC_ALARM_DATA_REQUEST, requestSendPanicData),
+    yield takeLatest(types.GET_NOTIFICATION_LIST_REQUEST, requestNotificationListData),
+    yield takeLatest(types.UPDATE_NOTIFICATION_READ_EVENT, requestUpdateNotificationRead)
 }

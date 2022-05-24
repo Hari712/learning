@@ -90,7 +90,7 @@ console.log('default group',group, arrGroupnames)
 
     function onAssignGroupSuccess(data) {
         AppManager.hideLoader()
-        NavigationService.push(SCREEN_CONSTANTS.COMPLETE_SETUP)
+        NavigationService.navigate(SCREEN_CONSTANTS.COMPLETE_SETUP)
     }
 
     function onAssignGroupError(error) {
@@ -98,7 +98,7 @@ console.log('default group',group, arrGroupnames)
     }
 
     function onTapNotNow() {
-        NavigationService.push(SCREEN_CONSTANTS.COMPLETE_SETUP)
+        NavigationService.navigate(SCREEN_CONSTANTS.COMPLETE_SETUP)
     }
 
     function onSubmit(item) {

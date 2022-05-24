@@ -1,4 +1,4 @@
-import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX, NUMBER_REGEX, CIRCLE_REGEX } from '../constants/AppConstants'
+import { EMAIL_PHONE_REGEX, EMAIL_VALIDATION_REGEX, NAME_VALIDATION_REGEX, PASSWORD_REGEX, NUMBER_REGEX, CIRCLE_REGEX, FCM_TOKEN } from '../constants/AppConstants'
 import { Dimensions, Platform, StatusBar } from 'react-native'
 import { removeItem } from '../utils/storage';
 import { USER_DATA } from '../constants/AppConstants';
@@ -28,6 +28,7 @@ export const validateName = (input) => {
 
 export const clearUserData = async () => {
     await removeItem(USER_DATA)
+    // await removeItem(FCM_TOKEN)
     clearToken();
 };
 
@@ -185,6 +186,10 @@ export function isIphoneX() {
       return round(value / 1.15077945, 2)
   }
 
+  export function convertAltitudeRound(value) {
+      return round(value * 100) / 100
+  }
+
   export function convertTemp(value, settingsData) {
     const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
     if(value){
@@ -195,7 +200,7 @@ export function isIphoneX() {
         return round(value*33.8,2) + " " + unit
     } 
     else 
-      return "-"
+      return "Not Available"
   }
 
   export function convertTime(value, settingsData) {

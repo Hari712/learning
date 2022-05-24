@@ -10,7 +10,7 @@ import { CIRCLE_REGEX, SCREEN_CONSTANTS } from '../constants/AppConstants';
 import { GeoFenceListIcon, PinIcon } from '../component/SvgComponent';
 import { isCircle } from '../utils/helper';
 import { useSelector } from 'react-redux';
-import { isRoleRegular } from '../screen/Selector';
+import { isRoleRegular, getLoginInfo } from '../screen/Selector';
 import NavigationService from '../navigation/NavigationService';
 import GeoFenceMapPreview from './GeofenceMapPreview';
 
@@ -18,8 +18,9 @@ const GeofenceEditDialog = (props) => {
 
     const { dialogVisible, setDialogVisible, activeGeofence, selectedDevice } = props
 
-    const { isRegular } = useSelector(state => ({
-        isRegular: isRoleRegular(state)
+    const { isRegular, loginInfo } = useSelector(state => ({
+        isRegular: isRoleRegular(state),
+        loginInfo: getLoginInfo(state),
     }))
 
     const [type, setType] = useState('')
@@ -31,6 +32,7 @@ const GeofenceEditDialog = (props) => {
     const [webNotificator, setWebNotificator] = useState(false)
     const [mailNotificator, setMailNotificator] = useState(false)
     const [pushNotificator, setPushNotificator] = useState(false)
+    const [smsNotificator, setSmsNotification] = useState(false)
     const [selectedUser, setSelectedUser] = useState()
 
     useEffect(() => {
@@ -40,12 +42,14 @@ const GeofenceEditDialog = (props) => {
                 setWebNotificator(String(notificator).includes("web"))
                 setPushNotificator(String(notificator).includes("firebase"))
                 setMailNotificator(String(notificator).includes("mail"))
+                setSmsNotification(String(notificator).includes("sms"))
             } else {
                 setWebNotificator(false)
                 setPushNotificator(false)
                 setMailNotificator(false)
             }
-        let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.map((item) => item.firstName+" "+item.lastName) : null
+            
+        let user  = activeGeofence && activeGeofence.userDTOS ? activeGeofence.userDTOS.filter((name,key) =>(name.id !== loginInfo.id)).map((item)=> item.firstName+" "+item.lastName) : null
         setSelectedUser(user)
 
         }
@@ -163,6 +167,12 @@ return(
                                 <Image style={{alignSelf:'flex-start'}} source={pushNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Push Notification")}</Text>
                             </View>
+
+                            <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
+                                <Image  source={smsNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
+                                <Text style={styles.notificationStyle}> Sms Notification</Text>
+                            </View>
+
                             <View style={{flexDirection:'row',alignItems:'center',left:wp(-2)}}>
                                 <Image style={{alignSelf:'flex-start'}} source={mailNotificator ? images.liveTracking.checkboxClick : images.liveTracking.checkbox}></Image>
                                 <Text style={styles.notificationStyle}> {translate("Email Notification")}</Text>
@@ -207,6 +217,7 @@ return(
                         mailNotificator:mailNotificator,
                         webNotificator: webNotificator,
                         pushNotificator: pushNotificator,
+                        smsNotificator: smsNotificator,
                         selectedUser: selectedUser,
                         status: activeGeofence.isActive
                     }})

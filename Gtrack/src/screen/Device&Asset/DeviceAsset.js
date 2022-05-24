@@ -80,9 +80,9 @@ const DeviceAsset = ({ navigation }) => {
 
   function menuHandle(item) {
     if (item == 'Create') {
-      NavigationService.push(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
+      NavigationService.navigate(SCREEN_CONSTANTS.CREATE_DEVICE_ASSET)
     } else if (item == 'Manage') {
-      NavigationService.push(SCREEN_CONSTANTS.MANAGE)
+      NavigationService.navigate(SCREEN_CONSTANTS.MANAGE)
     }
     // else if (item == 'Export All Devices') {
     //   exportAllDevices()
@@ -150,19 +150,35 @@ const DeviceAsset = ({ navigation }) => {
 
   const renderFooter = () => {
     //it will show indicator at the bottom of the list when data is loading otherwise it returns null
-    if (!isLoadMoreData || isRefreshing) return null;
-    return <ActivityIndicator style={styles.activityIndicator} />;
+    if (isLoadMoreData) 
+    return <View ><ActivityIndicator size="large" color="#000000" /></View>;
+    else    
+        return null;
+    // if (!isLoadMoreData || isRefreshing) return null;
+    // return <ActivityIndicator style={styles.activityIndicator} />;
   }
 
   const loadMoreDevices = () => {
+    // if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
+    //   if (deviceList.length < totalCount) {
+    //     setOnEndReachedCalledDuringMomentum(true)
+    //     setIsLoadMoreData(true)
+    //     setIsRefreshing(false)
+    //     setPageIndex(pageIndex + 1)
+    //   }
+    // }
     if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
       if (deviceList.length < totalCount) {
-        setIsRefreshing(false)
-        setIsLoadMoreData(true)
-        setOnEndReachedCalledDuringMomentum(true)
-        setPageIndex(pageIndex + 1)
+      // setIsRefreshing(false)
+      setIsLoadMoreData(true)
+      // setToMerge(true)
+      setPageIndex(pageIndex + 1)
       }
-    }
+      else {
+          setIsLoadMoreData(false)
+          setOnEndReachedCalledDuringMomentum(true)
+      }
+  }
   }
 
   function renderDeviceCell({ item, index }) {
@@ -191,7 +207,7 @@ const DeviceAsset = ({ navigation }) => {
     {menuClick ? renderMenu() : null}
     <TouchableWithoutFeedback onPress={()=> setMenuClick(false)}>
       
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, flexGrow: 1 }}>
         {deviceList.length > 0 ? 
           <FlatList
             refreshControl={
@@ -201,6 +217,7 @@ const DeviceAsset = ({ navigation }) => {
                 onRefresh={onRefresh}
               />
             }    
+            contentContainerStyle={{paddingVertical: hp(2)}}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item, index) => index.toString()}
             ListFooterComponent={renderFooter}
@@ -257,7 +274,7 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     color: "#000",
-    marginTop: '2%'
+    // marginTop: '2%'
   },
   noRecords: {
     marginVertical:hp(38),

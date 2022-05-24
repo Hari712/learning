@@ -113,9 +113,14 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
+        let clear;
+        if(route.params) {
+            const { editingData } = route.params
+            clear = editingData.type !== role
+        }
         role === 'Circle' ?
-            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail,editingData:oldData}) :
-            NavigationService.push(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail,editingData:oldData})
+            NavigationService.navigate(SCREEN_CONSTANTS.GEOFENCE_CIRCLE, {devices: selectedDeviceDetail,editingData:oldData, editedType: clear}) :
+            NavigationService.navigate(SCREEN_CONSTANTS.GEOFENCE_POLYGON, {devices: selectedDeviceDetail,editingData:oldData, editedType: clear})
        //navigation.navigate('GeoFenceType', { type: role })
     }
 

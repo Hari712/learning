@@ -92,6 +92,9 @@ function resetText() {
   newPwdRef.current.clear()
   setConfirmPassword('')
   confirmPwdRef.current.clear()
+  setOldpwdEyeClick(false)
+  setNewpwdEyeClick(false)
+  setConfirmPwdEyeClick(false)
 }
 
 function onSubmitPasscode() {
