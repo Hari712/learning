@@ -12,6 +12,7 @@ import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { UsersEditIcon, EmailIcon, PhoneIcon } from '../../component/SvgComponent';
 import NavigationService from '../../navigation/NavigationService';
+import center from '@turf/center';
 
 const UsersList = (props) => {
 
@@ -57,8 +58,9 @@ const UsersList = (props) => {
                     {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
                     {!isSuperOwner && <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } showText={false} value={item.isActive}   onChange={() => onChangeSwitch(item)}/>}
                     <Text style={styles.activeText}>{isSuperOwner ? null : item.isActive?"Active":"Inactive"}</Text>
-                        <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.navigate(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} style={{marginLeft:hp(2)}}>
-                            <UsersEditIcon/>
+                        <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.navigate(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} 
+                        style={{marginLeft:hp(2),borderColor:ColorConstant.WHITE,borderWidth:1,width:hp(3),height:hp(3),alignItems:'center',borderRadius:10,alignContent:'center'}}>
+                            <UsersEditIcon height={hp(2.8)} width={hp(1.8)}/>
                         </TouchableOpacity>
                 </View>
 
