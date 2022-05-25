@@ -7,14 +7,14 @@ import { ColorConstant } from '../../../constants/ColorConstants';
 import { getLoginState, isRoleRegular, isRoleAdmin, isRoleOwner } from '../../Selector';
 import ShadowView from 'react-native-simple-shadow-view';
 import { translate } from '../../../../App'
-import { Dialog, FontSize }from '../../../component';
+import { Dialog, FontSize, EditIcon } from '../../../component';
 import { SCREEN_CONSTANTS, PHONE_REGEX } from '../../../constants/AppConstants';
-import { BackIcon, EditIcon } from '../../../component/SvgComponent';
+import { BackIcon, } from '../../../component/SvgComponent';
 import NavigationService from '../../../navigation/NavigationService';
 
 const Profile = ({ navigation }) => {
 
-    const [dialogVisible,setDialogVisible] = useState(false)
+    const [dialogVisible, setDialogVisible] = useState(false)
 
     const { loginData, isRegular, isOwner, isAdmin } = useSelector(state => ({
         loginData: getLoginState(state),
@@ -22,8 +22,8 @@ const Profile = ({ navigation }) => {
         isOwner: isRoleOwner(state),
         isRegular: isRoleRegular(state)
     }))
-    
-    const userType = loginData.role.map((item) => item.name )
+
+    const userType = loginData.role.map((item) => item.name)
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -38,30 +38,30 @@ const Profile = ({ navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
             )
-            
+
         });
     }, [navigation]);
 
     useEffect(() => {
-    
+
     }, [])
 
     function RenderBillingDialog(item, index) {
         return (
-            <Dialog 
-                    heading={translate("Dailog_string")}
-                    message={translate("Dailog_string1")}
-                    visible={dialogVisible}
-                    onTouchOutside={() => setDialogVisible(false)}
-                    positiveButtonName={translate("Delete")}
-                    negativeButtonName={translate("Cancel")}
-                    negativeHandle={() => setDialogVisible(false)}
-                    positiveHandle={() => setDialogVisible(false)}
-                />
+            <Dialog
+                heading={translate("Dailog_string")}
+                message={translate("Dailog_string1")}
+                visible={dialogVisible}
+                onTouchOutside={() => setDialogVisible(false)}
+                positiveButtonName={translate("Delete")}
+                negativeButtonName={translate("Cancel")}
+                negativeHandle={() => setDialogVisible(false)}
+                positiveHandle={() => setDialogVisible(false)}
+            />
         )
     }
 
@@ -73,11 +73,13 @@ const Profile = ({ navigation }) => {
 
             <View style={styles.mainViewStyle}>
                 <View style={styles.blueBoxStyle}>
-                <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
+                    <Text style={styles.textStyle}>{loginData.firstName} {loginData.lastName}</Text>
 
-                    <TouchableOpacity style={{padding: hp(0.8)}} onPress={()=> { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, {loginData:loginData, userType:userType}) }} >
-                        <EditIcon width={12.947} height={12.947}/>
-                    </TouchableOpacity>
+                    {/* <TouchableOpacity style={{ padding: hp(0.8) }} onPress={() => { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, { loginData: loginData, userType: userType }) }} >
+                        <EditIcon width={12.947} height={12.947} />
+                    </TouchableOpacity> */}
+                    <EditIcon btnStyle={{ marginRight: hp(0.5) }}
+                        onPress={() => { navigation.navigate(SCREEN_CONSTANTS.EDIT_PROFILE, { loginData: loginData, userType: userType }) }} />
                 </View>
 
                 {/* <View style={styles.subMainView}>
@@ -93,18 +95,18 @@ const Profile = ({ navigation }) => {
                 </View> */}
 
                 <View style={styles.subMainView}>
-                    <View style = {{flexDirection: 'row' }}>
-                        <View style = {{ }}>
-                            <Text  style={styles.emailText}> {translate("Mobile Number")} </Text>
-                            <Text  style={styles.emailText}> {translate("Email Address")} </Text>
-                            <Text  style={styles.emailText}> {translate("User Type")} </Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{}}>
+                            <Text style={styles.emailText}> {translate("Mobile Number")} </Text>
+                            <Text style={styles.emailText}> {translate("Email Address")} </Text>
+                            <Text style={styles.emailText}> {translate("User Type")} </Text>
                         </View>
-                        <View style = {{ }}>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone.replace(PHONE_REGEX, '$1-$2-$3') :'-'}</Text>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{loginData.email}</Text>
-                            <Text style={[styles.emailText, {marginLeft: wp(5)}]}>{isOwner ? "Owner" : isAdmin ? "Admin" : "Regular"}</Text>
+                        <View style={{}}>
+                            <Text style={[styles.emailText, { marginLeft: wp(5) }]}>{loginData.phonePrefix} {loginData.phone ? loginData.phone.replace(PHONE_REGEX, '$1-$2-$3') : '-'}</Text>
+                            <Text style={[styles.emailText, { marginLeft: wp(5) }]}>{loginData.email}</Text>
+                            <Text style={[styles.emailText, { marginLeft: wp(5) }]}>{isOwner ? "Owner" : isAdmin ? "Admin" : "Regular"}</Text>
                         </View>
-                        
+
                     </View>
                 </View>
 
@@ -176,9 +178,9 @@ const styles = StyleSheet.create({
     },
     emailMainView: {
         flexDirection: 'row',
-        alignItems:'center',
-        flex:1,
-        justifyContent:'space-evenly'
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'space-evenly'
     },
     emailText: {
         color: ColorConstant.BLACK,
@@ -210,8 +212,8 @@ const styles = StyleSheet.create({
         fontSize: hp(1.4),
     },
     underLineStyle: {
-        borderBottomColor: ColorConstant.GREY, 
-        borderBottomWidth: 0.5, 
+        borderBottomColor: ColorConstant.GREY,
+        borderBottomWidth: 0.5,
         marginHorizontal: hp(2),
     },
     textMainView: {
@@ -219,9 +221,9 @@ const styles = StyleSheet.create({
         marginVertical: hp(1),
         flexDirection: 'row',
         justifyContent: 'space-between'
-    },  
+    },
     textStyleNone: {
-        color: ColorConstant.BLACK, 
+        color: ColorConstant.BLACK,
         fontSize: FontSize.FontSize.small
     },
     billingAddressDialogView: {

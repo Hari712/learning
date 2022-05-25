@@ -21,12 +21,13 @@ import LogoutConfirmationDialog from './LogoutConfirmationDialog'
 import RateUsDialog from './RateUsDialog'
 import PanicDialog from './PanicDialog';
 import PdfViewerDialog from './PdfViewer';
+import EditIcon from './EditIcon'
 
-export { 
+export {
     EditText,
-    Loader, 
-    CustomButton, 
-    CustomDialog, 
+    Loader,
+    CustomButton,
+    CustomDialog,
     DropDown,
     ExapandableListView,
     FontSize,
@@ -34,8 +35,8 @@ export {
     MultiSelect,
     MultiSelectDropdown,
     TextField,
-    Button, 
-    AddNewAssetDialog, 
+    Button,
+    AddNewAssetDialog,
     AddNewGroupDialog,
     DeviceCell,
     AssetConfirmationDialog,
@@ -45,5 +46,6 @@ export {
     LogoutConfirmationDialog,
     RateUsDialog,
     PanicDialog,
-    PdfViewerDialog
+    PdfViewerDialog,
+    EditIcon
 }

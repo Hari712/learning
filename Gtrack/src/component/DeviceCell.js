@@ -7,8 +7,10 @@ import NavigationService from '../navigation/NavigationService'
 import Tooltip from 'rn-tooltip'
 import { translate } from '../../App'
 import { SCREEN_CONSTANTS } from '../constants/AppConstants'
-import { TruckIcon, TravelIcon, ShuttleVanIcon, MachineryIcon, CarIcon, KidsIcon, PersonnelItemIcon, FamilyVanIcon, BusIcon, TrailerIcon, EditIcon } from './SvgComponent'
+import { TruckIcon, TravelIcon, ShuttleVanIcon, MachineryIcon, CarIcon, KidsIcon, PersonnelItemIcon, FamilyVanIcon, BusIcon, TrailerIcon, } from './SvgComponent'
 import IconConstant from '../constants/iconConstant'
+import EditIcon from './EditIcon'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const DeviceCell = (props) => {
 
@@ -41,13 +43,15 @@ const DeviceCell = (props) => {
                         pointerStyle={styles.pointerStyle}
                         containerStyle={styles.toolTipContainer}
                     >
-                    <IconConstant type={item.assetDTO && item.assetDTO.assetType} color={ColorConstant.WHITE} />
+                        <IconConstant type={item.assetDTO && item.assetDTO.assetType} color={ColorConstant.WHITE} />
                     </Tooltip>
                 </View>
 
-                <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
-                    <EditIcon width={11.947} height={11.947}/>
-                </TouchableOpacity>
+                {/* <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
+                    <EditIcon width={11.947} height={11.947} />
+                </TouchableOpacity> */}
+                <EditIcon btnStyle={styles.editButton}
+                    onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }} />
             </View>
 
             {/* White Body container */}
@@ -58,7 +62,7 @@ const DeviceCell = (props) => {
                 </View>
                 <View style={[styles.column, { width: '40%' }]} >
                     <Text style={styles.whiteBodyText}>{translate("Selected Plan")}</Text>
-                    <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{devicePlan} {devicePlan  ? <Text style={{ color: ColorConstant.GREY }}> {item && item.devicePlan ? '(' + item.devicePlan.planDuration + ')' : null} </Text> : 'null'}</Text>
+                    <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{devicePlan} {devicePlan ? <Text style={{ color: ColorConstant.GREY }}> {item && item.devicePlan ? '(' + item.devicePlan.planDuration + ')' : null} </Text> : 'null'}</Text>
                     {/* <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{planStatus} {devicePlan && devicePlan.planDuration ? <Text style={{ color: ColorConstant.GREY }}>({item.duration})</Text> : null}</Text> */}
                 </View>
                 <View style={[styles.column, { width: '25%' }]}>
@@ -68,9 +72,9 @@ const DeviceCell = (props) => {
             </View>
 
             {/* Active/Inactive body */}
-            <View style={[styles.activeInactiveText,{backgroundColor:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.LIGHTENGREEN : ColorConstant.LIGHTENPINK}]}>
-                <Text style={{fontSize:FontSize.FontSize.small,color:deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK}}>
-                    {deviceDTO.deviceStatus == "ACTIVE" ? "Active": "Inactive" }
+            <View style={[styles.activeInactiveText, { backgroundColor: deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.LIGHTENGREEN : ColorConstant.LIGHTENPINK }]}>
+                <Text style={{ fontSize: FontSize.FontSize.small, color: deviceDTO.deviceStatus == "ACTIVE" ? ColorConstant.DARKENGREEN : ColorConstant.DARKPINK }}>
+                    {deviceDTO.deviceStatus == "ACTIVE" ? "Active" : "Inactive"}
                 </Text>
             </View>
 
@@ -108,21 +112,35 @@ const styles = StyleSheet.create({
         width: "100%",
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
-        justifyContent:'center'
-       // paddingHorizontal: hp(3)
+        justifyContent: 'center'
+        // paddingHorizontal: hp(3)
     },
     blueTopHead: {
         alignContent: 'space-between',
         marginVertical: hp(0.5)
     },
     editButton: {
+        // flexDirection: 'row',
+        // width: wp(10),
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // zIndex: 10,
+        // padding: hp(1.5),
+        // marginLeft: 'auto',
+
         flexDirection: 'row',
-        width: wp(10),
+        // width: wp(10),
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 10,
-        padding: hp(1.5),
-        marginLeft: 'auto'
+        marginVertical: hp(1.5),
+        marginLeft: 'auto',
+        borderColor: ColorConstant.WHITE,
+        borderWidth: 1,
+        width: hp(3),
+        height: hp(3),
+        alignItems: 'center',
+        borderRadius: 10,
     },
     headerTitle: {
         color: ColorConstant.WHITE,
@@ -159,7 +177,7 @@ const styles = StyleSheet.create({
     toolTip: {
         marginTop: hp(1),
         left: 10,
-        zIndex:10
+        zIndex: 10
     },
     textStyle: {
         margin: hp(0.5),

@@ -16,7 +16,7 @@ const AssteItem = (props) => {
 
     const { item, index, editClick, setEditClick } = props
 
-    const { loginInfo ,assetTypeList, isConnected } = useSelector((state) => ({
+    const { loginInfo, assetTypeList, isConnected } = useSelector((state) => ({
         loginInfo: getLoginInfo(state),
         isConnected: state.network.isConnected,
         assetTypeList: getAssetTypeListInfo(state)
@@ -31,7 +31,7 @@ const AssteItem = (props) => {
     const [assetLName, setAssetLName] = useState();
     const [assetLdescription, setAssetLDescription] = useState(description)
 
-    useEffect(() => setAssetLName(assetName), [assetName]) 
+    useEffect(() => setAssetLName(assetName), [assetName])
     console.log('asset item', item, assetLName)
     const popUp = () => {
         return (
@@ -118,7 +118,7 @@ const AssteItem = (props) => {
 
     function renderDeleteConfirmationDialog() {
         return (
-            <DeleteConfirmationDialog 
+            <DeleteConfirmationDialog
                 isVisible={isDeleteConfirmationDialogVisible}
                 onTapConfirm={() => onTapConfirm()}
                 onTapClose={() => hideDeleteAssetConfirmationDialog()}
@@ -135,11 +135,15 @@ const AssteItem = (props) => {
                     <Text style={{ flex: 1, color: (index == editClick) ? ColorConstant.BLUE : ColorConstant.BLACK }}>{assetName}</Text>
                     <TouchableOpacity onPress={() => {
                         (index == editClick) ? setEditClick(-1) : setEditClick(index)
-                    }} style={{ marginRight: hp(2) }}>
-                        {(index == editClick) ? <DeviceAssetEditIconClicked width={16.93} height={17.011}/> : <DeviceAssetEditIcon width={16.93} height={17.011}/>}
+                    }} style={{ marginRight: hp(1), padding: hp(0.5), }}>
+                        {(index == editClick) ? <DeviceAssetEditIconClicked height={hp(2.3)} width={hp(2.3)} /> : <DeviceAssetEditIcon height={hp(2.3)} width={hp(2.3)} />}
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => showDeleteAssetConfirmationDialog()} >
-                        <TrashIcon width={17.567} height={19.547}/>
+                    <TouchableOpacity onPress={() => showDeleteAssetConfirmationDialog()}
+                        style={{ padding: hp(0.5) }}>
+                        <TrashIcon
+                            height={hp(2.4)} width={hp(2.4)}
+                        // width={17.567} height={19.547} 
+                        />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -190,9 +194,10 @@ const styles = StyleSheet.create({
     },
     whiteCard: {
         flexDirection: 'row',
-        paddingHorizontal: hp(2),
+        paddingLeft: hp(2),
+        paddingRight: hp(1),
         alignItems: 'center',
-        width: '90%'
+        width: '90%',
     },
 })
 

@@ -251,67 +251,67 @@ const GroupItem = props => {
     function renderActionButton() {
         return (
             <>
-                { !isAdmin ?
-                    <TouchableOpacity style={{ flex: 0.3 }} onPress={() => onDeleteGroup()} >
-                        <TrashIcon style={styles.icon} width={16.567} height={18.547} />
+                {!isAdmin ?
+                    <TouchableOpacity style={{ padding: hp(0.5), marginRight: hp(1.5), }} onPress={() => onDeleteGroup()} >
+                        <TrashIcon style={styles.icon} height={hp(2.4)} width={hp(2.4)} />
                     </TouchableOpacity>
-                : null}
+                    : null}
 
-                <TouchableOpacity style={{ flex: 0.3 }} style={{ alignSelf: 'center' }}
+                <TouchableOpacity style={{ flex: 0.3, }} style={{ alignSelf: 'center' }}
                     onPress={() => {
                         (item.id == addClick) ?
                             setAddClick(-1) :
                             setAddClick(item.id)
                     }}
                 >
-                    {item.id == addClick ? <AddIconClicked width={14.487} height={14.487} /> : <AddIcon width={14.487} height={14.487} />}
+                    {item.id == addClick ? <AddIconClicked height={hp(1.8)} width={hp(1.8)} /> : <AddIcon height={hp(1.8)} width={hp(1.8)} />}
                 </TouchableOpacity>
             </>
         )
     }
 
     return (
-        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2)}}>
-            <View style={{ flexDirection:'row', alignItems: 'center', }} >
-               {!isAdmin && <View style={{paddingRight:wp(3)}}>
-                    {isDefault ? <RadioButtonIconClicked/> :
-                    <TouchableOpacity onPress={()=> setDefaultGroup()}>
-                        <RadioButtonIcon/>
-                    </TouchableOpacity>
+        <View style={{ width: '100%', alignItems: 'center', paddingVertical: hp(2) }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', }} >
+                {!isAdmin && <View style={{ paddingRight: wp(3) }}>
+                    {isDefault ? <RadioButtonIconClicked /> :
+                        <TouchableOpacity onPress={() => setDefaultGroup()}>
+                            <RadioButtonIcon />
+                        </TouchableOpacity>
                     }
                 </View>
                 }
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
-                {/* Arrow Left Side */}
-                <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
-                    {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
-                </TouchableOpacity>
+                    {/* Arrow Left Side */}
+                    <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
+                        {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
+                    </TouchableOpacity>
 
-                <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
-                    {/* heading */}
-                    <View onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
-                        <TouchableOpacity style={{flex: 1}} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} >
-                             <Text style={{  color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
-                             {/* {(index !== selectedKey) && item.devices.length > 0 ?
+                    <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }}>
+                        {/* heading */}
+                        <View onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }}>
+                            <TouchableOpacity style={{ flex: 1, alignSelf: 'center' }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} >
+                                <Text style={{ color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{groupName}</Text>
+                                {/* {(index !== selectedKey) && item.devices.length > 0 ?
                                 <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center', marginRight: wp(5)}}>
                                     <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
                                 </View> : null 
                             } */}
-                        </TouchableOpacity>
-                        {isDefault && isOwner ? renderDefaultContainer() : renderActionButton()}
-                    </View>
-
-                    {/* Expanded data View */}
-
-                    {(index == selectedKey) ?
-                        <View style={{ marginTop: hp(1) }} >
-                            {!isEmpty(arrDevices) ? renderDevices() : <Text style={styles.noDevicesText}>No Devices</Text>}
+                            </TouchableOpacity>
+                            {isDefault && isOwner ? renderDefaultContainer() : renderActionButton()}
                         </View>
-                        : null}
+
+                        {/* Expanded data View */}
+
+                        {(index == selectedKey) ?
+                            <View style={{ marginTop: hp(1) }} >
+                                {!isEmpty(arrDevices) ? renderDevices() : <Text style={styles.noDevicesText}>No Devices</Text>}
+                            </View>
+                            : null}
 
 
+                    </View>
                 </View>
-            </View>
             </View>
             {/* Popup View */}
             {(item.id == addClick) ? addDevicePopup() : null}
@@ -403,8 +403,10 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE
     },
     icon: {
-        margin: 4,
-        alignSelf: 'center'
+        // margin: 4,
+        alignSelf: 'center',
+        // padding: hp(0.5),
+        // backgroundColor: 'red'
     },
     subCategory: {
         flexDirection: 'row',

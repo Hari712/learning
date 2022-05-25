@@ -4,14 +4,14 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FontSize } from '../../../component';
 import { useSelector, useDispatch } from 'react-redux';
-import {  getLoginState, isRoleRegular } from '../../Selector';
+import { getLoginState, isRoleRegular } from '../../Selector';
 import { GeoFenceTrashIcon } from '../../../component/SvgComponent';
 import Switches from 'react-native-switches'
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { isCircle } from './../../../utils/helper';
 
-const GeofenceList = ( props ) => {
+const GeofenceList = (props) => {
 
     const { item, setActiveGeofence, setSelectedDevice, setDialogVisible, dialogVisible, setGeofenceId, setGeofenceName, setDeleteDialogBox, deleteDialogBox } = props
 
@@ -30,12 +30,12 @@ const GeofenceList = ( props ) => {
     }
 
     function onChangeUserStatusSuccess(data) {
-        console.log("Success",data)
+        console.log("Success", data)
         const { result } = data
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: result, description: '' })
     }
-    
+
     function onChangeUserStatusError(error) {
         AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
@@ -51,18 +51,18 @@ const GeofenceList = ( props ) => {
 
         <View style={styles.cardContainer} >
             <View style={styles.blueBox}>
-                <TouchableOpacity onPress={onTapItem} style={{flex:1,marginRight:hp(1)}}>
+                <TouchableOpacity onPress={onTapItem} style={{ flex: 1, marginRight: hp(1), paddingVertical: hp(1.5) }}>
                     <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
                 </TouchableOpacity>
-                { !isRegular ? <Switches shape={'line'} buttonColor={item.isActive? ColorConstant.DARKENGREEN : ColorConstant.RED } textOn={item.isActive ? "Enable" :"Disable"} textOff=' ' textFont={"Nunito-Regular"} textSize={10} colorTextOn={ColorConstant.WHITE}  showText={true} value={item.isActive}  buttonSize={15} onChange={() => onChangeSwitch(item)}/> : null}
-                { !isRegular ?  
-                <TouchableOpacity style={{padding:hp(1),marginLeft:hp(2)}} onPress={() => { 
-                    setGeofenceId(item.geofence.id)
-                    setGeofenceName(item.geofence.name)
-                    setDeleteDialogBox(!deleteDialogBox)
-                }}>
-                    <GeoFenceTrashIcon/>
-                </TouchableOpacity> : null}
+                {!isRegular ? <Switches shape={'line'} buttonColor={item.isActive ? ColorConstant.DARKENGREEN : ColorConstant.RED} textOn={item.isActive ? "Enable" : "Disable"} textOff=' ' textFont={"Nunito-Regular"} textSize={10} colorTextOn={ColorConstant.WHITE} showText={true} value={item.isActive} buttonSize={15} onChange={() => onChangeSwitch(item)} /> : null}
+                {!isRegular ?
+                    <TouchableOpacity style={{ padding: hp(1), marginLeft: hp(1), }} onPress={() => {
+                        setGeofenceId(item.geofence.id)
+                        setGeofenceName(item.geofence.name)
+                        setDeleteDialogBox(!deleteDialogBox)
+                    }}>
+                        <GeoFenceTrashIcon height={hp(2)} width={hp(2)} />
+                    </TouchableOpacity> : null}
             </View>
 
             <TouchableOpacity onPress={onTapItem} style={styles.whiteContainer}>
@@ -70,10 +70,10 @@ const GeofenceList = ( props ) => {
                     <Text style={styles.whiteContainerText}>Geofence Type</Text>
                     <Text style={styles.whiteContainerSubText}>{geoFenceType}</Text>
                 </View>
-                
+
                 <View style={styles.deviceNameMainView}>
                     <Text style={styles.whiteContainerText}>Device Name</Text>
-                    <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={styles.whiteContainerSubText}>{item.deviceList[0] ? item.deviceList[0].deviceName : "-"}</Text>
                         <Text style={styles.whiteContainerSubText}>{item.deviceList.length > 1 ? "+" + (item.deviceList.length - 1) : null}</Text>
                     </View>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingHorizontal:hp(1.5),
+        paddingHorizontal: hp(1.5),
         backgroundColor: ColorConstant.WHITE,
     },
     createNewMainView: {
@@ -141,7 +141,8 @@ const styles = StyleSheet.create({
         width: "100%",
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
-        paddingHorizontal: hp(2),
+        paddingLeft: hp(2),
+        paddingRight: hp(1)
 
     },
     blueBoxTitle: {
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         flex: 1,
         fontFamily: 'Nunito-Bold',
-        textAlignVertical:'center'
+        textAlignVertical: 'center'
     },
     whiteContainer: {
         flexDirection: 'row',
@@ -207,8 +208,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize.FontSize.medium,
         color: ColorConstant.ORANGE,
         fontWeight: 'bold',
-        textAlign:'center',
-        flex:1
+        textAlign: 'center',
+        flex: 1
         //marginLeft: wp(30)
     },
     crossImageStyle: {

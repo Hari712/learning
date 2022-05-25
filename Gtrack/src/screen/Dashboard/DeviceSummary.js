@@ -1,10 +1,10 @@
 import React, { Component, useEffect, useState } from 'react'
-import { View, Image, StyleSheet, Text,TouchableOpacity, Platform } from 'react-native'
+import { View, Image, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import ShadowView from 'react-native-simple-shadow-view'
 import { translate } from '../../../App'
-import { FontSize} from '../../component'
+import { FontSize } from '../../component'
 import IconConstant from '../../constants/iconConstant'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import { DeviceSetupIcon, FullScreenIcon } from '../../component/SvgComponent'
@@ -12,63 +12,63 @@ import NavigationService from '../../navigation/NavigationService'
 import { SubscriptionStatus, SubscriptionStatusColor } from '../../utils/helper'
 
 const DeviceSummary = (props) => {
-    const { deviceList: {deviceList} } = props;
+    const { deviceList: { deviceList } } = props;
     return (
         <ShadowView style={styles.deviceSummaryContainer}>
 
             <View style={styles.deviceSummaryMainViewStyle}>
 
-            <View style={styles.leftMainViewStyle}>
-                <Text style={styles.summary}>{translate("Device Summary")}</Text>
-            </View>
+                <View style={styles.leftMainViewStyle}>
+                    <Text style={styles.summary}>{translate("Device Summary")}</Text>
+                </View>
 
-            <View style={styles.rightMainViewStyle}>
-                <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")} {props.deviceList.deviceCount}</Text>
+                <View style={styles.rightMainViewStyle}>
+                    <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")} {props.deviceList.deviceCount}</Text>
 
-                <TouchableOpacity style={styles.ViewallStyle} onPress={() => { NavigationService.navigate('Device & Asset') }} >
-                    <FullScreenIcon  resizeMode='contain'/>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.ViewallStyle} onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.DEVICE_ASSET) }} >
+                        <FullScreenIcon resizeMode='contain' />
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={styles.refreshImageStyle} onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
-                    <DeviceSetupIcon width={17} height={17}  resizeMode='cover'/>
-                </TouchableOpacity>
-            </View>
+                    {/* <TouchableOpacity style={styles.refreshImageStyle} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE)} >
+                        <DeviceSetupIcon width={17} height={17} resizeMode='cover' />
+                    </TouchableOpacity> */}
+                </View>
 
             </View>
             {deviceList.map((item, key) =>
 
-            <ShadowView style={styles.summaryContainer} key={key}>
-                <View style={styles.subContainer}>
+                <ShadowView style={styles.summaryContainer} key={key}>
+                    <View style={styles.subContainer}>
 
-                <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
-                    <View style={{ flex: 0.25 }}>
-                        <View style={styles.deviceSummaryDetailView}>
-                            {/* <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' /> */}
-                            {item.assetDTO && item.assetDTO.assetType ? <IconConstant color={ColorConstant.BLUE} type={item.assetDTO.assetType} /> : <IconConstant color={ColorConstant.BLUE} type={'default'} /> }
+                        <View style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center' }}>
+                            <View style={{ flex: 0.25 }}>
+                                <View style={styles.deviceSummaryDetailView}>
+                                    {/* <Image source={item.assetDTO && item.assetDTO.assetType ? iconConstant(item.assetDTO.assetType) : iconConstant('') } style={styles.image} resizeMode='contain' /> */}
+                                    {item.assetDTO && item.assetDTO.assetType ? <IconConstant color={ColorConstant.BLUE} type={item.assetDTO.assetType} /> : <IconConstant color={ColorConstant.BLUE} type={'default'} />}
+                                </View>
+                            </View>
+                            <View style={styles.titleText}>
+                                <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
+                                <Text style={styles.subtitle}>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
+                            </View>
+
                         </View>
-                    </View>
-                    <View style={styles.titleText}>
-                        <Text style={styles.title}>{item.deviceDTO.deviceName}</Text>
-                        <Text style={styles.subtitle }>{item.groupDTO && item.groupDTO.groupName ? item.groupDTO.groupName : "Default"}</Text>
-                    </View>
 
-                </View>
+                        <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'flex-end', }}>
+                            <View style={[styles.stateViewStyle, { backgroundColor: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).bg }]}>
+                                <Text style={[styles.stateTextStyle, { color: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).color }]}>
+                                    {SubscriptionStatus(item.devicePlan && item.devicePlan.status)}
+                                </Text>
+                            </View>
+                        </View>
 
-                <View style={{ flex: 0.3, justifyContent: 'center', alignItems: 'flex-end', }}>
-                    <View style={[styles.stateViewStyle, { backgroundColor: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).bg }]}>
-                        <Text style={[styles.stateTextStyle, { color: SubscriptionStatusColor(item.devicePlan && item.devicePlan.status).color }]}>
-                            {SubscriptionStatus(item.devicePlan && item.devicePlan.status)}
-                        </Text> 
                     </View>
-                </View>
-
-                </View>
-            </ShadowView>
+                </ShadowView>
 
             )}
 
-            </ShadowView>
-        )
+        </ShadowView>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
         // paddingBottom: hp(1)
     },
     summary: {
-        fontSize: hp(1.4), 
-        fontWeight: 'bold', 
+        fontSize: hp(1.4),
+        fontWeight: 'bold',
         color: ColorConstant.BLACK
     },
     rightMainViewStyle: {
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     },
     ViewallStyle: {
         width: hp(2),
-        marginRight: wp(3)
+        // marginRight: wp(3)
     },
     refreshImageStyle: {
         width: hp(2)
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         width: '93%',
         marginVertical: hp(2),
         // height: hp(40),
-        flex:1,
+        flex: 1,
         borderRadius: hp(5.5 / 2),
         borderWidth: 0.5,
         borderColor: ColorConstant.WHITE,
@@ -128,13 +128,13 @@ const styles = StyleSheet.create({
         marginTop: hp(2),
         paddingBottom: hp(1)
     },
-    deviceSummaryMainViewStyle: Platform.OS=="ios" ? {
+    deviceSummaryMainViewStyle: Platform.OS == "ios" ? {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: hp(2.5),
         zIndex: 5
-    }:{
+    } : {
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -144,18 +144,18 @@ const styles = StyleSheet.create({
         marginVertical: hp(1.5),
         paddingVertical: '3%',
         backgroundColor: ColorConstant.WHITE,
-        borderRadius: hp(5.5/2),
-        borderWidth:  Platform.OS=="ios" ? 0.5 : 0,
+        borderRadius: hp(5.5 / 2),
+        borderWidth: Platform.OS == "ios" ? 0.5 : 0,
         borderColor: ColorConstant.GREY,
         shadowColor: ColorConstant.BLACK,
-        shadowOffset: {width: 0, height: 5},
+        shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.3,
         elevation: 10,
         paddingHorizontal: '3%',
         marginHorizontal: '4%'
     },
     subContainer: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         flex: 1
     },
     deviceSummaryDetailView: {
@@ -167,22 +167,22 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     titleText: {
-        paddingHorizontal: '3%', 
-        marginTop: hp(1), 
+        paddingHorizontal: '3%',
+        marginTop: hp(1),
         flex: 0.74
     },
     title: {
-        color: ColorConstant.BLACK, 
-        fontSize: hp(1.4), 
+        color: ColorConstant.BLACK,
+        fontSize: hp(1.4),
         fontWeight: '500'
     },
     subtitle: {
-        color: ColorConstant.GREY, 
-        fontSize: hp(1.4), 
+        color: ColorConstant.GREY,
+        fontSize: hp(1.4),
         marginTop: hp(1)
     },
     image: {
-        height: hp(3.5), 
+        height: hp(3.5),
         width: hp(3.5)
     },
     stateViewStyle: {
