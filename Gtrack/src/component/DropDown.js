@@ -35,80 +35,79 @@ class DropDown extends React.Component {
         const data = ['Car', 'Truck', 'Tempo'];
 
         function handleRightAccessory() {
-            return <View style={[{ justifyContent:'center',height:otherProps.inputContainerStyle && otherProps.inputContainerStyle.height?otherProps.inputContainerStyle.height/2: styles.inputButton.height-hp(2)},accessoryStyle]}>
-                <NextIcon resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle}/>
+            return <View style={[{ justifyContent: 'center', height: otherProps.inputContainerStyle && otherProps.inputContainerStyle.height ? otherProps.inputContainerStyle.height / 2 : styles.inputButton.height - hp(2) }, accessoryStyle]}>
+                <NextIcon resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle} />
                 {/* <Image source={images.image.next} resizemode='contain' style={styles.downArrow, otherProps.rightIconStyle} /> */}
             </View>
         }
 
         const show = () => {
-            if(edit === false)
-            {
-                return false; 
+            if (edit === false) {
+                return false;
             }
             this.setState({ isSelected: !this.state.isSelected })
         }
 
         return (
             <>
-                    <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}
-                        onLayout={({ nativeEvent }) => {
-                            console.log("Sub container ", nativeEvent.layout)
-                            this.setState({ buttonMeasurement: nativeEvent.layout })
-                            //setSubContainerHeight(nativeEvent.layout.height)
-                        }}>
-                        <OutlinedTextField
-                            label={label}
-                            textColor={ColorConstant.BLACK}
-                            tintColor={ColorConstant.GREY}
-                            baseColor={ColorConstant.GREY}
-                            fontSize={FontSize.FontSize.small}
-                            //labelTextStyle={{ fontFamily: 'Nunito-ExtraLightItalic' }}
-                            labelFontSize={FontSize.FontSize.small}
-                            contentInset={{ input: 10.45, label: 3 }}
-                            //defaultValue={this.state.selected}
-                            renderRightAccessory={() => handleRightAccessory()}
-                            editable={false}
-                            inputContainerStyle={styles.inputContainer}
-                            activeLineWidth={1}
-                            containerStyle={styles.inputButton}
-                            {...otherProps}
-                        />
-                    </TouchableOpacity>
+                <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}
+                    onLayout={({ nativeEvent }) => {
+                        console.log("Sub container ", nativeEvent.layout)
+                        this.setState({ buttonMeasurement: nativeEvent.layout })
+                        //setSubContainerHeight(nativeEvent.layout.height)
+                    }}>
+                    <OutlinedTextField
+                        label={label}
+                        textColor={ColorConstant.BLACK}
+                        tintColor={ColorConstant.GREY}
+                        baseColor={ColorConstant.GREY}
+                        fontSize={FontSize.FontSize.small}
+                        //labelTextStyle={{ fontFamily: 'Nunito-ExtraLightItalic' }}
+                        labelFontSize={FontSize.FontSize.small}
+                        contentInset={{ input: 10.45, label: 3 }}
+                        //defaultValue={this.state.selected}
+                        renderRightAccessory={() => handleRightAccessory()}
+                        editable={false}
+                        inputContainerStyle={styles.inputContainer}
+                        activeLineWidth={1}
+                        containerStyle={styles.inputButton}
+                        {...otherProps}
+                    />
+                </TouchableOpacity>
                 {/* </View> */}
 
 
-                { this.state.isSelected ?
+                {this.state.isSelected ?
                     <View style={[isRelative ?
                         styles.relativeDropdown :
                         [styles.absoluteDropdown, { top: this.state.buttonMeasurement.y + this.state.buttonMeasurement.height }],
                         dropdownStyle]}>
-                            <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' contentContainerStyle={{ flexGrow: 1 }} style={{height: 'auto', maxHeight:hp(17),zIndex:99}}>
-                                {dataList && dataList.length > 0 ? dataList.map((item, key) => {
-                                    return (
-                                        <TouchableOpacity style={[{flex:1}, otherProps.dataRowStyle]} key={key}
-                                            onPress={() => {
-                                                console.log("clicked")
-                                                this.setState({
-                                                    selected: item,
-                                                    isSelected: false,
-                                                },()=>{this.props.valueSet(item)})
-                                                
-                                            }}>
-                                            <Text style={[styles.datatextStyle, otherProps.dataTextStyle]}>{item}</Text>
-                                            
-                                            {key <  (dataList ? dataList.length-1 : data.length-1) ?
-                                                <View style={styles.horizontalLine} />
-                                                : null}
+                        <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' contentContainerStyle={{ flexGrow: 1 }} style={{ height: 'auto', maxHeight: hp(17), zIndex: 99 }}>
+                            {dataList && dataList.length > 0 ? dataList.map((item, key) => {
+                                return (
+                                    <TouchableOpacity style={[{ flex: 1 }, otherProps.dataRowStyle]} key={key}
+                                        onPress={() => {
+                                            console.log("clicked")
+                                            this.setState({
+                                                selected: item,
+                                                isSelected: false,
+                                            }, () => { this.props.valueSet(item) })
 
-                                        </TouchableOpacity>
-                                    )
-                                }) : 
-                                <View style={{height:hp(6)}}>
-                                    <Text style={{textAlign:'center',textAlignVertical:'center',flex:1}}>{emptyDataText ? emptyDataText:"No data"}</Text>
+                                        }}>
+                                        <Text style={[styles.datatextStyle, otherProps.dataTextStyle]}>{item}</Text>
+
+                                        {key < (dataList ? dataList.length - 1 : data.length - 1) ?
+                                            <View style={styles.horizontalLine} />
+                                            : null}
+
+                                    </TouchableOpacity>
+                                )
+                            }) :
+                                <View style={{ height: hp(6) }}>
+                                    <Text style={{ textAlign: 'center', textAlignVertical: 'center', flex: 1 }}>{emptyDataText ? emptyDataText : "No data"}</Text>
                                 </View>
-                             }
-                            </ScrollView>
+                            }
+                        </ScrollView>
                     </View>
                     : null}
 
@@ -126,8 +125,8 @@ const styles = StyleSheet.create({
     downArrow: {
         marginVertical: hp(1),
     },
-    imageContainer:{
-        marginBottom:hp(1)
+    imageContainer: {
+        marginBottom: hp(1)
     },
     horizontalLine: {
         borderWidth: 0.5,
@@ -156,13 +155,13 @@ const styles = StyleSheet.create({
         borderColor: ColorConstant.GREY,
     },
     absoluteDropdown: {
-        position: 'absolute',        
+        position: 'absolute',
         marginTop: hp(0.5),
         borderRadius: hp(2),
         opacity: 1,
         marginHorizontal: wp(10),
         alignSelf: 'center',
-        elevation:10,
+        elevation: 10,
         shadowColor: ColorConstant.GREY,
         shadowOffset: {
             width: 0,
@@ -182,8 +181,8 @@ const styles = StyleSheet.create({
         height: hp(6),
     },
     datatextStyle: {
-        paddingVertical:hp(1.5),
-        flex:1
+        paddingVertical: hp(1.5),
+        flex: 1
     },
     inputButton: {
         alignSelf: 'center',

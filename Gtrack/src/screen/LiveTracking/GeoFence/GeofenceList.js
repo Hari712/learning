@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FontSize } from '../../../component';
 import { useSelector, useDispatch } from 'react-redux';
 import { getLoginState, isRoleRegular } from '../../Selector';
-import { GeoFenceTrashIcon } from '../../../component/SvgComponent';
+import { GeoFenceTrashIcon, SwitchOffIcon, SwitchOnIcon } from '../../../component/SvgComponent';
 import Switches from 'react-native-switches'
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
@@ -54,7 +54,31 @@ const GeofenceList = (props) => {
                 <TouchableOpacity onPress={onTapItem} style={{ flex: 1, marginRight: hp(1), paddingVertical: hp(1.5) }}>
                     <Text style={styles.blueBoxTitle}> {item.geofence.name} </Text>
                 </TouchableOpacity>
-                {!isRegular ? <Switches shape={'line'} buttonColor={item.isActive ? ColorConstant.DARKENGREEN : ColorConstant.RED} textOn={item.isActive ? "Enable" : "Disable"} textOff=' ' textFont={"Nunito-Regular"} textSize={10} colorTextOn={ColorConstant.WHITE} showText={true} value={item.isActive} buttonSize={15} onChange={() => onChangeSwitch(item)} /> : null}
+                {!isRegular ?
+                    // <Switches
+                    //     shape={'line'}
+                    //     buttonColor={item.isActive ? ColorConstant.DARKENGREEN : ColorConstant.RED}
+                    //     textOn={item.isActive ? "Enable" : "Disable"}
+                    //     textOff=' ' textFont={"Nunito-Regular"}
+                    //     textSize={10}
+                    //     colorTextOn={ColorConstant.WHITE}
+                    //     showText={true}
+                    //     value={item.isActive}
+                    //     buttonSize={15}
+                    //     onChange={() => onChangeSwitch(item)} />
+
+                    <TouchableOpacity style={{ marginRight: hp(0.5), }} activeOpacity={0.2}
+                        onPress={() => onChangeSwitch(item)}>
+                        {item.isActive == true ?
+                            <SwitchOnIcon />
+                            :
+                            <SwitchOffIcon />
+                        }
+                    </TouchableOpacity>
+                    : null}
+                {!isRegular ?
+                    <Text style={styles.activeText}>{item.isActive ? "Enable" : "Disable"}</Text>
+                    : null}
                 {!isRegular ?
                     <TouchableOpacity style={{ padding: hp(1), marginLeft: hp(1), }} onPress={() => {
                         setGeofenceId(item.geofence.id)
@@ -152,6 +176,14 @@ const styles = StyleSheet.create({
         flex: 1,
         fontFamily: 'Nunito-Bold',
         textAlignVertical: 'center'
+    },
+    activeText: {
+        //fontSize:FontSize.FontSize.small,
+        color: ColorConstant.WHITE,
+        paddingLeft: hp(0.5),
+        // flex: 0.35,
+        fontSize: Platform.os == 'ios' ? 14 : 12,
+        fontFamily: 'Nunito-Regular',
     },
     whiteContainer: {
         flexDirection: 'row',

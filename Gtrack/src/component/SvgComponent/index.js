@@ -78,7 +78,7 @@ import UsersInfoIcon from './UsersInfoIcon'
 import FilterIconClicked from './FilterIconClicked'
 import FilterIcon from './FilterIcon'
 import PhoneIcon from './PhoneIcon'
-import GreyCrossIcon from  './GreyCrossIcon'
+import GreyCrossIcon from './GreyCrossIcon'
 import OverSpeedIcon from './OverSpeedIcon'
 import BatteryIcon from './BatteryIcon'
 import GeoFenceIcon from './GeoFenceIcon'
@@ -137,6 +137,8 @@ import DefaultAssetIcon from './DefaultAssetIcon'
 import DeviceOfflineIcon from './DeviceOfflineIcon';
 import DownloadIcon from './DownloadIcon';
 import ClockIcon from './ClockIcon'
+import SwitchOffIcon from './SwitchOffIcon'
+import SwitchOnIcon from './SwitchOnIcon'
 
 export {
     BarCodeScanIcon,
@@ -276,5 +278,7 @@ export {
     DefaultAssetIcon,
     DeviceOfflineIcon,
     DownloadIcon,
-    ClockIcon
+    ClockIcon,
+    SwitchOffIcon,
+    SwitchOnIcon
 }

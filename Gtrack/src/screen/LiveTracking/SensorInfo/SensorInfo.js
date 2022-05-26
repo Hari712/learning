@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import  { FontSize }from '../../../component';
+import { FontSize } from '../../../component';
 import { FlatList } from 'react-native-gesture-handler';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
@@ -33,7 +33,7 @@ const SensorInfo = ({ navigation }) => {
 
     React.useEffect(() => {
         isFocused ? null : setSearchKeyword("")
-    },[isFocused]);
+    }, [isFocused]);
 
 
     React.useLayoutEffect(() => {
@@ -49,7 +49,7 @@ const SensorInfo = ({ navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
             )
@@ -59,15 +59,15 @@ const SensorInfo = ({ navigation }) => {
     useEffect(() => {
         AppManager.showLoader()
         dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id, onSuccess, onError))
-    },[])
+    }, [])
 
     function onSuccess(data) {
-        console.log("Sucess",data)
+        console.log("Sucess", data)
         AppManager.hideLoader()
     }
 
     function onError(data) {
-        console.log("Error",data)
+        console.log("Error", data)
         AppManager.hideLoader()
     }
 
@@ -76,11 +76,11 @@ const SensorInfo = ({ navigation }) => {
             <View>
                 {devices.map((subitem, subkey) => {
                     return (
-                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, {data:subitem})}>
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, { data: subitem })}>
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, {data:subitem})} >
-                                <NextArrowOrangeIcon  style={styles.icon} />
+                            <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.DEVICE_INFO, { data: subitem })} >
+                                <NextArrowOrangeIcon style={styles.icon} />
                             </TouchableOpacity>
 
                         </TouchableOpacity>
@@ -90,9 +90,9 @@ const SensorInfo = ({ navigation }) => {
         )
     }
 
-    const SensorInfoItem = ({ item,index }) => {
+    const SensorInfoItem = ({ item, index }) => {
         return (
-            <View style={{  paddingVertical: hp(2), paddingHorizontal:hp(3), width:'100%' }}>
+            <View style={{ paddingVertical: hp(2), paddingHorizontal: hp(3), width: '100%' }}>
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
 
                     {/* Arrow Left Side */}
@@ -105,9 +105,9 @@ const SensorInfo = ({ navigation }) => {
                         <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
                             {(index !== selectedKey) ?
-                                <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
-                                    <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
-                                </View> : null 
+                                <View style={{ backgroundColor: ColorConstant.LIGHTENBLUE, width: wp(8), alignItems: 'center' }}>
+                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Bold' }}>{item.devices.length}</Text>
+                                </View> : null
                             }
                         </TouchableOpacity>
 
@@ -131,22 +131,22 @@ const SensorInfo = ({ navigation }) => {
 
     const searchBar = () => {
         return (
-                <View style={styles.search}>
-                    <TextInput 
-                        placeholder={translate("Search_here")}
-                        style={styles.searchText}
-                        onChangeText={text => searchHandle(text) }                    
-                        value={searchKeyword}
-                        placeholderTextColor={ColorConstant.GREY}
-                    />
-                </View>
+            <View style={styles.search}>
+                <TextInput
+                    placeholder={translate("Search_here")}
+                    style={styles.searchText}
+                    onChangeText={text => searchHandle(text)}
+                    value={searchKeyword}
+                    placeholderTextColor={ColorConstant.GREY}
+                />
+            </View>
         )
     }
 
     const renderItemData = () => {
-        return(
-            <View style={{flex: 1}}>
-                <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>Select device</Text>
+        return (
+            <View style={{ flex: 1 }}>
+                <Text style={{ fontFamily: 'Nunito-Regular', color: ColorConstant.BLUE, paddingHorizontal: hp(3), marginTop: hp(2) }}>Select device</Text>
                 <FlatList
                     style={{}}
                     contentContainerStyle={{}}
@@ -159,7 +159,7 @@ const SensorInfo = ({ navigation }) => {
     }
 
     const noRecords = () => {
-        return(
+        return (
             <View style={styles.noRecords}>
                 <Text style={styles.noRecordsText}>No records found</Text>
             </View>
@@ -169,9 +169,9 @@ const SensorInfo = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {searchBar()}
-            
-            {groupDevices.length > 0 ? renderItemData() : noRecords() }
-    
+
+            {groupDevices.length > 0 ? renderItemData() : noRecords()}
+
         </SafeAreaView>
     )
 }
@@ -266,37 +266,37 @@ const styles = StyleSheet.create({
     },
     searchText: {
         //fontSize:FontSize.FontSize.small,
-        fontSize:14,
-        color:ColorConstant.BLACK,
+        fontSize: 14,
+        color: ColorConstant.BLACK,
         //fontFamily:'Nunito-Italic'
     },
     noRecords: {
-        marginVertical:hp(35),
-        alignItems:'center',
-        flex:1
+        marginVertical: hp(35),
+        alignItems: 'center',
+        flex: 1
     },
     noRecordsText: {
-        fontFamily:"Nunito-LightItalic",
-        fontSize:hp(2),
-        color:ColorConstant.BLACK
+        fontFamily: "Nunito-LightItalic",
+        fontSize: hp(2),
+        color: ColorConstant.BLACK
     },
     search: {
-        paddingHorizontal:hp(2),
-        height:hp(5),
-        marginHorizontal:hp(2.5),
-        borderRadius:12,
-        marginTop:hp(4),
+        paddingHorizontal: hp(2),
+        height: hp(5),
+        marginHorizontal: hp(2.5),
+        borderRadius: 12,
+        marginTop: hp(4),
         // marginBottom:hp(2),
-        elevation:4,
+        elevation: 4,
         shadowColor: ColorConstant.BLACK,
         shadowOffset: {
             width: 0,
             height: 0
         },
-        justifyContent  : 'center',
+        justifyContent: 'center',
         shadowRadius: 3,
         shadowOpacity: 0.2,
-        backgroundColor:ColorConstant.WHITE
+        backgroundColor: ColorConstant.WHITE
     },
 })
 

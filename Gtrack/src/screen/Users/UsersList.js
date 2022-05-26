@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -10,25 +10,33 @@ import AppManager from '../../constants/AppManager';
 import Switches from 'react-native-switches'
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { EmailIcon, PhoneIcon } from '../../component/SvgComponent';
+import { EmailIcon, PhoneIcon, SwitchOffIcon, SwitchOnIcon, } from '../../component/SvgComponent';
 import NavigationService from '../../navigation/NavigationService';
 import center from '@turf/center';
 import { EditIcon } from '../../component';
 
 const UsersList = (props) => {
-
     const { item } = props
+    const [isActive, setIsActive] = useState(item.isActive)
 
     const { loginData, isConnected, isOwner } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
         isOwner: isRoleOwner(state)
     }))
-
+    console.log('user items------', item)
     const user_id = loginData.id ? loginData.id : null
     const dispatch = useDispatch()
 
+    // React.useEffect(() => {
+    //     if (item.isActive) {
+    //         setIsActive(item.isActive)
+    //     }
+    // }, [item.isActive]);
+
     function onChangeSwitch(item) {
+        setIsActive(true)
+
         if (isConnected) {
             AppManager.showLoader()
             dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
@@ -39,11 +47,13 @@ const UsersList = (props) => {
 
     function onChangeUserStatusSuccess(data) {
         const { result } = data
+        console.log('result switch----', data)
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: result, description: '' })
     }
 
     function onChangeUserStatusError(error) {
+        setIsActive(false)
         AppManager.hideLoader()
         AppManager.showSimpleMessage('danger', { message: error, description: '' })
     }
@@ -57,7 +67,21 @@ const UsersList = (props) => {
             <View style={styles.blueBox}>
                 <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
                 {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
-                {!isSuperOwner && <Switches shape={'line'} buttonColor={item.isActive ? ColorConstant.DARKENGREEN : ColorConstant.RED} showText={false} value={item.isActive} onChange={() => onChangeSwitch(item)} />}
+                {!isSuperOwner &&
+                    // <Switches shape={'line'}
+                    //     buttonColor={item.isActive ? ColorConstant.DARKENGREEN : ColorConstant.RED}
+                    //     showText={false}
+                    //     value={item.isActive}
+                    //     onChange={() => onChangeSwitch(item)} />
+                    <TouchableOpacity style={{ marginRight: hp(0.5), }} activeOpacity={0.5}
+                        onPress={() => onChangeSwitch(item)}>
+                        {item.isActive == true ?
+                            <SwitchOnIcon />
+                            :
+                            <SwitchOffIcon />
+                        }
+                    </TouchableOpacity>
+                }
                 <Text style={styles.activeText}>{isSuperOwner ? null : item.isActive ? "Active" : "Inactive"}</Text>
                 {/* <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.navigate(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} 
                         style={{marginLeft:hp(2),borderColor:ColorConstant.WHITE,borderWidth:1,width:hp(3),height:hp(3),alignItems:'center',borderRadius:10,alignContent:'center'}}>

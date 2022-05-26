@@ -41,7 +41,7 @@ const ActivateDevice = ({ navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
             )
@@ -56,7 +56,7 @@ const ActivateDevice = ({ navigation }) => {
                 message = translate(AppConstants.EMPTY_DEVICE_ID)
             } else if (isEmpty(deviceName)) {
                 message = translate(AppConstants.EMPTY_DEVICE_NAME)
-            } else if(!DEVICE_ID_VALIDATION_REGX.test(deviceId)) {
+            } else if (!DEVICE_ID_VALIDATION_REGX.test(deviceId)) {
                 message = translate(AppConstants.INVALID_DEVICE_ID)
             }
             if (!isEmpty(message)) {
@@ -80,7 +80,7 @@ const ActivateDevice = ({ navigation }) => {
     function onSuccess(data) {
         deviceNameRef.current.clear()
         deviceIdRef.current.clear()
-        const deviceDTO = data.deviceDTO ? data.deviceDTO : {  }
+        const deviceDTO = data.deviceDTO ? data.deviceDTO : {}
         AppManager.hideLoader()
         AppManager.showSimpleMessage('success', { message: 'Device created successfully', description: '', floating: true })
         NavigationService.navigate(SCREEN_CONSTANTS.ASSIGN_ASSET, { device: deviceDTO })
@@ -102,7 +102,7 @@ const ActivateDevice = ({ navigation }) => {
     }
 
     function navigateToBarcodeScanner() {
-         NavigationService.navigate(SCREEN_CONSTANTS.BARCODE_SCANNER, {setDeviceID: (id) => deviceIdRef.current.onChangeText(id)})
+        NavigationService.navigate(SCREEN_CONSTANTS.BARCODE_SCANNER, { setDeviceID: (id) => deviceIdRef.current.onChangeText(id) })
     }
 
     function navigateToAssignAsset() {

@@ -19,7 +19,7 @@ import { isEmpty } from 'lodash';
 import { useIsFocused } from '@react-navigation/native';
 
 const GeoFence = ({ navigation }) => {
-    
+
     const [dialogVisible, setDialogVisible] = useState(false)
     const [deleteDialogBox, setDeleteDialogBox] = useState(false)
     const [activeGeofence, setActiveGeofence] = useState()
@@ -41,13 +41,13 @@ const GeoFence = ({ navigation }) => {
         geofenceList: getGeofenceListInfo(state),
         isRegular: isRoleRegular(state)
     }))
-  
+
 
     React.useEffect(() => {
-      if(isFocused){
-        loadGeofenceSearchList('')
-      }
-    },[isFocused]);
+        if (isFocused) {
+            loadGeofenceSearchList('')
+        }
+    }, [isFocused]);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -57,7 +57,7 @@ const GeoFence = ({ navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
             )
@@ -65,14 +65,14 @@ const GeoFence = ({ navigation }) => {
     }, [navigation]);
 
     useEffect(() => {
-        if(!isEmpty(geofenceList)) {
+        if (!isEmpty(geofenceList)) {
             const filteredList = geofenceList.filter(i => {
                 const included = i.userDTOS.filter(user => user.id === loginData.id)
-                if(!isEmpty(included)) {
+                if (!isEmpty(included)) {
                     return i;
                 }
-             })
-             setGeofenceData(filteredList)
+            })
+            setGeofenceData(filteredList)
             console.log('geofenceList', geofenceList, filteredList, loginData.id)
         }
         else {
@@ -83,12 +83,12 @@ const GeoFence = ({ navigation }) => {
     //     loadGeofenceList()
     // }, [])
 
-    useEffect(() => {  
+    useEffect(() => {
         loadGeofenceSearchList(selectedType)
     }, [selectedType])
 
-    function loadGeofenceSearchList(searchInput){
-        AppManager.showLoader() 
+    function loadGeofenceSearchList(searchInput) {
+        AppManager.showLoader()
         dispatch(LivetrackingActions.requestSearchGeofence(loginData.id, searchInput, onSuccess, onError))
     }
 
@@ -97,38 +97,38 @@ const GeoFence = ({ navigation }) => {
     //     dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
     // }
 
-    function onSuccess(data) { 
-        console.log("geofence",data)   
-        setIsRefreshing(false) 
+    function onSuccess(data) {
+        console.log("geofence", data)
+        setIsRefreshing(false)
         setIsTypeClick(false)
         AppManager.hideLoader()
     }
-    
+
     function onError(error) {
         AppManager.hideLoader()
-        setIsRefreshing(false) 
+        setIsRefreshing(false)
     }
 
     function ondeleteGeofence() {
-        setDeleteDialogBox(false)   
-        AppManager.showLoader()  
+        setDeleteDialogBox(false)
+        AppManager.showLoader()
         dispatch(LivetrackingActions.requestDeleteGeofence(loginData.id, geofenceId, onGeofenceDeleteSuccess, onGeofenceDeleteError))
     }
 
-    function onGeofenceDeleteSuccess(data) { 
+    function onGeofenceDeleteSuccess(data) {
         AppManager.showSimpleMessage('success', { message: "Geofence deleted successfully", description: '', floating: true })
         dispatch(LivetrackingActions.requestGetGeofence(loginData.id, onSuccess, onError))
         AppManager.hideLoader()
     }
-    
+
     function onGeofenceDeleteError(error) {
         AppManager.hideLoader()
-        console.log("Error",error)  
+        console.log("Error", error)
     }
 
     function GeoFenceInfoItem({ item }) {
-        return(
-            <GeofenceList  
+        return (
+            <GeofenceList
                 item={item}
                 setActiveGeofence={setActiveGeofence}
                 setSelectedDevice={setSelectedDevice}
@@ -143,8 +143,8 @@ const GeoFence = ({ navigation }) => {
     }
 
     function renderViewDialog() {
-        return(
-            <GeofenceEditDialog 
+        return (
+            <GeofenceEditDialog
                 dialogVisible={dialogVisible}
                 setDialogVisible={setDialogVisible}
                 selectedDevice={selectedDevice}
@@ -154,8 +154,8 @@ const GeoFence = ({ navigation }) => {
     }
 
     function renderDeleteDialog() {
-        return(
-            <GeofenceDeleteDialog 
+        return (
+            <GeofenceDeleteDialog
                 deleteDialogBox={deleteDialogBox}
                 geofenceName={geofenceName}
                 setDeleteDialogBox={setDeleteDialogBox}
@@ -175,77 +175,77 @@ const GeoFence = ({ navigation }) => {
         loadGeofenceSearchList(keyword)
     }
 
-    const onTypeClick = (item,key) => {
+    const onTypeClick = (item, key) => {
         (key == isMenuClick) ? setIsMenuClick(-1) : setIsMenuClick(key)
-        if(item == 'All') {
+        if (item == 'All') {
             setSelectedType('')
-        }else 
+        } else
             setSelectedType(item.toUpperCase())
-            
+
     }
     const searchBar = () => {
         return (
-                <View style={styles.search}>
-                    <TextInput 
-                        placeholder={translate("Search_here")}
-                        style={styles.searchText}
-                        onChangeText={text => searchHandle(text) }                    
-                        value={searchKeyword}
-                        placeholderTextColor={ColorConstant.GREY}
-                    />
-                </View>
+            <View style={styles.search}>
+                <TextInput
+                    placeholder={translate("Search_here")}
+                    style={styles.searchText}
+                    onChangeText={text => searchHandle(text)}
+                    value={searchKeyword}
+                    placeholderTextColor={ColorConstant.GREY}
+                />
+            </View>
         )
     }
 
     return (
         <SafeAreaView style={styles.container}>
             {searchBar()}
-            <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:hp(1.5),marginTop:hp(2)}}>
-            { !isRegular ?
-                <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW)} >
-                    <Text style={styles.createNewText}>{translate("Create New")}</Text>
-                </TouchableOpacity> : null }
-                <TouchableOpacity style={styles.allType} onPress={()=> setIsTypeClick(!isTypeClick)}>
-                    <Text style={[styles.createNewText,{color:ColorConstant.GREY}]}>{selectedType == '' ? 'All Type' : selectedType.charAt(0).toUpperCase() + selectedType.slice(1).toLowerCase()}</Text>
-                    <NextIcon/>
-                </TouchableOpacity> 
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: hp(1.5), marginTop: hp(2) }}>
+                {!isRegular ?
+                    <TouchableOpacity style={styles.createNewMainView} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW)} >
+                        <Text style={styles.createNewText}>{translate("Create New")}</Text>
+                    </TouchableOpacity> : null}
+                <TouchableOpacity style={styles.allType} onPress={() => setIsTypeClick(!isTypeClick)}>
+                    <Text style={[styles.createNewText, { color: ColorConstant.GREY }]}>{selectedType == '' ? 'All Type' : selectedType.charAt(0).toUpperCase() + selectedType.slice(1).toLowerCase()}</Text>
+                    <NextIcon />
+                </TouchableOpacity>
             </View>
 
-            <View style={styles.activeUserMainView} onLayout={({nativeEvent}) => setDropDownPos(nativeEvent.layout.y)} ></View>
+            <View style={styles.activeUserMainView} onLayout={({ nativeEvent }) => setDropDownPos(nativeEvent.layout.y)} ></View>
             {geofenceListData.length > 0 ?
-            <FlatList
-                style={{}}
-                contentContainerStyle={{}}
-                data={geofenceListData}
-                renderItem={GeoFenceInfoItem}
-                keyExtractor={(item, index) => index.toString()}
-                refreshControl={
-                    <RefreshControl 
-                        refreshing={isRefreshing}
-                        onRefresh={onRefresh}     
-                    />
-                }
-            /> :
-            <View style={styles.noRecords}>
-                <Text style={styles.noRecordsText}>No records found</Text>
-            </View>
-            }  
+                <FlatList
+                    style={{}}
+                    contentContainerStyle={{}}
+                    data={geofenceListData}
+                    renderItem={GeoFenceInfoItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                /> :
+                <View style={styles.noRecords}>
+                    <Text style={styles.noRecordsText}>No records found</Text>
+                </View>
+            }
 
             {isTypeClick ?
-                <View style={[styles.userMenu,{position:'absolute', top:dropDownPos}, isRegular && { left: wp(6), top:dropDownPos + hp(1) }]}>
+                <View style={[styles.userMenu, { position: 'absolute', top: dropDownPos }, isRegular && { left: wp(6), top: dropDownPos + hp(1) }]}>
                     {geofenceType.map((item, key) =>
-                        <TouchableOpacity  key={key} onPress={()=> onTypeClick(item,key)}>
-                            <Text style={[styles.userStyle,{color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE}]}>{item}</Text>
+                        <TouchableOpacity key={key} onPress={() => onTypeClick(item, key)}>
+                            <Text style={[styles.userStyle, { color: (key == isMenuClick) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>{item}</Text>
                             {key != geofenceType.length - 1 ? <View style={styles.horizontalLine} /> : null}
                         </TouchableOpacity>
                     )
                     }
                 </View>
-            : null}
+                : null}
 
-            {renderViewDialog()} 
+            {renderViewDialog()}
 
-            {renderDeleteDialog()}   
+            {renderDeleteDialog()}
 
         </SafeAreaView>
     )
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        paddingHorizontal:hp(1.5),
+        paddingHorizontal: hp(1.5),
         backgroundColor: ColorConstant.WHITE,
     },
     createNewMainView: {
@@ -274,20 +274,20 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.ORANGE,
         height: hp(5),
         borderRadius: 10,
-        marginVertical:hp(1)
+        marginVertical: hp(1)
         // marginTop: hp(3)
     },
-    allType : {
-        alignItems:'center',
-        borderColor:ColorConstant.GREY,
-        backgroundColor:ColorConstant.WHITE,
-        borderWidth:0.5,
-        width:'48%',
-        height:hp(5),
-        borderRadius:10,
-        alignSelf:'center',
-        flexDirection:'row',
-        justifyContent:'space-around',
+    allType: {
+        alignItems: 'center',
+        borderColor: ColorConstant.GREY,
+        backgroundColor: ColorConstant.WHITE,
+        borderWidth: 0.5,
+        width: '48%',
+        height: hp(5),
+        borderRadius: 10,
+        alignSelf: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         shadowColor: ColorConstant.GREY,
         shadowOffset: { height: 0, width: 0 },
         shadowOpacity: 1,
@@ -300,28 +300,29 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     noRecords: {
-        marginVertical:hp(35),
-        alignItems:'center'
+        marginVertical: hp(35),
+        alignItems: 'center'
     },
     noRecordsText: {
-        fontFamily:"Nunito-Regular",
-        fontSize:hp(2)
+        fontFamily: "Nunito-Regular",
+        fontSize: hp(2)
     },
     searchText: {
         //fontSize:FontSize.FontSize.small,
-        fontSize:14,
-        color:ColorConstant.BLACK,
-        fontFamily:'Nunito-LightItalic'
+        fontSize: 14,
+        color: ColorConstant.BLACK,
+        fontFamily: 'Nunito-LightItalic',
+        height: hp(5),
     },
     search: {
-        paddingHorizontal:hp(2),
-        height:hp(5),
-        marginHorizontal:hp(1.5),
-        borderRadius:12,
-        marginTop:hp(4),
-        justifyContent  : 'center',
+        paddingHorizontal: hp(2),
+        height: hp(5),
+        marginHorizontal: hp(1.5),
+        borderRadius: 12,
+        marginTop: hp(4),
+        justifyContent: 'center',
         // marginBottom:hp(2),
-        elevation:4,
+        elevation: 4,
         shadowColor: ColorConstant.BLACK,
         shadowOffset: {
             width: 0,
@@ -329,7 +330,7 @@ const styles = StyleSheet.create({
         },
         shadowRadius: 3,
         shadowOpacity: 0.2,
-        backgroundColor:ColorConstant.WHITE
+        backgroundColor: ColorConstant.WHITE
     },
     horizontalLine: {
         borderBottomWidth: 0.5, borderBottomColor: ColorConstant.GREY, margin: hp(0.7)
@@ -339,13 +340,13 @@ const styles = StyleSheet.create({
         //color: ColorConstant.BLUE,
         textAlignVertical: 'center',
         paddingLeft: hp(0.5),
-        fontSize:FontSize.FontSize.small,
-        fontFamily:'Nunito-Regular'
+        fontSize: FontSize.FontSize.small,
+        fontFamily: 'Nunito-Regular'
     },
     activeUserMainView: {
         justifyContent: 'space-evenly',
         flexDirection: 'row',
-        backgroundColor:ColorConstant.WHITE
+        backgroundColor: ColorConstant.WHITE
     },
     userMenu: {
         backgroundColor: ColorConstant.WHITE,

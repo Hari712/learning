@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput, RefreshControl, FlatList, ScrollView, Text, ActivityIndicator } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
@@ -15,7 +15,7 @@ import isEmpty from 'lodash/isEmpty'
 import { useIsFocused } from '@react-navigation/native';
 import { uniqBy } from 'lodash';
 
-const Users = ({navigation}) => {
+const Users = ({ navigation }) => {
 
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [searchKeyword, setSearchKeyword] = useState("")
@@ -31,7 +31,7 @@ const Users = ({navigation}) => {
   const [totalCount, setTotalCount] = useState(0)
   const [searchData, setSearchData] = useState([])
   const [toMerge, setToMerge] = useState(false)
-  
+
 
   const { loginData, subUserData, isConnected } = useSelector(state => ({
     loginData: getLoginState(state),
@@ -45,28 +45,28 @@ const Users = ({navigation}) => {
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
-    if(!isFocused){
+    if (!isFocused) {
       resetHandle()
     }
-  },[isFocused]);
+  }, [isFocused]);
 
   useEffect(() => {
-    if (isRefreshing == true || isLoadMoreData == true ) {
+    if (isRefreshing == true || isLoadMoreData == true) {
       fetchUserslist()
     }
-    if (searchKeyword || roleKeyword || statusKey){
+    if (searchKeyword || roleKeyword || statusKey) {
       fetchUserslist()
     }
   }, [pageIndex, isRefreshing, isLoadMoreData, searchKeyword, roleKeyword, statusKey])
 
-  useEffect(() => {    
-    AppManager.showLoader() 
-    fetchUserslist() 
-  },[])
+  useEffect(() => {
+    AppManager.showLoader()
+    fetchUserslist()
+  }, [])
 
-  useEffect(()=>{
-    if(toMerge && pageIndex > 0){
-      setSearchData(uniqBy([...searchData,...subUserData],'id'))
+  useEffect(() => {
+    if (toMerge && pageIndex > 0) {
+      setSearchData(uniqBy([...searchData, ...subUserData], 'id'))
     } else {
       setSearchData(subUserData)
     }
@@ -84,39 +84,39 @@ const Users = ({navigation}) => {
     //   setSearchData((old)=>[adminData,...old])
     // }
 
-  },[subUserData])
-console.log("data",subUserData,loginData)
+  }, [subUserData])
+  console.log("data", subUserData, loginData)
   const fetchUserslist = () => {
     if (isConnected) {
-    const requestBody =  {
-      "pageNumber" : pageIndex,
-      "pageSize" : pageCount,
-      "useMaxSearchAsLimit" : false,
-      "searchColumnsList" : [ 
-        {
-          "columnName" : "searchParam",
-          "searchStr" : searchKeyword
-        }, 
-        {
-          "columnName" : "role",
-          "searchStrList" : roleKeyword
-        }, 
-        {
-          "columnName" : "isDeactivated",
-          "searchStrList" : statusKey
-        } 
-      ],
-      "sortHeader" : "id",
-      "sortDirection" : "DESC"
+      const requestBody = {
+        "pageNumber": pageIndex,
+        "pageSize": pageCount,
+        "useMaxSearchAsLimit": false,
+        "searchColumnsList": [
+          {
+            "columnName": "searchParam",
+            "searchStr": searchKeyword
+          },
+          {
+            "columnName": "role",
+            "searchStrList": roleKeyword
+          },
+          {
+            "columnName": "isDeactivated",
+            "searchStrList": statusKey
+          }
+        ],
+        "sortHeader": "id",
+        "sortDirection": "DESC"
+      }
+      dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onSuccess, onError))
+    } else {
+      AppManager.showNoInternetConnectivityError()
     }
-    dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onSuccess, onError))
-  } else {
-    AppManager.showNoInternetConnectivityError()
   }
-}
 
-  function onSuccess(data) {    
-    console.log("Success user",data) 
+  function onSuccess(data) {
+    console.log("Success user", data)
     AppManager.hideLoader()
     setIsRefreshing(false)
     const arrList = data.result.data ? data.result.data : []
@@ -132,8 +132,8 @@ console.log("data",subUserData,loginData)
 
   function onError(error) {
     AppManager.hideLoader()
-    console.log("Error",error)  
-    setIsRefreshing(false) 
+    console.log("Error", error)
+    setIsRefreshing(false)
     setVisible(false)
     setIsLoadMoreData(false)
     let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
@@ -143,13 +143,13 @@ console.log("data",subUserData,loginData)
   React.useLayoutEffect(() => {
 
     navigation.setOptions({
-      headerLeft:()=>(null)     
+      headerLeft: () => (null)
     });
-  },[navigation]);
+  }, [navigation]);
 
   function renderItem({ item }) {
-    return(
-      <UsersList 
+    return (
+      <UsersList
         item={item}
       />
     )
@@ -162,7 +162,7 @@ console.log("data",subUserData,loginData)
     setStatus(-1)
     setPageIndex(0)
     setSearchKeyword("")
-    setRoleKeyword( ["ROLE_REGULAR", "ROLE_OWNER"])
+    setRoleKeyword(["ROLE_REGULAR", "ROLE_OWNER"])
     setStatusKey(["Active", "InActive"])
     setIsLoadMoreData(false)
     setOnEndReachedCalledDuringMomentum(false)
@@ -183,10 +183,10 @@ console.log("data",subUserData,loginData)
     setPageIndex(0)
     setSearchKeyword(keyword)
   }
-  
+
   function filterDialog() {
-    return(
-      <UsersFilterDialog 
+    return (
+      <UsersFilterDialog
         visible={visible}
         setVisible={setVisible}
         status={status}
@@ -199,58 +199,58 @@ console.log("data",subUserData,loginData)
     )
   }
 
-  const searchBar = () => {  
-        return (
-          <View style={styles.searchSubContainer}>
-            <View style={styles.search}>
-                <TextInput 
-                    placeholder={translate("Search_here")}
-                    style={styles.searchText}
-                    onChangeText={text => searchHandle(text) }                    
-                    value={searchKeyword}
-                    placeholderTextColor={ColorConstant.GREY}
-                />
-                <TouchableOpacity  onPress={()=> setVisible(!visible)} >
-                  {visible? <FilterIconClicked/> : <FilterIcon/> }
-                </TouchableOpacity>
-            </View>
-            <TouchableOpacity activeOpacity={1} onPress={()=>navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
-              <UserAddIcon/>
-            </TouchableOpacity>
-          
-          </View>
-        )
-    }
+  const searchBar = () => {
+    return (
+      <View style={styles.searchSubContainer}>
+        <View style={styles.search}>
+          <TextInput
+            placeholder={translate("Search_here")}
+            style={styles.searchText}
+            onChangeText={text => searchHandle(text)}
+            value={searchKeyword}
+            placeholderTextColor={ColorConstant.GREY}
+          />
+          <TouchableOpacity onPress={() => setVisible(!visible)} >
+            {visible ? <FilterIconClicked /> : <FilterIcon />}
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
+          <UserAddIcon />
+        </TouchableOpacity>
 
-    const onRefresh = () => {
-      setPageIndex(0)
-      setIsRefreshing(true)
-      dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))  
-    }
+      </View>
+    )
+  }
 
-    const renderFooter = () => {
-      //it will show indicator at the bottom of the list when data is loading otherwise it returns null
-      if (!isLoadMoreData || isRefreshing) return null;
-      return <View><ActivityIndicator size="large" color="#000000" /></View>;
-    }
+  const onRefresh = () => {
+    setPageIndex(0)
+    setIsRefreshing(true)
+    dispatch(UsersActions.requestGetSubuser(loginData.id, onSuccess, onError))
+  }
 
-    const loadMoreUsers = () => {
-      if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
-        if (searchData.length < totalCount) {
-          setIsRefreshing(false)
-          setIsLoadMoreData(true)
-          setToMerge(true)
-          setOnEndReachedCalledDuringMomentum(true)
-          setPageIndex(pageIndex + 1)
-        }
+  const renderFooter = () => {
+    //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+    if (!isLoadMoreData || isRefreshing) return null;
+    return <View><ActivityIndicator size="large" color="#000000" /></View>;
+  }
+
+  const loadMoreUsers = () => {
+    if (!onEndReachedCalledDuringMomentum && !isLoadMoreData) {
+      if (searchData.length < totalCount) {
+        setIsRefreshing(false)
+        setIsLoadMoreData(true)
+        setToMerge(true)
+        setOnEndReachedCalledDuringMomentum(true)
+        setPageIndex(pageIndex + 1)
       }
     }
+  }
 
-return ( 
-  <View style={styles.container}>
-    
+  return (
+    <View style={styles.container}>
+
       <View style={styles.searchContainer}>
-      {searchBar()} 
+        {searchBar()}
       </View>
 
       {subUserData.length > 0 ?
@@ -258,9 +258,9 @@ return (
           data={searchData}
           renderItem={renderItem}
           refreshControl={
-            <RefreshControl 
+            <RefreshControl
               refreshing={isRefreshing}
-              onRefresh={onRefresh}     
+              onRefresh={onRefresh}
             />
           }
           keyExtractor={(item, index) => index.toString()}
@@ -273,57 +273,36 @@ return (
         <View style={styles.noRecords}>
           <Text style={styles.noRecordsText}>No records found</Text>
         </View>
-      } 
+      }
 
-      {filterDialog()} 
+      {filterDialog()}
 
-  </View>
-      )
-    }
+    </View>
+  )
+}
 
 
 const styles = StyleSheet.create({
-container: {
-  height:'100%'
-},
-searchContainer : {
-    width:'90%',
-    // alignItems:'center',
-    alignSelf:'center'
-    //marginVertical:hp(0.1)
-},
-search: {
-  paddingHorizontal:hp(2),
-  flexDirection:'row',
-  alignItems:'center',
-  justifyContent:'space-between',
-  width:'84%',
-  height:hp(6),
-  borderRadius:12,
-  marginTop:hp(4),
-  marginBottom:hp(2),
-  elevation:4,
-  shadowColor: ColorConstant.GREY,
-  shadowOffset: {
-    width: 0,
-    height: 0
+  container: {
+    height: '100%'
   },
-  shadowRadius: 3,
-  shadowOpacity: 0.5,
-  backgroundColor:ColorConstant.WHITE
-},
-addButton : {
-    //paddingHorizontal:hp(2),
-    //marginHorizontal:hp(2),
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'center',
-    width:'14%',
-    height:hp(6),
-    borderRadius:12,
-    marginTop:hp(4),
-    //marginBottom:hp(2),
-    elevation:4,
+  searchContainer: {
+    width: '90%',
+    // alignItems:'center',
+    alignSelf: 'center'
+    //marginVertical:hp(0.1)
+  },
+  search: {
+    paddingHorizontal: hp(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '84%',
+    height: hp(6),
+    borderRadius: 12,
+    marginTop: hp(4),
+    marginBottom: hp(2),
+    elevation: 4,
     shadowColor: ColorConstant.GREY,
     shadowOffset: {
       width: 0,
@@ -331,33 +310,54 @@ addButton : {
     },
     shadowRadius: 3,
     shadowOpacity: 0.5,
-    backgroundColor:ColorConstant.WHITE
-  
-},
-searchText: {
-  //fontSize:FontSize.FontSize.small,
-  flex: 0.9,
-  fontSize:14,
-  color:ColorConstant.BLACK,
-  fontFamily:'Nunito-LightItalic'
-},
-searchSubContainer: {
-  flexDirection:'row',
-  width:'100%',
-  justifyContent:'space-between'
-},
-noRecords: {
-  marginVertical:hp(38),
-  alignItems:'center'
-},
-noRecordsText: {
-fontFamily:"Nunito-Regular",
-fontSize:hp(2)
-},
-activityIndicator: {
-  color: "#000",
-  marginTop: '2%'
-}
+    backgroundColor: ColorConstant.WHITE
+  },
+  addButton: {
+    //paddingHorizontal:hp(2),
+    //marginHorizontal:hp(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '14%',
+    height: hp(6),
+    borderRadius: 12,
+    marginTop: hp(4),
+    //marginBottom:hp(2),
+    elevation: 4,
+    shadowColor: ColorConstant.GREY,
+    shadowOffset: {
+      width: 0,
+      height: 0
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.5,
+    backgroundColor: ColorConstant.WHITE
+
+  },
+  searchText: {
+    //fontSize:FontSize.FontSize.small,
+    flex: 0.9,
+    fontSize: 14,
+    color: ColorConstant.BLACK,
+    fontFamily: 'Nunito-LightItalic',
+  },
+  searchSubContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  noRecords: {
+    marginVertical: hp(38),
+    alignItems: 'center'
+  },
+  noRecordsText: {
+    fontFamily: "Nunito-Regular",
+    fontSize: hp(2)
+  },
+  activityIndicator: {
+    color: "#000",
+    marginTop: '2%'
+  }
 });
 
 
