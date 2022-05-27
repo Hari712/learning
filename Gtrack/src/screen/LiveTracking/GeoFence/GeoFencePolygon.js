@@ -261,9 +261,12 @@ const GeoFencePolyGon = ({navigation, route}) => {
                     />
                    {regionAndroid ?
 						  <Map.default.Camera
+                          animationMode='flyTo'
+                          animationDuration={10000}
+                          zoomLevel={17}
                           centerCoordinate={regionAndroid}
                           // followUserLocation={true}
-                          zoomLevel={3.5}
+                        //   zoomLevel={3.5}
                       /> : 
 						<Map.default.Camera 
 							zoomLevel={3.5}

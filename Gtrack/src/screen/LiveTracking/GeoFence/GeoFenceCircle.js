@@ -6,7 +6,7 @@ import { ColorConstant } from '../../../constants/ColorConstants';
 import { translate } from '../../../../App'
 import Slider from "react-native-slider";
 import { useSelector } from 'react-redux'
-import { isUserLoggedIn } from '../../Selector'
+import { isUserLoggedIn,getLiveTrackingDeviceList} from '../../Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
 import circle from '@turf/circle'
@@ -29,7 +29,8 @@ const GeoFenceCircle = ({navigation,route}) => {
 
     const { devices, editedType } = route.params
 
-    const { isLoggedIn } = useSelector(state => ({
+    const { isLoggedIn,devicePositions } = useSelector(state => ({
+        devicePositions: getLiveTrackingDeviceList(state),
         isLoggedIn: isUserLoggedIn(state)
     }))
 
@@ -40,14 +41,30 @@ const GeoFenceCircle = ({navigation,route}) => {
     const [isScrollEnabled, setIsScrollEnabled] = useState(true)
     const [selectedCoordinate, setSelectedCoordinate] = useState(null)
     const [area, setArea] = useState('')
-    const [radius, setRadius] = useState(500.001)
+    const [radius, setRadius] = useState(100)
     const [value, setValue] = useState(0.5);
     const [oldData, setOldData] = useState()
     const location = useSubscribeLocationUpdates(isLoggedIn)
     const [color, setColor] = useState(ColorConstant.ORANGE)
+    useEffect(()=>{
+        if(selectedCoordinate) {
+
+            if(!isAndroid) {
+                let delta = radius/10000
+                const region = { 
+                    latitude: selectedCoordinate.latitude, 
+                    longitude: selectedCoordinate.longitude, 
+                    latitudeDelta: delta, 
+                    longitudeDelta: delta*ASPECT_RATIO
+                } 
+                setRegion(region)
+            }
+        }
+    },[])
 
     useEffect(()=>{
         if(selectedCoordinate) {
+
             if(!isAndroid) {
                 let delta = radius/10000
                 const region = { 
@@ -262,9 +279,12 @@ const GeoFenceCircle = ({navigation,route}) => {
                   
                     {regionAndroid ?
 						  <Map.default.Camera
+                          animationMode='flyTo'
+                          animationDuration={10000}
+                          zoomLevel={17}
                           centerCoordinate={regionAndroid}
                           // followUserLocation={true}
-                          zoomLevel={3.5}
+                        //   zoomLevel={3.5}
                       /> : 
 						<Map.default.Camera 
 							zoomLevel={3.5}
@@ -289,7 +309,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                 <View style={{position:"absolute", marginVertical:20}}>
                     <TouchableOpacity
                         onPress={() => {
-                            isEditing ? setCompleteEditing(true) : null;
+                            isEditing ? setCompleteEditing(true) : false;
                             setIsEditing(prevState => !prevState)
                         }}
                         style={[styles.bubble, styles.button]} >
@@ -303,7 +323,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         onPress={() => {
-                            isEditing ? setCompleteEditing(true) : null;
+                            isEditing ? setCompleteEditing(true) : false;
                             setIsEditing(prevState => !prevState)
                         }}
                         style={[styles.bubble, styles.button]} >
@@ -316,7 +336,7 @@ const GeoFenceCircle = ({navigation,route}) => {
             
         )
     }
-
+console.log('isEditingisEditingisEditingisEditing',isEditing,selectedCoordinate)
     function renderSlider() {
         if (isEditing && selectedCoordinate) {
             return (
@@ -332,7 +352,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                         <Slider
                             value={radius/1000}
                             onValueChange={(value) => onChangeRadius(value)}
-                            minimumValue={0.5}
+                            minimumValue={0.1}
                             maximumValue={1000}
                             step={1}
                             minimumTrackTintColor={ColorConstant.BLUE}
