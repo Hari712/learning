@@ -30,7 +30,7 @@ const Passcode = ({ navigation, route }) => {
         if (isConnected) {
             let message = ''
             if (isEmpty(passcode)) {
-                message = AppConstants.EMPTY_PASSWORD
+                message = translate(AppConstants.EMPTY_OTP)
             }
             if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
@@ -64,7 +64,7 @@ const Passcode = ({ navigation, route }) => {
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
-                <LoginWelcomeIcon/>
+                <LoginWelcomeIcon />
                 <View style={styles.subContainer}>
                     <Text style={styles.resetEmailText}>{translate("Passcode_string1")}</Text>
                     <Text style={styles.textStyle}>{translate("Passcode_string2")}</Text>

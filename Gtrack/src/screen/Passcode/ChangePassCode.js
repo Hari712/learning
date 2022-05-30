@@ -31,7 +31,7 @@ const ChangePasscode = ({ navigation, route }) => {
         if (isConnected) {
             let message = ''
             if (isEmpty(passcode)) {
-                message = AppConstants.EMPTY_PASSWORD
+                message = translate(AppConstants.EMPTY_PASSWORD)
             }
             else if (!validatePassword(passcode)) {
                 message = translate(AppConstants.INVALID_PASSWORD)

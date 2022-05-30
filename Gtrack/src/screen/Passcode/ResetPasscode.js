@@ -5,13 +5,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import NavigationService from '../../navigation/NavigationService'
-import { EditText, CustomButton, FontSize} from '../../component'
+import { EditText, CustomButton, FontSize } from '../../component'
 import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants'
 import AppManager from '../../constants/AppManager'
 import * as LoginActions from '../Login/Login.Action'
 import { validateEmailorPhoneNumber } from '../../utils/helper'
 import { translate } from '../../../App'
 import { LoginIcon, LoginWelcomeIcon } from '../../component/SvgComponent'
+import isEmpty from 'lodash/isEmpty';
 
 const ResetPasscode = () => {
     const [email, setEmail] = useState('')
@@ -22,9 +23,18 @@ const ResetPasscode = () => {
     }))
 
     function onTapReset() {
+        let emailStr = String(email).trim().toLowerCase()
         if (isConnected) {
-            if (!validateEmailorPhoneNumber(email)) {
-                AppManager.showSimpleMessage('warning', { message: translate(AppConstants.INVALID_EMAIL_OR_PHONE), description: '', floating: true })
+            let message = '';
+            if (isEmpty(emailStr)) {
+                message = translate(AppConstants.EMPTY_EMAIL_OR_PHONE);
+            } else if (!validateEmailorPhoneNumber(emailStr)) {
+                message = translate(AppConstants.INVALID_EMAIL_OR_PHONE);
+                // AppManager.showSimpleMessage('warning', { message: translate(AppConstants.INVALID_EMAIL_OR_PHONE), description: '', floating: true })
+            }
+
+            if (!isEmpty(message)) {
+                AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true });
             } else {
                 AppManager.showLoader()
                 const requestBody = {
@@ -52,7 +62,7 @@ const ResetPasscode = () => {
     return (
         <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
             <View style={styles.container}>
-                <LoginWelcomeIcon/>
+                <LoginWelcomeIcon />
                 <View style={styles.headingMainStyle}>
                     <Text style={styles.headingTextStyle}>{translate("Reset_Passcode_string1")}</Text>
                 </View>
@@ -71,13 +81,11 @@ const ResetPasscode = () => {
                     textStyle={styles.buttonTextStyle}
                 />
 
-                <View style={styles.LoginIntoMainView}>
+                <TouchableOpacity style={styles.LoginIntoMainView} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
                     <Text style={styles.LoginIntoTextView}>{translate("Reset_Passcode_string3")}  </Text>
-                    <TouchableOpacity style={styles.subContainer} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
-                        <LoginIcon/>
-                        {/* <Image source={images.image.login} /> */}
-                    </TouchableOpacity>
-                </View>
+                    <LoginIcon width={hp(2.3)} height={hp(2.3)} />
+                    {/* <Image source={images.image.login} /> */}
+                </TouchableOpacity>
 
             </View>
 
@@ -120,18 +128,14 @@ const styles = StyleSheet.create({
     },
     LoginIntoMainView: {
         flexDirection: 'row',
-        marginTop: hp(5)
+        marginTop: hp(5),
+        alignItems: 'center'
     },
     LoginIntoTextView: {
         color: ColorConstant.WHITE,
         //fontWeight: 'bold',
         fontSize: FontSize.FontSize.medium,
-        fontFamily: 'Nunito-Bold'
-    },
-    subContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
+        fontFamily: 'Nunito-SemiBold',
     },
 })
 

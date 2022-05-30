@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     },
     blueTopHead: {
         alignContent: 'space-between',
-        marginVertical: hp(0.5)
+        marginVertical: hp(1.5)
     },
     editButton: {
         // flexDirection: 'row',
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain'
     },
     toolTip: {
-        marginTop: hp(1),
+        marginTop: hp(1.8),
         left: 10,
         zIndex: 10
     },

@@ -151,8 +151,8 @@ const UsersList = (props) => {
             <View style={styles.emailPhone}>
                 <EmailIcon />
                 <Text style={styles.emailText}>    {item.email}</Text>
-                <PhoneIcon />
-                <Text style={styles.phoneText}>  {item.phoneNo}</Text>
+                {/* <PhoneIcon />
+                <Text style={styles.phoneText}>  {item.phoneNo}</Text> */}
             </View>
         </View>
     )

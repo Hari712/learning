@@ -36,7 +36,7 @@ const Login = () => {
 
 	function onTapLoginButton() {
 		let emailStr = String(email).trim().toLowerCase()
-		console.log("User Logged",emailStr, email)
+		console.log("User Logged", emailStr, email)
 		if (isConnected) {
 			let message = '';
 			if (isEmpty(emailStr)) {
@@ -107,11 +107,11 @@ const Login = () => {
 		}
 		else {
 			fcmToken = await firebase.messaging().getToken();
-            if (fcmToken) {
-                console.log('fcmToken:', fcmToken);
-                await AsyncStorage.setItem(FCM_TOKEN, fcmToken);
+			if (fcmToken) {
+				console.log('fcmToken:', fcmToken);
+				await AsyncStorage.setItem(FCM_TOKEN, fcmToken);
 				dispatch(LoginActions.requestAddDeviceToken(data.userDTO.id, fcmToken, onAddDeviceTokenSuccess, onAddDeviceTokenError))
-            }
+			}
 		}
 	}
 
@@ -305,8 +305,7 @@ const styles = StyleSheet.create({
 	},
 	resetText: {
 		color: ColorConstant.WHITE,
-		fontSize: FontSize.FontSize.small,
-		fontWeight: '500',
+		fontSize: FontSize.FontSize.medium,
 		marginTop: hp(3),
 		fontFamily: 'Nunito-SemiBold',
 	},
