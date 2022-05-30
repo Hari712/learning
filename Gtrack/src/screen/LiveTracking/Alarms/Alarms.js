@@ -11,6 +11,7 @@ import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants'
 import { BackIcon, DeleteIcon, } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import { showNotificationName } from '../../../utils/helper';
+import DeleteIconButton from '../../../component/DeleteIconButton';
 
 
 const Alarms = ({ navigation }) => {
@@ -145,16 +146,8 @@ const Alarms = ({ navigation }) => {
               : null}
 
             {!isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(item)} style={{    marginLeft: hp(1),
-                borderColor: ColorConstant.WHITE,
-                borderWidth: 1,
-                width: hp(3),
-                height: hp(3),
-                alignItems: 'center',
-                borderRadius: 10,
-                alignContent: 'center' }} >
-                <DeleteIcon height={hp(2.8)} width={hp(1.8)} />
-              </TouchableOpacity> : null}
+            
+           <DeleteIconButton onPress={()=>handleRemove(item)}/>: null}
           </View>
 
 

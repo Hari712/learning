@@ -10,6 +10,7 @@ import Switches from 'react-native-switches'
 import AppManager from '../../../constants/AppManager';
 import * as LivetrackingActions from '../Livetracking.Action'
 import { isCircle } from './../../../utils/helper';
+import DeleteIconButton from '../../../component/DeleteIconButton';
 
 const GeofenceList = (props) => {
 
@@ -80,13 +81,12 @@ const GeofenceList = (props) => {
                     <Text style={styles.activeText}>{item.isActive ? "Enable" : "Disable"}</Text>
                     : null}
                 {!isRegular ?
-                    <TouchableOpacity style={{ padding: hp(1), marginLeft: hp(1), }} onPress={() => {
-                        setGeofenceId(item.geofence.id)
-                        setGeofenceName(item.geofence.name)
-                        setDeleteDialogBox(!deleteDialogBox)
-                    }}>
-                        <GeoFenceTrashIcon height={hp(2)} width={hp(2)} />
-                    </TouchableOpacity> : null}
+                 <DeleteIconButton onPress={() => {
+                    setGeofenceId(item.geofence.id)
+                    setGeofenceName(item.geofence.name)
+                    setDeleteDialogBox(!deleteDialogBox)
+                }}/>
+               : null}
             </View>
 
             <TouchableOpacity onPress={onTapItem} style={styles.whiteContainer}>
