@@ -145,8 +145,15 @@ const Alarms = ({ navigation }) => {
               : null}
 
             {!isRegular ?
-              <TouchableOpacity onPress={() => handleRemove(item)} style={{ zIndex: 5, padding: hp(1), }} >
-                <DeleteIcon width={hp(2)} height={hp(2)} />
+              <TouchableOpacity onPress={() => handleRemove(item)} style={{    marginLeft: hp(1),
+                borderColor: ColorConstant.WHITE,
+                borderWidth: 1,
+                width: hp(3),
+                height: hp(3),
+                alignItems: 'center',
+                borderRadius: 10,
+                alignContent: 'center' }} >
+                <DeleteIcon height={hp(2.8)} width={hp(1.8)} />
               </TouchableOpacity> : null}
           </View>
 
