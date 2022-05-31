@@ -132,7 +132,7 @@ const Alarms = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.ALARMS_DETAIL, { data: item })}>
           {/* Blue top head */}
           <View style={styles.blueBox}>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
               <Text style={styles.blueBoxTitle}>{attributes && attributes.name ? attributes.name : null}</Text>
               <Text style={[styles.blueBoxTitle, { fontFamily: 'Nunito-Regular' }]}>{showNotificationName(item.notificationType)}</Text>
             </View>
@@ -146,8 +146,8 @@ const Alarms = ({ navigation }) => {
               : null}
 
             {!isRegular ?
-            
-           <DeleteIconButton onPress={()=>handleRemove(item)}/>: null}
+
+              <DeleteIconButton onPress={() => handleRemove(item)} /> : null}
           </View>
 
 
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     color: ColorConstant.WHITE,
     fontSize: 12,
     //fontSize:FontSize.FontSize.small,
-    flex: 1,
+    // flex: 1,
     fontFamily: 'Nunito-Bold'
   },
   whiteContainer: {
