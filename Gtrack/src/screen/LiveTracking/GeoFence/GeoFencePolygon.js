@@ -86,7 +86,7 @@ const GeoFencePolyGon = ({navigation, route}) => {
             ),
             headerRight: () => (
               
-                <TouchableOpacity disabled={!(area && selectedCoordinates[0])}  style={{padding:hp(2)}} onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
+                <TouchableOpacity disabled={!(area && selectedCoordinates[0])}    style={{marginRight:hp(2)}}  onPress={() => navigation.navigate(SCREEN_CONSTANTS.GEOFENCE_DETAILS, { selectedArea: area, type: 'Polygon', devices: devices, editingData:oldData })}>
                     <Text style={{color:area && selectedCoordinates[0] ? ColorConstant.BLACK:ColorConstant.DARKGREY}}>Next</Text>
                 </TouchableOpacity>
             )
