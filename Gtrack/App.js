@@ -16,6 +16,7 @@ import OfflineStatusBar from './src/component/OfflineBar'
 import SocketProvider from './src/provider/SocketProvider'
 import withCodePush from './src/hoc/withCodePush'
 import AppProvider from './src/provider/AppProvider'
+import SplashScreen from 'react-native-splash-screen';
 
 export const translationGetters = {
   // lazy requires (metro bundler does not support symlinks)
@@ -95,12 +96,12 @@ const MainApp = forwardRef((props, ref) => {
     <Provider store={store}>
       <ReduxNetworkProvider pingInterval={40000}>
         <AppProvider>
-        <SocketProvider>
-         <AppNavigator />
-        </SocketProvider>
-        <FlashMessage position="top" animated={true} />
-        {isLoading ? <Loader /> : null}
-        <OfflineStatusBar />
+          <SocketProvider>
+            <AppNavigator />
+          </SocketProvider>
+          <FlashMessage position="top" animated={true} />
+          {isLoading ? <Loader /> : null}
+          <OfflineStatusBar />
         </AppProvider>
       </ReduxNetworkProvider>
     </Provider>
@@ -112,8 +113,12 @@ const App = () => {
   React.useEffect(() => {
     setI18nConfig(); // set initial config
     RNLocalize.addEventListener("change", handleLocalizationChange());
-  },[])
-  
+  }, [])
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <MainApp ref={appManagerRef} />
   )

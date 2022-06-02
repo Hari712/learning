@@ -26,6 +26,8 @@
 	<true/>
 	<key>CodePushDeploymentKey</key>
 	<string>jh9fk-3f9Kfw3kCcRJ9dXfuQBPKFPH4ZvQoti</string>
+<!--	<key>UIStatusBarStyle</key>-->
+<!--	<string>UIStatusBarStyleLightContent</string>-->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

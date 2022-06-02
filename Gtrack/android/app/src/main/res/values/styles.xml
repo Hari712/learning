@@ -9,4 +9,14 @@
     <style name="Dialog.Theme" parent="Theme.AppCompat.Light.Dialog">
             <item name="colorAccent">#FF7F21</item>
     </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+      <item name="android:background">@drawable/background_splash</item>
+      <item name="android:statusBarColor">@color/background</item>
+    </style>
+
+    <style name="SplashStatusBarTheme" parent="SplashScreen_SplashTheme">
+       <item name="android:statusBarColor">@color/background</item>
+    </style>
+
 </resources>
