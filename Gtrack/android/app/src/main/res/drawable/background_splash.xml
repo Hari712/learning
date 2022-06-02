@@ -3,13 +3,20 @@
 android:layout_height="match_parent" android:layout_width="match_parent">
 
     <item
-        android:drawable="@color/background" />
+        android:drawable="@drawable/splash_bg"  android:gravity="fill_horizontal|fill_vertical" />
 
 
-   <item>
+   <!-- <item>
         <bitmap
-            android:gravity="fill_horizontal|fill_vertical"
-            android:src="@drawable/splash"/>
-    </item>
+        
+            android:gravity="center"
+            android:src="@drawable/logo"/>
+    </item> -->
+
+      <item
+        android:drawable="@drawable/logo"
+     
+        android:gravity="center"
+        />
 </layer-list>
 
