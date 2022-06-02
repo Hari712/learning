@@ -25,7 +25,7 @@ const DeviceSummary = (props) => {
             <View style={styles.rightMainViewStyle}>
                 <Text style={styles.devicesTextStyle}>{translate("Dashboard_string2")} {props.deviceList.deviceCount}</Text>
 
-                <TouchableOpacity style={styles.ViewallStyle} onPress={() => { NavigationService.navigate('Device & Asset') }} >
+                <TouchableOpacity style={styles.ViewallStyle} onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.DEVICE_ASSET) }} >
                     <FullScreenIcon  resizeMode='contain'/>
                 </TouchableOpacity>
 
