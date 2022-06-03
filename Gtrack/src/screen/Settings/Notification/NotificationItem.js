@@ -79,12 +79,12 @@ const NotificationItem = (props) => {
     const ExpandableReportItem = () => {
         return (
             item =='Email Notification' ?
-            renderExpandItem('mail')
-        :
-            item =='Push Notification' ?
-            renderExpandItem('firebase')
-        :
-            renderExpandItem('sms')
+                renderExpandItem('mail')
+            : item =='Push Notification' ?
+                renderExpandItem('firebase')
+            : item =='Web Notification' ?
+                renderExpandItem('web')
+            : renderExpandItem('sms')
         )
     }
 

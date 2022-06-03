@@ -14,7 +14,8 @@ import NotificationItem from './NotificationItem';
 const NOTIFICATIONS = [
     'Push Notification',
     'Email Notification',
-    'SMS Notification'
+    'SMS Notification',
+    'Web Notification'
 ]
 
 const SettingNotification = ({ navigation }) => {
