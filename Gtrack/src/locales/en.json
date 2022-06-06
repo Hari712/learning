@@ -26,7 +26,7 @@
     "Empty_Email_Or_Phone": "Please enter email or phone",
     "Invalid_Email_Or_Phone": "Please enter valid email or phone number",
     "Empty_Password": "Please enter password",
-    "Empty_Otp": "Please enter otp",
+    "Empty_Otp": "Please enter OTP",
     "Empty_Confirm_Password": "Please enter confirm password",
     "Password_Does_Not_Match": "Password and confirm password does not match",
     "Invalid_Password": "Password should be minimum 8 characters long and must contain one lower character, one upper character, one digit, one special character from @,#,$,%,^,& and No spaces",
