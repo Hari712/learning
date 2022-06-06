@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import AppManager from '../../constants/AppManager'
 import { getLoginInfo, getGroupListInfo } from '../Selector'
 import isEmpty from 'lodash/isEmpty'
+import { NoRecordFoundImage } from '../../component/SvgComponent';
 
 const GroupList = () => {
 
@@ -32,7 +33,7 @@ const GroupList = () => {
         if (isRefreshing == true) {
             fetchGroupList()
         }
-    },[isRefreshing])
+    }, [isRefreshing])
 
     function loadGroupList() {
         AppManager.showLoader()
@@ -42,7 +43,7 @@ const GroupList = () => {
     function fetchGroupList() {
         dispatch(DeviceActions.requestGetAllUserGroups(user_id, onGroupListLoadedSuccess, onGroupListLoadedError))
     }
-    
+
 
     function onGroupListLoadedSuccess(data) {
         AppManager.hideLoader()
@@ -78,7 +79,7 @@ const GroupList = () => {
         setDeviceNames(arrDeviceNames)
     }
 
-    console.log("data",arrDeviceList,arrDeviceNames)
+    console.log("data", arrDeviceList, arrDeviceNames)
 
     function onNonGroupedDeviceLoadedError(error) {
         console.log(error)
@@ -88,7 +89,7 @@ const GroupList = () => {
     function renderItem({ item, index }) {
         return (
             <>
-                <GroupItem 
+                <GroupItem
                     item={item}
                     index={index}
                     arrDeviceNames={arrDeviceNames}
@@ -109,21 +110,22 @@ const GroupList = () => {
     return (
         <View styles={styles.container}>
             {groupList.length > 0 ?
-            <FlatList
-                refreshControl={
-                    <RefreshControl
-                      style={styles.refreshIndicator}
-                      refreshing={isRefreshing}
-                      onRefresh={onRefresh}
-                    />
-                }
-                data={groupList}
-                renderItem={(data) => renderItem(data)}
-                keyExtractor={(item, index) => index.toString()}
-            /> :
-            <View style={styles.noRecords}>
-                <Text style={styles.noRecordsText}>No records found</Text>
-            </View> }
+                <FlatList
+                    refreshControl={
+                        <RefreshControl
+                            style={styles.refreshIndicator}
+                            refreshing={isRefreshing}
+                            onRefresh={onRefresh}
+                        />
+                    }
+                    data={groupList}
+                    renderItem={(data) => renderItem(data)}
+                    keyExtractor={(item, index) => index.toString()}
+                /> :
+                <View style={styles.noRecords}>
+                    <NoRecordFoundImage />
+                    {/* <Text style={styles.noRecordsText}>No records found</Text> */}
+                </View>}
         </View>
     )
 }
@@ -133,12 +135,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
     noRecords: {
-        marginVertical:hp(38),
-        alignItems:'center'
+        height: '85%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     noRecordsText: {
-    fontFamily:"Nunito-Regular",
-    fontSize:hp(2)
+        fontFamily: "Nunito-Regular",
+        fontSize: hp(2)
     },
     refreshIndicator: { tintColor: 'white' }
 })

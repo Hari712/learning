@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getGeofenceListInfo, getLoginState, isRoleRegular } from '../../Selector';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import * as LivetrackingActions from '../Livetracking.Action'
-import { BackIcon, NextIcon } from '../../../component/SvgComponent';
+import { BackIcon, NextIcon, NoRecordFoundImage } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import GeofenceList from './GeofenceList';
 import GeofenceEditDialog from '../../../component/GeofenceEditDialog';
@@ -227,7 +227,8 @@ const GeoFence = ({ navigation }) => {
                     }
                 /> :
                 <View style={styles.noRecords}>
-                    <Text style={styles.noRecordsText}>No records found</Text>
+                    <NoRecordFoundImage />
+                    {/* <Text style={styles.noRecordsText}>No records found</Text> */}
                 </View>
             }
 
@@ -300,8 +301,9 @@ const styles = StyleSheet.create({
         color: '#ffffff'
     },
     noRecords: {
-        marginVertical: hp(35),
-        alignItems: 'center'
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     noRecordsText: {
         fontFamily: "Nunito-Regular",

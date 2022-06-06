@@ -8,6 +8,7 @@ import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { useDispatch, useSelector } from 'react-redux'
 import AppManager from '../../constants/AppManager'
 import { getAssetListInfo, getLoginInfo } from '../Selector'
+import { NoRecordFoundImage } from '../../component/SvgComponent';
 
 const AssetList = () => {
 
@@ -34,7 +35,7 @@ const AssetList = () => {
         if (isRefreshing) {
             fetchAssetList()
         }
-    },[isRefreshing])
+    }, [isRefreshing])
 
     function loadAssetList() {
         AppManager.showLoader()
@@ -56,11 +57,11 @@ const AssetList = () => {
     }
 
     function onSuccess(data) {
-        console.log("SearchData",data)
+        console.log("SearchData", data)
     }
-        
+
     function onError(error) {
-        console.log("Error",error)
+        console.log("Error", error)
     }
 
     const renderSearchBar = () => {
@@ -71,12 +72,12 @@ const AssetList = () => {
         }
 
         return (
-            <View style={{ paddingHorizontal: hp(3), zIndex:10 }}>
+            <View style={{ paddingHorizontal: hp(3), zIndex: 10 }}>
                 <View style={styles.search}>
                     <TextInput
                         placeholder='Search Here'
-                        style={{flex: 1}}
-                        onChangeText={text => searchFilter(text) }                    
+                        style={{ flex: 1 }}
+                        onChangeText={text => searchFilter(text)}
                         value={search}
                     />
                 </View>
@@ -103,37 +104,38 @@ const AssetList = () => {
     }
 
     return (
-        <SafeAreaView style={{flex:1}}>
-        <KeyboardAvoidingView keyboardVerticalOffset={hp(10)} behavior='height'
-            style={{flexGrow:1 }}
-        >
-                
-        <View styles={styles.container}>
-            {renderSearchBar()}
-            {/* <View style={{flex:1}}> */}
-            {assetList.length > 0 ?
-            <FlatList
-                    style={{ height:'85%' }}
-                    nestedScrollEnabled={true}
-                    keyboardShouldPersistTaps='handled'
-                    refreshControl={
-                        <RefreshControl
-                            style={styles.refreshIndicator}
-                            refreshing={isRefreshing}
-                            onRefresh={onRefresh}
+        <SafeAreaView style={{ flex: 1 }}>
+            <KeyboardAvoidingView keyboardVerticalOffset={hp(10)} behavior='height'
+                style={{ flexGrow: 1 }}
+            >
+
+                <View styles={styles.container}>
+                    {renderSearchBar()}
+                    {/* <View style={{flex:1}}> */}
+                    {assetList.length > 0 ?
+                        <FlatList
+                            style={{ height: '85%' }}
+                            nestedScrollEnabled={true}
+                            keyboardShouldPersistTaps='handled'
+                            refreshControl={
+                                <RefreshControl
+                                    style={styles.refreshIndicator}
+                                    refreshing={isRefreshing}
+                                    onRefresh={onRefresh}
+                                />
+                            }
+                            data={assetList}
+                            renderItem={(data) => renderItem(data)}
+                            keyExtractor={(item, index) => index.toString()}
                         />
-                    }
-                    data={assetList}
-                    renderItem={(data) => renderItem(data)}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-             :
-            <View style={styles.noRecords}>
-                <Text style={styles.noRecordsText}>No records found</Text>
-            </View> }
-            {/* </View> */}
-        </View>
-        </KeyboardAvoidingView>
+                        :
+                        <View style={styles.noRecords}>
+                            <NoRecordFoundImage />
+                            {/* <Text style={styles.noRecordsText}>No records found</Text> */}
+                        </View>}
+                    {/* </View> */}
+                </View>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 }
@@ -143,12 +145,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
     noRecords: {
-        marginVertical:hp(32),
-        alignItems:'center'
+        height: '84%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     noRecordsText: {
-    fontFamily:"Nunito-Regular",
-    fontSize:hp(2)
+        fontFamily: "Nunito-Regular",
+        fontSize: hp(2)
     },
     search: {
         paddingHorizontal: hp(2),

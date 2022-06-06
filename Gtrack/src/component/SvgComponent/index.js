@@ -139,6 +139,7 @@ import DownloadIcon from './DownloadIcon';
 import ClockIcon from './ClockIcon'
 import SwitchOffIcon from './SwitchOffIcon'
 import SwitchOnIcon from './SwitchOnIcon'
+import NoRecordFoundImage from './NoRecordFoundImage'
 
 export {
     BarCodeScanIcon,
@@ -280,5 +281,6 @@ export {
     DownloadIcon,
     ClockIcon,
     SwitchOffIcon,
-    SwitchOnIcon
+    SwitchOnIcon,
+    NoRecordFoundImage
 }

@@ -8,7 +8,7 @@ import * as UsersActions from './Users.Action'
 import AppManager from '../../constants/AppManager';
 import { translate } from '../../../App';
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { UserAddIcon, FilterIcon, FilterIconClicked } from '../../component/SvgComponent';
+import { UserAddIcon, FilterIcon, FilterIconClicked, NoRecordFoundImage } from '../../component/SvgComponent';
 import UsersList from './UsersList';
 import UsersFilterDialog from '../../component/UsersFilterDialog';
 import isEmpty from 'lodash/isEmpty'
@@ -210,11 +210,11 @@ const Users = ({ navigation }) => {
             value={searchKeyword}
             placeholderTextColor={ColorConstant.GREY}
           />
-        
+
         </View>
         <TouchableOpacity style={styles.addButton} onPress={() => setVisible(!visible)} >
-            {visible ? <FilterIconClicked /> : <FilterIcon />}
-          </TouchableOpacity>
+          {visible ? <FilterIconClicked /> : <FilterIcon />}
+        </TouchableOpacity>
         <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
           <UserAddIcon />
         </TouchableOpacity>
@@ -272,7 +272,8 @@ const Users = ({ navigation }) => {
           onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
         /> :
         <View style={styles.noRecords}>
-          <Text style={styles.noRecordsText}>No records found</Text>
+          <NoRecordFoundImage />
+          {/* <Text style={styles.noRecordsText}>No records found</Text> */}
         </View>
       }
 
@@ -348,8 +349,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   noRecords: {
-    marginVertical: hp(38),
-    alignItems: 'center'
+    // marginVertical: hp(38),
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   noRecordsText: {
     fontFamily: "Nunito-Regular",

@@ -2,10 +2,10 @@ import React, { useState, Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import  { FontSize }from '../../../component';
+import { FontSize } from '../../../component';
 import { dist, getAdvanceSettingsInfo, getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
-import {  CalenderIconWhite, LocationIcon } from '../../../component/SvgComponent';
+import { CalenderIconWhite, LocationIcon, NoRecordFoundImage } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
@@ -28,81 +28,81 @@ const RouteDetails = (props) => {
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
 
-    const renderItem = ({ item,index }) => {
-        
+    const renderItem = ({ item, index }) => {
+
         let sDateArray = convertTime(item.tripStartTime, advSettingsData)
         var sdateComponent = sDateArray.format('YYYY-MM-DD');
         var stimeComponent = sDateArray.format('HH:mm');
-        
+
         let eDateArray = convertTime(item.tripEndTime, advSettingsData)
         var edateComponent = eDateArray.format('YYYY-MM-DD');
         var etimeComponent = eDateArray.format('HH:mm');
 
         let duration = moment.duration(eDateArray.diff(sDateArray))
-        let durationFormat = parseInt(duration.asHours())+'h '+parseInt(duration.asMinutes()%60)+'m '+parseInt(duration.asSeconds()%60)+'s'
-        
+        let durationFormat = parseInt(duration.asHours()) + 'h ' + parseInt(duration.asMinutes() % 60) + 'm ' + parseInt(duration.asSeconds() % 60) + 's'
+
         return (
-            <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.cardContainer}>
-    
+            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE, { item: item })} style={styles.cardContainer}>
+
                 {/* Blue top head */}
                 <View style={styles.blueConatiner}>
-                    <View style={{padding:hp(1.5),alignSelf:'center'}}>
-                        <CalenderIconWhite width={14.947} height={14.947}/>
+                    <View style={{ padding: hp(1.5), alignSelf: 'center' }}>
+                        <CalenderIconWhite width={14.947} height={14.947} />
                     </View>
-                    
+
                     <View style={styles.blueTopHead}>
                         <Text style={styles.headerTitle}>{sdateComponent}  to  {edateComponent}</Text>
                     </View>
-    
-                    <TouchableOpacity onPress={()=> NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE,{item:item})} style={styles.editButton}>
-                        <LocationIcon/>
+
+                    <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE, { item: item })} style={styles.editButton}>
+                        <LocationIcon />
                     </TouchableOpacity>
                 </View>
                 {/* White Body container */}
                 <View style={styles.whiteBodyContainer}>
                     <View style={styles.column} >
-                        <View style={{height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8)}}>
+                        <View style={{ height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8) }}>
                             <Text style={styles.whiteBodyText}>Start</Text>
                             <Text numberOfLines={2} style={[styles.whiteBodyText, { color: ColorConstant.BLACK, width: '90%', height: (item.tripStartAddress || item.tripEndAddress) ? hp(5) : hp(3) }]}>{item.tripStartAddress ? item.tripStartAddress : '-'}</Text>
-                            <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                                <ClockIcon  width={20} height={20} />
+                            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                                <ClockIcon width={20} height={20} />
                                 <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK, marginLeft: hp(0.5) }]}>{stimeComponent}</Text>
                             </View>
-                        </View> 
-                        <View style={{height:hp(2)}} />
+                        </View>
+                        <View style={{ height: hp(2) }} />
 
                         <Text style={styles.whiteBodyText}>Drive Duration</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK  }]}>{durationFormat}</Text>
-                        <View style={{height:hp(2)}} />
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{durationFormat}</Text>
+                        <View style={{ height: hp(2) }} />
                     </View>
                     <View style={[styles.column, { width: '40%' }]} >
-                        <View style={{height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8)}}>
-                        <Text style={styles.whiteBodyText}>End</Text>
-                        <Text numberOfLines={2} style={[styles.whiteBodyText, { color: ColorConstant.BLACK, width: '90%', height: (item.tripStartAddress || item.tripEndAddress) ? hp(5) : hp(3) }]}>{item.tripEndAddress ? item.tripEndAddress : '-'}</Text>
-                        <View style={{alignItems: 'center', flexDirection: 'row'}}>
-                                <ClockIcon  width={20} height={20} />
+                        <View style={{ height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8) }}>
+                            <Text style={styles.whiteBodyText}>End</Text>
+                            <Text numberOfLines={2} style={[styles.whiteBodyText, { color: ColorConstant.BLACK, width: '90%', height: (item.tripStartAddress || item.tripEndAddress) ? hp(5) : hp(3) }]}>{item.tripEndAddress ? item.tripEndAddress : '-'}</Text>
+                            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                                <ClockIcon width={20} height={20} />
                                 <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK, marginLeft: hp(0.5) }]}>{etimeComponent}</Text>
+                            </View>
                         </View>
-                        </View>
-                        <View style={{height:hp(2)}} />
-                        
+                        <View style={{ height: hp(2) }} />
+
                         <Text style={styles.whiteBodyText}>Avg Speed</Text>
                         <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertSpeed(item.tripAverageSpeed, distUnit)}</Text>
-                        <View style={{height:hp(2)}} />
+                        <View style={{ height: hp(2) }} />
                     </View>
                     <View style={[styles.column, { width: '25%' }]}>
-                        <View style={{height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8)}}>
-                        <Text style={styles.whiteBodyText}>Distance</Text>
-                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{ convertDist(item.tripDistance, distUnit) }</Text>
+                        <View style={{ height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8) }}>
+                            <Text style={styles.whiteBodyText}>Distance</Text>
+                            <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertDist(item.tripDistance, distUnit)}</Text>
                         </View>
-                        <View style={{height:hp(2)}} />
-                        
+                        <View style={{ height: hp(2) }} />
+
                         <Text style={styles.whiteBodyText}>Top Speed</Text>
                         <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{convertSpeed(item.tripMaxSpeed, distUnit)}</Text>
-                        <View style={{height:hp(2)}} />
-                    </View>          
+                        <View style={{ height: hp(2) }} />
+                    </View>
                 </View>
-    
+
             </TouchableOpacity>
         )
     }
@@ -111,26 +111,27 @@ const RouteDetails = (props) => {
     return (
         <View>
 
-            <View style={{paddingHorizontal:hp(3)}} >
-                <Text style={{color:ColorConstant.BLUE, fontFamily:'Nunito-Regular', fontSize:FontSize.FontSize.small}}>{routeDetails.length > 0 ? "Route Details": ''}</Text>
+            <View style={{ paddingHorizontal: hp(3) }} >
+                <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: FontSize.FontSize.small }}>{routeDetails.length > 0 ? "Route Details" : ''}</Text>
             </View>
             {routeDetails.length > 0 ?
-            <FlatList
-                style={{paddingBottom: hp(2)}}
-                nestedScrollEnabled={true}
-                keyboardShouldPersistTaps='handled'                
-                data={routeDetails}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-                showsVerticalScrollIndicator={false}
-                ListFooterComponent={renderFooter}
-                onEndReached={() => loadMoreData()}
-                onEndReachedThreshold={0.1}
-                onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
-            />  :
-            <View style={styles.noRecords}>
-                <Text style={styles.noRecordsText}>No records found</Text>
-            </View> }
+                <FlatList
+                    style={{ paddingBottom: hp(2) }}
+                    nestedScrollEnabled={true}
+                    keyboardShouldPersistTaps='handled'
+                    data={routeDetails}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsVerticalScrollIndicator={false}
+                    ListFooterComponent={renderFooter}
+                    onEndReached={() => loadMoreData()}
+                    onEndReachedThreshold={0.1}
+                    onMomentumScrollBegin={() => { setOnEndReachedCalledDuringMomentum(false) }}
+                /> :
+                <View style={styles.noRecords}>
+                    <NoRecordFoundImage />
+                    {/* <Text style={styles.noRecordsText}>No records found</Text> */}
+                </View>}
         </View>
 
     )
@@ -142,12 +143,12 @@ const styles = StyleSheet.create({
 
     container: {
         backgroundColor: ColorConstant.WHITE,
-        marginHorizontal:hp(3),
+        marginHorizontal: hp(3),
         // marginTop:hp(2),
-        borderWidth:1,
-        borderRadius:10,
-        borderColor:Platform.OS == 'ios'? ColorConstant.GREY : ColorConstant.WHITE,
-        elevation:6,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: Platform.OS == 'ios' ? ColorConstant.GREY : ColorConstant.WHITE,
+        elevation: 6,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -157,22 +158,22 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     summaryCardView: {
-        paddingHorizontal:hp(2)
+        paddingHorizontal: hp(2)
     },
     summaryTextStyle: {
-        fontFamily:"Nunito-Regular",color:ColorConstant.GREY,fontSize:hp(1.5)
+        fontFamily: "Nunito-Regular", color: ColorConstant.GREY, fontSize: hp(1.5)
     },
     cardContainer: {
         //width:"100%",
         marginVertical: hp(1.5),
         // height:hp(18),
         alignSelf: 'center',
-        marginHorizontal:hp(3),
+        marginHorizontal: hp(3),
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 10,
-        borderWidth: Platform.OS == 'ios'? 0.3 : 0,
-        borderColor:ColorConstant.GREY,
-        elevation:3,
+        borderWidth: Platform.OS == 'ios' ? 0.3 : 0,
+        borderColor: ColorConstant.GREY,
+        elevation: 3,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -182,12 +183,13 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
     },
     noRecords: {
-        marginVertical:hp(20),
-        alignItems:'center'
+        marginVertical: hp(20),
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     noRecordsText: {
-    fontFamily:"Nunito-Regular",
-    fontSize:hp(2)
+        fontFamily: "Nunito-Regular",
+        fontSize: hp(2)
     },
     blueConatiner: {
         backgroundColor: ColorConstant.BLUE,
@@ -209,10 +211,10 @@ const styles = StyleSheet.create({
     },
     headerTitle: {
         color: ColorConstant.WHITE,
-        textAlignVertical:'center',
+        textAlignVertical: 'center',
         //backgroundColor:'red',
-        flex:1,
-        fontFamily:'Nunito-Bold',
+        flex: 1,
+        fontFamily: 'Nunito-Bold',
         fontSize: FontSize.FontSize.small
     },
     whiteBodyContainer: {

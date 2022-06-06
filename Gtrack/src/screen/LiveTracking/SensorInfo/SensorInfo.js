@@ -6,7 +6,7 @@ import { FontSize } from '../../../component';
 import { FlatList } from 'react-native-gesture-handler';
 import { translate } from '../../../../App'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { BackIcon, DownArrowIcon, NextArrowOrangeIcon, UpArrowIcon } from '../../../component/SvgComponent';
+import { BackIcon, DownArrowIcon, NextArrowOrangeIcon, NoRecordFoundImage, UpArrowIcon } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import { getGroupDevicesListInfo, getLoginState } from '../../Selector';
 import { useSelector, useDispatch } from 'react-redux';
@@ -161,7 +161,8 @@ const SensorInfo = ({ navigation }) => {
     const noRecords = () => {
         return (
             <View style={styles.noRecords}>
-                <Text style={styles.noRecordsText}>No records found</Text>
+                <NoRecordFoundImage />
+                {/* <Text style={styles.noRecordsText}>No records found</Text> */}
             </View>
         )
     }
@@ -271,9 +272,9 @@ const styles = StyleSheet.create({
         //fontFamily:'Nunito-Italic'
     },
     noRecords: {
-        marginVertical: hp(35),
         alignItems: 'center',
-        flex: 1
+        flex: 1,
+        justifyContent: 'center'
     },
     noRecordsText: {
         fontFamily: "Nunito-LightItalic",

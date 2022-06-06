@@ -3,10 +3,10 @@ import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensio
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import * as TripHistoryActions from './TripHistory.Action'
 import { ColorConstant } from '../../../constants/ColorConstants'
-import  { FontSize } from '../../../component'
+import { FontSize } from '../../../component'
 import { FlatList } from 'react-native-gesture-handler'
 import { translate } from '../../../../App'
-import { BackIcon, DownArrowIcon, NextOrangeIcon } from '../../../component/SvgComponent'
+import { BackIcon, DownArrowIcon, NextOrangeIcon, NoRecordFoundImage } from '../../../component/SvgComponent'
 import { useDispatch, useSelector } from 'react-redux'
 import { getGroupDevicesListInfo, getLoginState } from '../../Selector'
 import AppManager from '../../../constants/AppManager'
@@ -41,30 +41,30 @@ const TripHistory = ({ navigation }) => {
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
             )
         });
     }, [navigation]);
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchGroupDevices()
-    },[])
+    }, [])
 
     function fetchGroupDevices() {
-        AppManager.showLoader() 
+        AppManager.showLoader()
         dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id, onSuccess, onError))
     }
 
-    function onSuccess(data) {    
-        console.log("Success",data) 
+    function onSuccess(data) {
+        console.log("Success", data)
         AppManager.hideLoader()
     }
-    
+
     function onError(error) {
         AppManager.hideLoader()
-        console.log("Error",error)  
+        console.log("Error", error)
     }
 
     function renderDevices(devices) {
@@ -72,11 +72,11 @@ const TripHistory = ({ navigation }) => {
             <>
                 {devices.map((subitem, subkey) => {
                     return (
-                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, {data:subitem})} >
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, { data: subitem })} >
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
-                            
-                                <NextOrangeIcon  style={styles.icon} />
+
+                            <NextOrangeIcon style={styles.icon} />
                         </TouchableOpacity>
                     )
                 })}
@@ -84,9 +84,9 @@ const TripHistory = ({ navigation }) => {
         )
     }
 
-    const deviceGroupInfoItem = ({ item,index }) => {
+    const deviceGroupInfoItem = ({ item, index }) => {
         return (
-            <View style={{  paddingVertical: hp(2), paddingHorizontal:hp(3), width:'100%' }}>
+            <View style={{ paddingVertical: hp(2), paddingHorizontal: hp(3), width: '100%' }}>
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
 
                     {/* Arrow Left Side */}
@@ -94,15 +94,15 @@ const TripHistory = ({ navigation }) => {
                         {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
                     </TouchableOpacity>
 
-                    <View style={{ flex: 1, padding: 10 }}  onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }} >
+                    <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }} >
                         {/* heading */}
                         <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
                             {/* {isDefault ? renderDefaultContainer() : renderActionButton()} */}
                             {(index !== selectedKey) ?
-                                <View style={{backgroundColor: ColorConstant.LIGHTENBLUE,width:wp(8),alignItems:'center'}}>
-                                    <Text style={{color:ColorConstant.BLUE,fontFamily:'Nunito-Bold'}}>{item.devices.length}</Text>
-                                </View> : null 
+                                <View style={{ backgroundColor: ColorConstant.LIGHTENBLUE, width: wp(8), alignItems: 'center' }}>
+                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Bold' }}>{item.devices.length}</Text>
+                                </View> : null
                             }
                         </TouchableOpacity>
 
@@ -128,22 +128,22 @@ const TripHistory = ({ navigation }) => {
 
     const searchBar = () => {
         return (
-                <View style={styles.search}>
-                    <TextInput 
-                        placeholder={translate("Search_here")}
-                        style={styles.searchText}
-                        onChangeText={text => searchHandle(text) }                    
-                        value={searchKeyword}
-                        placeholderTextColor={ColorConstant.GREY}
-                    />
-                </View>
+            <View style={styles.search}>
+                <TextInput
+                    placeholder={translate("Search_here")}
+                    style={styles.searchText}
+                    onChangeText={text => searchHandle(text)}
+                    value={searchKeyword}
+                    placeholderTextColor={ColorConstant.GREY}
+                />
+            </View>
         )
     }
 
     const renderItemData = () => {
-        return(
-            <View style={{flex: 1}}>
-                <Text style={{fontFamily:'Nunito-Regular',color:ColorConstant.BLUE,paddingHorizontal:hp(3),marginTop:hp(2)}}>
+        return (
+            <View style={{ flex: 1 }}>
+                <Text style={{ fontFamily: 'Nunito-Regular', color: ColorConstant.BLUE, paddingHorizontal: hp(3), marginTop: hp(2) }}>
                     Select device
                 </Text>
                 <FlatList
@@ -157,9 +157,10 @@ const TripHistory = ({ navigation }) => {
     }
 
     const noRecords = () => {
-        return(
+        return (
             <View style={styles.noRecords}>
-                <Text style={styles.noRecordsText}>No records found</Text>
+                <NoRecordFoundImage />
+                {/* <Text style={styles.noRecordsText}>No records found</Text> */}
             </View>
         )
     }
@@ -168,7 +169,7 @@ const TripHistory = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {searchBar()}
-            {groupDevices.length > 0 ? renderItemData() : noRecords() }
+            {groupDevices.length > 0 ? renderItemData() : noRecords()}
         </SafeAreaView>
     )
 }
@@ -233,14 +234,14 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE
     },
     noRecords: {
-        marginVertical:hp(35),
-        alignItems:'center',
-        flex:1
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1
     },
     noRecordsText: {
-        fontFamily:"Nunito-Regular",
-        fontSize:hp(2),
-        color:ColorConstant.BLACK
+        fontFamily: "Nunito-Regular",
+        fontSize: hp(2),
+        color: ColorConstant.BLACK
     },
     subCategory: {
         flexDirection: 'row',
@@ -274,27 +275,27 @@ const styles = StyleSheet.create({
     },
     searchText: {
         //fontSize:FontSize.FontSize.small,
-        fontSize:14,
-        color:ColorConstant.BLACK,
-        fontFamily:'Nunito-LightItalic'
+        fontSize: 14,
+        color: ColorConstant.BLACK,
+        fontFamily: 'Nunito-LightItalic'
     },
     search: {
-        paddingHorizontal:hp(2),
-        height:hp(5),
-        marginHorizontal:hp(2.5),
-        borderRadius:12,
-        marginTop:hp(4),
+        paddingHorizontal: hp(2),
+        height: hp(5),
+        marginHorizontal: hp(2.5),
+        borderRadius: 12,
+        marginTop: hp(4),
         // marginBottom:hp(2),
-        elevation:4,
+        elevation: 4,
         shadowColor: ColorConstant.BLACK,
         shadowOffset: {
             width: 0,
             height: 0
         },
-        justifyContent  : 'center',
+        justifyContent: 'center',
         shadowRadius: 3,
         shadowOpacity: 0.2,
-        backgroundColor:ColorConstant.WHITE
+        backgroundColor: ColorConstant.WHITE
     },
 })
 
