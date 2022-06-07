@@ -48,9 +48,11 @@ const NotificationItem = (props) => {
         dispatch(SettingNotificationActions.setLocalSettingsNotification(notifItem, notiValue))
         
     }
-
+    const capitalize = (str) => {
+        return str[0].toUpperCase() + str.slice(1);
+      };
     const renderExpandItem = (filterKey) => {
-
+     
         return (
             notificationData.map((item) => {
 
@@ -62,7 +64,7 @@ const NotificationItem = (props) => {
                 return(
                     <View style={{ height: isCollapsed ? null : 0, overflow: 'hidden' }}>
                         <View style={styles.headingViewStyle}>
-                            <Text style = {styles.headingTextStyle}>{type} </Text>
+                            <Text style = {styles.headingTextStyle}>{capitalize(type)} </Text>  
                                 <TouchableOpacity onPress={() => onUpdateNotification(item,filterKey) } >
                                     { toggler ? <ToggleButtonIconClicked/> : <ToggleButtonIcon/> }
                                 </TouchableOpacity>

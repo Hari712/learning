@@ -211,11 +211,24 @@ const EditProfile = ({ navigation, route, item }) => {
             console.log('loginData', loginData)
             let message = ''
             const phone = getPhone(phoneNumber)
+            // console.log('firstNamefirstNamefirstNamefirstNamefirstNamefirstNamefirstName',firstName)
+            // console.log('validateName(firstName)validateName(firstName)validateName(firstName)validateName(firstName)',validateName(firstName))
             if (!validateName(firstName)) {
-                message = "Name should contain only alphabets"
+                if(firstName == ''){
+                    message = "Please enter first name."
+                }
+                else{
+                    message = "First name should contain only alphabets"
+                }
+              
             }
             else if (!validateName(lastName)) {
-                message = "Name should contain only alphabets"
+                if(lastName == ''){
+                    message = "Please enter last name."
+                }
+                else{
+                    message = "Last name should contain only alphabets"
+                }
             }
             else if (isEmpty(phonePrefix)) {
                 message = 'Please select country code'
