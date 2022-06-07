@@ -140,6 +140,8 @@ import ClockIcon from './ClockIcon'
 import SwitchOffIcon from './SwitchOffIcon'
 import SwitchOnIcon from './SwitchOnIcon'
 import NoRecordFoundImage from './NoRecordFoundImage'
+import DownArrowOrangeIcon from './DownArrowOrangeIcon'
+import UpArrowOrangeIcon from './UpArrowOrangeIcon'
 
 export {
     BarCodeScanIcon,
@@ -282,5 +284,7 @@ export {
     ClockIcon,
     SwitchOffIcon,
     SwitchOnIcon,
-    NoRecordFoundImage
+    NoRecordFoundImage,
+    DownArrowOrangeIcon,
+    UpArrowOrangeIcon
 }

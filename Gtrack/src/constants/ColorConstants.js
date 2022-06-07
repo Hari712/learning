@@ -3,13 +3,13 @@ export const ColorConstant = {
     ORANGE: '#FF7F21',
     GREY: '#B5B5B5',
     BLUE: '#06418E',
-    BLACK:'#373737',
-    PINK:'#FEF6F1',
+    BLACK: '#373737',
+    PINK: '#FEF6F1',
     TRANSPARENT: 'transparent',
     LIGHTPINK: '#FFDDC5',
     LIGHTGREY: '#E4E4E4',
-    GREEN:'#62D508',
-    RED:'#FE1A19',
+    GREEN: '#62D508',
+    RED: '#FE1A19',
     DARKGREY: '#E6EAF3',
     LIGHTBLUE: '#C0DAFE',
     GREEN: '#1DD8BD',
@@ -25,8 +25,9 @@ export const ColorConstant = {
     LIGHTENPINK: '#FFD2DE',
     DARKENGREEN: '#00B512',
     DARKPINK: '#FF1111',
-    LIGHTENBLUE: '#EEF5FF'
+    LIGHTENBLUE: '#EEF5FF',
+    LIGTH_GREY: '#DEDEDE',
 
-    
-    
+
+
 }
