@@ -171,6 +171,7 @@ function* requestAllLastKnownPostion(action) {
         yield put(LivetrackingActions.setAllLastKnownPostionResponse(result))
         onSuccess(response)
     } catch (error) {
+        yield put(LivetrackingActions.setAllLastKnownPostionResponse([]))
         onError(error)
     }
 }

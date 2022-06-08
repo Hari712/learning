@@ -9,14 +9,12 @@ import AppManager from '../../../constants/AppManager'
 import { getAdvanceSettingsInfo, getAssetItemInfo, getLoginState } from '../../Selector'
 import { useSelector, useDispatch } from 'react-redux'
 import * as LivetrackingActions from '../Livetracking.Action'
-import Moment from 'moment'
 import { convertTemp, convertTime, convertAltitudeRound } from '../../../utils/helper'
-
+import { isEmpty } from 'lodash'
 
 const DeviceInfo = ({ navigation, route }) => {
 
     const { data } = route.params
-
     const { loginData, isConnected, assetData, advSettingsData } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
@@ -27,11 +25,14 @@ const DeviceInfo = ({ navigation, route }) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log('isFocusedisFocusedisFocusedisFocused',data)
         if(data){
-            if(data.status != 'offline'){
-                AppManager.showLoader()
-                dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, data.positionId, onSuccess, onError))
-            }
+            // if(data.status != 'offline'){
+               
+              
+            // }
+            AppManager.showLoader()
+            dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, data.positionId, onSuccess, onError))
             dispatch(LivetrackingActions.requestAssetInfo(loginData.id, data.id, onSuccess, onError))
         }
     },[])
@@ -65,14 +66,13 @@ const DeviceInfo = ({ navigation, route }) => {
             )
         });
     }, [navigation]);
-
     return (
         <SafeAreaView style={styles.DeviceInfoMainView}>
             <ScrollView>
                 <View style={styles.mainView}>
                     <Text style={styles.textViewStyle}>{data.name}</Text>
                 </View>
-                {data.status != 'offline' ?
+                {!isEmpty(assetData) ?
                 <View>
                     {assetData.map((item)=>
                     <View>
@@ -183,7 +183,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                     </View>
                     </View> )}
-                </View> : <Text style={styles.noDevice}>Your device is not activated</Text> }
+                </View> : <Text style={styles.noDevice}>No Data Found</Text> }
             </ScrollView>
         </SafeAreaView>
     )
