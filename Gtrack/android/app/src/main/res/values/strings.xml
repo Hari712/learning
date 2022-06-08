@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Gtrack</string>
+    <string name="app_name">GTrack</string>
     <string moduleConfig="true" name="CodePushDeploymentKey">_BjXVJadraArA2zzr6WpjuNsYIfvzQi-RzxrW</string>
 </resources>

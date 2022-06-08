@@ -4,7 +4,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { translate } from '../../../../App'
 import { FontSize } from '../../../component'
-import { BackIcon, ListIcon, SensorIcon } from '../../../component/SvgComponent'
+import { BackIcon, ListIcon, SensorIcon ,NoRecordFoundImage} from '../../../component/SvgComponent'
 import AppManager from '../../../constants/AppManager'
 import { getAdvanceSettingsInfo, getAssetItemInfo, getLoginState } from '../../Selector'
 import { useSelector, useDispatch } from 'react-redux'
@@ -183,7 +183,9 @@ const DeviceInfo = ({ navigation, route }) => {
 
                     </View>
                     </View> )}
-                </View> : <Text style={styles.noDevice}>No Data Found</Text> }
+                </View> :     <View style={styles.noDevice}>
+                    <NoRecordFoundImage />
+                </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -203,7 +205,6 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.ORANGE,
         height: hp(5)
     },
-
     textViewStyle: {
         color: ColorConstant.WHITE,
         fontWeight: 'bold',
@@ -277,7 +278,7 @@ const styles = StyleSheet.create({
         marginTop: hp(1),
     },
     noDevice: {
-        alignSelf:'center',paddingVertical:hp(40),fontFamily:'Nunito-Regular'
+        alignSelf:'center',paddingVertical:hp(30),fontFamily:'Nunito-Regular'
     }
 });
 

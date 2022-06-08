@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, FlatList, RefreshControl, TextInput, Image } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { ColorConstant } from '../../../constants/ColorConstants';
-import { FontSize } from '../../../component';
+import { CustomDialog, FontSize } from '../../../component';
 import { translate } from '../../../../App';
 import images from '../../../constants/images'
 import { useDispatch, useSelector } from 'react-redux';
@@ -155,12 +155,20 @@ const GeoFence = ({ navigation }) => {
 
     function renderDeleteDialog() {
         return (
-            <GeofenceDeleteDialog
-                deleteDialogBox={deleteDialogBox}
-                geofenceName={geofenceName}
-                setDeleteDialogBox={setDeleteDialogBox}
-                ondeleteGeofence={ondeleteGeofence}
-            />
+            <CustomDialog
+        heading="Are you sure ?"
+        message={"Do you really want to delete " + geofenceName + "?"}
+        visible={deleteDialogBox}   
+        onTouchOutside={() => setDeleteDialogBox(false)}
+        negativeHandle={() => setDeleteDialogBox(false)}
+        positiveHandle={ondeleteGeofence}
+      />
+            // <GeofenceDeleteDialog
+            //     deleteDialogBox={deleteDialogBox}
+            //     geofenceName={geofenceName}
+            //     setDeleteDialogBox={setDeleteDialogBox}
+            //     ondeleteGeofence={ondeleteGeofence}
+            // />
         )
     }
 

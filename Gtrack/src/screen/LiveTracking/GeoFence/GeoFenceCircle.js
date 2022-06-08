@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { isUserLoggedIn,getLiveTrackingDeviceList} from '../../Selector'
 import GetLocation from 'react-native-get-location'
 const { width, height } = Dimensions.get('window');
+import AppManager from '../../../constants/AppManager'
 import circle from '@turf/circle'
 import { BackIcon, NextIcon } from '../../../component/SvgComponent';
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
@@ -157,9 +158,13 @@ const GeoFenceCircle = ({navigation,route}) => {
     }, [completeEditing,selectedCoordinate,radius, oldData])
 
     useEffect(() => {
-
+      
         if (isEditing) {
             setIsScrollEnabled(false)
+            if(selectedCoordinate != null){
+                AppManager.showSimpleMessage('success', { message: 'Pin location on map', description: '', floating: true })
+            }
+            
         } else {
             setIsScrollEnabled(true)
         }
