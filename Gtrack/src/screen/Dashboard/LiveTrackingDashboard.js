@@ -30,9 +30,9 @@ const Map = Platform.select({
 	android: () => require('@react-native-mapbox-gl/maps'),
 })();
 
-const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVisible }) => {
+const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVisible ,selectedIndex}) => {
 	const dispatch = useDispatch();
-	console.log('sheetref', sheetRef)
+	console.log('sheetref', sheetRef,)
 	const { isConnected, devicePositions, groupDevices, loginData } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		loginData: getLoginState(state),
@@ -61,24 +61,22 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 
 	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
-	const [selectedDeviceIndex, setSelectedDeviceIndex, selectedDeviceIndexRef] = useStateRef(0);
+	const [selectedDeviceIndex,setSelectedDeviceIndex] =useState(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
 	const [coordList, setCoordList] = useState([])
 	const [lineString, setLineString] = useState(null)
 	const [region, setRegion] = useStateRef()
-	const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
-
 	const mapRef = useRef();
-
 	useEffect(
 		() => {
 			setDeviceList(groupDevices);
 			if (!isEmpty(deviceList)) {
-				const device = deviceList[selectedDeviceIndex];
+				const device = deviceList[selectedIndex];
 				setSelectedDevice(device);
 			}
+			setSheetVisible(groupDevices);
 		},
-		[groupDevices]
+		[groupDevices,selectedIndex]
 	);
 
 	useEffect(
@@ -274,7 +272,7 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 		const deviceInfo = selectedDevice;
 		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
-			<View
+			<TouchableOpacity 	onPress={() => {onOpen()}}
 				style={{
 					height: hp(3),
 					backgroundColor: ColorConstant.WHITE,
@@ -305,18 +303,17 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
 						{` ${deviceInfo.name} `}
 					</Text>
-					<TouchableOpacity style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
-						onPress={() => onOpen()}>
-						{bottomSheetVisible ? <UpArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
-							:
+					<View style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
+					>
+					
 							<DownArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
-						}
-					</TouchableOpacity>
+						
+					</View>
 					{/* {VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
 					</TouchableOpacity> } */}
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 

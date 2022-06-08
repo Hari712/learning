@@ -56,8 +56,7 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-
-
+	
 
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();

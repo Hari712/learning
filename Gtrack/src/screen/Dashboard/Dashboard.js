@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState, useRef } from 'react'
-import { StyleSheet, SafeAreaView, FlatList, View, Text } from 'react-native'
+import { StyleSheet, SafeAreaView, FlatList, View, Text,TouchableOpacity } from 'react-native'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -20,7 +20,10 @@ const Dashboard = ({ navigation }) => {
 
   const [isClickDownArrow, setIsClickDownArrow] = useState(false)
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
+  const [bottomsheedData,setBottomsheetData] = useState([])
 
+	const [selectedDevice, setSelectedDevice] = useState(null);
+	const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
   const sheetRef = useRef(null);
 
   const dispatch = useDispatch()
@@ -45,7 +48,16 @@ const Dashboard = ({ navigation }) => {
   }, [navigation]);
 
   const isFocused = useIsFocused();
-
+  useEffect(()=>{
+    if(bottomsheedData != []){
+      setSelectedDevice(bottomsheedData[0])
+    }},[bottomsheedData])
+    useEffect(() => {
+      if(!bottomSheetVisible){
+       sheetRef.current.open()
+   }
+     }, [bottomSheetVisible])
+   
   React.useEffect(() => {
     if (isFocused) {
       fetchDeviceDetails()
@@ -56,9 +68,13 @@ const Dashboard = ({ navigation }) => {
   useEffect(() => {
     fetchDeviceDetails()
     fetchNotifiedDevices()
-    sheetRef.current.open()
+    // sheetRef.current.open()
 
   }, [])
+
+  // useEffect(() => {
+  //   sheetRef.current.open()
+  // }, [])
 
   function fetchDeviceDetails() {
     AppManager.showLoader()
@@ -82,22 +98,21 @@ const Dashboard = ({ navigation }) => {
   }
 
   function onPressDevice(index) {
-    const arr = deviceList ? deviceList : [];
+    const arr = bottomsheedData ? bottomsheedData : [];
     const device = arr[index];
     setSelectedDevice(device);
     setSelectedDeviceIndex(index);
-    setDevicePositionArray([]);
-    setLineString(null)
-    sheetRef.current.close()
+    
+    setBottomSheetVisible(false);
   }
 
   const renderItems = ({ item, index }) => {
-    console.log('bottom sheet -------', item, index)
+    console.log('bottom sheet -------', item, index,selectedDevice.id,selectedDeviceIndex,item.id)
     return (
-      <View style={[styles.cardContainer, { borderBottomWidth: index == deviceList.length - 1 ? 0 : 0.8, }]}>
+      <View style={[styles.cardContainer, { borderBottomWidth: index == bottomsheedData.length - 1 ? 0 : 0.8, }]}>
         <TouchableOpacity
-          onPress={() => onPressDevice(index)}>
-          <Text style={[styles.bottomSheetTextStyle, { color: selectedDevice.id == item.id ? ColorConstant.ORANGE : ColorConstant.GREY }]}>{item.name}</Text>
+          onPress={() => {onPressDevice(index)}}>
+          <Text style={[styles.bottomSheetTextStyle, {color:selectedDevice.id == item.id ?  ColorConstant.ORANGE :ColorConstant.GREY}]}>{item.name}</Text>
         </TouchableOpacity>
       </View>
     )
@@ -106,16 +121,17 @@ const Dashboard = ({ navigation }) => {
   const RenderContent = () => (
     <View style={styles.subView}>
       <Text style={styles.mainTitle}>Select Device</Text>
-      {/* <FlatList
+      <FlatList
         showsVerticalScrollIndicator={false}
         style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
         contentContainerStyle={{ paddingBottom: '5%' }}
-        data={deviceList}
+        data={bottomsheedData}
         renderItem={renderItems}
         keyExtractor={(item, index) => index.toString()}
-      /> */}
+      />
     </View>
   );
+  console.log('bottomsheedDatabottomsheedDatabottomsheedData',bottomSheetVisible)
 
   const RenderBottomSheet = () => {
 
@@ -136,8 +152,9 @@ const Dashboard = ({ navigation }) => {
           backgroundColor: ColorConstant.ORANGE
         }
       }}
-      onOpen={() => setBottomSheetVisible(true)}
+
       onClose={() => setBottomSheetVisible(false)}
+            onOpen={() => setBottomSheetVisible(true)}
     >
       <RenderContent />
     </RBSheet>
@@ -145,7 +162,9 @@ const Dashboard = ({ navigation }) => {
   }
 
   const openSheet = () => {
-    sheetRef.current.open()
+   
+    sheetRef.current.open();
+    setBottomSheetVisible(true);
   }
 
   return (
@@ -155,7 +174,9 @@ const Dashboard = ({ navigation }) => {
 
         {isOwner ?
           <>
-            <LiveTrackingDashboard onOpen={openSheet} setSheetVisible={(value) => console.log('value===', value)} />
+            <LiveTrackingDashboard onOpen={()=>openSheet()} setSheetVisible={(value) => {
+              setBottomsheetData(value)
+            }} selectedIndex ={selectedDeviceIndex}  />
             <DeviceSummary deviceList={deviceDetails} />
             <RecentAlarms deviceList={notiDevices} />
             <ActiveUser />
@@ -164,7 +185,9 @@ const Dashboard = ({ navigation }) => {
 
         {isAdmin ?
           <>
-            <LiveTrackingDashboard sheetRef={sheetRef} setSheetVisible={(value) => console.log('value===', value)} />
+            <LiveTrackingDashboard onOpen={()=>openSheet()} setSheetVisible={(value) => {
+              setBottomsheetData(value)
+            }}  selectedIndex ={selectedDeviceIndex}  />
             <DeviceSummary deviceList={deviceDetails} />
             <RecentAlarms deviceList={notiDevices} />
             <RenderBottomSheet />
@@ -174,7 +197,6 @@ const Dashboard = ({ navigation }) => {
           <>
             <DeviceView />
           </> : null}
-
       </SafeAreaView>
 
     </ScrollView>
