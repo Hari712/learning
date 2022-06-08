@@ -586,7 +586,7 @@ const LiveTracking = ({ navigation }) => {
 			</View>
 			<RBSheet
 				ref={sheetRef}
-				// closeOnDragDown={true}
+				closeOnDragDown={true}
 				height={hp(45)}
 				customStyles={{
 					wrapper: {
@@ -596,10 +596,10 @@ const LiveTracking = ({ navigation }) => {
 						borderTopLeftRadius: 30,
 						borderTopRightRadius: 30
 					},
-					// draggableIcon: {
-					// 	width: hp(10),
-					// 	backgroundColor: ColorConstant.ORANGE
-					// }
+					draggableIcon: {
+						width: hp(10),
+						backgroundColor: ColorConstant.ORANGE
+					}
 				}}
 				onOpen={() => setBottomSheetVisible(true)}
 				onClose={() => setBottomSheetVisible(false)}
