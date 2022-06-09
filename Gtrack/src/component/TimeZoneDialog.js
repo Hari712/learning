@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         textAlignVertical:'center'
     },
     deleteDialogMainView: {
-        height: hp(70),
+        maxHeight: hp(70),
         width: wp(80)
     },
     subHeadingView: {

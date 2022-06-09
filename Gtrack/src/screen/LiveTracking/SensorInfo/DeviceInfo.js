@@ -4,19 +4,17 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { translate } from '../../../../App'
 import { FontSize } from '../../../component'
-import { BackIcon, ListIcon, SensorIcon } from '../../../component/SvgComponent'
+import { BackIcon, ListIcon, SensorIcon ,NoRecordFoundImage} from '../../../component/SvgComponent'
 import AppManager from '../../../constants/AppManager'
 import { getAdvanceSettingsInfo, getAssetItemInfo, getLoginState } from '../../Selector'
 import { useSelector, useDispatch } from 'react-redux'
 import * as LivetrackingActions from '../Livetracking.Action'
-import Moment from 'moment'
 import { convertTemp, convertTime, convertAltitudeRound } from '../../../utils/helper'
-
+import { isEmpty } from 'lodash'
 
 const DeviceInfo = ({ navigation, route }) => {
 
     const { data } = route.params
-
     const { loginData, isConnected, assetData, advSettingsData } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
@@ -27,11 +25,14 @@ const DeviceInfo = ({ navigation, route }) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log('isFocusedisFocusedisFocusedisFocused',data)
         if(data){
-            if(data.status != 'offline'){
-                AppManager.showLoader()
-                dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, data.positionId, onSuccess, onError))
-            }
+            // if(data.status != 'offline'){
+               
+              
+            // }
+            AppManager.showLoader()
+            dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, data.positionId, onSuccess, onError))
             dispatch(LivetrackingActions.requestAssetInfo(loginData.id, data.id, onSuccess, onError))
         }
     },[])
@@ -65,14 +66,13 @@ const DeviceInfo = ({ navigation, route }) => {
             )
         });
     }, [navigation]);
-
     return (
         <SafeAreaView style={styles.DeviceInfoMainView}>
             <ScrollView>
                 <View style={styles.mainView}>
                     <Text style={styles.textViewStyle}>{data.name}</Text>
                 </View>
-                {data.status != 'offline' ?
+                {!isEmpty(assetData) ?
                 <View>
                     {assetData.map((item)=>
                     <View>
@@ -183,7 +183,9 @@ const DeviceInfo = ({ navigation, route }) => {
 
                     </View>
                     </View> )}
-                </View> : <Text style={styles.noDevice}>Your device is not activated</Text> }
+                </View> :     <View style={styles.noDevice}>
+                    <NoRecordFoundImage />
+                </View>}
             </ScrollView>
         </SafeAreaView>
     )
@@ -203,7 +205,6 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.ORANGE,
         height: hp(5)
     },
-
     textViewStyle: {
         color: ColorConstant.WHITE,
         fontWeight: 'bold',
@@ -277,7 +278,7 @@ const styles = StyleSheet.create({
         marginTop: hp(1),
     },
     noDevice: {
-        alignSelf:'center',paddingVertical:hp(40),fontFamily:'Nunito-Regular'
+        alignSelf:'center',paddingVertical:hp(30),fontFamily:'Nunito-Regular'
     }
 });
 
