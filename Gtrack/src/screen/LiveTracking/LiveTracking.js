@@ -24,7 +24,7 @@ import { isNewNotification } from '../../utils/socketHelper';
 import { sendEvent } from '../../provider/SocketProvider';
 import url from 'socket.io-client/lib/url';
 import RBSheet from "react-native-raw-bottom-sheet";
-
+import IconConstant from '../../constants/iconConstant';
 const { width, height } = Dimensions.get('window');
 
 
@@ -484,12 +484,19 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	const renderItems = ({ item, index }) => {
-		console.log('bottom sheet -------', item, index)
+		console.log('bottom sheet-------', item, index)
 		return (
 			<View style={[styles.cardContainer, { borderBottomWidth: index == deviceList.length - 1 ? 0 : 0.8, }]}>
-				<TouchableOpacity
+				<TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}}
 					onPress={() => onPressDevice(index)}>
+						{/* <View style={styles.notificationLeftView}>
+                            <View style={styles.notificationDetailView}> */}
+						
+                               
+                            {/* </View>
+                        </View> */}
 					<Text style={[styles.bottomSheetTextStyle, { color: selectedDevice.id == item.id ? ColorConstant.ORANGE : ColorConstant.GREY }]}>{item.name}</Text>
+					<IconConstant type={item.status =='online'? 'deviceonline' :'deviceoffline'} color={ColorConstant.ORANGE} />
 				</TouchableOpacity>
 			</View>
 		)
@@ -499,7 +506,7 @@ const LiveTracking = ({ navigation }) => {
 		<View style={styles.subView}>
 			<Text style={styles.mainTitle}>Select Device</Text>
 			<FlatList
-				showsVerticalScrollIndicator={false}
+				showsVerticalScrollIndicator={true}
 				style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
 				contentContainerStyle={{ paddingBottom: '5%' }}
 				data={deviceList}
@@ -586,7 +593,7 @@ const LiveTracking = ({ navigation }) => {
 			<RBSheet
 				ref={sheetRef}
 				closeOnDragDown={true}
-				height={hp(45)}
+				height={deviceList.length > 3 ? hp(45):  hp(30)}
 				customStyles={{
 					wrapper: {
 						backgroundColor: 'rgba(0,0,0,0.5)'
@@ -706,6 +713,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		// height: height / 2,
+		paddingBottom:hp(5),
 		backgroundColor: ColorConstant.WHITE,
 	},
 	mainTitle: {
