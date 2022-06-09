@@ -15,6 +15,7 @@ import ActiveUser from './ActiveUser'
 import DeviceView from './DeviceView';
 import { useIsFocused } from '@react-navigation/native';
 import RBSheet from "react-native-raw-bottom-sheet";
+import IconConstant from '../../constants/iconConstant';
 
 const Dashboard = ({ navigation }) => {
 
@@ -110,10 +111,11 @@ const Dashboard = ({ navigation }) => {
     console.log('bottom sheet -------', item, index,selectedDevice.id,selectedDeviceIndex,item.id)
     return (
       <View style={[styles.cardContainer, { borderBottomWidth: index == bottomsheedData.length - 1 ? 0 : 0.8, }]}>
-        <TouchableOpacity
-          onPress={() => {onPressDevice(index)}}>
-          <Text style={[styles.bottomSheetTextStyle, {color:selectedDevice.id == item.id ?  ColorConstant.ORANGE :ColorConstant.GREY}]}>{item.name}</Text>
-        </TouchableOpacity>
+       <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}}
+					onPress={() => onPressDevice(index)}>
+					<Text style={[styles.bottomSheetTextStyle, { color: selectedDevice.id == item.id ? ColorConstant.ORANGE : ColorConstant.GREY }]}>{item.name}</Text>
+					<IconConstant type={item.status =='online'? 'deviceonline' :'deviceoffline'} color={ColorConstant.ORANGE} />
+				</TouchableOpacity>
       </View>
     )
   }
@@ -122,7 +124,7 @@ const Dashboard = ({ navigation }) => {
     <View style={styles.subView}>
       <Text style={styles.mainTitle}>Select Device</Text>
       <FlatList
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
         contentContainerStyle={{ paddingBottom: '5%' }}
         data={bottomsheedData}
@@ -131,14 +133,14 @@ const Dashboard = ({ navigation }) => {
       />
     </View>
   );
-  console.log('bottomsheedDatabottomsheedDatabottomsheedData',bottomSheetVisible)
+  console.log('bottomsheedDatabottomsheedDatabottomsheedData',bottomsheedData.length)
 
   const RenderBottomSheet = () => {
 
     return <RBSheet
       ref={sheetRef}
       closeOnDragDown={true}
-      height={hp(45)}
+      height={bottomsheedData.length > 3 ? hp(45):  hp(30)}
       customStyles={{
         wrapper: {
           backgroundColor: 'rgba(0,0,0,0.5)'
@@ -219,6 +221,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   subView: {
+    paddingBottom:hp(5),
     width: '100%',
     alignItems: 'center',
     // height: height / 2,
