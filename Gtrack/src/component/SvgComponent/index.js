@@ -142,6 +142,7 @@ import SwitchOnIcon from './SwitchOnIcon'
 import NoRecordFoundImage from './NoRecordFoundImage'
 import DownArrowOrangeIcon from './DownArrowOrangeIcon'
 import UpArrowOrangeIcon from './UpArrowOrangeIcon'
+import GtrackIndiaLogoNew from './GtrackIndiaLogoNew'
 
 export {
     BarCodeScanIcon,
@@ -286,5 +287,6 @@ export {
     SwitchOnIcon,
     NoRecordFoundImage,
     DownArrowOrangeIcon,
-    UpArrowOrangeIcon
+    UpArrowOrangeIcon,
+    GtrackIndiaLogoNew
 }

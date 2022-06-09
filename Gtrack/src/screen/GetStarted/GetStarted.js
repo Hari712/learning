@@ -8,32 +8,33 @@ import CustomButton from '../../component/Button'
 import FontSize from '../../component/FontSize'
 import { translate } from '../../../App'
 import { SCREEN_CONSTANTS } from '../../constants/AppConstants'
-import { GtrackIndiaLogo } from '../../component/SvgComponent'
+import { GtrackIndiaLogo, GtrackIndiaLogoNew } from '../../component/SvgComponent'
 
 const GetStarted = (navigation) => {
-    return ( 
+    return (
         <View style={styles.container}>
             <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
 
-                <GtrackIndiaLogo/>
+                {/* <GtrackIndiaLogo/> */}
+                <GtrackIndiaLogoNew style={styles.imageStyle} />
                 {/* <Image style={styles.imageStyle} source={images.image.logo}/> */}
 
-                    <View style={styles.mainViewStyle}>
-                        <View style={styles.viewStyle}>
-                            <Text style={styles.textStyle}> {translate("Splash_string1")} </Text>
-                            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
-                                <Text style={styles.loginTextStyle}>{translate("Splash_string2")}</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        <CustomButton
-                            title={translate("Splash_string3")}
-                            style={styles.buttonStyle}
-                            textStyle={styles.buttonTextStyle}
-                            onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.SIGNUP)} 
-                        />
-                        
+                <View style={styles.mainViewStyle}>
+                    <View style={styles.viewStyle}>
+                        <Text style={styles.textStyle}> {translate("Splash_string1")} </Text>
+                        <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
+                            <Text style={styles.loginTextStyle}>{translate("Splash_string2")}</Text>
+                        </TouchableOpacity>
                     </View>
+
+                    <CustomButton
+                        title={translate("Splash_string3")}
+                        style={styles.buttonStyle}
+                        textStyle={styles.buttonTextStyle}
+                        onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.SIGNUP)}
+                    />
+
+                </View>
 
             </ImageBackground>
         </View>
@@ -50,37 +51,37 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     imageStyle: {
-        position:'absolute', 
-        alignSelf:'center'
+        position: 'absolute',
+        alignSelf: 'center'
     },
     mainViewStyle: {
-        position:'absolute', 
-        bottom: 20, 
+        position: 'absolute',
+        bottom: 20,
         //alignContent:'center', 
-        alignItems:'center', 
+        alignItems: 'center',
         //width:wp(100)
     },
     viewStyle: {
-        flexDirection:'row', 
-        marginBottom:hp(2)
+        flexDirection: 'row',
+        marginBottom: hp(2)
     },
     textStyle: {
-        color:ColorConstant.WHITE,
+        color: ColorConstant.WHITE,
         fontSize: hp(2.2),
-        fontFamily:'Nunito-Bold'
+        fontFamily: 'Nunito-Bold'
         //fontWeight: 'bold'
     },
     loginTextStyle: {
-        color:ColorConstant.ORANGE,
+        color: ColorConstant.ORANGE,
         fontSize: hp(2.2),
-        fontWeight:'bold'
+        fontWeight: 'bold'
     },
     buttonStyle: {
-        width:wp(80),
-        height:hp(5.3),
+        width: wp(80),
+        height: hp(5.3),
     },
     buttonTextStyle: {
-        fontSize: FontSize.FontSize.regular, 
+        fontSize: FontSize.FontSize.regular,
         fontWeight: '600',
         fontFamily: 'Nunito-Bold'
     }
