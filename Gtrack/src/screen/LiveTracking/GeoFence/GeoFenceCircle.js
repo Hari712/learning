@@ -161,9 +161,9 @@ const GeoFenceCircle = ({navigation,route}) => {
       
         if (isEditing) {
             setIsScrollEnabled(false)
-            if(selectedCoordinate != null){
-                AppManager.showSimpleMessage('success', { message: 'Pin location on map', description: '', floating: true })
-            }
+            // if(selectedCoordinate != null){
+            //     AppManager.showSimpleMessage('success', { message: 'Pin location on map', description: '', floating: true })
+            // }
             
         } else {
             setIsScrollEnabled(true)
