@@ -230,7 +230,6 @@ const styles = StyleSheet.create({
   mainTitle: {
     color: ColorConstant.ORANGE,
     fontWeight: 'bold',
-    paddingTop: hp(2),
     fontSize: FontSize.FontSize.medium,
     fontFamily: 'Nunito-Bold'
   },
