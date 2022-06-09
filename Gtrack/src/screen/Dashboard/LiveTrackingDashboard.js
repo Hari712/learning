@@ -76,7 +76,19 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 			}
 			setSheetVisible(groupDevices);
 		},
-		[groupDevices,selectedIndex]
+		[groupDevices]
+	);
+	useEffect(
+		() => {
+			setDeviceList(groupDevices);
+			if (!isEmpty(deviceList)) {
+				const device = deviceList[selectedIndex];
+				setSelectedDevice(device);
+			}
+			setSheetVisible(groupDevices);
+			setDevicePositionArray([]);
+		},
+		[selectedIndex]
 	);
 
 	useEffect(
