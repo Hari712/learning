@@ -130,7 +130,7 @@ const RouteDetails = (props) => {
                 /> :
                 <View style={styles.noRecords}>
                     <NoRecordFoundImage />
-                    {/* <Text style={styles.noRecordsText}>No records found</Text> */}
+                    <Text style={styles.noRecordsText}>No Records Found</Text>
                 </View>}
         </View>
 
@@ -189,7 +189,9 @@ const styles = StyleSheet.create({
     },
     noRecordsText: {
         fontFamily: "Nunito-Regular",
-        fontSize: hp(2)
+        fontSize: hp(2),
+        color: ColorConstant.DARK_GREY,
+        marginTop: hp(1),
     },
     blueConatiner: {
         backgroundColor: ColorConstant.BLUE,

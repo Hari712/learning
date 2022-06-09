@@ -8,7 +8,7 @@ import * as LivetrackingActions from '../Livetracking.Action'
 import { translate } from '../../../../App'
 import { getAlarmsListInfo, getLoginState, isRoleRegular } from '../../Selector';
 import { AppConstants, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
-import { BackIcon, DeleteIcon, } from '../../../component/SvgComponent';
+import { BackIcon, DeleteIcon, NoRecordFoundImage, } from '../../../component/SvgComponent';
 import AppManager from '../../../constants/AppManager';
 import { showNotificationName } from '../../../utils/helper';
 import DeleteIconButton from '../../../component/DeleteIconButton';
@@ -199,18 +199,24 @@ const Alarms = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate(SCREEN_CONSTANTS.CREATE_NEW)} style={styles.header}>
           <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 16, color: ColorConstant.WHITE }}>{translate("Create New")}</Text>
         </TouchableOpacity> : null}
-
-      <FlatList
-        data={alarmListData}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => { return index }}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefreshing}
-            onRefresh={onRefresh}
-          />
-        }
-      />
+      {alarmListData.length > 0 ?
+        <FlatList
+          data={alarmListData}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => { return index }}
+          refreshControl={
+            <RefreshControl
+              refreshing={isRefreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        />
+        :
+        <View style={styles.noRecords}>
+          <NoRecordFoundImage />
+          <Text style={styles.noRecordsText}>No Records Found</Text>
+        </View>
+      }
       <CustomDialog
         heading="Are you sure ?"
         message={"Do you really want to delete " + alarmName + " alarm ?"}
@@ -332,6 +338,17 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.2,
     backgroundColor: ColorConstant.WHITE
+  },
+  noRecords: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noRecordsText: {
+    fontFamily: "Nunito-Regular",
+    fontSize: hp(2),
+    color: ColorConstant.DARK_GREY,
+    marginTop: hp(1),
   },
 });
 

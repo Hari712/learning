@@ -162,7 +162,7 @@ const SensorInfo = ({ navigation }) => {
         return (
             <View style={styles.noRecords}>
                 <NoRecordFoundImage />
-                {/* <Text style={styles.noRecordsText}>No records found</Text> */}
+                <Text style={styles.noRecordsText}>No Records Found</Text>
             </View>
         )
     }
@@ -277,9 +277,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     noRecordsText: {
-        fontFamily: "Nunito-LightItalic",
+        fontFamily: "Nunito-Regular",
         fontSize: hp(2),
-        color: ColorConstant.BLACK
+        color: ColorConstant.DARK_GREY,
+        marginTop: hp(1),
     },
     search: {
         paddingHorizontal: hp(2),
