@@ -3,7 +3,7 @@ import Svg, { G, Rect, Path } from "react-native-svg"
 
 function PanicAlarmIcon(props) {
     return (
-    <Svg width={50} height={50} viewBox="0 0 50 50" {...props}>
+    <Svg width={18.696} height={18.696}viewBox="0 0 50 50" {...props}>
         <G data-name="Group 8850" transform="translate(-310 -321)">
         <Rect
             data-name="Rectangle 4344"

@@ -569,7 +569,8 @@ const LiveTracking = ({ navigation }) => {
 					onLongPress={() => onLongPress()}
 					delayLongPress={2000}
 				>
-					{isPanicAlarmClick ? <PanicIconClick height={55} width={55} /> : <PanicAlarmIcon />}
+			
+					{isPanicAlarmClick ? <PanicIconClick	height={hp(6)} width={hp(6)}  /> : <PanicAlarmIcon height={hp(6)} width={hp(6)}  />}
 				</TouchableOpacity>
 				}
 				<CustomDialog
@@ -646,10 +647,11 @@ const styles = StyleSheet.create({
 	lineIconStyle: {
 		borderRadius: 13,
 		height: hp(6),
+		width: '80%',
 		marginTop: hp(2),
 		justifyContent: 'center',
 		alignItems: 'center',
-		width: '80%',
+		
 		backgroundColor: ColorConstant.WHITE,
 	},
 	lineContainer: {
@@ -719,7 +721,6 @@ const styles = StyleSheet.create({
 	mainTitle: {
 		color: ColorConstant.ORANGE,
 		fontWeight: 'bold',
-		paddingTop: hp(2),
 		fontSize: FontSize.FontSize.medium,
 		fontFamily: 'Nunito-Bold'
 	},
