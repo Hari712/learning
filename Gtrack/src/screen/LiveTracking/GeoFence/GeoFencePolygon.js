@@ -319,11 +319,40 @@ const GeoFencePolyGon = ({navigation, route}) => {
                 </View>
         )
     }
-
+    function mapOverlayContainer() {
+        return ( <>
+         {!isEditing && isEmpty(selectedCoordinates) ? <View style={{flex: 1,
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                opacity: 0.5,
+                backgroundColor: 'black',
+                width: wp(100), 
+                height: hp(100),
+                }} /> : null}
+            {(isEditing && isEmpty(selectedCoordinates)) || (!isEmpty(selectedCoordinates) && selectedCoordinates.length < 3) ? 
+                 <View style={{flex: 1,
+                        position: 'absolute',
+                        marginTop: hp(10),
+                        alignSelf: 'center',
+                        opacity: 0.5,
+                        backgroundColor: ColorConstant.OVERLAY_BG,
+                        borderRadius: hp(25),
+                        width: wp(50), 
+                        height: hp(5),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}> 
+                    <Text style={{color: ColorConstant.BLACK, fontSize: 20, fontWeight: 'bold'}}>Tap to Draw</Text> 
+                </View> : null}
+            </>
+        );
+    }
 
     return (
         <View style={styles.container}>
             {isAndroid ? renderMapBox() : renderAppleMap()}
+            {mapOverlayContainer()}
             {renderButton()}
         </View>
     )

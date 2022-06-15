@@ -157,14 +157,10 @@ const GeoFenceCircle = ({navigation,route}) => {
         } 
     }, [completeEditing,selectedCoordinate,radius, oldData])
 
-    useEffect(() => {
+    useEffect( () => {
       
         if (isEditing) {
             setIsScrollEnabled(false)
-            // if(selectedCoordinate != null){
-            //     AppManager.showSimpleMessage('success', { message: 'Pin location on map', description: '', floating: true })
-            // }
-            
         } else {
             setIsScrollEnabled(true)
         }
@@ -211,7 +207,6 @@ const GeoFenceCircle = ({navigation,route}) => {
                     showsUserLocation={true} 
                     initialRegion={region} 
                     region={region}
-                    scrollEnabled={isScrollEnabled} 
                     onPress={(mapInfo) => onPressAppleMap(mapInfo)}>
                         {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
                         {!isEmpty(selectedCoordinate) ? renderAppleMapCircle() : null}
@@ -372,10 +367,40 @@ console.log('isEditingisEditingisEditingisEditing',isEditing,selectedCoordinate)
             return null
         }
     }
+    function mapOverlayContainer() {
+        return ( <>
+         {!isEditing && isEmpty(selectedCoordinate) ? <View style={{flex: 1,
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                opacity: 0.5,
+                backgroundColor: 'black',
+                width: wp(100), 
+                height: hp(100),
+                }} /> : null}
+            {isEditing && isEmpty(selectedCoordinate) ? 
+                 <View style={{flex: 1,
+                        position: 'absolute',
+                        marginTop: hp(10),
+                        alignSelf: 'center',
+                        opacity: 0.5,
+                        backgroundColor: ColorConstant.OVERLAY_BG,
+                        borderRadius: hp(25),
+                        width: wp(50), 
+                        height: hp(5),
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}> 
+                    <Text style={{color: ColorConstant.BLACK, fontSize: 20, fontWeight: 'bold'}}>Tap to Draw</Text> 
+                </View> : null}
+            </>
+        );
+    }
 
     return (
         <View style={styles.container}>
             {isAndroid ? renderMapBox() : renderAppleMap()}
+                {mapOverlayContainer()}
                 {renderButton()}
                 {renderSlider()}           
         </View>

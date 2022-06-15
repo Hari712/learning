@@ -27,7 +27,7 @@ export const ColorConstant = {
     DARKPINK: '#FF1111',
     LIGHTENBLUE: '#EEF5FF',
     LIGTH_GREY: '#DEDEDE',
-    DARK_GREY: '#565656'
-
+    DARK_GREY: '#c9c9c9',
+    OVERLAY_BG: '#adadad'
 
 }
