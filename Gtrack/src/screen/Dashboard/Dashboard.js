@@ -44,7 +44,7 @@ const Dashboard = ({ navigation }) => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (null),
+      header: () => null,
     });
   }, [navigation]);
 

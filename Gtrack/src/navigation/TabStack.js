@@ -111,7 +111,7 @@ const DashBoardStackNavigator = ({navigation, route}) => {
     }, [navigation, route]);
 
     return(
-        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="none" headerMode="screen" screenOptions={ScreenOptions}>
+        <DashBoardStack.Navigator initialRouteName="DashBoard" headerMode="screen" screenOptions={ScreenOptions}>
             <DashBoardStack.Screen name={SCREEN_CONSTANTS.DASHBOARD} component={DashBoard} />
             <DashBoardStack.Screen name={SCREEN_CONSTANTS.TRACKING_DETAILS} component={TrackingDetails} />
         </DashBoardStack.Navigator>

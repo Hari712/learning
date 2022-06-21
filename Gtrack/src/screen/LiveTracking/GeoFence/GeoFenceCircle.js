@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get('window');
 import AppManager from '../../../constants/AppManager'
 import circle from '@turf/circle'
 import { BackIcon, NextIcon } from '../../../component/SvgComponent';
-import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { MAP_BOX_STYLEURL, rasterSourceProps, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import useSubscribeLocationUpdates from '../../../utils/useSubscribeLocationUpdates';
 import round from 'lodash';
 
@@ -269,7 +269,7 @@ const GeoFenceCircle = ({navigation,route}) => {
 
         return (
             <>
-                <Map.default.MapView style={{ flex: 1 }}  onPress={(mapInfo) => onPressMapBox(mapInfo)}>
+                <Map.default.MapView style={{ flex: 1 }}  onPress={(mapInfo) => onPressMapBox(mapInfo)} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
                     <Map.default.UserLocation
                         renderMode='normal'
                         visible={true}
@@ -292,6 +292,15 @@ const GeoFenceCircle = ({navigation,route}) => {
 						/> }
                     {!isEmpty(selectedCoordinate) ? renderMainCoordinate() : null}
                     {!isEmpty(selectedCoordinate) ? renderMapBoxCircle() : null}
+                    <Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>	
                 </Map.default.MapView>
             </>
         )

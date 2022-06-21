@@ -8,6 +8,7 @@ import circle from '@turf/circle'
 import { FontSize } from '.';
 import { PinIcon } from './SvgComponent';
 import { translate } from '../../App';
+import { MAP_BOX_STYLEURL, rasterSourceProps } from '../constants/AppConstants';
 
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.02;
@@ -105,7 +106,7 @@ const GeoFenceMapPreview = (props) => {
 
         return (
             <View style={StyleSheet.absoluteFillObject}>
-                <Map.default style={StyleSheet.absoluteFillObject} scrollEnabled={isScrollEnabled} showsUserLocation={true} initialRegion={region} scrollEnabled={isScrollEnabled} >
+                <Map.default style={StyleSheet.absoluteFillObject} scrollEnabled={isScrollEnabled} showsUserLocation={true} initialRegion={region} >
                     {type == 'Circle' ? renderMainCoordinate() : renderApplePolygonCoordinates()}
                     {type == 'Circle' ? renderAppleMapCircle() : renderApplePolyGon()}
                 </Map.default>
@@ -185,7 +186,7 @@ const GeoFenceMapPreview = (props) => {
 
         return (
             <>
-                <Map.default.MapView style={{ flex: 1, overflow: 'hidden' }} scrollEnabled={false}>
+                <Map.default.MapView style={{ flex: 1, overflow: 'hidden' }}  attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
                     <Map.default.UserLocation
                         renderMode='normal'
                         visible={true}
@@ -199,6 +200,15 @@ const GeoFenceMapPreview = (props) => {
 					/>
                     {type == 'Circle' ? renderMainCoordinate() : renderPolygonCoordinates()}
                     {type == 'Circle' ? renderMapBoxCircle() : renderMapboxPolygon()}
+                    <Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>
                 </Map.default.MapView>
             </>
         )

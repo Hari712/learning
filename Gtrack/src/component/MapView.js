@@ -6,6 +6,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useSelector } from 'react-redux'
 import { isUserLoggedIn } from '../screen/Selector'
 import useSubscribeLocationUpdates from '../utils/useSubscribeLocationUpdates'
+import { MAP_BOX_STYLEURL, rasterSourceProps } from '../constants/AppConstants';
 
 const isAndroid = Platform.OS === 'android'
 const {height} = Dimensions.get('window')
@@ -135,7 +136,7 @@ const MapView = (props) => {
 		console.log("Android")
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} >
+				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
 					
 					<Map.default.UserLocation
 						renderMode='normal'
@@ -167,7 +168,15 @@ const MapView = (props) => {
 
 					{ props.type == 'Circle' ? renderCircle() : null }
 					{ props.type == 'Polygon' ? renderPolygon() : null }
-
+					<Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>	
 				</Map.default.MapView>
 			</View>
 		)

@@ -15,6 +15,7 @@ import isEmpty from 'lodash/isEmpty';
 import { lineString as makeLineString } from '@turf/helpers';
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import AppManager from '../../constants/AppManager';
+import { MAP_BOX_STYLEURL, rasterSourceProps } from '../../constants/AppConstants';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -225,7 +226,7 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 		}
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }}>
+				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
 					{/* <Map.default.UserLocation
 								renderMode="normal"
 								visible={true}
@@ -261,6 +262,15 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
 							<Map.default.Callout title={address} />
 						</Map.default.PointAnnotation>}
+					<Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>	
 				</Map.default.MapView>
 			</View>
 		);

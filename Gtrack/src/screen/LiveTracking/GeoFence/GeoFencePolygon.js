@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty'
 import GetLocation from 'react-native-get-location'
 import { BackIcon, NextIcon } from '../../../component/SvgComponent';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { MAP_BOX_STYLEURL, rasterSourceProps, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { FontSize } from '../../../component';
 const { width, height } = Dimensions.get('window');
@@ -252,7 +252,7 @@ const GeoFencePolyGon = ({navigation, route}) => {
 
         return (
             <>
-                <Map.default.MapView style={{ flex: 1 }} onPress={(mapInfo) => onPressMapBox(mapInfo)}>
+                <Map.default.MapView style={{ flex: 1 }} onPress={(mapInfo) => onPressMapBox(mapInfo)} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
                     <Map.default.UserLocation
                         renderMode='normal'
                         visible={true}
@@ -274,6 +274,15 @@ const GeoFencePolyGon = ({navigation, route}) => {
 						/> }
                     {!isEmpty(selectedCoordinates) ? renderCoordinates() : null}
                     {!isEmpty(selectedCoordinates) && selectedCoordinates.length > 2 ? renderPolygon() : null}
+                    <Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>	
                 </Map.default.MapView>
             </>
         )

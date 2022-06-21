@@ -15,6 +15,7 @@ import useStateRef from '../../utils/useStateRef';
 import _ from 'lodash';
 import { BackIcon, LiveEndPointIcon, LiveStartPointIcon } from '../../component/SvgComponent';
 import { convertDist, convertSpeed, convertTime } from '../../utils/helper';
+import { MAP_BOX_STYLEURL, rasterSourceProps } from '../../constants/AppConstants';
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
@@ -278,9 +279,10 @@ const LiveTrackingDetails = ({navigation, route}) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
+
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView  style={{ flex: 1 }}>
+				<Map.default.MapView  style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
 					{/* <Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
@@ -329,6 +331,15 @@ const LiveTrackingDetails = ({navigation, route}) => {
 								 <LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline}  />
 							{/* <LiveEndPointIcon/> */}
 						</Map.default.PointAnnotation>}
+					<Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>	
 				</Map.default.MapView>
 			</View>
 		);

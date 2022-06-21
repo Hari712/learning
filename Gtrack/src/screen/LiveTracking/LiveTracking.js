@@ -10,8 +10,8 @@ import useSubscribeLocationUpdates from '../../utils/useSubscribeLocationUpdates
 import { MapView, FontSize, CustomDialog, PanicDialog } from '../../component';
 import NavigationService from '../../navigation/NavigationService';
 import { translate } from '../../../App';
-import { AppConstants, SCREEN_CONSTANTS } from '../../constants/AppConstants';
-import { BellIcon, BluelineIcon, DownArrowOrangeIcon, LiveEndPointIcon, LiveStartPointIcon, LiveTrackingPlusIcon, LoginIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick, UpArrowOrangeIcon } from '../../component/SvgComponent';
+import { AppConstants, MAP_BOX_STYLEURL, MAP_BOX_VIEW_STYLESHEET, rasterSourceProps, SCREEN_CONSTANTS } from '../../constants/AppConstants';
+import { BellIcon, BluelineIcon, DownArrowOrangeIcon, GtrackIndiaLogoNew, LiveEndPointIcon, LiveStartPointIcon, LiveTrackingPlusIcon, LoginIcon, OrangelineIcon, PanicAlarmIcon, PanicIcon, PanicIconClick, UpArrowOrangeIcon } from '../../component/SvgComponent';
 import { useIsFocused } from '@react-navigation/native';
 import { FullScreenIcon, RefreshIcon, RightArrowIcon } from '../../component/SvgComponent';
 import useStateRef from '../../utils/useStateRef';
@@ -25,6 +25,7 @@ import { sendEvent } from '../../provider/SocketProvider';
 import url from 'socket.io-client/lib/url';
 import RBSheet from "react-native-raw-bottom-sheet";
 import IconConstant from '../../constants/iconConstant';
+import { map } from 'lodash';
 const { width, height } = Dimensions.get('window');
 
 
@@ -389,11 +390,10 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
-		console.log('startCoordinate', devicePositionArray, lineString)
-		console.log('selectedDevice.status', liveTrakingDeviceList[selectedDeviceIndex])
+
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} styleURL={Map.default.StyleURL.Street}>
+				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
@@ -440,7 +440,18 @@ const LiveTracking = ({ navigation }) => {
 							<LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline} />
 							{/* <Map.default.Callout title={endAddress} /> */}
 						</Map.default.PointAnnotation>}
+				
+					<Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+					
+							layerIndex={0}
+						/>
+					</Map.default.RasterSource>
 				</Map.default.MapView>
+			
 			</View>
 		);
 	}
@@ -519,6 +530,7 @@ const LiveTracking = ({ navigation }) => {
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
+			{isAndroid && <Text style={{position: 'absolute', left: 0, bottom: 0}}> <GtrackIndiaLogoNew width={wp(20)} height={hp(5)} /> </Text>}
 			{/* {renderAppleMap()} */}
 			{selectedDevice && renderDeviceSelectionView()}
 			<View style={[styles.subContainer, { marginTop: selectedDevice ? Platform.OS === 'ios' ? hp(13) : hp(11) : hp(5) }]}>

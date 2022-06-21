@@ -1,6 +1,7 @@
 import { translate } from "../../App";
 
 export const MAP_BOX_TOKEN = 'pk.eyJ1Ijoia2h1c2hidTEyMyIsImEiOiJja2U4ZHBvdmsxbTZtMnpsNjY5M3FidDhnIn0.oHzVctH2vRk-DSj6o0IhsQ'
+export const MAP_BOX_STYLEURL = 'mapbox://styles/harshit-darji/cl4ihuufa002g15t5sgz6t9et'
 export const USER_DATA = 'USER_DATA';
 export const TRACCAR_SESSION_DATA = 'TRACCAR_SESSION_DATA'
 export const EMAIL_PHONE_REGEX = /^(\d{10}|\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3}))$/
@@ -105,3 +106,10 @@ export const AppConstants = {
     KILOMETER: 'KILOMETER',
     INVALID_DEVICE_ID: 'Invalid_Device_Id'
 }
+
+export const rasterSourceProps = {
+    id: 'googleMapSource',
+    tileUrlTemplates: ['mt0', 'mt1', 'mt2', 'mt3'].map(subdomain => "https://" + subdomain + ".google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}"),
+    tiles: ['mt0', 'mt1', 'mt2', 'mt3'].map(subdomain => "https://" + subdomain + ".google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}"),
+    tileSize: 256,
+};
