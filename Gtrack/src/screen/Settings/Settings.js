@@ -15,7 +15,7 @@ import { isRoleRegular, getLoginState } from '../Selector';
 import { logoutReset } from '../../utils/socketHelper';
 import { getValue } from '../../utils/storage';
 import { isEmpty } from 'lodash';
-
+import messaging from '@react-native-firebase/messaging';
 const isAndroid = Platform.OS === 'android'
 
 const Settings = ({ navigation }) => {
@@ -219,16 +219,26 @@ const Settings = ({ navigation }) => {
     setIsLogoutConfirmationDialogVisible(false)
   }
 
-  function onTapConfirm() {
-    onHideLogoutConfirmationDialog()
+  async function onTapConfirm() {
+    // onHideLogoutConfirmationDialog()
+    const fcmToken = await getValue(FCM_TOKEN)
     onRemoveDeviceToken()
   }
   console.log('loginData account', loginData)
   async function onRemoveDeviceToken() {
-		const fcmToken = await getValue(FCM_TOKEN)
+		let fcmToken = await getValue(FCM_TOKEN)
 		if (!isEmpty(fcmToken)) {
 			dispatch(LoginActions.requestRemoveDeviceToken(loginData.id, fcmToken, onRemoveDeviceTokenSuccess, onremoveDeviceTokenError))
 		}
+    else {
+      console.log('fcmToken logout 1234')
+      await messaging().registerDeviceForRemoteMessages();
+      fcmToken = await messaging().getToken();
+      console.log('fcmToken logout')
+      if (fcmToken) {
+        dispatch(LoginActions.requestRemoveDeviceToken(loginData.id, fcmToken, onRemoveDeviceTokenSuccess, onremoveDeviceTokenError))
+      }
+    }
 	}
 
 	function onRemoveDeviceTokenSuccess(data) {

@@ -21,6 +21,8 @@ import { translate } from '../../../App';
 import * as DeviceActions from '../DeviceSetup/Device.Action';
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import { LoginInfoIcon, LoginWelcomeIcon, LoginInfoClickIcon } from '../../component/SvgComponent';
+import firebase from '@react-native-firebase/app';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -102,11 +104,15 @@ const Login = () => {
 
 	async function onAddDeviceToken(data) {
 		let fcmToken = await getValue(FCM_TOKEN)
+		console.log(fcmToken, 'fcmToken 123344')
 		if (!isEmpty(fcmToken)) {
 			dispatch(LoginActions.requestAddDeviceToken(data.userDTO.id, fcmToken, onAddDeviceTokenSuccess, onAddDeviceTokenError))
 		}
 		else {
+			const authStatus = await firebase.messaging();
+			console.log("authStatusauthStatusauthStatus",authStatus,)
 			fcmToken = await firebase.messaging().getToken();
+			console.log(fcmToken, 'fcmToken firebase')
 			if (fcmToken) {
 				console.log('fcmToken:', fcmToken);
 				await AsyncStorage.setItem(FCM_TOKEN, fcmToken);
