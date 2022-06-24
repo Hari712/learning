@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
+import { DropDown, FontSize, LiveTrackingDropDown} from '../../component'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import NavigationService from '../../navigation/NavigationService';
 import ShadowView from 'react-native-simple-shadow-view';
@@ -15,7 +16,7 @@ import isEmpty from 'lodash/isEmpty';
 import { lineString as makeLineString } from '@turf/helpers';
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import AppManager from '../../constants/AppManager';
-import { MAP_BOX_STYLEURL, rasterSourceProps } from '../../constants/AppConstants';
+import { MAP_BOX_STYLEURL,rasterSourceProps} from '../../constants/AppConstants';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -31,15 +32,25 @@ const Map = Platform.select({
 	android: () => require('@react-native-mapbox-gl/maps'),
 })();
 
-const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVisible ,selectedIndex}) => {
+const LiveTrackinDashboard = () => {
 	const dispatch = useDispatch();
-	console.log('sheetref', sheetRef,)
 	const { isConnected, devicePositions, groupDevices, loginData } = useSelector(state => ({
 		isConnected: state.network.isConnected,
 		loginData: getLoginState(state),
 		devicePositions: getLiveTrackingDeviceList(state),
 		groupDevices: getLivetrackingGroupDevicesListInfo(state)
 	}));
+	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
+	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
+	const [selectedDeviceIndex,setSelectedDeviceIndex] =useState(0);
+	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
+	const [coordList, setCoordList] = useState([])
+	const [deviceNameArr, setDeviceNameArr] = useState([])
+	const [lineString, setLineString] = useState(null)
+	const [region, setRegion] = useStateRef()
+	
+
+	const mapRef = useRef();
 
 	useEffect(() => {
 		fetchGroupDevices()
@@ -52,6 +63,13 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 
 	function onSuccess(data) {
 		console.log("Success", data)
+		let devicelistArr = deviceList.map((item)=>{
+			return{
+			'name':item.name,'status':item.status,'id':item.id}});
+		selectedDevice ? null : setSelectedDevice(devicelistArr[0].name)
+		selectedDeviceIndex != 0 ? null :setSelectedDeviceIndex(devicelistArr[0].id)
+		setDeviceNameArr(devicelistArr);
+		
 		AppManager.hideLoader()
 	}
 
@@ -59,39 +77,16 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 		AppManager.hideLoader()
 		console.log("Error", error)
 	}
-
-	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
-	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
-	const [selectedDeviceIndex,setSelectedDeviceIndex] =useState(0);
-	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
-	const [coordList, setCoordList] = useState([])
-	const [lineString, setLineString] = useState(null)
-	const [region, setRegion] = useStateRef()
-	const mapRef = useRef();
 	useEffect(
 		() => {
-			setDeviceList(groupDevices);
-			if (!isEmpty(deviceList)) {
-				const device = deviceList[selectedIndex];
+			if (!isEmpty(deviceList) && isEmpty(selectedDevice)) {
+				const device = deviceList[0].name;
 				setSelectedDevice(device);
 			}
-			setSheetVisible(groupDevices);
+			setDeviceList(groupDevices);
 		},
 		[groupDevices]
 	);
-	useEffect(
-		() => {
-			setDeviceList(groupDevices);
-			if (!isEmpty(deviceList)) {
-				const device = deviceList[selectedIndex];
-				setSelectedDevice(device);
-			}
-			setSheetVisible(groupDevices);
-			setDevicePositionArray([]);
-		},
-		[selectedIndex]
-	);
-
 	useEffect(
 		() => {
 			if (!isEmpty(devicePositions) && selectedDevice) {
@@ -116,9 +111,16 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 
 	useEffect(
 		() => {
+			setDevicePositionArray([]);
+			let devicename;
+				Object.values(deviceList).filter((item)=> {
+					if(item.id === selectedDeviceIndex)
+					devicename = item.name
+				} )
+				setSelectedDevice(devicename)
 			if (selectedDeviceRef.current) {
 				const deviceInfo = selectedDeviceRef.current;
-				const arr = devicePositions.filter(item => item.deviceId === deviceInfo.id);
+				const arr = devicePositions.filter(item => item.deviceId === selectedDeviceIndex);
 				if (!isEmpty(arr)) {
 					const device = arr[0];
 					let deviceRegion = {
@@ -130,10 +132,9 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 					setDevicePositionArray([device]);
 					setRegion(deviceRegion)
 				}
-				console.log(deviceInfo);
 			}
 		},
-		[selectedDevice]
+		[selectedDeviceIndex]
 	);
 
 	useEffect(() => {
@@ -226,53 +227,53 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 		}
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
-					{/* <Map.default.UserLocation
-								renderMode="normal"
-								visible={true}
-								showsUserHeadingIndicator={true}
-								animated={true}
-							/> */}
-					{isContainCoordinate ?
-						<Map.default.Camera
-							zoomLevel={13}
-							bounds={{
-								ne: coordinate,
-								sw: coordinate,
+			<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
+				{/* <Map.default.UserLocation
+							renderMode="normal"
+							visible={true}
+							showsUserHeadingIndicator={true}
+							animated={true}
+						/> */}
+				{isContainCoordinate ?
+					<Map.default.Camera
+						zoomLevel={13}
+						bounds={{
+							ne: coordinate,
+							sw: coordinate,
+						}}
+					/> :
+					<Map.default.Camera
+						zoomLevel={4}
+						centerCoordinate={[79.570507, 22.385092]}
+					/>}
+				{!isEmpty(lineString)
+					? <Map.default.ShapeSource id="route" shape={lineString}>
+						<Map.default.LineLayer
+							id="lineroute"
+							style={{
+								lineCap: 'round',
+								lineWidth: 3,
+								lineOpacity: 0.84,
+								lineColor: ColorConstant.ORANGE,
 							}}
-						/> :
-						<Map.default.Camera
-							zoomLevel={4}
-							centerCoordinate={[79.570507, 22.385092]}
-						/>}
-					{!isEmpty(lineString)
-						? <Map.default.ShapeSource id="route" shape={lineString}>
-							<Map.default.LineLayer
-								id="lineroute"
-								style={{
-									lineCap: 'round',
-									lineWidth: 3,
-									lineOpacity: 0.84,
-									lineColor: ColorConstant.ORANGE,
-								}}
-							/>
-						</Map.default.ShapeSource>
-						: null}
-					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
-							<Map.default.Callout title={address} />
-						</Map.default.PointAnnotation>}
-					<Map.default.RasterSource {...rasterSourceProps}>
-						<Map.default.RasterLayer
-							id="googleMapLayer"
-							sourceID="googleMapSource"
-							// style={{rasterOpacity: 0.5}}
-					
-							layerIndex={0}
 						/>
-					</Map.default.RasterSource>	
-				</Map.default.MapView>
-			</View>
+					</Map.default.ShapeSource>
+					: null}
+				{isContainCoordinate &&
+					<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
+						<Map.default.Callout title={address} />
+					</Map.default.PointAnnotation>}
+				<Map.default.RasterSource {...rasterSourceProps}>
+					<Map.default.RasterLayer
+						id="googleMapLayer"
+						sourceID="googleMapSource"
+						// style={{rasterOpacity: 0.5}}
+				
+						layerIndex={0}
+					/>
+				</Map.default.RasterSource>	
+			</Map.default.MapView>
+		</View>
 		);
 	}
 
@@ -292,50 +293,22 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 
 	function renderDeviceSelectionView() {
 		const deviceInfo = selectedDevice;
-		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
-			<TouchableOpacity 	onPress={() => {onOpen()}}
-				style={{
-					height: hp(3),
-					backgroundColor: ColorConstant.WHITE,
-					position: 'absolute',
-					marginTop: hp(3),
-					borderRadius: 13,
-					alignSelf: 'center',
-					justifyContent: 'center',
-					marginHorizontal: hp(3),
-					width: wp(50)
-				}}
-			>
-				<View
-					style={{
-						justifyContent: 'center',
-						flexDirection: 'row',
-						alignItems: 'center',
-						paddingHorizontal: wp(3),
-					}}
-				>
-					{/* {VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressPrevious()}>
-						<Image
-							source={images.dashBoard.leftIcon}
-							resizeMode="contain"
-							style={{ width: wp(1.5), height: hp(1.5) }}
-						/>
-					</TouchableOpacity>} */}
-					<Text style={{ color: ColorConstant.BROWN, fontSize: hp(1.4), marginHorizontal: hp(1) }}>
-						{` ${deviceInfo.name} `}
-					</Text>
-					<View style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
-					>
-					
-							<DownArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
-						
-					</View>
-					{/* {VisibleArrow && <TouchableOpacity style={{padding:hp(0.5)}} onPress={() => onPressNext()}>
-						<RightArrowIcon resizeMode="contain" width={6.779} height={10.351} />
-					</TouchableOpacity> } */}
-				</View>
-			</TouchableOpacity>
+			<View style={{alignItems: 'flex-start', justifyContent:'flex-start', flex:1}}>
+                <LiveTrackingDropDown 
+                    // label='Type' 
+					selectedValue={selectedDeviceIndex}
+                    defaultValue={deviceInfo} 
+                    valueSet={setSelectedDeviceIndex}  
+                    dataList={deviceNameArr} 
+                    fontSize={hp(1.6)} 
+                    contentInset={{ input: 4, label: -8 }}
+                    outerStyle={styles.outerStyle} 
+                    accessoryStyle={{marginBottom:hp(0.5)}}
+                    dropdownStyle = {{top:hp(6)}}
+                    inputContainerStyle={styles.inputContainerStyle} 
+                    containerStyle={styles.containerStyle} />
+            </View>
 		);
 	}
 
@@ -366,6 +339,26 @@ const LiveTrackinDashboard = ({ navigation, route, sheetRef, onOpen, setSheetVis
 export default LiveTrackinDashboard;
 
 const styles = StyleSheet.create({
+	outerStyle:{
+		height: hp(5),
+		paddingTop:hp(1.5),
+		flex:1,
+		borderRadius:10
+	  },
+	  inputContainerStyle: {
+		height: hp(3.5),
+		width:'100%',
+		borderRadius:10
+	  },
+	  containerStyle: {
+		alignSelf: 'center',
+		height: hp(5),
+		flex:1,
+		borderRadius:10,
+		paddingHorizontal:10,
+		backgroundColor:ColorConstant.WHITE
+		
+	  },
 	conatiner: {
 		flex: 1,
 	},
