@@ -1,10 +1,10 @@
-import React, { Component, useEffect, useState, useRef } from 'react'
-import { StyleSheet, SafeAreaView, FlatList, View, Text,TouchableOpacity } from 'react-native'
+import React, { Component, useEffect, useState } from 'react'
+import {  StyleSheet, SafeAreaView } from 'react-native'
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { ScrollView } from 'react-native-gesture-handler'
 import LiveTrackingDashboard from "../../screen/Dashboard/LiveTrackingDashboard"
-import { FontSize } from '../../component'
+import { FontSize} from '../../component'
 import { useDispatch, useSelector } from 'react-redux'
 import * as DashboardActions from './Dashboad.Action'
 import { getDeviceDetailsListInfo, getLoginInfo, getNotificationCountListInfo, getNotifiedDevicesInfo, isRoleAdmin, isRoleOwner, isRoleRegular } from '../Selector'
@@ -14,198 +14,102 @@ import DeviceSummary from './DeviceSummary'
 import ActiveUser from './ActiveUser'
 import DeviceView from './DeviceView';
 import { useIsFocused } from '@react-navigation/native';
-import RBSheet from "react-native-raw-bottom-sheet";
-import IconConstant from '../../constants/iconConstant';
 
 const Dashboard = ({ navigation }) => {
 
-  const [isClickDownArrow, setIsClickDownArrow] = useState(false)
-  const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
-  const [bottomsheedData,setBottomsheetData] = useState([])
+    const [isClickDownArrow, setIsClickDownArrow] = useState(false)  
 
-	const [selectedDevice, setSelectedDevice] = useState(null);
-	const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
-  const sheetRef = useRef(null);
+    const dispatch = useDispatch()
 
-  const dispatch = useDispatch()
+    const { isConnected, deviceDetails, loginInfo, isRegular, isAdmin, isOwner, notiDevices} = useSelector(state => ({
+      isConnected: state.network.isConnected,
+      loginInfo: getLoginInfo(state),
+      deviceDetails: getDeviceDetailsListInfo(state),
+      notificationCount: getNotificationCountListInfo(state),
+      isRegular: isRoleRegular(state),
+      isAdmin: isRoleAdmin(state),
+      isOwner: isRoleOwner(state),
+      notiDevices: getNotifiedDevicesInfo(state)
+    }))
 
-  const { isConnected, deviceDetails, loginInfo, isRegular, isAdmin, isOwner, notiDevices } = useSelector(state => ({
-    isConnected: state.network.isConnected,
-    loginInfo: getLoginInfo(state),
-    deviceDetails: getDeviceDetailsListInfo(state),
-    notificationCount: getNotificationCountListInfo(state),
-    isRegular: isRoleRegular(state),
-    isAdmin: isRoleAdmin(state),
-    isOwner: isRoleOwner(state),
-    notiDevices: getNotifiedDevicesInfo(state)
-  }))
+    const user_id = loginInfo.id ? loginInfo.id : null
 
-  const user_id = loginInfo.id ? loginInfo.id : null
+    React.useLayoutEffect(() => {
+      navigation.setOptions({
+        headerLeft: () => (null),
+      });
+    },[navigation]);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      header: () => null,
-    });
-  }, [navigation]);
+    const isFocused = useIsFocused();
 
-  const isFocused = useIsFocused();
-  useEffect(()=>{
-    if(bottomsheedData != []){
-      setSelectedDevice(bottomsheedData[0])
-    }},[bottomsheedData])
+    React.useEffect(() => {
+      if(isFocused){
+        fetchDeviceDetails()
+        fetchNotifiedDevices()
+      }
+    },[isFocused]);
+
     useEffect(() => {
-      if(!bottomSheetVisible){
-       sheetRef.current.open()
-   }
-     }, [bottomSheetVisible])
-   
-  React.useEffect(() => {
-    if (isFocused) {
       fetchDeviceDetails()
       fetchNotifiedDevices()
+    }, [])
+
+    function fetchDeviceDetails() {
+      AppManager.showLoader()
+      dispatch(DashboardActions.requestDeviceDetails(user_id, onSuccess, onError))
     }
-  }, [isFocused]);
 
-  useEffect(() => {
-    fetchDeviceDetails()
-    fetchNotifiedDevices()
-    // sheetRef.current.open()
+    function fetchNotifiedDevices() {
+      AppManager.showLoader()
+      dispatch(DashboardActions.requestGetNotifiedDevices(user_id, onSuccess, onError))
+    }
 
-  }, [])
+    const onSuccess = (data) => {
+      AppManager.hideLoader()
+      console.log("success",data)
+      setIsClickDownArrow(false)
+    }
 
-  // useEffect(() => {
-  //   sheetRef.current.open()
-  // }, [])
+    const onError = (error) => {
+      AppManager.hideLoader()
+      console.log("Error",error)
+    }
 
-  function fetchDeviceDetails() {
-    AppManager.showLoader()
-    dispatch(DashboardActions.requestDeviceDetails(user_id, onSuccess, onError))
-  }
-
-  function fetchNotifiedDevices() {
-    AppManager.showLoader()
-    dispatch(DashboardActions.requestGetNotifiedDevices(user_id, onSuccess, onError))
-  }
-
-  const onSuccess = (data) => {
-    AppManager.hideLoader()
-    console.log("success", data)
-    setIsClickDownArrow(false)
-  }
-
-  const onError = (error) => {
-    AppManager.hideLoader()
-    console.log("Error", error)
-  }
-
-  function onPressDevice(index) {
-    const arr = bottomsheedData ? bottomsheedData : [];
-    const device = arr[index];
-    setSelectedDevice(device);
-    setSelectedDeviceIndex(index);
-    
-    setBottomSheetVisible(false);
-  }
-
-  const renderItems = ({ item, index }) => {
-    console.log('bottom sheet -------', item, index,selectedDevice.id,selectedDeviceIndex,item.id)
+  
     return (
-      <View style={[styles.cardContainer, { borderBottomWidth: index == bottomsheedData.length - 1 ? 0 : 0.8, }]}>
-       <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}}
-					onPress={() => onPressDevice(index)}>
-					<Text style={[styles.bottomSheetTextStyle, { color: selectedDevice.id == item.id ? ColorConstant.ORANGE : ColorConstant.GREY }]}>{item.name}</Text>
-					<IconConstant type={item.status =='online'? 'deviceonline' :'deviceoffline'} color={ColorConstant.ORANGE} />
-				</TouchableOpacity>
-      </View>
-    )
-  }
 
-  const RenderContent = () => (
-    <View style={styles.subView}>
-      <Text style={styles.mainTitle}>Select Device</Text>
-      <FlatList
-        showsVerticalScrollIndicator={true}
-        style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
-        contentContainerStyle={{ paddingBottom: '5%' }}
-        data={bottomsheedData}
-        renderItem={renderItems}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
-  );
-  console.log('bottomsheedDatabottomsheedDatabottomsheedData',bottomsheedData.length)
+        <ScrollView>
+            <SafeAreaView style={styles.container}>
 
-  const RenderBottomSheet = () => {
+            
+              
+            {isOwner ?
+              <>
+                <LiveTrackingDashboard /> 
+                <DeviceSummary deviceList={deviceDetails} />
+                <RecentAlarms deviceList={notiDevices}/>
+                <ActiveUser />
+              </> : null }
 
-    return <RBSheet
-      ref={sheetRef}
-      closeOnDragDown={true}
-      height={bottomsheedData.length > 3 ? hp(45):  hp(30)}
-      customStyles={{
-        wrapper: {
-          backgroundColor: 'rgba(0,0,0,0.5)'
-        },
-        container: {
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30
-        },
-        draggableIcon: {
-          width: hp(10),
-          backgroundColor: ColorConstant.ORANGE
-        }
-      }}
+            {isAdmin ?
+              <>
+                <LiveTrackingDashboard /> 
+                <DeviceSummary deviceList={deviceDetails} />
+                <RecentAlarms deviceList={notiDevices}/>
+              </> : null }
 
-      onClose={() => setBottomSheetVisible(false)}
-            onOpen={() => setBottomSheetVisible(true)}
-    >
-      <RenderContent />
-    </RBSheet>
+            {isRegular ?
+              <>
+                <DeviceView />
+              </> : null }
+
+            </SafeAreaView>
+          
+        </ScrollView>
+
+      )
 
   }
-
-  const openSheet = () => {
-   
-    sheetRef.current.open();
-    setBottomSheetVisible(true);
-  }
-
-  return (
-
-    <ScrollView>
-      <SafeAreaView style={styles.container}>
-
-        {isOwner ?
-          <>
-            <LiveTrackingDashboard onOpen={()=>openSheet()} setSheetVisible={(value) => {
-              setBottomsheetData(value)
-            }} selectedIndex ={selectedDeviceIndex}  />
-            <DeviceSummary deviceList={deviceDetails} />
-            <RecentAlarms deviceList={notiDevices} />
-            <ActiveUser />
-            <RenderBottomSheet />
-          </> : null}
-
-        {isAdmin ?
-          <>
-            <LiveTrackingDashboard onOpen={()=>openSheet()} setSheetVisible={(value) => {
-              setBottomsheetData(value)
-            }}  selectedIndex ={selectedDeviceIndex}  />
-            <DeviceSummary deviceList={deviceDetails} />
-            <RecentAlarms deviceList={notiDevices} />
-            <RenderBottomSheet />
-          </> : null}
-
-        {isRegular ?
-          <>
-            <DeviceView />
-          </> : null}
-      </SafeAreaView>
-
-    </ScrollView>
-
-  )
-
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -214,43 +118,14 @@ const styles = StyleSheet.create({
   },
   mainViewStyle: {
     alignItems: 'center',
-    backgroundColor: ColorConstant.WHITE,
+    backgroundColor:ColorConstant.WHITE,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: hp(1),
-    zIndex: 10,
-  },
-  subView: {
-    paddingBottom:hp(5),
-    width: '100%',
-    alignItems: 'center',
-    // height: height / 2,
-    backgroundColor: ColorConstant.WHITE,
-  },
-  mainTitle: {
-    color: ColorConstant.ORANGE,
-    fontWeight: 'bold',
-    fontSize: FontSize.FontSize.medium,
-    fontFamily: 'Nunito-Bold'
-  },
-  cardContainer: {
-    // alignItems: 'center',
-    paddingVertical: hp(1.5),
-    paddingHorizontal: hp(1),
-    borderColor: ColorConstant.LIGTH_GREY,
-  },
-  bottomSheetTextStyle: {
-    margin: hp(0.5),
-    color: ColorConstant.GREY,
-    textAlignVertical: 'center',
-    paddingLeft: hp(0.5),
-    fontSize: FontSize.FontSize.small,
-    fontWeight: '600',
-    fontFamily: 'Nunito-Regular',
+    zIndex:10,
   },
 })
 
 export default Dashboard;
-
 
 
