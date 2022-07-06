@@ -11,6 +11,7 @@ import {
     Button,
     ActivityIndicator,
 } from 'react-native';
+import NavigationService from '../../../navigation/NavigationService'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DropDown, TextField, FontSize } from '../../../component';
@@ -24,6 +25,7 @@ import RouteDetails from './RouteDetails';
 import * as TripHistoryActions from './TripHistory.Action';
 import AppManager from '../../../constants/AppManager';
 import isEmpty from 'lodash/isEmpty'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants'
 
 const TripHistoryDetails = ({ navigation, route }) => {
 
@@ -50,15 +52,61 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [isLoadMoreData, setIsLoadMoreData] = useState(false)
     const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false)
     const [isFirstSearch, setIsFirstSearch] = useState(false);
+    const [combined,setConbined] =useState()
+    const [combined1,setConbined1] =useState()
 
     useEffect(() => {
-        if (isFirstSearch)
+        if (isFirstSearch){
             setRouteData(routeDetails)
-        else
+            CombieCurrentDayTrip(routeDetails)
+            let routeDatas =routeDetails;
+            let tripdata =routeDatas.sort((a, b) => {
+                if (a.tripStartPositionId < b.tripStartPositionId)
+                  return -1;
+                if (a.tripStartPositionId > b.tripStartPositionId)
+                  return 1;
+                return 0;
+              })
+        var mapCombined = tripdata &&  tripdata.map((i)=> i.tripTravelledPositions)
+        var mapCombined1 = tripdata &&  tripdata.map((i)=> [i.tripEndLatitude,i.tripEndLongitude])
+     
+        const mergeResult =  [].concat.apply([], mapCombined);
+    
+        console.log("Success212121",mapCombined1)
+        setConbined(mergeResult)
+            // console.log('routeDatarouteDatarouteDatarouteData',routeDatas);
+        }
+        else{
+            let routeDatas =[...routeData, ...routeDetails];
+           
             setRouteData([...routeData, ...routeDetails])
+            let tripdata =routeDatas.sort((a, b) => {
+                console.log('a.indexa.index',a.tripStartLongitude)
+                if (a.tripStartPositionId < b.tripStartPositionId)
+                  return -1;
+                if (a.tripStartPositionId > b.tripStartPositionId)
+                  return 1;
+                return 0;
+              })
+        var mapCombined = tripdata &&  tripdata.map((i)=> i.tripTravelledPositions)
+        var mapCombined1 = tripdata &&  tripdata.map((i)=> [i.tripEndLatitude,i.tripEndLongitude])
+        console.log('sorted array herea',);
+     
+        const mergeResult =  [].concat.apply([], mapCombined);
+    
+        console.log("Success212121adfsdsdf",mapCombined1)
+        setConbined(mergeResult)
+        setConbined1(mapCombined1)
+            // console.log('routeDatarouteDatarouteDatarouteData',routeDatas);
+           
+        }
+       
 
     }, [routeDetails])
-
+    
+    function CombieCurrentDayTrip(data){
+       
+    }
     useEffect(() => {
         setRouteData([])
     }, [])
@@ -87,7 +135,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
         let currentMonthDate = Moment().date(1).format('YYYY-MM-DD')
         setOnEndReachedCalledDuringMomentum(false)
         if (selectedDay) {
-
+            setConbined(null)
+            setConbined1(null)
             switch (selectedDay) {
                 case 'Today':
                     setStartDate(todayDate)
@@ -304,9 +353,11 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
 
-
+                        
                     </View>
-
+                    <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, { item: combined ,points:combined1})}>
+                    <Text>All day trip data</Text>
+                            </TouchableOpacity>
                     {routeData.length > 0 ?
                         <RouteDetails
                             routeDetails={routeData}
