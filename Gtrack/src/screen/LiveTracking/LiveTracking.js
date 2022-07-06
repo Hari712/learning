@@ -77,6 +77,7 @@ const LiveTracking = ({ navigation }) => {
 	const sheetRef = useRef(null);
 
 	useEffect(() => {
+		console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems',groupDevices)
 		setDeviceList(groupDevices);
 	}, [groupDevices])
 
@@ -441,7 +442,7 @@ const LiveTracking = ({ navigation }) => {
 							{/* <Map.default.Callout title={endAddress} /> */}
 						</Map.default.PointAnnotation>}
 				
-					<Map.default.RasterSource {...rasterSourceProps}>
+					<Map.default.RasterSource {...rasterSourceProps} >
 						<Map.default.RasterLayer
 							id="googleMapLayer"
 							sourceID="googleMapSource"
@@ -512,11 +513,22 @@ const LiveTracking = ({ navigation }) => {
 			</View>
 		)
 	}
-
+	const flatListRef = useRef();
+	const scrollPositionRef = useRef();
 	const RenderContent = () => (
 		<View style={styles.subView}>
 			<Text style={styles.mainTitle}>Select Device</Text>
 			<FlatList
+			     ref={flatListRef}
+			  scrollsToTop={false}
+			  maintainVisibleContentPosition={{
+				minIndexForVisible: 0,
+			  }}
+			  onContentSizeChange={() =>{flatListRef.current.scrollToOffset({offset: scrollPositionRef.current, animated: false});}}
+            // onViewableItemsChanged={() => {
+			// 	flatListRef.current.scrollToOffset({offset: scrollPositionRef.current, animated: false});
+			//   }}
+			  onScroll={(event) => scrollPositionRef.current = event.nativeEvent.contentOffset.y}
 				showsVerticalScrollIndicator={true}
 				style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
 				contentContainerStyle={{ paddingBottom: '5%' }}
@@ -604,9 +616,12 @@ const LiveTracking = ({ navigation }) => {
 				/>}
 			</View>
 			<RBSheet
+			animationType={'fade'}
 				ref={sheetRef}
 				closeOnDragDown={true}
+				
 				height={deviceList.length > 3 ? hp(45):  hp(30)}
+				shou
 				customStyles={{
 					wrapper: {
 						backgroundColor: 'rgba(0,0,0,0.5)'

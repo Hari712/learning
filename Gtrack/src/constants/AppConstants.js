@@ -57,6 +57,7 @@ export const SCREEN_CONSTANTS = {
     TRIP_HISTORY: 'TripHistory',
     TRIP_HISTORY_DETAILS: 'TripHistoryDetails',
     DISPATCH_ROUTE: 'DispatchRoute',
+    DISPATCH_ROUTE_TOTAL: 'DispatchRouteTotalTrip',
     SETTINGS_NOTIFICATION: 'SettingNotification',
     CHANGE_PASSCODE: 'ChangePasscode',
     ACTIVATE_DEVICE: 'ActivateDevice',

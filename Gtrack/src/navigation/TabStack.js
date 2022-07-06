@@ -19,6 +19,7 @@ import { LiveTrackingIcon, LiveTrackingIconClicked,
     UserIcon, UserIconClicked, 
     DeviceAndAssetsIcon, DeviceAndAssetsIconClicked } from '../component/SvgComponent';
 import AppLogs from '../applog/AppLog';
+import DispatchRouteTotalTrip from '../screen/LiveTracking/TripHistory/DispatchRouteTotalTrip';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -69,6 +70,7 @@ const LiveTrackingStackNavigator = ({navigation, route}) => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_TYPE} component={AlarmType} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_DETAIL} component={AlarmDetail} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY} component={TripHistory} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL} component={DispatchRouteTotalTrip} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS} component={TripHistoryDetails} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE} component={DispatchRoute} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ACTIVATE_DEVICE} component={ActivateDevice} />

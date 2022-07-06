@@ -175,7 +175,8 @@ const LiveTrackinDashboard = () => {
 		const address = isContainCoordinate ? startingDestination.address : ''
 		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
 		return (
-			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={false}>
+	
+			<Map.default style={[StyleSheet.absoluteFillObject,{marginBottom: hp(5.5 / 2)}]} region={region} ref={mapRef} showsUserLocation={false}>
 				{isContainCoordinate && <Map.Marker
 					coordinate={coordinate}
 					description={address}
@@ -226,8 +227,8 @@ const LiveTrackinDashboard = () => {
 			coordinate.push(startingDestination.latitude);
 		}
 		return (
-			<View style={{ flex: 1 }}>
-			<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
+			<View style={{ flex: 1, }}>
+			<Map.default.MapView style={{ flex: 1 ,}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
 				{/* <Map.default.UserLocation
 							renderMode="normal"
 							visible={true}
@@ -324,7 +325,7 @@ const LiveTrackinDashboard = () => {
 				{renderRightPanel()}
 			</View>
 
-			<View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2) }}>
+			<View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2),  }}>
 
 				{isAndroid ? renderMapBox() : renderAppleMap()}
 
