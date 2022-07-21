@@ -15,7 +15,7 @@ import NavigationService from '../../../navigation/NavigationService'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DropDown, TextField, FontSize } from '../../../component';
-import { getCombinedTripHistoryListInfo, getLoginState, getTripHistoryListInfo } from '../../Selector';
+import { getCombinedTripHistoryListInfo, getLoginState, getTripHistoryListInfo, getCombinedTripCoordinatesListInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue, NoRecordFoundImage } from '../../../component/SvgComponent';
@@ -31,12 +31,15 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
     const { data } = route.params
 
-    const { loginData, isConnected, routeDetails,combinedTripHistory } = useSelector(state => ({
+    const { loginData, isConnected, routeDetails, combinedTripHistory, tripsCoordinates } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
         routeDetails: getTripHistoryListInfo(state),
-        combinedTripHistory:getCombinedTripHistoryListInfo(state)
+        combinedTripHistory: getCombinedTripHistoryListInfo(state),
+        tripsCoordinates: getCombinedTripCoordinatesListInfo(state)
     }))
+
+    console.log('combined trip history-----', tripsCoordinates)
 
     const dispatch = useDispatch()
 
@@ -53,64 +56,50 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [isLoadMoreData, setIsLoadMoreData] = useState(false)
     const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false)
     const [isFirstSearch, setIsFirstSearch] = useState(false);
-    const [combined,setConbined] =useState()
-    const [combined1,setConbined1] =useState()
+    const [combined, setConbined] = useState()
+    const [combined1, setConbined1] = useState()
 
     useEffect(() => {
-        if (isFirstSearch){
+        if (isFirstSearch) {
             setRouteData(routeDetails)
             // CombieCurrentDayTrip(routeDetails)
-        //     let routeDatas =routeDetails;
-        //     let tripdata =routeDatas.sort((a, b) => {
-        //         if (a.tripStartPositionId < b.tripStartPositionId)
-        //           return -1;
-        //         if (a.tripStartPositionId > b.tripStartPositionId)
-        //           return 1;
-        //         return 0;
-        //       })
-        // var mapCombined = tripdata &&  tripdata.map((i)=> i.tripTravelledPositions)
-        // var mapCombined1 = tripdata &&  tripdata.map((i)=> [i.tripEndLatitude,i.tripEndLongitude])
-     
-        // const mergeResult =  [].concat.apply([], mapCombined);
-    
-        // console.log("Success212121",mapCombined1)
-        // setConbined(mergeResult)
-        // setConbined1(mapCombined1)
+            //     let routeDatas =routeDetails;
+            //     let tripdata =routeDatas.sort((a, b) => {
+            //         if (a.tripStartPositionId < b.tripStartPositionId)
+            //           return -1;
+            //         if (a.tripStartPositionId > b.tripStartPositionId)
+            //           return 1;
+            //         return 0;
+            //       })
+            // var mapCombined = tripdata &&  tripdata.map((i)=> i.tripTravelledPositions)
+            // var mapCombined1 = tripdata &&  tripdata.map((i)=> [i.tripEndLatitude,i.tripEndLongitude])
+
+            // const mergeResult =  [].concat.apply([], mapCombined);
+
+            // console.log("Success212121",mapCombined1)
+            // setConbined(mergeResult)
+            // setConbined1(mapCombined1)
             // console.log('routeDatarouteDatarouteDatarouteData',routeDatas);
         }
-        else{
+        else {
             // let routeDatas =[...routeData, ...routeDetails];
-           
+
             setRouteData([...routeData, ...routeDetails])
-          
+
             // console.log('routeDatarouteDatarouteDatarouteData',routeDatas);
-           
+
         }
-       
+
 
     }, [routeDetails])
-    
-useEffect(()=>{
-    if(combinedTripHistory.length != null){
-        // CombieCurrentDayTrip(combinedTripHistory)
-    let tripdata =combinedTripHistory.sort((a, b) => {
-        console.log('a.indexa.index',a.tripStartLongitude)
-        if (a.tripStartPositionId < b.tripStartPositionId)
-          return -1;
-        if (a.tripStartPositionId > b.tripStartPositionId)
-          return 1;
-        return 0;
-      })
-var mapCombined = tripdata &&  tripdata.map((i)=> i.tripTravelledPositions)
-var mapCombined1 = tripdata &&  tripdata.map((i)=> [i.tripEndLatitude,i.tripEndLongitude])
-console.log('sorted array herea',);
 
-const mergeResult =  [].concat.apply([], mapCombined);
+    useEffect(() => {
+        if (!isEmpty(tripsCoordinates)) {
+            setConbined(tripsCoordinates.coords)
+            setConbined1(tripsCoordinates.points)
+        }
+    }, [tripsCoordinates])
 
-console.log("Success212121adfsdsdf",mapCombined1)
-setConbined(mergeResult)
-setConbined1(mapCombined1)}
-},[combinedTripHistory])
     useEffect(() => {
         setRouteData([])
     }, [])
@@ -129,7 +118,7 @@ setConbined1(mapCombined1)}
         }
     }, [pageIndex, isLoadMoreData])
 
-    console.log('combinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistory',combinedTripHistory,routeDetails,routeDetails)
+    console.log('combinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistory', combinedTripHistory, routeDetails, routeDetails)
     useEffect(() => {
 
         let todayDate = Moment().format('YYYY-MM-DD');
@@ -213,19 +202,19 @@ setConbined1(mapCombined1)}
             }
             setIsFirstSearch(true)
             dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
-            if(startDate == endDate){
+            if (startDate == endDate) {
                 fetchCombinedTripHistory()
             }
         } else {
             AppManager.showNoInternetConnectivityError()
         }
     }
-    const fetchCombinedTripHistory =()=> {
+    const fetchCombinedTripHistory = () => {
         AppManager.showLoader()
         const start = Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000");
         const end = Moment(endDate).format("YYYY-MM-DDT23:59:59.000")
-        console.log('in if of sttart and end same trip historu',endDate,startDate)
-        if(startDate == endDate){
+        console.log('in if of sttart and end same trip historu', endDate, startDate)
+        if (startDate == endDate) {
             console.log('in if of sttart and end same trip historu')
             dispatch(TripHistoryActions.getCombinedTripHistoryRequest(loginData.id, data.id, start, end, onSuccess, onError))
         }
@@ -233,11 +222,11 @@ setConbined1(mapCombined1)}
             console.log("SuccessonSuccessCombined", data)
             AppManager.hideLoader()
         }
-    
+
         function onError(error) {
             AppManager.hideLoader()
             console.log("Error", error)
-    
+
             // setIsLoadMoreData(false)
             // let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
             // setPageIndex(pagenumber)
@@ -258,13 +247,13 @@ setConbined1(mapCombined1)}
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => {navigation.goBack(), dispatch(TripHistoryActions.clearCombinedHistoryData())}}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => { navigation.goBack(), dispatch(TripHistoryActions.clearCombinedHistoryData()) }}>
                     <BackIcon />
                 </TouchableOpacity>
             )
         });
     }, [navigation]);
- 
+
     function onSuccess(data) {
         console.log("Success", data)
 
@@ -278,7 +267,7 @@ setConbined1(mapCombined1)}
         // setIsRefreshing(false)
         setIsLoadMoreData(false)
         AppManager.hideLoader()
-       
+
     }
 
     function onError(error) {
@@ -290,7 +279,7 @@ setConbined1(mapCombined1)}
         setPageIndex(pagenumber)
         AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
     }
- 
+
     const showDatePicker = (item) => {
         // setDatePickerVisibility(true);
         if (item == "From") {
@@ -355,18 +344,18 @@ setConbined1(mapCombined1)}
             </View>
         );
     }
-    function combineTripHistory(){
-        return(
-            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, { item: combined ,points:combined1,devicename:data.name})} style={styles.combineTripHistoryMainView}>
-                    <Text style={styles.CombineTripHistoryTextView}>Combined Trip History</Text>
-                            </TouchableOpacity> 
+    function combineTripHistory() {
+        return (
+            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, { item: combined, points: combined1, devicename: data.name })} style={styles.combineTripHistoryMainView}>
+                <Text style={styles.CombineTripHistoryTextView}>Combined Trip History</Text>
+            </TouchableOpacity>
         )
     }
-    function combineTripHistoryGet(){
-        return(
+    function combineTripHistoryGet() {
+        return (
             <TouchableOpacity onPress={fetchCombinedTripHistory} style={styles.combineTripHistoryMainView}>
-                    <Text style={styles.CombineTripHistoryTextView}>Get Trip History</Text>
-                            </TouchableOpacity> 
+                <Text style={styles.CombineTripHistoryTextView}>Get Trip History</Text>
+            </TouchableOpacity>
         )
     }
     return (
@@ -399,13 +388,13 @@ setConbined1(mapCombined1)}
 
                             </TouchableOpacity>
                         </View>
-                       {/* { combineTripHistoryGet()} */}
-    {selectedDay == 'Today' ||selectedDay == 'Yesterday'? routeData.length > 0  && combineTripHistory()
-                    :selectedDay == 'Custom' &&  startDate == endDate ? routeData.length > 0  &&  combineTripHistory() :null }
-                  {/* { combineTripHistory()} */}
-                        
+                        {/* { combineTripHistoryGet()} */}
+                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && combineTripHistory()
+                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && combineTripHistory() : null}
+                        {/* { combineTripHistory()} */}
+
                     </View>
-                
+
                     {routeData.length > 0 ?
                         <RouteDetails
                             routeDetails={routeData}
@@ -498,29 +487,32 @@ const styles = StyleSheet.create({
         borderColor: ColorConstant.GREY,
         elevation: 2,
     },
-    combineTripHistoryMainView:{  width: '100%',
-    alignSelf: 'center',
-    // marginVertical: hp(1.5),
+    combineTripHistoryMainView: {
+        width: '100%',
+        alignSelf: 'center',
+        // marginVertical: hp(1.5),
 
-    // alignSelf: 'center',
-    marginHorizontal: hp(3),
-    backgroundColor: ColorConstant.ORANGE,
-    borderRadius: 10,
-    borderWidth: Platform.OS == 'ios' ? 0.3 : 0,
-    borderColor: ColorConstant.GREY,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: {
-        width: 0,
-        height: 3,
+        // alignSelf: 'center',
+        marginHorizontal: hp(3),
+        backgroundColor: ColorConstant.ORANGE,
+        borderRadius: 10,
+        borderWidth: Platform.OS == 'ios' ? 0.3 : 0,
+        borderColor: ColorConstant.GREY,
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        alignContent: 'center'
     },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-    alignContent:'center'
+    CombineTripHistoryTextView: {
+        color: ColorConstant.WHITE,
+        fontSize: FontSize.FontSize.medium, alignSelf: 'center',
+        marginVertical: Platform.OS == 'ios' ? hp(1.3) : hp(0.5),
     },
-    CombineTripHistoryTextView:{color: ColorConstant.WHITE,
-        fontSize: FontSize.FontSize.medium,alignSelf:'center',
-        marginVertical: Platform.OS == 'ios' ? hp(1.3) : hp(0.5),},
     dropDown: {
         flexDirection: 'row',
         marginTop: hp(0.5),
