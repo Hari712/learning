@@ -16,7 +16,30 @@ function* getTripHistory(action) {
         onError(error)
     }
 }
+function* getCombinedTripHistory(action) {
+    const { userId, deviceId, from, to, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.GET_COMBINED_TRIP_HISTORY(userId, deviceId, from, to)
+        const response = yield call(API.get, url)
+        const result = response.result ? response.result : []
+
+    console.log('resultresultresultresultresultresultgetCombinedTripHistory',result)
+        yield put(TripHistoryActions.setCombinedTripHistoryResponse(result))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+function* clearCombinedTripHistory() {
+    // try {
+        yield put(TripHistoryActions.setCombinedTripHistoryResponse())
+    // } catch (error) {
+       
+    // }
+}
 
 export function* watchTripHistory() {
-    yield takeLatest(types.GET_TRIP_HISTORY_REQUEST, getTripHistory)
+    yield takeLatest(types.GET_TRIP_HISTORY_REQUEST, getTripHistory),
+    yield takeLatest(types.GET_COMBINED_TRIP_HISTORY_REQUEST, getCombinedTripHistory),
+    yield takeLatest(types.CLEAR_COMBINED_TRIP_HISTORY_REQUEST, clearCombinedTripHistory)
 }
