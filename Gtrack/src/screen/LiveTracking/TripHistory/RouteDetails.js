@@ -40,7 +40,7 @@ const RouteDetails = (props) => {
 
         let duration = moment.duration(eDateArray.diff(sDateArray))
         let durationFormat = parseInt(duration.asHours()) + 'h ' + parseInt(duration.asMinutes() % 60) + 'm ' + parseInt(duration.asSeconds() % 60) + 's'
-
+        console.log('routeDetailsrouteDetailsrouteDetailsrouteDetails',props)
         return (
             <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE, { item: item })} style={styles.cardContainer}>
 

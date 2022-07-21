@@ -308,6 +308,12 @@ export const getTripHistoryListInfo = createSelector(
     [getTripHistoryList],
     (info) => info
 )
+const getCombinedTripHistoryList = (state) => state.tripHistory && state.tripHistory.tripHistoryDetails ? state.tripHistory.tripHistoryDetails : {}
+
+export const getCombinedTripHistoryListInfo = createSelector(
+    [getCombinedTripHistoryList],
+    (info) => info
+)
 
 /*    
  * Get Group Devices for Livetracking

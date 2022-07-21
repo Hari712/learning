@@ -265,7 +265,7 @@ const LiveTracking = ({ navigation }) => {
 		const deviceInfo = selectedDevice;
 		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
-			<View
+			<TouchableOpacity
 				style={{
 					height: hp(5),
 					backgroundColor: ColorConstant.WHITE,
@@ -277,6 +277,7 @@ const LiveTracking = ({ navigation }) => {
 					marginHorizontal: hp(3),
 					width: wp(88)
 				}}
+				onPress={() => { sheetRef.current.open() }}
 			>
 				<View
 					style={{
@@ -303,19 +304,19 @@ const LiveTracking = ({ navigation }) => {
 
 					{/* <UpArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
 						: */}
-					<TouchableOpacity style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
+					<View style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
 						onPress={() => { sheetRef.current.open() }}>
 						{bottomSheetVisible ? <UpArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
 							:
 							<DownArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
 						}
-					</TouchableOpacity>
+					</View>
 					{/* } */}
 					{/* {VisibleArrow && <TouchableOpacity style={{ padding: hp(1) }} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
 					</TouchableOpacity>} */}
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 

@@ -20,7 +20,7 @@ const Map = Platform.select({
 
 const DispatchRouteTotalTrip = ({ navigation, route }) => {
 
-    const { item ,points} = route.params
+    const { item ,points,devicename} = route.params
 
     const [lineString, setLineString] = useState(null)
 
@@ -42,7 +42,7 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
                     fontWeight: '500',
                     //letterSpacing: 0,
                     textAlign:'center' }}>
-                deviceName
+                {devicename}
                 </Text>          
             ),
             headerLeft: () => (
@@ -105,10 +105,12 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
             return(
                 <>
                 {points.map((item, index) => {
+                    console.log('itemitemitemitemitemitemitemitem',item)
+                    let cordinate = [item[1],item[0]]
                     return (
                         <Map.default.PointAnnotation
-                            draggable
-                            coordinate={item}
+            
+                            coordinate={cordinate}
                             anchor={{x: 0.5, y: 0.5}}
                             // anchor={{x: 0.5, y: 0.5}}
                             // onDragEnd={(e) => {
@@ -123,39 +125,14 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
                             //     }))
                             // }}
                         >    
-                          <MarkerIcon width={20} height={20} />
+                           <LocationOrangeIcon width={30} height={30}/>
                         </Map.default.PointAnnotation>
                     )
                 })}
-                {/* // <Map.default.PointAnnotation
-                //     id='startPoint' 
-                //     coordinate={tripStartCord}
-                //     anchor={{x: 0.5, y: 0.5}}
-                //     title = {"Start"}
-                // >  
-                //     <MarkerIcon width={20} height={20} />
-                    
-                //     {renderPopup('Start',item.tripStartAddress)}
-
-                // </Map.default.PointAnnotation> */}
                 </>
             )
         }
 
-        function renderEndPoint() {
-            return(
-                <Map.default.PointAnnotation
-                    id='endPoint' 
-                    coordinate={tripEndCord}
-                    anchor={{x: 0.5, y: 0.5}}
-                >
-                    <LocationOrangeIcon width={30} height={30}/>
-
-                    {renderPopup('End',item.tripEndAddress)}
-
-                </Map.default.PointAnnotation>
-            )
-        }
 
         function renderLine() {
             return(
@@ -178,11 +155,7 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
 
         return (
             <Map.default.MapView style={{ flex: 1}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
-                {/* <Map.default.UserLocation
-                    renderMode='normal'
-                    visible={true}
-                    showsUserHeadingIndicator={true}
-                /> */}
+          
                 <Map.default.Camera
                     zoomLevel={14}
                     centerCoordinate={tripStartCord}
@@ -192,14 +165,12 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
 
                 {renderStartPoint()}
 
-                {/* {renderEndPoint()} */}
+        
 
                 <Map.default.RasterSource {...rasterSourceProps}>
 						<Map.default.RasterLayer
 							id="googleMapLayer"
 							sourceID="googleMapSource"
-							// style={{rasterOpacity: 0.5}}
-					
 							layerIndex={0}
 						/>
                 </Map.default.RasterSource>	
@@ -236,6 +207,21 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
                 setLineString(coordinateArray)
             }
         },[])
+        function renderPoinst() {
+            return(
+                <>
+                     {points.map(coordInfo => { return(
+                        <Map.Marker
+                   
+                            coordinate={{
+                                latitude: coordInfo[0],
+                                longitude: coordInfo[1]
+                            }}
+                        />
+                    )})}
+                </>
+            )
+        }
 
    
         return (
@@ -252,27 +238,7 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
                         {renderPopUpText('Start',item.tripStartAddress)}
                     </Map.Callout> */}
                 </Map.Marker>
-                {points.map(coordInfo => (
-                        <Map.Marker
-                            // key={coordInfo.id.toString()}
-                            coordinate={{
-                                latitude: coordInfo[0],
-                                longitude: coordInfo[1]
-                            }}
-                            //   onPress={e => console.log(e.nativeEvent)}
-                            draggable={true}
-                            // onDragEnd={(e) => {
-                            //     const { coordinate } = e.nativeEvent
-                            //     setSelectedCoordinates(prevState => prevState.map((item, index) => {
-                            //         if (item.id == coordInfo.id) {
-                            //             item.coordinates = coordinate
-                            //             return item
-                            //         }
-                            //         return item
-                            //     }))
-                            // }}
-                        />
-                    ))}
+               {renderPoinst()}
                 <Map.Marker coordinate={tripEndCord}  >
                     {/* <LocationOrangeIcon/> */}
                     {/* <Map.Callout>
