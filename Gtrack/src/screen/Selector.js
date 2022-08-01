@@ -323,8 +323,10 @@ const getCombinedTripCoordinatesList = (state) => getCombinedTripHistoryCoord(st
 
 function getCombinedTripHistoryCoord(state) {
     const tripsInfo = state.tripHistory && state.tripHistory.tripHistoryDetails ? state.tripHistory.tripHistoryDetails : {}
-    console.log('trips inffo--', tripsInfo)
-    let tripdata = tripsInfo.sort((a, b) => {
+    
+    let tripCoordsData
+    if(tripsInfo != {}){
+    let tripdata = [].slice.call(tripsInfo).sort((a, b) => {
         console.log('a.indexa.index', a.tripStartLongitude)
         if (a.tripStartPositionId < b.tripStartPositionId)
             return -1;
@@ -337,10 +339,11 @@ function getCombinedTripHistoryCoord(state) {
     console.log('sorted array herea',);
 
     const mergeResult = [].concat.apply([], mapCombined);
-    var tripCoordsData = {
+     tripCoordsData = {
         coords: mergeResult,
         points: mapCombined1
-    }
+    }}
+    else {tripCoordsData ={}}
     return tripCoordsData
 }
 

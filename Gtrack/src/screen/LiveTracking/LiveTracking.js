@@ -57,7 +57,7 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-	
+
 
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();
@@ -442,18 +442,18 @@ const LiveTracking = ({ navigation }) => {
 							<LiveEndPointIcon width={isOnline ? 60 : 54} isDeviceOnline={isOnline} />
 							{/* <Map.default.Callout title={endAddress} /> */}
 						</Map.default.PointAnnotation>}
-				
-					<Map.default.RasterSource {...rasterSourceProps} >
+
+					<Map.default.RasterSource {...rasterSourceProps}>
 						<Map.default.RasterLayer
 							id="googleMapLayer"
 							sourceID="googleMapSource"
 							// style={{rasterOpacity: 0.5}}
-					
+
 							layerIndex={0}
 						/>
 					</Map.default.RasterSource>
 				</Map.default.MapView>
-			
+
 			</View>
 		);
 	}
@@ -500,16 +500,16 @@ const LiveTracking = ({ navigation }) => {
 		console.log('bottom sheet-------', item, index)
 		return (
 			<View style={[styles.cardContainer, { borderBottomWidth: index == deviceList.length - 1 ? 0 : 0.8, }]}>
-				<TouchableOpacity style={{flexDirection:'row',justifyContent:'space-between'}}
+				<TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}
 					onPress={() => onPressDevice(index)}>
-						{/* <View style={styles.notificationLeftView}>
+					{/* <View style={styles.notificationLeftView}>
                             <View style={styles.notificationDetailView}> */}
-						
-                               
-                            {/* </View>
+
+
+					{/* </View>
                         </View> */}
 					<Text style={[styles.bottomSheetTextStyle, { color: selectedDevice.id == item.id ? ColorConstant.ORANGE : ColorConstant.GREY }]}>{item.name}</Text>
-					<IconConstant type={item.status =='online'? 'deviceonline' :'deviceoffline'} color={ColorConstant.ORANGE} />
+					<IconConstant type={item.status == 'online' ? 'deviceonline' : 'deviceoffline'} color={ColorConstant.ORANGE} />
 				</TouchableOpacity>
 			</View>
 		)
@@ -540,10 +540,50 @@ const LiveTracking = ({ navigation }) => {
 		</View>
 	);
 
+	function renderDevicesSheet() {
+		return (
+			<>
+				<RBSheet
+					ref={sheetRef}
+					closeOnDragDown={true}
+					height={deviceList?.length > 3 ? hp(45) : hp(30)}
+					customStyles={{
+						wrapper: {
+							backgroundColor: 'rgba(0,0,0,0.5)'
+						},
+						container: {
+							borderTopLeftRadius: 30,
+							borderTopRightRadius: 30
+						},
+						draggableIcon: {
+							width: hp(10),
+							backgroundColor: ColorConstant.ORANGE
+						}
+					}}
+					onOpen={() => setBottomSheetVisible(true)}
+					onClose={() => setBottomSheetVisible(false)}
+				>
+					{/* <RenderContent /> */}
+					<View style={styles.subView}>
+						<Text style={styles.mainTitle}>Select Device</Text>
+						<FlatList
+							showsVerticalScrollIndicator={true}
+							style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
+							contentContainerStyle={{ paddingBottom: '5%' }}
+							data={deviceList}
+							renderItem={renderItems}
+							keyExtractor={(item, index) => index.toString()}
+						/>
+					</View>
+				</RBSheet>
+			</>
+		)
+	}
+
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
-			{isAndroid && <Text style={{position: 'absolute', left: 0, bottom: 0}}> <GtrackIndiaLogoNew width={wp(20)} height={hp(5)} /> </Text>}
+			{isAndroid && <Text style={{ position: 'absolute', left: 0, bottom: 0 }}> <GtrackIndiaLogoNew width={wp(20)} height={hp(5)} /> </Text>}
 			{/* {renderAppleMap()} */}
 			{selectedDevice && renderDeviceSelectionView()}
 			<View style={[styles.subContainer, { marginTop: selectedDevice ? Platform.OS === 'ios' ? hp(13) : hp(11) : hp(5) }]}>
@@ -594,8 +634,8 @@ const LiveTracking = ({ navigation }) => {
 					onLongPress={() => onLongPress()}
 					delayLongPress={2000}
 				>
-			
-					{isPanicAlarmClick ? <PanicIconClick	height={hp(6)} width={hp(6)}  /> : <PanicAlarmIcon height={hp(6)} width={hp(6)}  />}
+
+					{isPanicAlarmClick ? <PanicIconClick height={hp(6)} width={hp(6)} /> : <PanicAlarmIcon height={hp(6)} width={hp(6)} />}
 				</TouchableOpacity>
 				}
 				<CustomDialog
@@ -616,31 +656,8 @@ const LiveTracking = ({ navigation }) => {
 					afterTimeoutHandle={sendTraccarApi}
 				/>}
 			</View>
-			<RBSheet
-			animationType={'fade'}
-				ref={sheetRef}
-				closeOnDragDown={true}
-				
-				height={deviceList.length > 3 ? hp(45):  hp(30)}
-				shou
-				customStyles={{
-					wrapper: {
-						backgroundColor: 'rgba(0,0,0,0.5)'
-					},
-					container: {
-						borderTopLeftRadius: 30,
-						borderTopRightRadius: 30
-					},
-					draggableIcon: {
-						width: hp(10),
-						backgroundColor: ColorConstant.ORANGE
-					}
-				}}
-				onOpen={() => setBottomSheetVisible(true)}
-				onClose={() => setBottomSheetVisible(false)}
-			>
-				<RenderContent />
-			</RBSheet>
+
+			{renderDevicesSheet()}
 		</View>
 	);
 };
@@ -679,7 +696,7 @@ const styles = StyleSheet.create({
 		marginTop: hp(2),
 		justifyContent: 'center',
 		alignItems: 'center',
-		
+
 		backgroundColor: ColorConstant.WHITE,
 	},
 	lineContainer: {
@@ -743,7 +760,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		// height: height / 2,
-		paddingBottom:hp(5),
+		paddingBottom: hp(5),
 		backgroundColor: ColorConstant.WHITE,
 	},
 	mainTitle: {
