@@ -14,7 +14,7 @@ android:layout_height="match_parent" android:layout_width="match_parent">
     </item> -->
 
       <item
-        android:drawable="@drawable/new_logo"
+        android:drawable="@drawable/old_logo"
       android:width="248dp"
         android:height="101dp"
         android:gravity="center"

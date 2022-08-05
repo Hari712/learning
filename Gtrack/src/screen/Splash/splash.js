@@ -7,8 +7,8 @@ const Splash = (navigation) => {
     return (
         <View style={styles.container}>
             <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
-                {/* <GtrackIndiaLogo/> */}
-                <GtrackIndiaLogoNew />
+                <GtrackIndiaLogo />
+                {/* <GtrackIndiaLogoNew /> */}
                 {/* <Image style={styles.imageStyle} source={images.image.logo} /> */}
             </ImageBackground>
         </View>
