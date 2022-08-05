@@ -16,7 +16,7 @@ const GetStarted = (navigation) => {
             <ImageBackground style={styles.backgroundImage} source={images.image.splash} resizeMode={'stretch'}>
 
                 {/* <GtrackIndiaLogo/> */}
-                <GtrackIndiaLogoNew style={styles.imageStyle} />
+                <GtrackIndiaLogo style={styles.imageStyle} />
                 {/* <Image style={styles.imageStyle} source={images.image.logo}/> */}
 
                 <View style={styles.mainViewStyle}>
