@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions, Modal, FlatList } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions, Modal, FlatList,Linking } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -26,6 +26,7 @@ import url from 'socket.io-client/lib/url';
 import RBSheet from "react-native-raw-bottom-sheet";
 import IconConstant from '../../constants/iconConstant';
 import { map } from 'lodash';
+import FindMyDevice from '../../component/SvgComponent/FindMyDevice';
 const { width, height } = Dimensions.get('window');
 
 
@@ -579,6 +580,19 @@ const LiveTracking = ({ navigation }) => {
 			</>
 		)
 	}
+	function OpenMapForLocation(){
+	const currentPosition =	devicePositionArray.length == 1 ? 0 :devicePositionArray.length - 1
+	const latitude = devicePositionArray[currentPosition].latitude
+	const longitude = devicePositionArray[currentPosition].longitude
+	console.log('currentPositioncurrentPositioncurrentPositioncurrentPositioncurrentPosition',currentPosition,latitude,longitude,devicePositionArray)
+		if(Platform.OS == 'ios'){
+			console.log('ios called bro',latitude,longitude)
+			Linking.openURL(`http://maps.apple.com/?daddr=${latitude},${longitude}`);
+		}
+		if(Platform.OS == 'android'){
+			Linking.openURL(`http://maps.google.com/?daddr=${latitude},${longitude}`);
+		}
+	}
 
 	return (
 		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
@@ -619,7 +633,12 @@ const LiveTracking = ({ navigation }) => {
 						)}
 					</View>
 					: null}
-
+				<TouchableOpacity
+					activeOpacity={1}
+					onPress={() => OpenMapForLocation()}
+					style={styles.lineIconStyle}>
+					<FindMyDevice height={hp(8.5)} width={hp(8.5)}/>
+				</TouchableOpacity>
 				{!isRegular
 					? <TouchableOpacity
 						onPress={() => navigateToDeviceSetup()}
