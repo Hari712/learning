@@ -44,7 +44,7 @@ const isAndroid = Platform.OS === 'android';
 const LiveTracking = ({ navigation }) => {
 	const [isLineClick, setIsLineClick] = useState(false);
 	const [currentPosition, setCurrentPosition] = useState(); //by default
-
+	const [isPlusClick, setIsPlusClick] = useState(false);
 	const { isLoggedIn, isRegular, devicePositions, groupDevices, liveTrakingDeviceList, loginData, hasPanic, notiEvents, getPanicDetail, isNewEvent } = useSelector(state => ({
 		isLoggedIn: isUserLoggedIn(state),
 		isRegular: isRoleRegular(state),
@@ -114,6 +114,7 @@ const LiveTracking = ({ navigation }) => {
 				KeepAwake.activate()
 			} else {
 				setIsLineClick(false);
+				setIsPlusClick(false);
 				KeepAwake.deactivate();
 			}
 			return () => { console.log('deactivate'); KeepAwake.deactivate(); }
@@ -228,8 +229,21 @@ const LiveTracking = ({ navigation }) => {
 		}
 	};
 
+	const onItemPress = ({ navigation, item, color, setColor }) => {
+		if (item == 'Tracker Device') {
+			setIsPlusClick(false);
+			setIsLineClick(false);
+			navigateToDeviceSetup()
+		} else if (item == 'Mobile as Tracker') {
+			setIsPlusClick(false);
+			setIsLineClick(false);
+			navigation.navigate(SCREEN_CONSTANTS.ADD_MOBILE_TRACKER);
+		}
+	};
+
 	function navigateToDeviceSetup() {
 		setIsLineClick(false);
+		setIsPlusClick(false);
 		NavigationService.navigate(SCREEN_CONSTANTS.ACTIVATE_DEVICE);
 	}
 
@@ -568,7 +582,7 @@ const LiveTracking = ({ navigation }) => {
 	}
 
 	return (
-		<View onStartShouldSetResponder={() => setIsLineClick(false)} style={styles.container}>
+		<View onStartShouldSetResponder={() => { setIsLineClick(false), setIsPlusClick(false) }} style={styles.container}>
 			{isAndroid ? renderMapBox() : renderAppleMap()}
 			{isAndroid && <Text style={{ position: 'absolute', left: 0, bottom: 0 }}> <GtrackIndiaLogoNew width={wp(20)} height={hp(5)} /> </Text>}
 			{/* {renderAppleMap()} */}
@@ -576,7 +590,7 @@ const LiveTracking = ({ navigation }) => {
 			<View style={[styles.subContainer, { marginTop: selectedDevice ? Platform.OS === 'ios' ? hp(13) : hp(11) : hp(5) }]}>
 				<TouchableOpacity
 					onPress={() => {
-						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false), setIsVisible(true);
+						navigation.navigate(SCREEN_CONSTANTS.NOTIFICATION), setIsLineClick(false), setIsPlusClick(false), setIsVisible(true);
 					}}
 					style={styles.bellIconStyle}
 				>
@@ -588,7 +602,7 @@ const LiveTracking = ({ navigation }) => {
 
 				<TouchableOpacity
 					activeOpacity={1}
-					onPress={() => setIsLineClick(!isLineClick)}
+					onPress={() => { setIsLineClick(!isLineClick), setIsPlusClick(false) }}
 					style={styles.lineIconStyle}
 				>
 					{isLineClick ? <OrangelineIcon /> : <BluelineIcon />}
@@ -609,11 +623,24 @@ const LiveTracking = ({ navigation }) => {
 
 				{!isRegular
 					? <TouchableOpacity
-						onPress={() => navigateToDeviceSetup()}
+						onPress={() => { setIsPlusClick(!isPlusClick), setIsLineClick(false) }}
 						style={[styles.lineIconStyle, { backgroundColor: ColorConstant.BLUE }]}
 					>
 						<LiveTrackingPlusIcon />
 					</TouchableOpacity>
+					: null}
+
+				{isPlusClick
+					? <View style={[styles.lineContainer, { top: hp(17.5) }]}>
+						{deviceData.map((item, key) =>
+							<TouchableOpacity key={key} onPress={() => onItemPress({ navigation, item })}>
+								<Text style={styles.textStyle}>
+									{translate(item)}
+								</Text>
+								{key != deviceData.length - 1 ? <View style={styles.horizontalLine} /> : null}
+							</TouchableOpacity>
+						)}
+					</View>
 					: null}
 
 				{(!isRegular || !isEmpty(getPanicDetail)) && <TouchableOpacity
@@ -650,6 +677,7 @@ const LiveTracking = ({ navigation }) => {
 };
 
 const data = ['Geo Fence', 'Asset Information', 'Alarms', "Trip History"]
+const deviceData = ['Tracker Device', 'Mobile as Tracker']
 
 const styles = StyleSheet.create({
 	container: {
@@ -702,6 +730,7 @@ const styles = StyleSheet.create({
 		elevation: 10,
 		shadowRadius: 3,
 	},
+
 	textStyle: {
 		margin: hp(0.5),
 		color: ColorConstant.BLUE,

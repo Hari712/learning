@@ -1,6 +1,6 @@
 import * as types from '../../constants/ActionTypes'
 
-export const requestGetAllAssetsType = (userId ,onSuccess, onError) => ({
+export const requestGetAllAssetsType = (userId, onSuccess, onError) => ({
     type: types.GET_ASSETS_TYPE_REQUEST,
     userId,
     onSuccess,
@@ -33,7 +33,7 @@ export const requestAddAsset = (userId, data, onSuccess, onError) => ({
     onError
 })
 
-export const setAddAssetResponse= (data) => ({
+export const setAddAssetResponse = (data) => ({
     type: types.ADD_ASSET_RESPONSE,
     data
 })
@@ -120,8 +120,8 @@ export const requestGetAllNonGroupedDevice = (userId, data, onSuccess, onError) 
 
 export const requestGetConsolidatedDevice = (userId, onSuccess, onError) => ({
     type: types.GET_CONSOLIDATED_DEVICE_REQUEST,
-    userId, 
-    onSuccess, 
+    userId,
+    onSuccess,
     onError
 })
 
@@ -248,4 +248,17 @@ export const getDeviceReportBYID = (userId, deviceId, onSuccess, onError) => ({
     deviceId,
     onSuccess,
     onError
+})
+
+export const requestAddMobileAsTracker = (userId, data, onSuccess, onError) => ({
+    type: types.ADD_MOBILE_AS_TRACKER_REQUEST,
+    userId,
+    data,
+    onSuccess,
+    onError
+})
+
+export const setAddMobileAsTrackerResponse = (data) => ({
+    type: types.ADD_MOBILE_AS_TRACKER_RESPONSE,
+    data
 })

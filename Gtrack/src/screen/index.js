@@ -50,6 +50,7 @@ import TripHistoryDetails from './LiveTracking/TripHistory/TripHistoryDetails'
 import DispatchRoute from './LiveTracking/TripHistory/DispatchRoute'
 import NoInternet from './NoInternet/NoInternet'
 import LiveTrackingDetails from './LiveTracking/LiveTrackingDetails'
+import AddMobileTracker from './DeviceSetup/AddMobileTracker'
 
 export {
     Splash,
@@ -75,7 +76,7 @@ export {
     EditProfile,
     Notification,
     SensorInfo,
-    DeviceInfo, 
+    DeviceInfo,
     GeoFence,
     GeoFenceCreateNew,
     GeoFenceType,
@@ -87,7 +88,7 @@ export {
     DispatchRoute,
     CreateNew,
     AlarmType,
-    AlarmDetail,    
+    AlarmDetail,
     SettingNotification,
     ChangePasscode,
     ActivateDevice,
@@ -102,5 +103,6 @@ export {
     GeoFenceCircle,
     GeoFencePolyGon,
     NoInternet,
-    LiveTrackingDetails
+    LiveTrackingDetails,
+    AddMobileTracker
 }

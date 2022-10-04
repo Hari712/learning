@@ -70,7 +70,8 @@ export const SCREEN_CONSTANTS = {
     TRACKING_DETAILS: 'TrackingDetails',
     GEOFENCE_CIRCLE: 'GeoFenceCircle',
     GEOFENCE_POLYGON: 'GeoFencePolyGon',
-    LIVETRACKINGDETAILS: 'LiveTrackingDetails'
+    LIVETRACKINGDETAILS: 'LiveTrackingDetails',
+    ADD_MOBILE_TRACKER: 'AddMobileTracker'
 }
 
 export const AppConstants = {
