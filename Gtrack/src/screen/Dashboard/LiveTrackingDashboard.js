@@ -47,6 +47,7 @@ const LiveTrackinDashboard = () => {
 	const [coordList, setCoordList] = useState([])
 	const [deviceNameArr, setDeviceNameArr] = useState([])
 	const [lineString, setLineString] = useState(null)
+	const [showLocationAddress,setShowLocationAddress] = useState(false)
 	const [region, setRegion] = useStateRef()
 	
 
@@ -228,7 +229,7 @@ const LiveTrackinDashboard = () => {
 		}
 		return (
 			<View style={{ flex: 1, }}>
-			<Map.default.MapView style={{ flex: 1 ,}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
+			<Map.default.MapView style={{ flex: 1 ,}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}  onPress={()=>setShowLocationAddress(false)} >
 				{/* <Map.default.UserLocation
 							renderMode="normal"
 							visible={true}
@@ -261,9 +262,19 @@ const LiveTrackinDashboard = () => {
 					</Map.default.ShapeSource>
 					: null}
 				{isContainCoordinate &&
-					<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
-						<Map.default.Callout title={address} />
+					<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}   onSelected={(data)=>{setShowLocationAddress(!showLocationAddress)}} onDeselected={(data)=>{setShowLocationAddress(!showLocationAddress)}}>
+						{/* <Map.default.Callout title={address} /> */}
 					</Map.default.PointAnnotation>}
+					{showLocationAddress &&
+          <Map.default.MarkerView
+            id="annotaton-start"
+            anchor={{ x: 0.5, y: 1.3 }}
+            coordinate={coordinate}>
+                    	<Map.default.Callout title={address} />
+                    {/* {renderPopup('Start',item.tripStartAddress)} */}
+    
+          </Map.default.MarkerView>
+          }
 				<Map.default.RasterSource {...rasterSourceProps}>
 					<Map.default.RasterLayer
 						id="googleMapLayer"

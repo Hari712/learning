@@ -72,6 +72,7 @@ const LiveTracking = ({ navigation }) => {
 	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
 	const [isVisible, setIsVisible] = useState(false)
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
+	const[showStartLocation,setShowStartLocation]=useState(false)
 
 	const isFocused = useIsFocused()
 
@@ -346,7 +347,7 @@ const LiveTracking = ({ navigation }) => {
 			<Map.default
 				style={StyleSheet.absoluteFillObject}
 				// region={regionpoint}
-				initialRegion={region} ref={mapRef}
+				initialRegion={region} ref={mapRef} rotateEnabled={false}
 				showsUserLocation={false}>
 
 				{isContainCoordinate &&
@@ -393,10 +394,10 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
-
+		
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
+				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}    onPress={()=>setShowStartLocation(false)}>
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
@@ -431,12 +432,20 @@ const LiveTracking = ({ navigation }) => {
 						</Map.default.ShapeSource>
 						: null}
 					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
+						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}  onSelected={(data)=>setShowStartLocation(!showStartLocation)} onDeselected={(data)=>setShowStartLocation(!showStartLocation)}>
 							<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} />
 							{/* <LiveStartPointIcon /> */}
-							<Map.default.Callout title={startAddress} />
+							{/* <Map.default.Callout title={startAddress} /> */}
 						</Map.default.PointAnnotation>}
-
+						{showStartLocation &&
+         						 <Map.default.MarkerView
+									id="annotaton-start"
+									anchor={{ x: 0.5, y: 1.3 }}
+									coordinate={startCoordinate}>
+												<Map.default.Callout title={startAddress} />
+							
+								</Map.default.MarkerView>
+          }
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
 							{/* <LiveEndPointIcon/>  */}
@@ -494,6 +503,7 @@ const LiveTracking = ({ navigation }) => {
 		setSelectedDeviceIndex(index);
 		setDevicePositionArray([]);
 		setLineString(null)
+		setShowStartLocation(false)
 		sheetRef.current.close()
 	}
 
@@ -586,8 +596,9 @@ const LiveTracking = ({ navigation }) => {
 	const longitude = devicePositionArray[currentPosition].longitude
 	console.log('currentPositioncurrentPositioncurrentPositioncurrentPositioncurrentPosition',currentPosition,latitude,longitude,devicePositionArray)
 		if(Platform.OS == 'ios'){
-			console.log('ios called bro',latitude,longitude)
+			console.log('ios called',latitude,longitude)
 			Linking.openURL(`http://maps.apple.com/?daddr=${latitude},${longitude}`);
+			
 		}
 		if(Platform.OS == 'android'){
 			Linking.openURL(`http://maps.google.com/?daddr=${latitude},${longitude}`);

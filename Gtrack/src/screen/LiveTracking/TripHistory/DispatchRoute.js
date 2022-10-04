@@ -23,7 +23,8 @@ const DispatchRoute = ({ navigation, route }) => {
     const { item } = route.params
 
     const [lineString, setLineString] = useState(null)
-
+    const [showStartLocation,setShowStartLocation] = useState(false)
+    const [showEndLocation,setShowEndLocation] = useState(false)
     const mapRef = useRef()
 
     // useLayoutEffect(() => {
@@ -108,10 +109,12 @@ const DispatchRoute = ({ navigation, route }) => {
                     coordinate={tripStartCord}
                     anchor={{x: 0.5, y: 0.5}}
                     title = {"Start"}
+                    onSelected={(data)=>{setShowStartLocation(!showStartLocation),setShowEndLocation(false)}}
+                    onDeselected={(data)=>{setShowStartLocation(!showStartLocation),setShowEndLocation(false)}}
                 >  
                     <MarkerIcon width={20} height={20} />
                     
-                    {renderPopup('Start',item.tripStartAddress)}
+                    {/* {renderPopup('Start',item.tripStartAddress)} */}
 
                 </Map.default.PointAnnotation>
             )
@@ -122,11 +125,13 @@ const DispatchRoute = ({ navigation, route }) => {
                 <Map.default.PointAnnotation
                     id='endPoint' 
                     coordinate={tripEndCord}
-                    anchor={{x: 0.5, y: 0.5}}
+                    anchor={{x: 0.5, y: 1}}
+                    onSelected={(data)=>{setShowEndLocation(!showEndLocation),setShowStartLocation(false)}}
+                    onDeselected={(data)=>{setShowEndLocation(!showEndLocation),setShowStartLocation(false)}}
                 >
                     <LocationOrangeIcon width={30} height={30}/>
 
-                    {renderPopup('End',item.tripEndAddress)}
+                    {/* {renderPopup('End',item.tripEndAddress)} */}
 
                 </Map.default.PointAnnotation>
             )
@@ -149,10 +154,13 @@ const DispatchRoute = ({ navigation, route }) => {
                 </Map.default.ShapeSource>
             )
         }
-
+        const ShowPopup=()=>{
+            setShowStartLocation(false)
+            setShowEndLocation(false)
+        }
         return (
-            <Map.default.MapView style={{ flex: 1}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
-                {/* <Map.default.UserLocation
+            <Map.default.MapView style={{ flex: 1,}}  onPress={()=>ShowPopup()} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
+                      {/* <Map.default.UserLocation
                     renderMode='normal'
                     visible={true}
                     showsUserHeadingIndicator={true}
@@ -163,7 +171,25 @@ const DispatchRoute = ({ navigation, route }) => {
                 />
 
                 {!isEmpty(lineString) ? renderLine(): null}
+                {showStartLocation &&
+          <Map.default.MarkerView
+            id="annotaton-start"
+            anchor={{ x: 0.5, y: 1.1 }}
+            coordinate={tripStartCord}>
+                    
+                    {renderPopup('Start',item.tripStartAddress)}
+    
+          </Map.default.MarkerView>
+          }
+             {showEndLocation &&
+          <Map.default.MarkerView
+            id="annotaton-end"
+            anchor={{ x: 0.5, y: 1.2 }}
+            coordinate={tripEndCord}>
 
+                     {renderPopup('End',item.tripEndAddress)}
+          </Map.default.MarkerView>
+          }
                 {renderStartPoint()}
 
                 {renderEndPoint()}
