@@ -55,13 +55,13 @@ api.interceptors.request.use(req => {
     // }
     // Important: request interceptors **must** return the request.
     return req;
-  });
+});
 
 api.interceptors.response.use(response => response, errorResponseHandler);
 
 function errorResponseHandler(error) {
     // check for errorHandle config
-    console.log(error);
+    console.log('error from api call--------------', error);
 
     return refreshToken(error);
 }
@@ -81,7 +81,7 @@ async function refreshToken(error) {
         if ((status == 401 && message === TOKEN_EXPIRED)) {
             clearToken()
             const userInfo = await getItem(USER_DATA)
-           
+
             if (!isEmpty(userInfo)) {
                 const refreshToken = userInfo.refreshToken
                 const userId = userInfo.userDTO.id
@@ -102,9 +102,9 @@ async function refreshToken(error) {
         else if (status == 500 && message.includes(JWT_EXPIRED)) {
             setTimeout(() => store.dispatch(LoginActions.requestLogout()), 1000)
         }
-       
+
     } else {
-       
+
     }
     return Promise.reject(error);
 }
@@ -147,7 +147,7 @@ const parseError = error => {
     } else {
         message = error.message ? error.message : message;
     }
-    console.log(message)
+    console.log('error message-=-=-=-=-=-=', message)
     return message;
 };
 

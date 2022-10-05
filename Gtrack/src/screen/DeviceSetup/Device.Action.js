@@ -257,8 +257,3 @@ export const requestAddMobileAsTracker = (userId, data, onSuccess, onError) => (
     onSuccess,
     onError
 })
-
-export const setAddMobileAsTrackerResponse = (data) => ({
-    type: types.ADD_MOBILE_AS_TRACKER_RESPONSE,
-    data
-})

@@ -195,8 +195,8 @@ function* requestGetAllDeviceById(action) {
             const taxUrl = ApiConstants.FETCH_TAX_BY_PROVINCE(userId)
             const taxResponse = yield call(API.get, taxUrl)
             const tax = taxResponse.result ? taxResponse.result : 0
-            const devicePlan = { ...result.devicePlan, ...{ tax: tax }}
-            finalResponse = {...finalResponse, ...{ devicePlan: devicePlan }}
+            const devicePlan = { ...result.devicePlan, ...{ tax: tax } }
+            finalResponse = { ...finalResponse, ...{ devicePlan: devicePlan } }
         }
         onSuccess(finalResponse)
     } catch (error) {
@@ -323,6 +323,19 @@ function* requestDeviceReport(action) {
     }
 }
 
+function* requestAddMobileAsTracker(action) {
+    const { userId, data, onSuccess, onError } = action
+    try {
+        const url = ApiConstants.ADD_MOBILE_AS_TRACKER(userId)
+        const response = yield call(API.post, url, data)
+        const result = response.result ? response.result : {}
+        console.log('response-=-=-=-==', response)
+        onSuccess(result)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 
 export function* watchDeviceSetup() {
     yield takeLatest(types.GET_ASSETS_TYPE_REQUEST, resetLoadAssetsType),
@@ -346,5 +359,6 @@ export function* watchDeviceSetup() {
         yield takeLatest(types.UPDATE_ASSET_REQUEST, requestUpdateAssetInfo),
         yield takeLatest(types.DELETE_ASSET_BY_ASSET_ID_REQUEST, requestDeleteAssetByAssetId),
         yield takeLatest(types.SEARCH_ASSET_REQUEST, requestSearchAsset),
-        yield takeLatest(types.GET_DEVICE_REPORT_BY_ID, requestDeviceReport)
+        yield takeLatest(types.GET_DEVICE_REPORT_BY_ID, requestDeviceReport),
+        yield takeLatest(types.ADD_MOBILE_AS_TRACKER_REQUEST, requestAddMobileAsTracker)
 }

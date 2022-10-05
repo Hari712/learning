@@ -108,9 +108,9 @@ const AddMobileTracker = ({ navigation }) => {
     }
 
     const handleOnChangePhone = (value) => {
-        const phone = getFormattedPhoneNumber(value)
-        setPhoneNumber(phone)
-        return phone
+        // const phone = getFormattedPhoneNumber(value)
+        setPhoneNumber(value)
+        return value
     }
 
     function getPhone(phone) {
