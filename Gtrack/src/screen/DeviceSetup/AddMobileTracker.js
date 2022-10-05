@@ -99,6 +99,7 @@ const AddMobileTracker = ({ navigation }) => {
     function onSuccess(data) {
         AppManager.hideLoader()
         console.log("Success", data)
+        NavigationService.navigate(SCREEN_CONSTANTS.DEVICE_ASSET)
     }
 
     function onError(error) {
