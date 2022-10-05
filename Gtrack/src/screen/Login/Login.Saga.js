@@ -6,7 +6,7 @@ import { storeItem, getItem } from '../../utils/storage'
 import API from '../../api'
 import * as LoginActions from './Login.Action'
 import * as LiveTrackingActions from '../LiveTracking/Livetracking.Action'
-
+import { AppConstants } from '../../constants/AppConstants'
 
 function* login(action) {
     const { data, onSuccess, onError } = action
@@ -15,7 +15,11 @@ function* login(action) {
         setToken(response.result.accessToken)
         const result = response.result ? response.result : {}
         onSuccess(result)
-        yield put(LoginActions.setLoginResponse(result))
+        const isTracker =result && result.userDTO && result.userDTO.roles[0] && result.userDTO.roles[0].name
+        if(isTracker != AppConstants.ROLE_TRACKER){
+            yield put(LoginActions.setLoginResponse(result))
+        }
+        
     } catch (error) {
         onError(error)
     }
