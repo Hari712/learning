@@ -132,6 +132,7 @@
     "Device_setup_string2": "If you want to continue click on complete setup",
     "Complete Setup": "Complete Setup",
     "Device Setup": "Device Setup",
+    "Add Mobile as Tracker": "Add Mobile as Tracker",
     "Activate Device": "Activate Device",
     "Activate": "Activate",
     "Assign Asset": "Assign Asset",
@@ -259,5 +260,8 @@
     "Alarm_Type": "Alarm Type",
     "Country_Code": "Country Code",
     "Invalid_Device_Id": "Please enter Valid device id",
-    "SMS_Notification": "Sms Notification"
+    "SMS_Notification": "Sms Notification",
+    "Tracker Device": "Tracker Device",
+    "Mobile as Tracker": "Mobile as Tracker",
+    "Mobile_Number": "Mobile Number*"
 }

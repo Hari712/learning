@@ -11,7 +11,7 @@ import AppManager from '../../constants/AppManager';
 import { EditText, CustomButton, FontSize } from '../../component';
 import CheckBox from 'react-native-check-box';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
-import { storeItem, getValue } from '../../utils/storage';
+import { storeItem, getValue, removeItem } from '../../utils/storage';
 import { USER_DATA } from '../../constants/AppConstants';
 import isEmpty from 'lodash/isEmpty';
 import * as LoginActions from './Login.Action';
@@ -66,7 +66,13 @@ const Login = () => {
 	function onLoginSuccess(data) {
 		console.log('Success data', data);
 		AppManager.hideLoader();
+		// ROLE_REGULAR: 'ROLE_REGULAR',
+		// ROLE_OWNER: 'ROLE_OWNER',
 		storeItem(USER_DATA, data);
+		const isTracker =data && data.userDTO && data.userDTO.roles[0] && data.userDTO.roles[0].name
+        if(isTracker != AppConstants.ROLE_TRACKER){
+
+		
 		let deviceType = DeviceInfo.getSystemName();
 		let version = DeviceInfo.getVersion();
 		const traccarPassword = `g-track${data.userDTO.userKey}`;
@@ -100,6 +106,13 @@ const Login = () => {
 		);
 		dispatch(SettingsActions.requestGetAdvanceSettings(data.userDTO.id, onFeedbackSuccess, onFeedbackError))
 		onAddDeviceToken(data)
+			}
+			else if(isTracker === AppConstants.ROLE_TRACKER){
+				 removeItem(USER_DATA)
+				setEmail('')
+				setPassword('')
+				AppManager.showSimpleMessage('warning', { message: 'User registered as Tracker user', description: '', floating: true });
+			}
 	}
 
 	async function onAddDeviceToken(data) {
