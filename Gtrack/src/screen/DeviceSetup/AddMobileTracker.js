@@ -79,7 +79,7 @@ const AddMobileTracker = ({ navigation }) => {
             if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
             } else {
-                // AppManager.showLoader()
+                AppManager.showLoader()
                 const requestBody = {
                     "firstName": firstName,
                     "lastName": lastName,
