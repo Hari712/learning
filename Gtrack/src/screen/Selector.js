@@ -348,7 +348,7 @@ function getCombinedTripHistoryCoord(state) {
       // tripTravelledPositions: DemoData.tripTravelledPositions,
       tripTravelledPositions:mergeResult,
       tripStartPosition: DemoData.tripStartPosition,
-      tripEndPosition: DemoData.tripEndPosition,
+      tripEndPosition: mapCombined1,
   
   }
 

@@ -674,7 +674,7 @@ const LiveTracking = ({ navigation }) => {
 					: null}
 
 				{isPlusClick
-					? <View style={[styles.lineContainer, { top: hp(17.5) }]}>
+					? <View style={[styles.lineContainer, { top: hp(25) }]}>
 						{deviceData.map((item, key) =>
 							<TouchableOpacity key={key} onPress={() => onItemPress({ navigation, item })}>
 								<Text style={styles.textStyle}>

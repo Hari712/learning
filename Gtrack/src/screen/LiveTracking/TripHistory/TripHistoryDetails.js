@@ -48,6 +48,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [isStartDateVisible, setIsStartDateVisible] = useState(false);
     const [isEndDateVisible, setIsEndDateVisible] = useState(false);
     const [selectedDay, setSelectedDay] = useState("Today")
+    const [selectedDuration, setSelectedDuration] = useState("5")
     const [dropdownPosY, setDropdownPosY] = useState()
     const [routeData, setRouteData] = useState([])
     const [pageIndex, setPageIndex] = useState(0)
@@ -95,8 +96,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         if (!isEmpty(tripsCoordinates)) {
-            setConbined(tripsCoordinates.coords)
-            setConbined1(tripsCoordinates.points)
+            setConbined(tripsCoordinates.tripTravelledPositions)
+            setConbined1(tripsCoordinates.tripEndPosition)
         }
     }, [tripsCoordinates])
 
@@ -110,7 +111,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
             setConbined1(null)
             fetchFirstTripHistory()
         }
-    }, [startDate, endDate])
+    }, [startDate, endDate,selectedDuration])
 
     useEffect(() => {
         if (isLoadMoreData) {
@@ -346,7 +347,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
     }
     function combineTripHistory() {
         return (
-            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, { item: combined, points: combined1, devicename: data.name })} style={styles.combineTripHistoryMainView}>
+            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, {tripData: tripsCoordinates, item: tripsCoordinates.tripTravelledPositions, points: tripsCoordinates.tripEndPosition, devicename: data.name })} style={styles.combineTripHistoryMainView}>
                 <Text style={styles.CombineTripHistoryTextView}>Combined Trip History</Text>
             </TouchableOpacity>
         )
@@ -407,19 +408,40 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
                     <View
                         style={{
-                            top: dropdownPosY,
+                            flexDirection:'row',
                             position: 'absolute',
-                            width: "100%",
+                            width: "95%",
                             alignSelf: 'center',
-                            paddingHorizontal: hp(3)
-                        }}
-                    >
-                        <DropDown
+                        }}>
+                        <View
+                         style={{
+                            top: dropdownPosY,
+                            width: "70%",
+                            paddingHorizontal: hp(1)
+                        }}>
+                            <DropDown
                             label="Select Day"
                             defaultValue={selectedDay}
                             valueSet={setSelectedDay}
                             dataList={daysList}
                         />
+                        </View>
+                        <View
+                         style={{
+                            top: dropdownPosY,
+                            width: "30%",
+                            alignSelf: 'center',
+                            paddingHorizontal: hp(1)
+                        }}> 
+                        <DropDown
+                            label="Time Gap"
+                            defaultValue={selectedDuration}
+                            valueSet={setSelectedDuration}
+                            dataList={timeList}
+                        />
+                        </View>
+                        
+                       
                     </View>
 
                     <DateTimePickerModal
@@ -443,6 +465,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
 };
 
 const daysList = ['Today', 'Yesterday', 'Last Week', 'Last Month', 'Custom'];
+const timeList = ['5','10','15','20','25','30']
 
 const styles = StyleSheet.create({
     container: {
