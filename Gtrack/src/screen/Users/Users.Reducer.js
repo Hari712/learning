@@ -69,4 +69,19 @@ export const usersReducer = createReducer(state = initialState, {
             mobileUser: result.data
         }
     },
+    [types.MOBILE_ACTIVATE_DEACTIVATE_DEVICE_RESPONSE](state, action) {
+        const { subUserId } = action
+        const arrMobileUsers = state.mobileUser ? state.mobileUser : []
+        const arrSelectedUser = arrMobileUsers.map((item) => {
+            if (item.id == subUserId) {
+                item.isActive = !item.isActive
+            }
+            return item
+        })
+
+        return {
+            ...state,
+            mobileUser: arrSelectedUser
+        }
+    },
 })

@@ -64,10 +64,11 @@ export const setSubuserByFilter = (data) => ({
     data
 })
 
-export const requestActivateDeactivateDevice = (userId, subUserId, onSuccess, onError) => ({
+export const requestActivateDeactivateDevice = (userId, subUserId, userType, onSuccess, onError) => ({
     type: types.ACTIVATE_DEACTIVATE_DEVICE_REQUEST,
     userId,
     subUserId,
+    userType,
     onSuccess,
     onError
 })
@@ -90,3 +91,7 @@ export const setMobileUserByFilter = (data) => ({
     data
 })
 
+export const setMobileUserStatusRequest = (subUserId) => ({
+    type: types.MOBILE_ACTIVATE_DEACTIVATE_DEVICE_RESPONSE,
+    subUserId
+})

@@ -16,7 +16,7 @@ import center from '@turf/center';
 import { EditIcon } from '../../component';
 
 const UsersList = (props) => {
-    const { item } = props
+    const { item, userType } = props
     const [isActive, setIsActive] = useState(item.isActive)
 
     const { loginData, isConnected, isOwner } = useSelector(state => ({
@@ -39,7 +39,7 @@ const UsersList = (props) => {
 
         if (isConnected) {
             AppManager.showLoader()
-            dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, onChangeUserStatusSuccess, onChangeUserStatusError))
+            dispatch(UsersActions.requestActivateDeactivateDevice(user_id, item.id, userType, onChangeUserStatusSuccess, onChangeUserStatusError))
         } else {
             AppManager.showNoInternetConnectivityError()
         }

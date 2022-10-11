@@ -71,11 +71,14 @@ function* getSubuserByFilter(action) {
 }
 
 function* requestActivateDeactivateDevice(action) {
-    const { userId, subUserId, onSuccess, onError } = action
+    const { userId, subUserId, userType, onSuccess, onError } = action
     try {
         const url = ApiConstants.ACTIVATE_DEACTIVE(userId, subUserId)
         const response = yield call(API.delete, url)
-        yield put(UserActions.setUserStatusRequest(subUserId))
+        if (userType == 'mobile')
+            yield put(UserActions.setMobileUserStatusRequest(subUserId))
+        else
+            yield put(UserActions.setUserStatusRequest(subUserId))
         onSuccess(response)
     } catch (error) {
         onError(error)

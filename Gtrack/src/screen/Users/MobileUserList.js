@@ -242,6 +242,7 @@ const MobileUserList = () => {
         return (
             <UsersList
                 item={item}
+                userType={'mobile'}
             />
         )
     }
