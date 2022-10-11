@@ -172,6 +172,7 @@ const MobileUserList = () => {
                 setIsRole={setIsRole}
                 resetHandle={resetHandle}
                 filterHandle={filterHandle}
+                userType={'mobile'}
             />
         )
     }

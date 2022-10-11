@@ -174,6 +174,7 @@ const TrackerUserList = () => {
                 setIsRole={setIsRole}
                 resetHandle={resetHandle}
                 filterHandle={filterHandle}
+                userType={'tracker'}
             />
         )
     }
