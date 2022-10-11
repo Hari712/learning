@@ -8,7 +8,7 @@ import * as DeviceActions from '../DeviceSetup/Device.Action'
 import { useDispatch, useSelector } from 'react-redux'
 import * as UsersActions from './Users.Action'
 import AppManager from '../../constants/AppManager';
-import { getAssetListInfo, getLoginInfo } from '../Selector'
+import { getAssetListInfo, getLoginInfo, getMobileuserState } from '../Selector'
 import { UserAddIcon, FilterIcon, FilterIconClicked, NoRecordFoundImage } from '../../component/SvgComponent';
 import { translate } from '../../../App';
 import UsersList from './UsersList';
@@ -35,9 +35,9 @@ const MobileUserList = () => {
     const [searchData, setSearchData] = useState([])
     const [toMerge, setToMerge] = useState(false)
 
-    const { loginData, subUserData, isConnected } = useSelector(state => ({
+    const { loginData, mobileUserData, isConnected } = useSelector(state => ({
         loginData: getLoginState(state),
-        subUserData: getSubuserState(state),
+        mobileUserData: getMobileuserState(state),
         isConnected: state.network.isConnected,
     }))
 
@@ -68,11 +68,11 @@ const MobileUserList = () => {
 
     useEffect(() => {
         if (toMerge && pageIndex > 0) {
-            setSearchData(uniqBy([...searchData, ...subUserData], 'id'))
+            setSearchData(uniqBy([...searchData, ...mobileUserData], 'id'))
         } else {
-            setSearchData(subUserData)
+            setSearchData(mobileUserData)
         }
-    }, [subUserData])
+    }, [mobileUserData])
 
     const fetchUserslist = () => {
         if (isConnected) {
@@ -81,18 +81,18 @@ const MobileUserList = () => {
                 "pageSize": pageCount,
                 "useMaxSearchAsLimit": false,
                 "searchColumnsList": [
-                    // {
-                    //     "columnName": "searchParam",
-                    //     "searchStr": searchKeyword
-                    // },
+                    {
+                        "columnName": "searchParam",
+                        "searchStr": searchKeyword
+                    },
                     // {
                     //     "columnName": "role",
                     //     "searchStrList": roleKeyword
                     // },
-                    // {
-                    //     "columnName": "isDeactivated",
-                    //     "searchStrList": statusKey
-                    // },
+                    {
+                        "columnName": "isDeactivated",
+                        "searchStrList": statusKey
+                    },
                     {
                         "columnName": "mobileDeviceUser",
                         "searchStr": "true"
@@ -101,7 +101,7 @@ const MobileUserList = () => {
                 "sortHeader": "id",
                 "sortDirection": "DESC"
             }
-            dispatch(UsersActions.requestSubuserByFilter(requestBody, loginData.id, onSuccess, onError))
+            dispatch(UsersActions.requestMobileUserByFilter(requestBody, loginData.id, onSuccess, onError))
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -251,8 +251,9 @@ const MobileUserList = () => {
             <View style={styles.searchContainer}>
                 {searchBar()}
             </View>
-            {subUserData.length > 0 ?
+            {mobileUserData.length > 0 ?
                 <FlatList
+                    contentContainerStyle={{ paddingBottom: '25%' }}
                     data={searchData}
                     renderItem={renderItem}
                     refreshControl={

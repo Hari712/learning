@@ -17,6 +17,8 @@ import isEmpty from 'lodash/isEmpty'
 import { useIsFocused } from '@react-navigation/native';
 import { uniqBy } from 'lodash';
 import { getLoginState, getSubuserState } from '../Selector'
+import NavigationService from '../../navigation/NavigationService';
+import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 
 const TrackerUserList = () => {
 
@@ -229,7 +231,7 @@ const TrackerUserList = () => {
                 <TouchableOpacity style={styles.addButton} onPress={() => setVisible(!visible)} >
                     {visible ? <FilterIconClicked /> : <FilterIcon />}
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
+                <TouchableOpacity activeOpacity={1} onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
                     <UserAddIcon />
                 </TouchableOpacity>
 
@@ -253,6 +255,7 @@ const TrackerUserList = () => {
             </View>
             {subUserData.length > 0 ?
                 <FlatList
+                    contentContainerStyle={{ paddingBottom: '25%' }}
                     data={searchData}
                     renderItem={renderItem}
                     refreshControl={

@@ -9,6 +9,7 @@ function* getSubuser(action) {
     try {
         const response = yield call(API.get, ApiConstants.GET_SUBUSER(userId))
         yield put(UserActions.setSubuserResponse(response))
+        console.log('sub user data----', response)
         onSuccess(response)
     } catch (error) {
         onError(error)
@@ -62,7 +63,6 @@ function* getSubuserByFilter(action) {
     const { body, userId, onSuccess, onError } = action
     try {
         const response = yield call(API.post, ApiConstants.GET_SUBUSER_BY_FILTER(userId), body)
-        console.log('response from saga of mobile user-------', response)
         yield put(UserActions.setSubuserByFilter(response))
         onSuccess(response)
     } catch (error) {
@@ -82,11 +82,24 @@ function* requestActivateDeactivateDevice(action) {
     }
 }
 
+function* getMobileUserByFilter(action) {
+    const { body, userId, onSuccess, onError } = action
+    try {
+        const response = yield call(API.post, ApiConstants.GET_SUBUSER_BY_FILTER(userId), body)
+        console.log('response from saga of mobile user-------', response)
+        yield put(UserActions.setMobileUserByFilter(response))
+        onSuccess(response)
+    } catch (error) {
+        onError(error)
+    }
+}
+
 export function* watchUsers() {
     yield takeLatest(types.GET_SUBUSER_REQUEST, getSubuser),
         yield takeLatest(types.ADD_SUBUSER_REQUEST, addSubuser),
         yield takeLatest(types.GET_GROUP_REQUEST, getGroup),
         yield takeLatest(types.UPDATE_SUBUSER_DETAIL_REQUEST, updateSubuserDetails),
         yield takeLatest(types.GET_SUBUSER_BY_FILTER_REQUEST, getSubuserByFilter),
-        yield takeLatest(types.ACTIVATE_DEACTIVATE_DEVICE_REQUEST, requestActivateDeactivateDevice)
+        yield takeLatest(types.ACTIVATE_DEACTIVATE_DEVICE_REQUEST, requestActivateDeactivateDevice),
+        yield takeLatest(types.GET_MOBILE_USER_BY_FILTER_REQUEST, getMobileUserByFilter)
 }

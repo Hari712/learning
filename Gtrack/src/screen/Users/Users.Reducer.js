@@ -4,7 +4,8 @@ import { isEmpty } from 'lodash';
 
 const initialState = {
     subUser: [],
-    group:[]
+    group: [],
+    mobileUser: []
 }
 
 export const usersReducer = createReducer(state = initialState, {
@@ -12,38 +13,38 @@ export const usersReducer = createReducer(state = initialState, {
         const { result } = action.data
         return {
             ...state,
-            subUser:result
+            subUser: result
         }
     },
     [types.GET_SUBUSER_BY_FILTER_RESPONSE](state, action) {
         const { result } = action.data
         return {
             ...state,
-            subUser:result.data
+            subUser: result.data
         }
     },
     [types.GET_GROUP_RESPONSE](state, action) {
         const { result } = action.data
         return {
             ...state,
-            group:result
+            group: result
         }
     },
     [types.ADD_SUBUSER_RESPONSE](state, action) {
         const { result } = action.data
-        const userlist = !isEmpty(state.subUser) ? [ ...result, ...state.subUser] : [ ...result]
+        const userlist = !isEmpty(state.subUser) ? [...result, ...state.subUser] : [...result]
         return {
             ...state,
             subUser: userlist
         }
-    },    
+    },
     [types.UPDATE_SUBUSER_RESPONSE](state, action) {
         const { result } = action.data
-        const arrSubUsers = state.subUser 
+        const arrSubUsers = state.subUser
         const arrSubUsersRemovedUser = arrSubUsers.filter((item) => item.id !== result.id)
         return {
             ...state,
-            subUser:[result, ...arrSubUsersRemovedUser]
+            subUser: [result, ...arrSubUsersRemovedUser]
         }
     },
     [types.ACTIVATE_DEACTIVATE_DEVICE_RESPONSE](state, action) {
@@ -55,10 +56,17 @@ export const usersReducer = createReducer(state = initialState, {
             }
             return item
         })
-        
+
         return {
             ...state,
-            subUser:arrSelectedUser
+            subUser: arrSelectedUser
         }
-    }
+    },
+    [types.GET_MOBILE_USER_BY_FILTER_RESPONSE](state, action) {
+        const { result } = action.data
+        return {
+            ...state,
+            mobileUser: result.data
+        }
+    },
 })

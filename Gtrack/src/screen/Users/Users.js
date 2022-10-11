@@ -14,10 +14,11 @@ import UsersFilterDialog from '../../component/UsersFilterDialog';
 import isEmpty from 'lodash/isEmpty'
 import { useIsFocused } from '@react-navigation/native';
 import { uniqBy } from 'lodash';
-import { SceneMap, TabView, TabBar } from 'react-native-tab-view'
+import { SceneMap, TabView, TabBar, ScrollPager } from 'react-native-tab-view'
 import TrackerUserList from './TrackerUserList';
 import MobileUserList from './MobileUserList';
 import { FontSize } from '../../component';
+const IS_ANDROID = Platform.OS === 'android'
 
 const Users = ({ navigation }) => {
 
@@ -277,6 +278,7 @@ const Users = ({ navigation }) => {
           navigationState={{ index, routes }}
           renderScene={renderScene}
           onIndexChange={setIndex}
+          lazy
           renderTabBar={props => {
             console.log('props--------', props, index)
             return (
@@ -292,6 +294,10 @@ const Users = ({ navigation }) => {
                 )}
               />)
           }}
+          renderPager={
+            IS_ANDROID ? undefined : (props) => <ScrollPager {...props} />
+          }
+          swipeEnabled={false}
           initialLayout={initialLayout} />
       </View>
 

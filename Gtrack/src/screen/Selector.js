@@ -18,17 +18,17 @@ export const isUserLoggedIn = createSelector(
 
 export const isRoleRegular = createSelector(
     [getLoginInfo],
-    (info) => info && ( info.role[0].name == AppConstants.ROLE_REGULAR )
+    (info) => info && (info.role[0].name == AppConstants.ROLE_REGULAR)
 )
 
 export const isRoleOwner = createSelector(
     [getLoginInfo],
-    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER ) && (info.isCorporateUser)
+    (info) => info && (info.role[0].name == AppConstants.ROLE_OWNER) && (info.isCorporateUser)
 )
 
 export const isRoleAdmin = createSelector(
     [getLoginInfo],
-    (info) => info && ( info.role[0].name == AppConstants.ROLE_OWNER) && (!info.isCorporateUser)
+    (info) => info && (info.role[0].name == AppConstants.ROLE_OWNER) && (!info.isCorporateUser)
 )
 
 /**
@@ -47,7 +47,7 @@ export const getTraccarSessionInfo = createSelector(
 
 const getSubuserInfo = (state) => getSubuserInfoList(state)
 function getSubuserInfoList(state) {
-    const userInfo = state.users && state.users.subUser ? state.users.subUser  : {}
+    const userInfo = state.users && state.users.subUser ? state.users.subUser : {}
     const arrUserInfo = Object.values(userInfo)
     arrUserInfo.sort((item1, item2) => item2.id - item1.id)
     return arrUserInfo
@@ -186,12 +186,12 @@ export const getAlarmsListInfo = createSelector(
 
 export const hasPanicAlarm = createSelector(
     [getAlarmsList],
-    (info) => info && info.map((item)=> item.attributes && item.attributes.alarms == "sos").includes(true)
+    (info) => info && info.map((item) => item.attributes && item.attributes.alarms == "sos").includes(true)
 )
 
 export const getPanicAlarm = createSelector(
     [getAlarmsList],
-    (info) => info && info.filter((item)=> item.attributes && item.attributes.alarms == "sos")
+    (info) => info && info.filter((item) => item.attributes && item.attributes.alarms == "sos")
 )
 
 /**
@@ -201,7 +201,7 @@ export const getPanicAlarm = createSelector(
 const getAlertTypeList = (state) => getAlertTypeInfo(state)
 function getAlertTypeInfo(state) {
     const alertTypeList = state.livetracking && state.livetracking.alertTypes ? state.livetracking.alertTypes : {}
-    const arrAlertTypes = alertTypeList.map((item)=>{return item.type})
+    const arrAlertTypes = alertTypeList.map((item) => { return item.type })
     return arrAlertTypes
 }
 export const getAlertTypetListInfo = createSelector(
@@ -318,11 +318,11 @@ const getLivetrackingGroupDevicesList = (state) => getAllLivetrackingGroupDevice
 function getAllLivetrackingGroupDevices(state) {
     const groupInfo = state.livetracking && state.livetracking.groupDevices ? state.livetracking.groupDevices : {}
     let deviceArr = []
-     groupInfo.map((item) => {
-         deviceArr = [...deviceArr, ...item.devices]
-     })
-     deviceArr.sort(function(a, b){return a.id - b.id})
-     return deviceArr
+    groupInfo.map((item) => {
+        deviceArr = [...deviceArr, ...item.devices]
+    })
+    deviceArr.sort(function (a, b) { return a.id - b.id })
+    return deviceArr
 }
 
 export const getLivetrackingGroupDevicesListInfo = createSelector(
@@ -358,7 +358,7 @@ export const getAdvanceSettingsInfo = createSelector(
 
 export const dist = createSelector(
     [getAdvanceSettings],
-    (info) => info && ( info.distance == AppConstants.KILOMETER ? "km" : "mi" ) 
+    (info) => info && (info.distance == AppConstants.KILOMETER ? "km" : "mi")
 )
 
 /**
@@ -424,4 +424,20 @@ function getAppLogsData(state) {
 export const getAppLogs = createSelector(
     getAppLogsInfo,
     logs => logs
+)
+
+/**
+ * Get Mobile User Information
+ */
+
+const getMobileUserInfo = (state) => getMobileuserInfoList(state)
+function getMobileuserInfoList(state) {
+    const userInfo = state.users && state.users.mobileUser ? state.users.mobileUser : {}
+    const arrUserInfo = Object.values(userInfo)
+    arrUserInfo.sort((item1, item2) => item2.id - item1.id)
+    return arrUserInfo
+}
+export const getMobileuserState = createSelector(
+    [getMobileUserInfo],
+    (info) => info
 )
