@@ -244,7 +244,7 @@ const TrackerUserList = () => {
         return (
             <UsersList
                 item={item}
-                userType={'mobile'}
+                userType={'tracker'}
             />
         )
     }

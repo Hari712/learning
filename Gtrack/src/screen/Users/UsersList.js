@@ -13,7 +13,7 @@ import { SCREEN_CONSTANTS } from '../../constants/AppConstants';
 import { EmailIcon, PhoneIcon, SwitchOffIcon, SwitchOnIcon, } from '../../component/SvgComponent';
 import NavigationService from '../../navigation/NavigationService';
 import center from '@turf/center';
-import { EditIcon } from '../../component';
+import { EditIcon, FontSize } from '../../component';
 
 const UsersList = (props) => {
     const { item, userType } = props
@@ -96,63 +96,68 @@ const UsersList = (props) => {
             </View>
 
             {/* White Body container */}
-            <View style={styles.whiteContainer}>
-                <View style={styles.whiteSubView} >
-                    <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
-                    {item.roles.map((role, key) =>
-                        <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Admin"}</Text>)}
-                </View>
-                <View style={{ flexDirection: 'column', flex: 1 }} >
-                    <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>
-                    {item.roles.map((role, key) =>
-                        <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular User" : "Admin"}</Text>)}
-                </View>
-                <View style={{ flexDirection: 'column' }}>
-                    <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
-                    <View style={{ justifyContent: 'flex-start', flexDirection: 'row' }}>
-                        {isSuperOwner ?
-                            <Text style={styles.whiteContainerSubText}>All Group Assigned</Text>
-                            :
-                            <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0] ? item.groups[0].groupName : "No Group Assigned"} </Text>
-                        }
-                        <Tooltip
-                            popover={
-                                <View style={{ flexWrap: 'wrap', flex: 1, width: wp(20) }}>
-                                    {item.groups && item.groups.map((element, index) => {
-                                        if (index > 0)
-                                            return (
-                                                <Text key={index} style={{ fontSize: 10, fontFamily: 'Nunito-Regular' }}>
-                                                    {element.groupName}
-                                                </Text>
-                                            )
-                                    })}
-                                </View>
+            {userType == 'mobile' ? null :
+                <View style={styles.whiteContainer}>
+                    <View style={styles.whiteSubView} >
+                        <Text style={styles.whiteContainerText}>{translate("Role")}</Text>
+                        {item.roles.map((role, key) =>
+                            <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular" : "Admin"}</Text>)}
+                    </View>
+                    <View style={{ flexDirection: 'column', flex: 1 }} >
+                        <Text style={styles.whiteContainerText}>{translate("Rights")}</Text>
+                        {item.roles.map((role, key) =>
+                            <Text key={key} style={styles.whiteContainerSubText}>{role.name == "ROLE_REGULAR" ? "Regular User" : "Admin"}</Text>)}
+                    </View>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Text style={styles.whiteContainerText}>{translate("Group")}</Text>
+                        <View style={{ justifyContent: 'flex-start', flexDirection: 'row' }}>
+                            {isSuperOwner ?
+                                <Text style={styles.whiteContainerSubText}>All Group Assigned</Text>
+                                :
+                                <Text style={styles.whiteContainerSubText}>{item && item.groups && item.groups[0] ? item.groups[0].groupName : "No Group Assigned"} </Text>
                             }
-                            backgroundColor={ColorConstant.WHITE}
-                            overlayColor={ColorConstant.TRANSPARENT}
-                            pointerStyle={{ elevation: 0.1, borderRightWidth: 4, borderLeftWidth: 4 }}
-                            containerStyle={{ borderColor: ColorConstant.ORANGE, borderWidth: 1, borderRadius: 6 }}
-                        >
-                            {item.groups && item.groups.length > 1 ?
-                                <Text style={{ fontSize: 10, fontFamily: 'Nunito-SemiBold', backgroundColor: ColorConstant.LIGHTGREY, marginLeft: 2, padding: 2, borderColor: ColorConstant.GREY, borderRadius: 4, borderWidth: 1 }}>
-                                    +{item.groups.length - 1}
-                                </Text>
-                                : null
-                            }
-                        </Tooltip>
+                            <Tooltip
+                                popover={
+                                    <View style={{ flexWrap: 'wrap', flex: 1, width: wp(20) }}>
+                                        {item.groups && item.groups.map((element, index) => {
+                                            if (index > 0)
+                                                return (
+                                                    <Text key={index} style={{ fontSize: 10, fontFamily: 'Nunito-Regular' }}>
+                                                        {element.groupName}
+                                                    </Text>
+                                                )
+                                        })}
+                                    </View>
+                                }
+                                backgroundColor={ColorConstant.WHITE}
+                                overlayColor={ColorConstant.TRANSPARENT}
+                                pointerStyle={{ elevation: 0.1, borderRightWidth: 4, borderLeftWidth: 4 }}
+                                containerStyle={{ borderColor: ColorConstant.ORANGE, borderWidth: 1, borderRadius: 6 }}
+                            >
+                                {item.groups && item.groups.length > 1 ?
+                                    <Text style={{ fontSize: 10, fontFamily: 'Nunito-SemiBold', backgroundColor: ColorConstant.LIGHTGREY, marginLeft: 2, padding: 2, borderColor: ColorConstant.GREY, borderRadius: 4, borderWidth: 1 }}>
+                                        +{item.groups.length - 1}
+                                    </Text>
+                                    : null
+                                }
+                            </Tooltip>
+                        </View>
+
                     </View>
 
                 </View>
-
-            </View>
-
+            }
             {/* Email and Phone */}
             <View style={styles.horizontalLine} />
             <View style={styles.emailPhone}>
                 <EmailIcon />
                 <Text style={styles.emailText}>    {item.email}</Text>
-                {/* <PhoneIcon />
-                <Text style={styles.phoneText}>  {item.phoneNo}</Text> */}
+                {userType == 'mobile' ?
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <PhoneIcon />
+                        <Text style={styles.phoneText}>  {item.phonePrefix + ' ' + item.phone}</Text>
+                    </View>
+                    : null}
             </View>
         </View>
     )
@@ -234,15 +239,15 @@ const styles = StyleSheet.create({
     },
     emailText: {
         color: ColorConstant.BLACK,
-        //fontSize:FontSize.FontSize.extraSmall,
+        // fontSize: FontSize.FontSize.small,
         flex: 1,
-        fontSize: 10,
+        fontSize: 12,
         fontFamily: 'Nunito-Regular'
     },
     phoneText: {
         color: ColorConstant.BLACK,
         //fontSize:FontSize.FontSize.extraSmall,
-        fontSize: 10,
+        fontSize: 12,
         fontFamily: 'Nunito-Regular'
     }
 });
