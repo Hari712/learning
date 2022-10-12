@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { ColorConstant } from '../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
-import  { DropDown, TextField, FontSize }from '../../component';
+import { DropDown, TextField, FontSize } from '../../component';
 import { MultiSelectGroup } from '../../component/MultiSelect'
 import { AppConstants } from '../../constants/AppConstants';
 import * as UsersActions from './Users.Action'
@@ -60,52 +60,53 @@ const AddUser = ({ navigation, route }) => {
     if (isConnected) {
       let message = ''
       let emailStr = String(email).trim().toLowerCase()
-      if (!validateEmailorPhoneNumber(emailStr)) {    
-          message = translate(AppConstants.INVALID_EMAIL)
-      } 
+      if (!validateEmailorPhoneNumber(emailStr)) {
+        message = translate(AppConstants.INVALID_EMAIL)
+      }
       if (!isEmpty(message)) {
-        AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true }) }
+        AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
+      }
       else {
-      AppManager.showLoader()
-      if (route && route.params) {
-        const requestBody = {
-          "id": route.params.editData.id,
-          "firstName": firstName,
-          "lastName": lastName,
-          "email": emailStr,
-          "roles": [{
-            "id": role == "Admin" ? 1 : 2
-          }],
-          "groups": selectedGroup
-        }
-        dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
-      } else {
-        const requestBody = {
-          "userDTOS": [{
-            "id": null,
-            "email": emailStr,
+        AppManager.showLoader()
+        if (route && route.params) {
+          const requestBody = {
+            "id": route.params.editData.id,
             "firstName": firstName,
             "lastName": lastName,
-            "markAsOwner": null,
+            "email": emailStr,
             "roles": [{
               "id": role == "Admin" ? 1 : 2
             }],
             "groups": selectedGroup
-          }]
+          }
+          dispatch(UsersActions.requestUpdateSubuserDetail(requestBody, loginData.id, onSuccess, onError))
+        } else {
+          const requestBody = {
+            "userDTOS": [{
+              "id": null,
+              "email": emailStr,
+              "firstName": firstName,
+              "lastName": lastName,
+              "markAsOwner": null,
+              "roles": [{
+                "id": role == "Admin" ? 1 : 2
+              }],
+              "groups": selectedGroup
+            }]
+          }
+          dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
         }
-        dispatch(UsersActions.requestAddSubuser(requestBody, loginData.id, onSuccess, onError))
-      }
 
-    }
+      }
     } else {
       AppManager.showNoInternetConnectivityError()
+    }
   }
-}
 
 
   function onSuccess(data) {
     console.log("Success", data)
-    if (route && route.params){
+    if (route && route.params) {
       AppManager.showSimpleMessage('success', { message: 'Successfully updated the user details', description: '' })
     } else {
       AppManager.showSimpleMessage('success', { message: 'A new user added successfully', description: '' })
@@ -135,7 +136,7 @@ const AddUser = ({ navigation, route }) => {
         </Text>
       ),
       headerLeft: () => (
-        <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
           <BackIcon />
         </TouchableOpacity>
       )
@@ -175,7 +176,7 @@ const AddUser = ({ navigation, route }) => {
               label={translate("User_First_Name")}
               valueSet={setFirstName}
               defaultValue={firstName}
-              outerStyle={[styles.outerStyle, !isAddNew && {backgroundColor:ColorConstant.PINK}]}
+              outerStyle={[styles.outerStyle, !isAddNew && { backgroundColor: ColorConstant.PINK }]}
             />
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>
@@ -184,7 +185,7 @@ const AddUser = ({ navigation, route }) => {
               label={translate("User_Last_Name")}
               valueSet={setLastName}
               defaultValue={lastName}
-              outerStyle={[styles.outerStyle, !isAddNew && {backgroundColor:ColorConstant.PINK}]}
+              outerStyle={[styles.outerStyle, !isAddNew && { backgroundColor: ColorConstant.PINK }]}
             />
           </ShadowView>
           <ShadowView style={styles.shadowContainer}>
@@ -193,7 +194,7 @@ const AddUser = ({ navigation, route }) => {
               label={translate("User_Email_Address")}
               valueSet={setEmail}
               defaultValue={email}
-              outerStyle={[styles.outerStyle, !isAddNew && {backgroundColor:ColorConstant.PINK}]}
+              outerStyle={[styles.outerStyle, !isAddNew && { backgroundColor: ColorConstant.PINK }]}
             />
           </ShadowView>
           <View style={styles.dropDown}>
@@ -204,7 +205,7 @@ const AddUser = ({ navigation, route }) => {
                 valueSet={setRole}
                 dataList={['Regular', 'Admin']}
                 outerStyle={{ marginTop: hp(2) }}
-                inputContainerStyle={{height: hp(6)}}
+                inputContainerStyle={{ height: hp(6) }}
                 contentInset={{ input: 16, label: 1.4 }}
                 //outerStyle={[styles.outerStyle]} 
                 dropdownStyle={styles.dropdownStyle}
@@ -213,7 +214,7 @@ const AddUser = ({ navigation, route }) => {
               />
             </View>
             <TouchableOpacity onPress={() => setInfoClick(!infoClick)} style={styles.infoButton}>
-              {infoClick ? <UsersInfoIconClicked/> : <UsersInfoIcon/> } 
+              {infoClick ? <UsersInfoIconClicked /> : <UsersInfoIcon />}
             </TouchableOpacity>
 
           </View>
@@ -263,28 +264,28 @@ const styles = StyleSheet.create({
     marginBottom: hp(4),
     alignSelf: 'center',
   },
-  shadowContainer: Platform.OS=='ios'?
-  { 
-    width: '100%',
-    shadowColor: ColorConstant.GREY,
-    shadowOffset: {
-      width: 0,
-      height: 3
+  shadowContainer: Platform.OS == 'ios' ?
+    {
+      width: '100%',
+      shadowColor: ColorConstant.GREY,
+      shadowOffset: {
+        width: 0,
+        height: 3
+      },
+      shadowOpacity: 0.3,
+      marginTop: hp(2),
+      shadowRadius: 3
+    } : {
+      width: '100%',
+      marginTop: hp(2),
     },
-    shadowOpacity: 0.3,
-    marginTop: hp(2),
-    shadowRadius: 3 
-  }: {
-    width: '100%',
-    marginTop: hp(2),
-  }, 
 
   outerStyle: {
     backgroundColor: ColorConstant.WHITE,
     borderRadius: 4,
-    borderBottomWidth: Platform.OS=='android'? 1:0,
+    borderBottomWidth: Platform.OS == 'android' ? 1 : 0,
     borderColor: ColorConstant.GREY,
-    elevation:2,
+    elevation: 2,
   },
   dropDown: {
     flexDirection: 'row',
