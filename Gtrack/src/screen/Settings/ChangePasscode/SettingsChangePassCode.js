@@ -107,7 +107,7 @@ const SettingsChangePassCode = ({ navigation, route }) => {
       else if (isEmpty(newPasscode)) {
         message = translate(AppConstants.EMPTY_NEW_PASSCODE)
       }
-      else if (validatePassword(newPasscode)) {
+      else if (!validatePassword(newPasscode)) {
         message = translate(AppConstants.INVALID_PASSWORD)
       }
       else if (isEmpty(confirmPasscode)) {
