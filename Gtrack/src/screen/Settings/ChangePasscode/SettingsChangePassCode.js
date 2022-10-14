@@ -132,6 +132,8 @@ const SettingsChangePassCode = ({ navigation, route }) => {
     else {
       AppManager.showNoInternetConnectivityError()
     }
+    // const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&])[A-z\d@#$%^&]{8,}$/
+    // console.log('isvalid password---', PASSWORD_REGEX.test(newPasscode))
   }
 
   const onSuccess = (data) => {
@@ -258,12 +260,13 @@ const styles = StyleSheet.create({
     width: '70%',
     alignSelf: 'center',
     borderRadius: 4,
-    height: hp(5),
-    marginTop: hp(5)
+    paddingVertical: hp(1.5),
+    // height: hp(5),
+    marginTop: hp(5),
+    alignItems: 'center'
   },
   submit: {
     textAlign: 'center',
-    paddingVertical: hp(1),
     color: ColorConstant.WHITE,
     fontFamily: "Nunito-Bold"
   },
