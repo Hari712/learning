@@ -38,7 +38,7 @@ export const setGroupResponse = (data) => ({
     data
 })
 
-export const requestUpdateSubuserDetail = ( body, userId, onSuccess, onError) => ({
+export const requestUpdateSubuserDetail = (body, userId, onSuccess, onError) => ({
     type: types.UPDATE_SUBUSER_DETAIL_REQUEST,
     body,
     userId,
@@ -51,7 +51,7 @@ export const setUpdateSubuserResponse = (data) => ({
     data
 })
 
-export const requestSubuserByFilter = ( body, userId, onSuccess, onError) => ({
+export const requestSubuserByFilter = (body, userId, onSuccess, onError) => ({
     type: types.GET_SUBUSER_BY_FILTER_REQUEST,
     body,
     userId,
@@ -64,10 +64,11 @@ export const setSubuserByFilter = (data) => ({
     data
 })
 
-export const requestActivateDeactivateDevice = (userId, subUserId, onSuccess, onError) => ({
+export const requestActivateDeactivateDevice = (userId, subUserId, userType, onSuccess, onError) => ({
     type: types.ACTIVATE_DEACTIVATE_DEVICE_REQUEST,
     userId,
     subUserId,
+    userType,
     onSuccess,
     onError
 })
@@ -77,4 +78,20 @@ export const setUserStatusRequest = (subUserId) => ({
     subUserId
 })
 
+export const requestMobileUserByFilter = (body, userId, onSuccess, onError) => ({
+    type: types.GET_MOBILE_USER_BY_FILTER_REQUEST,
+    body,
+    userId,
+    onSuccess,
+    onError
+})
 
+export const setMobileUserByFilter = (data) => ({
+    type: types.GET_MOBILE_USER_BY_FILTER_RESPONSE,
+    data
+})
+
+export const setMobileUserStatusRequest = (subUserId) => ({
+    type: types.MOBILE_ACTIVATE_DEACTIVATE_DEVICE_RESPONSE,
+    subUserId
+})

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
-import { DropDown, FontSize, LiveTrackingDropDown} from '../../component'
+import { DropDown, FontSize, LiveTrackingDropDown } from '../../component'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import NavigationService from '../../navigation/NavigationService';
 import ShadowView from 'react-native-simple-shadow-view';
@@ -16,7 +16,7 @@ import isEmpty from 'lodash/isEmpty';
 import { lineString as makeLineString } from '@turf/helpers';
 import * as LivetrackingActions from '../LiveTracking/Livetracking.Action'
 import AppManager from '../../constants/AppManager';
-import { MAP_BOX_STYLEURL,rasterSourceProps} from '../../constants/AppConstants';
+import { MAP_BOX_STYLEURL, rasterSourceProps } from '../../constants/AppConstants';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -42,14 +42,14 @@ const LiveTrackinDashboard = () => {
 	}));
 	const [deviceList, setDeviceList, deviceListRef] = useStateRef(groupDevices);
 	const [selectedDevice, setSelectedDevice, selectedDeviceRef] = useStateRef();
-	const [selectedDeviceIndex,setSelectedDeviceIndex] =useState(0);
+	const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
 	const [devicePositionArray, setDevicePositionArray, devicePositionArrayRef] = useStateRef([]);
 	const [coordList, setCoordList] = useState([])
 	const [deviceNameArr, setDeviceNameArr] = useState([])
 	const [lineString, setLineString] = useState(null)
 	const [showLocationAddress,setShowLocationAddress] = useState(false)
 	const [region, setRegion] = useStateRef()
-	
+
 
 	const mapRef = useRef();
 
@@ -64,13 +64,15 @@ const LiveTrackinDashboard = () => {
 
 	function onSuccess(data) {
 		console.log("Success", data)
-		let devicelistArr = deviceList.map((item)=>{
-			return{
-			'name':item.name,'status':item.status,'id':item.id}});
+		let devicelistArr = deviceList.map((item) => {
+			return {
+				'name': item.name, 'status': item.status, 'id': item.id
+			}
+		});
 		selectedDevice ? null : setSelectedDevice(devicelistArr[0].name)
-		selectedDeviceIndex != 0 ? null :setSelectedDeviceIndex(devicelistArr[0].id)
+		selectedDeviceIndex != 0 ? null : setSelectedDeviceIndex(devicelistArr[0].id)
 		setDeviceNameArr(devicelistArr);
-		
+
 		AppManager.hideLoader()
 	}
 
@@ -114,11 +116,11 @@ const LiveTrackinDashboard = () => {
 		() => {
 			setDevicePositionArray([]);
 			let devicename;
-				Object.values(deviceList).filter((item)=> {
-					if(item.id === selectedDeviceIndex)
+			Object.values(deviceList).filter((item) => {
+				if (item.id === selectedDeviceIndex)
 					devicename = item.name
-				} )
-				setSelectedDevice(devicename)
+			})
+			setSelectedDevice(devicename)
 			if (selectedDeviceRef.current) {
 				const deviceInfo = selectedDeviceRef.current;
 				const arr = devicePositions.filter(item => item.deviceId === selectedDeviceIndex);
@@ -236,56 +238,48 @@ const LiveTrackinDashboard = () => {
 							showsUserHeadingIndicator={true}
 							animated={true}
 						/> */}
-				{isContainCoordinate ?
-					<Map.default.Camera
-						zoomLevel={13}
-						bounds={{
-							ne: coordinate,
-							sw: coordinate,
-						}}
-					/> :
-					<Map.default.Camera
-						zoomLevel={4}
-						centerCoordinate={[79.570507, 22.385092]}
-					/>}
-				{!isEmpty(lineString)
-					? <Map.default.ShapeSource id="route" shape={lineString}>
-						<Map.default.LineLayer
-							id="lineroute"
-							style={{
-								lineCap: 'round',
-								lineWidth: 3,
-								lineOpacity: 0.84,
-								lineColor: ColorConstant.ORANGE,
-							}}
+					{isContainCoordinate ?
+						<Map.default.Camera
+							zoomLevel={12}
+							centerCoordinate={coordinate}
+						// zoomLevel={13}
+						// bounds={{
+						// 	ne: coordinate,
+						// 	sw: coordinate,
+						// }}
+						/> :
+						<Map.default.Camera
+							zoomLevel={4}
+							centerCoordinate={[79.570507, 22.385092]}
+						/>}
+					{!isEmpty(lineString)
+						? <Map.default.ShapeSource id="route" shape={lineString}>
+							<Map.default.LineLayer
+								id="lineroute"
+								style={{
+									lineCap: 'round',
+									lineWidth: 3,
+									lineOpacity: 0.84,
+									lineColor: ColorConstant.ORANGE,
+								}}
+							/>
+						</Map.default.ShapeSource>
+						: null}
+					{isContainCoordinate &&
+						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}>
+							<Map.default.Callout title={address} />
+						</Map.default.PointAnnotation>}
+					<Map.default.RasterSource {...rasterSourceProps}>
+						<Map.default.RasterLayer
+							id="googleMapLayer"
+							sourceID="googleMapSource"
+							// style={{rasterOpacity: 0.5}}
+
+							layerIndex={0}
 						/>
-					</Map.default.ShapeSource>
-					: null}
-				{isContainCoordinate &&
-					<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}   onSelected={(data)=>{setShowLocationAddress(!showLocationAddress)}} onDeselected={(data)=>{setShowLocationAddress(!showLocationAddress)}}>
-						{/* <Map.default.Callout title={address} /> */}
-					</Map.default.PointAnnotation>}
-					{showLocationAddress &&
-          <Map.default.MarkerView
-            id="annotaton-start"
-            anchor={{ x: 0.5, y: 1.3 }}
-            coordinate={coordinate}>
-                    	<Map.default.Callout title={address} />
-                    {/* {renderPopup('Start',item.tripStartAddress)} */}
-    
-          </Map.default.MarkerView>
-          }
-				<Map.default.RasterSource {...rasterSourceProps}>
-					<Map.default.RasterLayer
-						id="googleMapLayer"
-						sourceID="googleMapSource"
-						// style={{rasterOpacity: 0.5}}
-				
-						layerIndex={0}
-					/>
-				</Map.default.RasterSource>	
-			</Map.default.MapView>
-		</View>
+					</Map.default.RasterSource>
+				</Map.default.MapView>
+			</View>
 		);
 	}
 
@@ -306,21 +300,21 @@ const LiveTrackinDashboard = () => {
 	function renderDeviceSelectionView() {
 		const deviceInfo = selectedDevice;
 		return (
-			<View style={{alignItems: 'flex-start', justifyContent:'flex-start', flex:1}}>
-                <LiveTrackingDropDown 
-                    // label='Type' 
+			<View style={{ alignItems: 'flex-start', justifyContent: 'flex-start', flex: 1 }}>
+				<LiveTrackingDropDown
+					// label='Type' 
 					selectedValue={selectedDeviceIndex}
-                    defaultValue={deviceInfo} 
-                    valueSet={setSelectedDeviceIndex}  
-                    dataList={deviceNameArr} 
-                    fontSize={hp(1.6)} 
-                    contentInset={{ input: 4, label: -8 }}
-                    outerStyle={styles.outerStyle} 
-                    accessoryStyle={{marginBottom:hp(0.5)}}
-                    dropdownStyle = {{top:hp(6)}}
-                    inputContainerStyle={styles.inputContainerStyle} 
-                    containerStyle={styles.containerStyle} />
-            </View>
+					defaultValue={deviceInfo}
+					valueSet={setSelectedDeviceIndex}
+					dataList={deviceNameArr}
+					fontSize={hp(1.6)}
+					contentInset={{ input: 4, label: -8 }}
+					outerStyle={styles.outerStyle}
+					accessoryStyle={{ marginBottom: hp(0.5) }}
+					dropdownStyle={{ top: hp(6) }}
+					inputContainerStyle={styles.inputContainerStyle}
+					containerStyle={styles.containerStyle} />
+			</View>
 		);
 	}
 
@@ -351,26 +345,26 @@ const LiveTrackinDashboard = () => {
 export default LiveTrackinDashboard;
 
 const styles = StyleSheet.create({
-	outerStyle:{
+	outerStyle: {
 		height: hp(5),
-		paddingTop:hp(1.5),
-		flex:1,
-		borderRadius:10
-	  },
-	  inputContainerStyle: {
+		paddingTop: hp(1.5),
+		flex: 1,
+		borderRadius: 10
+	},
+	inputContainerStyle: {
 		height: hp(3.5),
-		width:'100%',
-		borderRadius:10
-	  },
-	  containerStyle: {
+		width: '100%',
+		borderRadius: 10
+	},
+	containerStyle: {
 		alignSelf: 'center',
 		height: hp(5),
-		flex:1,
-		borderRadius:10,
-		paddingHorizontal:10,
-		backgroundColor:ColorConstant.WHITE
-		
-	  },
+		flex: 1,
+		borderRadius: 10,
+		paddingHorizontal: 10,
+		backgroundColor: ColorConstant.WHITE
+
+	},
 	conatiner: {
 		flex: 1,
 	},

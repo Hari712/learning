@@ -1,13 +1,15 @@
 package com.gtrack;
-import org.devio.rn.splashscreen.SplashScreen;
 import android.os.Bundle;
+
 import com.facebook.react.ReactActivity;
+
+import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this, R.style.SplashStatusBarTheme);
+        SplashScreen.show(this, R.style.SplashStatusBarTheme,true);
         super.onCreate(savedInstanceState);
     }
 

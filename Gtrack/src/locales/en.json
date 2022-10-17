@@ -263,5 +263,7 @@
     "SMS_Notification": "Sms Notification",
     "Tracker Device": "Tracker Device",
     "Mobile as Tracker": "Mobile as Tracker",
-    "Mobile_Number": "Mobile Number*"
+    "Mobile_Number": "Mobile Number*",
+    "Tracker User": "Tracker User",
+    "Mobile User": "Mobile User"
 }

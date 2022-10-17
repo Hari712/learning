@@ -422,11 +422,12 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							animationMode='flyTo'
 							animationDuration={10000}
-							zoomLevel={17}
-							bounds={{
-								ne: endCoordinate,
-								sw: endCoordinate,
-							}}
+							zoomLevel={12}
+							centerCoordinate={endCoordinate}
+						// bounds={{
+						// 	ne: endCoordinate,
+						// 	sw: endCoordinate,
+						// }}
 						/> :
 						<Map.default.Camera
 							zoomLevel={4}
