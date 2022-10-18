@@ -175,7 +175,10 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "pageNumber": pageIndex,
                 "pageSize": pageCount,
                 "useMaxSearchAsLimit": false,
-                "searchColumnsList": null,
+                "searchColumnsList": [{
+                    "columnName" : "duration",
+                    "searchStr" : selectedDuration
+                }],
                 "sortHeader": "id",
                 "sortDirection": "DESC"
             }
@@ -197,7 +200,10 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "pageNumber": 0,
                 "pageSize": pageCount,
                 "useMaxSearchAsLimit": false,
-                "searchColumnsList": null,
+                "searchColumnsList": [{
+                    "columnName" : "duration",
+                    "searchStr" : selectedDuration
+                }],
                 "sortHeader": "id",
                 "sortDirection": "DESC"
             }
