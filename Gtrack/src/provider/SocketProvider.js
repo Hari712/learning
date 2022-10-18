@@ -53,7 +53,7 @@ const SocketProvider = (props) => {
         if (isConnected && isLoggedIn && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
             connectWitWebsocket()
         }
-    },[traccarSessionInfoDetail])
+    },[traccarSessionInfoDetail,isConnected])
 
     useEffect(() => {
         if (!isLoggedIn) {
