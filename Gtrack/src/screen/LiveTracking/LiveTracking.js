@@ -27,6 +27,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import IconConstant from '../../constants/iconConstant';
 import { map } from 'lodash';
 import FindMyDevice from '../../component/SvgComponent/FindMyDevice';
+import AppManager from '../../constants/AppManager';
 const { width, height } = Dimensions.get('window');
 
 
@@ -606,18 +607,26 @@ const LiveTracking = ({ navigation }) => {
 		)
 	}
 	function OpenMapForLocation(){
+	
 	const currentPosition =	devicePositionArray.length == 1 ? 0 :devicePositionArray.length - 1
-	const latitude = devicePositionArray[currentPosition].latitude
-	const longitude = devicePositionArray[currentPosition].longitude
-	console.log('currentPositioncurrentPositioncurrentPositioncurrentPositioncurrentPosition',currentPosition,latitude,longitude,devicePositionArray)
-		if(Platform.OS == 'ios'){
-			console.log('ios called',latitude,longitude)
-			Linking.openURL(`http://maps.apple.com/?daddr=${latitude},${longitude}`);
-			
-		}
-		if(Platform.OS == 'android'){
-			Linking.openURL(`http://maps.google.com/?daddr=${latitude},${longitude}`);
-		}
+	console.log('devicePositionArray[currentPosition]',devicePositionArray[currentPosition])
+	if(devicePositionArray[currentPosition]){
+		const latitude = devicePositionArray[currentPosition].latitude
+		const longitude = devicePositionArray[currentPosition].longitude
+		console.log('currentPositioncurrentPositioncurrentPositioncurrentPositioncurrentPosition',devicePositionArray[currentPosition])
+			if(Platform.OS == 'ios'){
+				console.log('ios called',latitude,longitude)
+				Linking.openURL(`http://maps.apple.com/?daddr=${latitude},${longitude}`);
+				
+			}
+			if(Platform.OS == 'android'){
+				Linking.openURL(`http://maps.google.com/?daddr=${latitude},${longitude}`);
+			}
+	}
+	else{
+		AppManager.showSimpleMessage('warning', { message: 'Device Location Not Found', description: '', floating: true })
+	}
+	
 	}
 
 	return (
