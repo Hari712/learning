@@ -57,7 +57,7 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-	console.log('groupdevices-----------', groupDevices)
+	console.log('groupdevices-----------', groupDevices, liveTrakingDeviceList)
 
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();
@@ -71,45 +71,28 @@ const LiveTracking = ({ navigation }) => {
 	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
 	const [isVisible, setIsVisible] = useState(false)
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
+	const [flatListData, setFlatlistData] = useState()
 
 	const isFocused = useIsFocused()
 
 	const sheetRef = useRef(null);
 
-	// useEffect(() => {
-	// 	setDeviceList(groupDevices);
-	// }, [groupDevices])
-
-	// useEffect(() => {
-	// 	if (!isEmpty(deviceList)) {
-	// 		const device = deviceList[selectedDeviceIndex];
-	// 		setSelectedDevice(device);
-	// 	}
-	// }, [deviceList])
-
-
-	// useEffect(() => {
-	// 	console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems', groupDevices)
-	// 	if (!bottomSheetVisible) {
-	// 		setDeviceList(liveTrakingDeviceList);
-	// 	}
-
-	// }, [liveTrakingDeviceList])
-
 	useEffect(() => {
-		console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems', groupDevices)
-		if (!bottomSheetVisible) {
-			setDeviceList(liveTrakingDeviceList);
-		}
-	}, [bottomSheetVisible, liveTrakingDeviceList])
+		setDeviceList(groupDevices);
+	}, [groupDevices])
 
 	useEffect(() => {
 		if (!isEmpty(deviceList)) {
-			const device = liveTrakingDeviceList[selectedDeviceIndex];
+			const device = deviceList[selectedDeviceIndex];
 			setSelectedDevice(device);
 		}
 	}, [deviceList])
 
+	useEffect(() => {
+		if (bottomSheetVisible === false) {
+			setFlatlistData(liveTrakingDeviceList)
+		}
+	}, [liveTrakingDeviceList])
 
 	useEffect(() => {
 		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
@@ -601,7 +584,7 @@ const LiveTracking = ({ navigation }) => {
 							showsVerticalScrollIndicator={true}
 							style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
 							contentContainerStyle={{ paddingBottom: '5%' }}
-							data={deviceList}
+							data={flatListData}
 							renderItem={renderItems}
 							keyExtractor={(item, index) => index.toString()}
 						/>
