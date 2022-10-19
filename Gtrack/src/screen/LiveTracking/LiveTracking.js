@@ -59,8 +59,9 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-	console.log('groupdevices-----------', groupDevices)
+	console.log('groupdevices-----------', groupDevices,)
 
+	const dispatch = useDispatch()
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();
 	const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
@@ -74,55 +75,32 @@ const LiveTracking = ({ navigation }) => {
 	const [isVisible, setIsVisible] = useState(false)
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
 	const[showStartLocation,setShowStartLocation]=useState(false)
-
+	const [flatListData,setFlatlistData] = useState()
 	const isFocused = useIsFocused()
 
 	const sheetRef = useRef(null);
 
-	// useEffect(() => {
-	// 	setDeviceList(groupDevices);
-	// }, [groupDevices])
 
-	// useEffect(() => {
-	// 	if (!isEmpty(deviceList)) {
-	// 		const device = deviceList[selectedDeviceIndex];
-	// 		setSelectedDevice(device);
-	// 	}
-	// }, [deviceList])
-
-
-	// useEffect(() => {
-	// 	console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems', groupDevices)
-	// 	if (!bottomSheetVisible) {
-	// 		setDeviceList(liveTrakingDeviceList);
-	// 	}
-
-	// }, [liveTrakingDeviceList])
-
-	useEffect(() => {
-		console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems',groupDevices)
+  useEffect(() => {
 		setDeviceList(groupDevices);
 	}, [groupDevices])
-	useEffect(() => {
-		console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems', groupDevices)
-		if (!bottomSheetVisible) {
-			setDeviceList(liveTrakingDeviceList);
-		}
-	}, [bottomSheetVisible, liveTrakingDeviceList])
 
 	useEffect(() => {
 		if (!isEmpty(deviceList)) {
-			const device = liveTrakingDeviceList[selectedDeviceIndex];
+			const device = deviceList[selectedDeviceIndex];
 			setSelectedDevice(device);
 		}
 	}, [deviceList])
-
 
 	useEffect(() => {
 		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
 	}, [])
 
-	const dispatch = useDispatch()
+	useEffect(()=>{
+		if(bottomSheetVisible === false){
+			setFlatlistData(liveTrakingDeviceList)
+		}
+	},[liveTrakingDeviceList])
 
 	function onSuccess(data) {
 		console.log("Success", data)
@@ -190,7 +168,6 @@ const LiveTracking = ({ navigation }) => {
 		},
 		[devicePositions]
 	);
-
 	useEffect(() => {
 		console.log('devicePositionArray', devicePositionArray)
 		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
@@ -626,8 +603,8 @@ const LiveTracking = ({ navigation }) => {
 						<FlatList
 							showsVerticalScrollIndicator={true}
 							style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
-							contentContainerStyle={{ paddingBottom: '5%' }}
-							data={deviceList}
+							contentContainerStyle={{ paddingBottom: '5%' }}	
+							data={flatListData}
 							renderItem={renderItems}
 							keyExtractor={(item, index) => index.toString()}
 						/>
