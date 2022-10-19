@@ -57,7 +57,7 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-
+	console.log('groupdevices-----------', groupDevices)
 
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();
@@ -76,13 +76,36 @@ const LiveTracking = ({ navigation }) => {
 
 	const sheetRef = useRef(null);
 
+	// useEffect(() => {
+	// 	setDeviceList(groupDevices);
+	// }, [groupDevices])
+
+	// useEffect(() => {
+	// 	if (!isEmpty(deviceList)) {
+	// 		const device = deviceList[selectedDeviceIndex];
+	// 		setSelectedDevice(device);
+	// 	}
+	// }, [deviceList])
+
+
+	// useEffect(() => {
+	// 	console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems', groupDevices)
+	// 	if (!bottomSheetVisible) {
+	// 		setDeviceList(liveTrakingDeviceList);
+	// 	}
+
+	// }, [liveTrakingDeviceList])
+
 	useEffect(() => {
-		setDeviceList(groupDevices);
-	}, [groupDevices])
+		console.log('renderItemsrenderItemsrenderItemsrenderItemsrenderItems', groupDevices)
+		if (!bottomSheetVisible) {
+			setDeviceList(liveTrakingDeviceList);
+		}
+	}, [bottomSheetVisible, liveTrakingDeviceList])
 
 	useEffect(() => {
 		if (!isEmpty(deviceList)) {
-			const device = deviceList[selectedDeviceIndex];
+			const device = liveTrakingDeviceList[selectedDeviceIndex];
 			setSelectedDevice(device);
 		}
 	}, [deviceList])
@@ -503,10 +526,15 @@ const LiveTracking = ({ navigation }) => {
 	function onPressDevice(index) {
 		const arr = deviceList ? deviceList : [];
 		const device = arr[index];
-		setSelectedDevice(device);
-		setSelectedDeviceIndex(index);
-		setDevicePositionArray([]);
-		setLineString(null)
+
+		console.log('setSelectedDeviceIndex(index);', index)
+		if (selectedDeviceIndex != index) {
+			setSelectedDevice(device);
+			setSelectedDeviceIndex(index);
+			setDevicePositionArray([]);
+			setLineString(null)
+			// setShowStartLocation(false)
+		}
 		sheetRef.current.close()
 	}
 
@@ -523,7 +551,7 @@ const LiveTracking = ({ navigation }) => {
 					{/* </View>
                         </View> */}
 					<Text style={[styles.bottomSheetTextStyle, { color: selectedDevice.id == item.id ? ColorConstant.ORANGE : ColorConstant.GREY }]}>{item.name}</Text>
-					<IconConstant type={item.status == 'online' ? 'deviceonline' : 'deviceoffline'} color={ColorConstant.ORANGE} />
+					<IconConstant type={item.status == 'online' ? 'deviceonline' : 'deviceoffline'} />
 				</TouchableOpacity>
 			</View>
 		)
