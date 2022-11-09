@@ -396,8 +396,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
                         {/* { combineTripHistoryGet()} */}
-                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && combineTripHistory()
-                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && combineTripHistory() : null}
+                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && tripsCoordinates.deviceName && combineTripHistory()
+                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && tripsCoordinates.deviceName && combineTripHistory() : null}
                         {/* { combineTripHistory()} */}
 
                     </View>

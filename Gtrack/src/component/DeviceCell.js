@@ -18,7 +18,9 @@ const DeviceCell = (props) => {
     const { deviceDTO } = item
     const groupDTO = item.groupDTO ? item.groupDTO : null
     const assetDTO = item.assetDTO ? item.assetDTO : null
+
     const groupName = groupDTO ? groupDTO.groupName : 'No group found'
+    const isMobileTracker = deviceDTO.isMobileTracker 
     //const devicePlan = item.devicePlan ? item.devicePlan : null
     const devicePlan = item && item.devicePlan && item.devicePlan.subscriptionPlanCurrency && item.devicePlan.subscriptionPlanCurrency.subscriptionPlan && item.devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName ? item.devicePlan.subscriptionPlanCurrency.subscriptionPlan.planName : 'None'
     //const planStatus = devicePlan ? devicePlan.planName : 'None'
@@ -31,6 +33,7 @@ const DeviceCell = (props) => {
 
             {/* Blue top head */}
             <View style={styles.blueConatiner}>
+                <View style={styles.deviceDataContainer}>
                 <View style={styles.blueTopHead}>
                     <Text style={styles.headerTitle}>{deviceDTO.deviceName}</Text>
                     <Text style={styles.id}>{deviceDTO.deviceId}</Text>
@@ -46,12 +49,12 @@ const DeviceCell = (props) => {
                         <IconConstant type={item.assetDTO && item.assetDTO.assetType} color={ColorConstant.WHITE} />
                     </Tooltip>
                 </View>
-
-                {/* <TouchableOpacity style={styles.editButton} onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }}>
-                    <EditIcon width={11.947} height={11.947} />
-                </TouchableOpacity> */}
-                <EditIcon btnStyle={styles.editButton}
-                    onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }} />
+                </View>
+                <View style={{ justifyContent:'center',}} >
+                    {!isMobileTracker  &&  
+                        <EditIcon onPress={() => { NavigationService.navigate(SCREEN_CONSTANTS.EDIT_DEVICE_ASSET, { id: item.id, title: item.title, device: deviceDTO, groupDTO: groupDTO, assetDTO: assetDTO }) }} />
+                    }
+                </View> 
             </View>
 
             {/* White Body container */}
@@ -100,12 +103,20 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
     },
     blueConatiner: {
+        justifyContent:'space-around',
         backgroundColor: ColorConstant.BLUE,
         flexDirection: 'row',
         width: "100%",
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         paddingHorizontal: hp(3)
+    },
+    deviceDataContainer:{
+        backgroundColor: ColorConstant.BLUE,
+        flexDirection: 'row',
+        width: "100%",
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
     },
     activeInactiveText: {
         flexDirection: 'row',
@@ -118,6 +129,14 @@ const styles = StyleSheet.create({
     blueTopHead: {
         alignContent: 'space-between',
         marginVertical: hp(1.5)
+    },
+    activeText: {
+        //fontSize:FontSize.FontSize.small,
+        color: ColorConstant.WHITE,
+        paddingLeft: hp(0.5),
+        flex: 0.35,
+        fontSize: 12,
+        fontFamily: 'Nunito-Regular',
     },
     editButton: {
         // flexDirection: 'row',
