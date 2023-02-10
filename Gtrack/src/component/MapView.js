@@ -163,7 +163,9 @@ const MapView = (props) => {
 					<Map.default.Camera
 						centerCoordinate={centerCoord}
 						// followUserLocation={true}
-						zoomLevel={12}
+						minZoomLevel={4}
+						maxZoomLevel={15}
+						zoomLevel={15}
 					/>
 
 					{ props.type == 'Circle' ? renderCircle() : null }

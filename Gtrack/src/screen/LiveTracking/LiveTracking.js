@@ -230,6 +230,9 @@ const LiveTracking = ({ navigation }) => {
 		} else if (item == 'Trip History') {
 			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY);
 		}
+		else if (item == 'Location History') {
+			navigation.navigate(SCREEN_CONSTANTS.LOCATION_HISTORY);
+		}
 		else if (item === 'Asset Information') {
 			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
@@ -426,7 +429,9 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							animationMode='flyTo'
 							animationDuration={10000}
-							zoomLevel={12}
+							zoomLevel={15}
+							// minZoomLevel={4}
+							// maxZoomLevel={15}
 							centerCoordinate={endCoordinate}
 						// bounds={{
 						// 	ne: endCoordinate,
@@ -434,6 +439,8 @@ const LiveTracking = ({ navigation }) => {
 						// }}
 						/> :
 						<Map.default.Camera
+						minZoomLevel={4}
+						maxZoomLevel={15}
 							zoomLevel={4}
 							centerCoordinate={[79.570507, 22.385092]}
 						/>}
@@ -736,7 +743,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 };
 
-const data = ['Geo Fence', 'Asset Information', 'Alarms', "Trip History"]
+const data = ['Geo Fence', 'Asset Information', 'Alarms', "Trip History","Location History"]
 const deviceData = ['Tracker Device', 'Mobile as Tracker']
 
 const styles = StyleSheet.create({

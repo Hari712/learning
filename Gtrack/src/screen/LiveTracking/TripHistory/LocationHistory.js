@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput, UIManager, LayoutAnimation } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import * as TripHistoryActions from './TripHistory.Action'
+// import * as TripHistoryActions from './TripHistory.Action'
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { FontSize } from '../../../component'
 import { FlatList } from 'react-native-gesture-handler'
@@ -15,7 +15,7 @@ import isEmpty from 'lodash/isEmpty'
 import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import * as LivetrackingActions from '../Livetracking.Action'
 
-const TripHistory = ({ navigation }) => {
+const LocationHistory = ({ navigation }) => {
 
     const { loginData, groupDevices, isConnected } = useSelector(state => ({
         loginData: getLoginState(state),
@@ -37,7 +37,7 @@ const TripHistory = ({ navigation }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    {translate("Trip History")}
+                    {translate("Location History")}
                 </Text>
             ),
             headerLeft: () => (
@@ -50,10 +50,6 @@ const TripHistory = ({ navigation }) => {
 
     useEffect(() => {
         fetchGroupDevices()
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true);
-        }
-        
     }, [])
 
     function fetchGroupDevices() {
@@ -72,16 +68,19 @@ const TripHistory = ({ navigation }) => {
     }
 
     function renderDevices(devices) {
+      
         return (
             <>
                 {devices.map((subitem, subkey) => {
+                      console.log('tem.devicestem.devicestem.devicestem.devicestem.devices',subitem.uniqueId)
                       let text = subitem.uniqueId;
                       let result = text.substring(0,2);
                       let deviceType = result === 'GT' ? true :false
-                    return (<>{!deviceType ?
-                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, { data: subitem ,isMobileTracker:deviceType})} >
+                    return (<>{deviceType ?
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, { data: subitem, isMobileTracker:deviceType})} >
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
+
                             <NextOrangeIcon style={styles.icon} />
                         </TouchableOpacity>
                     :null }
@@ -93,20 +92,22 @@ const TripHistory = ({ navigation }) => {
     }
 
     const deviceGroupInfoItem = ({ item, index }) => {
-      const device1 =  item.devices.filter(name => name.uniqueId.substring(0,2)  !== 'GT').map(filteredName => filteredName)
-      console.log('item.devicesitem.devicesitem.devicesitem.devicesitem.devicesitem.devices',device1); 
+        const device1 =  item.devices.filter(name => name.uniqueId.substring(0,2)  === 'GT').map(filteredName => 
+     filteredName
+          )
+    console.log('item.devicesitem.devicesitem.devicesitem.devicesitem.devicesitem.devices',device1); 
         return (
             <View style={{ paddingVertical: hp(2), paddingHorizontal: hp(3), width: '100%' }}>
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
 
                     {/* Arrow Left Side */}
-                    <TouchableOpacity onPress={() => toggleExpand(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
+                    <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
                         {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
                     </TouchableOpacity>
 
                     <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }} >
                         {/* heading */}
-                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => toggleExpand(index)}>
+                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
                             {/* {isDefault ? renderDefaultContainer() : renderActionButton()} */}
                             {(index !== selectedKey) ?
@@ -130,20 +131,6 @@ const TripHistory = ({ navigation }) => {
             </View>
         )
     }
-    const toggleExpand=(index)=>{
-        // (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)]
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        if(index == selectedKey){
-            setSelectedKey(-1) 
-          
-        }
-        else{
-            setSelectedKey(index)
-        }
-     
-        // this.setState({expanded : !this.state.expanded})
-      }
-
     const searchHandle = (keyword) => {
         setSearchKeyword(keyword)
         dispatch(LivetrackingActions.requestSearchGroup(loginData.id, keyword, onSuccess, onError))
@@ -323,7 +310,7 @@ const styles = StyleSheet.create({
     },
 })
 
-export default TripHistory;
+export default LocationHistory;
 
 const SENSORINFOITEMS = [
     {

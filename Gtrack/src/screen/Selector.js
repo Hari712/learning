@@ -325,34 +325,34 @@ function getCombinedTripHistoryCoord(state) {
     const tripsInfo = state.tripHistory && state.tripHistory.tripHistoryDetails ? state.tripHistory.tripHistoryDetails : {}
       console.log("statestatestatestatestatestatestate",tripsInfo)
     let tripCoordsData
-    if(tripsInfo != {}){
-    let tripdata = [].slice.call(tripsInfo).sort((a, b) => {
-        console.log('a.indexa.index', a.tripStartLongitude)
-        if (a.tripStartPositionId < b.tripStartPositionId)
-            return -1;
-        if (a.tripStartPositionId > b.tripStartPositionId)
-            return 1;
-        return 0;
-    })
-    var mapCombined = tripdata && tripdata.map((i) => i.tripTravelledPositions)
-    var mapCombined1 = tripdata && tripdata.map((i) => [i.tripEndLatitude, i.tripEndLongitude])
+//     if(tripsInfo != {}){
+//     // let tripdata = [].slice.call(tripsInfo).sort((a, b) => {
+//     //     console.log('a.indexa.index', a.tripStartLongitude)
+//     //     if (a.tripStartPositionId < b.tripStartPositionId)
+//     //         return -1;
+//     //     if (a.tripStartPositionId > b.tripStartPositionId)
+//     //         return 1;
+//     //     return 0;
+//     // })
+//     // var mapCombined = tripdata && tripdata.map((i) => i.tripTravelledPositions)
+//     // var mapCombined1 = tripdata && tripdata.map((i) => [i.tripEndLatitude, i.tripEndLongitude])
 
-    const mergeResult = [].concat.apply([], mapCombined);
-    console.log('tripsInfotripsInfotripsInfotripsInfotripsInfo',mergeResult)
-    tripCoordsData = {
-      deviceId:tripsInfo.deviceId,
-      deviceName: tripsInfo.deviceName,
-      tripStartAddress:tripsInfo.tripStartAddress,
-      tripEndAddress:tripsInfo.tripEndAddress,
-      tripMaxSpeed:tripsInfo.tripMaxSpeed,
-      tripTravelledPositions: tripsInfo.tripTravelledPositions,
-      tripStartPosition: tripsInfo.tripStartPosition,
-      tripEndPosition: tripsInfo.tripEndPosition,
-  }
+//     // const mergeResult = [].concat.apply([], mapCombined);
+//     // console.log('tripsInfotripsInfotripsInfotripsInfotripsInfo',mergeResult)
+//     tripCoordsData = {
+//       deviceId:tripsInfo.deviceId,
+//       deviceName: tripsInfo.deviceName,
+//       tripStartAddress:tripsInfo.tripStartAddress,
+//       tripEndAddress:tripsInfo.tripEndAddress,
+//       tripMaxSpeed:tripsInfo.tripMaxSpeed,
+//       tripTravelledPositions: tripsInfo.tripTravelledPositions,
+//       tripStartPosition: tripsInfo.tripStartPosition,
+//       tripEndPosition: tripsInfo.tripEndPosition,
+//   }
 
-  }
-    else {tripCoordsData ={}}
-    return tripCoordsData
+//   }
+//     else {tripCoordsData ={}}
+    return tripsInfo
 }
 // tripCoordsData = {
 //     deviceID:DemoData[0].deviceId,

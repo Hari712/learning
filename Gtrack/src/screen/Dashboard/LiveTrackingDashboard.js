@@ -323,7 +323,7 @@ const LiveTrackinDashboard = () => {
 			<View style={styles.deviceSummaryMainViewStyle}>
 				<View style={styles.leftMainViewStyle}>
 					<Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>
-						Live Tracking
+						Live Location
 					</Text>
 				</View>
 

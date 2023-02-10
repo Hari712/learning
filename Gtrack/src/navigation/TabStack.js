@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard, DeviceAsset, EditDeviceAsset, CreateDeviceAsset, Details, Settings, Profile, Permission, About, RateUs, Feedback, Manage, AddUser, EditProfile, Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails, AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode, TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails, DispatchRoute, LiveTrackingDetails, AddMobileTracker } from '../screen';
+import { LiveTracking, Users, DashBoard, DeviceAsset, EditDeviceAsset, CreateDeviceAsset, Details, Settings, Profile, Permission, About, RateUs, Feedback, Manage, AddUser, EditProfile, Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails, AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode, TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails, DispatchRoute, LiveTrackingDetails, AddMobileTracker, LocationHistory } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
@@ -22,6 +22,7 @@ import {
 } from '../component/SvgComponent';
 import AppLogs from '../applog/AppLog';
 import DispatchRouteTotalTrip from '../screen/LiveTracking/TripHistory/DispatchRouteTotalTrip';
+import DispatchLocationRoute from '../screen/LiveTracking/TripHistory/DispatchLocationRoute';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -72,9 +73,11 @@ const LiveTrackingStackNavigator = ({ navigation, route }) => {
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_TYPE} component={AlarmType} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_DETAIL} component={AlarmDetail} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY} component={TripHistory} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LOCATION_HISTORY} component={LocationHistory} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL} component={DispatchRouteTotalTrip} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS} component={TripHistoryDetails} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE} component={DispatchRoute} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_LOCATION_ROUTE} component={DispatchLocationRoute} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ACTIVATE_DEVICE} component={ActivateDevice} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ADD_MOBILE_TRACKER} component={AddMobileTracker} />
         <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_ASSET} component={AssignAsset} />

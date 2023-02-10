@@ -255,6 +255,7 @@
     "Poor":"Poor",
     "Empty_Alarm_Name":"Enter alarm name",
     "Trip History": "Trip History",
+    "Location History": "Location History",
     "Alarm_Type":"Alarm Type",
     "Country_Code": "Country Code",
     "Invalid_Device_Id": "Please enter Valid device id",

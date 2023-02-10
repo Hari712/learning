@@ -29,7 +29,7 @@ import { SCREEN_CONSTANTS } from '../../../constants/AppConstants'
 
 const TripHistoryDetails = ({ navigation, route }) => {
 
-    const { data } = route.params
+    const { data,isMobileTracker } = route.params
 
     const { loginData, isConnected, routeDetails, combinedTripHistory, tripsCoordinates } = useSelector(state => ({
         loginData: getLoginState(state),
@@ -39,10 +39,10 @@ const TripHistoryDetails = ({ navigation, route }) => {
         tripsCoordinates: getCombinedTripCoordinatesListInfo(state)
     }))
 
-    console.log('combined trip history-----', tripsCoordinates)
+    console.log('combined trip history-----', tripsCoordinates,combinedTripHistory)
 
     const dispatch = useDispatch()
-
+    const [isMobileDevice,setIsMobileDevice]= useState(isMobileDevice)
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
     const [isStartDateVisible, setIsStartDateVisible] = useState(false);
@@ -119,7 +119,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
         }
     }, [pageIndex, isLoadMoreData])
 
-    console.log('combinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistory', combinedTripHistory, routeDetails, routeDetails)
+    // console.log('combinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistory', combinedTripHistory, routeDetails, routeDetails)
     useEffect(() => {
 
         let todayDate = Moment().format('YYYY-MM-DD');
@@ -183,7 +183,22 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "sortDirection": "DESC"
             }
             setIsFirstSearch(false)
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            console.log('  if(!isMobileDevice){ 10',isMobileTracker)
+            if(!isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 1',isMobileTracker)
+              dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            } else{
+                AppManager.hideLoader()
+              }
+             if(isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 11',isMobileTracker)
+              dispatch(TripHistoryActions.getLocationHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            }
+            else{
+              AppManager.hideLoader()
+            }
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -208,10 +223,24 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "sortDirection": "DESC"
             }
             setIsFirstSearch(true)
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
-            if (startDate == endDate) {
-                fetchCombinedTripHistory()
+            console.log('  if(!isMobileDevice){ 101',isMobileTracker)
+            if(!isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 1',isMobileTracker)
+              dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            } else{
+                AppManager.hideLoader()
+              }
+             if(isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 11',isMobileTracker)
+              dispatch(TripHistoryActions.getLocationHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
             }
+            else{
+              AppManager.hideLoader()
+            }
+           
+          
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -250,7 +279,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    {translate("Trip History")}
+                    {!isMobileTracker ? translate("Trip History") :translate("Location History")}
                 </Text>
             ),
             headerLeft: () => (
@@ -262,8 +291,13 @@ const TripHistoryDetails = ({ navigation, route }) => {
     }, [navigation]);
 
     function onSuccess(data) {
-        console.log("Success", data)
-
+        console.log("Success", data,startDate === endDate,startDate , endDate)
+        if (startDate === endDate) {
+            if(pageIndex === 0){
+                fetchCombinedTripHistory()
+            }
+          
+        }
         const arrList = data.result.data ? data.result.data : []
         const totalCountLocal = data.result.totalCount ? data.result.totalCount : 0
         if (isEmpty(arrList)) {
@@ -353,18 +387,12 @@ const TripHistoryDetails = ({ navigation, route }) => {
     }
     function combineTripHistory() {
         return (
-            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, {tripData: tripsCoordinates, item: tripsCoordinates.tripTravelledPositions, points: tripsCoordinates.tripEndPosition, devicename: data.name })} style={styles.combineTripHistoryMainView}>
+            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, {tripData: combinedTripHistory, item: combinedTripHistory.tripTravelledPositions, points: combinedTripHistory.tripEndPosition, devicename: data.name })} style={styles.combineTripHistoryMainView}>
                 <Text style={styles.CombineTripHistoryTextView}>Combined Trip History</Text>
             </TouchableOpacity>
         )
     }
-    function combineTripHistoryGet() {
-        return (
-            <TouchableOpacity onPress={fetchCombinedTripHistory} style={styles.combineTripHistoryMainView}>
-                <Text style={styles.CombineTripHistoryTextView}>Get Trip History</Text>
-            </TouchableOpacity>
-        )
-    }
+
     return (
         <View style={styles.container}>
 
@@ -396,21 +424,32 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
                         {/* { combineTripHistoryGet()} */}
-                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && tripsCoordinates.deviceName && combineTripHistory()
-                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && tripsCoordinates.deviceName && combineTripHistory() : null}
-                        {/* { combineTripHistory()} */}
+                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && combinedTripHistory && combineTripHistory()
+                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && combinedTripHistory && combineTripHistory() : null}
+                     
 
                     </View>
-
-                    {routeData.length > 0 ?
-                        <RouteDetails
+                   { isMobileTracker  && routeData.length > 0 ?
+                   <RouteDetails
+                        isMobileTracker ={isMobileTracker}
+                        routeDetails={routeData}
+                        loadMoreData={loadMoreData}
+                        setOnEndReachedCalledDuringMomentum={setOnEndReachedCalledDuringMomentum}
+                        onEndReachedCalledDuringMomentum={onEndReachedCalledDuringMomentum}
+                        renderFooter={renderFooter}
+                    /> 
+                     :!isMobileTracker &&routeData.length > 0 ? 
+                     <RouteDetails
+                            isMobileTracker ={isMobileTracker}
                             routeDetails={routeData}
                             loadMoreData={loadMoreData}
                             setOnEndReachedCalledDuringMomentum={setOnEndReachedCalledDuringMomentum}
                             onEndReachedCalledDuringMomentum={onEndReachedCalledDuringMomentum}
                             renderFooter={renderFooter}
                         />
-                        : renderNoRecordsFoundLabel()}
+               :  renderNoRecordsFoundLabel()
+                 }
+              
 
                     <View
                         style={{
@@ -472,7 +511,168 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
 const daysList = ['Today', 'Yesterday', 'Last Week', 'Last Month', 'Custom'];
 const timeList = ['5','10','15','20','25','30']
-
+const  datas= [
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T04:52:27.000+0000",
+      "tripLatitude": 22.318144887685776,
+      "tripLongitude": 73.167904028669,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T04:57:00.000+0000",
+      "tripLatitude": 22.318177660927176,
+      "tripLongitude": 73.16773270256817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T05:02:00.000+0000",
+      "tripLatitude": 22.318141534924507,
+      "tripLongitude": 73.167660869658,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T05:16:19.000+0000",
+      "tripLatitude": 22.318068,
+      "tripLongitude": 73.1676817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T07:59:55.000+0000",
+      "tripLatitude": 22.318130493164062,
+      "tripLongitude": 73.16771585501094,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T08:22:22.000+0000",
+      "tripLatitude": 22.318068,
+      "tripLongitude": 73.1676817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T08:27:03.000+0000",
+      "tripLatitude": 22.318068,
+      "tripLongitude": 73.1676817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T04:54:12.000+0000",
+      "tripLatitude": 22.318104,
+      "tripLongitude": 73.167706,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T05:30:16.000+0000",
+      "tripLatitude": 22.31793212890625,
+      "tripLongitude": 73.16801896621531,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:12:22.000+0000",
+      "tripLatitude": 22.3181097,
+      "tripLongitude": 73.1677045,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:17:20.000+0000",
+      "tripLatitude": 22.293,
+      "tripLongitude": 73.164,
+      "tripDistance": 0,
+      "tripAddress": "Old Padra Road, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:27:05.000+0000",
+      "tripLatitude": 22.278,
+      "tripLongitude": 73.162,
+      "tripDistance": 0,
+      "tripAddress": "Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:32:18.000+0000",
+      "tripLatitude": 22.31467199,
+      "tripLongitude": 73.1655254,
+      "tripDistance": 0,
+      "tripAddress": "Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:39:21.000+0000",
+      "tripLatitude": 22.3181107,
+      "tripLongitude": 73.1677087,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T07:15:02.000+0000",
+      "tripLatitude": 22.3181117,
+      "tripLongitude": 73.1677156,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T08:51:49.000+0000",
+      "tripLatitude": 22.308,
+      "tripLongitude": 73.165,
+      "tripDistance": 0,
+      "tripAddress": null,
+      "tripDuration": 0
+    }
+  ]
 const styles = StyleSheet.create({
     container: {
         //alignItems: 'center',
@@ -517,7 +717,7 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     combineTripHistoryMainView: {
-        width: '100%',
+        width: '60%',
         alignSelf: 'center',
         // marginVertical: hp(1.5),
 

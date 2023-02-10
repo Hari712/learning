@@ -1,17 +1,20 @@
-import React, { useState, Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList } from 'react-native';
+import React, { useState, Component, useRef } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, Platform, FlatList, Dimensions } from 'react-native';
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { FontSize } from '../../../component';
 import { dist, getAdvanceSettingsInfo, getLoginState } from '../../Selector'
 import { useDispatch, useSelector } from 'react-redux';
 import { CalenderIconWhite, LocationIcon, NoRecordFoundImage } from '../../../component/SvgComponent';
-import { SCREEN_CONSTANTS } from '../../../constants/AppConstants';
+import { MAP_BOX_STYLEURL, rasterSourceProps, SCREEN_CONSTANTS } from '../../../constants/AppConstants';
 import NavigationService from '../../../navigation/NavigationService'
 import Moment from 'moment'
 import { convertDist, convertSpeed, convertTime } from '../../../utils/helper';
 import { ClockIcon } from '../../../component/SvgComponent';
-
+const Map = Platform.select({
+	ios: () => require('react-native-maps'),
+	android: () => require('@react-native-mapbox-gl/maps'),
+})();
 const RouteDetails = (props) => {
 
     const { loginData, distUnit, advSettingsData } = useSelector(state => ({
@@ -19,10 +22,10 @@ const RouteDetails = (props) => {
         distUnit: dist(state),
         advSettingsData: getAdvanceSettingsInfo(state)
     }))
-
+    const mapRef = useRef();
     var moment = require('moment-timezone');
-    const { routeDetails, loadMoreData, renderFooter, setOnEndReachedCalledDuringMomentum, onEndReachedCalledDuringMomentum } = props
-
+    const { routeDetails, loadMoreData, renderFooter, setOnEndReachedCalledDuringMomentum, onEndReachedCalledDuringMomentum,isMobileTracker } = props
+    const isAndroid = Platform.OS === 'android';
     const dispatch = useDispatch()
 
     const [startDate, setStartDate] = useState();
@@ -106,7 +109,153 @@ const RouteDetails = (props) => {
             </TouchableOpacity>
         )
     }
+   
+    const renderLocationItem =({ item, index })=>{
+        let sDateArray = convertTime(item.tripTime, advSettingsData)
+        var sdateComponent = sDateArray.format('YYYY-MM-DD');
+        var stimeComponent = sDateArray.format('HH:mm');
+        function renderAppleMap() {
 
+            const { width, height } = Dimensions.get('window');
+            const ASPECT_RATIO = width / height;
+            const LATITUDE_DELTA = 0.01;
+            const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+            let deviceRegion = {
+                latitude:item.tripLatitude, 
+                longitude: item.tripLongitude,
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA,
+            };
+            const coordinate =  { latitude: item.tripLatitude, longitude: item.tripLongitude } 
+            return (
+        
+                <Map.default style={[StyleSheet.absoluteFillObject,]}  region={deviceRegion} ref={mapRef} showsUserLocation={false} scrollEnabled={false}>
+                <Map.Marker
+                        coordinate={coordinate}
+                        // zoomEnabled={false}
+                        // pitchEnabled={false}
+                        // description={item.address}
+                    />
+                
+                </Map.default>
+            )
+        }
+        function renderMapBox() {
+            let coordinate = [item.tripLongitude,item.tripLatitude];
+            return (
+                <View style={{ flex: 1, }}>
+                <Map.default.MapView style={{ flex: 1 ,}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}  >
+                    {/* <Map.default.UserLocation
+                                renderMode="normal"
+                                visible={true}
+                                showsUserHeadingIndicator={true}
+                                animated={true}
+                            /> */}
+                        {coordinate ?
+                            <Map.default.Camera
+                                zoomLevel={15}
+                                centerCoordinate={coordinate}
+                                animated={true}
+                                minZoomLevel={4}
+                                maxZoomLevel={15}
+                            /> :
+                            <Map.default.Camera
+                                zoomLevel={4}
+                                minZoomLevel={4}
+                                maxZoomLevel={15}
+                                centerCoordinate={[79.570507, 22.385092]}
+                            />}
+                       		{coordinate &&
+						<Map.default.PointAnnotation id={`1`} coordinate={coordinate} key={1} title={``}/>
+						}
+                        <Map.default.RasterSource {...rasterSourceProps}>
+                            <Map.default.RasterLayer
+                                id="googleMapLayer"
+                                sourceID="googleMapSource"
+                                // style={{rasterOpacity: 0.5}}
+    
+                                layerIndex={0}
+                            />
+                        </Map.default.RasterSource>
+                    </Map.default.MapView>
+                </View>
+            );
+        }
+    
+        return (
+            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_LOCATION_ROUTE, { item: item })} style={styles.cardContainer}>
+ {/* onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_LOCATION_ROUTE, { item: item })}  */}
+                {/* Blue top head */}
+                <View style={styles.blueConatiner}>
+                    <View style={{ padding: hp(1.5), alignSelf: 'center' }}>
+                        <CalenderIconWhite width={14.947} height={14.947} />
+                    </View>
+
+                    <View style={styles.blueTopHead}>
+                        <Text style={styles.headerTitle}>{sdateComponent}  {stimeComponent}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_LOCATION_ROUTE, { item: item })} style={styles.editButton}>
+                        <LocationIcon />
+                    </TouchableOpacity>
+                </View>
+                {/* <View style={styles.whiteBodyContainerMap}> */}
+                {/* <View style={styles.column2} > */}
+                        {/* <View style={{ height: hp(16), width: '100%'}}>
+                        {isAndroid ? renderMapBox() : renderAppleMap()}
+                        </View> */}
+                        {/* <View style={{ height: hp(1) }} />
+
+                        <Text style={styles.whiteBodyText}>Address</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripAddress}</Text> */}
+                      {/* <View style={{ height: hp(2) }} /> */}
+                      {/* </View> */}
+                    {/* </View> */}
+                {/* White Body container */}
+                <View style={[styles.whiteBodyContainer,{paddingTop: hp(0.5),paddingBottom:item.tripAddress ? hp(1.5): hp(0.2)}]}>
+                <View style={styles.column2} >
+                        <View style={{ height: item.tripAddress? hp(6) : hp(5)}}>
+                            <Text style={styles.whiteBodyText}>Address</Text>
+                            <Text numberOfLines={2} style={[styles.whiteBodyText, {color: ColorConstant.BLACK, width: '90%', height: item.tripAddress ? hp(8) : hp(3) }]}>{item.tripAddress ? item.tripAddress : '-'}</Text>
+                        </View>
+                        {/* <View style={{ height: hp(16), width: '100%'}}>
+                        {isAndroid ? renderMapBox() : renderAppleMap()}
+                        </View> */}
+                        {/* <View style={{ height: hp(1) }} />
+
+                        <Text style={styles.whiteBodyText}>Address</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripAddress}</Text> */}
+                        {/* <View style={{ height: hp(2) }} /> */}
+                    </View>
+                    
+                    {/* <View style={styles.column1} >
+                    <View style={{ height: hp(15), width: '100%'  }}>
+
+                        {isAndroid ? renderMapBox() : renderAppleMap()}
+
+                        </View>
+                        {/* <View style={{ height: (item.tripStartAddress || item.tripEndAddress) ? hp(10) : hp(8) }}>
+                            <Text style={styles.whiteBodyText}>Start</Text>
+                            <Text numberOfLines={2} style={[styles.whiteBodyText, { color: ColorConstant.BLACK, width: '90%', height: item.tripAddress ? hp(5) : hp(3) }]}>{item.tripAddress ? item.tripAddress : '-'}</Text>
+                            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+                                <ClockIcon width={20} height={20} />
+                                <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK, marginLeft: hp(0.5) }]}>{item.tripAddress}</Text>
+                            </View>
+                        </View> */}
+                        {/* <View style={{ height: hp(1) }} />
+
+                        <Text style={styles.whiteBodyText}>Address</Text>
+                        <Text style={[styles.whiteBodyText, { color: ColorConstant.BLACK }]}>{item.tripAddress}</Text>
+                        <View style={{ height: hp(3) }} /> */}
+                           {/* <View style={{ height: hp(1) }} />
+                    </View> */} 
+                   
+                </View>
+               
+
+            </TouchableOpacity>
+        )
+    }
 
     return (
         <View>
@@ -120,7 +269,7 @@ const RouteDetails = (props) => {
                     nestedScrollEnabled={true}
                     keyboardShouldPersistTaps='handled'
                     data={routeDetails}
-                    renderItem={renderItem}
+                    renderItem={!isMobileTracker ?renderItem :renderLocationItem}
                     keyExtractor={(item, index) => index.toString()}
                     showsVerticalScrollIndicator={false}
                     ListFooterComponent={renderFooter}
@@ -137,7 +286,6 @@ const RouteDetails = (props) => {
     )
 }
 
-const daysList = ["Today", "Yesterday", "Last Week", "Last Month", "Custom"]
 
 const styles = StyleSheet.create({
 
@@ -226,12 +374,28 @@ const styles = StyleSheet.create({
         //backgroundColor:ColorConstant.WHITE,
         //paddingBottom: hp(1.5)
     },
+    whiteBodyContainerMap: {
+        flexDirection: 'row',
+        // paddingTop: hp(1.5),
+        // paddingBottom: hp(2),
+        //backgroundColor:ColorConstant.WHITE,
+        //paddingBottom: hp(1.5)
+    },
     whiteBodyText: {
         color: ColorConstant.GREY,
         fontSize: FontSize.FontSize.small
     },
     column: {
         flexDirection: 'column', width: '35%'
+    },
+    column1: {
+        flexDirection: 'column', width: '65%'
+    },
+    column2: {
+        flexDirection: 'column', width: '100%'
+    },
+    row:{
+        flexDirection:'row', width: '80%'
     }
 });
 

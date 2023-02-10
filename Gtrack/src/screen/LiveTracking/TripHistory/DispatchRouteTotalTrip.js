@@ -20,14 +20,14 @@ const Map = Platform.select({
 
 const DispatchRouteTotalTrip = ({ navigation, route }) => {
     // item ,points,devicename,
-    const { tripData} = route.params
+    const { tripData,devicename} = route.params
     console.log('tripData[0]',tripData)
     const [lineString, setLineString] = useState(null)
     const [showStartLocation,setShowStartLocation] = useState(false)
     const [showEndLocation,setShowEndLocation] = useState(false)
-    const item = tripData.tripTravelledPositions
+    const item = tripData.tripTravelledPositions 
     const points= tripData.tripEndPosition
-    const devicename = tripData.deviceName
+    // const devicename = tripData.deviceName
     const startAddress =tripData.tripStartAddress
     const endAddress =tripData.tripEndAddress
     const mapRef = useRef()
@@ -183,7 +183,7 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
             <Map.default.MapView style={{ flex: 1,}}  onPress={()=>ShowPopup()} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
           
                 <Map.default.Camera
-                    zoomLevel={14}
+                    zoomLevel={15}
                     centerCoordinate={tripStartCord}
                            
                 />
@@ -285,7 +285,7 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
                         {renderPopUpText('Start',startAddress)}
                     </Map.Callout>
                 </Map.Marker>
-               {/* {renderPoinst()} */}
+               {renderPoinst()}
                 <Map.Marker coordinate={tripEndCord}  >
                     <LocationOrangeIcon/>
                     <Map.Callout>

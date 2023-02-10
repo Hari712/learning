@@ -1,13 +1,15 @@
 const BASE_URL = 'https://dev-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
-
-export const env = 'dev' //'prod' //'dev' 
-
+// prod base url https://api.gtrackindia.com/gtrackapi/
+export const env = 'qa' //'prod' //'dev'
 // https://qa-api.vegitone.com/gtrackapi/
 // https://dev-api.vegitone.com/gtrackapi/
 
 const SUFFIX_URL = 'public/'
 
 const TRACCAR_URL = 'https://traccar-devqa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
+
+// prod traccar url https://traccar.gtrackindia.com/
+const SOCKET_URL = 'traccar-devqa.gtrackindia.com/'
 
 const AUTH = 'auth/'
 
@@ -20,7 +22,7 @@ const ApiConstants = {
     LOGIN: SUFFIX_URL + AUTH + 'login',
     SIGNUP: SUFFIX_URL + 'signup',
     TRACCAR_URL: TRACCAR_URL,
-    SOCKET_BASE_URL: 'traccar-devqa.gtrackindia.com/',
+    SOCKET_BASE_URL: SOCKET_URL,
     REFRESH_TOKEN: (userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     FORGOT_PASSWORD: `${SUFFIX_URL}forgotPassword/getOTP`,
     VERIFY_OTP: `${SUFFIX_URL}forgotPassword/verifyOTP`,
@@ -79,6 +81,7 @@ const ApiConstants = {
     GET_SETTINGS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
     UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`,
     GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
+    GET_LOCATION_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getLocationHistory?from=${from}&to=${to}`,
     GET_COMBINED_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
     ADD_DEVICE_TOKEN:(userId) => `${USER}${userId}/trace/addDeviceToken`,
     REMOVE_DEVICE_TOKEN_API:(userId) => `${USER}${userId}/trace/removeDeviceToken`,
