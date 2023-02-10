@@ -67,6 +67,8 @@ const UsersList = (props) => {
             <View style={styles.blueBox}>
                 <Text style={styles.blueBoxTitle}>{item.firstName} {item.lastName}</Text>
                 {/* <Image source={item.isActive?images.user.active:images.user.inactive} /> */}
+                 {userType != 'mobile' &&
+                  <>
                 {!isSuperOwner &&
                     // <Switches shape={'line'}
                     //     buttonColor={item.isActive ? ColorConstant.DARKENGREEN : ColorConstant.RED}
@@ -83,16 +85,17 @@ const UsersList = (props) => {
                     </TouchableOpacity>
                 }
                 <Text style={styles.activeText}>{isSuperOwner ? null : item.isActive ? "Active" : "Inactive"}</Text>
-                {/* <TouchableOpacity onPress={()=>{isSuperOwner ? NavigationService.navigate(SCREEN_CONSTANTS.PROFILE) : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER,{editData:item})}} 
-                        style={{marginLeft:hp(2),borderColor:ColorConstant.WHITE,borderWidth:1,width:hp(3),height:hp(3),alignItems:'center',borderRadius:10,alignContent:'center'}}>
-                            <UsersEditIcon height={hp(2.8)} width={hp(1.8)}/>
-                        </TouchableOpacity> */}
+             
+                
+      
                 <EditIcon
                     onPress={() => {
                         isSuperOwner ?
                             NavigationService.navigate(SCREEN_CONSTANTS.PROFILE)
                             : NavigationService.navigate(SCREEN_CONSTANTS.ADD_USER, { editData: item })
                     }} />
+                       </>
+                }
             </View>
 
             {/* White Body container */}

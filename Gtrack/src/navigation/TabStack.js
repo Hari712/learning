@@ -3,7 +3,7 @@ import { Image, View, Text, StyleSheet } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { LiveTracking, Users, DashBoard, DeviceAsset, EditDeviceAsset, CreateDeviceAsset, Details, Settings, Profile, Permission, About, RateUs, Feedback, Manage, AddUser, EditProfile, Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails, AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode, TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails, DispatchRoute, LiveTrackingDetails, AddMobileTracker } from '../screen';
+import { LiveTracking, Users, DashBoard, DeviceAsset, EditDeviceAsset, CreateDeviceAsset, Details, Settings, Profile, Permission, About, RateUs, Feedback, Manage, AddUser, EditProfile, Notification, SensorInfo, DeviceInfo, GeoFence, GeoFenceCreateNew, GeoFenceType, GeoFenceDetails, AdvanceSettings, SettingNotification, Alarms, CreateNew, AlarmType, AlarmDetail, ActivateDevice, AssignAsset, AssignGroup, BarcodeScanner, CompleteSetup, GeoFenceCreator, SettingsChangePassCode, TrackingDetails, GeoFenceCircle, GeoFencePolyGon, TripHistory, TripHistoryDetails, DispatchRoute, LiveTrackingDetails, AddMobileTracker, LocationHistory } from '../screen';
 import { ColorConstant } from '../constants/ColorConstants';
 import { FontSize } from '../component';
 import images from '../constants/images';
@@ -21,6 +21,8 @@ import {
     DeviceAndAssetsIcon, DeviceAndAssetsIconClicked
 } from '../component/SvgComponent';
 import AppLogs from '../applog/AppLog';
+import DispatchRouteTotalTrip from '../screen/LiveTracking/TripHistory/DispatchRouteTotalTrip';
+import DispatchLocationRoute from '../screen/LiveTracking/TripHistory/DispatchLocationRoute';
 
 const Tab = createBottomTabNavigator();
 const LiveTrackingStack = createStackNavigator();
@@ -55,39 +57,42 @@ const LiveTrackingStackNavigator = ({ navigation, route }) => {
             navigation.setOptions({ tabBarVisible: true });
         }
     }, [navigation, route]);
-
-    return (
-        <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen' screenOptions={ScreenOptions}>
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LIVE_TRACKING} component={LiveTracking} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.NOTIFICATION} component={Notification} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.SENSOR_INFO} component={SensorInfo} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DEVICE_INFO} component={DeviceInfo} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE} component={GeoFence} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW} component={GeoFenceCreateNew} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_TYPE} component={GeoFenceType} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_DETAILS} component={GeoFenceDetails} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS} component={Alarms} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_NEW} component={CreateNew} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_TYPE} component={AlarmType} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_DETAIL} component={AlarmDetail} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY} component={TripHistory} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS} component={TripHistoryDetails} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE} component={DispatchRoute} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ACTIVATE_DEVICE} component={ActivateDevice} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ADD_MOBILE_TRACKER} component={AddMobileTracker} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_ASSET} component={AssignAsset} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_GROUP} component={AssignGroup} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.BARCODE_SCANNER} component={BarcodeScanner} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.COMPLETE_SETUP} component={CompleteSetup} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DETAILS} component={Details} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.EDIT_DEVICE_ASSET} component={EditDeviceAsset} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_DEVICE_ASSET} component={CreateDeviceAsset} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.MANAGE} component={Manage} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CIRCLE} component={GeoFenceCircle} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_POLYGON} component={GeoFencePolyGon} />
-            <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LIVETRACKINGDETAILS} component={LiveTrackingDetails} />
-        </LiveTrackingStack.Navigator>
+    
+    return(
+    <LiveTrackingStack.Navigator initialRouteName="LiveTracking" headerMode='screen'  screenOptions={ScreenOptions}>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LIVE_TRACKING} component={LiveTracking} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.NOTIFICATION} component={Notification} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.SENSOR_INFO} component={SensorInfo} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DEVICE_INFO} component={DeviceInfo} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE} component={GeoFence} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATE_NEW} component={GeoFenceCreateNew} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_TYPE} component={GeoFenceType} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_DETAILS} component={GeoFenceDetails} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS} component={Alarms} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_NEW} component={CreateNew} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_TYPE} component={AlarmType} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ALARMS_DETAIL} component={AlarmDetail} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY} component={TripHistory} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LOCATION_HISTORY} component={LocationHistory} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL} component={DispatchRouteTotalTrip} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS} component={TripHistoryDetails} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_ROUTE} component={DispatchRoute} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DISPATCH_LOCATION_ROUTE} component={DispatchLocationRoute} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ACTIVATE_DEVICE} component={ActivateDevice} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ADD_MOBILE_TRACKER} component={AddMobileTracker} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_ASSET} component={AssignAsset} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.ASSIGN_GROUP} component={AssignGroup} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.BARCODE_SCANNER} component={BarcodeScanner}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.COMPLETE_SETUP} component={CompleteSetup}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.DETAILS} component={Details}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.EDIT_DEVICE_ASSET} component={EditDeviceAsset}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.CREATE_DEVICE_ASSET} component={CreateDeviceAsset}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.MANAGE} component={Manage} />
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CREATOR} component={GeoFenceCreator}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_CIRCLE} component={GeoFenceCircle}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.GEOFENCE_POLYGON} component={GeoFencePolyGon}/>
+        <LiveTrackingStack.Screen name={SCREEN_CONSTANTS.LIVETRACKINGDETAILS} component={LiveTrackingDetails} />
+    </LiveTrackingStack.Navigator>
     )
 }
 

@@ -238,7 +238,7 @@ const TrackingDetails = ({navigation, route}) => {
 					/> */}
 					{isContainCoordinate &&
 						<Map.default.Camera
-							zoomLevel={12}
+						zoomLevel={15}
 							bounds={{
 								ne: coordinate,
 								sw: coordinate,

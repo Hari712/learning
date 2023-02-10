@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions, Modal, FlatList } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity, Platform, Dimensions, Modal, FlatList,Linking } from 'react-native';
 import images from '../../constants/images';
 import { ColorConstant } from '../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -26,6 +26,8 @@ import url from 'socket.io-client/lib/url';
 import RBSheet from "react-native-raw-bottom-sheet";
 import IconConstant from '../../constants/iconConstant';
 import { map } from 'lodash';
+import FindMyDevice from '../../component/SvgComponent/FindMyDevice';
+import AppManager from '../../constants/AppManager';
 const { width, height } = Dimensions.get('window');
 
 
@@ -57,8 +59,9 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-	console.log('groupdevices-----------', groupDevices, liveTrakingDeviceList)
+	console.log('groupdevices-----------', groupDevices,)
 
+	const dispatch = useDispatch()
 	const [deviceList, setDeviceList] = useState(groupDevices);
 	const [selectedDevice, setSelectedDevice] = useState();
 	const [selectedDeviceIndex, setSelectedDeviceIndex] = useState(0);
@@ -71,13 +74,14 @@ const LiveTracking = ({ navigation }) => {
 	const [isPanicAlarmCreateDialog, setIsPanicAlarmCreateDialog] = useState(false);
 	const [isVisible, setIsVisible] = useState(false)
 	const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
-	const [flatListData, setFlatlistData] = useState()
-
+	const[showStartLocation,setShowStartLocation]=useState(false)
+	const [flatListData,setFlatlistData] = useState()
 	const isFocused = useIsFocused()
 
 	const sheetRef = useRef(null);
 
-	useEffect(() => {
+
+  useEffect(() => {
 		setDeviceList(groupDevices);
 	}, [groupDevices])
 
@@ -89,16 +93,14 @@ const LiveTracking = ({ navigation }) => {
 	}, [deviceList])
 
 	useEffect(() => {
-		if (bottomSheetVisible === false) {
-			setFlatlistData(liveTrakingDeviceList)
-		}
-	}, [liveTrakingDeviceList])
-
-	useEffect(() => {
 		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
 	}, [])
 
-	const dispatch = useDispatch()
+	useEffect(()=>{
+		if(bottomSheetVisible === false){
+			setFlatlistData(liveTrakingDeviceList)
+		}
+	},[liveTrakingDeviceList])
 
 	function onSuccess(data) {
 		console.log("Success", data)
@@ -166,7 +168,6 @@ const LiveTracking = ({ navigation }) => {
 		},
 		[devicePositions]
 	);
-
 	useEffect(() => {
 		console.log('devicePositionArray', devicePositionArray)
 		if (!isEmpty(devicePositionArray) && devicePositionArray.length > 1) {
@@ -229,6 +230,9 @@ const LiveTracking = ({ navigation }) => {
 		} else if (item == 'Trip History') {
 			navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY);
 		}
+		else if (item == 'Location History') {
+			navigation.navigate(SCREEN_CONSTANTS.LOCATION_HISTORY);
+		}
 		else if (item === 'Asset Information') {
 			setIsLineClick(false)
 			navigation.navigate(SCREEN_CONSTANTS.SENSOR_INFO)
@@ -284,7 +288,7 @@ const LiveTracking = ({ navigation }) => {
 		const deviceInfo = selectedDevice;
 		const VisibleArrow = deviceList && deviceList.length > 1 ? true : false
 		return (
-			<View
+			<TouchableOpacity
 				style={{
 					height: hp(5),
 					backgroundColor: ColorConstant.WHITE,
@@ -296,6 +300,7 @@ const LiveTracking = ({ navigation }) => {
 					marginHorizontal: hp(3),
 					width: wp(88)
 				}}
+				onPress={() => { sheetRef.current.open() }}
 			>
 				<View
 					style={{
@@ -322,19 +327,19 @@ const LiveTracking = ({ navigation }) => {
 
 					{/* <UpArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
 						: */}
-					<TouchableOpacity style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
+					<View style={{ position: 'absolute', right: hp(1.5), padding: hp(1) }}
 						onPress={() => { sheetRef.current.open() }}>
 						{bottomSheetVisible ? <UpArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
 							:
 							<DownArrowOrangeIcon width={wp(4)} height={hp(1.7)} />
 						}
-					</TouchableOpacity>
+					</View>
 					{/* } */}
 					{/* {VisibleArrow && <TouchableOpacity style={{ padding: hp(1) }} onPress={() => onPressNext()}>
 						<RightArrowIcon resizeMode="contain" width={9.779} height={13.351} />
 					</TouchableOpacity>} */}
 				</View>
-			</View>
+			</TouchableOpacity>
 		);
 	}
 
@@ -363,7 +368,7 @@ const LiveTracking = ({ navigation }) => {
 			<Map.default
 				style={StyleSheet.absoluteFillObject}
 				// region={regionpoint}
-				initialRegion={region} ref={mapRef}
+				initialRegion={region} ref={mapRef} rotateEnabled={false}
 				showsUserLocation={false}>
 
 				{isContainCoordinate &&
@@ -410,11 +415,10 @@ const LiveTracking = ({ navigation }) => {
 			endCoordinate.push(liveEndPoint.longitude);
 			endCoordinate.push(liveEndPoint.latitude);
 		}
-		console.log('endcoordinates--------', endCoordinate)
-
+		
 		return (
 			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
+				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}    onPress={()=>setShowStartLocation(false)}>
 					<Map.default.UserLocation
 						renderMode="normal"
 						visible={true}
@@ -425,7 +429,9 @@ const LiveTracking = ({ navigation }) => {
 						<Map.default.Camera
 							animationMode='flyTo'
 							animationDuration={10000}
-							zoomLevel={12}
+							zoomLevel={15}
+							// minZoomLevel={4}
+							// maxZoomLevel={15}
 							centerCoordinate={endCoordinate}
 						// bounds={{
 						// 	ne: endCoordinate,
@@ -433,6 +439,8 @@ const LiveTracking = ({ navigation }) => {
 						// }}
 						/> :
 						<Map.default.Camera
+						minZoomLevel={4}
+						maxZoomLevel={15}
 							zoomLevel={4}
 							centerCoordinate={[79.570507, 22.385092]}
 						/>}
@@ -450,12 +458,20 @@ const LiveTracking = ({ navigation }) => {
 						</Map.default.ShapeSource>
 						: null}
 					{isContainCoordinate &&
-						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}>
+						<Map.default.PointAnnotation id={`1`} coordinate={startCoordinate} key={1} title={``}  onSelected={(data)=>setShowStartLocation(!showStartLocation)} onDeselected={(data)=>setShowStartLocation(!showStartLocation)}>
 							<LiveStartPointIcon width={isOnline ? 10 : 7} isDeviceOnline={isOnline} />
 							{/* <LiveStartPointIcon /> */}
-							<Map.default.Callout title={startAddress} />
+							{/* <Map.default.Callout title={startAddress} /> */}
 						</Map.default.PointAnnotation>}
-
+						{showStartLocation &&
+         						 <Map.default.MarkerView
+									id="annotaton-start"
+									anchor={{ x: 0.5, y: 1.3 }}
+									coordinate={startCoordinate}>
+												<Map.default.Callout title={startAddress} />
+							
+								</Map.default.MarkerView>
+          }
 					{isContainCoordinate &&
 						<Map.default.PointAnnotation id={`2`} coordinate={endCoordinate} key={2} title={``}>
 							{/* <LiveEndPointIcon/>  */}
@@ -539,11 +555,22 @@ const LiveTracking = ({ navigation }) => {
 			</View>
 		)
 	}
-
+	const flatListRef = useRef();
+	const scrollPositionRef = useRef();
 	const RenderContent = () => (
 		<View style={styles.subView}>
 			<Text style={styles.mainTitle}>Select Device</Text>
 			<FlatList
+			     ref={flatListRef}
+			  scrollsToTop={false}
+			  maintainVisibleContentPosition={{
+				minIndexForVisible: 0,
+			  }}
+			  onContentSizeChange={() =>{flatListRef.current.scrollToOffset({offset: scrollPositionRef.current, animated: false});}}
+            // onViewableItemsChanged={() => {
+			// 	flatListRef.current.scrollToOffset({offset: scrollPositionRef.current, animated: false});
+			//   }}
+			  onScroll={(event) => scrollPositionRef.current = event.nativeEvent.contentOffset.y}
 				showsVerticalScrollIndicator={true}
 				style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
 				contentContainerStyle={{ paddingBottom: '5%' }}
@@ -583,7 +610,7 @@ const LiveTracking = ({ navigation }) => {
 						<FlatList
 							showsVerticalScrollIndicator={true}
 							style={{ width: '90%', marginHorizontal: hp(2), marginVertical: hp(2), }}
-							contentContainerStyle={{ paddingBottom: '5%' }}
+							contentContainerStyle={{ paddingBottom: '5%' }}	
 							data={flatListData}
 							renderItem={renderItems}
 							keyExtractor={(item, index) => index.toString()}
@@ -592,6 +619,28 @@ const LiveTracking = ({ navigation }) => {
 				</RBSheet>
 			</>
 		)
+	}
+	function OpenMapForLocation(){
+	
+	const currentPosition =	devicePositionArray.length == 1 ? 0 :devicePositionArray.length - 1
+	console.log('devicePositionArray[currentPosition]',devicePositionArray[currentPosition])
+	if(devicePositionArray[currentPosition]){
+		const latitude = devicePositionArray[currentPosition].latitude
+		const longitude = devicePositionArray[currentPosition].longitude
+		console.log('currentPositioncurrentPositioncurrentPositioncurrentPositioncurrentPosition',devicePositionArray[currentPosition])
+			if(Platform.OS == 'ios'){
+				console.log('ios called',latitude,longitude)
+				Linking.openURL(`http://maps.apple.com/?daddr=${latitude},${longitude}`);
+				
+			}
+			if(Platform.OS == 'android'){
+				Linking.openURL(`http://maps.google.com/?daddr=${latitude},${longitude}`);
+			}
+	}
+	else{
+		AppManager.showSimpleMessage('warning', { message: 'Device Location Not Found', description: '', floating: true })
+	}
+	
 	}
 
 	return (
@@ -633,7 +682,12 @@ const LiveTracking = ({ navigation }) => {
 						)}
 					</View>
 					: null}
-
+				<TouchableOpacity
+					activeOpacity={1}
+					onPress={() => OpenMapForLocation()}
+					style={styles.lineIconStyle}>
+					<FindMyDevice height={hp(8.5)} width={hp(8.5)}/>
+				</TouchableOpacity>
 				{!isRegular
 					? <TouchableOpacity
 						onPress={() => { setIsPlusClick(!isPlusClick), setIsLineClick(false) }}
@@ -644,7 +698,7 @@ const LiveTracking = ({ navigation }) => {
 					: null}
 
 				{isPlusClick
-					? <View style={[styles.lineContainer, { top: hp(17.5) }]}>
+					? <View style={[styles.lineContainer, { top: hp(25) }]}>
 						{deviceData.map((item, key) =>
 							<TouchableOpacity key={key} onPress={() => onItemPress({ navigation, item })}>
 								<Text style={styles.textStyle}>
@@ -689,7 +743,7 @@ const LiveTracking = ({ navigation }) => {
 	);
 };
 
-const data = ['Geo Fence', 'Asset Information', 'Alarms', "Trip History"]
+const data = ['Geo Fence', 'Asset Information', 'Alarms', "Trip History","Location History"]
 const deviceData = ['Tracker Device', 'Mobile as Tracker']
 
 const styles = StyleSheet.create({

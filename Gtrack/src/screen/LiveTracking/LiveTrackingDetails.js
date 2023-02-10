@@ -291,7 +291,7 @@ const LiveTrackingDetails = ({navigation, route}) => {
 					/> */}
 					{isContainCoordinate &&
 						<Map.default.Camera
-							zoomLevel={17}
+						zoomLevel={15}
 							bounds={{
 								ne: endCoordinate,
 								sw: endCoordinate,

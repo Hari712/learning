@@ -227,9 +227,9 @@ const MobileUserList = () => {
                     />
 
                 </View>
-                <TouchableOpacity style={styles.addButton} onPress={() => setVisible(!visible)} >
+                {/* <TouchableOpacity style={styles.addButton} onPress={() => setVisible(!visible)} >
                     {visible ? <FilterIconClicked /> : <FilterIcon />}
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 {/* <TouchableOpacity activeOpacity={1} onPress={() => navigation.navigate(SCREEN_CONSTANTS.ADD_USER)} style={styles.addButton}>
                     <UserAddIcon />
                 </TouchableOpacity> */}
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '84%',
+        width: '100%',
         height: hp(6),
         borderRadius: 12,
         marginTop: hp(4),

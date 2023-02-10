@@ -47,6 +47,7 @@ const LiveTrackinDashboard = () => {
 	const [coordList, setCoordList] = useState([])
 	const [deviceNameArr, setDeviceNameArr] = useState([])
 	const [lineString, setLineString] = useState(null)
+	const [showLocationAddress,setShowLocationAddress] = useState(false)
 	const [region, setRegion] = useStateRef()
 
 
@@ -177,7 +178,8 @@ const LiveTrackinDashboard = () => {
 		const address = isContainCoordinate ? startingDestination.address : ''
 		const coordinate = isContainCoordinate ? { latitude: startingDestination.latitude, longitude: startingDestination.longitude } : null
 		return (
-			<Map.default style={StyleSheet.absoluteFillObject} region={region} ref={mapRef} showsUserLocation={false}>
+	
+			<Map.default style={[StyleSheet.absoluteFillObject,{marginBottom: hp(5.5 / 2)}]} region={region} ref={mapRef} showsUserLocation={false}>
 				{isContainCoordinate && <Map.Marker
 					coordinate={coordinate}
 					description={address}
@@ -228,9 +230,9 @@ const LiveTrackinDashboard = () => {
 			coordinate.push(startingDestination.latitude);
 		}
 		return (
-			<View style={{ flex: 1 }}>
-				<Map.default.MapView style={{ flex: 1 }} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
-					{/* <Map.default.UserLocation
+			<View style={{ flex: 1, }}>
+			<Map.default.MapView style={{ flex: 1 ,}} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}  onPress={()=>setShowLocationAddress(false)} >
+				{/* <Map.default.UserLocation
 							renderMode="normal"
 							visible={true}
 							showsUserHeadingIndicator={true}
@@ -321,14 +323,14 @@ const LiveTrackinDashboard = () => {
 			<View style={styles.deviceSummaryMainViewStyle}>
 				<View style={styles.leftMainViewStyle}>
 					<Text style={{ fontSize: hp(1.4), fontWeight: 'bold', color: ColorConstant.BLACK }}>
-						Live Tracking
+						Live Location
 					</Text>
 				</View>
 
 				{renderRightPanel()}
 			</View>
 
-			<View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2) }}>
+			<View style={{ height: hp(30), width: '100%', paddingHorizontal: wp(5), paddingBottom: hp(2),  }}>
 
 				{isAndroid ? renderMapBox() : renderAppleMap()}
 

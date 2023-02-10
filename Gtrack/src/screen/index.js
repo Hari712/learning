@@ -46,6 +46,7 @@ import TrackingDetails from './Dashboard/TrackingDetails'
 import GeoFenceCircle from './LiveTracking/GeoFence/GeoFenceCircle'
 import GeoFencePolyGon from './LiveTracking/GeoFence/GeoFencePolygon'
 import TripHistory from './LiveTracking/TripHistory/TripHistory'
+import LocationHistory from './LiveTracking/TripHistory/LocationHistory'
 import TripHistoryDetails from './LiveTracking/TripHistory/TripHistoryDetails'
 import DispatchRoute from './LiveTracking/TripHistory/DispatchRoute'
 import NoInternet from './NoInternet/NoInternet'
@@ -104,5 +105,6 @@ export {
     GeoFencePolyGon,
     NoInternet,
     LiveTrackingDetails,
-    AddMobileTracker
+    AddMobileTracker,
+    LocationHistory,
 }

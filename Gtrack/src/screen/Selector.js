@@ -308,6 +308,67 @@ export const getTripHistoryListInfo = createSelector(
     [getTripHistoryList],
     (info) => info
 )
+const getCombinedTripHistoryList = (state) => state.tripHistory && state.tripHistory.tripHistoryDetails ? state.tripHistory.tripHistoryDetails : {}
+
+export const getCombinedTripHistoryListInfo = createSelector(
+    [getCombinedTripHistoryList],
+    (info) => info
+)
+
+/*    
+ * Get Combined Trip History coordinates
+ */
+
+const getCombinedTripCoordinatesList = (state) => getCombinedTripHistoryCoord(state)
+
+function getCombinedTripHistoryCoord(state) {
+    const tripsInfo = state.tripHistory && state.tripHistory.tripHistoryDetails ? state.tripHistory.tripHistoryDetails : {}
+      console.log("statestatestatestatestatestatestate",tripsInfo)
+    let tripCoordsData
+//     if(tripsInfo != {}){
+//     // let tripdata = [].slice.call(tripsInfo).sort((a, b) => {
+//     //     console.log('a.indexa.index', a.tripStartLongitude)
+//     //     if (a.tripStartPositionId < b.tripStartPositionId)
+//     //         return -1;
+//     //     if (a.tripStartPositionId > b.tripStartPositionId)
+//     //         return 1;
+//     //     return 0;
+//     // })
+//     // var mapCombined = tripdata && tripdata.map((i) => i.tripTravelledPositions)
+//     // var mapCombined1 = tripdata && tripdata.map((i) => [i.tripEndLatitude, i.tripEndLongitude])
+
+//     // const mergeResult = [].concat.apply([], mapCombined);
+//     // console.log('tripsInfotripsInfotripsInfotripsInfotripsInfo',mergeResult)
+//     tripCoordsData = {
+//       deviceId:tripsInfo.deviceId,
+//       deviceName: tripsInfo.deviceName,
+//       tripStartAddress:tripsInfo.tripStartAddress,
+//       tripEndAddress:tripsInfo.tripEndAddress,
+//       tripMaxSpeed:tripsInfo.tripMaxSpeed,
+//       tripTravelledPositions: tripsInfo.tripTravelledPositions,
+//       tripStartPosition: tripsInfo.tripStartPosition,
+//       tripEndPosition: tripsInfo.tripEndPosition,
+//   }
+
+//   }
+//     else {tripCoordsData ={}}
+    return tripsInfo
+}
+// tripCoordsData = {
+//     deviceID:DemoData[0].deviceId,
+//     deviceName: DemoData[0].deviceName,
+//      startAddress:DemoData[0].tripStartAddress,
+//      endAdress:DemoData[0].tripStartAddress,
+//      tripMaxSpeed:DemoData[0].tripMaxSpeed,
+//     coords: DemoData[0].tripTravelledPositions,
+//     points0: DemoData[0].tripStartPosition,
+//     points: DemoData[0].tripEndPosition,
+
+// }
+export const getCombinedTripCoordinatesListInfo = createSelector(
+    [getCombinedTripCoordinatesList],
+    (info) => info
+)
 
 /*    
  * Get Group Devices for Livetracking

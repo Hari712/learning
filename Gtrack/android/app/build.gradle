@@ -194,8 +194,12 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
+    //if this dont work  
     implementation "com.facebook.react:react-native:+"  // From node_modules
 implementation 'androidx.appcompat:appcompat:1.0.0'
+// use this
+// implementation "com.facebook.react:react-native:0.63.2"  // From node_modules
+//     implementation 'androidx.appcompat:appcompat:1.1.0'
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'com.android.support:multidex:1.0.3'

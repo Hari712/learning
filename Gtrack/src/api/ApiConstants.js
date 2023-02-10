@@ -1,13 +1,15 @@
 const BASE_URL = 'https://dev-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
-
-export const env = 'dev' //'prod' //'dev' 
-
+// prod base url https://api.gtrackindia.com/gtrackapi/
+export const env = 'qa' //'prod' //'dev'
 // https://qa-api.vegitone.com/gtrackapi/
 // https://dev-api.vegitone.com/gtrackapi/
 
 const SUFFIX_URL = 'public/'
 
 const TRACCAR_URL = 'https://traccar-devqa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
+
+// prod traccar url https://traccar.gtrackindia.com/
+const SOCKET_URL = 'traccar-devqa.gtrackindia.com/'
 
 const AUTH = 'auth/'
 
@@ -20,7 +22,7 @@ const ApiConstants = {
     LOGIN: SUFFIX_URL + AUTH + 'login',
     SIGNUP: SUFFIX_URL + 'signup',
     TRACCAR_URL: TRACCAR_URL,
-    SOCKET_BASE_URL: 'traccar-devqa.gtrackindia.com/',
+    SOCKET_BASE_URL: SOCKET_URL,
     REFRESH_TOKEN: (userId) => `${SUFFIX_URL}${AUTH}${userId}/token`,
     FORGOT_PASSWORD: `${SUFFIX_URL}forgotPassword/getOTP`,
     VERIFY_OTP: `${SUFFIX_URL}forgotPassword/verifyOTP`,
@@ -73,20 +75,22 @@ const ApiConstants = {
     ENABLE_DISABLE_GEOFENCE: (userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
     TRACCAR_SESSION: (userId) => `${USER}${userId}/session`,
     GET_LAST_KNOWN_POSITIONS: (userId) => `${USER}${userId}/trace/positions`,
-    GET_GROUP_DEVICES: (userId) => `${USER}${userId}/trace/getGroupDevices`,
-    GET_ALL_LAST_KNOWN_POSITION: (userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
-    GET_ASSET_INFO_BY_TRACCAR_ID: (userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`,
-    GET_SETTINGS_NOTIFICATION: (userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
-    UPDATE_NOTIFICATION_SETTINGS: (userId) => `${USER}${userId}/trace/updateNotificationSettings`,
-    GET_TRIP_HISTORY: (userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
-    ADD_DEVICE_TOKEN: (userId) => `${USER}${userId}/trace/addDeviceToken`,
-    REMOVE_DEVICE_TOKEN_API: (userId) => `${USER}${userId}/trace/removeDeviceToken`,
-    SEARCH_GROUP: (userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
-    SEARCH_GEOFENCE: (userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
-    SEARCH_ALARMS: (userId, keyword) => `${USER}${userId}/trace/alerts?typeOrName=${keyword}`,
-    ADVANCE_SETTINGS: (userId) => `${USER}${userId}/settings`,
-    GET_NOTIFIED_DEVICES: (userId) => `${USER}${userId}/trace/notifiedDevices`,
-    GET_DEVICE_REPORT_DETAILS: (userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`,
+    GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`,
+    GET_ALL_LAST_KNOWN_POSITION:(userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
+    GET_ASSET_INFO_BY_TRACCAR_ID:(userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`,
+    GET_SETTINGS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
+    UPDATE_NOTIFICATION_SETTINGS:(userId) => `${USER}${userId}/trace/updateNotificationSettings`,
+    GET_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
+    GET_LOCATION_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getLocationHistory?from=${from}&to=${to}`,
+    GET_COMBINED_TRIP_HISTORY:(userId, deviceId, from, to) => `${USER}${userId}/trace/${deviceId}/getTripHistory?from=${from}&to=${to}`,
+    ADD_DEVICE_TOKEN:(userId) => `${USER}${userId}/trace/addDeviceToken`,
+    REMOVE_DEVICE_TOKEN_API:(userId) => `${USER}${userId}/trace/removeDeviceToken`,
+    SEARCH_GROUP:(userId, groupName) => `${USER}${userId}/trace/getGroupDevices?name=${groupName}`,
+    SEARCH_GEOFENCE:(userId, keyword) => `${USER}${userId}/trace/geofences?typeOrName=${keyword}`,
+    SEARCH_ALARMS:(userId, keyword) => `${USER}${userId}/trace/alerts?typeOrName=${keyword}`,
+    ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
+    GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`,
+    GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`,
     GET_NOTIFICATION_LIST: (userId) => `${USER}${userId}/notification/list?type=FIREBASE`,
     UPDATE_NOTIFICATION_READ: (userId) => `${USER}${userId}/notification/markAsRead`,
     ADD_MOBILE_AS_TRACKER: (userId) => `${USER}${userId}/devices/mobile`

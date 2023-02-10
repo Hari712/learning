@@ -18,21 +18,33 @@ const Map = Platform.select({
     android: () => require('@react-native-mapbox-gl/maps')
 })();
 
-const DispatchRoute = ({ navigation, route }) => {
-
-    const { item } = route.params
-
+const DispatchRouteTotalTrip = ({ navigation, route }) => {
+    // item ,points,devicename,
+    const { tripData,devicename} = route.params
+    console.log('tripData[0]',tripData)
     const [lineString, setLineString] = useState(null)
     const [showStartLocation,setShowStartLocation] = useState(false)
     const [showEndLocation,setShowEndLocation] = useState(false)
+    const item = tripData.tripTravelledPositions 
+    const points= tripData.tripEndPosition
+    // const devicename = tripData.deviceName
+    const startAddress =tripData.tripStartAddress
+    const endAddress =tripData.tripEndAddress
     const mapRef = useRef()
-
+    // deviceId:DemoData[0].deviceId,
+    // deviceName: DemoData[0].deviceName,
+    // tripStartAddress:DemoData[0].tripStartAddress,
+    // tripEndAddress:DemoData[0].tripEndAddress,
+    // tripMaxSpeed:DemoData[0].tripMaxSpeed,
+    // tripTravelledPositions: DemoData[0].tripTravelledPositions,
+    // tripStartPosition: DemoData[0].tripStartPosition,
+    // tripEndPosition: DemoData[0].tripEndPosition,
     // useLayoutEffect(() => {
     //     navigation.setOptions({
     //         header: () => null ,
     //     })
     // }, [navigation])
-    console.log('DispatchRoute', item)
+    // console.log('DispatchRoute', tripData)
     useLayoutEffect(() => {
 
         navigation.setOptions({
@@ -43,7 +55,7 @@ const DispatchRoute = ({ navigation, route }) => {
                     fontWeight: '500',
                     //letterSpacing: 0,
                     textAlign:'center' }}>
-                    {item.deviceName}
+                {devicename}
                 </Text>          
             ),
             headerLeft: () => (
@@ -56,7 +68,7 @@ const DispatchRoute = ({ navigation, route }) => {
 
     function renderPopUpText(title, address) {
         return(
-            <View style={{width:wp(50),paddingHorizontal:hp(2)}}>
+            <View style={{width:wp(50),paddingHorizontal:hp(2),zIndex:1}}>
                 <View style={{flexDirection:'row'}}>
                     { title == 'Start' ? <StartPointIcon/> : <EndPointIcon/> }
                     <Text style={styles.title}>{title}</Text>
@@ -65,26 +77,26 @@ const DispatchRoute = ({ navigation, route }) => {
             </View>
         )
     }
-
-    
+   
     function renderPopup(title, address) {
         return(
             <Map.default.Callout 
                 contentStyle={{elevation:10,zIndex:10,borderColor:ColorConstant.WHITE,borderWidth:1,borderRadius:10}}
-                containerStyle={{zIndex:10}}
+                containerStyle={{zIndex:10,background:'red'}}
                 title={renderPopUpText(title, address)} 
+                // anchor={{x: 10, y: 50}} 
             />
         )
     }
 
     function renderMapBox() {
 
-        let tripStartCord = [item.tripTravelledPositions[0][1], item.tripTravelledPositions[0][0]]
-        let tripEndCord = [item.tripTravelledPositions[item.tripTravelledPositions.length - 1][1], item.tripTravelledPositions[item.tripTravelledPositions.length - 1][0]]
+        let tripStartCord = [item[0][1], item[0][0]]
+        let tripEndCord = [item[item.length - 1][1], item[item.length - 1][0]]
 
         useEffect(()=>{
             if(isAndroid){
-                let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return([coorItem[1],coorItem[0]])} )
+                let coordinateArray = item.map((coorItem)=>{return([coorItem[1],coorItem[0]])} )
                 // coordinateArray = [...coordinateArray]
                 setLineString({
                     "type": "FeatureCollection",
@@ -102,21 +114,29 @@ const DispatchRoute = ({ navigation, route }) => {
             }
         },[])
 
+      
         function renderStartPoint() {
+
             return(
+          
                 <Map.default.PointAnnotation
                     id='startPoint' 
+                    style={{zIndex: 99999999}}
                     coordinate={tripStartCord}
-                    anchor={{x: 0.5, y: 0.5}}
+                    anchor={{x: 0.5, y: 1}}
                     title = {"Start"}
                     onSelected={(data)=>{setShowStartLocation(!showStartLocation),setShowEndLocation(false)}}
-                    onDeselected={(data)=>{setShowStartLocation(!showStartLocation),setShowEndLocation(false)}}
+                    // onDeselected={(data)=>setShowLastLocation(!showStartLocation)}
+                
                 >  
-                    <MarkerIcon width={20} height={20} />
-                    
-                    {/* {renderPopup('Start',item.tripStartAddress)} */}
+          
+                    <LocationOrangeIcon width={30} height={30}/>
+
+                    {/* {renderPopup('Start',startAddress)} */}
 
                 </Map.default.PointAnnotation>
+                
+            
             )
         }
 
@@ -127,15 +147,16 @@ const DispatchRoute = ({ navigation, route }) => {
                     coordinate={tripEndCord}
                     anchor={{x: 0.5, y: 1}}
                     onSelected={(data)=>{setShowEndLocation(!showEndLocation),setShowStartLocation(false)}}
-                    onDeselected={(data)=>{setShowEndLocation(!showEndLocation),setShowStartLocation(false)}}
                 >
+                       
                     <LocationOrangeIcon width={30} height={30}/>
 
-                    {/* {renderPopup('End',item.tripEndAddress)} */}
+                    {/* {renderPopup('End',endAddress)} */}
 
                 </Map.default.PointAnnotation>
             )
         }
+
 
         function renderLine() {
             return(
@@ -146,11 +167,11 @@ const DispatchRoute = ({ navigation, route }) => {
                         id='lineroute'
                         style={{
                             lineCap: 'round',
-                            lineWidth: 5,
+                            lineWidth: 4,
                             lineOpacity: 0.8,
                             lineColor: ColorConstant.ORANGE,
                         }}
-                    />
+                    />                 
                 </Map.default.ShapeSource>
             )
         }
@@ -160,50 +181,45 @@ const DispatchRoute = ({ navigation, route }) => {
         }
         return (
             <Map.default.MapView style={{ flex: 1,}}  onPress={()=>ShowPopup()} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
-                      {/* <Map.default.UserLocation
-                    renderMode='normal'
-                    visible={true}
-                    showsUserHeadingIndicator={true}
-                /> */}
+          
                 <Map.default.Camera
                     zoomLevel={15}
                     centerCoordinate={tripStartCord}
+                           
                 />
-
                 {!isEmpty(lineString) ? renderLine(): null}
-                {showStartLocation &&
+               {showStartLocation &&
           <Map.default.MarkerView
             id="annotaton-start"
-            anchor={{ x: 0.5, y: 1.1 }}
+            anchor={{ x: 0.5, y: 1.3 }}
             coordinate={tripStartCord}>
                     
-                    {renderPopup('Start',item.tripStartAddress)}
+                            {renderPopup('Start',startAddress)}
     
           </Map.default.MarkerView>
           }
              {showEndLocation &&
           <Map.default.MarkerView
             id="annotaton-end"
-            anchor={{ x: 0.5, y: 1.2 }}
+            anchor={{ x: 0.5, y: 1.3 }}
             coordinate={tripEndCord}>
-
-                     {renderPopup('End',item.tripEndAddress)}
+                    
+                    {renderPopup('End',endAddress)}
+    
           </Map.default.MarkerView>
           }
+      
                 {renderStartPoint()}
-
                 {renderEndPoint()}
+        
 
                 <Map.default.RasterSource {...rasterSourceProps}>
 						<Map.default.RasterLayer
 							id="googleMapLayer"
 							sourceID="googleMapSource"
-							// style={{rasterOpacity: 0.5}}
-					
 							layerIndex={0}
 						/>
-                </Map.default.RasterSource>	
-                
+                </Map.default.RasterSource>	 
             </Map.default.MapView>
         )
     }
@@ -212,30 +228,48 @@ const DispatchRoute = ({ navigation, route }) => {
 
         let initialRegion = 
         {
-            latitude: item.tripTravelledPositions[0][0],
-            longitude: item.tripTravelledPositions[0][1],
+            latitude: item[0][0],
+            longitude: item[0][1],
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
         }
 
-        let tripStartCord = {
-            latitude: item.tripTravelledPositions[0][0],
-            longitude: item.tripTravelledPositions[0][1],
+        let  tripStartCord = {
+            latitude: item[0][0],
+            longitude: item[0][1],
         }
-        let tripEndCord = {
-            latitude: item.tripTravelledPositions[item.tripTravelledPositions.length - 1][0],
-            longitude: item.tripTravelledPositions[item.tripTravelledPositions.length - 1][1]
+        let tripEndCord   = {
+            latitude: item[item.length - 1][0],
+            longitude: item[item.length - 1][1]
         }
 
         useEffect(()=>{
 
             if(!isAndroid){
-                let coordinateArray = item.tripTravelledPositions.map((coorItem)=>{return({longitude:coorItem[1],latitude:coorItem[0]})} )
+                let coordinateArray = item.map((coorItem)=>{return({longitude:coorItem[1],latitude:coorItem[0]})} )
                 // coordinateArray = [tripStartCord,...coordinateArray,tripEndCord]
+                console.log('coordinateArraycoordinateArraycoordinateArray',coordinateArray)
                 setLineString(coordinateArray)
             }
         },[])
+        console.log('pointspointspointspoints',points)
+        function renderPoinst() {
+            return(
+                <>
+                     {points &&  points.map(coordInfo => { return(
+                        <Map.Marker
+                   
+                            coordinate={{
+                                latitude: coordInfo[0],
+                                longitude: coordInfo[1]
+                            }}
+                        />
+                    )})}
+                </>
+            )
+        }
 
+   
         return (
 
             <Map.default
@@ -243,26 +277,28 @@ const DispatchRoute = ({ navigation, route }) => {
                 ref={mapRef}
                 initialRegion={initialRegion}
                 showsUserLocation={false}
+        
             >
                 <Map.Marker coordinate={tripStartCord} >
-                    <MarkerIcon/>
+                <LocationOrangeIcon/>
                     <Map.Callout>
-                        {renderPopUpText('Start',item.tripStartAddress)}
+                        {renderPopUpText('Start',startAddress)}
                     </Map.Callout>
                 </Map.Marker>
-
+               {renderPoinst()}
                 <Map.Marker coordinate={tripEndCord}  >
                     <LocationOrangeIcon/>
                     <Map.Callout>
-                        {renderPopUpText('End',item.tripEndAddress)}
+                        {renderPopUpText('End',endAddress)}
                     </Map.Callout>
                 </Map.Marker>
-
+         
                 <Map.Polyline
                     coordinates={lineString}
                     strokeColor={ColorConstant.ORANGE}
                     strokeWidth={3}
                 />
+                
             </Map.default>
         )
     }
@@ -290,4 +326,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default DispatchRoute
+export default DispatchRouteTotalTrip

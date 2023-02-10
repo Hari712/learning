@@ -11,10 +11,11 @@ import {
     Button,
     ActivityIndicator,
 } from 'react-native';
+import NavigationService from '../../../navigation/NavigationService'
 import { ColorConstant } from '../../../constants/ColorConstants';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { DropDown, TextField, FontSize } from '../../../component';
-import { getLoginState, getTripHistoryListInfo } from '../../Selector';
+import { getCombinedTripHistoryListInfo, getLoginState, getTripHistoryListInfo, getCombinedTripCoordinatesListInfo } from '../../Selector';
 import { useDispatch, useSelector } from 'react-redux';
 import { translate } from '../../../../App';
 import { BackIcon, CalenderIconBlue, NoRecordFoundImage } from '../../../component/SvgComponent';
@@ -24,24 +25,30 @@ import RouteDetails from './RouteDetails';
 import * as TripHistoryActions from './TripHistory.Action';
 import AppManager from '../../../constants/AppManager';
 import isEmpty from 'lodash/isEmpty'
+import { SCREEN_CONSTANTS } from '../../../constants/AppConstants'
 
 const TripHistoryDetails = ({ navigation, route }) => {
 
-    const { data } = route.params
+    const { data,isMobileTracker } = route.params
 
-    const { loginData, isConnected, routeDetails } = useSelector(state => ({
+    const { loginData, isConnected, routeDetails, combinedTripHistory, tripsCoordinates } = useSelector(state => ({
         loginData: getLoginState(state),
         isConnected: state.network.isConnected,
-        routeDetails: getTripHistoryListInfo(state)
+        routeDetails: getTripHistoryListInfo(state),
+        combinedTripHistory: getCombinedTripHistoryListInfo(state),
+        tripsCoordinates: getCombinedTripCoordinatesListInfo(state)
     }))
 
-    const dispatch = useDispatch()
+    console.log('combined trip history-----', tripsCoordinates,combinedTripHistory)
 
+    const dispatch = useDispatch()
+    const [isMobileDevice,setIsMobileDevice]= useState(isMobileDevice)
     const [startDate, setStartDate] = useState();
     const [endDate, setEndDate] = useState();
     const [isStartDateVisible, setIsStartDateVisible] = useState(false);
     const [isEndDateVisible, setIsEndDateVisible] = useState(false);
     const [selectedDay, setSelectedDay] = useState("Today")
+    const [selectedDuration, setSelectedDuration] = useState("5")
     const [dropdownPosY, setDropdownPosY] = useState()
     const [routeData, setRouteData] = useState([])
     const [pageIndex, setPageIndex] = useState(0)
@@ -50,14 +57,49 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [isLoadMoreData, setIsLoadMoreData] = useState(false)
     const [onEndReachedCalledDuringMomentum, setOnEndReachedCalledDuringMomentum] = useState(false)
     const [isFirstSearch, setIsFirstSearch] = useState(false);
+    const [combined, setConbined] = useState()
+    const [combined1, setConbined1] = useState()
 
     useEffect(() => {
-        if (isFirstSearch)
+        if (isFirstSearch) {
             setRouteData(routeDetails)
-        else
+            // CombieCurrentDayTrip(routeDetails)
+            //     let routeDatas =routeDetails;
+            //     let tripdata =routeDatas.sort((a, b) => {
+            //         if (a.tripStartPositionId < b.tripStartPositionId)
+            //           return -1;
+            //         if (a.tripStartPositionId > b.tripStartPositionId)
+            //           return 1;
+            //         return 0;
+            //       })
+            // var mapCombined = tripdata &&  tripdata.map((i)=> i.tripTravelledPositions)
+            // var mapCombined1 = tripdata &&  tripdata.map((i)=> [i.tripEndLatitude,i.tripEndLongitude])
+
+            // const mergeResult =  [].concat.apply([], mapCombined);
+
+            // console.log("Success212121",mapCombined1)
+            // setConbined(mergeResult)
+            // setConbined1(mapCombined1)
+            // console.log('routeDatarouteDatarouteDatarouteData',routeDatas);
+        }
+        else {
+            // let routeDatas =[...routeData, ...routeDetails];
+
             setRouteData([...routeData, ...routeDetails])
 
+            // console.log('routeDatarouteDatarouteDatarouteData',routeDatas);
+
+        }
+
+
     }, [routeDetails])
+
+    useEffect(() => {
+        if (!isEmpty(tripsCoordinates)) {
+            setConbined(tripsCoordinates.tripTravelledPositions)
+            setConbined1(tripsCoordinates.tripEndPosition)
+        }
+    }, [tripsCoordinates])
 
     useEffect(() => {
         setRouteData([])
@@ -65,9 +107,11 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
     useEffect(() => {
         if (startDate && endDate) {
+            setConbined(null)
+            setConbined1(null)
             fetchFirstTripHistory()
         }
-    }, [startDate, endDate])
+    }, [startDate, endDate,selectedDuration])
 
     useEffect(() => {
         if (isLoadMoreData) {
@@ -75,7 +119,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
         }
     }, [pageIndex, isLoadMoreData])
 
-
+    // console.log('combinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistorycombinedTripHistory', combinedTripHistory, routeDetails, routeDetails)
     useEffect(() => {
 
         let todayDate = Moment().format('YYYY-MM-DD');
@@ -87,7 +131,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
         let currentMonthDate = Moment().date(1).format('YYYY-MM-DD')
         setOnEndReachedCalledDuringMomentum(false)
         if (selectedDay) {
-
+            setConbined(null)
+            setConbined1(null)
             switch (selectedDay) {
                 case 'Today':
                     setStartDate(todayDate)
@@ -130,12 +175,30 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "pageNumber": pageIndex,
                 "pageSize": pageCount,
                 "useMaxSearchAsLimit": false,
-                "searchColumnsList": null,
+                "searchColumnsList": [{
+                    "columnName" : "duration",
+                    "searchStr" : selectedDuration
+                }],
                 "sortHeader": "id",
                 "sortDirection": "DESC"
             }
             setIsFirstSearch(false)
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            console.log('  if(!isMobileDevice){ 10',isMobileTracker)
+            if(!isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 1',isMobileTracker)
+              dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            } else{
+                AppManager.hideLoader()
+              }
+             if(isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 11',isMobileTracker)
+              dispatch(TripHistoryActions.getLocationHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            }
+            else{
+              AppManager.hideLoader()
+            }
         } else {
             AppManager.showNoInternetConnectivityError()
         }
@@ -152,14 +215,58 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 "pageNumber": 0,
                 "pageSize": pageCount,
                 "useMaxSearchAsLimit": false,
-                "searchColumnsList": null,
+                "searchColumnsList": [{
+                    "columnName" : "duration",
+                    "searchStr" : selectedDuration
+                }],
                 "sortHeader": "id",
                 "sortDirection": "DESC"
             }
             setIsFirstSearch(true)
-            dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            console.log('  if(!isMobileDevice){ 101',isMobileTracker)
+            if(!isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 1',isMobileTracker)
+              dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            } else{
+                AppManager.hideLoader()
+              }
+             if(isMobileTracker){
+                AppManager.hideLoader()
+                console.log('  if(!isMobileDevice){ 11',isMobileTracker)
+              dispatch(TripHistoryActions.getLocationHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+            }
+            else{
+              AppManager.hideLoader()
+            }
+           
+          
         } else {
             AppManager.showNoInternetConnectivityError()
+        }
+    }
+    const fetchCombinedTripHistory = () => {
+        AppManager.showLoader()
+        const start = Moment(startDate).format("YYYY-MM-DDTHH:mm:SS.000");
+        const end = Moment(endDate).format("YYYY-MM-DDT23:59:59.000")
+        console.log('in if of sttart and end same trip historu', endDate, startDate)
+        if (startDate == endDate) {
+            console.log('in if of sttart and end same trip historu')
+            dispatch(TripHistoryActions.getCombinedTripHistoryRequest(loginData.id, data.id, start, end, onSuccess, onError))
+        }
+        function onSuccess(data) {
+            console.log("SuccessonSuccessCombined", data)
+            AppManager.hideLoader()
+        }
+
+        function onError(error) {
+            AppManager.hideLoader()
+            console.log("Error", error)
+
+            // setIsLoadMoreData(false)
+            // let pagenumber = pageIndex - 1 < 0 ? 0 : pageIndex - 1
+            // setPageIndex(pagenumber)
+            AppManager.showSimpleMessage('danger', { message: error, description: '', floating: true })
         }
     }
 
@@ -172,11 +279,11 @@ const TripHistoryDetails = ({ navigation, route }) => {
                     fontWeight: '500',
                     textAlign: 'center'
                 }}>
-                    {translate("Trip History")}
+                    {!isMobileTracker ? translate("Trip History") :translate("Location History")}
                 </Text>
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => navigation.goBack()}>
+                <TouchableOpacity style={{ padding: hp(2) }} onPress={() => { navigation.goBack(), dispatch(TripHistoryActions.clearCombinedHistoryData()) }}>
                     <BackIcon />
                 </TouchableOpacity>
             )
@@ -184,8 +291,13 @@ const TripHistoryDetails = ({ navigation, route }) => {
     }, [navigation]);
 
     function onSuccess(data) {
-        console.log("Success", data)
-
+        console.log("Success", data,startDate === endDate,startDate , endDate)
+        if (startDate === endDate) {
+            if(pageIndex === 0){
+                fetchCombinedTripHistory()
+            }
+          
+        }
         const arrList = data.result.data ? data.result.data : []
         const totalCountLocal = data.result.totalCount ? data.result.totalCount : 0
         if (isEmpty(arrList)) {
@@ -196,6 +308,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
         // setIsRefreshing(false)
         setIsLoadMoreData(false)
         AppManager.hideLoader()
+
     }
 
     function onError(error) {
@@ -272,7 +385,14 @@ const TripHistoryDetails = ({ navigation, route }) => {
             </View>
         );
     }
-    console.log('setSelectedDay', selectedDay)
+    function combineTripHistory() {
+        return (
+            <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.DISPATCH_ROUTE_TOTAL, {tripData: combinedTripHistory, item: combinedTripHistory.tripTravelledPositions, points: combinedTripHistory.tripEndPosition, devicename: data.name })} style={styles.combineTripHistoryMainView}>
+                <Text style={styles.CombineTripHistoryTextView}>Combined Trip History</Text>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <View style={styles.container}>
 
@@ -303,35 +423,70 @@ const TripHistoryDetails = ({ navigation, route }) => {
 
                             </TouchableOpacity>
                         </View>
-
+                        {/* { combineTripHistoryGet()} */}
+                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && combinedTripHistory && combineTripHistory()
+                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && combinedTripHistory && combineTripHistory() : null}
+                     
 
                     </View>
-
-                    {routeData.length > 0 ?
-                        <RouteDetails
+                   { isMobileTracker  && routeData.length > 0 ?
+                   <RouteDetails
+                        isMobileTracker ={isMobileTracker}
+                        routeDetails={routeData}
+                        loadMoreData={loadMoreData}
+                        setOnEndReachedCalledDuringMomentum={setOnEndReachedCalledDuringMomentum}
+                        onEndReachedCalledDuringMomentum={onEndReachedCalledDuringMomentum}
+                        renderFooter={renderFooter}
+                    /> 
+                     :!isMobileTracker &&routeData.length > 0 ? 
+                     <RouteDetails
+                            isMobileTracker ={isMobileTracker}
                             routeDetails={routeData}
                             loadMoreData={loadMoreData}
                             setOnEndReachedCalledDuringMomentum={setOnEndReachedCalledDuringMomentum}
                             onEndReachedCalledDuringMomentum={onEndReachedCalledDuringMomentum}
                             renderFooter={renderFooter}
                         />
-                        : renderNoRecordsFoundLabel()}
+               :  renderNoRecordsFoundLabel()
+                 }
+              
 
                     <View
                         style={{
-                            top: dropdownPosY,
+                            flexDirection:'row',
                             position: 'absolute',
-                            width: "100%",
+                            width: "95%",
                             alignSelf: 'center',
-                            paddingHorizontal: hp(3)
-                        }}
-                    >
-                        <DropDown
+                        }}>
+                        <View
+                         style={{
+                            top: dropdownPosY,
+                            width: "70%",
+                            paddingHorizontal: hp(1)
+                        }}>
+                            <DropDown
                             label="Select Day"
                             defaultValue={selectedDay}
                             valueSet={setSelectedDay}
                             dataList={daysList}
                         />
+                        </View>
+                        <View
+                         style={{
+                            top: dropdownPosY,
+                            width: "30%",
+                            alignSelf: 'center',
+                            paddingHorizontal: hp(1)
+                        }}> 
+                        <DropDown
+                            label="Time Gap"
+                            defaultValue={selectedDuration}
+                            valueSet={setSelectedDuration}
+                            dataList={timeList}
+                        />
+                        </View>
+                        
+                       
                     </View>
 
                     <DateTimePickerModal
@@ -355,7 +510,169 @@ const TripHistoryDetails = ({ navigation, route }) => {
 };
 
 const daysList = ['Today', 'Yesterday', 'Last Week', 'Last Month', 'Custom'];
-
+const timeList = ['5','10','15','20','25','30']
+const  datas= [
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T04:52:27.000+0000",
+      "tripLatitude": 22.318144887685776,
+      "tripLongitude": 73.167904028669,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T04:57:00.000+0000",
+      "tripLatitude": 22.318177660927176,
+      "tripLongitude": 73.16773270256817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T05:02:00.000+0000",
+      "tripLatitude": 22.318141534924507,
+      "tripLongitude": 73.167660869658,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T05:16:19.000+0000",
+      "tripLatitude": 22.318068,
+      "tripLongitude": 73.1676817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T07:59:55.000+0000",
+      "tripLatitude": 22.318130493164062,
+      "tripLongitude": 73.16771585501094,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T08:22:22.000+0000",
+      "tripLatitude": 22.318068,
+      "tripLongitude": 73.1676817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-24T08:27:03.000+0000",
+      "tripLatitude": 22.318068,
+      "tripLongitude": 73.1676817,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T04:54:12.000+0000",
+      "tripLatitude": 22.318104,
+      "tripLongitude": 73.167706,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T05:30:16.000+0000",
+      "tripLatitude": 22.31793212890625,
+      "tripLongitude": 73.16801896621531,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:12:22.000+0000",
+      "tripLatitude": 22.3181097,
+      "tripLongitude": 73.1677045,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:17:20.000+0000",
+      "tripLatitude": 22.293,
+      "tripLongitude": 73.164,
+      "tripDistance": 0,
+      "tripAddress": "Old Padra Road, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:27:05.000+0000",
+      "tripLatitude": 22.278,
+      "tripLongitude": 73.162,
+      "tripDistance": 0,
+      "tripAddress": "Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:32:18.000+0000",
+      "tripLatitude": 22.31467199,
+      "tripLongitude": 73.1655254,
+      "tripDistance": 0,
+      "tripAddress": "Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T06:39:21.000+0000",
+      "tripLatitude": 22.3181107,
+      "tripLongitude": 73.1677087,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T07:15:02.000+0000",
+      "tripLatitude": 22.3181117,
+      "tripLongitude": 73.1677156,
+      "tripDistance": 0,
+      "tripAddress": "Genda Circle, Vadodara, Gujarat, IN",
+      "tripDuration": 0
+    },
+    {
+      "deviceId": 607,
+      "deviceName": "First Dev Device",
+      "tripTime": "2022-11-25T08:51:49.000+0000",
+      "tripLatitude": 22.308,
+      "tripLongitude": 73.165,
+      "tripDistance": 0,
+      "tripAddress": null,
+      "tripDuration": 0
+    }
+  ]
 const styles = StyleSheet.create({
     container: {
         //alignItems: 'center',
@@ -391,12 +708,39 @@ const styles = StyleSheet.create({
                 marginTop: hp(2),
             },
 
+
     outerStyle: {
         backgroundColor: ColorConstant.WHITE,
         borderRadius: 4,
         borderBottomWidth: Platform.OS == 'android' ? 1 : 0,
         borderColor: ColorConstant.GREY,
         elevation: 2,
+    },
+    combineTripHistoryMainView: {
+        width: '60%',
+        alignSelf: 'center',
+        // marginVertical: hp(1.5),
+
+        // alignSelf: 'center',
+        marginHorizontal: hp(3),
+        backgroundColor: ColorConstant.ORANGE,
+        borderRadius: 10,
+        borderWidth: Platform.OS == 'ios' ? 0.3 : 0,
+        borderColor: ColorConstant.GREY,
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.27,
+        shadowRadius: 4.65,
+        alignContent: 'center'
+    },
+    CombineTripHistoryTextView: {
+        color: ColorConstant.WHITE,
+        fontSize: FontSize.FontSize.medium, alignSelf: 'center',
+        marginVertical: Platform.OS == 'ios' ? hp(1.3) : hp(0.5),
     },
     dropDown: {
         flexDirection: 'row',
