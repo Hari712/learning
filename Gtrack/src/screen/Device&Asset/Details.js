@@ -226,6 +226,8 @@ const Details = ({ route, navigation }) => {
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
         const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.subscriptionPlanCurrency.monthlyFee : devicePlan.subscriptionPlanCurrency.annualFee
         const planDetail = planData && planData[upperCase(devicePlanName)]
+        const deviceUpdateFrequency =   devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan &&  devicePlan.subscriptionPlanCurrency.subscriptionPlan.updateFrequency ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.updateFrequency : null
+        const deviceDataRetention =   devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan &&  devicePlan.subscriptionPlanCurrency.subscriptionPlan.dataRetention ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.dataRetention : null
         // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
         // const actualTax = (planPrice * tax) / 100
         // const payableAmount = planPrice + actualTax
@@ -251,8 +253,8 @@ const Details = ({ route, navigation }) => {
                 </View>
                 <View style={styles.features}>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{translate("Features")}</Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail?.lineOne ?planDetail.lineOne :'-'}</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail?.lineTwo?planDetail.lineTwo :'-'}</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {deviceUpdateFrequency ? `Update frequency - ${deviceUpdateFrequency} sec` :'-'}</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {deviceDataRetention ? `Data retention - ${deviceDataRetention} year` :'-'}</Text></Text>
                 </View>
             </>
         )

@@ -1,4 +1,4 @@
-const BASE_URL = 'https://dev-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://qa-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 // prod base url https://api.gtrackindia.com/gtrackapi/
 export const env = 'qa' //'prod' //'dev'
 // https://qa-api.vegitone.com/gtrackapi/
@@ -9,6 +9,7 @@ const SUFFIX_URL = 'public/'
 const TRACCAR_URL = 'https://traccar-devqa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
 
 // prod traccar url https://traccar.gtrackindia.com/
+// dev traccar url 'traccar-devqa.gtrackindia.com/'
 const SOCKET_URL = 'traccar-devqa.gtrackindia.com/'
 
 const AUTH = 'auth/'
@@ -91,7 +92,7 @@ const ApiConstants = {
     ADVANCE_SETTINGS:(userId) => `${USER}${userId}/settings`,
     GET_NOTIFIED_DEVICES:(userId) => `${USER}${userId}/trace/notifiedDevices`,
     GET_DEVICE_REPORT_DETAILS:(userId, deviceId) => `${USER}${userId}/devices/${deviceId}/export`,
-    GET_NOTIFICATION_LIST: (userId) => `${USER}${userId}/notification/list?type=FIREBASE`,
+    GET_NOTIFICATION_LIST: (userId) => `${USER}${userId}/notification/list?type=WEB`,
     UPDATE_NOTIFICATION_READ: (userId) => `${USER}${userId}/notification/markAsRead`,
     ADD_MOBILE_AS_TRACKER: (userId) => `${USER}${userId}/devices/mobile`
 }
