@@ -108,7 +108,7 @@ const SensorInfo = ({ navigation }) => {
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
 
                     {/* Arrow Left Side */}
-                    <TouchableOpacity onPress={() => c} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
+                    <TouchableOpacity onPress={() =>toggleExpand(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
                         {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
                     </TouchableOpacity>
 
