@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet, Dimensions, TextInput, LayoutAnimation } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 // import * as TripHistoryActions from './TripHistory.Action'
 import { ColorConstant } from '../../../constants/ColorConstants'
@@ -90,7 +90,19 @@ const LocationHistory = ({ navigation }) => {
             </>
         )
     }
-
+    const toggleExpand=(index)=>{
+        // (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)]
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        if(index == selectedKey){
+            setSelectedKey(-1) 
+          
+        }
+        else{
+            setSelectedKey(index)
+        }
+     
+        // this.setState({expanded : !this.state.expanded})
+      }
     const deviceGroupInfoItem = ({ item, index }) => {
         const device1 =  item.devices.filter(name => name.uniqueId.substring(0,2)  === 'GT').map(filteredName => 
      filteredName
@@ -101,13 +113,13 @@ const LocationHistory = ({ navigation }) => {
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
 
                     {/* Arrow Left Side */}
-                    <TouchableOpacity onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
+                    <TouchableOpacity onPress={() => toggleExpand(index)} style={[styles.arrow, { backgroundColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLUE }]}>
                         {(index == selectedKey) ? <UpArrowIcon /> : <DownArrowIcon />}
                     </TouchableOpacity>
 
                     <View style={{ flex: 1, padding: 10 }} onLayout={({ nativeEvent }) => { setSubContainerHeight(nativeEvent.layout.height) }} >
                         {/* heading */}
-                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => (index == selectedKey) ? setSelectedKey(-1) : setSelectedKey(index)}>
+                        <TouchableOpacity style={{ flexDirection: 'row', width: '100%', paddingHorizontal: 10 }} onPress={() => toggleExpand(index)}>
                             <Text style={{ flex: 1, color: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.BLACK }}>{item.groupName}</Text>
                             {/* {isDefault ? renderDefaultContainer() : renderActionButton()} */}
                             {(index !== selectedKey) ?

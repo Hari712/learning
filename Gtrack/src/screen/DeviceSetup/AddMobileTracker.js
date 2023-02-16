@@ -15,7 +15,7 @@ import { translate } from '../../../App'
 import AppManager from '../../constants/AppManager'
 import isEmpty from 'lodash/isEmpty'
 import * as DeviceActions from './Device.Action'
-import { getFormattedPhoneNumber } from '../../utils/helper'
+import { getFormattedPhoneNumber, validateEmail, validateEmailorPhoneNumber, validateName, validatePhoneNumber } from '../../utils/helper'
 import Modal from 'react-native-modal'
 import { CountrySelection } from 'react-native-country-list'
 
@@ -76,9 +76,28 @@ const AddMobileTracker = ({ navigation }) => {
             else if (isEmpty(deviceName)) {
                 message = translate(AppConstants.EMPTY_DEVICE_NAME)
             }
+            else if (!validateEmail(email)) {
+                console.log('!validateEmailorPhoneNumber(email)',!validateEmailorPhoneNumber(email))
+				message = translate(AppConstants.INVALID_EMAIL);
+			} 
+            else if (!validateName(firstName)) {
+				message = translate(AppConstants.INVALID_FIRST_NAME);
+			}
+            else if (!validateName(lastName)) {
+				message = translate(AppConstants.INVALID_LAST_NAME);
+			}
+            else if (!validatePhoneNumber(phoneNumber)) {
+                console.log('!validateEmailorPhoneNumber(email)',!validateEmailorPhoneNumber(email))
+				message = translate(AppConstants.INVALID_PHONE_NUMBER);
+			} 
+    
+			if (!isEmpty(message)) {
+				AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true });
+			} 
             if (!isEmpty(message)) {
                 AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
-            } else {
+            } 
+            else {
                 AppManager.showLoader()
                 const requestBody = {
                     "firstName": firstName,
@@ -141,7 +160,7 @@ const AddMobileTracker = ({ navigation }) => {
             </Modal>
         )
     }
-
+    console.log('lastNamelastNamelastNamelastName',lastName.length)
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView keyboardShouldPersistTaps='handled' style={{ height: "100%" }}>
@@ -157,7 +176,7 @@ const AddMobileTracker = ({ navigation }) => {
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.3) }}
                             contentInset={{ label: hp(-0.5) }}
-                            ref={firstNameRef}
+                            maxLength={30}
                             inputContainerStyle={styles.inputContainer}
                         />
                     </View>
@@ -171,6 +190,7 @@ const AddMobileTracker = ({ navigation }) => {
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.3) }}
                             contentInset={{ label: hp(-0.5) }}
+                            maxLength={30}
                             ref={lastNameRef}
                             inputContainerStyle={styles.inputContainer}
                         />
@@ -226,6 +246,7 @@ const AddMobileTracker = ({ navigation }) => {
                                 formatText={input => handleOnChangePhone(input)}
                                 style={styles.textNameStyle}
                                 labelFontSize={hp(1.4)}
+                                maxLength={10}
                                 labelTextStyle={{ top: hp(0.5) }}
                             />
                         </View>
@@ -240,6 +261,7 @@ const AddMobileTracker = ({ navigation }) => {
                             labelFontSize={hp(1.4)}
                             labelTextStyle={{ top: hp(0.3) }}
                             contentInset={{ label: hp(-0.5) }}
+                            maxLength={15}
                             ref={deviceNameRef}
                             inputContainerStyle={styles.inputContainer}
                         />

@@ -81,6 +81,9 @@ export const SCREEN_CONSTANTS = {
 export const AppConstants = {
     EMPTY_EMAIL_OR_PHONE: "Empty_Email_Or_Phone",
     INVALID_EMAIL_OR_PHONE: "Invalid_Email_Or_Phone",
+    INVALID_FIRST_NAME:'Invlid_First_Name',
+    INVALID_LAST_NAME:'Invlid_Last_Name',
+    INVALID_PHONE_NUMBER:'Invalid_Phone_number',
     EMPTY_PASSWORD: "Empty_Password",
     EMPTY_OTP: "Empty_Otp",
     EMPTY_CONFIRM_PASSWORD: "Empty_Confirm_Password",

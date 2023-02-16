@@ -251,8 +251,8 @@ const Details = ({ route, navigation }) => {
                 </View>
                 <View style={styles.features}>
                     <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{translate("Features")}</Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail.lineOne}</Text></Text>
-                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail.lineTwo}</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail?.lineOne ?planDetail.lineOne :'-'}</Text></Text>
+                    <Text style={[styles.textStyle, { marginTop: hp(1) }]}>{'\u2B24'} <Text style={{ color: ColorConstant.BLACK }}>    {planDetail?.lineTwo?planDetail.lineTwo :'-'}</Text></Text>
                 </View>
             </>
         )

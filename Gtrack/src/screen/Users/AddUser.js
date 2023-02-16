@@ -13,7 +13,7 @@ import AppManager from '../../constants/AppManager'
 import ShadowView from 'react-native-simple-shadow-view'
 import { translate } from '../../../App';
 import { BackIcon, UsersInfoIcon, UsersInfoIconClicked } from '../../component/SvgComponent';
-import { validateEmailorPhoneNumber } from '../../utils/helper';
+import { validateEmailorPhoneNumber,validateName } from '../../utils/helper';
 
 const AddUser = ({ navigation, route }) => {
 
@@ -60,9 +60,16 @@ const AddUser = ({ navigation, route }) => {
     if (isConnected) {
       let message = ''
       let emailStr = String(email).trim().toLowerCase()
+      
       if (!validateEmailorPhoneNumber(emailStr)) {
         message = translate(AppConstants.INVALID_EMAIL)
       }
+      else if (!validateName(firstName)) {
+				message = translate(AppConstants.INVALID_FIRST_NAME);
+			}
+      else if (!validateName(lastName)) {
+				message = translate(AppConstants.INVALID_LAST_NAME);
+			}
       if (!isEmpty(message)) {
         AppManager.showSimpleMessage('warning', { message: message, description: '', floating: true })
       }

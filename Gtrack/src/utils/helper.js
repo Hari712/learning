@@ -15,7 +15,14 @@ export const validateEmailorPhoneNumber = (input) => {
     const phoneRE = EMAIL_PHONE_REGEX
     return emailRE.test(input) || phoneRE.test(input)
 }
-
+export const validatePhoneNumber = (input) => {
+  const phoneRE = EMAIL_PHONE_REGEX
+  return  phoneRE.test(input)
+}
+export const validateEmail = (input) => {
+  const emailRE = EMAIL_VALIDATION_REGEX
+  return emailRE.test(input) 
+}
 export const validatePassword = (input) => {
     const passwordRE = PASSWORD_REGEX
     return passwordRE.test(input)
