@@ -225,7 +225,6 @@ const Details = ({ route, navigation }) => {
         const deActivationDate = devicePlan && devicePlan.deActivationDate ? devicePlan.deActivationDate : ''
         const planDuration = devicePlan && devicePlan.planDuration ? devicePlan.planDuration : null
         const planPrice = devicePlan && planDuration === 'MONTHLY' ? devicePlan.subscriptionPlanCurrency.monthlyFee : devicePlan.subscriptionPlanCurrency.annualFee
-        const planDetail = planData && planData[upperCase(devicePlanName)]
         const deviceUpdateFrequency =   devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan &&  devicePlan.subscriptionPlanCurrency.subscriptionPlan.updateFrequency ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.updateFrequency : null
         const deviceDataRetention =   devicePlan && devicePlan.subscriptionPlanCurrency && devicePlan.subscriptionPlanCurrency.subscriptionPlan &&  devicePlan.subscriptionPlanCurrency.subscriptionPlan.dataRetention ? devicePlan.subscriptionPlanCurrency.subscriptionPlan.dataRetention : null
         // const tax = devicePlan && devicePlan.tax ? devicePlan.tax : 0
@@ -419,34 +418,6 @@ const Details = ({ route, navigation }) => {
     )
 }
 
-const Data = [
-    {
-        name: 'Tom Smith',
-        role: 'Owner'
-    },
-    {
-        name: 'David Smith',
-        role: 'Regular'
-    }
-]
-const planData = {
-    "PROFESSIONAL" : {
-      lineOne: "Update frequency - 30 sec",
-      lineTwo: "Data retention - 2 year",
-    },
-    "BASIC" : {
-      lineOne: "Update frequency - 180 sec",
-      lineTwo: "Data retention - 3 month",
-    },
-    "STANDARD": {
-      lineOne: "Update frequency - 90 sec",
-      lineTwo: "Data retention - 1 year",
-    },
-    "PREMIUM": {
-      lineOne: "Update frequency - 60 sec",
-      lineTwo: "Data retention - 1.5 year",
-    },
-    };
 
 const styles = StyleSheet.create({
 
