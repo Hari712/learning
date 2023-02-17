@@ -153,11 +153,21 @@ function* requestGetGroupDevices(action) {
     const { userId,isMobileTracker, onSuccess, onError } = action
     try {
         console.log('isMobileTrackerisMobileTrackerisMobileTracker',isMobileTracker,action)
-        const url = ApiConstants.GET_GROUP_DEVICES(userId, isMobileTracker)
-        const response = yield call(API.get, url)
-        const result = response.result ? response.result : []
-        yield put(LivetrackingActions.setGroupDevicesResponse(result))
-        onSuccess(response)
+        if(isMobileTracker != null){
+            const url = ApiConstants.GET_GROUP_DEVICES(userId, isMobileTracker)
+            const response = yield call(API.get, url)
+            const result = response.result ? response.result : []
+            yield put(LivetrackingActions.setGroupDevicesResponse(result))
+            onSuccess(response)
+        }
+        else{
+            const url = ApiConstants.GET_GROUP_DEVICES_DASHBOARD(userId)
+            const response = yield call(API.get, url)
+            const result = response.result ? response.result : []
+            yield put(LivetrackingActions.setGroupDevicesResponse(result))
+            onSuccess(response)
+        }
+       
     } catch (error) {
         onError(error)
     }
