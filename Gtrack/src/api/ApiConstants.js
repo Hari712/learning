@@ -1,4 +1,4 @@
-const BASE_URL = 'https://qa-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 // prod base url https://api.gtrackindia.com/gtrackapi/
 export const env = 'qa' //'prod' //'dev'
 // https://qa-api.vegitone.com/gtrackapi/
@@ -6,11 +6,11 @@ export const env = 'qa' //'prod' //'dev'
 
 const SUFFIX_URL = 'public/'
 
-const TRACCAR_URL = 'https://traccar-devqa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
+const TRACCAR_URL = 'https://traccar.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
 
 // prod traccar url https://traccar.gtrackindia.com/
 // dev traccar url 'traccar-devqa.gtrackindia.com/'
-const SOCKET_URL = 'traccar-devqa.gtrackindia.com/'
+const SOCKET_URL = 'traccar.gtrackindia.com/'
 
 const AUTH = 'auth/'
 
@@ -76,7 +76,7 @@ const ApiConstants = {
     ENABLE_DISABLE_GEOFENCE: (userId, geofenceId, enable) => `${USER}${userId}/trace/geofences/${geofenceId}/devices/enabledisable?enable=${enable}`,
     TRACCAR_SESSION: (userId) => `${USER}${userId}/session`,
     GET_LAST_KNOWN_POSITIONS: (userId) => `${USER}${userId}/trace/positions`,
-    GET_GROUP_DEVICES:(userId) => `${USER}${userId}/trace/getGroupDevices`,
+    GET_GROUP_DEVICES:(userId,mobileTracker) => `${USER}${userId}/trace/getGroupDevices?isMobileTracker=${mobileTracker}`,
     GET_ALL_LAST_KNOWN_POSITION:(userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
     GET_ASSET_INFO_BY_TRACCAR_ID:(userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`,
     GET_SETTINGS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,

@@ -98,7 +98,7 @@ function AppNavigator() {
 						onGettingLastKnownPositionError
 					)
 				);
-				dispatch(LivetrackingActions.requestGetGroupDevices(response.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
+				dispatch(LivetrackingActions.requestGetGroupDevices(response.userDTO.id,null, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 				dispatch(DeviceActions.requestGetAllUserDevice(response.userDTO.id, {}, onGetAllUserDeviceSuccess, onGetAllUserDeviceError))
 				dispatch(SettingsActions.requestGetAdvanceSettings(response.userDTO.id, onFeedbackSuccess, onFeedbackError))
 				dispatch(LivetrackingActions.requestGetDevicesByUserId(response.userDTO.id, onFeedbackSuccess, onFeedbackError))

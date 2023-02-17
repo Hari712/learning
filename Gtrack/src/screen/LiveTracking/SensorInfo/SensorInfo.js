@@ -58,7 +58,7 @@ const SensorInfo = ({ navigation }) => {
 
     useEffect(() => {
         AppManager.showLoader()
-        dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id, onSuccess, onError))
+        dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id,null,onSuccess, onError))
     }, [])
 
     function onSuccess(data) {

@@ -37,7 +37,7 @@ const DeviceView = ({ navigation }) => {
     
     function fetchGroupDevices() {
         AppManager.showLoader() 
-        dispatch(LivetrackingActions.requestGetGroupDevices(user_id, onSuccess, onError))
+        dispatch(LivetrackingActions.requestGetGroupDevices(user_id,null ,onSuccess, onError))
     }
 
     function onSuccess(data) {    

@@ -54,7 +54,8 @@ const LocationHistory = ({ navigation }) => {
 
     function fetchGroupDevices() {
         AppManager.showLoader()
-        dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id, onSuccess, onError))
+        const isMobileTracker = true
+        dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id,isMobileTracker,onSuccess, onError))
     }
 
     function onSuccess(data) {
@@ -76,14 +77,14 @@ const LocationHistory = ({ navigation }) => {
                       let text = subitem.uniqueId;
                       let result = text.substring(0,2);
                       let deviceType = result === 'GT' ? true :false
-                    return (<>{deviceType ?
-                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, { data: subitem, isMobileTracker:deviceType})} >
+                    return (<>
+                        <TouchableOpacity key={subkey} style={styles.subCategory} onPress={() => navigation.navigate(SCREEN_CONSTANTS.TRIP_HISTORY_DETAILS, { data: subitem, isMobileTracker:true})} >
                             <View style={{ width: 2, backgroundColor: ColorConstant.BLUE, marginRight: hp(1), marginLeft: 4, borderRadius: 10 }} />
                             <Text style={{ flex: 1, color: ColorConstant.BLUE }}>{subitem.name}</Text>
 
                             <NextOrangeIcon style={styles.icon} />
                         </TouchableOpacity>
-                    :null }
+       
                     </>
                     )
                 })}
@@ -103,11 +104,7 @@ const LocationHistory = ({ navigation }) => {
      
         // this.setState({expanded : !this.state.expanded})
       }
-    const deviceGroupInfoItem = ({ item, index }) => {
-        const device1 =  item.devices.filter(name => name.uniqueId.substring(0,2)  === 'GT').map(filteredName => 
-     filteredName
-          )
-    console.log('item.devicesitem.devicesitem.devicesitem.devicesitem.devicesitem.devices',device1); 
+      const deviceGroupInfoItem = ({ item, index }) => {
         return (
             <View style={{ paddingVertical: hp(2), paddingHorizontal: hp(3), width: '100%' }}>
                 <View style={[styles.card, { height: (index == selectedKey) ? subContainerHeight : hp(5), borderColor: (index == selectedKey) ? ColorConstant.ORANGE : ColorConstant.WHITE }]} >
@@ -124,7 +121,7 @@ const LocationHistory = ({ navigation }) => {
                             {/* {isDefault ? renderDefaultContainer() : renderActionButton()} */}
                             {(index !== selectedKey) ?
                                 <View style={{ backgroundColor: ColorConstant.LIGHTENBLUE, width: wp(8), alignItems: 'center' }}>
-                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Bold' }}>{device1.length}</Text>
+                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Bold' }}>{item.devices.length}</Text>
                                 </View> : null
                             }
                         </TouchableOpacity>
@@ -133,7 +130,7 @@ const LocationHistory = ({ navigation }) => {
 
                         {(index == selectedKey) ?
                             <View style={{ marginTop: hp(1) }} >
-                                {!isEmpty(item.devices)  && device1.length > 0  ? renderDevices(item.devices) : <Text style={styles.noDevicesText}>No Devices</Text>}
+                                {!isEmpty(item.devices)  && item.devices.length > 0  ? renderDevices(item.devices) : <Text style={styles.noDevicesText}>No Devices</Text>}
                             </View>
                             : null}
 

@@ -150,9 +150,10 @@ function* requestEnableDisableGeofence(action) {
 }
 
 function* requestGetGroupDevices(action) {
-    const { userId, onSuccess, onError } = action
+    const { userId,isMobileTracker, onSuccess, onError } = action
     try {
-        const url = ApiConstants.GET_GROUP_DEVICES(userId)
+        console.log('isMobileTrackerisMobileTrackerisMobileTracker',isMobileTracker,action)
+        const url = ApiConstants.GET_GROUP_DEVICES(userId, isMobileTracker)
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
         yield put(LivetrackingActions.setGroupDevicesResponse(result))

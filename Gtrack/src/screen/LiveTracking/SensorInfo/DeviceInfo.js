@@ -177,7 +177,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Temperature")}</Text>
-                                <Text style={styles.textStyle}>{convertTemp(item.attributes.coolantTemp, advSettingsData)}</Text>
+                                <Text style={styles.textStyle}>{convertTemp(item.attributes.temp1, advSettingsData)}</Text>
                             </View>
                         </View>
 

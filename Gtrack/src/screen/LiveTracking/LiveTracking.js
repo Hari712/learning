@@ -28,6 +28,7 @@ import IconConstant from '../../constants/iconConstant';
 import { map } from 'lodash';
 import FindMyDevice from '../../component/SvgComponent/FindMyDevice';
 import AppManager from '../../constants/AppManager';
+import { useFocusEffect } from '@react-navigation/native';
 const { width, height } = Dimensions.get('window');
 
 
@@ -93,9 +94,32 @@ const LiveTracking = ({ navigation }) => {
 	}, [deviceList])
 
 	useEffect(() => {
+		AppManager.showLoader()
 		dispatch(LivetrackingActions.requestGetAlarmsList(loginData.id, onSuccess, onError))
+	
 	}, [])
-
+	
+	// React.useFocusEffect(
+	// 	React.useEffect(()=>{
+		
+	// 	},[])
+			
+	// 		// Expensive task
+		  
+	//   );
+	useFocusEffect(
+		React.useCallback(() => {
+	
+			dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id,null, onSuccess, onError))
+	
+		  return () => {
+	
+			// alert('Screen was unfocused');
+			// Useful for cleanup functions
+	
+		  };
+		}, [])
+	);
 	useEffect(()=>{
 		if(bottomSheetVisible === false){
 			setFlatlistData(liveTrakingDeviceList)
@@ -103,10 +127,12 @@ const LiveTracking = ({ navigation }) => {
 	},[liveTrakingDeviceList])
 
 	function onSuccess(data) {
+		AppManager.hideLoader()
 		console.log("Success", data)
 	}
 
 	function onError(error) {
+		AppManager.hideLoader()
 		console.log("Error", error)
 	}
 

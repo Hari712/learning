@@ -142,9 +142,10 @@ export const setDeviceStatusData = (data) => ({
     data
 })
 
-export const requestGetGroupDevices = (userId, onSuccess, onError) => ({
+export const requestGetGroupDevices = (userId, isMobileTracker, onSuccess, onError) => ({
     type: types.GET_GROUP_DEVICES_REQUEST,
     userId,
+    isMobileTracker,
     onSuccess,
     onError
 })

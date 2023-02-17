@@ -76,7 +76,7 @@ const Login = () => {
 		let deviceType = DeviceInfo.getSystemName();
 		let version = DeviceInfo.getVersion();
 		const traccarPassword = `g-track${data.userDTO.userKey}`;
-		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
+		dispatch(LivetrackingActions.requestGetGroupDevices(data.userDTO.id, null,onGetAllUserDeviceSuccess, onGetAllUserDeviceError));
 		dispatch(
 			LoginActions.requestTraccarSession(data.userDTO.id, onTraccarSessionSuccess, onTraccarSessionError)
 		);

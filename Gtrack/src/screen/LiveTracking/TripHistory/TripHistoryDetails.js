@@ -228,6 +228,9 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 AppManager.hideLoader()
                 console.log('  if(!isMobileDevice){ 1',isMobileTracker)
               dispatch(TripHistoryActions.getTripHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+              if (startDate === endDate) {
+                    fetchCombinedTripHistory()
+            }
             } else{
                 AppManager.hideLoader()
               }
@@ -235,6 +238,10 @@ const TripHistoryDetails = ({ navigation, route }) => {
                 AppManager.hideLoader()
                 console.log('  if(!isMobileDevice){ 11',isMobileTracker)
               dispatch(TripHistoryActions.getLocationHistoryRequest(requestBody, loginData.id, data.id, start, end, onSuccess, onError))
+              if (startDate === endDate) {
+                    fetchCombinedTripHistory()
+              
+            }
             }
             else{
               AppManager.hideLoader()
@@ -429,7 +436,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                      
 
                     </View>
-                   { isMobileTracker  && routeData.length > 0 ?
+                   { isMobileTracker == true  && routeData.length > 0 ?
                    <RouteDetails
                         isMobileTracker ={isMobileTracker}
                         routeDetails={routeData}
@@ -438,7 +445,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
                         onEndReachedCalledDuringMomentum={onEndReachedCalledDuringMomentum}
                         renderFooter={renderFooter}
                     /> 
-                     :!isMobileTracker &&routeData.length > 0 ? 
+                     :isMobileTracker  ==  false && routeData.length > 0 ? 
                      <RouteDetails
                             isMobileTracker ={isMobileTracker}
                             routeDetails={routeData}

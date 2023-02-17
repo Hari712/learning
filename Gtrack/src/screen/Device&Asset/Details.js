@@ -367,9 +367,10 @@ const Details = ({ route, navigation }) => {
         const groupDTO = deviceData && deviceData.groupDTO ? deviceData.groupDTO : null
         const users = groupDTO && groupDTO.users ? groupDTO.users : []
         const groupname = groupDTO ? groupDTO.groupName : 'None'
+        const isMoblieTracker =deviceDTO.isMobileTracker
         return (
             <>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+                <ScrollView contentContainerStyle={{ flexGrow: 1 ,height:hp(100)}}>
                     <View style={styles.container}>
                         <View style={styles.cardContainer}>
                             <View style={styles.headerDetail}>
@@ -396,8 +397,8 @@ const Details = ({ route, navigation }) => {
 
 
                         {renderDevicePlan(devicePlan)}
-                        {renderAsetInfo(assetDTO)}
-                        {renderUserInfo(users)}
+                        {!isMoblieTracker && renderAsetInfo(assetDTO)}
+                        {!isMoblieTracker && renderUserInfo(users)}
 
 
                         <TouchableOpacity style={styles.export} onPress={() => exportDeviceDetail()}>
@@ -411,10 +412,10 @@ const Details = ({ route, navigation }) => {
     }
 
     return (
-        <>
+        <View style={{flex:1, backgroundColor: ColorConstant.WHITE}}>
             {isLoading ? null : renderDeviceDetail()}
             {renderViewDialog()} 
-        </>
+        </View>
     )
 }
 
