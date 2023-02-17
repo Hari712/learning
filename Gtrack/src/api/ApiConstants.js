@@ -1,6 +1,6 @@
 const BASE_URL = 'https://api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 // prod base url https://api.gtrackindia.com/gtrackapi/
-export const env = 'qa' //'prod' //'dev'
+export const env = 'prod' //'prod' //'dev'
 // https://qa-api.vegitone.com/gtrackapi/
 // https://dev-api.vegitone.com/gtrackapi/
 

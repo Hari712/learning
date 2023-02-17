@@ -34,6 +34,7 @@ const CompleteSetup = ({ navigation }) => {
         }
         else if(env === 'prod') {
                 // paste Link
+                Linking.openURL("https://gtrackindia.com/")
         }
     }
 
