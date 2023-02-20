@@ -77,6 +77,7 @@ const ApiConstants = {
     TRACCAR_SESSION: (userId) => `${USER}${userId}/session`,
     GET_LAST_KNOWN_POSITIONS: (userId) => `${USER}${userId}/trace/positions`,
     GET_GROUP_DEVICES:(userId,mobileTracker) => `${USER}${userId}/trace/getGroupDevices?isMobileTracker=${mobileTracker}`,
+    GET_GROUP_DEVICES_DASHBOARD:(userId) => `${USER}${userId}/trace/getGroupDevices?isMobileTracker=`,
     GET_ALL_LAST_KNOWN_POSITION:(userId, positionId) => `${USER}${userId}/trace/positions/list?positionIds=${positionId}`,
     GET_ASSET_INFO_BY_TRACCAR_ID:(userId, traccarId) => `${USER}${userId}/devices/assetinformation/${traccarId}`,
     GET_SETTINGS_NOTIFICATION:(userId) => `${USER}${userId}/trace/alerts?typeOrName=`,
