@@ -1,4 +1,4 @@
-package com.gtrack;
+package com.ekzero.gtrack;
 
 import android.content.Intent;
 import android.os.Bundle;

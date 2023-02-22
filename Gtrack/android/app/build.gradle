@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.gtrack"
+        applicationId "com.ekzero.gtrack"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 15

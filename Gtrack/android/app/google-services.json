@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:580746676141:android:7d556125d2079289330324",
+        "android_client_info": {
+          "package_name": "com.ekzero.gtrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580746676141-vnck407bn9kdkrc20m4vf7qc3rh7ht52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADy_okkIO_irQO4n-wlxUlBuL3P4D7VOk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580746676141-vnck407bn9kdkrc20m4vf7qc3rh7ht52.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "580746676141-8k85del7pfrfcdmictrrtc704qvk2g55.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ekZero.Gtrack"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:580746676141:android:320260a11e403b29330324",
         "android_client_info": {
           "package_name": "com.gtrack"
@@ -29,6 +65,13 @@
             {
               "client_id": "580746676141-vnck407bn9kdkrc20m4vf7qc3rh7ht52.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "580746676141-8k85del7pfrfcdmictrrtc704qvk2g55.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ekZero.Gtrack"
+              }
             }
           ]
         }

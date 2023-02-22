@@ -1,4 +1,4 @@
-package com.gtrack;
+package com.ekzero.gtrack;
 import org.devio.rn.splashscreen.SplashScreen;
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;
