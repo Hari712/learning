@@ -16,7 +16,7 @@ const isAndroid = Platform.OS === 'android'
 
 const Map = Platform.select({
     ios: () => require('react-native-maps'),
-    android: () => require('@react-native-mapbox-gl/maps')
+    android: () => require('@rnmapbox/maps')
 })();
 
 const DispatchLocationRoute = ({ navigation, route }) => {

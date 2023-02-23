@@ -23,7 +23,7 @@ const isAndroid = Platform.OS === 'android'
 
 const Map = Platform.select({
     ios: () => require('react-native-maps'),
-    android: () => require('@react-native-mapbox-gl/maps')
+    android: () => require('@rnmapbox/maps')
 })();
 
 const GeoFenceCircle = ({navigation,route}) => {
@@ -280,7 +280,7 @@ const GeoFenceCircle = ({navigation,route}) => {
                     {regionAndroid ?
 						  <Map.default.Camera
                           animationMode='flyTo'
-                          animationDuration={10000}
+                          animationDuration={5000}
                           zoomLevel={17}
                           centerCoordinate={regionAndroid}
                           // followUserLocation={true}

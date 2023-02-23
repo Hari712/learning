@@ -19,7 +19,7 @@ import { MAP_BOX_STYLEURL, rasterSourceProps } from '../../constants/AppConstant
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps'),
+	android: () => require('@rnmapbox/maps'),
 })();
 
 const { width, height } = Dimensions.get('window');
@@ -289,13 +289,21 @@ const LiveTrackingDetails = ({navigation, route}) => {
 						showsUserHeadingIndicator={true}
 						animated={true}
 					/> */}
-					{isContainCoordinate &&
+					{isContainCoordinate ?
 						<Map.default.Camera
 						zoomLevel={15}
+						minZoomLevel={4}
+						maxZoomLevel={15}
 							bounds={{
 								ne: endCoordinate,
 								sw: endCoordinate,
 							}}
+						/>:
+						<Map.default.Camera
+						minZoomLevel={4}
+						maxZoomLevel={15}
+							zoomLevel={3}
+							centerCoordinate={[79.570507, 22.385092]}
 						/>}
 					{!isEmpty(lineString)
 						? <Map.default.ShapeSource id="route" shape={lineString}>

@@ -57,7 +57,7 @@ const isAndroid = Platform.OS === 'android'
 
 const Mapbox = Platform.select({
   ios: () => null,
-  android: () => require('@react-native-mapbox-gl/maps')
+  android: () => require('@rnmapbox/maps')
 })();
 
 const MainApp = forwardRef((props, ref) => {
@@ -83,8 +83,11 @@ const MainApp = forwardRef((props, ref) => {
 
   async function initMapBox() {
     if (isAndroid) {
+      Mapbox.default.setWellKnownTileServer('Mapbox');
       Mapbox.default.setAccessToken(MAP_BOX_TOKEN);
-      Mapbox.default.setTelemetryEnabled(false);
+      Mapbox.default.setAccessToken(MAP_BOX_TOKEN);
+      // // Mapbox.default.setTelemetryEnabled(false);
+      // Mapbox.default.setWellKnownTileServer('Mapbox');
       const permission = await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION

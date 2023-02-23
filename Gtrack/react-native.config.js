@@ -5,11 +5,16 @@ module.exports = {
     },
     assets: ["./assets/fonts"],
     dependencies: {
-        '@react-native-mapbox-gl/maps': {
+        '@rnmapbox/maps': {
             platforms: {
                 ios: null,
             },
         },
+        // '@rnmapbox/maps': {
+        //     platforms: {
+        //         ios: null,
+        //     },
+        // },
         'react-native-maps': {
             platforms: {
                 android: null,

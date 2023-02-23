@@ -29,7 +29,7 @@ const isAndroid = Platform.OS === 'android';
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps'),
+	android: () => require('@rnmapbox/maps'),
 })();
 
 const LiveTrackinDashboard = () => {
@@ -241,6 +241,8 @@ const LiveTrackinDashboard = () => {
 					{isContainCoordinate ?
 						<Map.default.Camera
 							zoomLevel={12}
+							minZoomLevel={4}
+							maxZoomLevel={15}
 							centerCoordinate={coordinate}
 						// zoomLevel={13}
 						// bounds={{

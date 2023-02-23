@@ -21,7 +21,7 @@ var initialRegion = {
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps')
+	android: () => require('@rnmapbox/maps')
 })();
 
 const MapView = (props) => {

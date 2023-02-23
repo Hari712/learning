@@ -13,7 +13,7 @@ import { convertDist, convertSpeed, convertTime } from '../../../utils/helper';
 import { ClockIcon } from '../../../component/SvgComponent';
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps'),
+	android: () => require('@rnmapbox/maps'),
 })();
 const RouteDetails = (props) => {
 

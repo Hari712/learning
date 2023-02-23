@@ -15,7 +15,7 @@ const isAndroid = Platform.OS === 'android'
 
 const Map = Platform.select({
     ios: () => require('react-native-maps'),
-    android: () => require('@react-native-mapbox-gl/maps')
+    android: () => require('@rnmapbox/maps')
 })();
 
 const DispatchRoute = ({ navigation, route }) => {
@@ -166,7 +166,9 @@ const DispatchRoute = ({ navigation, route }) => {
                     showsUserHeadingIndicator={true}
                 /> */}
                 <Map.default.Camera
-                    zoomLevel={15}
+                   	zoomLevel={15}
+                       minZoomLevel={4}
+                       maxZoomLevel={15}
                     centerCoordinate={tripStartCord}
                 />
 

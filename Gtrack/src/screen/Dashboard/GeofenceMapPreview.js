@@ -194,7 +194,6 @@ const GeoFenceMapPreview = (props) => {
                         animated={true}
                     />
                     <Map.default.Camera
-                    
 						centerCoordinate={regionAndroid}
 						// followUserLocation={true}
 						zoomLevel={type == 'Circle' ? 2 : 3}

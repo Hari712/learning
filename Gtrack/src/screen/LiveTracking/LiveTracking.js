@@ -39,7 +39,7 @@ const DEFAULT_PADDING = { top: 40, right: 40, bottom: 40, left: 40 };
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps'),
+	android: () => require('@rnmapbox/maps'),
 })();
 
 const isAndroid = Platform.OS === 'android';
@@ -456,8 +456,8 @@ const LiveTracking = ({ navigation }) => {
 							animationMode='flyTo'
 							animationDuration={10000}
 							zoomLevel={15}
-							// minZoomLevel={4}
-							// maxZoomLevel={15}
+							minZoomLevel={4}
+							maxZoomLevel={15}
 							centerCoordinate={endCoordinate}
 						// bounds={{
 						// 	ne: endCoordinate,

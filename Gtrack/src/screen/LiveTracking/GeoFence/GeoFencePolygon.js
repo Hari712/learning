@@ -16,7 +16,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 const Map = Platform.select({
     ios: () => require('react-native-maps'),
-    android: () => require('@react-native-mapbox-gl/maps')
+    android: () => require('@rnmapbox/maps')
 })();
 
 const GeoFencePolyGon = ({navigation, route}) => {
@@ -262,8 +262,10 @@ const GeoFencePolyGon = ({navigation, route}) => {
                    {regionAndroid ?
 						  <Map.default.Camera
                           animationMode='flyTo'
-                          animationDuration={10000}
-                          zoomLevel={17}
+                          animationDuration={5000}
+                          zoomLevel={15}
+                          minZoomLevel={4}
+                          maxZoomLevel={15}
                           centerCoordinate={regionAndroid}
                           // followUserLocation={true}
                         //   zoomLevel={3.5}

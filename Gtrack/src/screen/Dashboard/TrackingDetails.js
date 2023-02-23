@@ -19,7 +19,7 @@ import { MAP_BOX_STYLEURL, rasterSourceProps } from '../../constants/AppConstant
 
 const Map = Platform.select({
 	ios: () => require('react-native-maps'),
-	android: () => require('@react-native-mapbox-gl/maps'),
+	android: () => require('@rnmapbox/maps'),
 })();
 
 const { width, height } = Dimensions.get('window');

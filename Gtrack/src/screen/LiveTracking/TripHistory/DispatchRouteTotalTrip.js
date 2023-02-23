@@ -15,7 +15,7 @@ const isAndroid = Platform.OS === 'android'
 
 const Map = Platform.select({
     ios: () => require('react-native-maps'),
-    android: () => require('@react-native-mapbox-gl/maps')
+    android: () => require('@rnmapbox/maps')
 })();
 
 const DispatchRouteTotalTrip = ({ navigation, route }) => {
@@ -183,7 +183,9 @@ const DispatchRouteTotalTrip = ({ navigation, route }) => {
             <Map.default.MapView style={{ flex: 1,}}  onPress={()=>ShowPopup()} attributionEnabled={false} logoEnabled={false} rotateEnabled={false} styleURL={MAP_BOX_STYLEURL}>
           
                 <Map.default.Camera
-                    zoomLevel={15}
+             	zoomLevel={15}
+                 minZoomLevel={4}
+                 maxZoomLevel={15}
                     centerCoordinate={tripStartCord}
                            
                 />
