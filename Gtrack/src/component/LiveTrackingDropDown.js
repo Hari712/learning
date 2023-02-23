@@ -99,11 +99,11 @@ class LiveTrackingDropDown extends React.Component {
                                             }, () => { this.props.valueSet(item.id) })
 
                                         }}>
-                                        <View style={{flexDirection:"row",justifyContent:'space-between'}}>
-                                        <View > 
-                                              <Text style={[styles.datatextStyle, otherProps.dataTextStyle,selectedValue === item.id && styles.datatextStyleColorOrange]}>{item.name}</Text>
+                                        <View style={{flexDirection:"row",justifyContent:'space-between',width:'100%'}}>
+                                        <View  style={{width:'85%'}}> 
+                                              <Text numberOfLines={1} style={[styles.datatextStyle, otherProps.dataTextStyle,selectedValue === item.id && styles.datatextStyleColorOrange]}>{item.name}</Text>
                                               </View>
-                                        <View style={{alignSelf:'center'}}> 
+                                        <View style={{alignSelf:'center',width:'15%'}}> 
                                         <IconConstant type={item.status =='online'? 'deviceonline' :'deviceoffline'} color={ColorConstant.ORANGE} />
                                             </View>
                                      
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
         marginTop: hp(0.5),
         borderRadius: hp(2),
         opacity: 1,
-        marginHorizontal: wp(10),
+        marginHorizontal: wp(1),
         alignSelf: 'center',
         elevation: 10,
         shadowColor: ColorConstant.GREY,
@@ -182,12 +182,13 @@ const styles = StyleSheet.create({
             width: 0,
             height: 3
         },
+        
         shadowRadius: 3,
         shadowOpacity: 0.3,
         backgroundColor: ColorConstant.WHITE,
         width: '100%',
-        paddingHorizontal: hp(3),
-        paddingLeft: hp(3),
+        // paddingHorizontal: hp(3),
+        paddingLeft: hp(1),borderWidth:1,borderColor:'red'
         // borderWidth: 1,
         // borderColor: ColorConstant.GREY,
     },

@@ -202,7 +202,8 @@ export function isIphoneX() {
     if(value){
       if(unit=='°C')
       // 1C = 33.8 F || ° => `\u02DA`
-        return round(value,2) + " " + unit
+      //   return round(value,2) + " " + unit
+        return (value/10) + " " + unit
       else  
         return round(value*33.8,2) + " " + unit
     } 
