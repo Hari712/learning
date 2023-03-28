@@ -219,7 +219,8 @@ return(
                         pushNotificator: pushNotificator,
                         smsNotificator: smsNotificator,
                         selectedUser: selectedUser,
-                        status: activeGeofence.isActive
+                        status: activeGeofence.isActive,
+                        editData:true
                     }})
                     setDialogVisible(false)
                 }

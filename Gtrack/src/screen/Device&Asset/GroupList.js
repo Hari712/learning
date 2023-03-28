@@ -76,7 +76,7 @@ const GroupList = () => {
         let arr = isEmpty(data) ? [] : data
         setDeviceList(arr)
         let arrDeviceNames = arr.map((item) => item.deviceName)
-        setDeviceNames(arrDeviceNames)
+        setDeviceNames(arr)
     }
 
     console.log("data", arrDeviceList, arrDeviceNames)

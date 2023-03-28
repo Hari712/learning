@@ -39,7 +39,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
         tripsCoordinates: getCombinedTripCoordinatesListInfo(state)
     }))
 
-    console.log('combined trip history-----', tripsCoordinates,combinedTripHistory)
+
 
     const dispatch = useDispatch()
     const [isMobileDevice,setIsMobileDevice]= useState(isMobileDevice)
@@ -59,7 +59,7 @@ const TripHistoryDetails = ({ navigation, route }) => {
     const [isFirstSearch, setIsFirstSearch] = useState(false);
     const [combined, setConbined] = useState()
     const [combined1, setConbined1] = useState()
-
+    console.log('combined trip history-----', tripsCoordinates,combinedTripHistory,routeData.length)
     useEffect(() => {
         if (isFirstSearch) {
             setRouteData(routeDetails)
@@ -431,8 +431,8 @@ const TripHistoryDetails = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
                         {/* { combineTripHistoryGet()} */}
-                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 0 && combinedTripHistory && combineTripHistory()
-                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 0 && combinedTripHistory && combineTripHistory() : null}
+                        {selectedDay == 'Today' || selectedDay == 'Yesterday' ? routeData.length > 1 && combinedTripHistory &&   combinedTripHistory.tripTravelledPositions && combineTripHistory()
+                            : selectedDay == 'Custom' && startDate == endDate ? routeData.length > 1 && combinedTripHistory &&  combinedTripHistory.tripTravelledPositions && combineTripHistory() : null}
                      
 
                     </View>

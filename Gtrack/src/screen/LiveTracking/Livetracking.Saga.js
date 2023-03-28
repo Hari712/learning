@@ -11,6 +11,7 @@ function* requestGetAlarmsList(action) {
         const url = ApiConstants.GET_ALARMS_LIST(userId, '')
         const response = yield call(API.get, url)
         const result = response.result ? response.result : []
+        console.log('resultresultresultresult',result)
         yield put(LivetrackingActions.setAlarmsListResponse(result))
         onSuccess(response)
     } catch (error) {

@@ -68,7 +68,7 @@ const Users = ({ navigation }) => {
           renderPager={
             IS_ANDROID ? undefined : (props) => <ScrollPager {...props} />
           }
-          swipeEnabled={false}
+          swipeEnabled={true}
           initialLayout={initialLayout} />
       </View>
     </View>

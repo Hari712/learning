@@ -30,13 +30,13 @@ const GeoFenceDetails = ({ navigation, route }) => {
     const { selectedArea, type, devices, editingData } = route.params    
 
     const deviId = !isEmpty(devices) ? devices.map((item)=>item.id) : []
-    console.log("devics",devices, deviId)
+
 
     let colorData = [ '#e87575', '#f5f293', '#709cf3', '#bdf897', '#f69157']
 
     const dispatch = useDispatch()
 
-    const userdata = (subUserData).map((item)=> item.firstName+" "+item.lastName )
+    const userdata = (subUserData).map((item)=> item)
     const [name, setName] = useState();
     const [description, setDescrption] = useState();
     const [color, setColor] = useState(tinycolor('#e87575').toHexString())

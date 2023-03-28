@@ -119,6 +119,7 @@
     "Time(Server)": "Time(Server)",
     "Address": "Address",
     "Angle": "Angle",
+    "Change_In_Temprature":"Change Temprature",
     "Engin_State_Hours": "Engine state & hours",
     "Altitude": "Altitude",
     "Odometer": "Odometer",

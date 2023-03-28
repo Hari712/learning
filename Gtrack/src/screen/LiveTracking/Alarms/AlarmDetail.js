@@ -34,7 +34,7 @@ const AlarmDetail = ({navigation,route}) => {
       setSmsNotification(String(notificator).includes("sms"))
     }
   },[data.users])
-
+  console.log('datadatadatadatadatadatadatadatadatadata',data)
   const user =  data.users.filter((name,key) =>(name.id !== loginData.id)).map((i) => i.firstName + ' ' +i.lastName) 
   
   React.useLayoutEffect(() => {

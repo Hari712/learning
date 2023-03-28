@@ -197,7 +197,7 @@ const Notification = ({ navigation }) => {
         const titleStr = showNotificationName(notiType)
         const imgString = String(notiType).toLowerCase()
         const descriptionStr = showNotificationDesc(notiType) + " at " + moment(item.notificationTime).format("hh:mm a")
-        console.log("device 1234", notiEvents, deviceDetail, groupDevices)
+        console.log("device 1234", notiEvents, deviceDetail, groupDevices,imgString)
 
         return (
             <TouchableOpacity onPress={() => {

@@ -66,6 +66,7 @@ const DeviceInfo = ({ navigation, route }) => {
             )
         });
     }, [navigation]);
+
     return (
         <SafeAreaView style={styles.DeviceInfoMainView}>
             <ScrollView>
@@ -178,6 +179,11 @@ const DeviceInfo = ({ navigation, route }) => {
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Temperature")}</Text>
                                 <Text style={styles.textStyle}>{convertTemp(item.attributes.temp1, advSettingsData)}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'column', width: '40%' }}>
+                                <Text style={styles.mainTextStyle}>{translate("Humidity")}</Text>
+                                <Text style={styles.textStyle}>{item.attributes.io68 != null ? `${item.attributes.io68}%` : 'Not available'}
+                                </Text>
                             </View>
                         </View>
 

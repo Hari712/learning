@@ -47,7 +47,7 @@ function Group() {
     function onNonGroupedDeviceLoadedSuccess(data) {
         let arr = isEmpty(data) ? [] : data
         setDeviceList(arr)
-        let arrDeviceNames = arr.map((item) => item.deviceName)
+        let arrDeviceNames = arr.map((item) => item)
         setDeviceNames(arrDeviceNames)
         console.log("arr",arrDeviceNames)
     }

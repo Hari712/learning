@@ -51,7 +51,7 @@ const GroupItem = props => {
     const onUpdateGroup = () => {
         if (isConnected) {
             AppManager.showLoader()
-            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
+            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item))
             const requestBody = {
                 "deviceDTO": null,
                 "assetDTO": null,
@@ -72,7 +72,7 @@ const GroupItem = props => {
     const setDefaultGroup = () => {
         if (isConnected) {
             AppManager.showLoader()
-            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item.deviceName))
+            let arrSelectedDevices = arrDeviceList.filter((item) => selectedDevices.includes(item))
             const requestBody = {
                 "deviceDTO": null,
                 "assetDTO": null,

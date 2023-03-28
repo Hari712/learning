@@ -47,7 +47,7 @@ const TripHistory = ({ navigation }) => {
             )
         });
     }, [navigation]);
-
+     
     useEffect(() => {
         fetchGroupDevices()
         if (Platform.OS === 'android') {

@@ -153,11 +153,14 @@ const Alarms = ({ navigation }) => {
 
           {/* White Body container */}
           <View style={styles.whiteContainer}>
-            {item.devices.map((entry, key) =>
+            {item.devices.length > 0 ? item.devices.map((entry, key) =>
               <View key={key} style={styles.whiteSubView}>
                 <Text style={styles.assetText}>{entry.deviceName}</Text>
               </View>
-            )}
+            ) :<View  style={styles.whiteSubView}>
+            <Text style={styles.assetText}>0 Device found</Text>
+          </View>
+          }
           </View>
 
           {/* Duration*/}
@@ -203,7 +206,7 @@ const Alarms = ({ navigation }) => {
         <FlatList
           data={alarmListData}
           renderItem={renderItem}
-          keyExtractor={(item, index) => { return index }}
+          keyExtractor={(item, index) => { return index.toString() }}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing}

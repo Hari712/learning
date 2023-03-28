@@ -199,11 +199,12 @@ export function isIphoneX() {
 
   export function convertTemp(value, settingsData) {
     const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
+    const temprature =parseFloat(value/10).toFixed(2)
     if(value){
       if(unit=='°C')
       // 1C = 33.8 F || ° => `\u02DA`
       //   return round(value,2) + " " + unit
-        return (value/10) + " " + unit
+        return temprature + " " + unit
       else  
         return round(value*33.8,2) + " " + unit
     } 
@@ -310,6 +311,11 @@ export function isIphoneX() {
       label: "geofenceExit",
       value: "Geofence Exit",
       desc: 'Your device is out of bounds'
+    },
+    {
+      label: "temperature",
+      value: "Temperature",
+      desc: 'Temperature out of range'
     }
   ]
 

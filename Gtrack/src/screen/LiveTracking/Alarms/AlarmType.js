@@ -20,7 +20,7 @@ import { getPanicAlarm } from './../../Selector';
 
 const AlarmType = ({navigation,route}) => {
     
-  const { alarmType, selectedDeviceList, notificationType, deviceOverSpeedValue, selectedDeviceID, editData} = route.params
+  const { alarmType, selectedDeviceList, notificationType, deviceOverSpeedValue, selectedDeviceID, editData,temprature} = route.params
   
   const dispatch = useDispatch()
 
@@ -43,7 +43,8 @@ const AlarmType = ({navigation,route}) => {
     getPanicDetail: getPanicAlarm(state)
   }))
 
-  const userdata = Object.values(subUserData).map((item)=> item.firstName+" "+item.lastName )
+  console.log('arrarrarrarrarr',subUserData,temprature)
+  const userdata = Object.values(subUserData).map((item)=> item )
   const [isIgnition, setIsIgnition] = useState(false)
   const [inputLabel, setInputLabel] = useState(translate("Alarms_string1"))
   const [speedInputVisible, setSpeedInputVisible] = useState()
@@ -52,14 +53,15 @@ const AlarmType = ({navigation,route}) => {
   const [batteryLevelInputValue, setBatteryLevelInputValue] = useState()
   const [movementInputVisible, setMovementInputVisible] = useState()
   const [movementInputValue, setMovementInputValue] = useState()
-  console.log('edit', route.params)
+  console.log('editroute.params', route.params,subUserData,selectUser)
   useEffect(() => {  
     
     !isAdmin && dispatch(UsersActions.requestGetSubuser(loginInfo.id, onSuccess, onError))   
     
     if(route){
-      console.log(editData, 'editData')
-      if(editData){  
+     
+      if(editData){ 
+         console.log(editData,editData.attributes.name, 'editData')
         setAlarmName(editData.attributes.name)      
         // { editData.notification.attributes.everyday? setSelectedCheckbox(0) : setSelectedCheckbox(-1) } 
         const currentUSer = editData.users.filter(i => i.id == loginInfo.id)[0]
@@ -73,7 +75,7 @@ const AlarmType = ({navigation,route}) => {
 
         var tempUser = [] ;
         editData.users ?
-        editData.users.filter((name,key) =>(name.id !== loginInfo.id)).map((item)=> tempUser.push(item.firstName+" "+item.lastName)) : null;
+        editData.users.filter((name,key) =>(name.id !== loginInfo.id)).map((item)=> tempUser.push(item)) : null;
         console.log("EditUser", editData)
         if(matchStrings(editData.notificationType,'alarm')) {
           switch (switchCaseString(editData.attributes.alarms)) {
@@ -140,14 +142,14 @@ const AlarmType = ({navigation,route}) => {
       if (isEmpty(alarmName)) {
         AppManager.showSimpleMessage('warning', { message: translate(AppConstants.EMPTY_ALARM_NAME), description: '', floating: true })
       } else {
-      AppManager.showLoader()
+      // AppManager.showLoader()
       // var everyday = (selectedCheckbox===0)
 
       let arrSelectedId = [];
       selectUser && 
         subUserData.filter((item)=> {      
           selectUser.filter((selectedItem)=>{        
-            if(item.firstName+" "+item.lastName === selectedItem){  
+            if(item.id === selectedItem.id){  
              editData ? arrSelectedId.push(item) : arrSelectedId.push(item.id)
             }
           })  
@@ -172,6 +174,7 @@ const AlarmType = ({navigation,route}) => {
           AppManager.hideLoader()
           AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
       } else {
+            AppManager.showLoader()
         isUpdate = true;
         const newUser = arrSelectedId.filter(({ id: id1 }) => !editData.users.some(({ id: id2 }) => id2 === id1))
         const currentUser = editData.users.filter(i => i.id == loginInfo.id)[0]
@@ -185,19 +188,21 @@ const AlarmType = ({navigation,route}) => {
          })
         const currentUserNotificator = { ...currentUser, "notification": { ...currentUser.notification, "notificators": notificator.join()} }
         const newUserData = newUser.map(item => { return  { "firstName": item.firstName, "id": item.id, "isCorporateUser": item.isCorporateUser, "lastName": item.lastName, "notification" : { ...currentUserNotificator.notification, "id":  null } } })
+        console.log('selectUserarrSelectedIdarrSelectedIdarrSelectedId',alarmName == "temperature" ? temprature : value,temprature,alarmName,editData.attributes.alarms,selectedDeviceID)
         requestBody = {
           "notificationKey" : editData.notificationKey,
-          "notificationName" : alarmName,
+          "notificationName" : editData.attributes.name,
           "notificationType" : editData.notificationType,
           "attributes" : {
             ...editData.attributes,
-            "name" : alarmName,
-            "value": value,
+            "name" : editData.attributes.name,
+            "value" :editData.attributes.alarms == "temperature" ? temprature : value,
           },
           "devices" : selectedDeviceID,
           "users" : isAdmin ? [ ...existingUser, currentUserNotificator ] : [ ...existingUserData, currentUserNotificator, ...newUserData ]
         }
-        console.log('existingUserData', existingUserData)
+       
+        console.log('existingUserData', existingUserData,requestBody)
         dispatch(LivetrackingActions.requestAddAlarmsNotification(isUpdate, loginInfo.id, requestBody, onAddSuccess, onError)) 
       }    
       } else {
@@ -206,6 +211,7 @@ const AlarmType = ({navigation,route}) => {
           AppManager.hideLoader()
           AppManager.showSimpleMessage('danger', { message: 'Panic alarm already exist', description: '', floating: true })
       } else {
+        AppManager.showLoader()
         isUpdate = false;
         arrSelectedId.push(loginInfo.id)
         requestBody = {
@@ -218,7 +224,7 @@ const AlarmType = ({navigation,route}) => {
             "notificators" : notificator.join(),
             "attributes" : {
               "alarms": alarmType,
-              "value" : value,
+              "value" :alarmType == "temperature" ?temprature : value,
               "name": alarmName,
               //"everyday": everyday  ,
               "description": "static description"   
@@ -278,7 +284,7 @@ return (
           <Text style={styles.textStyle}>{translate("Device_Name")}</Text>
           {selectedDeviceList.map((device,key) =>
             <Text key={key} style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>
-              {device}
+              {device.deviceName}
             </Text> 
           )}
         </View>
@@ -291,7 +297,7 @@ return (
           outerStyle={styles.outerStyle} 
         />
 
-        { !isAdmin ? 
+        { !isAdmin ?
           <MultiSelect 
             label="Select User"
             dataList={userdata} 
@@ -477,15 +483,32 @@ rowStyle: {
   borderBottomWidth:1
 },
 selectedItemContainerStyle:{
-  backgroundColor:"#F9FAFC",
-  flexDirection:'row',
-  flexWrap:'wrap',
-  //backgroundColor:ColorConstant.LIGHTRED,
+  backgroundColor:ColorConstant.PINK,
   borderRadius:8,
   marginTop:hp(2),
   elevation:0,
-  padding:hp(1)
+  padding:hp(1),maxHeight:hp(30)
+  
 },
+// selectedItemRowStyle: {
+// flexDirection:'row',
+// elevation:4,
+// shadowColor: ColorConstant.GREY,
+// shadowOffset: {
+//   width: 0,
+//   height: 0
+// },
+// shadowRadius: 3,
+// shadowOpacity: 1,
+// backgroundColor:ColorConstant.LIGHTPINK,
+// borderRadius:5,
+// alignItems:'center',
+// paddingHorizontal:hp(1),
+// //flexWrap:'wrap',
+// margin:4,
+// height:hp(4),
+// },
+
 selectedItemRowStyle: {
   flexDirection:'row',  
   elevation:4,
@@ -496,7 +519,7 @@ selectedItemRowStyle: {
   },
   shadowRadius: 3,
   shadowOpacity: 1,
-  backgroundColor:ColorConstant.LIGHTBLUE,
+  backgroundColor:ColorConstant.LIGHTPINK,
   borderRadius:5,
   alignItems:'center',
   paddingHorizontal:hp(1),

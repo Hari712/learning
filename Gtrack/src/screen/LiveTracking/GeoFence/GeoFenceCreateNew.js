@@ -31,8 +31,9 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     const [selectedDeviceDetail, setSelectedDeviceDetail] = useState([])
     const [role, setRole] = useState();
     const [oldData, setOldData] = useState()
+    const isEditData =route.params && route.params.editingData && route.params.editingData.editData  
     const DATA =['Circle','Polygon']
-
+    console.log("devics",isEditData,route.params)
     const dispatch = useDispatch()
 
     useEffect(() => {  
@@ -40,18 +41,19 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     }, [])
 
     useEffect(() => {  
-        setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item.deviceName))
+        setArrDeviceList(Object.values(geofenceDeviceList).map((item) => item))
 
         if(route.params) {
             const { editingData } = route.params
-            let selDev = editingData.devices.map((device) => device.deviceName)
+            let selDev = editingData.devices.map((device) => device)
             let list = [] 
             let selDeviceName = []
             Object.values(geofenceDeviceList).filter((item)=> {      
                 selDev.filter((selectedItem)=>{        
-                    if(item.deviceName === selectedItem){  
+                    console.log('selectedItemselectedItemselectedItem',selectedItem,item)
+                    if(item.id === selectedItem.id){  
                         list.push(item)
-                        selDeviceName.push(item.deviceName)
+                        selDeviceName.push(item)
                     }
                 })  
             }) 
@@ -74,7 +76,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
         let list = [] 
         Object.values(geofenceDeviceList).filter((item)=> {      
             selectedDevice.filter((selectedItem)=>{        
-                if(item.deviceName === selectedItem){  
+                if(item.id === selectedItem.id){  
                     list.push(item)
                 }
             })  
@@ -96,7 +98,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
         AppManager.hideLoader()
         console.log("Error",error)  
     }
-
+    console.log('selectedDeviceDetailselectedDeviceDetailselectedDeviceDetailselectedDeviceDetail',selectedDeviceDetail,selectedDevice)
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
@@ -113,6 +115,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     }, [navigation]);
 
     function navigateToPolygonCreator() {
+        console.log('selectedDeviceDetail,editingData:oldData',selectedDeviceDetail,oldData)
         let clear;
         if(route.params) {
             const { editingData } = route.params
@@ -127,7 +130,7 @@ const GeoFenceCreateNew = ({ navigation, route }) => {
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
-                <Text style={styles.textViewStyle}>{translate("Create New")}</Text>
+                <Text style={styles.textViewStyle}>{isEditData ? "Edit" : translate("Create New")}</Text>
             </View>
             <View style={styles.multiselectMainView}>
                 <MultiSelect

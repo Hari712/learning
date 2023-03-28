@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
+const BASE_URL = 'https://qa-api.gtrackindia.com/gtrackapi/' //'https://dev-api.vegitone.com/gtrackapi/' //'https://gtrackapi-qa.vegitone.com/gtrackapi/'
 // prod base url https://api.gtrackindia.com/gtrackapi/
 export const env = 'prod' //'prod' //'dev'
 // https://qa-api.vegitone.com/gtrackapi/
@@ -6,11 +6,14 @@ export const env = 'prod' //'prod' //'dev'
 
 const SUFFIX_URL = 'public/'
 
-const TRACCAR_URL = 'https://traccar.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
+const TRACCAR_URL = 'https://traccar-qa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
 
 // prod traccar url https://traccar.gtrackindia.com/
-// dev traccar url 'traccar-devqa.gtrackindia.com/'
-const SOCKET_URL = 'traccar.gtrackindia.com/'
+
+// qa: https://traccar-devqa.gtrackindia.com/
+// dev: https://traccar-dev.gtrackindia.com/
+
+const SOCKET_URL = 'traccar-qa.gtrackindia.com/'
 
 const AUTH = 'auth/'
 

@@ -60,7 +60,7 @@ const LiveTracking = ({ navigation }) => {
 		getPanicDetail: getPanicAlarm(state),
 		isNewEvent: getLiveNotificationCountsInfo(state),
 	}));
-	console.log('groupdevices-----------', groupDevices,)
+	// console.log('groupdevices-----------', groupDevices,)
 
 	const dispatch = useDispatch()
 	const [deviceList, setDeviceList] = useState(groupDevices);
@@ -109,7 +109,7 @@ const LiveTracking = ({ navigation }) => {
 	//   );
 	useFocusEffect(
 		React.useCallback(() => {
-	
+			AppManager.showLoader()
 			dispatch(LivetrackingActions.requestGetGroupDevices(loginData.id,null, onSuccess, onError))
 	
 		  return () => {

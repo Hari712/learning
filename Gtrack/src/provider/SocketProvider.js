@@ -51,24 +51,24 @@ const SocketProvider = (props) => {
 
     useEffect(() => {
         if (isConnected && isLoggedIn && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
-            connectWitWebsocket()
+            // connectWitWebsocket()
         }
     },[traccarSessionInfoDetail,isConnected])
-
+    console.log('traccarSessionInfoReftraccarSessionInfoRef',traccarSessionInfoRef,traccarSessionInfoDetail)
     useEffect(() => {
         if (!isLoggedIn) {
             socket && socket.close()
             socket = null
         }
     },[isLoggedIn])
-    console.log(traccarSessionInfoDetail, 'traccarSessionInfoDetail')
+    // console.log(traccarSessionInfoDetail, 'traccarSessionInfoDetail')
 
     function onTraccarSessionSuccess(data) {
-		console.log('Traccar Session Success', data);
+		// console.log('Traccar Session Success', data);
 	}
 
 	function onTraccarSessionError(error) {
-		console.log('Traccar Session Error', error);
+		// console.log('Traccar Session Error', error);
 	}
 
     function connectWitWebsocket() {

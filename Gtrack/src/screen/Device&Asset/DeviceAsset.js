@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   menuPopup: {
     backgroundColor: 'white',
     padding: 5,
-    paddingVertical: hp(1.5),
+    paddingVertical: hp(0.5),
     right: wp(3),
     borderRadius: 16,
     width: hp(15),

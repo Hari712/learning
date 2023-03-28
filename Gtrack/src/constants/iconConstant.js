@@ -1,5 +1,6 @@
 import {IgniteOffIcon, DeviceOfflineIcon, PanicIcon, BatteryIcon, DeviceMovingIcon, BusIcon, CarIcon, FamilyVanIcon, GeoFenceIcon, KidsIcon, MachineryIcon, IgniteOnIcon, OverSpeedIcon, PersonnelItemIcon, ShuttleVanIcon, TrailerIcon, TravelIcon, TruckIcon, XyzIcon, UnderSpeedIcon, FluelLevelcon, EngineIdleIcon, StationaryIcon, DeviceOnlineIcon, GeofenceExitIcon, GeofenceEntryIcon, DeviceStoppedIcon, DefaultAssetIcon } from "../component/SvgComponent"
 import React from 'react'
+import TempratureIcon from "../component/SvgComponent/TempratureIcon"
 
 const IconConstant = (props) => {
 
@@ -39,6 +40,7 @@ const IconConstant = (props) => {
         case 'fuellevel': return <FluelLevelcon color={color} /> 
         case 'engineidle': return <EngineIdleIcon color={color} /> 
         case 'stationary': return <StationaryIcon color={color} /> 
+        case 'temperature': return <TempratureIcon color={color}/>
             
         default: return <DefaultAssetIcon color={color} />  
     }

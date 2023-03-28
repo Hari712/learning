@@ -21,9 +21,20 @@ class MultiSelect extends React.Component {
     }
 
     condition(array1, array2) {
-        const newArray = JSON.stringify(array1.map((item)=>item).sort((a,b) => a > b ? 1 : -1)) === JSON.stringify(array2.map((item)=>item).sort((a,b) => a > b ? 1 : -1))
-        return (array1.length==0 ? false : newArray)
-    } 
+        console.log('array1, array2array1, array2array1, array2',array1,array2,array1.length === array2.length,array1.length > 0 && array1.length === array2.length)
+        // if(array1.length > 0 && array1.length === array2.length){
+        // const newArray = JSON.stringify(array1.map((item)=>item).sort((a,b) => a > b ? 1 : -1)) === JSON.stringify(array2.map((item)=>item).sort((a,b) => a > b ? 1 : -1)) 
+        // console.log('newArraynewArraynewArraynewArraynewArraynewArray',newArray)
+        // return (array1.length==0 ? false : newArray)
+        // }
+        if(array1.length === array2.length){
+            return true
+        }
+        else{
+            return false
+            }
+        } 
+        
 
     render() {
 
@@ -43,10 +54,11 @@ class MultiSelect extends React.Component {
         const show = () => {
             this.setState({ isSelected: !this.state.isSelected })
         }
-
+        console.log('selectedItem.includes(item)selectedItem.includes(itrem)selectedItem.includes(item)selectedItem.includes(item)selectedItem.includes(item)',selectedAll,selectedItem)
         return (
             <SafeAreaView >
-                <ShadowView style={styles.shadowContainer}>
+                <View>
+                        <ShadowView style={styles.shadowContainer}>
                     <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                         <OutlinedTextField
                             label={label}
@@ -67,21 +79,26 @@ class MultiSelect extends React.Component {
                         />
                     </TouchableOpacity>
                 </ShadowView>
-
+     
                 { this.state.isSelected ?
                     data.length > 0 ?
                         <ScrollView nestedScrollEnabled={true} keyboardShouldPersistTaps='always' 
                             style={[styles.dropdown, otherProps.dropdownStyle, data.length == 1 && { height:hp(11)}]}>
                         {/* Select All */}
                             <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
-                                onPress={() => {
+                                onPress={ () => {
+                                    console.log('selectAll this.state.isSelected ? data',selectedAll,data)
+                                    // selectedAll =  this.condition(selectedItem, data) 
                                     if (selectedAll) {
-                                        //selectedAll = false;
-                                        valueSet(oldArray => [])
+                                     
+                                        valueSet(() => [])
+                                        // selectedAll = false
                                     }
                                     else {
-                                        //selectedAll = true;
-                                        valueSet(oldArray => data)
+                                    
+                                        valueSet(() => data)
+                                        // selectedAll = true;
+                                        // selectedAll = this.condition(selectedItem, data)
                                     }
                                 }}>
                                 <Image source={selectedAll ? images.image.checkboxClick : images.image.checkbox} />
@@ -89,19 +106,39 @@ class MultiSelect extends React.Component {
                             </TouchableOpacity> 
 
                         {/* Data Rows */}
-                        {data.map((item, key) => {
+                        {data && data.length >0 &&data.map((item, key) => {
+                                console.log('itemitemitemitemitemitemitemitemitemitemitemitem',item,selectedItem)
                             return (
                                 <TouchableOpacity key={key} style={[styles.row, key < data.length-1 && otherProps.rowStyle]}
                                     onPress={() => {
                                         if (selectedItem.includes(item)) {
+                                            // if(selectedAll){
+                                                // selectedAll=false
+                                            // }
                                             valueSet(oldArray => oldArray.filter(function (value) { return value != item }))
+                                        }
+                                        if (selectedItem.find((element) => { return element.id === item.id })) {
+                                            // selectedAll=false
+                                            valueSet(oldArray => oldArray.filter(function (value) { return value.id != item.id }))
                                         }
                                         else {
                                             valueSet(oldArray => [...oldArray, item])
+                                           let selectedData =[...selectedItem, item]
+                                        // //    const isSelectedAllData =  this.condition([...selectedItem, item], data)
+                                        //    if(selectedData.length === data.length){
+                                        //        selectedAll = true
+                                        //        valueSet(oldArray => [...oldArray, item])
+                                        //    }
+                                        //    else{
+                                        //     selectedAll = false
+                                        //     valueSet(oldArray => [...oldArray, item])
+                                        //    }
+                                        //    console.log('isSelectedAllDataisSelectedAllDataisSelectedAllDataisSelectedAllDataisSelectedAllData',selectedData.length ===data.length)
+                                          
                                         }
                                     }}>
-                                    <Image source={selectedItem.includes(item) ? images.image.checkboxClick : images.image.checkbox} />
-                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: 12, textTransform: 'capitalize'  }}>{item}</Text>
+                                    <Image source={ selectedItem.includes(item) ? images.image.checkboxClick :  selectedItem.find((element) => { return element.id === item.id }) ?images.image.checkboxClick :images.image.checkbox} />
+                                    <Text style={{ color: ColorConstant.BLUE, fontFamily: 'Nunito-Regular', fontSize: 12, textTransform: 'capitalize'  }}>{item.deviceName ? item.deviceName: item.firstName+" "+item.lastName}</Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -119,13 +156,13 @@ class MultiSelect extends React.Component {
                     <Text style={{ color: ColorConstant.ORANGE, margin: hp(2), fontFamily: 'Nunito-SemiBold', fontSize: 12 }}>
                         Selected Device List
                 </Text> : null}
-
+                <ScrollView nestedScrollEnabled={true}>
                 {selectedItem && selectedItem.length ?
-                    <View style={[styles.selectedContainer, selectedItemContainerStyle]}>
+                    <ScrollView style={[styles.selectedContainer, selectedItemContainerStyle]} nestedScrollEnabled={true}>
                         {Object.values(selectedItem).map((item, key) =>
                             <View key={key} style={{ flexWrap: 'wrap', flexShrink: 1 }}>
                                 <View style={[otherProps.selectedItemRowStyle]}>
-                                    <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} key={key}>{item}</Text>
+                                    <Text style={[{ marginRight: hp(1), color: ColorConstant.ORANGE }, otherProps.textStyle]} key={key}>{item.deviceName ? item.deviceName: item.firstName+" "+item.lastName}</Text>
                                     {otherProps.hideDeleteButton ?
                                         <TouchableOpacity onPress={() => otherProps.deleteHandle(item, key)} 
                                             style={{ height:otherProps.selectedItemRowStyle.height ? otherProps.selectedItemRowStyle.height : hp(2), justifyContent: 'center' }}>  
@@ -134,8 +171,9 @@ class MultiSelect extends React.Component {
                                 </View>
                             </View>
                         )}
-                    </View> : null}
-
+                    </ScrollView> : null}
+                    </ScrollView>
+                    </View>
             </SafeAreaView>
         )
     }
@@ -193,6 +231,7 @@ export class MultiSelectGroup extends React.Component {
 
         return (
             <SafeAreaView >
+                
                 <TouchableOpacity onPress={show} style={[styles.container, outerStyle]}>
                     <OutlinedTextField
                         label={label}
@@ -212,11 +251,11 @@ export class MultiSelectGroup extends React.Component {
                         {...otherProps}
                     />
                 </TouchableOpacity>
-
+      
                 { this.state.isSelected ?
                     data.length > 0 ?
-                    <ScrollView nestedScrollEnabled={true} 
-                        style={[styles.dropdown, otherProps.dropdownStyle, data.length == 1 && { height:hp(11)}]}>
+                    <ScrollView nestedScrollEnabled={true} showsHorizontalScrollIndicator={true}
+                        style={[styles.dropdown, otherProps.dropdownStyle, data.length == 1 && { height:hp(11)}]} contentContainerStyle={{ flexGrow: 1 }}>
                         {/* Select All */}
                         {data.length > 0 ?
                             <TouchableOpacity style={[styles.row, otherProps.rowStyle]}
@@ -224,10 +263,12 @@ export class MultiSelectGroup extends React.Component {
                                     if (selectedAll) {
                                         // selectedAll = false;
                                         valueSet(oldArray => [])
+                                        selectedAll = this.condition(selectedItem, data)
                                     }
                                     else {
                                         // selectedAll = true;
                                         valueSet(oldArray => data)
+                                        selectedAll = this.condition(selectedItem, data)
                                     }
                                 }}>
                                 <Image source={selectedAll ? images.image.checkboxClick : images.image.checkbox} />
@@ -236,9 +277,10 @@ export class MultiSelectGroup extends React.Component {
                         : null }
 
                         {/* Data Rows */}
+               
                         {data.map((item, key) => {
                             return (
-                                <TouchableOpacity key={item.id} style={[styles.row,, key < data.length-1 && otherProps.rowStyle]}
+                                <TouchableOpacity key={item.id} style={[styles.row, key < data.length-1 && otherProps.rowStyle]}
                                     onPress={() => {
                                         if (selectedItem.find((element) => { return element.id === item.id })) {
                                             // selectedAll=false
@@ -254,6 +296,7 @@ export class MultiSelectGroup extends React.Component {
                                 </TouchableOpacity>
                             )
                         })}
+                
                     </ScrollView>
                     : 
                     <View style={[styles.dropdown, otherProps.dropdownStyle,{height:hp(6)}]}>
