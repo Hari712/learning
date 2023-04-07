@@ -94,7 +94,6 @@ const CreateNew = ({navigation,route}) => {
     console.log(error)
     AppManager.hideLoader()
   } 
-  console.log('alarmTypesalarmTypesalarmTypes',alarmTypes)
 
   function onDeviceSuccess(data) {
    

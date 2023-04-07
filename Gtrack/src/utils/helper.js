@@ -199,14 +199,16 @@ export function isIphoneX() {
 
   export function convertTemp(value, settingsData) {
     const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
-    const temprature =parseFloat(value/10).toFixed(2)
+    const Data = value/10
+    const temprature = Data.toFixed(2)
+    const tempratureFernhit =parseFloat(temprature * 9/5 + 32)
     if(value){
       if(unit=='°C')
       // 1C = 33.8 F || ° => `\u02DA`
       //   return round(value,2) + " " + unit
         return temprature + " " + unit
       else  
-        return round(value*33.8,2) + " " + unit
+        return tempratureFernhit + " " + unit
     } 
     else 
       return "Not Available"
@@ -327,6 +329,15 @@ export function isIphoneX() {
     })
     return val
   }
+  export function showNotificationNameAlarm(item) {
+    var val  
+    NOTIFICATION_TYPE.filter((nitem)=>{
+      if(nitem.label === item)
+        val = nitem.value
+    })
+    return val
+  }
+
 
   export function showNotificationLabel(item) {
     var val  

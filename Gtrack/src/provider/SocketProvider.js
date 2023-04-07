@@ -51,7 +51,7 @@ const SocketProvider = (props) => {
 
     useEffect(() => {
         if (isConnected && isLoggedIn && isConnecting == false && !isEmpty(traccarSessionInfoRef.current)) {
-            // connectWitWebsocket()
+            connectWitWebsocket()
         }
     },[traccarSessionInfoDetail,isConnected])
     console.log('traccarSessionInfoReftraccarSessionInfoRef',traccarSessionInfoRef,traccarSessionInfoDetail)
@@ -75,11 +75,12 @@ const SocketProvider = (props) => {
         const url = `wss://${socketURL}`
         const headers = {};
         headers["cookie"] = `JSESSIONID=${traccarSessionInfoDetail.jsessionID}`;
+        // var socketsss = io(url,{transports: ['websocket']});
         socket = new WebSocket(url, null, { headers })
         value = {
             socket: socket
         }
-        console.log('socket', url, socket)
+        console.log('socketsocket', url,socket)
         socket.onopen = (event) => {
             console.log('socket open' ,event);
         }
@@ -107,6 +108,7 @@ const SocketProvider = (props) => {
             }
 
             if (data.events && Array.isArray(data.events)) {
+                console.log("data.events",data.events)
                 setArrDevicePositionList(data)
                 const requestBody = {
                     "pageNumber" : 0,
@@ -120,7 +122,7 @@ const SocketProvider = (props) => {
                 dispatch(LiveTrackingActions.setNotificationEventsResponse(data.events))
                 setNotificationEvents(data.events)
                 function onSuccess(data) {    
-                    console.log("Success",data) 
+                    console.log("Successsssss",data) 
                 }
                 
                 function onError(error) {

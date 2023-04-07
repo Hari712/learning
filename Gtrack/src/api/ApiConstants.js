@@ -6,14 +6,14 @@ export const env = 'prod' //'prod' //'dev'
 
 const SUFFIX_URL = 'public/'
 
-const TRACCAR_URL = 'https://traccar-qa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
+const TRACCAR_URL = 'https://traccar-devqa.gtrackindia.com/'   //'https://traccar-dev.vegitone.com/'
 
 // prod traccar url https://traccar.gtrackindia.com/
 
 // qa: https://traccar-devqa.gtrackindia.com/
 // dev: https://traccar-dev.gtrackindia.com/
 
-const SOCKET_URL = 'traccar-qa.gtrackindia.com/'
+const SOCKET_URL = 'traccar-devqa.gtrackindia.com/'
 
 const AUTH = 'auth/'
 

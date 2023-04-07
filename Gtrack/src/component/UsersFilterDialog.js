@@ -36,7 +36,7 @@ const UsersFilterDialog = (props) => {
                     <View style={{ marginTop: hp(2) }}>
                         <Text style={styles.titleText}>Roles</Text>
                         {Role.map((role, key) =>
-                            <TouchableOpacity onPress={() => key == IsRole ? setIsRole(-1) : setIsRole(key)} style={styles.filterBox}>
+                            <TouchableOpacity onPress={() => key == IsRole ? setIsRole(-1) : setIsRole(key)} style={styles.filterBox} key={key}>
                                 {key == IsRole ? <RadioButtonIconClicked style={{ alignSelf: 'center' }} /> : <RadioButtonIcon style={{ alignSelf: 'center' }} />}
                                 <Text style={styles.textFilter}>{role}</Text>
                             </TouchableOpacity>)}

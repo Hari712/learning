@@ -195,7 +195,7 @@ const AlarmType = ({navigation,route}) => {
           "notificationType" : editData.notificationType,
           "attributes" : {
             ...editData.attributes,
-            "name" : editData.attributes.name,
+            "name" : alarmName,
             "value" :editData.attributes.alarms == "temperature" ? temprature : value,
           },
           "devices" : selectedDeviceID,

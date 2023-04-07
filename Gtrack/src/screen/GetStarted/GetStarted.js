@@ -20,19 +20,24 @@ const GetStarted = (navigation) => {
                 {/* <Image style={styles.imageStyle} source={images.image.logo}/> */}
 
                 <View style={styles.mainViewStyle}>
-                    <View style={styles.viewStyle}>
+                    {/* <View style={styles.viewStyle}>
                         <Text style={styles.textStyle}> {translate("Splash_string1")} </Text>
                         <TouchableOpacity onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}>
                             <Text style={styles.loginTextStyle}>{translate("Splash_string2")}</Text>
                         </TouchableOpacity>
-                    </View>
-
-                    <CustomButton
+                    </View> */}
+                <CustomButton
+                        title={translate("Splash_string2")}
+                        style={styles.buttonStyle}
+                        textStyle={styles.buttonTextStyle}
+                        onPress={() =>  NavigationService.navigate(SCREEN_CONSTANTS.LOGIN)}
+                    />
+                    {/* <CustomButton
                         title={translate("Splash_string3")}
                         style={styles.buttonStyle}
                         textStyle={styles.buttonTextStyle}
                         onPress={() => NavigationService.navigate(SCREEN_CONSTANTS.SIGNUP)}
-                    />
+                    /> */}
 
                 </View>
 

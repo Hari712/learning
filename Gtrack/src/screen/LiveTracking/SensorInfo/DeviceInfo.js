@@ -4,11 +4,12 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { ColorConstant } from '../../../constants/ColorConstants'
 import { translate } from '../../../../App'
 import { FontSize } from '../../../component'
-import { BackIcon, ListIcon, SensorIcon ,NoRecordFoundImage} from '../../../component/SvgComponent'
+import { BackIcon, ListIcon, SensorIcon ,NoRecordFoundImage, RefreshIcon} from '../../../component/SvgComponent'
 import AppManager from '../../../constants/AppManager'
 import { getAdvanceSettingsInfo, getAssetItemInfo, getLoginState } from '../../Selector'
 import { useSelector, useDispatch } from 'react-redux'
 import * as LivetrackingActions from '../Livetracking.Action'
+import * as LoginActions from '../../Login/Login.Action';
 import { convertTemp, convertTime, convertAltitudeRound } from '../../../utils/helper'
 import { isEmpty } from 'lodash'
 
@@ -29,21 +30,42 @@ const DeviceInfo = ({ navigation, route }) => {
         if(data){
             // if(data.status != 'offline'){
                
-              
+                FetchData()
             // }
-            AppManager.showLoader()
-            dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, data.positionId, onSuccess, onError))
-            dispatch(LivetrackingActions.requestAssetInfo(loginData.id, data.id, onSuccess, onError))
+           
         }
     },[])
+        function FetchData(){
+            AppManager.showLoader()
+            dispatch(LoginActions.requestGetLastKnownDevicePosition(
+                loginData.id,
+                onSuccess,
+                onError
+            ))
+          
+        }
+    function onSuccess(datas) {
+        console.log("Sucess sdads",datas,datas.result,datas.result.filter((res)=> res.deviceId === data.id))
+        const PositionId = datas.result.filter((datas)=> datas.deviceId === data.id)
+        console.log('PositionIdPositionIdPositionIdPositionIdPositionId',PositionId)
+        // AppManager.hideLoader()
+        dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, PositionId[0].id, onSuccess1, onError1))
+        dispatch(LivetrackingActions.requestAssetInfo(loginData.id, data.id, onSuccess1, onError1))
+    }
 
-    function onSuccess(data) {
-        console.log("Sucess",data)
+    function onError(datas) {
+        console.log("onError asda",datas)
+        // AppManager.hideLoader()
+        dispatch(LivetrackingActions.requestAllLastKnownPostion(loginData.id, data.positionId, onSuccess, onError))
+        dispatch(LivetrackingActions.requestAssetInfo(loginData.id, data.id, onSuccess1, onError1))
+    }
+    function onSuccess1(data) {
+        // console.log("Sucess",data)
         AppManager.hideLoader()
     }
 
-    function onError(data) {
-        console.log("Sucess",data)
+    function onError1(data) {
+        // console.log("onError",data)
         AppManager.hideLoader()
     }
 
@@ -63,7 +85,13 @@ const DeviceInfo = ({ navigation, route }) => {
                 <TouchableOpacity style={{padding:hp(2)}} onPress={() => navigation.goBack()}>
                     <BackIcon />
                 </TouchableOpacity>
+            ),
+            headerRight:  () => (
+                <TouchableOpacity style={{padding:hp(2)}} onPress={() => FetchData()}>
+                   <RefreshIcon height={hp(2)} width={hp(2)}/>
+                </TouchableOpacity>
             )
+            
         });
     }, [navigation]);
 
@@ -149,7 +177,7 @@ const DeviceInfo = ({ navigation, route }) => {
 
                             <View style={{ flexDirection: 'column', width: '25%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Vehicle Power")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.power ? item.attributes.power + 'V' :'Not available'}</Text>
+                                <Text style={styles.textStyle}>{item.attributes.power ? item.attributes.power.toFixed(2) + 'V' :'Not available'}</Text>
                             </View>
                         </View>
 
@@ -182,7 +210,7 @@ const DeviceInfo = ({ navigation, route }) => {
                             </View>
                             <View style={{ flexDirection: 'column', width: '40%' }}>
                                 <Text style={styles.mainTextStyle}>{translate("Humidity")}</Text>
-                                <Text style={styles.textStyle}>{item.attributes.io68 != null ? `${item.attributes.io68}%` : 'Not available'}
+                                <Text style={styles.textStyle}>{item.attributes.io86 != null ? `${item.attributes.io86}%` : 'Not available'}
                                 </Text>
                             </View>
                         </View>

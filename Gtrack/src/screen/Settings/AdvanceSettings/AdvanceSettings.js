@@ -131,7 +131,7 @@ return (
             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                 <View style={{height:hp(6)}}>
                     <Text style={styles.textStyle}>{translate("Select_language")}</Text>
-                    <Text style={styles.subText}>{toRegularCase(language)}</Text>
+                    <Text style={styles.subText}>{language ? toRegularCase(language) : "-"}</Text>
                 </View>
                 <TouchableOpacity style={{alignSelf:'center', padding:wp(4)}} onPress={()=>setIsLanguageClick(!isLanguageClick)}>
                   { 
@@ -161,7 +161,7 @@ return (
             <View style={[styles.unitContainer,{alignItems:'center'}]}>
                 <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{height:hp(6)}}>
                     <Text style={styles.textStyle}>Select time zone</Text>
-                    <Text style={styles.subText}>{showTimeText(timeZone)}</Text> 
+                    <Text style={styles.subText}>{timeZone ? showTimeText(timeZone) : "-"}</Text> 
                 </TouchableOpacity>
                 {/* <TouchableOpacity onPress={() => setIsToggleClick(!isToggleClick)} style={{alignSelf:'center'}}>
                   {

@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorConstant.WHITE,
         width: '100%',
         // paddingHorizontal: hp(3),
-        paddingLeft: hp(1),borderWidth:1,borderColor:'red'
+        paddingLeft: hp(1.5)
         // borderWidth: 1,
         // borderColor: ColorConstant.GREY,
     },

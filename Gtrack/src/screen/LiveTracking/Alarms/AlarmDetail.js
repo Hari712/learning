@@ -8,7 +8,7 @@ import { BackIcon, ListIcon } from '../../../component/SvgComponent';
 import { isEmpty } from 'lodash';
 import { useSelector } from 'react-redux';
 import { getLoginState, isRoleOwner } from '../../Selector';
-import { showNotificationName } from '../../../utils/helper';
+import { showNotificationName, showNotificationNameAlarm } from '../../../utils/helper';
 
 const AlarmDetail = ({navigation,route}) => {
 
@@ -75,7 +75,7 @@ return (
 
             <View style={{flexDirection:'column',flex:2}}>
                 <Text style={styles.textStyle}>{translate("Type")}</Text>
-                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{showNotificationName(data.notificationType)}</Text>
+                <Text style={[styles.textStyle,{marginTop:hp(1),color:ColorConstant.BLACK}]}>{data.notificationType != "alarm"? showNotificationName(data.notificationType) : showNotificationNameAlarm(data.attributes.alarms)}</Text>
             </View>
         </View>
 
