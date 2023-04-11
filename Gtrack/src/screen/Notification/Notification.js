@@ -108,7 +108,7 @@ const Notification = ({ navigation }) => {
             "sortDirection": "DESC"
         }
         const isMerge = pageIndex > 0
-        dispatch(LiveTrackingAction.requestGetNotificationList(loginData.id, requestBody, isMerge, onSuccess, onError))
+        dispatch(LiveTrackingAction.requestGetNotificationList(loginData.id, requestBody, onSuccess, onError))
     }
 
     function onSuccess(data) {

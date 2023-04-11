@@ -45,15 +45,20 @@ const AppProvider = (props) => {
     function initForegroundListener() {
         unsubscribe = firebase.messaging().onMessage(async (remoteMessage) => {
             const state = store.getState()
+            console.log('remoteMessageremoteMessageremoteMessage',remoteMessage)
             if (!isNil(state) && !isNil(state.login)) {
-                console.log('FCM Message Data:', remoteMessage.data);
+                console.log('FCM Message Data:', remoteMessage.data,remoteMessage);
                 debounceMessage(remoteMessage, false)
             }
         });
     }
-
+    console.log('unsubscribe',unsubscribe)
     function initBackgroundListener() {
         //This handler will be fired when app is opened from background state
+      
+        console.log(
+            'Notification caused app to open from background state: called'
+        );
         messaging().onNotificationOpenedApp(remoteMessage => {
             const module = remoteMessage && remoteMessage.data && remoteMessage.data.notificationModule ? remoteMessage.data.notificationModule : ''
             // if (routeNameRef && routeNameRef.current && routeNameRef.current === 'ChatMessage' && module === 'CHAT') {
@@ -71,6 +76,7 @@ const AppProvider = (props) => {
             }
             //navigation.navigate(remoteMessage.data.type);
         });
+        
     }
 
     function initQuitStateListener() {
@@ -115,6 +121,7 @@ const AppProvider = (props) => {
         const enabled =
             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL
+            console.log('enabledenabledenabledenabledenabledenabled',enabled)
         if (enabled) {
             
             getToken()

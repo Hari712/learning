@@ -48,7 +48,11 @@ const RecentAlarms = (props) => {
         } )
 
         console.log("user id",deviceId)
-        dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(loginInfo.id, deviceId, onSuccess, onError))  
+        if(deviceId){
+
+          dispatch(DashboardActions.requestUserDeviceEventsOrNotifiactionCount(loginInfo.id, deviceId, onSuccess, onError))
+        }
+      
     }
 
     const onSuccess = (data) => {

@@ -118,7 +118,7 @@ const SocketProvider = (props) => {
                     "sortHeader" : "id",
                     "sortDirection" : "DESC"
                   }
-                dispatch(LiveTrackingActions.requestGetNotificationList(loginInfo.id, requestBody, false, onSuccess, onError))
+                dispatch(LiveTrackingActions.requestGetNotificationList(loginInfo.id, requestBody, onSuccess, onError))
                 dispatch(LiveTrackingActions.setNotificationEventsResponse(data.events))
                 setNotificationEvents(data.events)
                 function onSuccess(data) {    

@@ -16,6 +16,7 @@ import OfflineStatusBar from './src/component/OfflineBar'
 import SocketProvider from './src/provider/SocketProvider'
 import withCodePush from './src/hoc/withCodePush'
 import AppProvider from './src/provider/AppProvider'
+import messaging from '@react-native-firebase/messaging'
 import SplashScreen from 'react-native-splash-screen';
 
 export const translationGetters = {

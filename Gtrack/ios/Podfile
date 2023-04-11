@@ -3,9 +3,11 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '11.0'
 
+
 target 'Gtrack' do
   config = use_native_modules!
-
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
   use_react_native!(:path => config["reactNativePath"])
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
@@ -17,7 +19,17 @@ target 'Gtrack' do
   pod 'rn-fetch-blob', :path => '../node_modules/rn-fetch-blob'
 
   pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
+  # # pod 'Firebase', :modular_headers => true
+  # pod 'Firebase/Core', :modular_headers => true
+  # # pod 'FirebaseCoreInternal', :modular_headers => true
+  # pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
+  
+  pod 'GoogleUtilities', :modular_headers => true
+  # # $RNFirebaseAsStaticFramework = true
+  # # use_flipper!()
 
+  $FirebaseSDKVersion = '10.7.0'
   target 'GtrackTests' do
     inherit! :complete
     # Pods for testing

@@ -201,7 +201,7 @@ export function isIphoneX() {
     const unit = settingsData.temprature === "CELSIUS" ? "°C" : "°F"
     const Data = value/10
     const temprature = Data.toFixed(2)
-    const tempratureFernhit =parseFloat(temprature * 9/5 + 32)
+    const tempratureFernhit =parseFloat(temprature * 9/5 + 32).toFixed(2)
     if(value){
       if(unit=='°C')
       // 1C = 33.8 F || ° => `\u02DA`
